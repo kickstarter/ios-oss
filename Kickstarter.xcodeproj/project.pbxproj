@@ -75,8 +75,6 @@
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		067F473D2680EFFB008609C4 /* Segment.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66BD267BDCB000E30863 /* Segment.xcframework */; };
 		067F47442680F012008609C4 /* Segment_Appboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; };
-		067F47462680F033008609C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; };
-		067F47482680F040008609C4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; };
 		067F474E2680F087008609C4 /* Prelude_UIKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C9267BDCB300E30863 /* Prelude_UIKit.xcframework */; };
 		067F47542680F08F008609C4 /* Prelude.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C0267BDCB100E30863 /* Prelude.xcframework */; };
 		067F475A2680F09B008609C4 /* ReactiveExtensions.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66D0267BDCB600E30863 /* ReactiveExtensions.xcframework */; };
@@ -84,8 +82,6 @@
 		067F47672680F0BB008609C4 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47662680F0BB008609C4 /* SDWebImage.framework */; };
 		067F476D2680F7B8008609C4 /* Alamofire.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66D3267BDCB700E30863 /* Alamofire.xcframework */; };
 		067F47732680F7BC008609C4 /* AlamofireImage.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66BF267BDCB100E30863 /* AlamofireImage.xcframework */; };
-		067F47792680F7D6008609C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; };
-		067F477A2680F7DE008609C4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; };
 		067F477B2680F7E9008609C4 /* Optimizely.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C6267BDCB200E30863 /* Optimizely.xcframework */; };
 		067F47812680F7EF008609C4 /* Prelude_UIKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C9267BDCB300E30863 /* Prelude_UIKit.xcframework */; };
 		067F47872680F7F5008609C4 /* Prelude.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C0267BDCB100E30863 /* Prelude.xcframework */; };
@@ -144,8 +140,6 @@
 		067F4A26268147BC008609C4 /* AppCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F490C268115A3008609C4 /* AppCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A2726814800008609C4 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; };
 		067F4A2826814800008609C4 /* Appboy_iOS_SDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		067F4A2E26814830008609C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; };
-		067F4A2F26814830008609C4 /* FBSDKCoreKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A3526814864008609C4 /* Segment_Appboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; };
 		067F4A3626814864008609C4 /* Segment_Appboy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A3C268148A6008609C4 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47662680F0BB008609C4 /* SDWebImage.framework */; };
@@ -157,21 +151,31 @@
 		067F4A5426814AD5008609C4 /* Optimizely.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C6267BDCB200E30863 /* Optimizely.xcframework */; };
 		067F4A5A26814AF3008609C4 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; };
 		067F4A5B26814AF3008609C4 /* Segment_Appboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; };
-		067F4A5C26814B12008609C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; };
-		067F4A5D26814B12008609C4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; };
 		067F4A5F26814B2C008609C4 /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C2267BDCB100E30863 /* FBSnapshotTestCase.xcframework */; };
 		067F4AFD268155F2008609C4 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47662680F0BB008609C4 /* SDWebImage.framework */; };
 		067F4B0D2681566E008609C4 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47662680F0BB008609C4 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B20268156AE008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B27268156C7008609C4 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		067F4B2E268156E3008609C4 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		067F4B3526815707008609C4 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B3C2681572A008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C1267BDCB100E30863 /* ReactiveExtensions_TestHelpers.xcframework */; };
 		067F4B442681585E008609C4 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47662680F0BB008609C4 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B4A26815864008609C4 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		067F4B56268158BA008609C4 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		067F4B5C268158D0008609C4 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4B732682377C008609C4 /* FBSDKCoreKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */; };
+		067F4B742682377C008609C4 /* FBSDKCoreKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4B8E2682383F008609C4 /* FBSDKCoreKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */; };
+		067F4B902682383F008609C4 /* FBSDKLoginKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */; };
+		067F4BA0268238AE008609C4 /* FBSDKCoreKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */; };
+		067F4BA1268238AE008609C4 /* FBSDKLoginKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */; };
+		067F4BAC2682395C008609C4 /* FBSDKLoginKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */; };
+		067F4BAD2682395C008609C4 /* FBSDKLoginKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4BB926823A05008609C4 /* FBSDKCoreKit_Basics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4BB826823A04008609C4 /* FBSDKCoreKit_Basics.xcframework */; };
+		067F4BBA26823A05008609C4 /* FBSDKCoreKit_Basics.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4BB826823A04008609C4 /* FBSDKCoreKit_Basics.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4BD126823BBE008609C4 /* FBSDKCoreKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */; };
+		067F4BD726823BC4008609C4 /* FBSDKLoginKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */; };
+		067F4BDD26823C7D008609C4 /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C2267BDCB100E30863 /* FBSnapshotTestCase.xcframework */; };
+		067F4BF326823CD2008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C1267BDCB100E30863 /* ReactiveExtensions_TestHelpers.xcframework */; };
+		067F4BF926823D07008609C4 /* FBSDKCoreKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */; };
+		067F4BFA26823D07008609C4 /* FBSDKLoginKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
@@ -1544,8 +1548,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				067F4B3526815707008609C4 /* FBSDKLoginKit.framework in CopyFiles */,
-				067F4B2E268156E3008609C4 /* FBSDKCoreKit.framework in CopyFiles */,
 				067F4B27268156C7008609C4 /* Segment_Appboy.framework in CopyFiles */,
 				067F4B20268156AE008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				067F4B0D2681566E008609C4 /* SDWebImage.framework in CopyFiles */,
@@ -1558,8 +1560,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				067F4B5C268158D0008609C4 /* FBSDKLoginKit.framework in CopyFiles */,
-				067F4B56268158BA008609C4 /* FBSDKCoreKit.framework in CopyFiles */,
 				067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				067F4B4A26815864008609C4 /* Segment_Appboy.framework in CopyFiles */,
 				067F4B442681585E008609C4 /* SDWebImage.framework in CopyFiles */,
@@ -1587,12 +1587,14 @@
 				067F48562681023A008609C4 /* FirebaseRemoteConfig.xcframework in Embed Frameworks */,
 				067F48F026810B6B008609C4 /* ReactiveSwift.xcframework in Embed Frameworks */,
 				067F485026810239008609C4 /* FirebaseCrashlytics.xcframework in Embed Frameworks */,
+				067F4BBA26823A05008609C4 /* FBSDKCoreKit_Basics.xcframework in Embed Frameworks */,
 				067F484A26810239008609C4 /* FirebaseAnalytics.xcframework in Embed Frameworks */,
 				067F48EA26810B6A008609C4 /* Protobuf.xcframework in Embed Frameworks */,
 				067F48DE26810B6A008609C4 /* AlamofireImage.xcframework in Embed Frameworks */,
 				067F4A3626814864008609C4 /* Segment_Appboy.framework in Embed Frameworks */,
 				067F48F226810B6B008609C4 /* Segment.xcframework in Embed Frameworks */,
 				067F4A3D268148A6008609C4 /* SDWebImage.framework in Embed Frameworks */,
+				067F4BAD2682395C008609C4 /* FBSDKLoginKit.xcframework in Embed Frameworks */,
 				067F4A26268147BC008609C4 /* AppCenter.framework in Embed Frameworks */,
 				067F48E426810B6A008609C4 /* Optimizely.xcframework in Embed Frameworks */,
 				067F48EE26810B6A008609C4 /* ReactiveExtensions.xcframework in Embed Frameworks */,
@@ -1606,10 +1608,10 @@
 				067F48D026810AC6008609C4 /* GoogleUtilities.xcframework in Embed Frameworks */,
 				067F484E26810239008609C4 /* FirebaseCoreDiagnostics.xcframework in Embed Frameworks */,
 				067F48E826810B6A008609C4 /* Prelude.xcframework in Embed Frameworks */,
+				067F4B742682377C008609C4 /* FBSDKCoreKit.xcframework in Embed Frameworks */,
 				067F4A2826814800008609C4 /* Appboy_iOS_SDK.framework in Embed Frameworks */,
 				067F48CC26810AC6008609C4 /* GoogleAppMeasurement.xcframework in Embed Frameworks */,
 				067F48E226810B6A008609C4 /* nanopb.xcframework in Embed Frameworks */,
-				067F4A2F26814830008609C4 /* FBSDKCoreKit.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
 				067F48CE26810AC6008609C4 /* GoogleDataTransport.xcframework in Embed Frameworks */,
 			);
@@ -1691,6 +1693,9 @@
 		067F491926811687008609C4 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
 		067F491A26811687008609C4 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		067F491B26811687008609C4 /* AppCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterDistribute.framework; path = Carthage/Build/iOS/AppCenterDistribute.framework; sourceTree = "<group>"; };
+		067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FBSDKCoreKit.xcframework; path = Carthage/Build/FBSDKCoreKit.xcframework; sourceTree = "<group>"; };
+		067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FBSDKLoginKit.xcframework; path = Carthage/Build/FBSDKLoginKit.xcframework; sourceTree = "<group>"; };
+		067F4BB826823A04008609C4 /* FBSDKCoreKit_Basics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FBSDKCoreKit_Basics.xcframework; path = Carthage/Build/FBSDKCoreKit_Basics.xcframework; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
@@ -3025,8 +3030,8 @@
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				067F47442680F012008609C4 /* Segment_Appboy.framework in Frameworks */,
 				067F473D2680EFFB008609C4 /* Segment.xcframework in Frameworks */,
-				067F47462680F033008609C4 /* FBSDKCoreKit.framework in Frameworks */,
-				067F47482680F040008609C4 /* FBSDKLoginKit.framework in Frameworks */,
+				067F4B902682383F008609C4 /* FBSDKLoginKit.xcframework in Frameworks */,
+				067F4B8E2682383F008609C4 /* FBSDKCoreKit.xcframework in Frameworks */,
 				067F474E2680F087008609C4 /* Prelude_UIKit.xcframework in Frameworks */,
 				067F4A1426814790008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F47542680F08F008609C4 /* Prelude.xcframework in Frameworks */,
@@ -3040,6 +3045,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				067F4BF326823CD2008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */,
+				067F4BDD26823C7D008609C4 /* FBSnapshotTestCase.xcframework in Frameworks */,
+				067F4BD726823BC4008609C4 /* FBSDKLoginKit.xcframework in Frameworks */,
+				067F4BD126823BBE008609C4 /* FBSDKCoreKit.xcframework in Frameworks */,
 				067F4A5126814A70008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F4A5226814A77008609C4 /* Segment_Appboy.framework in Frameworks */,
 				067F4A5326814A7B008609C4 /* SDWebImage.framework in Frameworks */,
@@ -3054,9 +3063,9 @@
 				067F47812680F7EF008609C4 /* Prelude_UIKit.xcframework in Frameworks */,
 				067F476D2680F7B8008609C4 /* Alamofire.xcframework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
+				067F4BA0268238AE008609C4 /* FBSDKCoreKit.xcframework in Frameworks */,
+				067F4BA1268238AE008609C4 /* FBSDKLoginKit.xcframework in Frameworks */,
 				067F47732680F7BC008609C4 /* AlamofireImage.xcframework in Frameworks */,
-				067F47792680F7D6008609C4 /* FBSDKCoreKit.framework in Frameworks */,
-				067F477A2680F7DE008609C4 /* FBSDKLoginKit.framework in Frameworks */,
 				067F477B2680F7E9008609C4 /* Optimizely.xcframework in Frameworks */,
 				067F47872680F7F5008609C4 /* Prelude.xcframework in Frameworks */,
 				067F478D2680F7FC008609C4 /* ReactiveExtensions.xcframework in Frameworks */,
@@ -3076,6 +3085,7 @@
 				067F48E726810B6A008609C4 /* Prelude.xcframework in Frameworks */,
 				067F48CF26810AC6008609C4 /* GoogleUtilities.xcframework in Frameworks */,
 				067F499F26813A98008609C4 /* AppCenterDistribute.framework in Frameworks */,
+				067F4BAC2682395C008609C4 /* FBSDKLoginKit.xcframework in Frameworks */,
 				067F48E126810B6A008609C4 /* nanopb.xcframework in Frameworks */,
 				067F489A2681072E008609C4 /* PromisesObjC.xcframework in Frameworks */,
 				067F48EF26810B6A008609C4 /* ReactiveSwift.xcframework in Frameworks */,
@@ -3086,11 +3096,12 @@
 				067F48ED26810B6A008609C4 /* ReactiveExtensions.xcframework in Frameworks */,
 				067F48E526810B6A008609C4 /* Prelude_UIKit.xcframework in Frameworks */,
 				067F48DB26810B6A008609C4 /* Alamofire.xcframework in Frameworks */,
-				067F4A2E26814830008609C4 /* FBSDKCoreKit.framework in Frameworks */,
 				067F484F26810239008609C4 /* FirebaseCrashlytics.xcframework in Frameworks */,
 				067F48CD26810AC6008609C4 /* GoogleDataTransport.xcframework in Frameworks */,
 				067F48DD26810B6A008609C4 /* AlamofireImage.xcframework in Frameworks */,
 				067F48DF26810B6A008609C4 /* FirebaseInstallations.xcframework in Frameworks */,
+				067F4BB926823A05008609C4 /* FBSDKCoreKit_Basics.xcframework in Frameworks */,
+				067F4B732682377C008609C4 /* FBSDKCoreKit.xcframework in Frameworks */,
 				067F48F126810B6B008609C4 /* Segment.xcframework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				067F484D26810239008609C4 /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
@@ -3105,13 +3116,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				067F4BF926823D07008609C4 /* FBSDKCoreKit.xcframework in Frameworks */,
+				067F4BFA26823D07008609C4 /* FBSDKLoginKit.xcframework in Frameworks */,
 				067F4B3C2681572A008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */,
 				067F4AFD268155F2008609C4 /* SDWebImage.framework in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				067F4A5A26814AF3008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F4A5B26814AF3008609C4 /* Segment_Appboy.framework in Frameworks */,
-				067F4A5C26814B12008609C4 /* FBSDKCoreKit.framework in Frameworks */,
-				067F4A5D26814B12008609C4 /* FBSDKLoginKit.framework in Frameworks */,
 				067F4A5F26814B2C008609C4 /* FBSnapshotTestCase.xcframework in Frameworks */,
 				067F4A5426814AD5008609C4 /* Optimizely.xcframework in Frameworks */,
 			);
@@ -4060,6 +4071,9 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				067F4BB826823A04008609C4 /* FBSDKCoreKit_Basics.xcframework */,
+				067F4B8F2682383F008609C4 /* FBSDKLoginKit.xcframework */,
+				067F4B722682377C008609C4 /* FBSDKCoreKit.xcframework */,
 				067F491A26811687008609C4 /* AppCenterAnalytics.framework */,
 				067F491926811687008609C4 /* AppCenterCrashes.framework */,
 				067F491B26811687008609C4 /* AppCenterDistribute.framework */,
