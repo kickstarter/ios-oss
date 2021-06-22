@@ -81,9 +81,9 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
       self.vm.inputs.setFeatureAtIndexEnabled(index: 2, isEnabled: true)
 
       self.scheduler.advance()
-      
+
       self.vm.inputs.didUpdateUserDefaults()
-      
+
       self.scheduler.advance()
 
       XCTAssertEqual(
