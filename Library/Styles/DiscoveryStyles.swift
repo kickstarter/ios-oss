@@ -62,11 +62,13 @@ public let discoveryFilterRowMarginStyle: (UITableViewCell) -> UITableViewCell =
     }
 }
 
-public let discoveryProjectCellStyle =
-  baseTableViewCellStyle()
+public let discoveryProjectCellStyle: (UITableViewCell) -> UITableViewCell = { cell in
+  cell |>
+    baseTableViewCellStyle()
     <> UITableViewCell.lens.accessibilityHint %~ { _ in
       Strings.dashboard_tout_accessibility_hint_opens_project()
     }
+}
 
 public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
   sort: DiscoveryParams.Sort,

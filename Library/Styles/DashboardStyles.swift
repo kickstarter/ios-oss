@@ -16,8 +16,8 @@ public let dashboardCellTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_support_700
     <> UILabel.lens.font .~ .ksr_title2()
 
-public let dashboardCardStyle: (UIView) -> UIView = { cell in
-  cell
+public let dashboardCardStyle: (UIView) -> UIView = { view in
+  view
     |> UIView.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
     |> UIView.lens.layer.borderWidth .~ 1.0
 }
