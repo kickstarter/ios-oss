@@ -187,9 +187,11 @@ public final class CommentsViewModel: CommentsViewModelType,
       return accum + comments
     }
 
-    let commentsAndProject = initialProject
-      .takePairWhen(paginatedComments)
-      .map { ($1, $0) }
+    let commentsAndProject = Signal.combineLatest(
+      initialProject,
+      paginatedComments
+    )
+    .map { ($1, $0) }
 
     self.currentComments <~ commentsAndProject.map(first)
       // Thread hop so that we don't circularly buffer.
@@ -420,8 +422,11 @@ private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
   }
 }
 
-private func commentsNextPage(from projectSlug: String?, cursor: String?,
-                              updateID: String?) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+private func commentsNextPage(
+  from projectSlug: String?,
+  cursor: String?,
+  updateID: String?
+) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
   if let id = updateID {
     return AppEnvironment.current.apiService.fetchComments(
       query: projectUpdateCommentsQuery(
