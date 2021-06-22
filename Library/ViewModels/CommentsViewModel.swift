@@ -272,9 +272,8 @@ public final class CommentsViewModel: CommentsViewModelType,
     let hideFooterView: Signal<CommentTableViewFooterViewState, Never> = Signal.merge(
       initialLoadOrReload.mapConst(.hidden),
       errors
-        .mapConst(.error)
         .withLatestFrom(hasRequestedNextPage.filter(isFalse))
-        .map(first)
+        .mapConst(.hidden)
     )
 
     self.configureFooterViewWithState = Signal.merge(
