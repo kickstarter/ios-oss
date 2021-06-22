@@ -73,7 +73,6 @@
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
-		067F473D2680EFFB008609C4 /* Segment.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66BD267BDCB000E30863 /* Segment.xcframework */; };
 		067F47442680F012008609C4 /* Segment_Appboy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; };
 		067F47462680F033008609C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; };
 		067F47482680F040008609C4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; };
@@ -135,8 +134,6 @@
 		067F48EE26810B6A008609C4 /* ReactiveExtensions.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66D0267BDCB600E30863 /* ReactiveExtensions.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F48EF26810B6A008609C4 /* ReactiveSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66AF267BDC6500E30863 /* ReactiveSwift.xcframework */; };
 		067F48F026810B6B008609C4 /* ReactiveSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66AF267BDC6500E30863 /* ReactiveSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		067F48F126810B6B008609C4 /* Segment.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66BD267BDCB000E30863 /* Segment.xcframework */; };
-		067F48F226810B6B008609C4 /* Segment.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66BD267BDCB000E30863 /* Segment.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F499F26813A98008609C4 /* AppCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F491B26811687008609C4 /* AppCenterDistribute.framework */; };
 		067F49A026813A98008609C4 /* AppCenterDistribute.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F491B26811687008609C4 /* AppCenterDistribute.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A1426814790008609C4 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; };
@@ -172,6 +169,8 @@
 		067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B56268158BA008609C4 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B5C268158D0008609C4 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4CA126826E64008609C4 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; };
+		067F4CA226826E64008609C4 /* Segment.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
@@ -1591,7 +1590,6 @@
 				067F48EA26810B6A008609C4 /* Protobuf.xcframework in Embed Frameworks */,
 				067F48DE26810B6A008609C4 /* AlamofireImage.xcframework in Embed Frameworks */,
 				067F4A3626814864008609C4 /* Segment_Appboy.framework in Embed Frameworks */,
-				067F48F226810B6B008609C4 /* Segment.xcframework in Embed Frameworks */,
 				067F4A3D268148A6008609C4 /* SDWebImage.framework in Embed Frameworks */,
 				067F4A26268147BC008609C4 /* AppCenter.framework in Embed Frameworks */,
 				067F48E426810B6A008609C4 /* Optimizely.xcframework in Embed Frameworks */,
@@ -1607,6 +1605,7 @@
 				067F484E26810239008609C4 /* FirebaseCoreDiagnostics.xcframework in Embed Frameworks */,
 				067F48E826810B6A008609C4 /* Prelude.xcframework in Embed Frameworks */,
 				067F4A2826814800008609C4 /* Appboy_iOS_SDK.framework in Embed Frameworks */,
+				067F4CA226826E64008609C4 /* Segment.framework in Embed Frameworks */,
 				067F48CC26810AC6008609C4 /* GoogleAppMeasurement.xcframework in Embed Frameworks */,
 				067F48E226810B6A008609C4 /* nanopb.xcframework in Embed Frameworks */,
 				067F4A2F26814830008609C4 /* FBSDKCoreKit.framework in Embed Frameworks */,
@@ -1691,6 +1690,7 @@
 		067F491926811687008609C4 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
 		067F491A26811687008609C4 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		067F491B26811687008609C4 /* AppCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterDistribute.framework; path = Carthage/Build/iOS/AppCenterDistribute.framework; sourceTree = "<group>"; };
+		067F4CA026826E64008609C4 /* Segment.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Segment.framework; path = Carthage/Build/iOS/Segment.framework; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
@@ -2020,7 +2020,6 @@
 		8A0B1E2924DA12E4009E90C0 /* GraphRewardTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphRewardTemplates.swift; sourceTree = "<group>"; };
 		8A0B1E2B24DA1327009E90C0 /* GraphLocationTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphLocationTemplates.swift; sourceTree = "<group>"; };
 		8A0F66AF267BDC6500E30863 /* ReactiveSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ReactiveSwift.xcframework; path = Carthage/Build/ReactiveSwift.xcframework; sourceTree = "<group>"; };
-		8A0F66BD267BDCB000E30863 /* Segment.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Segment.xcframework; path = Carthage/Build/Segment.xcframework; sourceTree = "<group>"; };
 		8A0F66BE267BDCB100E30863 /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = Carthage/Build/GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
 		8A0F66BF267BDCB100E30863 /* AlamofireImage.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AlamofireImage.xcframework; path = Carthage/Build/AlamofireImage.xcframework; sourceTree = "<group>"; };
 		8A0F66C0267BDCB100E30863 /* Prelude.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Prelude.xcframework; path = Carthage/Build/Prelude.xcframework; sourceTree = "<group>"; };
@@ -3024,7 +3023,6 @@
 			files = (
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				067F47442680F012008609C4 /* Segment_Appboy.framework in Frameworks */,
-				067F473D2680EFFB008609C4 /* Segment.xcframework in Frameworks */,
 				067F47462680F033008609C4 /* FBSDKCoreKit.framework in Frameworks */,
 				067F47482680F040008609C4 /* FBSDKLoginKit.framework in Frameworks */,
 				067F474E2680F087008609C4 /* Prelude_UIKit.xcframework in Frameworks */,
@@ -3079,6 +3077,7 @@
 				067F48E126810B6A008609C4 /* nanopb.xcframework in Frameworks */,
 				067F489A2681072E008609C4 /* PromisesObjC.xcframework in Frameworks */,
 				067F48EF26810B6A008609C4 /* ReactiveSwift.xcframework in Frameworks */,
+				067F4CA126826E64008609C4 /* Segment.framework in Frameworks */,
 				067F48E326810B6A008609C4 /* Optimizely.xcframework in Frameworks */,
 				067F4A2726814800008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F48E926810B6A008609C4 /* Protobuf.xcframework in Frameworks */,
@@ -3091,7 +3090,6 @@
 				067F48CD26810AC6008609C4 /* GoogleDataTransport.xcframework in Frameworks */,
 				067F48DD26810B6A008609C4 /* AlamofireImage.xcframework in Frameworks */,
 				067F48DF26810B6A008609C4 /* FirebaseInstallations.xcframework in Frameworks */,
-				067F48F126810B6B008609C4 /* Segment.xcframework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				067F484D26810239008609C4 /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				067F4A3C268148A6008609C4 /* SDWebImage.framework in Frameworks */,
@@ -4060,6 +4058,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				067F4CA026826E64008609C4 /* Segment.framework */,
 				067F491A26811687008609C4 /* AppCenterAnalytics.framework */,
 				067F491926811687008609C4 /* AppCenterCrashes.framework */,
 				067F491B26811687008609C4 /* AppCenterDistribute.framework */,
@@ -4093,7 +4092,6 @@
 				8A0F66CA267BDCB300E30863 /* Protobuf.xcframework */,
 				8A0F66C1267BDCB100E30863 /* ReactiveExtensions_TestHelpers.xcframework */,
 				8A0F66D0267BDCB600E30863 /* ReactiveExtensions.xcframework */,
-				8A0F66BD267BDCB000E30863 /* Segment.xcframework */,
 				8A0F66AF267BDC6500E30863 /* ReactiveSwift.xcframework */,
 			);
 			name = Frameworks;
