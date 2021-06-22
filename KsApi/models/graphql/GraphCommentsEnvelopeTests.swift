@@ -100,7 +100,6 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
       XCTAssertEqual(envelope.slug, "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer")
     } catch {
       XCTFail()
-      print(error)
     }
   }
 
@@ -203,6 +202,24 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
     } catch {
       XCTFail()
       print(error)
+    }
+  }
+
+  func testProjectOrUpdateCommentsDecode() {
+    let dictionary: [String: Any] = [:]
+
+    guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
+      XCTFail("Should have data")
+      return
+    }
+
+    do {
+      _ = try JSONDecoder().decode(GraphCommentsEnvelope.self, from: data)
+      XCTFail("Should not be decodable")
+    } catch let DecodingError.dataCorrupted(context) {
+      XCTAssertEqual("Unable to decode a Project or Update.", "\(context.debugDescription)")
+    } catch {
+      XCTFail("Should only fail with DecodingError.dataCorrupted")
     }
   }
 }
