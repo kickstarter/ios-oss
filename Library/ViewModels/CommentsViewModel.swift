@@ -188,10 +188,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     }
 
     let commentsAndProject = Signal.combineLatest(
-      initialProject,
-      paginatedComments
+      paginatedComments,
+      initialProject
     )
-    .map { ($1, $0) }
 
     self.currentComments <~ commentsAndProject.map(first)
       // Thread hop so that we don't circularly buffer.
