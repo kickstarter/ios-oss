@@ -12,7 +12,7 @@ github "microsoft/appcenter-sdk-apple" == 4.2.0
 github "ReactiveCocoa/ReactiveSwift" == 6.6.0
 github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 6.2.0
-github "segmentio/analytics-ios" == 4.1.4
+github "segmentio/analytics-ios" == 4.1.2
 github "appboy/appboy-segment-ios" == 4.0.0
 
 
