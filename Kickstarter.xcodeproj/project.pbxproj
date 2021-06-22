@@ -178,6 +178,8 @@
 		067F4D092682791C008609C4 /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4D3B26828124008609C4 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; };
 		067F4D51268282E0008609C4 /* Segment.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4D6626828826008609C4 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; };
+		067F4D682682882F008609C4 /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
@@ -1572,6 +1574,16 @@
 				067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				067F4B4A26815864008609C4 /* Segment_Appboy.framework in CopyFiles */,
 				067F4B442681585E008609C4 /* SDWebImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		067F4D6726828829008609C4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				067F4D682682882F008609C4 /* Segment.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3154,6 +3166,7 @@
 			files = (
 				067F4CC626827227008609C4 /* FBSnapshotTestCase.xcframework in Frameworks */,
 				D0B065D42280A83100142B7A /* Kickstarter_Framework.framework in Frameworks */,
+				067F4D6626828826008609C4 /* Segment.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5051,6 +5064,7 @@
 				D05DFC3D227A578B006F3B68 /* Sources */,
 				D05DFC3E227A578B006F3B68 /* Frameworks */,
 				D05DFC3F227A578B006F3B68 /* Resources */,
+				067F4D6726828829008609C4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
