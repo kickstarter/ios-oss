@@ -192,7 +192,7 @@ extension CommentsViewController {
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let comment = self.dataSource.comment(at: indexPath) else { return }
 
-    self.viewModel.inputs.didSelectComment(comment)
+    self.viewModel.inputs.viewReplies(for: comment)
   }
 }
 

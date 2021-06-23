@@ -161,7 +161,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testGoToCommentReplies_CommentHasReplies_GoToEmits_FeatureFlag_True() {
+  func testGoToCommentReplies_CommentHasReplies_GoToEmits() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
     let project = Project.template
@@ -169,48 +169,15 @@ internal final class CommentsViewModelTests: TestCase {
       |> \.replyCount .~ 1
       |> \.status .~ .success
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true
-      ]
+    self.vm.inputs.configureWith(project: project, update: nil)
+    self.vm.inputs.viewDidLoad()
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(project: project, update: nil)
-      self.vm.inputs.viewDidLoad()
-
-      self.goToCommentRepliesComment.assertDidNotEmitValue()
-
-      self.vm.inputs.didSelectComment(comment)
-
-      self.goToCommentRepliesComment
-        .assertValues([comment], "The comment replies feature is true, user can see replies.")
-    }
-  }
-
-  func testGoToCommentReplies_CommentHasReplies_GoToEmits_FeatureFlag_False() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    let project = Project.template
-    let comment = Comment.template
-      |> \.replyCount .~ 1
-      |> \.status .~ .success
+    self.vm.inputs.viewReplies(for: comment)
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false
-      ]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(project: project, update: nil)
-      self.vm.inputs.viewDidLoad()
-
-      self.goToCommentRepliesComment.assertDidNotEmitValue()
-
-      self.vm.inputs.didSelectComment(comment)
-
-      self.goToCommentRepliesComment
-        .assertValues([], "The comment replies feature is false, user can not see replies.")
-    }
+    self.goToCommentRepliesComment
+      .assertValues([comment])
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {
@@ -226,7 +193,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectComment(comment)
+    self.vm.inputs.viewReplies(for: comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
   }
@@ -244,7 +211,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectComment(comment)
+    self.vm.inputs.viewReplies(for: comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
   }
@@ -261,7 +228,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectComment(comment)
+    self.vm.inputs.viewReplies(for: comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
   }
@@ -727,12 +694,12 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: mockService2) {
         // Tap on the failed comment to retry
-        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.viewReplies(for: expectedFailedComment)
 
         // Tapping repeatedly is ignored (in the case where retries may be in flight).
-        self.vm.inputs.didSelectComment(expectedFailedComment)
-        self.vm.inputs.didSelectComment(expectedFailedComment)
-        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.viewReplies(for: expectedFailedComment)
+        self.vm.inputs.viewReplies(for: expectedFailedComment)
+        self.vm.inputs.viewReplies(for: expectedFailedComment)
 
         let expectedRetryingComment = expectedFailedComment
           |> \.status .~ .retrying
@@ -824,7 +791,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: mockService2) {
         // Tap on the failed comment to retry
-        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.viewReplies(for: expectedFailedComment)
 
         let expectedRetryingComment = expectedFailedComment
           |> \.status .~ .retrying

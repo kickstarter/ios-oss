@@ -20,7 +20,7 @@ public protocol CommentsViewModelInputs {
   func configureWith(project: Project?, update: Update?)
 
   /// Call with a `Comment` when it is selected.
-  func didSelectComment(_ comment: Comment)
+  func viewReplies(for comment: Comment)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
@@ -205,14 +205,14 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
-    let commentTapped = self.didSelectCommentProperty.signal.skipNil()
+    let commentTapped = self.viewRepliesProperty.signal.skipNil()
     let regularCommentTapped = commentTapped.filter { comment in
       [comment.status == .success, comment.isDeleted == false].allSatisfy(isTrue)
     }
     let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
 
     self.goToCommentReplies = regularCommentTapped
-      .filter { comment in comment.replyCount > 0 && commentThreadingRepliesEnabled() }
+      .filter { comment in comment.replyCount > 0 }
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
@@ -289,9 +289,9 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let retryingComment = MutableProperty<(Comment, String)?>(nil)
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
 
-  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
-  public func didSelectComment(_ comment: Comment) {
-    self.didSelectCommentProperty.value = comment
+  private let viewRepliesProperty = MutableProperty<Comment?>(nil)
+  public func viewReplies(for comment: Comment) {
+    self.viewRepliesProperty.value = comment
   }
 
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
@@ -464,9 +464,4 @@ private func commentsNextPage(
       )
     )
   }
-}
-
-private func commentThreadingRepliesEnabled() -> Bool {
-  return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue) ?? true
 }
