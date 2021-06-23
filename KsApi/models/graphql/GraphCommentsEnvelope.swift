@@ -27,15 +27,23 @@ extension GraphCommentsEnvelope {
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    let container: KeyedDecodingContainer<GraphCommentsEnvelope.CodingKeys>
 
-    if let projectContainer = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project) {
-      container = projectContainer
-      self.slug = try container.decodeIfPresent(String.self, forKey: .slug)
-    } else {
-      container = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post)
-      self.updateID = try container.decodeIfPresent(String.self, forKey: .id)
+    /// Try to decode a `Project` then `Update` container.
+    let tryContainer = (
+      (try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)) ??
+        (try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post))
+    )
+
+    guard let container = tryContainer else {
+      throw DecodingError.dataCorruptedError(
+        forKey: .post,
+        in: values,
+        debugDescription: "Unable to decode a Project or Update."
+      )
     }
+
+    self.slug = try container.decodeIfPresent(String.self, forKey: .slug)
+    self.updateID = try container.decodeIfPresent(String.self, forKey: .id)
 
     let commentsContainer = try container
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
