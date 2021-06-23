@@ -134,8 +134,11 @@ public final class CommentsViewModel: CommentsViewModelType,
     let pullToRefresh = self.refreshProperty.signal
 
     let requestFirstPageWith = Signal.merge(
-      initialProject,
-      initialProject.takeWhen(pullToRefresh)
+      projectOrUpdate,
+      projectOrUpdate.takeWhen(retryFirstPage),
+      projectOrUpdate.takeWhen(pullToRefresh)
+        // Thread hop so that we can clear our comments buffer before newly paginated results.
+        .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
     let hasRequestedNextPage = Signal.merge(
       requestFirstPageWith.mapConst(false),
@@ -146,20 +149,9 @@ public final class CommentsViewModel: CommentsViewModelType,
       requestNextPageWhen: requestNextPage,
       clearOnNewRequest: true,
       valuesFromEnvelope: { $0.comments },
-      cursorFromEnvelope: { ($0.slug, $0.cursor) },
-      requestFromParams: { project in
-        AppEnvironment.current.apiService.fetchComments(
-          query: commentsQuery(withProjectSlug: project.slug)
-        )
-      },
-      requestFromCursor: { projectSlug, cursor in
-        AppEnvironment.current.apiService.fetchComments(
-          query: commentsQuery(
-            withProjectSlug: projectSlug,
-            after: cursor
-          )
-        )
-      },
+      cursorFromEnvelope: { ($0.slug, $0.cursor, $0.updateID) },
+      requestFromParams: commentsFirstPage,
+      requestFromCursor: commentsNextPage,
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
     )
@@ -190,10 +182,11 @@ public final class CommentsViewModel: CommentsViewModelType,
       guard clear == false else { return comments }
       return accum + comments
     }
-    .filter { !$0.isEmpty }
-    let commentsAndProject = initialProject
-      .takePairWhen(paginatedComments)
-      .map { ($1, $0) }
+
+    let commentsAndProject = Signal.combineLatest(
+      paginatedComments,
+      initialProject
+    )
 
     self.currentComments <~ commentsAndProject.map(first)
       // Thread hop so that we don't circularly buffer.
@@ -425,4 +418,43 @@ private func commentsReplacingCommentById(
   mutableComments[commentIndex] = replacingComment
 
   return mutableComments
+}
+
+private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
+  -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  return projectOrUpdate.ifLeft { project in
+    AppEnvironment.current.apiService.fetchComments(
+      query: commentsQuery(
+        withProjectSlug:
+        project.slug
+      )
+    )
+  } ifRight: {
+    AppEnvironment.current.apiService.fetchComments(
+      query: projectUpdateCommentsQuery(id: $0.id.description)
+    )
+  }
+}
+
+private func commentsNextPage(
+  from projectSlug: String?,
+  cursor: String?,
+  updateID: String?
+) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  if let projectSlug = projectSlug {
+    return AppEnvironment.current.apiService.fetchComments(
+      query: commentsQuery(
+        withProjectSlug: projectSlug,
+        after: cursor
+      )
+    )
+  } else {
+    guard let id = updateID else { return .empty }
+    return AppEnvironment.current.apiService.fetchComments(
+      query: projectUpdateCommentsQuery(
+        id: id,
+        after: cursor
+      )
+    )
+  }
 }

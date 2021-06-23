@@ -117,6 +117,7 @@ public enum Query {
   case backing(id: String, NonEmptySet<Backing>)
   case category(id: String, NonEmptySet<Category>)
   case comment(id: String, NonEmptySet<Comment>)
+  case post(id: String, NonEmptySet<Project>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
   case user(NonEmptySet<User>)
@@ -400,6 +401,8 @@ extension Query: QueryType {
       return "node(id: \"\(id)\") { ... on Category { \(join(fields)) } }"
     case let .comment(id: id, fields):
       return "comment: node(id: \"\(id)\") { ... on Comment { \(join(fields)) } }"
+    case let .post(id, fields):
+      return "post(id: \"\(id)\") { ... on FreeformPost { \(join(fields)) } }"
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
