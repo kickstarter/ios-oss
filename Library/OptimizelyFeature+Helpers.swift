@@ -11,12 +11,12 @@ public func featureCommentFlaggingIsEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue] ??
     (AppEnvironment.current.optimizelyClient?
-      .isFeatureEnabled(featureKey: OptimizelyFeature.commentFlaggingEnabled.rawValue) ?? true)
+      .isFeatureEnabled(featureKey: OptimizelyFeature.commentFlaggingEnabled.rawValue) ?? false)
 }
 
 public func featureCommentThreadingRepliesIsEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .optimizelyFeatureFlags[OptimizelyFeature.commentThreadingRepliesEnabled.rawValue] ??
-    AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.commentThreadingRepliesEnabled.rawValue) ?? true
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.commentThreadingRepliesEnabled.rawValue) ?? false)
 }

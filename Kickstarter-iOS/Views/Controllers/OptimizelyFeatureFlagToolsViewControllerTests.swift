@@ -19,16 +19,16 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
   func testOptimizelyFeatureFlagToolsViewController() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
         OptimizelyFeature.commentThreading.rawValue: true,
         OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
       ]
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(language: language, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
         let controller = OptimizelyFeatureFlagToolsViewController.instantiate()
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
 

@@ -19,7 +19,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     self.vm.outputs.updateUserDefaultsWithFeatures.observe(self.updateUserDefaultsWithFeatures.observer)
   }
 
-  func testReloadWithData() {
+  func testReloadWithData_AllFeaturesEnabled() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
@@ -40,7 +40,28 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     }
   }
 
-  func testUpdateUserDefaultsWithFeatures() {
+  func testReloadWithData_FeaturesEnabledAndDisabled() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.commentThreading.rawValue: true,
+        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false
+      ]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadWithData.values.forEach { featureTuples in
+        featureTuples.forEach { feature, isEnabled in
+          let isEnabledOnClient = mockOptimizelyClient.features[feature.rawValue]
+
+          XCTAssertEqual(isEnabled, isEnabledOnClient)
+        }
+      }
+    }
+  }
+
+  func testUpdateUserDefaultsWithFeatures_FeaturesAreEnabled() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
@@ -57,13 +78,17 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      let (_, isEnabled) = self.updateUserDefaultsWithFeatures.values[0][0]
+      let (_, isEnabled0) = self.updateUserDefaultsWithFeatures.values[0][0]
+      let (_, isEnabled1) = self.updateUserDefaultsWithFeatures.values[0][1]
+      let (_, isEnabled2) = self.updateUserDefaultsWithFeatures.values[0][2]
 
-      XCTAssertTrue(isEnabled)
+      XCTAssertTrue(isEnabled0)
+      XCTAssertFalse(isEnabled1)
+      XCTAssertFalse(isEnabled2)
     }
   }
 
-  func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaults() {
+  func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
@@ -88,10 +113,12 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
 
       XCTAssertEqual(
         userDefaults
-          .dictionary(forKey: "com.kickstarter.KeyValueStoreType.optimizelyFeatureFlags") as? [String : Bool],
-        [OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
-         OptimizelyFeature.commentThreading.rawValue: true,
-         OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
+          .dictionary(forKey: "com.kickstarter.KeyValueStoreType.optimizelyFeatureFlags") as? [String: Bool],
+        [
+          OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+          OptimizelyFeature.commentThreading.rawValue: true,
+          OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
+        ]
       )
     }
 
