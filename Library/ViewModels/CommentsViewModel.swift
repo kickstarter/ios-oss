@@ -136,8 +136,6 @@ public final class CommentsViewModel: CommentsViewModelType,
     let requestFirstPageWith = Signal.merge(
       initialProject,
       initialProject.takeWhen(pullToRefresh)
-        // Thread hop so that we can clear our comments buffer before newly paginated results.
-        .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
     let hasRequestedNextPage = Signal.merge(
       requestFirstPageWith.mapConst(false),
@@ -200,26 +198,22 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.currentComments <~ commentsAndProject.map(first)
       // Thread hop so that we don't circularly buffer.
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
-
+    
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
       // Allow empty arrays from the first emission.
-      Signal.combineLatest(comments.skip(first: 1), initialProject)
+      Signal.zip(comments, initialProject)
         .filter { $0.0.isEmpty }
         .map { ($0.0, $0.1) }
-        .map { ($0, $1, false) },
-      // Allow empty arrays on pull to refresh.
-      Signal.zip(comments, pullToRefresh)
-        .withLatestFrom(initialProject)
-        .map(unpack)
-        .filter { $0.0.isEmpty }
-        .map { ($0.0, $0.2) }
-        .map { ($0, $1, false) },
+        .map { comments, project in (comments, project, false) },
       // Continue to paginate normally.
       commentsAndProject
         .filter { comments, _ in comments.isEmpty == false }
-        .map { ($0, $1, false) },
+        .map { comments, project in (comments, project, false) },
       // If there are errors emit empty comments array, project and error boolean.
-      errors.withLatestFrom(initialProject).map { ([], $1, true) }
+      Signal.combineLatest(errors, hasRequestedNextPage)
+        .filter(second >>> isFalse)
+        .map(first)
+        .withLatestFrom(initialProject).map { ([], $1, true) }
     )
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
@@ -272,8 +266,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     let hideFooterView: Signal<CommentTableViewFooterViewState, Never> = Signal.merge(
       initialLoadOrReload.mapConst(.hidden),
       errors
-        .withLatestFrom(hasRequestedNextPage.filter(isFalse))
         .mapConst(.hidden)
+        .withLatestFrom(hasRequestedNextPage.filter(isFalse))
+        .map(first)
     )
 
     self.configureFooterViewWithState = Signal.merge(
