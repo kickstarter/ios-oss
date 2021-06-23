@@ -64,10 +64,16 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToDebugPushNotifications()
       }
 
-    self.viewModel.outputs.goToFeatureFlagTools
+    self.viewModel.outputs.goToConfigFeatureFlagTools
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToFeatureFlagTools()
+        self?.goToConfigFeatureFlagTools()
+      }
+
+    self.viewModel.outputs.goToOptimizelyFeatureFlagTools
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToOptimizelyFeatureFlagTools()
       }
 
     self.viewModel.outputs.goToBetaFeedback
@@ -153,10 +159,16 @@ internal final class BetaToolsViewController: UITableViewController {
     )
   }
 
-  private func goToFeatureFlagTools() {
+  private func goToConfigFeatureFlagTools() {
     let featureFlagToolsViewController = FeatureFlagToolsViewController.instantiate()
 
     self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
+  }
+
+  private func goToOptimizelyFeatureFlagTools() {
+    let viewController = OptimizelyFeatureFlagToolsViewController.instantiate()
+
+    self.navigationController?.pushViewController(viewController, animated: true)
   }
 
   private func showLanguageActionSheet(sourceViewIndex: Int) {

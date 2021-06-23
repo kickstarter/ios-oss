@@ -60,8 +60,8 @@ internal final class CommentCellViewModelTests: TestCase {
   func testOutputs_bottomRowStackViewIsHidden_LoggedIn_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false
       ]
 
     let user = User.template |> \.id .~ 12_345
@@ -80,8 +80,8 @@ internal final class CommentCellViewModelTests: TestCase {
   func testOutputs_bottomRowStackViewIsHidden_IsBacking_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false
       ]
 
     let project = Project.template
@@ -100,7 +100,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_LoggedOut_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -115,7 +115,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_IsNotBacking_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -130,7 +130,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -142,7 +142,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -155,7 +155,7 @@ internal final class CommentCellViewModelTests: TestCase {
   func testOutput_notifyDelegateLinkTappedWithURL() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true
+        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
       ]
 
     guard let expectedURL = HelpType.community
@@ -198,7 +198,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_True_IsLoggedIn_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let project = Project.template
       |> \.personalization.isBacking .~ true
@@ -217,7 +217,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let user = User.template |> \.id .~ 12_345
 
@@ -236,7 +236,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
 
     let user = User.template |> \.id .~ 12_345
 
@@ -252,7 +252,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsLoggedOut_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
 
     withEnvironment(currentUser: nil, optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -378,7 +378,7 @@ internal final class CommentCellViewModelTests: TestCase {
       |> \.replyCount .~ 1
 
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
 
     self.viewRepliesStackViewIsHidden.assertDidNotEmitValue()
 
