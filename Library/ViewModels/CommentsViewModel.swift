@@ -253,11 +253,10 @@ public final class CommentsViewModel: CommentsViewModelType,
         currentlyRetrying.value.insert(comment.id)
       })
 
-    self.retryingComment <~ Signal.combineLatest(initialProject, commentableId)
+    self.retryingComment <~ commentableId
       .takePairWhen(newErroredCommentTapped)
-      .map(unpack)
-      .map { project, commentableId, comment in
-        (comment, commentableId, project)
+      .map { commentableId, comment in
+        (comment, commentableId)
       }
       .flatMap(.concurrent(limit: concurrentCommentLimit), retryCommentProducer)
       // Once we've emitted a value here the comment has been retried and can be removed.
@@ -346,8 +345,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
 private func retryCommentProducer(
   erroredComment comment: Comment,
-  commentableId: String,
-  project _: Project
+  commentableId: String
 ) -> SignalProducer<(Comment, String), Never> {
   // Retry posting the comment.
   AppEnvironment.current.apiService.postComment(
