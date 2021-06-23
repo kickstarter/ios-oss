@@ -881,7 +881,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testConfigureFooterViewWithState_ErrorOnFirstPage() {
+  func testDataSourceState_ErrorOnFirstPage() {
     self.configureFooterViewWithState.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
@@ -896,14 +896,13 @@ internal final class CommentsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.assertValues([true])
-      self.configureFooterViewWithState.assertValues([.hidden, .error], "Emits error state.")
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
         self.vm.inputs.commentTableViewFooterViewDidTapRetry()
 
         self.scheduler.advance()
 
-        self.configureFooterViewWithState.assertValues([.hidden, .error, .hidden], "Returns to hidden.")
+        self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.assertLastValue(false)
       }
     }
   }
@@ -951,7 +950,7 @@ internal final class CommentsViewModelTests: TestCase {
           self.scheduler.advance()
 
           self.configureFooterViewWithState.assertValues(
-            [.hidden, .activity, .hidden, .activity, .error], "Emits error state."
+            [.hidden, .activity, .hidden, .activity, .hidden, .error], "Emits error state."
           )
 
           withEnvironment(
@@ -961,13 +960,13 @@ internal final class CommentsViewModelTests: TestCase {
             self.vm.inputs.commentTableViewFooterViewDidTapRetry()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .error, .activity], "Activity is shown during paging."
+              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity], "Activity is shown during paging."
             )
 
             self.scheduler.advance()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .error, .activity, .hidden], "Returns to hidden."
+              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity, .hidden], "Returns to hidden."
             )
           }
         }

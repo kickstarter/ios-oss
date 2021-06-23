@@ -125,6 +125,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       isCloseToBottom.take(first: 1),
       tappedToRetry
     )
+    
+    // Don't retry the first page if we've paged before.
+    let retryFirstPage = tappedToRetry
+      .take(until: isCloseToBottom)
 
     let requestNextPage = Signal.merge(
       isCloseToBottom.ignoreValues(),
