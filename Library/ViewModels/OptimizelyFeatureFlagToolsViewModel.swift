@@ -93,11 +93,14 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
 private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   switch feature {
   case .commentFlaggingEnabled:
-    return AppEnvironment.current.userDefaults.commentFlaggingEnabled
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue]
   case .commentThreading:
-    return AppEnvironment.current.userDefaults.commentThreadingEnabled
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.commentThreading.rawValue]
   case .commentThreadingRepliesEnabled:
-    return AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.commentThreadingRepliesEnabled.rawValue]
   }
 }
 
@@ -106,10 +109,14 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
 private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: Bool) {
   switch feature {
   case .commentFlaggingEnabled:
-    AppEnvironment.current.userDefaults.commentFlaggingEnabled = value
+    AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue] = value
   case .commentThreading:
-    AppEnvironment.current.userDefaults.commentThreadingEnabled = value
+    AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.commentThreading.rawValue] = value
   case .commentThreadingRepliesEnabled:
-    AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled = value
+    AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.commentThreadingRepliesEnabled.rawValue] =
+      value
   }
 }

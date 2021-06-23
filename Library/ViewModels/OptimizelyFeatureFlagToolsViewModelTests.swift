@@ -88,14 +88,10 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
 
       XCTAssertEqual(
         userDefaults
-          .bool(forKey: "com.kickstarter.KeyValueStoreType.iOSCommentThreadingCommentFlagging"),
-        true
-      )
-      XCTAssertEqual(userDefaults.bool(forKey: "com.kickstarter.KeyValueStoreType.iOSCommentThreading"), true)
-      XCTAssertEqual(
-        userDefaults
-          .bool(forKey: "com.kickstarter.KeyValueStoreType.iOSCommentThreadingReplyButtons"),
-        true
+          .dictionary(forKey: "com.kickstarter.KeyValueStoreType.optimizelyFeatureFlags") as? [String : Bool],
+        [OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+         OptimizelyFeature.commentThreading.rawValue: true,
+         OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
       )
     }
 
