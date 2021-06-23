@@ -174,7 +174,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.viewReplies(for: comment)
+    self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment
       .assertValues([comment])
@@ -193,7 +193,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.viewReplies(for: comment)
+    self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
   }
@@ -211,7 +211,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.viewReplies(for: comment)
+    self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
   }
@@ -228,7 +228,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.viewReplies(for: comment)
+    self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
   }
@@ -694,12 +694,12 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: mockService2) {
         // Tap on the failed comment to retry
-        self.vm.inputs.viewReplies(for: expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
 
         // Tapping repeatedly is ignored (in the case where retries may be in flight).
-        self.vm.inputs.viewReplies(for: expectedFailedComment)
-        self.vm.inputs.viewReplies(for: expectedFailedComment)
-        self.vm.inputs.viewReplies(for: expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
 
         let expectedRetryingComment = expectedFailedComment
           |> \.status .~ .retrying
@@ -791,7 +791,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: mockService2) {
         // Tap on the failed comment to retry
-        self.vm.inputs.viewReplies(for: expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
 
         let expectedRetryingComment = expectedFailedComment
           |> \.status .~ .retrying

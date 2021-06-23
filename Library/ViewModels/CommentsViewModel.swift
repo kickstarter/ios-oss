@@ -20,7 +20,7 @@ public protocol CommentsViewModelInputs {
   func configureWith(project: Project?, update: Update?)
 
   /// Call with a `Comment` when it is selected.
-  func viewReplies(for comment: Comment)
+  func didSelectComment(_ comment: Comment)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
@@ -231,14 +231,15 @@ public final class CommentsViewModel: CommentsViewModelType,
         initialProject,
         commentableId,
         currentUser.skipNil()
-      ).map { configData in
-        (project: configData.0, commentableId: configData.1, user: configData.2)
+      ).map { project, commentableId, user in
+        (project: project, commentableId: commentableId, user: user)
       }
 
     self.failableOrComment <~ postFailableCommentConfigData
       .takePairWhen(commentComposerDidSubmitText)
       .map { data in
-        (data.0.project, data.0.commentableId, data.0.user, data.1)
+        let ((project, commentableId, user), text) = data
+        return (project, commentableId, user, text)
       }
       .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
 
@@ -291,7 +292,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
 
   private let viewRepliesProperty = MutableProperty<Comment?>(nil)
-  public func viewReplies(for comment: Comment) {
+  public func didSelectComment(_ comment: Comment) {
     self.viewRepliesProperty.value = comment
   }
 
