@@ -960,13 +960,15 @@ internal final class CommentsViewModelTests: TestCase {
             self.vm.inputs.commentTableViewFooterViewDidTapRetry()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity], "Activity is shown during paging."
+              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity],
+              "Activity is shown during paging."
             )
 
             self.scheduler.advance()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity, .hidden], "Returns to hidden."
+              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity, .hidden],
+              "Returns to hidden."
             )
           }
         }

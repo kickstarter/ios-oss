@@ -3,7 +3,11 @@ import Prelude
 import UIKit
 
 final class CommentsErrorCell: UITableViewCell, ValueCell {
-  private let rootStackView = UIStackView()
+  private let rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let iconImageView = UIImageView()
   private let messageLabel = UILabel()
 
@@ -38,6 +42,7 @@ final class CommentsErrorCell: UITableViewCell, ValueCell {
 
     _ = self.iconImageView
       |> UIImageView.lens.image .~ Library.image(named: "icon--alert")
+      |> \.tintColor .~ .ksr_black
   }
 
   // MARK: - Configuration
@@ -49,13 +54,23 @@ final class CommentsErrorCell: UITableViewCell, ValueCell {
   private func configureViews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToCenterInParent()
 
     _ = ([self.iconImageView, self.messageLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
-      self.rootStackView.heightAnchor.constraint(equalToConstant: Styles.grid(9))
+      self.iconImageView.heightAnchor.constraint(equalToConstant: Styles.grid(4)),
+      self.iconImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
+      self.rootStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+      self.rootStackView.heightAnchor.constraint(equalToConstant: Styles.grid(9)),
+      self.rootStackView.leadingAnchor.constraint(
+        equalTo: self.safeAreaLayoutGuide.leadingAnchor,
+        constant: Styles.grid(1)
+      ),
+      self.rootStackView.trailingAnchor.constraint(
+        equalTo: self.safeAreaLayoutGuide.trailingAnchor,
+        constant: -Styles.grid(1)
+      )
     ])
   }
 }

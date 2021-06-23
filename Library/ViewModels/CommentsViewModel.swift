@@ -125,7 +125,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       isCloseToBottom.take(first: 1),
       tappedToRetry
     )
-    
+
     // Don't retry the first page if we've paged before.
     let retryFirstPage = tappedToRetry
       .take(until: isCloseToBottom)
@@ -195,7 +195,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.currentComments <~ commentsAndProject.map(first)
       // Thread hop so that we don't circularly buffer.
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
-    
+
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
       // Allow empty arrays from the first emission.
       Signal.zip(comments, initialProject)

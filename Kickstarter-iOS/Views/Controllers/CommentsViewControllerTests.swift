@@ -356,11 +356,17 @@ internal final class CommentsViewControllerTests: TestCase {
   }
 
   func testView_NoComments_ShouldShowErrorState() {
-    AppEnvironment
-      .pushEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON)))
+    AppEnvironment.pushEnvironment(
+      apiService: MockService(
+        fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON)
+      ),
+      currentUser: User.template,
+      mainBundle: Bundle.framework
+    )
 
-    Language.allLanguages.forEach { language in
-      withEnvironment {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+      language, _ in
+      withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
