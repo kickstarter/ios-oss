@@ -216,6 +216,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
+    // get an id needed to post a comment to either a project or a project update
     let commentableId = projectOrUpdate
       .flatMap { projectOrUpdate in
         projectOrUpdate.ifLeft { project in
