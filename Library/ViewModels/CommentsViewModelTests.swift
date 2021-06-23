@@ -161,7 +161,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testGoToCommentReplies_CommentHasReplies_GoToEmits() {
+  func testGoToCommentReplies_CommentHasReplies_GoToEmits_FeatureFlag_True() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
     let project = Project.template
@@ -169,14 +169,48 @@ internal final class CommentsViewModelTests: TestCase {
       |> \.replyCount .~ 1
       |> \.status .~ .success
 
-    self.vm.inputs.configureWith(project: project, update: nil)
-    self.vm.inputs.viewDidLoad()
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true
+      ]
 
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToCommentRepliesComment.assertDidNotEmitValue()
+
+      self.vm.inputs.didSelectComment(comment)
+
+      self.goToCommentRepliesComment
+        .assertValues([comment], "The comment replies feature is true, user can see replies.")
+    }
+  }
+
+  func testGoToCommentReplies_CommentHasReplies_GoToEmits_FeatureFlag_False() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectComment(comment)
+    let project = Project.template
+    let comment = Comment.template
+      |> \.replyCount .~ 1
+      |> \.status .~ .success
 
-    self.goToCommentRepliesComment.assertValues([comment])
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false
+      ]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToCommentRepliesComment.assertDidNotEmitValue()
+
+      self.vm.inputs.didSelectComment(comment)
+
+      self.goToCommentRepliesComment
+        .assertValues([], "The comment replies feature is false, user can not see replies.")
+    }
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {

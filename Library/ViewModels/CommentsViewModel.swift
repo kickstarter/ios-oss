@@ -212,17 +212,34 @@ public final class CommentsViewModel: CommentsViewModelType,
     let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
 
     self.goToCommentReplies = regularCommentTapped
-      .filter { comment in comment.replyCount > 0 }
+      .filter { comment in comment.replyCount > 0 && commentThreadingRepliesEnabled() }
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
-    self.failableOrComment <~ Signal.combineLatest(
-      initialProject,
-      currentUser.skipNil()
-    )
-    .takePairWhen(commentComposerDidSubmitText)
-    .map(unpack)
-    .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
+    let commentableId = projectOrUpdate
+      .flatMap { projectOrUpdate in
+        projectOrUpdate.ifLeft { project in
+          SignalProducer.init(value: project.graphID)
+        } ifRight: { update in
+          SignalProducer.init(value: encodeToBase64("FreeformPost-\(update.id)"))
+        }
+      }
+
+    let postFailableCommentConfigData:
+      Signal<(project: Project, commentableId: String, user: User), Never> = Signal.combineLatest(
+        initialProject,
+        commentableId,
+        currentUser.skipNil()
+      ).map { configData in
+        (project: configData.0, commentableId: configData.1, user: configData.2)
+      }
+
+    self.failableOrComment <~ postFailableCommentConfigData
+      .takePairWhen(commentComposerDidSubmitText)
+      .map { data in
+        (data.0.project, data.0.commentableId, data.0.user, data.1)
+      }
+      .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
 
     let currentlyRetrying = MutableProperty<Set<String>>([])
 
@@ -234,9 +251,12 @@ public final class CommentsViewModel: CommentsViewModelType,
         currentlyRetrying.value.insert(comment.id)
       })
 
-    self.retryingComment <~ initialProject
+    self.retryingComment <~ Signal.combineLatest(initialProject, commentableId)
       .takePairWhen(newErroredCommentTapped)
-      .map { ($1, $0) }
+      .map(unpack)
+      .map { project, commentableId, comment in
+        (comment, commentableId, project)
+      }
       .flatMap(.concurrent(limit: concurrentCommentLimit), retryCommentProducer)
       // Once we've emitted a value here the comment has been retried and can be removed.
       .on(value: { [currentlyRetrying] _, id in
@@ -324,13 +344,14 @@ public final class CommentsViewModel: CommentsViewModelType,
 
 private func retryCommentProducer(
   erroredComment comment: Comment,
-  project: Project
+  commentableId: String,
+  project _: Project
 ) -> SignalProducer<(Comment, String), Never> {
   // Retry posting the comment.
   AppEnvironment.current.apiService.postComment(
     input: .init(
       body: comment.body,
-      commentableId: project.graphID
+      commentableId: commentableId
     )
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -359,6 +380,7 @@ private func retryCommentProducer(
 
 private func postCommentProducer(
   project: Project,
+  commentableId: String,
   user: User,
   body: String
 ) -> SignalProducer<(Comment, String), Never> {
@@ -374,7 +396,7 @@ private func postCommentProducer(
   return AppEnvironment.current.apiService.postComment(
     input: .init(
       body: body,
-      commentableId: project.graphID
+      commentableId: commentableId
     )
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -442,4 +464,9 @@ private func commentsNextPage(
       )
     )
   }
+}
+
+private func commentThreadingRepliesEnabled() -> Bool {
+  return AppEnvironment.current.optimizelyClient?
+    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue) ?? true
 }

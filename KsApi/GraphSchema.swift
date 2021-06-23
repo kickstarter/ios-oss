@@ -45,6 +45,10 @@ public func decodeBase64(_ input: String) -> String? {
     .flatMap { String(data: $0, encoding: .utf8) }
 }
 
+public func encodeToBase64(_ input: String) -> String {
+  return Data(input.utf8).base64EncodedString()
+}
+
 public func decompose(id: String) -> Int? {
   return decodeBase64(id)
     .flatMap { id -> Int? in
