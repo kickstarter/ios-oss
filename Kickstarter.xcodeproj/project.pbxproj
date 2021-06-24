@@ -67,15 +67,11 @@
 		01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */; };
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */; };
-		060A85312682C307008A9368 /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060A85302682C307008A9368 /* FBSnapshotTestCase.xcframework */; };
-		060A85362682C32B008A9368 /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060A85302682C307008A9368 /* FBSnapshotTestCase.xcframework */; };
 		0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645862669683A007D8D96 /* CommentRepliesDataSource.swift */; };
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
 		064329C52683D716004B63BA /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
-		064329D12683D7F0004B63BA /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060A85302682C307008A9368 /* FBSnapshotTestCase.xcframework */; };
-		064329D22683D7F0004B63BA /* FBSnapshotTestCase.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 060A85302682C307008A9368 /* FBSnapshotTestCase.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		064329D82683D8B7004B63BA /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; };
 		064329D92683D8BD004B63BA /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
@@ -1614,7 +1610,6 @@
 				067F48EA26810B6A008609C4 /* Protobuf.xcframework in Embed Frameworks */,
 				067F48DE26810B6A008609C4 /* AlamofireImage.xcframework in Embed Frameworks */,
 				067F4A3626814864008609C4 /* Segment_Appboy.framework in Embed Frameworks */,
-				064329D22683D7F0004B63BA /* FBSnapshotTestCase.xcframework in Embed Frameworks */,
 				067F4A3D268148A6008609C4 /* SDWebImage.framework in Embed Frameworks */,
 				067F4A26268147BC008609C4 /* AppCenter.framework in Embed Frameworks */,
 				067F48E426810B6A008609C4 /* Optimizely.xcframework in Embed Frameworks */,
@@ -1700,7 +1695,6 @@
 		01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItemStyles.swift; sourceTree = "<group>"; };
-		060A85302682C307008A9368 /* FBSnapshotTestCase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FBSnapshotTestCase.xcframework; path = Carthage/Build/FBSnapshotTestCase.xcframework; sourceTree = "<group>"; };
 		061645862669683A007D8D96 /* CommentRepliesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSource.swift; sourceTree = "<group>"; };
 		0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModel.swift; sourceTree = "<group>"; };
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3067,7 +3061,6 @@
 				067F4CFD26827763008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */,
 				067F4A5126814A70008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F4D0826827909008609C4 /* Segment.framework in Frameworks */,
-				060A85312682C307008A9368 /* FBSnapshotTestCase.xcframework in Frameworks */,
 				067F4A5226814A77008609C4 /* Segment_Appboy.framework in Frameworks */,
 				067F4A5326814A7B008609C4 /* SDWebImage.framework in Frameworks */,
 				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
@@ -3105,7 +3098,6 @@
 				067F499F26813A98008609C4 /* AppCenterDistribute.framework in Frameworks */,
 				066E215B2682AA7E00CA5591 /* FirebaseCore.xcframework in Frameworks */,
 				067F48E126810B6A008609C4 /* nanopb.xcframework in Frameworks */,
-				064329D12683D7F0004B63BA /* FBSnapshotTestCase.xcframework in Frameworks */,
 				067F489A2681072E008609C4 /* PromisesObjC.xcframework in Frameworks */,
 				067F48EF26810B6A008609C4 /* ReactiveSwift.xcframework in Frameworks */,
 				067F4CA126826E64008609C4 /* Segment.framework in Frameworks */,
@@ -3140,7 +3132,6 @@
 				067F4A5A26814AF3008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F4A5B26814AF3008609C4 /* Segment_Appboy.framework in Frameworks */,
 				067F4A5C26814B12008609C4 /* FBSDKCoreKit.framework in Frameworks */,
-				060A85362682C32B008A9368 /* FBSnapshotTestCase.xcframework in Frameworks */,
 				067F4A5D26814B12008609C4 /* FBSDKLoginKit.framework in Frameworks */,
 				067F4D3B26828124008609C4 /* Segment.framework in Frameworks */,
 				067F4A5426814AD5008609C4 /* Optimizely.xcframework in Frameworks */,
@@ -4102,7 +4093,6 @@
 				067F47452680F033008609C4 /* FBSDKCoreKit.framework */,
 				067F47432680F012008609C4 /* Segment_Appboy.framework */,
 				067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */,
-				060A85302682C307008A9368 /* FBSnapshotTestCase.xcframework */,
 				8A0F66D3267BDCB700E30863 /* Alamofire.xcframework */,
 				8A0F66BF267BDCB100E30863 /* AlamofireImage.xcframework */,
 				8A0F66C3267BDCB200E30863 /* FirebaseABTesting.xcframework */,
