@@ -1,0 +1,11 @@
+framework module FBSnapshotTestCase {
+  umbrella header "FBSnapshotTestCase.h"
+
+  export *
+  module * { export * }
+}
+
+module FBSnapshotTestCase.Swift {
+    header "FBSnapshotTestCase-Swift.h"
+    requires objc
+}
