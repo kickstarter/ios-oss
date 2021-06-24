@@ -67,8 +67,6 @@
 		01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */; };
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */; };
-		0605D32A268502A400025AD0 /* FBSnapshotTestCase.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D31C2685013A00025AD0 /* FBSnapshotTestCase.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0605D3432685089200025AD0 /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D31C2685013A00025AD0 /* FBSnapshotTestCase.xcframework */; };
 		0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645862669683A007D8D96 /* CommentRepliesDataSource.swift */; };
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
@@ -296,7 +294,6 @@
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
 		47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */; };
 		47733001268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */; };
-		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
 		47AC212F264AD2590090AEDF /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC212E264AD2590090AEDF /* CommentsViewController.swift */; };
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
@@ -1551,6 +1548,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0605D4B826853D0F00025AD0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		064329B42683D668004B63BA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1608,7 +1614,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0605D32A268502A400025AD0 /* FBSnapshotTestCase.xcframework in Embed Frameworks */,
 				067F49A026813A98008609C4 /* AppCenterDistribute.framework in Embed Frameworks */,
 				067F48DC26810B6A008609C4 /* Alamofire.xcframework in Embed Frameworks */,
 				067F48562681023A008609C4 /* FirebaseRemoteConfig.xcframework in Embed Frameworks */,
@@ -1703,7 +1708,6 @@
 		01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItemStyles.swift; sourceTree = "<group>"; };
-		0605D31C2685013A00025AD0 /* FBSnapshotTestCase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FBSnapshotTestCase.xcframework; sourceTree = "<group>"; };
 		061645862669683A007D8D96 /* CommentRepliesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSource.swift; sourceTree = "<group>"; };
 		0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModel.swift; sourceTree = "<group>"; };
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
@@ -1836,7 +1840,6 @@
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
 		47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewControllerTests.swift; sourceTree = "<group>"; };
 		47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
-		477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
 		47AC212E264AD2590090AEDF /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3072,7 +3075,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0605D3432685089200025AD0 /* FBSnapshotTestCase.xcframework in Frameworks */,
 				067F4CFD26827763008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */,
 				067F4A5126814A70008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F4D0826827909008609C4 /* Segment.framework in Frameworks */,
@@ -4110,7 +4112,6 @@
 				067F47452680F033008609C4 /* FBSDKCoreKit.framework */,
 				067F47432680F012008609C4 /* Segment_Appboy.framework */,
 				067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */,
-				0605D31C2685013A00025AD0 /* FBSnapshotTestCase.xcframework */,
 				8A0F66D3267BDCB700E30863 /* Alamofire.xcframework */,
 				8A0F66BF267BDCB100E30863 /* AlamofireImage.xcframework */,
 				8A0F66C3267BDCB200E30863 /* FirebaseABTesting.xcframework */,
@@ -4944,6 +4945,7 @@
 				A75511391C8642B3005355CF /* Headers */,
 				A755113A1C8642B3005355CF /* Resources */,
 				D0EA60A2228B6A85007DB557 /* Carthage */,
+				0605D4B826853D0F00025AD0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -6819,6 +6821,7 @@
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
@@ -7262,6 +7265,7 @@
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Beta/GoogleService-Info.plist",
@@ -7339,6 +7343,7 @@
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Beta/GoogleService-Info.plist",
@@ -7564,7 +7569,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-i386_x86_64-simulator",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7574,6 +7583,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KickstarterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7597,7 +7607,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-i386_x86_64-simulator",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7628,7 +7642,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-i386_x86_64-simulator",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7659,7 +7677,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/FBSnapshotTestCase.xcframework/ios-i386_x86_64-simulator",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7713,6 +7735,7 @@
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Beta/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
