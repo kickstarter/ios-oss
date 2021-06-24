@@ -19,6 +19,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let postTime = TestObserver<String, Never>()
   private let postedButtonIsHidden = TestObserver<Bool, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
+  private let viewCommentReplies = TestObserver<Comment, Never>()
   private let viewRepliesStackViewIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -34,6 +35,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.postTime.observe(self.postTime.observer)
     self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
+    self.vm.outputs.viewCommentReplies.observe(self.viewCommentReplies.observer)
     self.vm.outputs.viewRepliesViewHidden.observe(self.viewRepliesStackViewIsHidden.observer)
   }
 
@@ -279,6 +281,18 @@ internal final class CommentCellViewModelTests: TestCase {
     self.body.assertValues([comment.body], "The comment body is emitted.")
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
     self.replyButtonIsHidden.assertValue(true, "User is not logged in.")
+  }
+
+  func testOutput_ViewCommentReplies() {
+    let comment = Comment.template
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: comment, project: .template)
+      self.viewCommentReplies.assertDidNotEmitValue()
+
+      self.vm.inputs.viewRepliesButtonTapped()
+
+      self.viewCommentReplies.assertValue(comment, "The comment user want to view replies for was emmited")
+    }
   }
 
   func testPersonalizedLabels_UserIs_Creator_Author() {

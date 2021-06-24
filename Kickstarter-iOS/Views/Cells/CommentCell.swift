@@ -3,6 +3,10 @@ import Library
 import Prelude
 import UIKit
 
+protocol CommentCellDelegate: AnyObject {
+  func commentCellDidTapViewReplies(_ cell: CommentCell, comment: Comment)
+}
+
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
@@ -12,10 +16,15 @@ final class CommentCell: UITableViewCell, ValueCell {
     CommentCellHeaderStackView(frame: .zero)
   }()
 
+  weak var delegate: CommentCellDelegate?
+
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var postedButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var viewRepliesView: ViewRepliesView = { ViewRepliesView(frame: .zero) }()
+  private lazy var viewRepliesView: ViewRepliesView = {
+    ViewRepliesView(frame: .zero)
+      |> \.isUserInteractionEnabled .~ true
+  }()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
@@ -36,6 +45,12 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+
+  // MARK: - Actions
+
+  @objc func viewRepliesTapped() {
+    self.viewModel.inputs.viewRepliesButtonTapped()
   }
 
   // MARK: - Styles
@@ -90,6 +105,9 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = ([self.replyButton, UIView(), self.flagButton], self.bottomRowStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    let viewRepliesGesture = UITapGestureRecognizer(target: self, action: #selector(self.viewRepliesTapped))
+    self.viewRepliesView.addGestureRecognizer(viewRepliesGesture)
   }
 
   // MARK: - View model
@@ -102,6 +120,13 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
+
+    self.viewModel.outputs.viewCommentReplies
+      .observeForControllerAction()
+      .observeValues { [weak self] comment in
+        guard let self = self else { return }
+        self.delegate?.commentCellDidTapViewReplies(self, comment: comment)
+      }
   }
 }
 
