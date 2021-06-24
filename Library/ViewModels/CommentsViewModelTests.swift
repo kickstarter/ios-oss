@@ -837,7 +837,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
+      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([])
       self.cellSeparatorHidden.assertValue(true)
     }
   }
@@ -951,7 +951,7 @@ internal final class CommentsViewModelTests: TestCase {
           self.scheduler.advance()
 
           self.configureFooterViewWithState.assertValues(
-            [.hidden, .activity, .hidden, .activity, .hidden, .error], "Emits error state."
+            [.hidden, .activity, .hidden, .activity, .error], "Emits error state."
           )
 
           withEnvironment(
@@ -961,14 +961,14 @@ internal final class CommentsViewModelTests: TestCase {
             self.vm.inputs.commentTableViewFooterViewDidTapRetry()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity],
+              [.hidden, .activity, .hidden, .activity, .error, .activity],
               "Activity is shown during paging."
             )
 
             self.scheduler.advance()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .hidden, .error, .activity, .hidden],
+              [.hidden, .activity, .hidden, .activity, .error, .activity, .hidden],
               "Returns to hidden."
             )
           }

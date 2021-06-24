@@ -199,26 +199,21 @@ public final class CommentsViewModel: CommentsViewModelType,
       // Thread hop so that we don't circularly buffer.
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
-    // Allow empty arrays from the first emission.
-    let emptyCommentsWithInitialProject = Signal.zip(comments, initialProject)
-      .filter { comments, _ in comments.isEmpty }
-      .map { comments, project in (comments, project, false) }
-
     // Continue to paginate normally without empty comments.
     let paginatedCommentsAndProject = commentsAndProject
       .filter { comments, _ in comments.isEmpty == false }
       .map { comments, project in (comments, project, false) }
 
     // If there are errors emit empty comments array, project and error boolean.
-    let errorAndHasRequestedNextPage = Signal.combineLatest(errors, hasRequestedNextPage)
+    let errorsAndHasRequestedNextPage: Signal<([Comment], Project, Bool), Never> = Signal
+      .combineLatest(errors, hasRequestedNextPage)
       .filter(second >>> isFalse)
       .map(first)
-      .withLatestFrom(initialProject).map { ([Comment](), $1, true) }
+      .withLatestFrom(initialProject).map { ([], $1, true) }
 
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
-      emptyCommentsWithInitialProject,
       paginatedCommentsAndProject,
-      errorAndHasRequestedNextPage
+      errorsAndHasRequestedNextPage
     )
 
     self.beginOrEndRefreshing = isLoading
@@ -295,7 +290,8 @@ public final class CommentsViewModel: CommentsViewModelType,
       initialLoadOrReload.mapConst(.hidden),
       errors
         .mapConst(.hidden)
-        .withLatestFrom(hasRequestedNextPage.filter(isFalse))
+        .withLatestFrom(hasRequestedNextPage)
+        .filter(second >>> isFalse)
         .map(first)
     )
 
@@ -305,7 +301,8 @@ public final class CommentsViewModel: CommentsViewModelType,
       // Footer view would be only be visible if there is an error for pagination responses.
       errors
         .mapConst(.error)
-        .withLatestFrom(hasRequestedNextPage.filter(isTrue))
+        .withLatestFrom(hasRequestedNextPage)
+        .filter(second >>> isTrue)
         .map(first)
     )
     .skipRepeats()
