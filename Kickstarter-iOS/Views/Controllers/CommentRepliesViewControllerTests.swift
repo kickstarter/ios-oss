@@ -10,7 +10,6 @@ final class CommentRepliesViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
-    self.recordMode = true
   }
 
   override func tearDown() {
@@ -22,7 +21,7 @@ final class CommentRepliesViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
 
         let (parent, _) = traitControllers(
           device: .phone4_7inch,
@@ -41,11 +40,11 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testView_CurrentUserLoggedOut_HasRootCommentAndNoCommentComposer() {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
+      language, _ in
       withEnvironment(currentUser: nil, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
         parent.view.frame.size.height = 1_100
 
@@ -61,11 +60,11 @@ final class CommentRepliesViewControllerTests: TestCase {
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
+      language, _ in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          .configuredWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
@@ -77,11 +76,11 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testView_CurrentUserLoggedInNotBacking_HasRootCommentAndBlockedCommentComposer() {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
+      language, _ in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
