@@ -8,6 +8,10 @@ private enum Layout {
   enum Composer {
     static let originalHeight: CGFloat = 80.0
   }
+
+  enum ErrorState {
+    static let cellHeightMuliplier: CGFloat = 0.70
+  }
 }
 
 internal final class CommentsViewController: UITableViewController {
@@ -218,8 +222,8 @@ extension CommentsViewController: CommentTableViewFooterViewDelegate {
 
 extension CommentsViewController {
   override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if self.dataSource.isErrorStateIndexPath(indexPath) {
-      return (self.view.safeAreaLayoutGuide.layoutFrame.height * 0.70)
+    if self.dataSource.isInErrorState(indexPath: indexPath) {
+      return (self.view.safeAreaLayoutGuide.layoutFrame.height * Layout.ErrorState.cellHeightMuliplier)
     }
 
     return UITableView.automaticDimension

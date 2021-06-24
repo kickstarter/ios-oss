@@ -101,7 +101,7 @@ class CommentsDataSourceTests: XCTestCase {
       "CommentsErrorCell",
       self.dataSource.reusableId(item: rowIndex, section: self.errorSection)
     )
-    XCTAssertTrue(self.dataSource.isErrorStateIndexPath(IndexPath(row: 0, section: 2)))
+    XCTAssertTrue(self.dataSource.isInErrorState(indexPath: IndexPath(row: 0, section: 2)))
   }
 
   func testEmptyState_OnCommentsLoadingSuccess_ShouldNotShowErrorStateCell() {
@@ -113,7 +113,7 @@ class CommentsDataSourceTests: XCTestCase {
       "EmptyCommentsCell",
       self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
     )
-    XCTAssertFalse(self.dataSource.isErrorStateIndexPath(IndexPath(row: 0, section: 1)))
+    XCTAssertFalse(self.dataSource.isInErrorState(indexPath: IndexPath(row: 0, section: 1)))
   }
 
   func testEmptyState_WhenNoCommentsAndThenAddedComments_DoesNotShowEmptyStateCell() {

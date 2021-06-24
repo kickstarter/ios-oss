@@ -48,7 +48,7 @@ public protocol CommentsViewModelOutputs {
   /// Emits the selected `Comment` to navigate to its replies.
   var goToCommentReplies: Signal<Comment, Never> { get }
 
-  /// Emits a list of `Comment`s and the `Project` to load into the data source.
+  /// Emits a list of `Comments`, the `Project` to load into the data source and whether an error state should be displayed.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never> { get }
 
   /// Emits a HelpType to use when presenting a HelpWebViewController.
@@ -196,22 +196,29 @@ public final class CommentsViewModel: CommentsViewModelType,
       // Thread hop so that we don't circularly buffer.
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
+    // Allow empty arrays from the first emission.
+    let emptyCommentsWithInitialProject = Signal.zip(comments, initialProject)
+      .filter { $0.0.isEmpty }
+      .map { ($0.0, $0.1) }
+      .map { comments, project in (comments, project, false) }
+
+    // Continue to paginate normally without empty comments.
+    let paginatedCommentsAndProject = commentsAndProject
+      .filter { comments, _ in comments.isEmpty == false }
+      .map { comments, project in (comments, project, false) }
+
+    // If there are errors emit empty comments array, project and error boolean.
+    let errorAndHasRequestedNextPage = Signal.combineLatest(errors, hasRequestedNextPage)
+      .filter(second >>> isFalse)
+      .map(first)
+      .withLatestFrom(initialProject).map { ([Comment](), $1, true) }
+
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
-      // Allow empty arrays from the first emission.
-      Signal.zip(comments, initialProject)
-        .filter { $0.0.isEmpty }
-        .map { ($0.0, $0.1) }
-        .map { comments, project in (comments, project, false) },
-      // Continue to paginate normally.
-      commentsAndProject
-        .filter { comments, _ in comments.isEmpty == false }
-        .map { comments, project in (comments, project, false) },
-      // If there are errors emit empty comments array, project and error boolean.
-      Signal.combineLatest(errors, hasRequestedNextPage)
-        .filter(second >>> isFalse)
-        .map(first)
-        .withLatestFrom(initialProject).map { ([], $1, true) }
+      emptyCommentsWithInitialProject,
+      paginatedCommentsAndProject,
+      errorAndHasRequestedNextPage
     )
+
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
@@ -260,6 +267,8 @@ public final class CommentsViewModel: CommentsViewModelType,
       self.loadCommentsAndProjectIntoDataSource.ignoreValues()
     )
 
+    // Footer view would be hidden if there is an error at
+    // initial loading stage or when comments are refreshed
     let hideFooterView: Signal<CommentTableViewFooterViewState, Never> = Signal.merge(
       initialLoadOrReload.mapConst(.hidden),
       errors
@@ -271,6 +280,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.configureFooterViewWithState = Signal.merge(
       hideFooterView,
       footerViewActivityState.mapConst(.activity),
+      // Footer view would be only be visible if there is an error for pagination responses.
       errors
         .mapConst(.error)
         .withLatestFrom(hasRequestedNextPage.filter(isTrue))

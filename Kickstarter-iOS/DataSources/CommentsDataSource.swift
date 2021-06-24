@@ -87,7 +87,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
     }
   }
 
-  func isErrorStateIndexPath(_ indexPath: IndexPath) -> Bool {
+  func isInErrorState(indexPath: IndexPath) -> Bool {
     return indexPath.section == Section.error.rawValue
   }
 }

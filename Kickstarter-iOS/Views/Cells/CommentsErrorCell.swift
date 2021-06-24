@@ -3,13 +3,12 @@ import Prelude
 import UIKit
 
 final class CommentsErrorCell: UITableViewCell, ValueCell {
+  private let iconImageView = UIImageView()
+  private let messageLabel = UILabel()
   private let rootStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private let iconImageView = UIImageView()
-  private let messageLabel = UILabel()
 
   // MARK: - Lifecycle
 

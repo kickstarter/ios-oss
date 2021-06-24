@@ -365,15 +365,14 @@ internal final class CommentsViewControllerTests: TestCase {
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_100
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
