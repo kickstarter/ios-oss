@@ -6,6 +6,9 @@ import ReactiveSwift
 private let concurrentCommentLimit: UInt = 5
 
 public protocol CommentsViewModelInputs {
+  /// Call when the delegate method for the CommentCellDelegate is called.
+  func commentCellDidTapViewReplies(_ comment: Comment)
+
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
@@ -221,13 +224,11 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
-    let commentTapped = self.viewRepliesProperty.signal.skipNil()
-    let regularCommentTapped = commentTapped.filter { comment in
-      [comment.status == .success, comment.isDeleted == false].allSatisfy(isTrue)
-    }
-    let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
+    let commentCellTapped = self.didSelectCommentProperty.signal.skipNil()
+    let erroredCommentTapped = commentCellTapped.filter { comment in comment.status == .failed }
 
-    self.goToCommentReplies = regularCommentTapped
+    self.goToCommentReplies = self.commentCellDidTapViewRepliesProperty.signal
+      .skipNil()
       .filter { comment in comment.replyCount > 0 }
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
@@ -319,9 +320,14 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let retryingComment = MutableProperty<(Comment, String)?>(nil)
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
 
-  private let viewRepliesProperty = MutableProperty<Comment?>(nil)
+  private let commentCellDidTapViewRepliesProperty = MutableProperty<Comment?>(nil)
+  public func commentCellDidTapViewReplies(_ comment: Comment) {
+    self.commentCellDidTapViewRepliesProperty.value = comment
+  }
+
+  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
   public func didSelectComment(_ comment: Comment) {
-    self.viewRepliesProperty.value = comment
+    self.didSelectCommentProperty.value = comment
   }
 
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)

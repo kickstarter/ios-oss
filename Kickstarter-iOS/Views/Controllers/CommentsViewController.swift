@@ -185,9 +185,8 @@ internal final class CommentsViewController: UITableViewController {
 
 extension CommentsViewController {
   override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if let commentRemovedCell = cell as? CommentRemovedCell {
-      commentRemovedCell.delegate = self
-    }
+    (cell as? CommentCell)?.delegate = self
+    (cell as? CommentRemovedCell)?.delegate = self
 
     self.viewModel.inputs.willDisplayRow(
       self.dataSource.itemIndexAt(indexPath),
@@ -227,6 +226,14 @@ extension CommentsViewController {
     }
 
     return UITableView.automaticDimension
+  }
+}
+
+// MARK: - CommentCellDelegate
+
+extension CommentsViewController: CommentCellDelegate {
+  func commentCellDidTapViewReplies(_: CommentCell, comment: Comment) {
+    self.viewModel.inputs.commentCellDidTapViewReplies(comment)
   }
 }
 
