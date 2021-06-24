@@ -44,7 +44,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_WithFailedRemovedAndSuccessfulComments_ShouldDisplayAll_CommentThreadingRepliesEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
@@ -184,7 +184,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -213,7 +213,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_CurrentUser_LoggedIn_IsBacking_CommentThreadingRepliesEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -242,7 +242,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -271,7 +271,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_CurrentUser_LoggedIn_IsBacking_CommentThreadingRepliesEnabledFeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -300,7 +300,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_CurrentUser_LoggedOut_CommentFlaggingEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -321,7 +321,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_CurrentUser_LoggedOut_CommentThreadingRepliesEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -379,7 +379,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testCommentsViewController_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreading.rawValue: true]
 
     let mockService = MockService(fetchProjectResponse: .template)
 
@@ -392,7 +392,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testCommentsViewController_Optimizely_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentThreading.rawValue: false]
 
     let mockService = MockService(fetchProjectResponse: .template)
 

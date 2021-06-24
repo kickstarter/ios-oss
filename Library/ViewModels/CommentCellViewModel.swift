@@ -97,7 +97,7 @@ public final class CommentCellViewModel:
 
     self.flagButtonIsHidden = self.commentAndProject.signal
       .ignoreValues()
-      .map(commentFlaggingEnabled)
+      .map(featureCommentFlaggingIsEnabled)
       .map(isFalse)
 
     let isLoggedOut = self.commentAndProject.signal
@@ -163,22 +163,12 @@ public final class CommentCellViewModel:
   public var outputs: CommentCellViewModelOutputs { self }
 }
 
-private func commentFlaggingEnabled() -> Bool {
-  return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlaggingEnabled.rawValue) ?? true
-}
-
-private func commentThreadingRepliesEnabled() -> Bool {
-  return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue) ?? true
-}
-
 private func replyButtonHidden(isLoggedOut: Bool, isNotABacker: Bool) -> Bool {
-  guard commentThreadingRepliesEnabled() else { return true }
+  guard featureCommentThreadingRepliesIsEnabled() else { return true }
   return isLoggedOut || isNotABacker
 }
 
 private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
-  guard commentThreadingRepliesEnabled() else { return true }
+  guard featureCommentThreadingRepliesIsEnabled() else { return true }
   return replyCount == 0
 }

@@ -53,6 +53,10 @@ public func decompose(id: String) -> Int? {
     }
 }
 
+public func encodeToBase64(_ input: String) -> String {
+  return Data(input.utf8).base64EncodedString()
+}
+
 public struct RelayId: Decodable {
   let id: String
 }
