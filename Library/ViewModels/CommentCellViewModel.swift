@@ -12,7 +12,7 @@ public protocol CommentCellViewModelInputs {
   /// Call when the textView delegate method for shouldInteractWith url is called
   func linkTapped(url: URL)
 
-  /// Call when the view replies button  is tapped
+  /// Call when the view replies button is tapped
   func viewRepliesButtonTapped()
 }
 
@@ -50,7 +50,7 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits current `Comment` view replies button is clicked for
+  /// Emits a `Comment` for the cell that view replies button is clicked for.
   var viewCommentReplies: Signal<Comment, Never> { get }
 
   /// Emits whether or not the view replies stack view is hidden.

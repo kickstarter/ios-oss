@@ -291,7 +291,8 @@ internal final class CommentCellViewModelTests: TestCase {
 
       self.vm.inputs.viewRepliesButtonTapped()
 
-      self.viewCommentReplies.assertValue(comment, "The comment user want to view replies for was emmited")
+      self.viewCommentReplies
+        .assertValue(comment, "A Comment was emitted after the view replies button was tapped.")
     }
   }
 
