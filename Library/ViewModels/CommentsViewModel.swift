@@ -198,8 +198,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     // Allow empty arrays from the first emission.
     let emptyCommentsWithInitialProject = Signal.zip(comments, initialProject)
-      .filter { $0.0.isEmpty }
-      .map { ($0.0, $0.1) }
+      .filter { comments, _ in comments.isEmpty }
       .map { comments, project in (comments, project, false) }
 
     // Continue to paginate normally without empty comments.
