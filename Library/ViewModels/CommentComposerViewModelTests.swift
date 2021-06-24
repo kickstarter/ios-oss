@@ -11,7 +11,7 @@ final class CommentComposerViewModelTests: TestCase {
   private let clearInputTextView = TestObserver<(), Never>()
   private let commentComposerHidden = TestObserver<Bool, Never>()
   private let inputAreaHidden = TestObserver<Bool, Never>()
-  private let inputTextViewBecomeFirstResponder = TestObserver<Bool, Never>()
+  private let inputTextViewDidBecomeFirstResponder = TestObserver<Bool, Never>()
   private let notifyDelegateDidSubmitText = TestObserver<String, Never>()
   private let placeholderHidden = TestObserver<Bool, Never>()
   private let postButtonHidden = TestObserver<Bool, Never>()
@@ -26,7 +26,8 @@ final class CommentComposerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateDidSubmitText.observe(self.notifyDelegateDidSubmitText.observer)
     self.vm.outputs.postButtonHidden.observe(self.postButtonHidden.observer)
     self.vm.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
-    self.vm.outputs.inputTextViewBecomeFirstResponder.observe(self.inputTextViewBecomeFirstResponder.observer)
+    self.vm.outputs.inputTextViewDidBecomeFirstResponder
+      .observe(self.inputTextViewDidBecomeFirstResponder.observer)
     self.vm.outputs.clearInputTextView.observe(self.clearInputTextView.observer)
     self.vm.outputs.commentComposerHidden.observe(self.commentComposerHidden.observer)
     self.vm.outputs.updateTextViewHeight.observe(self.updateTextViewHeight.observer)
@@ -62,7 +63,7 @@ final class CommentComposerViewModelTests: TestCase {
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!", nil])
     self.postButtonHidden.assertValues([true, false, false, true])
     self.placeholderHidden.assertValues([false, true, true, false])
-    self.inputTextViewBecomeFirstResponder.assertDidEmitValue()
+    self.inputTextViewDidBecomeFirstResponder.assertDidEmitValue()
     self.updateTextViewHeight.assertValueCount(3)
     self.clearInputTextView.assertValueCount(1)
   }
@@ -83,20 +84,20 @@ final class CommentComposerViewModelTests: TestCase {
     self.commentComposerHidden.assertValues([true, false])
   }
 
-  func testInputTextViewBecomeFirstResponder_False() {
-    self.inputTextViewBecomeFirstResponder.assertDidNotEmitValue()
+  func testInputTextViewDidBecomeFirstResponder_False() {
+    self.inputTextViewDidBecomeFirstResponder.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: (nil, true, true, false))
 
-    self.inputTextViewBecomeFirstResponder.assertValues([false])
+    self.inputTextViewDidBecomeFirstResponder.assertValues([false])
   }
 
   func testInputTextViewBecomeFirstResponder_True() {
-    self.inputTextViewBecomeFirstResponder.assertDidNotEmitValue()
+    self.inputTextViewDidBecomeFirstResponder.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: (nil, true, true, true))
 
-    self.inputTextViewBecomeFirstResponder.assertValues([true])
+    self.inputTextViewDidBecomeFirstResponder.assertValues([true])
   }
 
   func testInputAreaVisibility() {

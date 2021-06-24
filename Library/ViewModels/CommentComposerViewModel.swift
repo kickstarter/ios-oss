@@ -48,7 +48,7 @@ public protocol CommentComposerViewModelOutputs {
   var inputAreaHidden: Signal<Bool, Never> { get }
 
   /// Emits when the input textview should become first responder.
-  var inputTextViewBecomeFirstResponder: Signal<Bool, Never> { get }
+  var inputTextViewDidBecomeFirstResponder: Signal<Bool, Never> { get }
 
   /// Emits when composer notifies view controller of comment submitted.
   var notifyDelegateDidSubmitText: Signal<String, Never> { get }
@@ -104,7 +104,7 @@ public final class CommentComposerViewModel:
         return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
 
-    self.inputTextViewBecomeFirstResponder = Signal.merge(
+    self.inputTextViewDidBecomeFirstResponder = Signal.merge(
       self.configDataProperty.signal.skipNil().map(\.becomeFirstResponder),
       self.resetInputProperty.signal.map { false }
     )
@@ -145,7 +145,7 @@ public final class CommentComposerViewModel:
   public var clearInputTextView: Signal<(), Never>
   public var commentComposerHidden: Signal<Bool, Never>
   public var inputAreaHidden: Signal<Bool, Never>
-  public var inputTextViewBecomeFirstResponder: Signal<Bool, Never>
+  public var inputTextViewDidBecomeFirstResponder: Signal<Bool, Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>

@@ -58,6 +58,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .map(third)
       .takeWhen(self.viewDidAppearProperty.signal)
 
+    /**
+     FIXME: There's currently an issue raised here: https://github.com/kickstarter/ios-oss/pull/1523#discussion_r655679914 where
+     `project.memberData.permissions` is not covered in this logic, as it also controls the reply button show/hide.
+      This has been logged in this ticket https://kickstarter.atlassian.net/browse/NT-2034.
+     */
     self.configureCommentComposerViewWithData = Signal
       .combineLatest(
         project,

@@ -146,7 +146,7 @@ final class CommentComposerView: UIView {
         self?.inputContainerView.inputTextView.text = nil
       }
 
-    self.viewModel.outputs.inputTextViewBecomeFirstResponder
+    self.viewModel.outputs.inputTextViewDidBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] becomeFirstResponder in
         guard let self = self else { return }
