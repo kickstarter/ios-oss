@@ -68,6 +68,7 @@
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */; };
 		0605D32A268502A400025AD0 /* FBSnapshotTestCase.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D31C2685013A00025AD0 /* FBSnapshotTestCase.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0605D3432685089200025AD0 /* FBSnapshotTestCase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D31C2685013A00025AD0 /* FBSnapshotTestCase.xcframework */; };
 		0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645862669683A007D8D96 /* CommentRepliesDataSource.swift */; };
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
@@ -3061,6 +3062,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0605D3432685089200025AD0 /* FBSnapshotTestCase.xcframework in Frameworks */,
 				067F4CFD26827763008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */,
 				067F4A5126814A70008609C4 /* Appboy_iOS_SDK.framework in Frameworks */,
 				067F4D0826827909008609C4 /* Segment.framework in Frameworks */,
