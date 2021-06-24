@@ -6,6 +6,9 @@ import ReactiveSwift
 private let concurrentCommentLimit: UInt = 5
 
 public protocol CommentsViewModelInputs {
+  /// Call when the delegate method for the CommentCellDelegate is called.
+  func commentCellDidTapViewReplies(_ comment: Comment)
+
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
@@ -187,9 +190,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       return accum + comments
     }
 
-    let commentsAndProject = initialProject
-      .takePairWhen(paginatedComments)
-      .map { ($1, $0) }
+    let commentsAndProject = Signal.combineLatest(
+      paginatedComments,
+      initialProject
+    )
 
     self.currentComments <~ commentsAndProject.map(first)
       // Thread hop so that we don't circularly buffer.
@@ -204,24 +208,41 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
-    let commentTapped = self.didSelectCommentProperty.signal.skipNil()
-    let regularCommentTapped = commentTapped.filter { comment in
-      [comment.status == .success, comment.isDeleted == false].allSatisfy(isTrue)
-    }
-    let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
+    let commentCellTapped = self.didSelectCommentProperty.signal.skipNil()
+    let erroredCommentTapped = commentCellTapped.filter { comment in comment.status == .failed }
 
-    self.goToCommentReplies = regularCommentTapped
+    self.goToCommentReplies = self.commentCellDidTapViewRepliesProperty.signal
+      .skipNil()
       .filter { comment in comment.replyCount > 0 }
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
-    self.failableOrComment <~ Signal.combineLatest(
-      initialProject,
-      currentUser.skipNil()
-    )
-    .takePairWhen(commentComposerDidSubmitText)
-    .map(unpack)
-    .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
+    // get an id needed to post a comment to either a project or a project update
+    let commentableId = projectOrUpdate
+      .flatMap { projectOrUpdate in
+        projectOrUpdate.ifLeft { project in
+          SignalProducer.init(value: project.graphID)
+        } ifRight: { update in
+          SignalProducer.init(value: encodeToBase64("FreeformPost-\(update.id)"))
+        }
+      }
+
+    let postFailableCommentConfigData:
+      Signal<(project: Project, commentableId: String, user: User), Never> = Signal.combineLatest(
+        initialProject,
+        commentableId,
+        currentUser.skipNil()
+      ).map { project, commentableId, user in
+        (project: project, commentableId: commentableId, user: user)
+      }
+
+    self.failableOrComment <~ postFailableCommentConfigData
+      .takePairWhen(commentComposerDidSubmitText)
+      .map { data in
+        let ((project, commentableId, user), text) = data
+        return (project, commentableId, user, text)
+      }
+      .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
 
     let currentlyRetrying = MutableProperty<Set<String>>([])
 
@@ -233,9 +254,11 @@ public final class CommentsViewModel: CommentsViewModelType,
         currentlyRetrying.value.insert(comment.id)
       })
 
-    self.retryingComment <~ initialProject
+    self.retryingComment <~ commentableId
       .takePairWhen(newErroredCommentTapped)
-      .map { ($1, $0) }
+      .map { commentableId, comment in
+        (comment, commentableId)
+      }
       .flatMap(.concurrent(limit: concurrentCommentLimit), retryCommentProducer)
       // Once we've emitted a value here the comment has been retried and can be removed.
       .on(value: { [currentlyRetrying] _, id in
@@ -267,6 +290,11 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let currentComments = MutableProperty<[Comment]?>(nil)
   private let retryingComment = MutableProperty<(Comment, String)?>(nil)
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
+
+  private let commentCellDidTapViewRepliesProperty = MutableProperty<Comment?>(nil)
+  public func commentCellDidTapViewReplies(_ comment: Comment) {
+    self.commentCellDidTapViewRepliesProperty.value = comment
+  }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
   public func didSelectComment(_ comment: Comment) {
@@ -323,13 +351,13 @@ public final class CommentsViewModel: CommentsViewModelType,
 
 private func retryCommentProducer(
   erroredComment comment: Comment,
-  project: Project
+  commentableId: String
 ) -> SignalProducer<(Comment, String), Never> {
   // Retry posting the comment.
   AppEnvironment.current.apiService.postComment(
     input: .init(
       body: comment.body,
-      commentableId: project.graphID
+      commentableId: commentableId
     )
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -358,6 +386,7 @@ private func retryCommentProducer(
 
 private func postCommentProducer(
   project: Project,
+  commentableId: String,
   user: User,
   body: String
 ) -> SignalProducer<(Comment, String), Never> {
@@ -373,7 +402,7 @@ private func postCommentProducer(
   return AppEnvironment.current.apiService.postComment(
     input: .init(
       body: body,
-      commentableId: project.graphID
+      commentableId: commentableId
     )
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -420,20 +449,23 @@ private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
   }
 }
 
-private func commentsNextPage(from projectSlug: String?, cursor: String?,
-                              updateID: String?) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-  if let id = updateID {
+private func commentsNextPage(
+  from projectSlug: String?,
+  cursor: String?,
+  updateID: String?
+) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  if let projectSlug = projectSlug {
     return AppEnvironment.current.apiService.fetchComments(
-      query: projectUpdateCommentsQuery(
-        id: id,
+      query: commentsQuery(
+        withProjectSlug: projectSlug,
         after: cursor
       )
     )
   } else {
-    guard let projectSlug = projectSlug else { return .empty }
+    guard let id = updateID else { return .empty }
     return AppEnvironment.current.apiService.fetchComments(
-      query: commentsQuery(
-        withProjectSlug: projectSlug,
+      query: projectUpdateCommentsQuery(
+        id: id,
         after: cursor
       )
     )

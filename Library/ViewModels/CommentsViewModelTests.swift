@@ -174,9 +174,10 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectComment(comment)
+    self.vm.inputs.commentCellDidTapViewReplies(comment)
 
-    self.goToCommentRepliesComment.assertValues([comment])
+    self.goToCommentRepliesComment
+      .assertValues([comment])
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {
