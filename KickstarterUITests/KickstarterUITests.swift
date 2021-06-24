@@ -1,9 +1,9 @@
-@testable import Library
 import SafariServices
 import UIKit
 import XCTest
+import Library
 
-final class KickstarterUITests: TestCase {
+final class KickstarterUITests: XCTestCase {
   func testGoToHttpScheme() {
     guard let url = URL(string: "http://www.kickstarter.com") else {
       XCTFail("URL cannot be nil")
