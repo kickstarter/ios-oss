@@ -205,7 +205,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
-    let commentTapped = self.didSelectCommentProperty.signal.skipNil()
+    let commentTapped = self.viewRepliesProperty.signal.skipNil()
     let regularCommentTapped = commentTapped.filter { comment in
       [comment.status == .success, comment.isDeleted == false].allSatisfy(isTrue)
     }
@@ -216,13 +216,32 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
-    self.failableOrComment <~ Signal.combineLatest(
-      initialProject,
-      currentUser.skipNil()
-    )
-    .takePairWhen(commentComposerDidSubmitText)
-    .map(unpack)
-    .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
+    // get an id needed to post a comment to either a project or a project update
+    let commentableId = projectOrUpdate
+      .flatMap { projectOrUpdate in
+        projectOrUpdate.ifLeft { project in
+          SignalProducer.init(value: project.graphID)
+        } ifRight: { update in
+          SignalProducer.init(value: encodeToBase64("FreeformPost-\(update.id)"))
+        }
+      }
+
+    let postFailableCommentConfigData:
+      Signal<(project: Project, commentableId: String, user: User), Never> = Signal.combineLatest(
+        initialProject,
+        commentableId,
+        currentUser.skipNil()
+      ).map { project, commentableId, user in
+        (project: project, commentableId: commentableId, user: user)
+      }
+
+    self.failableOrComment <~ postFailableCommentConfigData
+      .takePairWhen(commentComposerDidSubmitText)
+      .map { data in
+        let ((project, commentableId, user), text) = data
+        return (project, commentableId, user, text)
+      }
+      .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
 
     let currentlyRetrying = MutableProperty<Set<String>>([])
 
@@ -234,9 +253,11 @@ public final class CommentsViewModel: CommentsViewModelType,
         currentlyRetrying.value.insert(comment.id)
       })
 
-    self.retryingComment <~ initialProject
+    self.retryingComment <~ commentableId
       .takePairWhen(newErroredCommentTapped)
-      .map { ($1, $0) }
+      .map { commentableId, comment in
+        (comment, commentableId)
+      }
       .flatMap(.concurrent(limit: concurrentCommentLimit), retryCommentProducer)
       // Once we've emitted a value here the comment has been retried and can be removed.
       .on(value: { [currentlyRetrying] _, id in
@@ -269,9 +290,9 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let retryingComment = MutableProperty<(Comment, String)?>(nil)
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
 
-  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
+  private let viewRepliesProperty = MutableProperty<Comment?>(nil)
   public func didSelectComment(_ comment: Comment) {
-    self.didSelectCommentProperty.value = comment
+    self.viewRepliesProperty.value = comment
   }
 
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
@@ -324,13 +345,13 @@ public final class CommentsViewModel: CommentsViewModelType,
 
 private func retryCommentProducer(
   erroredComment comment: Comment,
-  project: Project
+  commentableId: String
 ) -> SignalProducer<(Comment, String), Never> {
   // Retry posting the comment.
   AppEnvironment.current.apiService.postComment(
     input: .init(
       body: comment.body,
-      commentableId: project.graphID
+      commentableId: commentableId
     )
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -359,6 +380,7 @@ private func retryCommentProducer(
 
 private func postCommentProducer(
   project: Project,
+  commentableId: String,
   user: User,
   body: String
 ) -> SignalProducer<(Comment, String), Never> {
@@ -374,7 +396,7 @@ private func postCommentProducer(
   return AppEnvironment.current.apiService.postComment(
     input: .init(
       body: body,
-      commentableId: project.graphID
+      commentableId: commentableId
     )
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
