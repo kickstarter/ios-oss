@@ -54,9 +54,12 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     let currentUser = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
 
-    let inputAreaBecomeFirstResponder = rootCommentProject
-      .map(third)
-      .takeWhen(self.viewDidAppearProperty.signal)
+    let inputAreaBecomeFirstResponder = Signal.merge(
+      rootCommentProject
+        .map(third)
+        .takeWhen(self.viewDidAppearProperty.signal),
+      self.viewDidLoadProperty.signal.mapConst(false)
+    ).skipRepeats()
 
     /**
      FIXME: There's currently an issue raised here: https://github.com/kickstarter/ios-oss/pull/1523#discussion_r655679914 where

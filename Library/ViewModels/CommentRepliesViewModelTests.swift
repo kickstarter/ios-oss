@@ -102,7 +102,6 @@ internal final class CommentRepliesViewModelTests: TestCase {
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear()
 
       self.configureCommentComposerViewURL
         .assertValues(
@@ -125,7 +124,6 @@ internal final class CommentRepliesViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewDidAppear()
 
       self.configureCommentComposerViewURL
         .assertValues(
@@ -152,11 +150,14 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
       self.configureCommentComposerViewURL
         .assertValues(
-          [URL(string: "http://www.kickstarter.com/medium.jpg")],
+          [
+            URL(string: "http://www.kickstarter.com/medium.jpg"),
+            URL(string: "http://www.kickstarter.com/medium.jpg")
+          ],
           "An URL is emitted because the user is logged in."
         )
       self.configureCommentComposerBecomeFirstResponder
-        .assertValues([true], "true is emitted because the user clicked on reply on the root comment")
+        .assertValues([false, true], "true is emitted because the user clicked on reply on the root comment")
     }
   }
 
