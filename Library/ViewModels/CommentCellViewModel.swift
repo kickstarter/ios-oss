@@ -14,6 +14,9 @@ public protocol CommentCellViewModelInputs {
 
   /// Call when the reply button is tapped
   func replyButtonTapped()
+
+  /// Call when the view replies button is tapped
+  func viewRepliesButtonTapped()
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -50,8 +53,11 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits current `Comment` reply button is clicked for
-  var replyComment: Signal<Comment, Never> { get }
+  /// Emits a `Comment` for the cell that reply button is clicked for.
+  var replyCommentTapped: Signal<Comment, Never> { get }
+
+  /// Emits a `Comment` for the cell that view replies button is clicked for.
+  var viewCommentReplies: Signal<Comment, Never> { get }
 
   /// Emits whether or not the view replies stack view is hidden.
   var viewRepliesViewHidden: Signal<Bool, Never> { get }
@@ -103,7 +109,7 @@ public final class CommentCellViewModel:
 
     self.flagButtonIsHidden = self.commentAndProject.signal
       .ignoreValues()
-      .map(commentFlaggingEnabled)
+      .map(featureCommentFlaggingIsEnabled)
       .map(isFalse)
 
     let isLoggedOut = self.commentAndProject.signal
@@ -136,7 +142,8 @@ public final class CommentCellViewModel:
     self.viewRepliesViewHidden = comment.map(\.replyCount)
       .map(viewRepliesStackViewHidden)
 
-    self.replyComment = comment.takeWhen(self.replyButtonTappedProperty.signal)
+    self.replyCommentTapped = comment.takeWhen(self.replyButtonTappedProperty.signal)
+    self.viewCommentReplies = comment.takeWhen(self.viewRepliesButtonTappedProperty.signal)
   }
 
   private var bindStylesProperty = MutableProperty(())
@@ -159,6 +166,11 @@ public final class CommentCellViewModel:
     self.replyButtonTappedProperty.value = ()
   }
 
+  fileprivate let viewRepliesButtonTappedProperty = MutableProperty(())
+  public func viewRepliesButtonTapped() {
+    self.viewRepliesButtonTappedProperty.value = ()
+  }
+
   public let authorBadge: Signal<Comment.AuthorBadge, Never>
   public var authorImageURL: Signal<URL, Never>
   public let authorName: Signal<String, Never>
@@ -170,29 +182,20 @@ public final class CommentCellViewModel:
   public let postTime: Signal<String, Never>
   public let postedButtonIsHidden: Signal<Bool, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
-  public let replyComment: Signal<Comment, Never>
+  public let replyCommentTapped: Signal<Comment, Never>
+  public let viewCommentReplies: Signal<Comment, Never>
   public let viewRepliesViewHidden: Signal<Bool, Never>
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }
 }
 
-private func commentFlaggingEnabled() -> Bool {
-  return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlaggingEnabled.rawValue) ?? true
-}
-
-private func commentThreadingRepliesEnabled() -> Bool {
-  return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue) ?? true
-}
-
 private func replyButtonHidden(isLoggedOut: Bool, isNotABacker: Bool) -> Bool {
-  guard commentThreadingRepliesEnabled() else { return true }
+  guard featureCommentThreadingRepliesIsEnabled() else { return true }
   return isLoggedOut || isNotABacker
 }
 
 private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
-  guard commentThreadingRepliesEnabled() else { return true }
+  guard featureCommentThreadingRepliesIsEnabled() else { return true }
   return replyCount == 0
 }

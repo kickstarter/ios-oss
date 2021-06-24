@@ -5,6 +5,7 @@ import UIKit
 
 protocol CommentCellDelegate: AnyObject {
   func commentCellDidTapReply(_ cell: CommentCell, comment: Comment)
+  func commentCellDidTapViewReplies(_ cell: CommentCell, comment: Comment)
 }
 
 final class CommentCell: UITableViewCell, ValueCell {
@@ -21,7 +22,10 @@ final class CommentCell: UITableViewCell, ValueCell {
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var postedButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var viewRepliesView: ViewRepliesView = { ViewRepliesView(frame: .zero) }()
+  private lazy var viewRepliesView: ViewRepliesView = {
+    ViewRepliesView(frame: .zero)
+      |> \.isUserInteractionEnabled .~ true
+  }()
 
   private let viewModel = CommentCellViewModel()
 
@@ -50,6 +54,10 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   @objc func replyButtonTapped() {
     self.viewModel.inputs.replyButtonTapped()
+  }
+
+  @objc func viewRepliesTapped() {
+    self.viewModel.inputs.viewRepliesButtonTapped()
   }
 
   // MARK: - Styles
@@ -104,6 +112,9 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = ([self.replyButton, UIView(), self.flagButton], self.bottomRowStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    let viewRepliesGesture = UITapGestureRecognizer(target: self, action: #selector(self.viewRepliesTapped))
+    self.viewRepliesView.addGestureRecognizer(viewRepliesGesture)
   }
 
   // MARK: - View model
@@ -117,11 +128,18 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
 
-    self.viewModel.outputs.replyComment
-      .observeForControllerAction()
+    self.viewModel.outputs.replyCommentTapped
+      .observeForUI()
       .observeValues { [weak self] comment in
         guard let self = self else { return }
         self.delegate?.commentCellDidTapReply(self, comment: comment)
+      }
+
+    self.viewModel.outputs.viewCommentReplies
+      .observeForUI()
+      .observeValues { [weak self] comment in
+        guard let self = self else { return }
+        self.delegate?.commentCellDidTapViewReplies(self, comment: comment)
       }
   }
 }

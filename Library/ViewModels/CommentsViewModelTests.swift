@@ -34,11 +34,11 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.configureFooterViewWithState.observe(self.configureFooterViewWithState.observer)
-    self.vm.outputs.goToRepliesWithCommentProjectAndShowKeyboard.map(first)
+    self.vm.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder.map(first)
       .observe(self.goToCommentRepliesComment.observer)
-    self.vm.outputs.goToRepliesWithCommentProjectAndShowKeyboard.map(second)
+    self.vm.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder.map(second)
       .observe(self.goToCommentRepliesProject.observer)
-    self.vm.outputs.goToRepliesWithCommentProjectAndShowKeyboard.map(third)
+    self.vm.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder.map(third)
       .observe(self.goToCommentRepliesShowKeyboard.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
@@ -210,11 +210,13 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesProject.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectComment(comment)
+    self.vm.inputs.commentCellDidTapViewReplies(comment)
 
     self.goToCommentRepliesComment.assertValues([comment])
     self.goToCommentRepliesProject.assertValues([project])
     self.goToCommentRepliesShowKeyboard.assertValues([false])
+    self.goToCommentRepliesComment
+      .assertValues([comment])
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit_HasNotShownKeyboard() {

@@ -4,6 +4,17 @@ import Prelude
 import XCTest
 
 final class OptimizelyClientTypeTests: TestCase {
+  func testAllFeatures() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+        OptimizelyFeature.commentThreading.rawValue: true,
+        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
+      ]
+
+    XCTAssert(mockOptimizelyClient.allFeatures().count == 3)
+  }
+
   func testVariantForExperiment_NoError() {
     let mockClient = MockOptimizelyClient()
       |> \.experiments .~

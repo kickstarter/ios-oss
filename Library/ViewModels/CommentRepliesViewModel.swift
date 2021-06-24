@@ -5,7 +5,7 @@ import ReactiveSwift
 
 public protocol CommentRepliesViewModelInputs {
   /**
-     Call with the comment and project that we are viewing replies for. `Comment` can be provided to minimize
+    Call with the comment and project that we are viewing replies for. `Comment` can be provided to minimize
     the number of API requests made (ie. no need to find the comment id), but this is for viewing the replies for the root comment.
 
      - parameter comment: The `Comment` we are viewing the replies.
@@ -72,7 +72,12 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
-          return (nil, false, true, false)
+          return (
+            avatarURL: nil,
+            canPostComment: false,
+            hidden: true,
+            becomeFirstResponder: false
+          )
         }
 
         let url = URL(string: user.avatar.medium)

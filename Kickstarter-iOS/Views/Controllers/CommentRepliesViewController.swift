@@ -100,6 +100,7 @@ final class CommentRepliesViewController: UITableViewController {
 
 // MARK: - CommentComposerViewDelegate
 
+// TODO: - Drive `resetInput()` from a ViewModel when we are implementing post comment for replies.
 extension CommentRepliesViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
     self.commentComposer.resetInput()
