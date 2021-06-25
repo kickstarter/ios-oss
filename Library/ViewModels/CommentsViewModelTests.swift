@@ -894,7 +894,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([])
+      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
       self.cellSeparatorHidden.assertValue(true)
     }
   }
