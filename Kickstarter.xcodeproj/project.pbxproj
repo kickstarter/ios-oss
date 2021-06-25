@@ -184,6 +184,7 @@
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
+		06F515382686619600D46ADD /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F4CA026826E64008609C4 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */; };
 		1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */; };
 		1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */; };
@@ -1578,6 +1579,16 @@
 				067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				067F4B4A26815864008609C4 /* Segment_Appboy.framework in CopyFiles */,
 				067F4B442681585E008609C4 /* SDWebImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06F515372686618D00D46ADD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				06F515382686619600D46ADD /* Segment.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4933,6 +4944,7 @@
 				A75511391C8642B3005355CF /* Headers */,
 				A755113A1C8642B3005355CF /* Resources */,
 				D0EA60A2228B6A85007DB557 /* Carthage */,
+				06F515372686618D00D46ADD /* CopyFiles */,
 			);
 			buildRules = (
 			);
