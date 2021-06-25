@@ -199,6 +199,11 @@ public final class CommentsViewModel: CommentsViewModelType,
       // Thread hop so that we don't circularly buffer.
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
+    // Allow empty arrays from the first emission.
+    let emptyCommentsWithInitialProject = Signal.zip(comments, initialProject)
+      .filter { comments, _ in comments.isEmpty }
+      .map { comments, project in (comments, project, false) }
+
     // Continue to paginate normally without empty comments.
     let paginatedCommentsAndProject = commentsAndProject
       .filter { comments, _ in comments.isEmpty == false }
@@ -212,6 +217,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       .withLatestFrom(initialProject).map { ([], $1, true) }
 
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
+      emptyCommentsWithInitialProject,
       paginatedCommentsAndProject,
       errorsAndHasRequestedNextPage
     )
