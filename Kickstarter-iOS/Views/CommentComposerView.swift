@@ -146,10 +146,13 @@ final class CommentComposerView: UIView {
         self?.inputContainerView.inputTextView.text = nil
       }
 
-    self.viewModel.outputs.inputTextViewResignFirstResponder
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.inputContainerView.inputTextView.resignFirstResponder()
+    self.viewModel.outputs.inputTextViewDidBecomeFirstResponder
+      .observeForControllerAction()
+      .observeValues { [weak self] becomeFirstResponder in
+        guard let self = self else { return }
+        _ = becomeFirstResponder
+          ? self.inputContainerView.inputTextView.becomeFirstResponder()
+          : self.inputContainerView.inputTextView.resignFirstResponder()
       }
 
     self.viewModel.outputs.updateTextViewHeight
