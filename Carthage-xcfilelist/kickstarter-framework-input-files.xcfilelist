@@ -1,5 +1,0 @@
-# Carthage input files
-
-$(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
-$(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
-$(SRCROOT)/Carthage/Build/iOS/Stripe.framework

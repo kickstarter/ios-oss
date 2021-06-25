@@ -1,7 +1,0 @@
-# Carthage input files
-
-$(SRCROOT)/Carthage/Build/iOS/Appboy_iOS_SDK.framework
-$(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
-$(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
-$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework
-$(SRCROOT)/Carthage/Build/iOS/Segment_Appboy.framework
