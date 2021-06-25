@@ -4,6 +4,7 @@ import Prelude
 import UIKit
 
 protocol CommentCellDelegate: AnyObject {
+  func commentCellDidTapReply(_ cell: CommentCell, comment: Comment)
   func commentCellDidTapViewReplies(_ cell: CommentCell, comment: Comment)
 }
 
@@ -26,12 +27,12 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> \.isUserInteractionEnabled .~ true
   }()
 
+  private let viewModel = CommentCellViewModel()
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private let viewModel = CommentCellViewModel()
 
   // MARK: - Lifecycle
 
@@ -41,6 +42,8 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bindStyles()
     self.configureViews()
     self.bindViewModel()
+
+    self.replyButton.addTarget(self, action: #selector(self.replyButtonTapped), for: .touchUpInside)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -48,6 +51,10 @@ final class CommentCell: UITableViewCell, ValueCell {
   }
 
   // MARK: - Actions
+
+  @objc func replyButtonTapped() {
+    self.viewModel.inputs.replyButtonTapped()
+  }
 
   @objc func viewRepliesTapped() {
     self.viewModel.inputs.viewRepliesButtonTapped()
@@ -121,8 +128,15 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
 
+    self.viewModel.outputs.replyCommentTapped
+      .observeForUI()
+      .observeValues { [weak self] comment in
+        guard let self = self else { return }
+        self.delegate?.commentCellDidTapReply(self, comment: comment)
+      }
+
     self.viewModel.outputs.viewCommentReplies
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] comment in
         guard let self = self else { return }
         self.delegate?.commentCellDidTapViewReplies(self, comment: comment)

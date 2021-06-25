@@ -154,7 +154,7 @@ private func composerView(avatarURL: URL?,
   let composer = CommentComposerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
-  composer.configure(with: (avatarURL, canPostComment, composerViewHidden))
+  composer.configure(with: (avatarURL, canPostComment, composerViewHidden, false))
 
   if textEntered {
     let textView = UITextView(frame: .zero)
