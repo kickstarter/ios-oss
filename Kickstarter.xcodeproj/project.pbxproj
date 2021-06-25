@@ -598,6 +598,7 @@
 		8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */; };
 		8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB524DCB7D500B4AB10 /* Constants.swift */; };
 		8A67DDB824DDB21100B4AB10 /* BackingsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */; };
+		8A6B658F268693070044813C /* Stripe.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 067F47992680F80F008609C4 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */; };
 		8A6C978E24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */; };
 		8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */; };
@@ -1556,6 +1557,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8A6B658F268693070044813C /* Stripe.framework in Copy Files */,
 				067F4D51268282E0008609C4 /* Segment.framework in Copy Files */,
 				067F4B3526815707008609C4 /* FBSDKLoginKit.framework in Copy Files */,
 				067F4B2E268156E3008609C4 /* FBSDKCoreKit.framework in Copy Files */,
