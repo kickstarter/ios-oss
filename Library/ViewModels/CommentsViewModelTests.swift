@@ -19,6 +19,7 @@ internal final class CommentsViewModelTests: TestCase {
   private let goToCommentRepliesProject = TestObserver<Project, Never>()
   private let goToCommentRepliesShowKeyboard = TestObserver<Bool, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
+  private let loadCommentsAndProjectIntoDataSourceShouldShowErrorState = TestObserver<Bool, Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
 
@@ -44,6 +45,8 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
+    self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(third)
+      .observe(self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
   }
 
@@ -936,7 +939,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testConfigureFooterViewWithState_ErrorOnFirstPage() {
+  func testDataSourceState_ErrorOnFirstPage() {
     self.configureFooterViewWithState.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
@@ -950,14 +953,14 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configureFooterViewWithState.assertValues([.hidden, .error], "Emits error state.")
+      self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.assertValues([true])
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
         self.vm.inputs.commentTableViewFooterViewDidTapRetry()
 
         self.scheduler.advance()
 
-        self.configureFooterViewWithState.assertValues([.hidden, .error, .hidden], "Returns to hidden.")
+        self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.assertLastValue(false)
       }
     }
   }
@@ -1015,13 +1018,15 @@ internal final class CommentsViewModelTests: TestCase {
             self.vm.inputs.commentTableViewFooterViewDidTapRetry()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .error, .activity], "Activity is shown during paging."
+              [.hidden, .activity, .hidden, .activity, .error, .activity],
+              "Activity is shown during paging."
             )
 
             self.scheduler.advance()
 
             self.configureFooterViewWithState.assertValues(
-              [.hidden, .activity, .hidden, .activity, .error, .activity, .hidden], "Returns to hidden."
+              [.hidden, .activity, .hidden, .activity, .error, .activity, .hidden],
+              "Returns to hidden."
             )
           }
         }

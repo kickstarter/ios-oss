@@ -8,6 +8,10 @@ private enum Layout {
   enum Composer {
     static let originalHeight: CGFloat = 80.0
   }
+
+  enum ErrorState {
+    static let cellHeightMuliplier: CGFloat = 0.70
+  }
 }
 
 internal final class CommentsViewController: UITableViewController {
@@ -62,6 +66,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.registerCellClass(CommentsErrorCell.self)
     self.tableView.registerCellClass(EmptyCommentsCell.self)
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
@@ -121,10 +126,11 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.loadCommentsAndProjectIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] comments, project in
+      .observeValues { [weak self] comments, project, shouldShow in
         self?.dataSource.load(
           comments: comments,
-          project: project
+          project: project,
+          shouldShowErrorState: shouldShow
         )
         self?.tableView.reloadData()
       }
@@ -212,6 +218,18 @@ extension CommentsViewController: CommentComposerViewDelegate {
 extension CommentsViewController: CommentTableViewFooterViewDelegate {
   func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
     self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CommentsViewController {
+  override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if self.dataSource.isInErrorState(indexPath: indexPath) {
+      return (self.view.safeAreaLayoutGuide.layoutFrame.height * Layout.ErrorState.cellHeightMuliplier)
+    }
+
+    return UITableView.automaticDimension
   }
 }
 
