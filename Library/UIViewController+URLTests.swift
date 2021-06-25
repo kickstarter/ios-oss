@@ -3,6 +3,18 @@ import SafariServices
 import UIKit
 import XCTest
 
+private class MockURLViewController: UIViewController {
+  var goToURLWithVC: UIViewController?
+
+  override func present(
+    _ viewControllerToPresent: UIViewController,
+    animated _: Bool,
+    completion _: (() -> Void)? = nil
+  ) {
+    self.goToURLWithVC = viewControllerToPresent
+  }
+}
+
 final class UIViewControllerURLTests: TestCase {
   func testSupportedSchemes() {
     XCTAssertEqual(UIViewController.supportedURLSchemes, ["http", "https"])
@@ -41,5 +53,31 @@ final class UIViewControllerURLTests: TestCase {
       XCTAssertTrue(mockApplication.canOpenURLWasCalled)
       XCTAssertFalse(mockApplication.openUrlWasCalled)
     }
+  }
+
+  func testGoToHttpScheme() {
+    guard let url = URL(string: "http://www.kickstarter.com") else {
+      XCTFail("URL cannot be nil")
+      return
+    }
+
+    let vc = MockURLViewController()
+
+    vc.goTo(url: url)
+
+    XCTAssertTrue(vc.goToURLWithVC is SFSafariViewController)
+  }
+
+  func testGoToHttpsScheme() {
+    guard let url = URL(string: "https://www.kickstarter.com") else {
+      XCTFail("URL cannot be nil")
+      return
+    }
+
+    let vc = MockURLViewController()
+
+    vc.goTo(url: url)
+
+    XCTAssertTrue(vc.goToURLWithVC is SFSafariViewController)
   }
 }
