@@ -1,7 +1,7 @@
+import Library
 import SafariServices
 import UIKit
 import XCTest
-import Library
 
 final class KickstarterUITests: XCTestCase {
   func testGoToHttpScheme() {
