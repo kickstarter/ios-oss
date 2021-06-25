@@ -129,10 +129,14 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToCommentReplies
+    self.viewModel.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder
       .observeForControllerAction()
-      .observeValues { [weak self] comment in
-        let vc = CommentRepliesViewController.configuredWith(comment: comment)
+      .observeValues { [weak self] comment, project, becomeFirstResponder in
+        let vc = CommentRepliesViewController.configuredWith(
+          comment: comment,
+          project: project,
+          inputAreaBecomeFirstResponder: becomeFirstResponder
+        )
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -214,6 +218,10 @@ extension CommentsViewController: CommentTableViewFooterViewDelegate {
 // MARK: - CommentCellDelegate
 
 extension CommentsViewController: CommentCellDelegate {
+  func commentCellDidTapReply(_: CommentCell, comment: Comment) {
+    self.viewModel.inputs.commentCellDidTapReply(comment: comment)
+  }
+
   func commentCellDidTapViewReplies(_: CommentCell, comment: Comment) {
     self.viewModel.inputs.commentCellDidTapViewReplies(comment)
   }

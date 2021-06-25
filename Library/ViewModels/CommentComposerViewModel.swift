@@ -2,7 +2,12 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public typealias CommentComposerViewData = (avatarURL: URL?, canPostComment: Bool, hidden: Bool)
+public typealias CommentComposerViewData = (
+  avatarURL: URL?,
+  canPostComment: Bool,
+  hidden: Bool,
+  becomeFirstResponder: Bool
+)
 
 public enum CommentComposerConstant {
   // The API only supports comments not more than 9000 characters
@@ -42,8 +47,8 @@ public protocol CommentComposerViewModelOutputs {
   /// Emits a boolean that determines if the input area is hidden.
   var inputAreaHidden: Signal<Bool, Never> { get }
 
-  /// Emits when the input textview should resign first responder.
-  var inputTextViewResignFirstResponder: Signal<(), Never> { get }
+  /// Emits when the input textview should become first responder.
+  var inputTextViewDidBecomeFirstResponder: Signal<Bool, Never> { get }
 
   /// Emits when composer notifies view controller of comment submitted.
   var notifyDelegateDidSubmitText: Signal<String, Never> { get }
@@ -99,7 +104,11 @@ public final class CommentComposerViewModel:
         return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
 
-    self.inputTextViewResignFirstResponder = self.resetInputProperty.signal
+    self.inputTextViewDidBecomeFirstResponder = Signal.merge(
+      self.configDataProperty.signal.skipNil().map(\.becomeFirstResponder),
+      self.resetInputProperty.signal.map { false }
+    )
+
     self.updateTextViewHeight = self.bodyText.signal.ignoreValues()
     self.clearInputTextView = self.bodyText.filter { $0 == nil }.ignoreValues()
   }
@@ -136,7 +145,7 @@ public final class CommentComposerViewModel:
   public var clearInputTextView: Signal<(), Never>
   public var commentComposerHidden: Signal<Bool, Never>
   public var inputAreaHidden: Signal<Bool, Never>
-  public var inputTextViewResignFirstResponder: Signal<(), Never>
+  public var inputTextViewDidBecomeFirstResponder: Signal<Bool, Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>
