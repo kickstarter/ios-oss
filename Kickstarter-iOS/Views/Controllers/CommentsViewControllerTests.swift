@@ -355,6 +355,28 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
+  func testView_NoComments_ShouldShowErrorState() {
+    AppEnvironment.pushEnvironment(
+      apiService: MockService(
+        fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON)
+      ),
+      currentUser: User.template,
+      mainBundle: Bundle.framework
+    )
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(currentUser: .template, language: language) {
+        let controller = CommentsViewController.configuredWith(project: .template)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testCommentsViewController_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.commentThreading.rawValue: true]

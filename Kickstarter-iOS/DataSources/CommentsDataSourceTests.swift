@@ -8,18 +8,19 @@ class CommentsDataSourceTests: XCTestCase {
   private let commentsSection = CommentsDataSource.Section.comments.rawValue
   private let dataSource = CommentsDataSource()
   private let emptySection = CommentsDataSource.Section.empty.rawValue
+  private let errorSection = CommentsDataSource.Section.error.rawValue
   private let tableView = UITableView()
 
   private let templateComments = Comment.templates + [Comment.retryingTemplate, Comment.retrySuccessTemplate]
 
   override func setUp() {
     super.setUp()
-    self.dataSource.load(comments: self.templateComments, project: .template)
+    self.dataSource.load(comments: self.templateComments, project: .template, shouldShowErrorState: false)
   }
 
   override func tearDown() {
     super.tearDown()
-    self.dataSource.load(comments: [], project: .template)
+    self.dataSource.load(comments: [], project: .template, shouldShowErrorState: false)
   }
 
   func testLoadedComments() {
@@ -72,7 +73,7 @@ class CommentsDataSourceTests: XCTestCase {
   func testCommentAtIndexPath() {
     super.setUp()
 
-    self.dataSource.load(comments: Comment.templates, project: .template)
+    self.dataSource.load(comments: Comment.templates, project: .template, shouldShowErrorState: false)
 
     XCTAssertEqual(
       self.dataSource.comment(at: IndexPath(row: 1, section: 0)),
@@ -82,7 +83,7 @@ class CommentsDataSourceTests: XCTestCase {
 
   func testEmptyState_WhenNoComments_HasEmptyStateCell() {
     let rowIndex: Int = 0
-    self.dataSource.load(comments: [], project: .template)
+    self.dataSource.load(comments: [], project: .template, shouldShowErrorState: false)
 
     XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
     XCTAssertEqual(
@@ -91,12 +92,36 @@ class CommentsDataSourceTests: XCTestCase {
     )
   }
 
+  func testEmptyState_OnCommentsLoadingError_ShouldShowErrorStateCell() {
+    let rowIndex: Int = 0
+    self.dataSource.load(comments: [], project: .template, shouldShowErrorState: true)
+
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.errorSection))
+    XCTAssertEqual(
+      "CommentsErrorCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.errorSection)
+    )
+    XCTAssertTrue(self.dataSource.isInErrorState(indexPath: IndexPath(row: 0, section: 2)))
+  }
+
+  func testEmptyState_OnCommentsLoadingSuccess_ShouldNotShowErrorStateCell() {
+    let rowIndex: Int = 0
+    self.dataSource.load(comments: [], project: .template, shouldShowErrorState: false)
+
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
+    XCTAssertEqual(
+      "EmptyCommentsCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
+    )
+    XCTAssertFalse(self.dataSource.isInErrorState(indexPath: IndexPath(row: 0, section: 1)))
+  }
+
   func testEmptyState_WhenNoCommentsAndThenAddedComments_DoesNotShowEmptyStateCell() {
     let rowIndex: Int = 0
     XCTAssertEqual(7, self.dataSource.numberOfItems(in: self.commentsSection))
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
 
-    self.dataSource.load(comments: [], project: .template)
+    self.dataSource.load(comments: [], project: .template, shouldShowErrorState: false)
 
     XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
     XCTAssertEqual(0, self.dataSource.numberOfItems(in: self.commentsSection))
@@ -106,7 +131,7 @@ class CommentsDataSourceTests: XCTestCase {
       self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
     )
 
-    self.dataSource.load(comments: [Comment.template], project: .template)
+    self.dataSource.load(comments: [Comment.template], project: .template, shouldShowErrorState: false)
 
     XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.commentsSection))
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))

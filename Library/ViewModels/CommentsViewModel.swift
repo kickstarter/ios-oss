@@ -54,8 +54,8 @@ public protocol CommentsViewModelOutputs {
   /// Emits the selected `Comment`, `Project` and a `Bool` to determine if keyboard should show when user to navigate to replies.
   var goToRepliesWithCommentProjectAndBecomeFirstResponder: Signal<(Comment, Project, Bool), Never> { get }
 
-  /// Emits a list of `Comment`s and the `Project` to load into the data source.
-  var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
+  /// Emits a list of `Comments`, the `Project` to load into the data source and whether an error state should be displayed.
+  var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never> { get }
 
   /// Emits a HelpType to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
@@ -126,16 +126,15 @@ public final class CommentsViewModel: CommentsViewModelType,
     let currentComments = self.currentComments.signal.skipNil()
 
     let tappedToRetry = self.commentTableViewFooterViewDidTapRetryProperty.signal
-
-    // Don't retry the first page if we've paged before.
-    let retryFirstPage = tappedToRetry
-      .take(until: isCloseToBottom)
-
     // Retry the next page if we've paged before at least once and tapped to retry.
     let retryNextPage = Signal.combineLatest(
       isCloseToBottom.take(first: 1),
       tappedToRetry
     )
+
+    // Don't retry the first page if we've paged before.
+    let retryFirstPage = tappedToRetry
+      .take(until: isCloseToBottom)
 
     let requestNextPage = Signal.merge(
       isCloseToBottom.ignoreValues(),
@@ -151,7 +150,10 @@ public final class CommentsViewModel: CommentsViewModelType,
         // Thread hop so that we can clear our comments buffer before newly paginated results.
         .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
-
+    let hasRequestedNextPage = Signal.merge(
+      requestFirstPageWith.mapConst(false),
+      requestNextPage.mapConst(true)
+    )
     let (comments, isLoading, _, errors) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPage,
@@ -163,7 +165,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
     )
-
     let commentsWithRetryingComment = currentComments
       .takePairWhen(self.retryingComment.signal.skipNil())
       .map(unpack)
@@ -173,7 +174,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       .takePairWhen(self.failableOrComment.signal.skipNil())
       .map(unpack)
       .map(commentsReplacingCommentById)
-
     self.resetCommentComposerAndScrollToTop = self.commentComposerDidSubmitTextProperty.signal.skipNil()
       .ignoreValues()
 
@@ -202,12 +202,29 @@ public final class CommentsViewModel: CommentsViewModelType,
       // Thread hop so that we don't circularly buffer.
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
+    // Allow empty arrays from the first emission.
+    let emptyCommentsWithInitialProject = Signal.zip(comments, initialProject)
+      .filter { comments, _ in comments.isEmpty }
+      .map { comments, project in (comments, project, false) }
+
+    // Continue to paginate normally without empty comments.
+    let paginatedCommentsAndProject = commentsAndProject
+      .filter { comments, _ in comments.isEmpty == false }
+      .map { comments, project in (comments, project, false) }
+
+    // If there are errors emit empty comments array, project and error boolean.
+    let errorsAndHasRequestedNextPage: Signal<([Comment], Project, Bool), Never> = Signal
+      .combineLatest(errors, hasRequestedNextPage)
+      .filter(second >>> isFalse)
+      .map(first)
+      .withLatestFrom(initialProject).map { ([], $1, true) }
+
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
-      // If we start off with no comments, show an empty state.
-      commentsAndProject.take(first: 1),
-      // Subsequent empty emissions (pull to refresh) should be ignored until replaced.
-      commentsAndProject.skip(first: 1).filter { comments, _ in comments.isEmpty == false }
+      emptyCommentsWithInitialProject,
+      paginatedCommentsAndProject,
+      errorsAndHasRequestedNextPage
     )
+
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
@@ -282,7 +299,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       .on(value: { [currentlyRetrying] _, id in
         currentlyRetrying.value.remove(id)
       })
-
     let footerViewActivityState = Signal
       .combineLatest(isCloseToBottom, isLoading)
       .filter(second >>> isTrue)
@@ -292,10 +308,26 @@ public final class CommentsViewModel: CommentsViewModelType,
       self.loadCommentsAndProjectIntoDataSource.ignoreValues()
     )
 
-    self.configureFooterViewWithState = Signal.merge(
+    // Footer view would be hidden if there is an error at
+    // initial loading stage or when comments are refreshed
+    let hideFooterView: Signal<CommentTableViewFooterViewState, Never> = Signal.merge(
       initialLoadOrReload.mapConst(.hidden),
+      errors
+        .mapConst(.hidden)
+        .withLatestFrom(hasRequestedNextPage)
+        .filter(second >>> isFalse)
+        .map(first)
+    )
+
+    self.configureFooterViewWithState = Signal.merge(
+      hideFooterView,
       footerViewActivityState.mapConst(.activity),
-      errors.mapConst(.error)
+      // Footer view would be only be visible if there is an error for pagination responses.
+      errors
+        .mapConst(.error)
+        .withLatestFrom(hasRequestedNextPage)
+        .filter(second >>> isTrue)
+        .map(first)
     )
     .skipRepeats()
 
@@ -364,7 +396,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToRepliesWithCommentProjectAndBecomeFirstResponder: Signal<(Comment, Project, Bool), Never>
-  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
 
