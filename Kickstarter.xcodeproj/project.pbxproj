@@ -139,10 +139,8 @@
 		067F48EF26810B6A008609C4 /* ReactiveSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66AF267BDC6500E30863 /* ReactiveSwift.xcframework */; };
 		067F48F026810B6B008609C4 /* ReactiveSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66AF267BDC6500E30863 /* ReactiveSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F499F26813A98008609C4 /* AppCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F491B26811687008609C4 /* AppCenterDistribute.framework */; };
-		067F49A026813A98008609C4 /* AppCenterDistribute.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F491B26811687008609C4 /* AppCenterDistribute.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A1426814790008609C4 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; };
 		067F4A25268147BC008609C4 /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F490C268115A3008609C4 /* AppCenter.framework */; };
-		067F4A26268147BC008609C4 /* AppCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F490C268115A3008609C4 /* AppCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A2726814800008609C4 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; };
 		067F4A2826814800008609C4 /* Appboy_iOS_SDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4A2E26814830008609C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; };
@@ -508,6 +506,7 @@
 		8A07D00C26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07D00B26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift */; };
 		8A07D0142665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */; };
 		8A08B521249C3352009CF74E /* EasyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A08B520249C3352009CF74E /* EasyButton.swift */; };
+		8A0B0416268A35FF00136F84 /* AppCenterDistributeResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A0B040F268A35EB00136F84 /* AppCenterDistributeResources.bundle */; };
 		8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */; };
 		8A0B1E2324D4C486009E90C0 /* GraphProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2224D4C486009E90C0 /* GraphProject.swift */; };
 		8A0B1E2524D4C491009E90C0 /* GraphReward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2424D4C491009E90C0 /* GraphReward.swift */; };
@@ -637,6 +636,10 @@
 		8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */; };
 		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
 		8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */; };
+		8AA9F1A9268A89A1000E6396 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; };
+		8AA9F1AA268A89A1000E6396 /* FBSDKLoginKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AA9F1B0268A89CA000E6396 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47992680F80F008609C4 /* Stripe.framework */; };
+		8AA9F1B1268A89CA000E6396 /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 067F47992680F80F008609C4 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
 		8AB64FE52576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64FE42576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift */; };
 		8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64FEC2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift */; };
@@ -1581,9 +1584,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				067F49A026813A98008609C4 /* AppCenterDistribute.framework in Embed Frameworks */,
 				067F48DC26810B6A008609C4 /* Alamofire.xcframework in Embed Frameworks */,
 				067F48562681023A008609C4 /* FirebaseRemoteConfig.xcframework in Embed Frameworks */,
+				8AA9F1AA268A89A1000E6396 /* FBSDKLoginKit.framework in Embed Frameworks */,
 				067F48F026810B6B008609C4 /* ReactiveSwift.xcframework in Embed Frameworks */,
 				067F485026810239008609C4 /* FirebaseCrashlytics.xcframework in Embed Frameworks */,
 				067F484A26810239008609C4 /* FirebaseAnalytics.xcframework in Embed Frameworks */,
@@ -1591,10 +1594,10 @@
 				067F48DE26810B6A008609C4 /* AlamofireImage.xcframework in Embed Frameworks */,
 				067F4A3626814864008609C4 /* Segment_Appboy.framework in Embed Frameworks */,
 				067F4A3D268148A6008609C4 /* SDWebImage.framework in Embed Frameworks */,
-				067F4A26268147BC008609C4 /* AppCenter.framework in Embed Frameworks */,
 				067F48E426810B6A008609C4 /* Optimizely.xcframework in Embed Frameworks */,
 				067F48EE26810B6A008609C4 /* ReactiveExtensions.xcframework in Embed Frameworks */,
 				067F48E026810B6A008609C4 /* FirebaseInstallations.xcframework in Embed Frameworks */,
+				8AA9F1B1268A89CA000E6396 /* Stripe.framework in Embed Frameworks */,
 				067F48542681023A008609C4 /* FirebasePerformance.xcframework in Embed Frameworks */,
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				067F48E626810B6A008609C4 /* Prelude_UIKit.xcframework in Embed Frameworks */,
@@ -1689,8 +1692,6 @@
 		067F47992680F80F008609C4 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = Carthage/Build/iOS/Stripe.framework; sourceTree = "<group>"; };
 		067F4883268105CD008609C4 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = Carthage/Build/iOS/Firebase.framework; sourceTree = "<group>"; };
 		067F490C268115A3008609C4 /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenter.framework; path = Carthage/Build/iOS/AppCenter.framework; sourceTree = "<group>"; };
-		067F491926811687008609C4 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
-		067F491A26811687008609C4 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		067F491B26811687008609C4 /* AppCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterDistribute.framework; path = Carthage/Build/iOS/AppCenterDistribute.framework; sourceTree = "<group>"; };
 		067F4CA026826E64008609C4 /* Segment.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Segment.framework; path = Carthage/Build/iOS/Segment.framework; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
@@ -2020,6 +2021,7 @@
 		8A07D00B26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentRepliesEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8A08B520249C3352009CF74E /* EasyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyButton.swift; sourceTree = "<group>"; };
+		8A0B040F268A35EB00136F84 /* AppCenterDistributeResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AppCenterDistributeResources.bundle; path = Carthage/Build/iOS/AppCenterDistribute.framework/AppCenterDistributeResources.bundle; sourceTree = "<group>"; };
 		8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModelTests.swift; sourceTree = "<group>"; };
 		8A0B1E2224D4C486009E90C0 /* GraphProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphProject.swift; sourceTree = "<group>"; };
 		8A0B1E2424D4C491009E90C0 /* GraphReward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphReward.swift; sourceTree = "<group>"; };
@@ -3076,6 +3078,7 @@
 				067F484726810239008609C4 /* FirebaseABTesting.xcframework in Frameworks */,
 				067F4A3526814864008609C4 /* Segment_Appboy.framework in Frameworks */,
 				067F484926810239008609C4 /* FirebaseAnalytics.xcframework in Frameworks */,
+				8AA9F1B0268A89CA000E6396 /* Stripe.framework in Frameworks */,
 				067F48552681023A008609C4 /* FirebaseRemoteConfig.xcframework in Frameworks */,
 				067F48E726810B6A008609C4 /* Prelude.xcframework in Frameworks */,
 				067F48CF26810AC6008609C4 /* GoogleUtilities.xcframework in Frameworks */,
@@ -3102,6 +3105,7 @@
 				067F4A3C268148A6008609C4 /* SDWebImage.framework in Frameworks */,
 				067F48CB26810AC6008609C4 /* GoogleAppMeasurement.xcframework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
+				8AA9F1A9268A89A1000E6396 /* FBSDKLoginKit.framework in Frameworks */,
 				067F48532681023A008609C4 /* FirebasePerformance.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4058,21 +4062,20 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0674C67E2685497800D9D991 /* FBSnapshotTestCase.xcframework */,
-				067F4CA026826E64008609C4 /* Segment.framework */,
-				067F491A26811687008609C4 /* AppCenterAnalytics.framework */,
-				067F491926811687008609C4 /* AppCenterCrashes.framework */,
-				067F491B26811687008609C4 /* AppCenterDistribute.framework */,
-				067F490C268115A3008609C4 /* AppCenter.framework */,
-				067F4883268105CD008609C4 /* Firebase.framework */,
-				067F47992680F80F008609C4 /* Stripe.framework */,
-				067F47662680F0BB008609C4 /* SDWebImage.framework */,
-				067F47472680F040008609C4 /* FBSDKLoginKit.framework */,
-				067F47452680F033008609C4 /* FBSDKCoreKit.framework */,
-				067F47432680F012008609C4 /* Segment_Appboy.framework */,
+				8A0B040F268A35EB00136F84 /* AppCenterDistributeResources.bundle */,
 				067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */,
+				067F490C268115A3008609C4 /* AppCenter.framework */,
+				067F491B26811687008609C4 /* AppCenterDistribute.framework */,
+				067F47452680F033008609C4 /* FBSDKCoreKit.framework */,
+				067F47472680F040008609C4 /* FBSDKLoginKit.framework */,
+				067F4883268105CD008609C4 /* Firebase.framework */,
+				067F47662680F0BB008609C4 /* SDWebImage.framework */,
+				067F47432680F012008609C4 /* Segment_Appboy.framework */,
+				067F4CA026826E64008609C4 /* Segment.framework */,
+				067F47992680F80F008609C4 /* Stripe.framework */,
 				8A0F66D3267BDCB700E30863 /* Alamofire.xcframework */,
 				8A0F66BF267BDCB100E30863 /* AlamofireImage.xcframework */,
+				0674C67E2685497800D9D991 /* FBSnapshotTestCase.xcframework */,
 				8A0F66C3267BDCB200E30863 /* FirebaseABTesting.xcframework */,
 				8A0F66CC267BDCB400E30863 /* FirebaseAnalytics.xcframework */,
 				8A0F66CB267BDCB400E30863 /* FirebaseCore.xcframework */,
@@ -5190,6 +5193,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0B0416268A35FF00136F84 /* AppCenterDistributeResources.bundle in Resources */,
 				9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */,
 				4748C17C25B79DA20098E89E /* GoogleService-Info.plist in Resources */,
 				8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */,
