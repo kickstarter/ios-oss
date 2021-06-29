@@ -117,15 +117,15 @@ public final class CommentCellViewModel:
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNil)
 
-    let isNotABacker = self.commentAndProject.signal
+    let isNotABackerCreatorOrCollaborator = self.commentAndProject.signal
       .skipNil()
       .map { _, project in project }
       .skipNil()
-      .map(userIsBackingProject)
+      .map(userIsBackingCreatorOrCollaborator)
       .negate()
 
     // If the user is either logged out, not backing or the flag is disabled, hide replyButton.
-    self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
+    self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABackerCreatorOrCollaborator)
       .map(replyButtonHidden)
 
     // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too.
@@ -190,9 +190,14 @@ public final class CommentCellViewModel:
   public var outputs: CommentCellViewModelOutputs { self }
 }
 
-private func replyButtonHidden(isLoggedOut: Bool, isNotABacker: Bool) -> Bool {
+private func userIsBackingCreatorOrCollaborator(_ project: Project) -> Bool {
+  return (project.personalization.backing != nil || project.personalization.isBacking == .some(true)) ||
+    !project.memberData.permissions.isEmpty
+}
+
+private func replyButtonHidden(isLoggedOut: Bool, isNotABackerCreatorOrCollaborator: Bool) -> Bool {
   guard featureCommentThreadingRepliesIsEnabled() else { return true }
-  return isLoggedOut || isNotABacker
+  return isLoggedOut || isNotABackerCreatorOrCollaborator
 }
 
 private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
