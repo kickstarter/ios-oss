@@ -16,6 +16,23 @@ extension Comment {
     replyCount: 2,
     status: .success
   )
+  
+  public static let replyTemplate = Comment(
+    author: Author(
+      id: "AFD8hsfh7gsSf9==",
+      imageUrl: "https://ks_.imag/fedrico.jpg",
+      isCreator: true,
+      name: "Federico Fellini"
+    ),
+    authorBadges: [.creator],
+    body: "Hello World",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "89DJa89jdSDJ89sd8==",
+    isDeleted: false,
+    parentId: "Q29tbWVudC0zMjY2NDAxMg==",
+    replyCount: 2,
+    status: .success
+  )
 
   public static let deletedTemplate = Comment(
     author: Author(

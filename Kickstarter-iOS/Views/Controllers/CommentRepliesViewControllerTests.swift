@@ -18,8 +18,11 @@ final class CommentRepliesViewControllerTests: TestCase {
   }
 
   func testViewController_WithComment_HasRootComment() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
+    )
     Language.allLanguages.forEach { language in
-      withEnvironment(currentUser: .template, language: language) {
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
 
@@ -39,9 +42,12 @@ final class CommentRepliesViewControllerTests: TestCase {
   }
 
   func testView_CurrentUserLoggedOut_HasRootCommentAndNoCommentComposer() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
+    )
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
-      withEnvironment(currentUser: nil, language: language) {
+      withEnvironment(apiService: mockService, currentUser: nil, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
@@ -56,12 +62,15 @@ final class CommentRepliesViewControllerTests: TestCase {
   }
 
   func testView_CurrentUserLoggedInIsBacking_HasRootCommentAndCommentComposer() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
+    )
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
-      withEnvironment(currentUser: .template, language: language) {
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
@@ -75,9 +84,12 @@ final class CommentRepliesViewControllerTests: TestCase {
   }
 
   func testView_CurrentUserLoggedInNotBacking_HasRootCommentAndBlockedCommentComposer() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
+    )
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
-      withEnvironment(currentUser: .template, language: language) {
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
