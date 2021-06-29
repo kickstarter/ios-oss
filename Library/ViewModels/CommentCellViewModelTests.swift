@@ -213,7 +213,7 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsCreatorOrCollaborator_False() {
+  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_False() {
     let user = User.template |> \.id .~ 12_345
 
     let project = Project.template
