@@ -198,6 +198,13 @@ public struct Service: ServiceType {
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
+  public func fetchCommentReplies(query: NonEmptySet<Query>)
+    -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+    return fetch(query: query)
+      .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
+  }
+
   public func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
     return request(.updateComments(update))
   }
@@ -443,6 +450,7 @@ public struct Service: ServiceType {
     -> SignalProducer<Comment, ErrorEnvelope> {
     return applyMutation(mutation: PostCommentMutation(input: input))
       .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(PostCommentEnvelope.modelProducer(from:))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {

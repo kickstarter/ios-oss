@@ -8,13 +8,17 @@ extension Comment {
     return Comment(
       author: Author(
         id: graphComment.author.id,
+        imageUrl: graphComment.author.imageUrl,
         isCreator: graphComment.author.isCreator,
         name: graphComment.author.name
       ),
+      authorBadges: graphComment.authorBadges.compactMap { Comment.AuthorBadge(rawValue: $0.rawValue) },
       body: graphComment.body,
+      createdAt: graphComment.createdAt,
       id: graphComment.id,
-      uid: decompose(id: graphComment.id) ?? -1,
-      replyCount: graphComment.replyCount
+      isDeleted: graphComment.deleted,
+      replyCount: graphComment.replyCount,
+      status: .success
     )
   }
 

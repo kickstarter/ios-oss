@@ -152,7 +152,6 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           page: .profile,
           project: project,
-          typeContext: .project,
           location: .accountMenu,
           section: sectionContext
         )

@@ -133,17 +133,23 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           }
       }
 
-    let (paginatedProjects, isLoading, page, stats) = paginate(
+    let statsProperty = MutableProperty<Int>(0)
+
+    let (paginatedProjects, isLoading, page, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
-      valuesFromEnvelope: { $0.projects },
+      valuesFromEnvelope: { [statsProperty] result -> [Project] in
+        statsProperty.value = result.stats.count
+        return result.projects
+      },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
-      statsFromEnvelope: { $0.stats.count },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
     )
+
+    let stats = statsProperty.signal
 
     self.searchLoaderIndicatorIsAnimating = isLoading
 

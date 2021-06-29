@@ -6,7 +6,6 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
     case personalization
-    case editorial
     case activitySample
     case projects
   }
@@ -54,14 +53,6 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func showEditorial(value: DiscoveryEditorialCellValue?) {
-    self.set(
-      values: [value].compactMap { $0 },
-      cellClass: DiscoveryEditorialCell.self,
-      inSection: Section.editorial.rawValue
-    )
-  }
-
   func show(onboarding: Bool) {
     self.set(
       values: onboarding ? [()] : [],
@@ -103,8 +94,6 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     case let (cell as DiscoveryProjectCardCell, value as DiscoveryProjectCellRowValue):
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):
-      cell.configureWith(value: value)
-    case let (cell as DiscoveryEditorialCell, value as DiscoveryEditorialCellValue):
       cell.configureWith(value: value)
     case let (cell as PersonalizationCell, value as Void):
       cell.configureWith(value: value)

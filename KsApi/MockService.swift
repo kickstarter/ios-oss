@@ -52,6 +52,8 @@
 
     fileprivate let fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
 
+    fileprivate let fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>?
+
     fileprivate let fetchConfigResponse: Config?
 
     fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
@@ -236,6 +238,7 @@
       fetchCommentsResponse: [DeprecatedComment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
       fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
+      fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>? = nil,
       fetchConfigResponse: Config? = nil,
       fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
       fetchDiscoveryError: ErrorEnvelope? = nil,
@@ -385,6 +388,8 @@
       self.fetchCommentsError = fetchCommentsError
 
       self.fetchCommentsEnvelopeResult = fetchCommentsEnvelopeResult
+
+      self.fetchCommentRepliesEnvelopeResult = fetchCommentRepliesEnvelopeResult
 
       self.fetchConfigResponse = fetchConfigResponse ?? .template
 
@@ -661,6 +666,11 @@
       limit _: Int?
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchCommentsEnvelopeResult)
+    }
+
+    func fetchCommentReplies(query _: NonEmptySet<Query>)
+      -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchCommentRepliesEnvelopeResult)
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
@@ -1211,11 +1221,7 @@
 
     func postComment(input _: PostCommentInput)
       -> SignalProducer<Comment, ErrorEnvelope> {
-      if let error = self.postCommentResult?.error {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: self.postCommentResult?.value ?? .template)
+      return producer(for: self.postCommentResult)
     }
 
     func resetPassword(email _: String) -> SignalProducer<User, ErrorEnvelope> {
@@ -1442,6 +1448,7 @@
             fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
             fetchCommentsResponse: $1.fetchCommentsResponse,
             fetchCommentsError: $1.fetchCommentsError,
+            fetchCommentsEnvelopeResult: $1.fetchCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
             fetchDiscoveryError: $1.fetchDiscoveryError,

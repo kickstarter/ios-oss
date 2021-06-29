@@ -2,7 +2,6 @@ import Foundation
 
 public enum AppKeys: String {
   // swiftformat:disable wrap
-  case analyticsIdentityData = "com.kickstarter.KeyValueStoreType.analyticsIdentityData"
   case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
   case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
@@ -15,6 +14,7 @@ public enum AppKeys: String {
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
   case onboardingCategories = "com.kickstarter.KeyValueStoreType.onboardingCategories"
+  case optimizelyFeatureFlags = "com.kickstarter.KeyValueStoreType.optimizelyFeatureFlags"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
   // swiftformat:enable wrap
@@ -34,7 +34,6 @@ public protocol KeyValueStoreType: AnyObject {
   func synchronize() -> Bool
 
   func removeObject(forKey defaultName: String)
-  var analyticsIdentityData: KSRAnalyticsIdentityData? { get set }
   var deniedNotificationContexts: [String] { get set }
   var favoriteCategoryIds: [Int] { get set }
   var hasClosedFacebookConnectInActivity: Bool { get set }
@@ -49,20 +48,10 @@ public protocol KeyValueStoreType: AnyObject {
   var hasSeenSaveProjectAlert: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
   var onboardingCategories: Data? { get set }
+  var optimizelyFeatureFlags: [String: Bool] { get set }
 }
 
 extension KeyValueStoreType {
-  public var analyticsIdentityData: KSRAnalyticsIdentityData? {
-    get {
-      guard let data = self.data(forKey: AppKeys.analyticsIdentityData.rawValue) else { return nil }
-      return try? JSONDecoder().decode(KSRAnalyticsIdentityData.self, from: data)
-    }
-    set {
-      let data = try? JSONEncoder().encode(newValue)
-      self.set(data, forKey: AppKeys.analyticsIdentityData.rawValue)
-    }
-  }
-
   public var favoriteCategoryIds: [Int] {
     get {
       return self.object(forKey: AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []
@@ -187,6 +176,16 @@ extension KeyValueStoreType {
 
     set {
       self.set(newValue, forKey: AppKeys.onboardingCategories.rawValue)
+    }
+  }
+
+  public var optimizelyFeatureFlags: [String: Bool] {
+    get {
+      return self
+        .object(forKey: AppKeys.optimizelyFeatureFlags.rawValue) as? [String: Bool] ?? [:]
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.optimizelyFeatureFlags.rawValue)
     }
   }
 }

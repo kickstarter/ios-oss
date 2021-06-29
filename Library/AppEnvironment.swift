@@ -82,8 +82,6 @@ public struct AppEnvironment: AppEnvironmentType {
     let storage = AppEnvironment.current.cookieStorage
     storage.cookies?.forEach(storage.deleteCookie)
 
-    AppEnvironment.current.userDefaults.analyticsIdentityData = nil
-
     self.replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
@@ -153,7 +151,8 @@ public struct AppEnvironment: AppEnvironmentType {
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
+    uuidType: UUIDType.Type = AppEnvironment.current.uuidType
   ) {
     self.pushEnvironment(
       Environment(
@@ -184,7 +183,8 @@ public struct AppEnvironment: AppEnvironmentType {
         reachability: reachability,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
-        userDefaults: userDefaults
+        userDefaults: userDefaults,
+        uuidType: uuidType
       )
     )
   }
@@ -219,7 +219,8 @@ public struct AppEnvironment: AppEnvironmentType {
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
+    uuidType: UUIDType.Type = AppEnvironment.current.uuidType
   ) {
     self.replaceCurrentEnvironment(
       Environment(
@@ -250,7 +251,8 @@ public struct AppEnvironment: AppEnvironmentType {
         reachability: reachability,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
-        userDefaults: userDefaults
+        userDefaults: userDefaults,
+        uuidType: uuidType
       )
     )
   }

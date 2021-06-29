@@ -122,7 +122,9 @@
 "Continue_with_quantity_count_add_ons.zero" = "Continuar con %{quantity_count} complementos";
 "Continue_with_this_reward" = "¿Continuar con esta recompensa?";
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
+"Couldnt_load_more_comments_Tap_to_retry" = "No se pudo cargar más comentarios.\nToca para intentar de nuevo.";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
+"Couldnt_post" = "No se pudo publicar. Toca para intentar de nuevo.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
 "Create_password" = "Crea contraseña";
 "Created_projects_projects_count" = "Proyectos creados: %{projects_count}";
@@ -311,6 +313,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones.";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
+"Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Más información sobre las reglas de los comentarios</a>";
 "Left_count_left.few" = "%{left_count} restantes";
 "Left_count_left.many" = "%{left_count} restantes";
 "Left_count_left.one" = "%{left_count} restante";
@@ -381,6 +384,7 @@
 "Notifications" = "Notificaciones";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Only_amount_of_time_left_to_watch_this" = "Queda poco tiempo para verlo (%{amount_of_time}).";
+"Only_backers_can_post_comments" = "Sólo los patrocinadores pueden publicar comentarios.";
 "Open_inbox" = "Abrir la bandeja de entrada";
 "Opens_comments" = "Abre comentarios.";
 "Opens_creator_profile" = "Abre el perfil del creador.";
@@ -423,8 +427,11 @@
 "Pledged_on_date" = "<b>Contribuido</b> el %{pledge_date}";
 "Popular" = "Popular";
 "Popular_Projects" = "Proyectos populares";
+"Post" = "Publicar";
 "Postal_code" = "Código postal";
 "Postcode" = "Código postal";
+"Posted" = "Publicado";
+"Posting" = "Publicación en proceso...";
 "Preparing_your_personal_data" = "Preparando tus datos personales...";
 "Privacy" = "Privacidad";
 "Private_profile" = "Perfil privado";
@@ -568,6 +575,7 @@
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Successful_projects_have_been_created_on_kickstarter" = "Proyectos exitosos se han creado en Kickstarter.";
+"Superbacker" = "Superbacker";
 "Support_creative_independence" = "Apoya la independencia creativa";
 "Support_creative_spaces_and_businesses_affected_by" = "Apoya espacios creativos y negocios afectados por el COVID-19.";
 "Survey" = "Cuestionario";
@@ -596,6 +604,7 @@
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "These_projects_could_use_your_support" = "A estos proyectos les vendría bien tu apoyo.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Esto te permite ver la meta del proyecto y los montos de las contribuciones en la moneda de tu preferencia.";
+"This_comment_has_been_removed_by_Kickstarter" = "Este comentario ha sido eliminado por Kickstarter.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Esta contribución no pudo ser cobrada por un error en el método de pago.";
@@ -641,6 +650,7 @@
 "View_dashboard" = "Ver panel";
 "View_progress" = "Ver progreso";
 "View_project" = "Ver proyecto";
+"View_replies" = "Ver respuestas";
 "View_rewards" = "Ver recompensas";
 "View_the_rewards" = "Ver las recompensas";
 "View_your_pledge" = "Revisa tu contribución";
@@ -675,6 +685,7 @@
 "Which_categories_interest_you" = "¿Qué categorías te interesan?";
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
+"Write_a_comment" = "Escribe un comentario...";
 "Yes" = "Sí";
 "Yes_cancel_it" = "Sí, cancelar";
 "Yes_cancel_my_pledge" = "Sí, cancelar mi contribución";

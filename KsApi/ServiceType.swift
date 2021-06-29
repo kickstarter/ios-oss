@@ -109,6 +109,9 @@ public protocol ServiceType {
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
+  /// Fetch comment replies for a comment with a query.
+  func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
+
   /// Fetch comments for an update.
   func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 

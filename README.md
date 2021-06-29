@@ -15,7 +15,6 @@ and read more about our journey to open source [here](https://kickstarter.engine
 1. Install Xcode.
 1. Clone this repository.
 1. Run `make bootstrap` to install tools and dependencies.
-1. Run `make test-all` to build and run tests on all platforms.  
 
 &#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
 
@@ -38,6 +37,11 @@ write [these](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewMod
 as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
 them heavily, including tests for localization, accessibility and event
 tracking.
+
+## Testing the project
+
+- Run all tests from the command line by running `make test-all`.
+- Run an individual scheme's tests by selecting that scheme in Xcode and hitting CMD+U.
 
 ## Documentation
 
@@ -96,7 +100,7 @@ We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)
 ## License
 
 ```
-Copyright 2020 Kickstarter, PBC.
+Copyright 2021 Kickstarter, PBC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

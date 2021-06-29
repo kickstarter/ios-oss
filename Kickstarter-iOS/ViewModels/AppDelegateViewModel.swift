@@ -80,7 +80,7 @@ public protocol AppDelegateViewModelInputs {
   func optimizelyClientConfigurationFailed()
 
   /// Call when Perimeter X Captcha is triggered
-  func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType)
+  func perimeterXCaptchaTriggeredWithUserInfo(_ userInfo: [AnyHashable: Any]?)
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -548,7 +548,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let projectCommentsLink = projectLink
       .filter { _, subpage, _, _ in subpage == .comments }
       .map { project, _, vcs, _ in
-        vcs + [DeprecatedCommentsViewController.configuredWith(project: project, update: nil)]
+        vcs + [commentsViewController(for: project, update: nil)]
       }
 
     let surveyResponseLink = deepLink
@@ -611,7 +611,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .observeForUI()
       .map { _, update, subpage, vcs -> [UIViewController]? in
         guard case .comments = subpage else { return nil }
-        return vcs + [DeprecatedCommentsViewController.configuredWith(update: update)]
+        return vcs + [commentsViewController(update: update)]
       }
       .skipNil()
 
@@ -677,7 +677,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { $0.hasError }
 
-    self.goToPerimeterXCaptcha = self.perimeterXCaptchaTriggeredProperty.signal.skipNil()
+    self.goToPerimeterXCaptcha = self.perimeterXCaptchaTriggeredWithUserInfoProperty.signal.skipNil()
+      .map { userInfo -> PerimeterXBlockResponseType? in
+        guard let response = userInfo["response"] as? PerimeterXBlockResponseType else { return nil }
+        return response
+      }
+      .skipNil()
 
     self.configureSegment = self.applicationLaunchOptionsProperty.signal
       .skipNil()
@@ -835,9 +840,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
-  private let perimeterXCaptchaTriggeredProperty = MutableProperty<PerimeterXBlockResponseType?>(nil)
-  public func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType) {
-    self.perimeterXCaptchaTriggeredProperty.value = response
+  private let perimeterXCaptchaTriggeredWithUserInfoProperty = MutableProperty<[AnyHashable: Any]?>(nil)
+  public func perimeterXCaptchaTriggeredWithUserInfo(_ userInfo: [AnyHashable: Any]?) {
+    self.perimeterXCaptchaTriggeredWithUserInfoProperty.value = userInfo
   }
 
   public let applicationIconBadgeNumber: Signal<Int, Never>

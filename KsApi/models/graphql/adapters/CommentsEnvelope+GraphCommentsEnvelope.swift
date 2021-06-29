@@ -9,7 +9,9 @@ extension CommentsEnvelope {
       comments: graphCommentsEnvelope.comments.map(Comment.comment(from:)),
       cursor: graphCommentsEnvelope.cursor,
       hasNextPage: graphCommentsEnvelope.hasNextPage,
-      totalCount: graphCommentsEnvelope.totalCount
+      slug: graphCommentsEnvelope.slug,
+      totalCount: graphCommentsEnvelope.totalCount,
+      updateID: graphCommentsEnvelope.updateID
     )
   }
 

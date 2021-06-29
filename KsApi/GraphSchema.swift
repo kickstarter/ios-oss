@@ -53,6 +53,10 @@ public func decompose(id: String) -> Int? {
     }
 }
 
+public func encodeToBase64(_ input: String) -> String {
+  return Data(input.utf8).base64EncodedString()
+}
+
 public struct RelayId: Decodable {
   let id: String
 }
@@ -116,6 +120,8 @@ public enum GraphError: Error {
 public enum Query {
   case backing(id: String, NonEmptySet<Backing>)
   case category(id: String, NonEmptySet<Category>)
+  case comment(id: String, NonEmptySet<Comment>)
+  case post(id: String, NonEmptySet<Project>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
   case user(NonEmptySet<User>)
@@ -139,16 +145,20 @@ public enum Query {
     case url
   }
 
-  public enum Comment {
+  public indirect enum Comment {
     case authorBadges
     case author(NonEmptySet<Author>)
     case id
+    case parentId
     case body
-    case replies(NonEmptySet<CommentReplyCount>)
+    case createdAt
+    case deleted
+    case replies(Set<QueryArg<Never>>, NonEmptySet<Connection<Comment>>)
 
-    public enum Author: String {
+    public enum Author {
       case id
       case name
+      case imageURL(width: Int)
       case isCreator
     }
 
@@ -393,6 +403,10 @@ extension Query: QueryType {
       return "backing(id: \"\(id)\") { \(join(fields)) }"
     case let .category(id, fields):
       return "node(id: \"\(id)\") { ... on Category { \(join(fields)) } }"
+    case let .comment(id: id, fields):
+      return "comment: node(id: \"\(id)\") { ... on Comment { \(join(fields)) } }"
+    case let .post(id, fields):
+      return "post(id: \"\(id)\") { ... on FreeformPost { \(join(fields)) } }"
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
@@ -508,16 +522,24 @@ extension Query.Comment: QueryType {
     switch self {
     case .id: return "id"
     case .authorBadges: return "authorBadges"
+    case .parentId: return "parentId"
     case let .author(fields): return "author { \(join(fields)) }"
     case .body: return "body"
-    case let .replies(fields): return "replies { \(join(fields)) }"
+    case let .replies(args, fields): return "replies\(connection(args, fields))"
+    case .createdAt: return "createdAt"
+    case .deleted: return "deleted"
     }
   }
 }
 
 extension Query.Comment.Author: QueryType {
   public var description: String {
-    return self.rawValue
+    switch self {
+    case .id: return "id"
+    case .name: return "name"
+    case .isCreator: return "isCreator"
+    case let .imageURL(width): return "imageUrl(width: \(width))"
+    }
   }
 }
 

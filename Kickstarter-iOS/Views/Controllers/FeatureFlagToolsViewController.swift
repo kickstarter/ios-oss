@@ -19,7 +19,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title .~ "Feature flags"
+      |> \.title .~ "Config Feature flags"
 
     _ = self.tableView
       |> \.tableFooterView .~ UIView(frame: .zero)

@@ -9,8 +9,8 @@ public final class KSRAnalytics {
   internal private(set) var config: Config?
   private let device: UIDeviceType
   internal private(set) var loggedInUser: User? {
-    didSet {
-      self.identify(self.loggedInUser)
+    willSet {
+      self.identify(oldUser: self.loggedInUser, newUser: newValue)
     }
   }
 
@@ -39,8 +39,6 @@ public final class KSRAnalytics {
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
-    case editorialProjects = "editorial_collection" // EditorialProjectsViewController
-    case emailVerification = "email_verification" // EmailVerificationViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
     case login = "log_in" // LoginViewController
@@ -339,7 +337,6 @@ public final class KSRAnalytics {
     case location
     case percentRaised
     case pledge(PledgeContext)
-    case project
     case projectState
     case pwl
     case recommended
@@ -416,7 +413,6 @@ public final class KSRAnalytics {
       case .location: return "location"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
-      case .project: return "project"
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -535,24 +531,21 @@ public final class KSRAnalytics {
   }
 
   /// Configure Tracking Client's supporting user identity
-  private func identify(_ user: User?) {
-    guard let user = user else {
+  private func identify(oldUser: User?, newUser: User?) {
+    guard let newUser = newUser else {
       self.segmentClient?.reset()
       return
     }
 
-    let previousIdentityData = AppEnvironment.current.userDefaults.analyticsIdentityData
-
-    let newData = KSRAnalyticsIdentityData(user)
-
-    guard newData != previousIdentityData else { return }
+    let newData = KSRAnalyticsIdentityData(newUser)
+    if let oldUser = oldUser, newData == KSRAnalyticsIdentityData(oldUser) {
+      return
+    }
 
     self.segmentClient?.identify(
       "\(newData.userId)",
       traits: newData.allTraits
     )
-
-    AppEnvironment.current.userDefaults.analyticsIdentityData = newData
   }
 
   // MARK: - Activity
@@ -568,12 +561,22 @@ public final class KSRAnalytics {
 
   // MARK: - Application Lifecycle
 
-  /// Called when the user taps on a TabBarItem
-  public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
+  /**
+   Called when the user selected a tab bar item.
+
+   - parameter tabBarItemLabel: The tab the user is navigating to.
+   - parameter previousTabBarItemLabel: The tab the user is navigating from.
+   */
+  public func trackTabBarClicked(
+    tabBarItemLabel: TabBarItemLabel,
+    previousTabBarItemLabel: TabBarItemLabel
+  ) {
+    let page = pageContext(from: previousTabBarItemLabel)
     switch tabBarItemLabel {
     case .discovery:
       let properties = contextProperties(
         ctaContext: .discover,
+        page: page,
         locationContext: .globalNav
       )
       self.track(
@@ -592,22 +595,10 @@ public final class KSRAnalytics {
    */
 
   public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
-    let pageContext: PageContext?
-    switch prevTabBarItemLabel {
-    case .activity:
-      pageContext = .activities
-    case .discovery:
-      pageContext = .discovery
-    case .profile:
-      pageContext = .profile
-    case .search:
-      pageContext = .search
-    default:
-      pageContext = nil
-    }
+    let page = pageContext(from: prevTabBarItemLabel)
     let properties = contextProperties(
       ctaContext: .search,
-      page: pageContext,
+      page: page,
       locationContext: .globalNav
     )
     self.track(
@@ -715,25 +706,6 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props
-    )
-  }
-
-  /**
-   Call when the user taps the editorial header at the top of Discovery
-   */
-  public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag) {
-    let props = contextProperties(
-      page: .discovery,
-      typeContext: .project,
-      locationContext: .discoverAdvanced
-    )
-    .withAllValuesFrom(discoveryProperties(from: params))
-
-    self.track(
-      event: SegmentEvent.cardClicked.rawValue,
-      properties: props,
-      refTag: refTag.stringTag
     )
   }
 
@@ -1517,6 +1489,28 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
     return "safari"
   } else {
     return shareType.rawValue
+  }
+}
+
+/**
+ Call to get a `PageContext` value from a `TabBarItemLabel`
+
+ - parameter from: The `TabBarItemLabel` that is being converted.
+
+ - returns: A `PageContext` value used for analytics.
+ */
+private func pageContext(from tabBarItemLabel: KSRAnalytics.TabBarItemLabel) -> KSRAnalytics.PageContext? {
+  switch tabBarItemLabel {
+  case .activity:
+    return .activities
+  case .discovery:
+    return .discovery
+  case .profile:
+    return .profile
+  case .search:
+    return .search
+  default:
+    return nil
   }
 }
 
