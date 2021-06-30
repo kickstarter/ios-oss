@@ -182,19 +182,23 @@ public struct Service: ServiceType {
     return request(.projectComments(project))
   }
 
-  public func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(CommentsEnvelope.envelopeProducer(from:))
-  }
-
-  public func fetchComments(
+  public func fetchProjectComments(
     slug: String,
     cursor: String?,
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
+      .flatMap(CommentsEnvelope.envelopeProducer(from:))
+  }
+
+  public func fetchUpdateComments(
+    id: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 

@@ -515,7 +515,6 @@
 		8A4E954724525DE400A578CF /* ProjectState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954624525DE400A578CF /* ProjectState.swift */; };
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
 		8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */; };
-		8A555864264C4AA500C2C30D /* GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */; };
 		8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555868264C4AE400C2C30D /* GraphComment.swift */; };
 		8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555873264C4C8300C2C30D /* CommentsQueries.swift */; };
 		8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */; };
@@ -603,7 +602,6 @@
 		8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */; };
 		8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */; };
-		8ADCCC8F264C72B20079D308 /* GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */; };
 		8ADCCCA6264C97940079D308 /* CommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */; };
 		8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCAD264C98A50079D308 /* Comment.swift */; };
 		8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */; };
@@ -611,7 +609,6 @@
 		8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */; };
 		8ADCCCCB264CA13F0079D308 /* Comment+GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */; };
 		8ADCCCD0264CA18E0079D308 /* GraphCommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */; };
-		8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */; };
 		8ADCCD32265309CD0079D308 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; };
 		8ADCCD34265309EC0079D308 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; };
 		8ADCCD35265309FA0079D308 /* Apollo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -2135,7 +2132,6 @@
 		8A4E954624525DE400A578CF /* ProjectState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectState.swift; sourceTree = "<group>"; };
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
 		8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTemplate.swift; sourceTree = "<group>"; };
-		8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelope.swift; sourceTree = "<group>"; };
 		8A555868264C4AE400C2C30D /* GraphComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphComment.swift; sourceTree = "<group>"; };
 		8A555873264C4C8300C2C30D /* CommentsQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueries.swift; sourceTree = "<group>"; };
 		8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueriesTests.swift; sourceTree = "<group>"; };
@@ -2200,7 +2196,6 @@
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
 		8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTests.swift; sourceTree = "<group>"; };
-		8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTests.swift; sourceTree = "<group>"; };
 		8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelope.swift; sourceTree = "<group>"; };
 		8ADCCCAD264C98A50079D308 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelope.swift"; sourceTree = "<group>"; };
@@ -2208,7 +2203,6 @@
 		8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelopeTests.swift"; sourceTree = "<group>"; };
 		8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+GraphCommentTests.swift"; sourceTree = "<group>"; };
 		8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTemplates.swift; sourceTree = "<group>"; };
-		8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8ADCCD31265309CD0079D308 /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
 		8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
 		8ADCCD4E2654281E0079D308 /* GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphAPI.swift; sourceTree = "<group>"; };
@@ -3318,7 +3312,6 @@
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 				8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */,
 				8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */,
-				8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */,
 				8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
 				8A0B1E2B24DA1327009E90C0 /* GraphLocationTemplates.swift */,
@@ -3388,8 +3381,6 @@
 				8A555868264C4AE400C2C30D /* GraphComment.swift */,
 				8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */,
 				8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */,
-				8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */,
-				8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */,
 				8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */,
 				8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */,
 				8A0B1E2624DA0DC3009E90C0 /* GraphLocation.swift */,
@@ -6490,7 +6481,6 @@
 				D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */,
 				D01588371EEB2ED7006E7684 /* EncodableType.swift in Sources */,
 				D0158A301EEB30A2006E7684 /* User.NewsletterSubscriptionsTemplates.swift in Sources */,
-				8A555864264C4AA500C2C30D /* GraphCommentsEnvelope.swift in Sources */,
 				D01588DB1EEB2ED7006E7684 /* User.NewsletterSubscriptionsLenses.swift in Sources */,
 				D01588691EEB2ED7006E7684 /* DiscoveryEnvelope.swift in Sources */,
 				D0158A251EEB30A2006E7684 /* RewardTemplates.swift in Sources */,
@@ -6671,7 +6661,6 @@
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
-				8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				8A49396924B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift in Sources */,
@@ -6761,7 +6750,6 @@
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
 				8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */,
-				8ADCCC8F264C72B20079D308 /* GraphCommentsEnvelopeTests.swift in Sources */,
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,

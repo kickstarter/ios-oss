@@ -491,11 +491,9 @@ private func commentsReplacingCommentById(
 private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
   -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
   return projectOrUpdate.ifLeft { project in
-    AppEnvironment.current.apiService.fetchComments(slug: project.slug, cursor: nil, limit: nil)
+    AppEnvironment.current.apiService.fetchProjectComments(slug: project.slug, cursor: nil, limit: nil)
   } ifRight: {
-    AppEnvironment.current.apiService.fetchComments(
-      query: projectUpdateCommentsQuery(id: $0.id.description)
-    )
+    AppEnvironment.current.apiService.fetchUpdateComments(id: $0.id.description, cursor: nil, limit: nil)
   }
 }
 
@@ -505,14 +503,11 @@ private func commentsNextPage(
   updateID: String?
 ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
   if let projectSlug = projectSlug {
-    return AppEnvironment.current.apiService.fetchComments(slug: projectSlug, cursor: cursor, limit: nil)
+    return AppEnvironment.current.apiService
+      .fetchProjectComments(slug: projectSlug, cursor: cursor, limit: nil)
   } else {
     guard let id = updateID else { return .empty }
-    return AppEnvironment.current.apiService.fetchComments(
-      query: projectUpdateCommentsQuery(
-        id: id,
-        after: cursor
-      )
-    )
+    return AppEnvironment.current.apiService
+      .fetchUpdateComments(id: id, cursor: cursor, limit: nil)
   }
 }
