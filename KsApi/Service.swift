@@ -194,7 +194,7 @@ public struct Service: ServiceType {
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: FetchCommentsQuery(slug: slug, cursor: cursor, limit: limit))
+      .fetch(query: FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 

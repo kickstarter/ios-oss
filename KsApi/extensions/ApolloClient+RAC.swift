@@ -17,12 +17,12 @@ extension ApolloClient {
         switch result {
         case let .success(response):
           guard let data = response.data else {
-            return observer.send(error: .couldNotParseJSON) // FIXME: better error here (data is nil).
+            return observer.send(error: .couldNotParseJSON)
           }
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):
-          observer.send(error: .couldNotDecodeJSON(error)) // FIXME: better error please.
+          observer.send(error: .couldNotDecodeJSON(error))
         }
       }
     }
@@ -44,12 +44,12 @@ extension ApolloClient {
         switch result {
         case let .success(response):
           guard let data = response.data else {
-            return observer.send(error: .couldNotParseJSON) // FIXME: better error here (data is nil).
+            return observer.send(error: .couldNotParseJSON)
           }
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):
-          observer.send(error: .couldNotDecodeJSON(error)) // FIXME: better error please.
+          observer.send(error: .couldNotDecodeJSON(error))
         }
       }
     }

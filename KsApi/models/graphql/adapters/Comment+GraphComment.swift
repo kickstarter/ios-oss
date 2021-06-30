@@ -32,7 +32,7 @@ extension Comment {
       let authorName = commentFragment.author?.name
     else { return nil }
 
-    let authorBagdes = commentFragment.authorBadges?
+    let authorBadges = commentFragment.authorBadges?
       .compactMap { $0 }
       .compactMap { Comment.AuthorBadge(rawValue: $0.rawValue) } ?? []
 
@@ -43,7 +43,7 @@ extension Comment {
         isCreator: commentFragment.author?.isCreator ?? false,
         name: authorName
       ),
-      authorBadges: authorBagdes,
+      authorBadges: authorBadges,
       body: commentFragment.body,
       createdAt: commentFragment.createdAt.flatMap(TimeInterval.init) ?? 0,
       id: commentFragment.id,

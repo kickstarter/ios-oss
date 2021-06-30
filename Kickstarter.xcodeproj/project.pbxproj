@@ -2069,6 +2069,7 @@
 		8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeExpandableRewardsHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
+		8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUpdateComments.graphql; sourceTree = "<group>"; };
 		8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryView.swift; sourceTree = "<group>"; };
 		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISOFormatter.swift"; sourceTree = "<group>"; };
@@ -2209,7 +2210,7 @@
 		8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTemplates.swift; sourceTree = "<group>"; };
 		8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8ADCCD31265309CD0079D308 /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
-		8ADCCD3D26532D730079D308 /* FetchComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchComments.graphql; sourceTree = "<group>"; };
+		8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
 		8ADCCD4E2654281E0079D308 /* GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphAPI.swift; sourceTree = "<group>"; };
 		8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+RAC.swift"; sourceTree = "<group>"; };
 		8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloInterceptors.swift; sourceTree = "<group>"; };
@@ -3272,7 +3273,8 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
-				8ADCCD3D26532D730079D308 /* FetchComments.graphql */,
+				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
+				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
 				8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */,
 				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,

@@ -53,11 +53,11 @@ public enum CommentBadge: RawRepresentable, Equatable, Hashable, CaseIterable, A
   }
 }
 
-public final class FetchCommentsQuery: GraphQLQuery {
+public final class FetchProjectCommentsQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query FetchComments($slug: String!, $cursor: String, $limit: Int) {
+    query FetchProjectComments($slug: String!, $cursor: String, $limit: Int) {
       project(slug: $slug) {
         __typename
         comments(after: $cursor, first: $limit) {
@@ -82,7 +82,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
     }
     """
 
-  public let operationName: String = "FetchComments"
+  public let operationName: String = "FetchProjectComments"
 
   public var queryDocument: String {
     var document: String = operationDefinition
@@ -392,6 +392,392 @@ public final class FetchCommentsQuery: GraphQLQuery {
             }
             set {
               resultMap.updateValue(newValue, forKey: "hasNextPage")
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class FetchUpdateCommentsQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query FetchUpdateComments($postId: ID!, $cursor: String, $limit: Int) {
+      post(id: $postId) {
+        __typename
+        ... on FreeformPost {
+          comments(after: $cursor, first: $limit) {
+            __typename
+            edges {
+              __typename
+              node {
+                __typename
+                ...CommentFragment
+              }
+            }
+            pageInfo {
+              __typename
+              endCursor
+              hasNextPage
+            }
+            totalCount
+          }
+          id
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "FetchUpdateComments"
+
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + CommentFragment.fragmentDefinition)
+    return document
+  }
+
+  public var postId: GraphQLID
+  public var cursor: String?
+  public var limit: Int?
+
+  public init(postId: GraphQLID, cursor: String? = nil, limit: Int? = nil) {
+    self.postId = postId
+    self.cursor = cursor
+    self.limit = limit
+  }
+
+  public var variables: GraphQLMap? {
+    return ["postId": postId, "cursor": cursor, "limit": limit]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("post", arguments: ["id": GraphQLVariable("postId")], type: .object(Post.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(post: Post? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "post": post.flatMap { (value: Post) -> ResultMap in value.resultMap }])
+    }
+
+    /// Fetches a post given its ID.
+    public var post: Post? {
+      get {
+        return (resultMap["post"] as? ResultMap).flatMap { Post(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "post")
+      }
+    }
+
+    public struct Post: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["CreatorInterview", "FreeformPost"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLTypeCase(
+            variants: ["FreeformPost": AsFreeformPost.selections],
+            default: [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            ]
+          )
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public static func makeCreatorInterview() -> Post {
+        return Post(unsafeResultMap: ["__typename": "CreatorInterview"])
+      }
+
+      public static func makeFreeformPost(comments: AsFreeformPost.Comment? = nil, id: GraphQLID) -> Post {
+        return Post(unsafeResultMap: ["__typename": "FreeformPost", "comments": comments.flatMap { (value: AsFreeformPost.Comment) -> ResultMap in value.resultMap }, "id": id])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var asFreeformPost: AsFreeformPost? {
+        get {
+          if !AsFreeformPost.possibleTypes.contains(__typename) { return nil }
+          return AsFreeformPost(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsFreeformPost: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["FreeformPost"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("comments", arguments: ["after": GraphQLVariable("cursor"), "first": GraphQLVariable("limit")], type: .object(Comment.selections)),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(comments: Comment? = nil, id: GraphQLID) {
+          self.init(unsafeResultMap: ["__typename": "FreeformPost", "comments": comments.flatMap { (value: Comment) -> ResultMap in value.resultMap }, "id": id])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// List of comments on the commentable
+        public var comments: Comment? {
+          get {
+            return (resultMap["comments"] as? ResultMap).flatMap { Comment(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "comments")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public struct Comment: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CommentConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("edges", type: .list(.object(Edge.selections))),
+              GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+              GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(edges: [Edge?]? = nil, pageInfo: PageInfo, totalCount: Int) {
+            self.init(unsafeResultMap: ["__typename": "CommentConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap, "totalCount": totalCount])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// A list of edges.
+          public var edges: [Edge?]? {
+            get {
+              return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
+            }
+          }
+
+          /// Information to aid in pagination.
+          public var pageInfo: PageInfo {
+            get {
+              return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+            }
+          }
+
+          public var totalCount: Int {
+            get {
+              return resultMap["totalCount"]! as! Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+
+          public struct Edge: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["CommentEdge"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("node", type: .object(Node.selections)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(node: Node? = nil) {
+              self.init(unsafeResultMap: ["__typename": "CommentEdge", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// The item at the end of the edge.
+            public var node: Node? {
+              get {
+                return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+              }
+              set {
+                resultMap.updateValue(newValue?.resultMap, forKey: "node")
+              }
+            }
+
+            public struct Node: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["Comment"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLFragmentSpread(CommentFragment.self),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var fragments: Fragments {
+                get {
+                  return Fragments(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+
+              public struct Fragments {
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public var commentFragment: CommentFragment {
+                  get {
+                    return CommentFragment(unsafeResultMap: resultMap)
+                  }
+                  set {
+                    resultMap += newValue.resultMap
+                  }
+                }
+              }
+            }
+          }
+
+          public struct PageInfo: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["PageInfo"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("endCursor", type: .scalar(String.self)),
+                GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(endCursor: String? = nil, hasNextPage: Bool) {
+              self.init(unsafeResultMap: ["__typename": "PageInfo", "endCursor": endCursor, "hasNextPage": hasNextPage])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// When paginating forwards, the cursor to continue.
+            public var endCursor: String? {
+              get {
+                return resultMap["endCursor"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "endCursor")
+              }
+            }
+
+            /// When paginating forwards, are there more items?
+            public var hasNextPage: Bool {
+              get {
+                return resultMap["hasNextPage"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "hasNextPage")
+              }
             }
           }
         }

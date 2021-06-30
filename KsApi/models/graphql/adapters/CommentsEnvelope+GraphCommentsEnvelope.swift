@@ -16,9 +16,9 @@ extension CommentsEnvelope {
   }
 
   /**
-   Returns a minimal `CommentsEnvelope` from a `FetchCommentsQuery.Data`
+   Returns a minimal `CommentsEnvelope` from a `FetchProjectCommentsQuery.Data`
    */
-  static func commentsEnvelope(from data: FetchCommentsQuery.Data) -> CommentsEnvelope? {
+  static func commentsEnvelope(from data: FetchProjectCommentsQuery.Data) -> CommentsEnvelope? {
     // FIXME: Explore simpler way to access the node in edges structure.
     guard let comments = data.project?.comments?.edges?
       .compactMap({ $0?.node?.fragments.commentFragment })
@@ -30,8 +30,8 @@ extension CommentsEnvelope {
       cursor: data.project?.comments?.pageInfo.endCursor ?? "",
       hasNextPage: data.project?.comments?.pageInfo.hasNextPage ?? false,
       slug: data.project?.slug ?? "",
-      totalCount: data.project?.comments?.totalCount ?? 0
-      // TODO: Add updateID.
+      totalCount: data.project?.comments?.totalCount ?? 0,
+      updateID: nil
     )
   }
 }

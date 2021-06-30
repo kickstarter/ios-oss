@@ -16,7 +16,7 @@ extension CommentsEnvelope {
     return SignalProducer(value: CommentsEnvelope.commentsEnvelope(from: envelope))
   }
 
-  static func envelopeProducer(from data: FetchCommentsQuery.Data)
+  static func envelopeProducer(from data: FetchProjectCommentsQuery.Data)
     -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     guard let envelope = CommentsEnvelope.commentsEnvelope(from: data) else { return .empty }
     return SignalProducer(value: envelope)
