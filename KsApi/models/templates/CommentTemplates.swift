@@ -16,7 +16,7 @@ extension Comment {
     replyCount: 2,
     status: .success
   )
-  
+
   public static let replyTemplate = Comment(
     author: Author(
       id: "AFD8hsfh7gsSf9==",

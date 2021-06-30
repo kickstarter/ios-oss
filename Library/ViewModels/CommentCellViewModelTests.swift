@@ -20,6 +20,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let postedButtonIsHidden = TestObserver<Bool, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
   private let replyCommentTapped = TestObserver<Comment, Never>()
+  private let shouldIndentContent = TestObserver<Bool, Never>()
   private let viewCommentReplies = TestObserver<Comment, Never>()
   private let viewRepliesStackViewIsHidden = TestObserver<Bool, Never>()
 
@@ -37,6 +38,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
     self.vm.outputs.replyCommentTapped.observe(self.replyCommentTapped.observer)
+    self.vm.outputs.shouldIndentContent.observe(self.shouldIndentContent.observer)
     self.vm.outputs.viewCommentReplies.observe(self.viewCommentReplies.observer)
     self.vm.outputs.viewRepliesViewHidden.observe(self.viewRepliesStackViewIsHidden.observer)
   }
@@ -143,6 +145,22 @@ internal final class CommentCellViewModelTests: TestCase {
           "The comment flagging feature is enabled, therefore the stack view is not hidden."
         )
     }
+  }
+
+  func testOutput_bottomRowStackViewIsHidden_IsReply() {
+    self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
+
+    self.bottomRowStackViewIsHidden
+      .assertValue(
+        true,
+        "The bottom row stack view should be hidden if comment is a reply."
+      )
+  }
+
+  func testOutput_shouldIndentContent() {
+    self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
+    self.vm.inputs.bindStyles()
+    self.shouldIndentContent.assertValue(true)
   }
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_False() {

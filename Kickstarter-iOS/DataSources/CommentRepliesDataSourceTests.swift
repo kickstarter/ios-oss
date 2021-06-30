@@ -6,8 +6,11 @@ import XCTest
 
 class CommentRepliesDataSourceTests: XCTestCase {
   let commentSection = CommentRepliesDataSource.Section.comment.rawValue
+  let repliesSection = CommentRepliesDataSource.Section.replies.rawValue
   let dataSource = CommentRepliesDataSource()
   let tableView = UITableView()
+
+  private let templateReplies: [Comment] = [.replyTemplate, .replyTemplate, .replyTemplate]
 
   override func setUp() {
     super.setUp()
@@ -23,5 +26,16 @@ class CommentRepliesDataSourceTests: XCTestCase {
     let rowIndex: Int = 0
     XCTAssertEqual(Comment.Status.success, Comment.templates[rowIndex].status)
     XCTAssertEqual("RootCommentCell", self.dataSource.reusableId(item: 0, section: self.commentSection))
+  }
+
+  func testDataSource_WithReplies_HasRepliesSection() {
+    self.dataSource.load(replies: self.templateReplies, project: .template)
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.repliesSection))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+  }
+
+  func testDataSource_WithReplies_HasCommentCell() {
+    self.dataSource.load(replies: self.templateReplies, project: .template)
+    XCTAssertEqual("CommentCell", self.dataSource.reusableId(item: 0, section: self.repliesSection))
   }
 }
