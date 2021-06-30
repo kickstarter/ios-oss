@@ -30,7 +30,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
 
   func testDataSource_WithReplies_HasRepliesSection() {
     self.dataSource.load(replies: self.templateReplies, project: .template)
-    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.repliesSection))
+    XCTAssertEqual(3, self.dataSource.numberOfItems(in: self.repliesSection))
     XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
   }
 
