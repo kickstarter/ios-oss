@@ -4,6 +4,55 @@
 import Apollo
 import Foundation
 
+/// All available comment author badges
+public enum CommentBadge: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  /// Indicates the author is a creator
+  case creator
+  /// Indicates the author is a collaborator
+  case collaborator
+  /// Indicates the author is a superbacker
+  case superbacker
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "creator": self = .creator
+      case "collaborator": self = .collaborator
+      case "superbacker": self = .superbacker
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .creator: return "creator"
+      case .collaborator: return "collaborator"
+      case .superbacker: return "superbacker"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: CommentBadge, rhs: CommentBadge) -> Bool {
+    switch (lhs, rhs) {
+      case (.creator, .creator): return true
+      case (.collaborator, .collaborator): return true
+      case (.superbacker, .superbacker): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+
+  public static var allCases: [CommentBadge] {
+    return [
+      .creator,
+      .collaborator,
+      .superbacker,
+    ]
+  }
+}
+
 public final class FetchCommentsQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -28,6 +77,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
           totalCount
         }
         id
+        slug
       }
     }
     """
@@ -91,6 +141,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("comments", arguments: ["after": GraphQLVariable("cursor"), "first": GraphQLVariable("limit")], type: .object(Comment.selections)),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("slug", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -100,8 +151,8 @@ public final class FetchCommentsQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(comments: Comment? = nil, id: GraphQLID) {
-        self.init(unsafeResultMap: ["__typename": "Project", "comments": comments.flatMap { (value: Comment) -> ResultMap in value.resultMap }, "id": id])
+      public init(comments: Comment? = nil, id: GraphQLID, slug: String) {
+        self.init(unsafeResultMap: ["__typename": "Project", "comments": comments.flatMap { (value: Comment) -> ResultMap in value.resultMap }, "id": id, "slug": slug])
       }
 
       public var __typename: String {
@@ -129,6 +180,16 @@ public final class FetchCommentsQuery: GraphQLQuery {
         }
         set {
           resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The project's unique URL identifier.
+      public var slug: String {
+        get {
+          return resultMap["slug"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "slug")
         }
       }
 
@@ -348,11 +409,16 @@ public struct CommentFragment: GraphQLFragment {
       author {
         __typename
         id
+        imageUrl(width: 200)
         isCreator
         name
       }
+      authorBadges
       body
+      createdAt
+      deleted
       id
+      parentId
       replies {
         __typename
         totalCount
@@ -366,8 +432,12 @@ public struct CommentFragment: GraphQLFragment {
     return [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("author", type: .object(Author.selections)),
+      GraphQLField("authorBadges", type: .list(.scalar(CommentBadge.self))),
       GraphQLField("body", type: .nonNull(.scalar(String.self))),
+      GraphQLField("createdAt", type: .scalar(String.self)),
+      GraphQLField("deleted", type: .nonNull(.scalar(Bool.self))),
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("parentId", type: .scalar(String.self)),
       GraphQLField("replies", type: .object(Reply.selections)),
     ]
   }
@@ -378,8 +448,8 @@ public struct CommentFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(author: Author? = nil, body: String, id: GraphQLID, replies: Reply? = nil) {
-    self.init(unsafeResultMap: ["__typename": "Comment", "author": author.flatMap { (value: Author) -> ResultMap in value.resultMap }, "body": body, "id": id, "replies": replies.flatMap { (value: Reply) -> ResultMap in value.resultMap }])
+  public init(author: Author? = nil, authorBadges: [CommentBadge?]? = nil, body: String, createdAt: String? = nil, deleted: Bool, id: GraphQLID, parentId: String? = nil, replies: Reply? = nil) {
+    self.init(unsafeResultMap: ["__typename": "Comment", "author": author.flatMap { (value: Author) -> ResultMap in value.resultMap }, "authorBadges": authorBadges, "body": body, "createdAt": createdAt, "deleted": deleted, "id": id, "parentId": parentId, "replies": replies.flatMap { (value: Reply) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -401,6 +471,16 @@ public struct CommentFragment: GraphQLFragment {
     }
   }
 
+  /// The badges for the comment author
+  public var authorBadges: [CommentBadge?]? {
+    get {
+      return resultMap["authorBadges"] as? [CommentBadge?]
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "authorBadges")
+    }
+  }
+
   /// The body of the comment
   public var body: String {
     get {
@@ -411,12 +491,42 @@ public struct CommentFragment: GraphQLFragment {
     }
   }
 
+  /// When was this comment posted
+  public var createdAt: String? {
+    get {
+      return resultMap["createdAt"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "createdAt")
+    }
+  }
+
+  /// Whether the comment is deleted
+  public var deleted: Bool {
+    get {
+      return resultMap["deleted"]! as! Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "deleted")
+    }
+  }
+
   public var id: GraphQLID {
     get {
       return resultMap["id"]! as! GraphQLID
     }
     set {
       resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  /// The ID of the parent comment
+  public var parentId: String? {
+    get {
+      return resultMap["parentId"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "parentId")
     }
   }
 
@@ -437,6 +547,7 @@ public struct CommentFragment: GraphQLFragment {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("imageUrl", arguments: ["width": 200], type: .nonNull(.scalar(String.self))),
         GraphQLField("isCreator", type: .scalar(Bool.self)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
       ]
@@ -448,8 +559,8 @@ public struct CommentFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, isCreator: Bool? = nil, name: String) {
-      self.init(unsafeResultMap: ["__typename": "User", "id": id, "isCreator": isCreator, "name": name])
+    public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name])
     }
 
     public var __typename: String {
@@ -467,6 +578,16 @@ public struct CommentFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// The user's avatar.
+    public var imageUrl: String {
+      get {
+        return resultMap["imageUrl"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "imageUrl")
       }
     }
 

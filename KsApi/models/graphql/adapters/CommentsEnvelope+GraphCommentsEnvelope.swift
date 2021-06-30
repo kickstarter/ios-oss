@@ -29,7 +29,9 @@ extension CommentsEnvelope {
       comments: comments,
       cursor: data.project?.comments?.pageInfo.endCursor ?? "",
       hasNextPage: data.project?.comments?.pageInfo.hasNextPage ?? false,
+      slug: data.project?.slug ?? "",
       totalCount: data.project?.comments?.totalCount ?? 0
+      // TODO: Add updateID.
     )
   }
 }

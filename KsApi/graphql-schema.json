@@ -1602,6 +1602,18 @@
             "deprecationReason": null
           },
           {
+            "name": "fulfillmentStatus",
+            "description": "The fulfillment status of a backing.",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "FulfillmentStatus",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -4986,22 +4998,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "showBackerTrustModule",
-            "description": "Whether or not to show backer trust module on project page",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -10778,36 +10774,6 @@
             "deprecationReason": null
           },
           {
-            "name": "android_creator_view",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "android_go_rewardless_2",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "android_native_checkout",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "android_email_verification_flow",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "android_email_verification_skip",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "android_segment",
             "description": null,
             "isDeprecated": false,
@@ -11012,18 +10978,6 @@
             "deprecationReason": null
           },
           {
-            "name": "budget_viz_fashion",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "budget_viz_arts",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "disable_manual_create_stripe_elements_postal_code",
             "description": null,
             "isDeprecated": false,
@@ -11193,6 +11147,12 @@
           },
           {
             "name": "ct_2021_backer_report_status",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ct_2021_migration_tool",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -23106,6 +23066,41 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "FulfillmentStatus",
+        "description": "Values for backing fulfillment status",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "not_started",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "in_progress",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shipped",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "delayed",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "SetupIntent",
         "description": "Selected fields on a SetupIntent from Stripe for a given backing.",
@@ -30295,6 +30290,33 @@
             "deprecationReason": null
           },
           {
+            "name": "migrateToFulfillmentStatus",
+            "description": "Migrate's a project's eligible backings to new fulfillment status tool.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "MigrateToFulfillmentStatusInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "MigrateToFulfillmentStatusPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paymentSourceDelete",
             "description": "Delete a user's payment source",
             "args": [
@@ -30592,8 +30614,8 @@
             "deprecationReason": null
           },
           {
-            "name": "setBackingFulfillmentStatus",
-            "description": "Sets a backing's fulfillment status.",
+            "name": "setBackingFulfillmentStatuses",
+            "description": "Sets the fulfillment status of multiple backings at once.",
             "args": [
               {
                 "name": "input",
@@ -30603,7 +30625,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "SetBackingFulfillmentStatusInput",
+                    "name": "SetBackingFulfillmentStatusesInput",
                     "ofType": null
                   }
                 },
@@ -30612,7 +30634,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "SetBackingFulfillmentStatusPayload",
+              "name": "SetBackingFulfillmentStatusesPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -39011,6 +39033,80 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "MigrateToFulfillmentStatusInput",
+        "description": "Autogenerated input type of MigrateToFulfillmentStatus",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MigrateToFulfillmentStatusPayload",
+        "description": "Autogenerated return type of MigrateToFulfillmentStatus",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": "Succeeds if backings are being updated in backend.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "PaymentSourceDeleteInput",
         "description": "Autogenerated input type of PaymentSourceDelete",
         "fields": null,
@@ -39879,12 +39975,34 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "SetBackingFulfillmentStatusInput",
-        "description": "Autogenerated input type of SetBackingFulfillmentStatus",
+        "name": "SetBackingFulfillmentStatusesInput",
+        "description": "Autogenerated input type of SetBackingFulfillmentStatuses",
         "fields": null,
         "inputFields": [
           {
-            "name": "backingId",
+            "name": "backingIds",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "projectId",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -39927,44 +40045,9 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "FulfillmentStatus",
-        "description": "Values for backing fulfillment status",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "not_started",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "in_progress",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "shipped",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "delayed",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
-        "name": "SetBackingFulfillmentStatusPayload",
-        "description": "Autogenerated return type of SetBackingFulfillmentStatus",
+        "name": "SetBackingFulfillmentStatusesPayload",
+        "description": "Autogenerated return type of SetBackingFulfillmentStatuses",
         "fields": [
           {
             "name": "clientMutationId",
@@ -39979,16 +40062,24 @@
             "deprecationReason": null
           },
           {
-            "name": "success",
-            "description": "Success if status was set successfully",
+            "name": "updatedBackingIds",
+            "description": "Lists the ids of all successfully updated backings.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,

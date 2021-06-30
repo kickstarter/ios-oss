@@ -48,8 +48,9 @@ public final class MockApolloQuery: GraphQLQuery {
     public static var selections: [GraphQLSelection] {
       return []
     }
+
     public private(set) var resultMap: ResultMap
-    
+
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
     }

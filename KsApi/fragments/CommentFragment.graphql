@@ -1,11 +1,16 @@
 fragment CommentFragment on Comment {
   author {
     id
+    imageUrl(width: 200)
     isCreator
     name
   }
+  authorBadges
   body
+  createdAt
+  deleted
   id
+  parentId
   replies {
     totalCount
   }
