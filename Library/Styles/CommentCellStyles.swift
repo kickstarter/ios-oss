@@ -22,9 +22,7 @@ public let commentBodyTextViewStyle: TextViewStyle = { textView in
     |> \.font .~ UIFont.ksr_callout()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.isEditable .~ false
-    |> \.isSelectable .~ true
-    |> \.isUserInteractionEnabled .~ true
-    |> \.dataDetectorTypes .~ .link
+    |> \.isUserInteractionEnabled .~ false
 }
 
 public let creatorAuthorBadgeStyle: PaddingLabelStyle = { label in
