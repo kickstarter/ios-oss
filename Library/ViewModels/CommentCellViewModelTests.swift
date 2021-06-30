@@ -231,6 +231,40 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
+  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_False() {
+    let user = User.template |> \.id .~ 12_345
+
+    let project = Project.template
+      |> \.memberData.permissions .~ [.post, .comment]
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: project)
+
+      self.replyButtonIsHidden
+        .assertValue(false, "The replyButton is not hidden because the user is a creator collaborator.")
+    }
+  }
+
+  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_True() {
+    let user = User.template |> \.id .~ 12_345
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: .template)
+
+      self.replyButtonIsHidden
+        .assertValue(
+          true,
+          "The replyButton is hidden because the user is not backing, and not a creator or collaborator."
+        )
+    }
+  }
+
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_True_IsLoggedIn_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
