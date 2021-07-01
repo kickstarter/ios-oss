@@ -6,7 +6,7 @@ import XCTest
 
 class CommentRepliesDataSourceTests: XCTestCase {
   let commentSection = CommentRepliesDataSource.Section.rootComment.rawValue
-  let repliesSection = CommentRepliesDataSource.Section.comments.rawValue
+  let repliesSection = CommentRepliesDataSource.Section.replies.rawValue
   let dataSource = CommentRepliesDataSource()
   let tableView = UITableView()
 

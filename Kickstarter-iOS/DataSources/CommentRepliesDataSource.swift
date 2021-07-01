@@ -6,7 +6,7 @@ import UIKit
 internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case rootComment
-    case comments
+    case replies
     case empty
     case error
   }
@@ -24,11 +24,11 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     self.clearValues(section: Section.empty.rawValue)
     self.clearValues(section: Section.error.rawValue)
 
-    self.padValuesForSection(Section.comments.rawValue)
+    self.padValuesForSection(Section.replies.rawValue)
 
-    let current = (self[section: Section.comments.rawValue] as? [(comment: Comment, project: Project)]) ?? []
+    let current = (self[section: Section.replies.rawValue] as? [(comment: Comment, project: Project)]) ?? []
 
-    self.clearValues(section: Section.comments.rawValue)
+    self.clearValues(section: Section.replies.rawValue)
 
     let newComments = comments.map { comment in
       (comment, project)
@@ -39,18 +39,6 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     allComments.forEach { comment, project in
       self.loadValue(comment, project: project)
     }
-  }
-
-  // TODO: Implement and write tests
-  internal func showEmptyState() {
-    self.clearValues(section: Section.comments.rawValue)
-    self.clearValues(section: Section.error.rawValue)
-
-    self.appendRow(
-      value: .errorPullToRefresh,
-      cellClass: EmptyStateCell.self,
-      toSection: Section.empty.rawValue
-    )
   }
 
   // TODO: Implement and write tests
@@ -89,7 +77,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     comment: Comment, and project: Project,
     byCommentId id: String
   ) -> (IndexPath?, Bool)? {
-    let section = Section.comments.rawValue
+    let section = Section.replies.rawValue
     let values = self.items(in: section)
 
     // TODO: We may need to introduce optimizations here if this becomes problematic for projects that have
@@ -106,7 +94,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
     // We found an existing comment, let's update the value at that IndexPath.
     if let commentIndex = commentIndex {
-      indexPath = IndexPath(row: commentIndex, section: Section.comments.rawValue)
+      indexPath = IndexPath(row: commentIndex, section: Section.replies.rawValue)
       return (self.loadValue(comment, project: project, at: indexPath), false)
     }
 
@@ -121,7 +109,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     append: Bool = false,
     at indexPath: IndexPath? = nil
   ) -> IndexPath? {
-    let section = Section.comments.rawValue
+    let section = Section.replies.rawValue
 
     // Removed
     guard comment.isDeleted == false else {
