@@ -63,6 +63,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
   }
 
+  /// Determines if a `Comment` object is present in the data source at a given `IndexPath`.
   public func comment(at indexPath: IndexPath) -> Comment? {
     let value = self[indexPath]
 
@@ -73,6 +74,15 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
   }
 
+  /**
+   Replaces a `Commment` at a given `IndexPath` by using `loadValue`.
+
+   - parameter comment: `Comment` object that will be replacing an existing cell in the tableView..
+   - parameter and: `Project` object required for `loadValue`to append the row.
+   - parameter id: `String` object, representing the ID of the `Comment`object that is potentially already in the tableView.
+   
+   - returns: An optional tuple of `(IndexPath?, Bool)?`. The `Bool` object determines if the tableView needs to be reloaded.
+   */
   internal func replace(
     comment: Comment, and project: Project,
     byCommentId id: String
@@ -102,6 +112,15 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     return (self.loadValue(comment, project: project, append: true), true)
   }
 
+  /**
+   Loads a `Comment` into the data source at a given `IndexPath`.
+
+   - parameter comment: `Comment` object that will be loaded into the tableView..
+   - parameter project: `Project` object required for the data source schema of the cell.
+   - parameter at: `IndexPath?` object, representing a potential insertion point for a `Comment`.
+   
+   - returns: An optional `IndexPath?`representing where a given `Comment` needs to be inserted/appended.
+   */
   @discardableResult
   private func loadValue(
     _ comment: Comment,
