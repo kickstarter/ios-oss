@@ -10,6 +10,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
+    self.recordMode = true
   }
 
   override func tearDown() {
@@ -17,17 +18,15 @@ final class CommentRepliesViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testViewController_WithComment_HasRootComment() {
-    let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
-    )
-    Language.allLanguages.forEach { language in
-      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+  func testViewController_WithRootComment() {
+    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
 
         let (parent, _) = traitControllers(
-          device: .phone4_7inch,
+          device: device,
           orientation: .portrait,
           child: controller
         )
@@ -36,68 +35,31 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
 
-  func testView_CurrentUserLoggedOut_HasRootCommentAndNoCommentComposer() {
+  func testViewController_WithRootCommentAndReplies() {
     let mockService = MockService(
       fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
     )
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
-      withEnvironment(apiService: mockService, currentUser: nil, language: language) {
-        let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-
-        parent.view.frame.size.height = 1_100
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
-      }
-    }
-  }
-
-  func testView_CurrentUserLoggedInIsBacking_HasRootCommentAndCommentComposer() {
-    let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
-    )
-    let project = Project.template
-      |> \.personalization.isBacking .~ true
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
-      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
-        let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_100
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
-      }
-    }
-  }
-
-  func testView_CurrentUserLoggedInNotBacking_HasRootCommentAndBlockedCommentComposer() {
-    let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
-    )
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
