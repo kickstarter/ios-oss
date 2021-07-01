@@ -10,7 +10,6 @@ final class CommentRepliesViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
-    self.recordMode = true
   }
 
   override func tearDown() {
