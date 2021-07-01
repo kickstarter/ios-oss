@@ -85,8 +85,10 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
   }
 
-  internal func replace(comment: Comment, and project: Project,
-                        byCommentId id: String) -> (IndexPath?, Bool)? {
+  internal func replace(
+    comment: Comment, and project: Project,
+    byCommentId id: String
+  ) -> (IndexPath?, Bool)? {
     let section = Section.comments.rawValue
     let values = self.items(in: section)
 
