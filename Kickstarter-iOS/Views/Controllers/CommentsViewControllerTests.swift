@@ -25,7 +25,7 @@ internal final class CommentsViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
-        let controller = CommentsViewController.configuredWith(project: Project.template)
+        let controller = CommentsViewController.configuredWith(project: .template)
 
         let (parent, _) = traitControllers(
           device: .phone4_7inch,
