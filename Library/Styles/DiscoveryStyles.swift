@@ -43,28 +43,32 @@ public func discoveryFilterLabelStyle<L: UILabelProtocol>(categoryId: Int?, isSe
     <> L.lens.alpha .~ ((categoryId == nil) ? 1.0 : (isSelected ? 1.0 : 0.8))
 }
 
-public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
-  <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-    cell.traitCollection.isRegularRegular
-      ? .init(
-        top: Styles.grid(2),
-        left: Styles.grid(6),
-        bottom: Styles.grid(2),
-        right: Styles.grid(2)
-      )
-      : .init(
-        top: Styles.grid(2),
-        left: Styles.grid(4),
-        bottom: Styles.grid(2),
-        right: Styles.grid(2)
-      )
-  }
+public let discoveryFilterRowMarginStyle: (UITableViewCell) -> UITableViewCell = { cell in
+  cell |> baseTableViewCellStyle()
+    |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+      cell.traitCollection.isRegularRegular
+        ? .init(
+          top: Styles.grid(2),
+          left: Styles.grid(6),
+          bottom: Styles.grid(2),
+          right: Styles.grid(2)
+        )
+        : .init(
+          top: Styles.grid(2),
+          left: Styles.grid(4),
+          bottom: Styles.grid(2),
+          right: Styles.grid(2)
+        )
+    }
+}
 
-public let discoveryProjectCellStyle =
-  baseTableViewCellStyle()
+public let discoveryProjectCellStyle: (UITableViewCell) -> UITableViewCell = { cell in
+  cell |>
+    baseTableViewCellStyle()
     <> UITableViewCell.lens.accessibilityHint %~ { _ in
       Strings.dashboard_tout_accessibility_hint_opens_project()
     }
+}
 
 public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
   sort: DiscoveryParams.Sort,

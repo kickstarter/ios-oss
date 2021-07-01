@@ -44,13 +44,18 @@ internal final class ProjectDescriptionViewController: WebViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
-      <> WebViewController.lens.title %~ { _ in Strings.project_menu_buttons_campaign() }
-      <> (WebViewController.lens.webView.scrollView .. UIScrollView.lens.delaysContentTouches) .~ false
-      <> (WebViewController.lens.webView.scrollView .. UIScrollView.lens.canCancelContentTouches) .~ true
+      |> self.projectDescriptionViewControllerStyle
 
     _ = self.loadingIndicator
       |> baseActivityIndicatorStyle
+  }
+
+  private let projectDescriptionViewControllerStyle: (WebViewController) -> WebViewController = { vc in
+    vc
+      |> baseControllerStyle()
+      |> WebViewController.lens.title %~ { _ in Strings.project_menu_buttons_campaign() }
+      |> (WebViewController.lens.webView.scrollView .. UIScrollView.lens.delaysContentTouches) .~ false
+      |> (WebViewController.lens.webView.scrollView .. UIScrollView.lens.canCancelContentTouches) .~ true
   }
 
   // MARK: - View model

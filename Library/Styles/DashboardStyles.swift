@@ -16,9 +16,11 @@ public let dashboardCellTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_support_700
     <> UILabel.lens.font .~ .ksr_title2()
 
-public let dashboardCardStyle = roundedStyle()
-  <> UIView.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
-  <> UIView.lens.layer.borderWidth .~ 1.0
+public let dashboardCardStyle: (UIView) -> UIView = { view in
+  view
+    |> UIView.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> UIView.lens.layer.borderWidth .~ 1.0
+}
 
 public let dashboardChartCardViewStyle = dashboardCardStyle
   <> UIView.lens.backgroundColor .~ .ksr_support_100
@@ -36,10 +38,13 @@ public let dashboardColumnTextLabelStyle =
   UILabel.lens.textColor .~ .ksr_support_400
     <> UILabel.lens.font .~ .ksr_caption1()
 
-public let dashboardContextCellStyle = baseTableViewCellStyle()
-  <> (UITableViewCell.lens.contentView .. UIView.lens.layoutMargins) %~ {
-    .init(topBottom: 32.0, leftRight: $0.left)
-  }
+public let dashboardContextCellStyle: (UITableViewCell) -> UITableViewCell = { cell in
+  cell
+    |> baseTableViewCellStyle()
+    |> (UITableViewCell.lens.contentView .. UIView.lens.layoutMargins) %~ {
+      .init(topBottom: 32.0, leftRight: $0.left)
+    }
+}
 
 public let dashboardDrawerProjectNameTextLabelStyle =
   UILabel.lens.textColor .~ .ksr_support_400

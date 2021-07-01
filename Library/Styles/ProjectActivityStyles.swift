@@ -2,8 +2,11 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 2.0)
-  <> UIView.lens.backgroundColor .~ .ksr_support_400
+public let projectActivityBulletSeparatorViewStyle: (UIView) -> UIView = { view in
+  view
+    |> roundedStyle(cornerRadius: 2.0)
+    |> UIView.lens.backgroundColor .~ .ksr_support_400
+}
 
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_support_300
 
