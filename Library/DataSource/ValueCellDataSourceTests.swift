@@ -150,4 +150,27 @@ internal final class ValueCellDataSourceTests: XCTestCase {
 
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
   }
+
+  func testItemsInSection() {
+    let items1 = self.dataSource.items(in: 0) as? [(value: Int, reusableId: String)]
+
+    XCTAssertEqual(items1?.compactMap { $0.value }, [1, 2])
+    XCTAssertEqual(items1?.compactMap { $0.reusableId }, ["IntTableCell", "IntTableCell"])
+
+    self.dataSource.clearValues()
+
+    let items2 = self.dataSource.items(in: 0) as? [(value: Int, reusableId: String)]
+
+    XCTAssertTrue(items2?.isEmpty ?? false)
+  }
+
+  func testPadValuesForSection() {
+    let myDataSource = IntDataSource()
+
+    myDataSource.padValuesForSection(0)
+
+    let array = myDataSource.items(in: 0)
+
+    XCTAssertTrue(array.isEmpty)
+  }
 }

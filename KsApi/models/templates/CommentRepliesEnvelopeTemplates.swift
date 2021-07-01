@@ -5,7 +5,7 @@ extension CommentRepliesEnvelope {
     comment: .template,
     cursor: "cursor",
     hasPreviousPage: false,
-    replies: [.template, .template, .template],
+    replies: [.replyTemplate, .replyTemplate, .replyTemplate],
     totalCount: 3
   )
 }
