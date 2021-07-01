@@ -157,10 +157,31 @@ internal final class CommentCellViewModelTests: TestCase {
       )
   }
 
-  func testOutput_shouldIndentContent() {
+  func testOutput_bottomRowStackViewIsHidden_FeatureFlagFalse_LoggedOut_IsReplyTrue() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
+
+    withEnvironment(currentUser: nil, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
+
+      self.bottomRowStackViewIsHidden
+        .assertValue(
+          true,
+          "The bottom row stack view should be hidden if comment is a reply."
+        )
+    }
+  }
+
+  func testOutput_shouldIndentContent_True() {
     self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
     self.vm.inputs.bindStyles()
     self.shouldIndentContent.assertValue(true)
+  }
+
+  func testOutput_shouldIndentContent_False() {
+    self.vm.inputs.configureWith(comment: .template, project: .template)
+    self.vm.inputs.bindStyles()
+    self.shouldIndentContent.assertValue(false)
   }
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_False() {

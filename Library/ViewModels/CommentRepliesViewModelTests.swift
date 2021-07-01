@@ -193,7 +193,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOuput_loadRepliesAndProjectIntoDataSource() {
+  func testOutput_loadRepliesAndProjectIntoDataSource() {
     let project = Project.template
     let envelope = CommentRepliesEnvelope.template
 
@@ -207,6 +207,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
         project: project,
         inputAreaBecomeFirstResponder: false
       )
+      
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+      
       self.vm.inputs.viewDidLoad()
 
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
