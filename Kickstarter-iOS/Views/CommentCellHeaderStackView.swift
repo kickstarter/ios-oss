@@ -98,6 +98,9 @@ internal final class CommentCellHeaderStackView: UIStackView {
     var stackViewAlignment: UIStackView.Alignment = .center
 
     switch badge {
+    case .collaborator:
+      style = collaboratorAuthorBadgeStyle
+      stackViewAlignment = .center
     case .creator:
       style = creatorAuthorBadgeStyle
       stackViewAlignment = .center
