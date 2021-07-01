@@ -3,7 +3,6 @@ import Foundation
 import ReactiveSwift
 
 extension ApolloClient {
-  // TODO: consider tests
   /**
    Performs a GraphQL fetch request with a given query.
 
@@ -28,7 +27,6 @@ extension ApolloClient {
     }
   }
 
-  // TODO: consider tests
   /**
    Performs a GraphQL mutation request with a given mutation.
 

@@ -25,7 +25,6 @@ class HeadersInterceptor: ApolloInterceptor {
     self.additionalHeaders = additionalHeaders
   }
 
-  // TODO: can we test this?
   func interceptAsync<Operation: GraphQLOperation>(
     chain: RequestChain,
     request: HTTPRequest<Operation>,
