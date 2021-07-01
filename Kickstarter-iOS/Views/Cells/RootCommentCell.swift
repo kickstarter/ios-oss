@@ -3,10 +3,22 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Border {
+    static let height: CGFloat = 1.0
+  }
+}
+
 final class RootCommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
+  private lazy var bottomBorder: UIView = {
+    UIView(frame: .zero)
+      |> \.backgroundColor .~ UIColor.ksr_support_200
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
   }()
@@ -67,6 +79,16 @@ final class RootCommentCell: UITableViewCell, ValueCell {
 
     _ = (rootViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.bottomBorder, self.contentView)
+      |> ksr_addSubviewToParent()
+
+    NSLayoutConstraint.activate([
+      self.bottomBorder.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+      self.bottomBorder.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+      self.bottomBorder.bottomAnchor.constraint(equalTo: self.rootStackView.bottomAnchor),
+      self.bottomBorder.heightAnchor.constraint(equalToConstant: Layout.Border.height)
+    ])
   }
 
   // MARK: - View model

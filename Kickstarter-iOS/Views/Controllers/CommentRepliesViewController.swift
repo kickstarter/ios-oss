@@ -64,6 +64,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.navigationItem.title = localizedString(key: "Replies", defaultValue: "Replies")
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.tableFooterView = UIView()
 
@@ -90,6 +91,13 @@ final class CommentRepliesViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.loadRepliesAndProjectIntoDataSource
+      .observeForUI()
+      .observeValues { replies, project in
+        self.dataSource.load(comments: replies, project: project)
+        self.tableView.reloadData()
+      }
+
     self.viewModel.outputs.configureCommentComposerViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -113,6 +121,5 @@ private let tableViewStyle: TableViewStyle = { tableView in
   tableView
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
-    |> \.separatorColor .~ UIColor.ksr_support_200
-    |> \.separatorInset .~ .zero
+    |> \.separatorStyle .~ .none
 }
