@@ -94,7 +94,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.viewModel.outputs.loadRepliesAndProjectIntoDataSource
       .observeForUI()
       .observeValues { replies, project in
-        self.dataSource.load(replies: replies, project: project)
+        self.dataSource.load(comments: replies, project: project)
         self.tableView.reloadData()
       }
 
