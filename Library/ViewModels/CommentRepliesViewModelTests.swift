@@ -207,10 +207,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
         project: project,
         inputAreaBecomeFirstResponder: false
       )
-      
+
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
-      
+
       self.vm.inputs.viewDidLoad()
 
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
