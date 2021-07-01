@@ -56,6 +56,9 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a `Comment` for the cell that reply button is clicked for.
   var replyCommentTapped: Signal<Comment, Never> { get }
 
+  /// Emits whether the content of the cell should be indented.
+  var shouldIndentContent: Signal<Bool, Never> { get }
+
   /// Emits a `Comment` for the cell that view replies button is clicked for.
   var viewCommentReplies: Signal<Comment, Never> { get }
 
@@ -124,6 +127,8 @@ public final class CommentCellViewModel:
       .map(userIsBackingCreatorOrCollaborator)
       .negate()
 
+    let isReply = comment.map { $0.isReply }
+
     // If the user is either logged out, not backing or the flag is disabled, hide replyButton.
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABackerCreatorOrCollaborator)
       .map(replyButtonHidden)
@@ -131,9 +136,10 @@ public final class CommentCellViewModel:
     // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too.
     self.bottomRowStackViewIsHidden = Signal.combineLatest(
       self.flagButtonIsHidden.signal,
-      self.replyButtonIsHidden.signal
-    ).map { flagButtonIsHidden, replyButtonIsHidden in
-      flagButtonIsHidden && replyButtonIsHidden
+      self.replyButtonIsHidden.signal,
+      isReply
+    ).map { flagButtonIsHidden, replyButtonIsHidden, isReply in
+      (flagButtonIsHidden && replyButtonIsHidden) || isReply
     }
 
     self.notifyDelegateLinkTappedWithURL = self.linkTappedProperty.signal.skipNil()
@@ -144,6 +150,9 @@ public final class CommentCellViewModel:
 
     self.replyCommentTapped = comment.takeWhen(self.replyButtonTappedProperty.signal)
     self.viewCommentReplies = comment.takeWhen(self.viewRepliesButtonTappedProperty.signal)
+
+    self.shouldIndentContent = isReply
+      .takeWhen(self.bindStylesProperty.signal)
   }
 
   private var bindStylesProperty = MutableProperty(())
@@ -183,6 +192,7 @@ public final class CommentCellViewModel:
   public let postedButtonIsHidden: Signal<Bool, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
   public let replyCommentTapped: Signal<Comment, Never>
+  public let shouldIndentContent: Signal<Bool, Never>
   public let viewCommentReplies: Signal<Comment, Never>
   public let viewRepliesViewHidden: Signal<Bool, Never>
 

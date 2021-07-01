@@ -55,7 +55,7 @@ public func commentsQuery(
  */
 public func commentRepliesQuery(
   withCommentId id: String,
-  last: Int = Query.defaultPaginationCount,
+  last: Int = Query.repliesPaginationCount,
   before cursor: String? = nil
 ) -> NonEmptySet<Query> {
   let args = Set([cursor.flatMap(QueryArg<Never>.before), .last(last)].compact())
