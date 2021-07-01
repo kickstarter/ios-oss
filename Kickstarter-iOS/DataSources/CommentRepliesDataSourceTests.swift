@@ -125,6 +125,112 @@ class CommentRepliesDataSourceTests: XCTestCase {
     XCTAssertEqual(reload, true)
   }
 
+  func testReplace_DeletedComment() {
+    let comments = [
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      Comment.replyTemplate |> \.id .~ "3",
+      Comment.replyTemplate |> \.id .~ "4",
+      Comment.replyTemplate |> \.id .~ "5"
+    ]
+
+    self.dataSource.load(comments: comments, project: .template)
+
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+
+    let deletedComment = Comment.deletedTemplate
+      |> \.id .~ "123"
+
+    guard
+      let (indexPath, reload) = self.dataSource
+      .replace(comment: deletedComment, and: .template, byCommentId: "2")
+    else {
+      XCTFail("Should return and indexPath and Bool.")
+      return
+    }
+
+    XCTAssertEqual(
+      self.dataSource.comment(at: IndexPath(row: 1, section: self.repliesSection)),
+      deletedComment
+    )
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+    XCTAssertEqual(indexPath?.row, 1)
+    XCTAssertEqual(reload, false)
+  }
+
+  func testReplace_FailedComment() {
+    let comments = [
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      Comment.replyTemplate |> \.id .~ "3",
+      Comment.replyTemplate |> \.id .~ "4",
+      Comment.replyTemplate |> \.id .~ "5"
+    ]
+
+    self.dataSource.load(comments: comments, project: .template)
+
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+
+    let failedComment = Comment.failedTemplate
+      |> \.id .~ "123"
+
+    guard
+      let (indexPath, reload) = self.dataSource
+      .replace(comment: failedComment, and: .template, byCommentId: "2")
+    else {
+      XCTFail("Should return and indexPath and Bool.")
+      return
+    }
+
+    XCTAssertEqual(
+      self.dataSource.comment(at: IndexPath(row: 1, section: self.repliesSection)),
+      failedComment
+    )
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+    XCTAssertEqual(indexPath?.row, 1)
+    XCTAssertEqual(reload, false)
+  }
+
+  func testLoadComments_DeletedComment() {
+    let deletedComment = Comment.deletedTemplate |> \.id .~ "3"
+    let comments = [
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      deletedComment,
+      Comment.replyTemplate |> \.id .~ "4",
+      Comment.replyTemplate |> \.id .~ "5"
+    ]
+
+    self.dataSource.load(comments: comments, project: .template)
+
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+
+    XCTAssertEqual(
+      self.dataSource.comment(at: IndexPath(row: 0, section: self.repliesSection)),
+      deletedComment
+    )
+  }
+
+  func testLoadComments_FailedComment() {
+    let failedComment = Comment.failedTemplate |> \.id .~ "3"
+    let comments = [
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      failedComment,
+      Comment.replyTemplate |> \.id .~ "4",
+      Comment.replyTemplate |> \.id .~ "5"
+    ]
+
+    self.dataSource.load(comments: comments, project: .template)
+
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+
+    XCTAssertEqual(
+      self.dataSource.comment(at: IndexPath(row: 0, section: self.repliesSection)),
+      failedComment
+    )
+  }
+
   func testLoadComments_Pagination_Prepends() {
     let firstPage = [
       Comment.replyTemplate |> \.id .~ "1",
