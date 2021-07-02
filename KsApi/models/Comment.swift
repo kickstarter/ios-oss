@@ -30,6 +30,7 @@ public struct Comment {
   }
 
   public enum AuthorBadge: String, Decodable {
+    case collaborator
     case creator
     case backer
     case superbacker
