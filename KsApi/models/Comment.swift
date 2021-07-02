@@ -7,10 +7,16 @@ public struct Comment {
   public let createdAt: TimeInterval
   public var id: String
   public var isDeleted: Bool
+  public var parentId: String?
   public var replyCount: Int
   /// return the first `authorBadges`, if nil  return `.backer`
   public var authorBadge: AuthorBadge {
     return self.authorBadges.first ?? .backer
+  }
+
+  /// Use to determine if a comment is a reply to another comment
+  public var isReply: Bool {
+    return self.parentId != nil
   }
 
   /// Track and return the current status of the `Comment`
@@ -24,6 +30,7 @@ public struct Comment {
   }
 
   public enum AuthorBadge: String, Decodable {
+    case collaborator
     case creator
     case backer
     case superbacker

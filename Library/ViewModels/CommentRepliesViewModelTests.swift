@@ -13,6 +13,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
   private let loadCommentIntoDataSourceComment = TestObserver<Comment, Never>()
+  private let loadRepliesAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
+  private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
 
   override func setUp() {
     super.setUp()
@@ -24,6 +26,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.loadCommentIntoDataSource.observe(self.loadCommentIntoDataSourceComment.observer)
+    self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(second)
+      .observe(self.loadRepliesAndProjectIntoDataSourceProject.observer)
+    self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(first)
+      .observe(self.loadRepliesAndProjectIntoDataSourceReplies.observer)
   }
 
   func testDataSource_WithComment_HasComment() {
@@ -184,6 +190,31 @@ internal final class CommentRepliesViewModelTests: TestCase {
           [false],
           "false is emitted because the user clicked on view replies on the root comment"
         )
+    }
+  }
+
+  func testOutput_loadRepliesAndProjectIntoDataSource() {
+    let project = Project.template
+    let envelope = CommentRepliesEnvelope.template
+
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(envelope)
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(
+        comment: .template,
+        project: project,
+        inputAreaBecomeFirstResponder: false
+      )
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
     }
   }
 }

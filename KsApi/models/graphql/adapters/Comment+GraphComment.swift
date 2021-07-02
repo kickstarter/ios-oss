@@ -17,6 +17,7 @@ extension Comment {
       createdAt: graphComment.createdAt,
       id: graphComment.id,
       isDeleted: graphComment.deleted,
+      parentId: graphComment.parentId,
       replyCount: graphComment.replyCount,
       status: .success
     )

@@ -20,4 +20,14 @@ final class CommentTests: XCTestCase {
     XCTAssertEqual(.success, comment.status)
     XCTAssertEqual([.you], comment.authorBadges)
   }
+
+  func testCommentIsReply_True() {
+    let comment = Comment.replyTemplate
+    XCTAssertTrue(comment.isReply)
+  }
+
+  func testCommentIsReply_False() {
+    let comment = Comment.template
+    XCTAssertFalse(comment.isReply)
+  }
 }
