@@ -29,7 +29,7 @@ public protocol CommentRepliesViewModelOutputs {
   var loadCommentIntoDataSource: Signal<Comment, Never> { get }
 
   /// Emits a list of `Replies` and `Project` to load into the data source
-  var loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
+  var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -102,10 +102,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         .materialize()
       }
 
-    let replies = repliesEvent.values()
-      .map { $0.replies }
+    let repliesAndTotalCount = repliesEvent
+      .values()
+      .map { ($0.replies, $0.totalCount) }
 
-    self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(replies, project)
+    self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(repliesAndTotalCount, project)
   }
 
   fileprivate let commentProjectProperty = MutableProperty<(Comment, Project, Bool)?>(nil)
@@ -125,7 +126,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
-  public var loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }

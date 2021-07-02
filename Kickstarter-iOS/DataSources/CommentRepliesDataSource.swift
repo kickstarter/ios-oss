@@ -19,7 +19,9 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   }
 
   /// Loads in a new page of comments.
-  internal func load(comments: [Comment], project: Project) {
+  internal func load(repliesAndTotalCount: ([Comment], Int), project: Project) {
+    let (replies, totalCount) = repliesAndTotalCount
+
     // Clear all but rootComment section.
     self.clearValues(section: Section.empty.rawValue)
     self.clearValues(section: Section.error.rawValue)
@@ -30,14 +32,19 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
     self.clearValues(section: Section.replies.rawValue)
 
-    let newComments = comments.map { comment in
-      (comment, project)
+    let newReplies = replies.map { reply in
+      (reply, project)
     }
 
-    let allComments = newComments + current
+    let allReplies = newReplies + current
 
-    allComments.forEach { comment, project in
-      self.loadValue(comment, project: project)
+    allReplies.forEach { reply, project in
+      self.loadValue(reply, project: project)
+    }
+
+    // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the tableViews count
+    if totalCount > allReplies.count {
+      self.loadValue(nil, project: project)
     }
   }
 
@@ -58,6 +65,8 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as CommentCell, value as (Comment, Project)):
       cell.configureWith(value: value)
+    case let (cell as ViewMoreRepliesCell, _):
+      cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }
@@ -124,12 +133,22 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
    */
   @discardableResult
   private func loadValue(
-    _ comment: Comment,
+    _ comment: Comment?,
     project: Project,
     append: Bool = false,
     at indexPath: IndexPath? = nil
   ) -> IndexPath? {
     let section = Section.replies.rawValue
+
+    // If nil is passed in we are rendering a ViewMoreRepliesCell for pagination.
+    guard let comment = comment else {
+      return self.insertRow(
+        value: (),
+        cellClass: ViewMoreRepliesCell.self,
+        atIndex: 0,
+        inSection: section
+      )
+    }
 
     // Removed
     guard comment.isDeleted == false else {

@@ -66,6 +66,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
+    self.tableView.registerCellClass(ViewMoreRepliesCell.self)
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
@@ -93,8 +94,8 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.viewModel.outputs.loadRepliesAndProjectIntoDataSource
       .observeForUI()
-      .observeValues { replies, project in
-        self.dataSource.load(comments: replies, project: project)
+      .observeValues { repliesAndTotalCount, project in
+        self.dataSource.load(repliesAndTotalCount: repliesAndTotalCount, project: project)
         self.tableView.reloadData()
       }
 
