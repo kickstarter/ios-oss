@@ -99,8 +99,19 @@ public protocol ServiceType {
   /// Fetch comments for a project.
   func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for a project with a query.
-  func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+  /// Fetch comments for a project with a slug, cursor and limit.
+  func fetchProjectComments(
+    slug: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+
+  /// Fetch comments for an update with an id, cursor and limit.
+  func fetchUpdateComments(
+    id: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comment replies for a comment with a query.
   func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
@@ -486,7 +497,7 @@ extension ServiceType {
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
   }
 
-  fileprivate var defaultHeaders: [String: String] {
+  internal var defaultHeaders: [String: String] {
     var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
     headers["Authorization"] = self.authorizationHeader
@@ -500,7 +511,7 @@ extension ServiceType {
   }
 
   // PerimeterX authorization header
-  fileprivate var pxHeaders: [String: String] {
+  internal var pxHeaders: [String: String] {
     return self.perimeterXClient.headers()
   }
 

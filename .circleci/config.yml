@@ -7,6 +7,9 @@ xcode_version: &xcode_version 12.2.0
 iphone_name: &iphone_name iPhone 8
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (14.2) [" || true
 
+# Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
+spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
+
 # Templates
 
 default_environment: &default_environment
@@ -28,6 +31,9 @@ test_job: &test_job
   steps:
     - checkout
     - run:
+        name: SPM SSH Workaround
+        command: *spm_ssh_workaround
+    - run:
         name: Store Xcode Version
         command: xcodebuild -version > xcode_version.txt
     - restore_cache:
@@ -39,7 +45,7 @@ test_job: &test_job
         command: make bootstrap
     - run:
         name: Pre-load simulator
-        command: *preload_simulator # Note we may no longer need to preload the simulator, this was a workaround before.
+        command: *preload_simulator
     - run:
         name: Run tests
         command: make test
@@ -63,6 +69,9 @@ test_job: &test_job
 distribute_job: &distribute_job
   steps:
     - checkout
+    - run:
+        name: SPM SSH Workaround
+        command: *spm_ssh_workaround
     - run:
         name: Store Xcode Version
         command: xcodebuild -version > xcode_version.txt
@@ -116,6 +125,9 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - run:
+          name: SPM SSH Workaround
+          command: *spm_ssh_workaround
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
@@ -184,6 +196,9 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - run:
+          name: SPM SSH Workaround
+          command: *spm_ssh_workaround
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt

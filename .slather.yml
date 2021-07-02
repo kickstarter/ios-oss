@@ -1,3 +1,4 @@
 ignore:
   - Library/Strings.swift
   - Library/Tracking/Vendor/BrazeDebounceMiddleware.swift
+  - KsApi/GraphAPI.swift

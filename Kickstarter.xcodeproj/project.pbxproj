@@ -75,7 +75,6 @@
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
-		06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
@@ -516,7 +515,6 @@
 		8A4E954724525DE400A578CF /* ProjectState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954624525DE400A578CF /* ProjectState.swift */; };
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
 		8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */; };
-		8A555864264C4AA500C2C30D /* GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */; };
 		8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555868264C4AE400C2C30D /* GraphComment.swift */; };
 		8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555873264C4C8300C2C30D /* CommentsQueries.swift */; };
 		8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */; };
@@ -530,6 +528,14 @@
 		8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */; };
 		8A6C978E24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */; };
 		8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */; };
+		8A713AEC268BE85400159D7B /* ApolloAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; };
+		8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; };
+		8A713AF0268BE86F00159D7B /* ApolloUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; };
+		8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; };
+		8A713AF2268BE87000159D7B /* ApolloUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; };
+		8A713AF3268BE87000159D7B /* ApolloAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; };
+		8A713AF4268BE88100159D7B /* ApolloAPI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A713AF5268BE88100159D7B /* ApolloUtils.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */; };
 		8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */; };
 		8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -596,7 +602,6 @@
 		8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */; };
 		8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */; };
-		8ADCCC8F264C72B20079D308 /* GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */; };
 		8ADCCCA6264C97940079D308 /* CommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */; };
 		8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCAD264C98A50079D308 /* Comment.swift */; };
 		8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */; };
@@ -604,7 +609,14 @@
 		8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */; };
 		8ADCCCCB264CA13F0079D308 /* Comment+GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */; };
 		8ADCCCD0264CA18E0079D308 /* GraphCommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */; };
-		8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */; };
+		8ADCCD32265309CD0079D308 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; };
+		8ADCCD34265309EC0079D308 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; };
+		8ADCCD35265309FA0079D308 /* Apollo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8ADCCD4F2654281E0079D308 /* GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD4E2654281E0079D308 /* GraphAPI.swift */; };
+		8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */; };
+		8ADCCD812655CA290079D308 /* ApolloInterceptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */; };
+		8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */; };
+		8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD902655D4030079D308 /* ApolloInterceptorsTests.swift */; };
 		8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF4D7524BCCFD60018AD4B /* PillsView.swift */; };
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
 		8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */; };
@@ -1612,6 +1624,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8A713AF4268BE88100159D7B /* ApolloAPI.framework in CopyFiles */,
+				8A713AF5268BE88100159D7B /* ApolloUtils.framework in CopyFiles */,
+				8ADCCD35265309FA0079D308 /* Apollo.framework in CopyFiles */,
 				D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */,
 				D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */,
 				D00A374E225829F500F46F47 /* Prelude.framework in CopyFiles */,
@@ -2051,6 +2066,7 @@
 		8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeExpandableRewardsHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
+		8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUpdateComments.graphql; sourceTree = "<group>"; };
 		8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryView.swift; sourceTree = "<group>"; };
 		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISOFormatter.swift"; sourceTree = "<group>"; };
@@ -2116,7 +2132,6 @@
 		8A4E954624525DE400A578CF /* ProjectState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectState.swift; sourceTree = "<group>"; };
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
 		8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTemplate.swift; sourceTree = "<group>"; };
-		8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelope.swift; sourceTree = "<group>"; };
 		8A555868264C4AE400C2C30D /* GraphComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphComment.swift; sourceTree = "<group>"; };
 		8A555873264C4C8300C2C30D /* CommentsQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueries.swift; sourceTree = "<group>"; };
 		8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueriesTests.swift; sourceTree = "<group>"; };
@@ -2130,6 +2145,8 @@
 		8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+StartRefreshing.swift"; sourceTree = "<group>"; };
 		8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAView.swift; sourceTree = "<group>"; };
 		8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModel.swift; sourceTree = "<group>"; };
+		8A713AEA268BE85400159D7B /* ApolloAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApolloAPI.framework; path = Carthage/Build/iOS/ApolloAPI.framework; sourceTree = "<group>"; };
+		8A713AEB268BE85400159D7B /* ApolloUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApolloUtils.framework; path = Carthage/Build/iOS/ApolloUtils.framework; sourceTree = "<group>"; };
 		8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModel.swift; sourceTree = "<group>"; };
 		8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModelTests.swift; sourceTree = "<group>"; };
 		8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeTypes.swift; sourceTree = "<group>"; };
@@ -2179,7 +2196,6 @@
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
 		8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTests.swift; sourceTree = "<group>"; };
-		8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTests.swift; sourceTree = "<group>"; };
 		8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelope.swift; sourceTree = "<group>"; };
 		8ADCCCAD264C98A50079D308 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelope.swift"; sourceTree = "<group>"; };
@@ -2187,7 +2203,14 @@
 		8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelopeTests.swift"; sourceTree = "<group>"; };
 		8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+GraphCommentTests.swift"; sourceTree = "<group>"; };
 		8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTemplates.swift; sourceTree = "<group>"; };
-		8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		8ADCCD31265309CD0079D308 /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
+		8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
+		8ADCCD4E2654281E0079D308 /* GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphAPI.swift; sourceTree = "<group>"; };
+		8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+RAC.swift"; sourceTree = "<group>"; };
+		8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloInterceptors.swift; sourceTree = "<group>"; };
+		8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+Singleton.swift"; sourceTree = "<group>"; };
+		8ADCCD902655D4030079D308 /* ApolloInterceptorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloInterceptorsTests.swift; sourceTree = "<group>"; };
+		8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentFragment.graphql; sourceTree = "<group>"; };
 		8ADF4D7524BCCFD60018AD4B /* PillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillsView.swift; sourceTree = "<group>"; };
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
 		8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModel.swift; sourceTree = "<group>"; };
@@ -3089,6 +3112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
+				8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
 				8A417DE725AE2F8600A2C406 /* Segment.framework in Frameworks */,
@@ -3103,6 +3127,7 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				8A86D7EE24FDC84400037A7B /* GoogleAppMeasurement.framework in Frameworks */,
 				774D98DA23A9795100FC81C2 /* Optimizely.framework in Frameworks */,
+				8ADCCD32265309CD0079D308 /* Apollo.framework in Frameworks */,
 				4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
@@ -3113,6 +3138,7 @@
 				4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
 				4748C15625B105DF0098E89E /* Protobuf.framework in Frameworks */,
+				8A713AEC268BE85400159D7B /* ApolloAPI.framework in Frameworks */,
 				4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */,
 				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
 				8A86D7D924FDC7B000037A7B /* GoogleUtilities.framework in Frameworks */,
@@ -3140,7 +3166,10 @@
 			files = (
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
+				8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
+				8ADCCD34265309EC0079D308 /* Apollo.framework in Frameworks */,
+				8A713AF0268BE86F00159D7B /* ApolloUtils.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3149,6 +3178,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */,
+				8A713AF2268BE87000159D7B /* ApolloUtils.framework in Frameworks */,
+				8A713AF3268BE87000159D7B /* ApolloAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3236,6 +3267,8 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
+				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
 				8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */,
 				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,
@@ -3279,7 +3312,6 @@
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 				8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */,
 				8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */,
-				8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */,
 				8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
 				8A0B1E2B24DA1327009E90C0 /* GraphLocationTemplates.swift */,
@@ -3349,8 +3381,6 @@
 				8A555868264C4AE400C2C30D /* GraphComment.swift */,
 				8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */,
 				8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */,
-				8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */,
-				8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */,
 				8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */,
 				8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */,
 				8A0B1E2624DA0DC3009E90C0 /* GraphLocation.swift */,
@@ -3370,6 +3400,14 @@
 				8AE3F72F24DA29DE002B03C3 /* adapters */,
 			);
 			path = graphql;
+			sourceTree = "<group>";
+		};
+		8ADCCDAA2656BC020079D308 /* fragments */ = {
+			isa = PBXGroup;
+			children = (
+				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
+			);
+			path = fragments;
 			sourceTree = "<group>";
 		};
 		8AE3F72F24DA29DE002B03C3 /* adapters */ = {
@@ -4083,6 +4121,9 @@
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
+				8ADCCD31265309CD0079D308 /* Apollo.framework */,
+				8A713AEA268BE85400159D7B /* ApolloAPI.framework */,
+				8A713AEB268BE85400159D7B /* ApolloUtils.framework */,
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
 				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,
@@ -4550,9 +4591,9 @@
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
-				8A1F660D26273B6300A28E74 /* px */,
 				D01587531EEB2DE4006E7684 /* Info.plist */,
 				47567A5C25E40E500073AD6E /* ErrorHandler.swift */,
+				8ADCCD4E2654281E0079D308 /* GraphAPI.swift */,
 				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
 				775DFA9C215E758400620CED /* GraphMutation.swift */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
@@ -4566,9 +4607,11 @@
 				D01588291EEB2ED7006E7684 /* ServiceType.swift */,
 				D015882A1EEB2ED7006E7684 /* ServiceTypeTests.swift */,
 				D01587691EEB2ED6006E7684 /* extensions */,
+				8ADCCDAA2656BC020079D308 /* fragments */,
 				D015876B1EEB2ED6006E7684 /* lib */,
 				D01587771EEB2ED6006E7684 /* models */,
 				775DFADB2162A56D00620CED /* mutations */,
+				8A1F660D26273B6300A28E74 /* px */,
 				7798B5292174F3BC008BC50D /* queries */,
 			);
 			path = KsApi;
@@ -4577,6 +4620,10 @@
 		D01587691EEB2ED6006E7684 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */,
+				8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */,
+				8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */,
+				8ADCCD902655D4030079D308 /* ApolloInterceptorsTests.swift */,
 				8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */,
 				8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */,
 				8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */,
@@ -5019,6 +5066,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D01587611EEB2DE4006E7684 /* Build configuration list for PBXNativeTarget "KsApi" */;
 			buildPhases = (
+				8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */,
 				D015874B1EEB2DE4006E7684 /* Sources */,
 				D015874C1EEB2DE4006E7684 /* Frameworks */,
 				D015874D1EEB2DE4006E7684 /* Headers */,
@@ -5300,6 +5348,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" != \"Debug\" ]; then\n  ${SRCROOT}/bin/firebase-crashlytics-run.sh\nfi\n";
+		};
+		8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Apollo Code Generation";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SCRIPT_PATH=\"${SRCROOT}/Carthage/Checkouts/apollo-ios/scripts\"\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"${SRCROOT}/KsApi/graphql-schema.json\" GraphAPI.swift\n";
 		};
 		D0D58D772257F95E00532AC1 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6411,10 +6477,10 @@
 				3706408A22A8B2B700889CBD /* ShippingTemplates.swift in Sources */,
 				8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */,
 				D01588D91EEB2ED7006E7684 /* User.AvatarLenses.swift in Sources */,
+				8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */,
 				D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */,
 				D01588371EEB2ED7006E7684 /* EncodableType.swift in Sources */,
 				D0158A301EEB30A2006E7684 /* User.NewsletterSubscriptionsTemplates.swift in Sources */,
-				8A555864264C4AA500C2C30D /* GraphCommentsEnvelope.swift in Sources */,
 				D01588DB1EEB2ED7006E7684 /* User.NewsletterSubscriptionsLenses.swift in Sources */,
 				D01588691EEB2ED7006E7684 /* DiscoveryEnvelope.swift in Sources */,
 				D0158A251EEB30A2006E7684 /* RewardTemplates.swift in Sources */,
@@ -6436,6 +6502,7 @@
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
+				8ADCCD4F2654281E0079D308 /* GraphAPI.swift in Sources */,
 				8A30C6B12491683C00EE12E4 /* ManagePledgeViewQueries.swift in Sources */,
 				D01588FF1EEB2ED7006E7684 /* Project.swift in Sources */,
 				D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */,
@@ -6457,6 +6524,7 @@
 				D01588AD1EEB2ED7006E7684 /* Project.StatsLenses.swift in Sources */,
 				D0158A211EEB30A2006E7684 /* ProjectStatsEnvelope.VideoStatsTemplates.swift in Sources */,
 				D0158A141EEB30A2006E7684 /* FindFriendsEnvelopeTemplates.swift in Sources */,
+				8ADCCD812655CA290079D308 /* ApolloInterceptors.swift in Sources */,
 				8A8831C324DA2B27002BCA5E /* Backing+GraphBacking.swift in Sources */,
 				D79440902208970E00D0A747 /* CreatePaymentSourceTemplate.swift in Sources */,
 				D01589991EEB2ED7006E7684 /* ServerConfig.swift in Sources */,
@@ -6489,6 +6557,7 @@
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
+				8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */,
 				8ADCCCBB264C9F4C0079D308 /* Comment+GraphComment.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,
 				8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */,
@@ -6592,7 +6661,6 @@
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
-				8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				8A49396924B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift in Sources */,
@@ -6682,7 +6750,6 @@
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
 				8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */,
-				8ADCCC8F264C72B20079D308 /* GraphCommentsEnvelopeTests.swift in Sources */,
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,
@@ -6715,6 +6782,7 @@
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
 				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
+				8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */,
 				8A07CFE92665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift in Sources */,
 				47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
