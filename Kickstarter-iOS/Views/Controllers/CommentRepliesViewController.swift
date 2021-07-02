@@ -64,6 +64,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.navigationItem.title = localizedString(key: "Replies", defaultValue: "Replies")
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.registerCellClass(ViewMoreRepliesCell.self)
@@ -74,13 +75,14 @@ final class CommentRepliesViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.viewModel.inputs.viewDidAppear()
-  }
-
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.configureCommentComposerViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.commentComposer.configure(with: data)
+      }
 
     self.viewModel.outputs.loadCommentIntoDataSource
       .observeForUI()
@@ -99,11 +101,24 @@ final class CommentRepliesViewController: UITableViewController {
         self.tableView.reloadData()
       }
 
-    self.viewModel.outputs.configureCommentComposerViewWithData
+    self.viewModel.outputs.viewMoreRepliesCellTapped
       .observeForUI()
-      .observeValues { [weak self] data in
-        self?.commentComposer.configure(with: data)
+      .observeValues {
+        print("TAPPED")
       }
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CommentRepliesViewController {
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    switch indexPath.section {
+    case 1: // Section.viewMoreReplies.rawValue
+      self.viewModel.inputs.didSelectRow()
+    default:
+      return
+    }
   }
 }
 

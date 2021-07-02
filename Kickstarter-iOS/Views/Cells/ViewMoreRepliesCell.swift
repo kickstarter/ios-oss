@@ -2,14 +2,8 @@ import Library
 import Prelude
 import UIKit
 
-// internal protocol ThanksCategoryCellDelegate: AnyObject {
-//  func thanksCategoryCell(_ cell: ThanksCategoryCell, didTapSeeAllProjectsWith category: KsApi.Category)
-// }
-
 final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
   // MARK: - Properties
-
-//  internal weak var delegate: ThanksCategoryCellDelegate?
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
@@ -53,6 +47,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
       )
 
     _ = self.titleTextLabel
+      |> \.font .~ UIFont.ksr_callout()
       |> UILabel.lens.textColor .~ .ksr_create_700
       |> UILabel.lens.text .~ localizedString(key: "View more replies", defaultValue: "View more replies")
   }

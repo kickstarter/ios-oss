@@ -6,6 +6,7 @@ import UIKit
 internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case rootComment
+    case viewMoreReplies
     case replies
     case empty
     case error
@@ -23,6 +24,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     let (replies, totalCount) = repliesAndTotalCount
 
     // Clear all but rootComment section.
+    self.clearValues(section: Section.viewMoreReplies.rawValue)
     self.clearValues(section: Section.empty.rawValue)
     self.clearValues(section: Section.error.rawValue)
 
@@ -42,9 +44,13 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       self.loadValue(reply, project: project)
     }
 
-    // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the tableViews count
+    // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the current count.
     if totalCount > allReplies.count {
-      self.loadValue(nil, project: project)
+      self.appendRow(
+        value: (),
+        cellClass: ViewMoreRepliesCell.self,
+        toSection: Section.viewMoreReplies.rawValue
+      )
     }
   }
 
@@ -133,22 +139,12 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
    */
   @discardableResult
   private func loadValue(
-    _ comment: Comment?,
+    _ comment: Comment,
     project: Project,
     append: Bool = false,
     at indexPath: IndexPath? = nil
   ) -> IndexPath? {
     let section = Section.replies.rawValue
-
-    // If nil is passed in we are rendering a ViewMoreRepliesCell for pagination.
-    guard let comment = comment else {
-      return self.insertRow(
-        value: (),
-        cellClass: ViewMoreRepliesCell.self,
-        atIndex: 0,
-        inSection: section
-      )
-    }
 
     // Removed
     guard comment.isDeleted == false else {

@@ -14,8 +14,8 @@ public protocol CommentRepliesViewModelInputs {
    **/
   func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
 
-  /// Call when the view appears.
-  func viewDidAppear()
+  /// Call when a `ViewMoreRepliesCell` on the `CommentRepliesViewController` is selected.
+  func didSelectRow()
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -30,6 +30,9 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits a list of `Replies` and `Project` to load into the data source
   var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never> { get }
+
+  /// Emits  `Void` when a `ViewMoreRepliesCell` is tapped.
+  var viewMoreRepliesCellTapped: Signal<Void, Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -94,6 +97,8 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         return (url, canPostComment, false, inputAreaBecomeFirstResponder)
       }
 
+    self.viewMoreRepliesCellTapped = self.didSelectRowProperty.signal
+
     let repliesEvent = rootComment
       .switchMap { comment in
         AppEnvironment.current.apiService.fetchCommentReplies(
@@ -114,6 +119,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.commentProjectProperty.value = (comment, project, inputAreaBecomeFirstResponder)
   }
 
+  private let didSelectRowProperty = MutableProperty(())
+  public func didSelectRow() {
+    self.didSelectRowProperty.value = ()
+  }
+
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -127,6 +137,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
   public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
+  public let viewMoreRepliesCellTapped: Signal<Void, Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }
