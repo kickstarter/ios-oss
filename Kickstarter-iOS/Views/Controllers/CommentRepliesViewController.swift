@@ -100,12 +100,6 @@ final class CommentRepliesViewController: UITableViewController {
         self.dataSource.load(repliesAndTotalCount: repliesAndTotalCount, project: project)
         self.tableView.reloadData()
       }
-
-    self.viewModel.outputs.viewMoreRepliesCellTapped
-      .observeForUI()
-      .observeValues {
-        print("TAPPED")
-      }
   }
 }
 
@@ -113,11 +107,8 @@ final class CommentRepliesViewController: UITableViewController {
 
 extension CommentRepliesViewController {
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    switch indexPath.section {
-    case 1: // Section.viewMoreReplies.rawValue
-      self.viewModel.inputs.didSelectRow()
-    default:
-      return
+    if self.dataSource.isCellInViewMoreRepliesSection(indexPath) {
+      self.viewModel.inputs.viewMoreRepliesCellWasTapped()
     }
   }
 }

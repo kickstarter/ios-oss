@@ -15,7 +15,7 @@ public protocol CommentRepliesViewModelInputs {
   func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
 
   /// Call when a `ViewMoreRepliesCell` on the `CommentRepliesViewController` is selected.
-  func didSelectRow()
+  func viewMoreRepliesCellWasTapped()
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -30,9 +30,6 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits a list of `Replies` and `Project` to load into the data source
   var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never> { get }
-
-  /// Emits  `Void` when a `ViewMoreRepliesCell` is tapped.
-  var viewMoreRepliesCellTapped: Signal<Void, Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -97,19 +94,34 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         return (url, canPostComment, false, inputAreaBecomeFirstResponder)
       }
 
-    self.viewMoreRepliesCellTapped = self.didSelectRowProperty.signal
+    let totalCountProperty = MutableProperty<Int>(0)
 
-    let repliesEvent = rootComment
-      .switchMap { comment in
-        AppEnvironment.current.apiService.fetchCommentReplies(
-          query: commentRepliesQuery(withCommentId: comment.id)
-        )
-        .materialize()
-      }
+    // TODO: Handle isLoading from here
+    let (replies, _, _, _) = paginate(
+      requestFirstPageWith: rootComment,
+      requestNextPageWhen: self.viewMoreRepliesCellWasTappedProperty.signal,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: { [totalCountProperty] envelope -> [Comment] in
+        totalCountProperty.value = envelope.totalCount
+        return envelope.replies
+      },
+      cursorFromEnvelope: { envelope in
+        (envelope.comment, envelope.cursor)
+      },
+      requestFromParams: { comment in
+        AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id))
+      },
+      requestFromCursor: {
+        AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: $0.0.id, before: $0.1))
+      },
+      // only return new pages, we'll concat them ourselves
+      concater: { _, value in value }
+    )
 
-    let repliesAndTotalCount = repliesEvent
-      .values()
-      .map { ($0.replies, $0.totalCount) }
+    let repliesAndTotalCount = replies.on(value: { print($0.count) })
+      .withLatestFrom(totalCountProperty.signal)
 
     self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(repliesAndTotalCount, project)
   }
@@ -117,11 +129,6 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   fileprivate let commentProjectProperty = MutableProperty<(Comment, Project, Bool)?>(nil)
   public func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool) {
     self.commentProjectProperty.value = (comment, project, inputAreaBecomeFirstResponder)
-  }
-
-  private let didSelectRowProperty = MutableProperty(())
-  public func didSelectRow() {
-    self.didSelectRowProperty.value = ()
   }
 
   fileprivate let viewDidAppearProperty = MutableProperty(())
@@ -134,10 +141,14 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  private let viewMoreRepliesCellWasTappedProperty = MutableProperty(())
+  public func viewMoreRepliesCellWasTapped() {
+    self.viewMoreRepliesCellWasTappedProperty.value = ()
+  }
+
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
   public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
-  public let viewMoreRepliesCellTapped: Signal<Void, Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }

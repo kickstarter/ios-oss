@@ -34,7 +34,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
     self.clearValues(section: Section.replies.rawValue)
 
-    let newReplies = replies.map { reply in
+    let newReplies = replies.map { [project] reply in
       (reply, project)
     }
 
@@ -46,10 +46,10 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
     // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the current count.
     if totalCount > allReplies.count {
-      self.appendRow(
-        value: (),
+      self.set(
+        values: [()],
         cellClass: ViewMoreRepliesCell.self,
-        toSection: Section.viewMoreReplies.rawValue
+        inSection: Section.viewMoreReplies.rawValue
       )
     }
   }
@@ -225,5 +225,9 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
 
     return nil
+  }
+
+  func isCellInViewMoreRepliesSection(_ indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.viewMoreReplies.rawValue ? true : false
   }
 }
