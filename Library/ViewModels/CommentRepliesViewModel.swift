@@ -17,6 +17,9 @@ public protocol CommentRepliesViewModelInputs {
   /// Call when a `ViewMoreRepliesCell` on the `CommentRepliesViewController` is selected.
   func viewMoreRepliesCellWasTapped()
 
+  /// Call when the view appears
+  func viewDidAppear()
+
   /// Call when the view loads.
   func viewDidLoad()
 }

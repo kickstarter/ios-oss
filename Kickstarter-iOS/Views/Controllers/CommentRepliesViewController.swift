@@ -57,6 +57,12 @@ final class CommentRepliesViewController: UITableViewController {
     return true
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 

@@ -10,7 +10,10 @@ class CommentRepliesDataSourceTests: XCTestCase {
   let dataSource = CommentRepliesDataSource()
   let tableView = UITableView()
 
-  private let templateReplies: [Comment] = [.replyTemplate, .replyTemplate, .replyTemplate]
+  private let templateRepliesAndTotalCount: (
+    [Comment],
+    Int
+  ) = ([.replyTemplate, .replyTemplate, .replyTemplate], 3)
 
   override func setUp() {
     super.setUp()
@@ -29,18 +32,18 @@ class CommentRepliesDataSourceTests: XCTestCase {
   }
 
   func testDataSource_WithReplies_HasRepliesSection() {
-    self.dataSource.load(comments: self.templateReplies, project: .template)
+    self.dataSource.load(repliesAndTotalCount: self.templateRepliesAndTotalCount, project: .template)
     XCTAssertEqual(3, self.dataSource.numberOfItems(in: self.repliesSection))
-    XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
   }
 
   func testDataSource_WithReplies_HasCommentCell() {
-    self.dataSource.load(comments: self.templateReplies, project: .template)
+    self.dataSource.load(repliesAndTotalCount: self.templateRepliesAndTotalCount, project: .template)
     XCTAssertEqual("CommentCell", self.dataSource.reusableId(item: 0, section: self.repliesSection))
   }
 
   func testCommentAtIndexPath() {
-    self.dataSource.load(comments: self.templateReplies, project: .template)
+    self.dataSource.load(repliesAndTotalCount: self.templateRepliesAndTotalCount, project: .template)
 
     XCTAssertEqual(
       self.dataSource.comment(at: IndexPath(row: 0, section: self.repliesSection)),
@@ -61,7 +64,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "5"
     ]
 
-    self.dataSource.load(comments: comments, project: .template)
+    let totalCount = 5
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
 
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
 
@@ -100,7 +105,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "5"
     ]
 
-    self.dataSource.load(comments: comments, project: .template)
+    let totalCount = 5
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
 
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
 
@@ -134,7 +141,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "5"
     ]
 
-    self.dataSource.load(comments: comments, project: .template)
+    let totalCount = 5
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
 
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
 
@@ -167,7 +176,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "5"
     ]
 
-    self.dataSource.load(comments: comments, project: .template)
+    let totalCount = 5
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
 
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
 
@@ -201,7 +212,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "5"
     ]
 
-    self.dataSource.load(comments: comments, project: .template)
+    let totalCount = 5
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
 
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
 
@@ -221,7 +234,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "5"
     ]
 
-    self.dataSource.load(comments: comments, project: .template)
+    let totalCount = 5
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
 
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
 
@@ -248,7 +263,9 @@ class CommentRepliesDataSourceTests: XCTestCase {
       Comment.replyTemplate |> \.id .~ "10"
     ]
 
-    self.dataSource.load(comments: firstPage, project: .template)
+    let totalCount = 10
+
+    self.dataSource.load(repliesAndTotalCount: (firstPage, totalCount), project: .template)
 
     let firstPageComments = Array(0..<firstPage.count).compactMap { index -> Comment? in
       self.dataSource.comment(at: IndexPath(row: index, section: self.repliesSection))
@@ -256,7 +273,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
 
     XCTAssertEqual(firstPageComments, firstPage)
 
-    self.dataSource.load(comments: nextPage, project: .template)
+    self.dataSource.load(repliesAndTotalCount: (nextPage, totalCount), project: .template)
 
     let allComments = Array(0..<(firstPage.count + nextPage.count)).compactMap { index -> Comment? in
       self.dataSource.comment(at: IndexPath(row: index, section: self.repliesSection))

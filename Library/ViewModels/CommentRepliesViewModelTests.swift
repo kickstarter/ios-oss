@@ -28,7 +28,9 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.vm.outputs.loadCommentIntoDataSource.observe(self.loadCommentIntoDataSourceComment.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(second)
       .observe(self.loadRepliesAndProjectIntoDataSourceProject.observer)
-    self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(first)
+    self.vm.outputs.loadRepliesAndProjectIntoDataSource
+      .map(first)
+      .map { $0.0 }
       .observe(self.loadRepliesAndProjectIntoDataSourceReplies.observer)
   }
 
@@ -208,10 +210,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
         inputAreaBecomeFirstResponder: false
       )
 
+      self.vm.inputs.viewDidLoad()
+
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
 
-      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
