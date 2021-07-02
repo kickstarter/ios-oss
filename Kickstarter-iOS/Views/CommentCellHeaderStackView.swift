@@ -98,11 +98,13 @@ internal final class CommentCellHeaderStackView: UIStackView {
     var stackViewAlignment: UIStackView.Alignment = .center
 
     switch badge {
-    case .collaborator:
-      style = collaboratorAuthorBadgeStyle
-      stackViewAlignment = .center
-    case .creator:
-      style = creatorAuthorBadgeStyle
+    // TODO: Internationalize `Collaborator` string.
+    case .collaborator, .creator:
+      style = setStyleForCreatorAndCollaborator(
+        text: badge == .creator
+          ? Strings.Creator()
+          : localizedString(key: "Collaborator", defaultValue: "Collaborator")
+      )
       stackViewAlignment = .center
     case .superbacker:
       style = superbackerAuthorBadgeStyle
@@ -142,4 +144,17 @@ internal final class CommentCellHeaderStackView: UIStackView {
     self.authorNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
   }
+}
+
+private func setStyleForCreatorAndCollaborator(text: String) -> PaddingLabelStyle {
+  let style: PaddingLabelStyle = { label in
+    label
+      |> \.text .~ text
+      |> \.font .~ UIFont.ksr_footnote()
+      |> \.textColor .~ UIColor.ksr_create_700
+      |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
+      |> roundedStyle(cornerRadius: Styles.grid(1))
+      |> \.adjustsFontForContentSizeCategory .~ true
+  }
+  return style
 }

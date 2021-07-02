@@ -27,28 +27,6 @@ public let commentBodyTextViewStyle: TextViewStyle = { textView in
     |> \.dataDetectorTypes .~ .link
 }
 
-// Internationalize
-
-public let collaboratorAuthorBadgeStyle: PaddingLabelStyle = { label in
-  label
-    |> \.text .~ localizedString(key: "Collaborator", defaultValue: "Collaborator")
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ UIColor.ksr_create_700
-    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.adjustsFontForContentSizeCategory .~ true
-}
-
-public let creatorAuthorBadgeStyle: PaddingLabelStyle = { label in
-  label
-    |> \.text .~ Strings.Creator()
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ UIColor.ksr_create_700
-    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.adjustsFontForContentSizeCategory .~ true
-}
-
 public let superbackerAuthorBadgeStyle: PaddingLabelStyle = { label in
   label
     |> \.text .~ Strings.Superbacker().uppercased()
