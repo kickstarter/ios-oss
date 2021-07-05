@@ -41,7 +41,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testViewController_WithRootCommentAndReplies() {
     let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.multipleReplyTemplate)
     )
     let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in

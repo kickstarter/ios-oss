@@ -35,6 +35,23 @@ extension Comment {
 
   public static let replyTemplate = Comment(
     author: Author(
+      id: "1",
+      imageUrl: "http://www.kickstarter.com/medium.jpg",
+      isCreator: true,
+      name: "Blob"
+    ),
+    authorBadges: [.creator],
+    body: "Hello World",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "89DJa89jdSDJ89sd8==",
+    isDeleted: false,
+    parentId: "Q29tbWVudC0zMjY2NDAxMg==",
+    replyCount: 2,
+    status: .success
+  )
+
+  public static let replyRootCommentTemplate = Comment(
+    author: Author(
       id: "AFD8hsfh7gsSf9==",
       imageUrl: "https://ks_.imag/fedrico.jpg",
       isCreator: true,
@@ -43,9 +60,9 @@ extension Comment {
     authorBadges: [.creator],
     body: "Hello World",
     createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
-    id: "89DJa89jdSDJ89sd8==",
+    id: "Q29tbWVudC0zMjY2NDAxMg==",
     isDeleted: false,
-    parentId: "Q29tbWVudC0zMjY2NDAxMg==",
+    parentId: nil,
     replyCount: 2,
     status: .success
   )
