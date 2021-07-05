@@ -612,6 +612,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
@@ -668,6 +669,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
@@ -721,6 +723,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
@@ -821,6 +824,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
