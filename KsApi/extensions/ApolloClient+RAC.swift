@@ -12,7 +12,7 @@ extension ApolloClient {
    */
   public func fetch<Query: GraphQLQuery>(query: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
     SignalProducer { observer, _ in
-      self.fetch(query: query) { result in
+      self.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
         switch result {
         case let .success(response):
           guard let data = response.data else {

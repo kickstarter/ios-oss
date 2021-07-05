@@ -29,6 +29,7 @@ extension Comment {
   static func comment(from commentFragment: CommentFragment) -> Comment? {
     guard
       let authorId = commentFragment.author?.id,
+      let decomposedAuthorId = decompose(id: authorId),
       let authorImageUrl = commentFragment.author?.imageUrl,
       let authorName = commentFragment.author?.name
     else { return nil }
@@ -39,7 +40,7 @@ extension Comment {
 
     return Comment(
       author: Author(
-        id: authorId,
+        id: "\(decomposedAuthorId)",
         imageUrl: authorImageUrl,
         isCreator: commentFragment.author?.isCreator ?? false,
         name: authorName
