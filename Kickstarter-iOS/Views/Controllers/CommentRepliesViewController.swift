@@ -110,9 +110,11 @@ final class CommentRepliesViewController: UITableViewController {
     self.viewModel.outputs.loadFailableReplyIntoDataSource
       .observeForUI()
       .observeValues { failableComment, replaceableCommentId, project in
-        self.dataSource.replace(comment: failableComment, and: project, byCommentId: replaceableCommentId)
+        self.dataSource.replace(comment: failableComment,
+                                                                and: project,
+                                                                byCommentId: replaceableCommentId)
         self.tableView.reloadData()
-        // TODO: Scroll to bottom if not already doing so.
+        self.scrollToBottom()
       }
     
     self.viewModel.outputs.configureCommentComposerViewWithData
@@ -120,6 +122,16 @@ final class CommentRepliesViewController: UITableViewController {
       .observeValues { [weak self] data in
         self?.commentComposer.configure(with: data)
       }
+  }
+  
+  private func scrollToBottom() {
+    let repliesSectionValue = CommentRepliesDataSource.Section.replies.rawValue
+    let numberOfReplies = self.tableView.numberOfRows(inSection: repliesSectionValue) - 1
+    let indexPath = IndexPath(row: numberOfReplies,
+                              section: repliesSectionValue)
+    self.tableView.scrollToRow(at: indexPath,
+                               at: .bottom,
+                               animated: true)
   }
 }
 

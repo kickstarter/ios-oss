@@ -91,7 +91,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal func replace(
     comment: Comment, and project: Project,
     byCommentId id: String
-  ) -> (IndexPath?, Bool)? {
+  ) -> (IndexPath?, Bool) {
     let section = Section.replies.rawValue
     let values = self.items(in: section)
 
@@ -118,6 +118,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     return (self.loadValue(comment, project: project, append: true), true)
   }
 
+  // MARK: Helpers
   /**
    Loads a `Comment` into the data source at a given `IndexPath`.
 
