@@ -58,6 +58,10 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as CommentCell, value as (Comment, Project)):
       cell.configureWith(value: value)
+    case let (cell as CommentPostFailedCell, value as Comment):
+      cell.configureWith(value: value)
+    case let (cell as CommentRemovedCell, value as Comment):
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }
@@ -83,6 +87,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
    - returns: An optional tuple of `(IndexPath?, Bool)?`. The `Bool` object determines if the tableView needs to be reloaded.
    */
+  @discardableResult
   internal func replace(
     comment: Comment, and project: Project,
     byCommentId id: String

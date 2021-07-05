@@ -66,6 +66,9 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
+    self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.registerCellClass(CommentPostFailedCell.self)
+    
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
@@ -80,6 +83,12 @@ final class CommentRepliesViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+    
+    self.viewModel.outputs.resetCommentComposer
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.commentComposer.resetInput()
+      }
 
     self.viewModel.outputs.loadCommentIntoDataSource
       .observeForUI()
@@ -97,7 +106,15 @@ final class CommentRepliesViewController: UITableViewController {
         self.dataSource.load(comments: replies, project: project)
         self.tableView.reloadData()
       }
-
+    
+    self.viewModel.outputs.loadFailableReplyIntoDataSource
+      .observeForUI()
+      .observeValues { failableComment, replaceableCommentId, project in
+        self.dataSource.replace(comment: failableComment, and: project, byCommentId: replaceableCommentId)
+        self.tableView.reloadData()
+        // TODO: Scroll to bottom if not already doing so.
+      }
+    
     self.viewModel.outputs.configureCommentComposerViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -108,10 +125,9 @@ final class CommentRepliesViewController: UITableViewController {
 
 // MARK: - CommentComposerViewDelegate
 
-// TODO: Drive `resetInput()` from a ViewModel when we are implementing post comment for replies.
 extension CommentRepliesViewController: CommentComposerViewDelegate {
-  func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
-    self.commentComposer.resetInput()
+  func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
+    self.viewModel.inputs.commentComposerDidSubmitText(text)
   }
 }
 

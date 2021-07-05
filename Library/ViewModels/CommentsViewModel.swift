@@ -3,8 +3,6 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-private let concurrentCommentLimit: UInt = 5
-
 public protocol CommentsViewModelInputs {
   /// Call when the delegate method for the CommentCellDelegate is called.
   func commentCellDidTapReply(comment: Comment)
@@ -72,6 +70,7 @@ public protocol CommentsViewModelType {
 public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
+  // MARK: Initializers
   public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
@@ -275,9 +274,9 @@ public final class CommentsViewModel: CommentsViewModelType,
       .takePairWhen(commentComposerDidSubmitText)
       .map { data in
         let ((project, commentableId, user), text) = data
-        return (project, commentableId, user, text)
+        return (project, commentableId, nil, user, text)
       }
-      .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
+      .flatMap(.concurrent(limit: CommentsViewModel.concurrentCommentLimit), CommentsViewModel.postCommentProducer)
 
     let currentlyRetrying = MutableProperty<Set<String>>([])
 
@@ -294,7 +293,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       .map { commentableId, comment in
         (comment, commentableId)
       }
-      .flatMap(.concurrent(limit: concurrentCommentLimit), retryCommentProducer)
+      .flatMap(.concurrent(limit: CommentsViewModel.concurrentCommentLimit), retryCommentProducer)
       // Once we've emitted a value here the comment has been retried and can be removed.
       .on(value: { [currentlyRetrying] _, id in
         currentlyRetrying.value.remove(id)
@@ -439,36 +438,6 @@ private func retryCommentProducer(
   .map { replacementComment in (replacementComment, comment.id) }
 }
 
-private func postCommentProducer(
-  project: Project,
-  commentableId: String,
-  user: User,
-  body: String
-) -> SignalProducer<(Comment, String), Never> {
-  let failableComment = Comment.failableComment(
-    withId: AppEnvironment.current.uuidType.init().uuidString,
-    date: AppEnvironment.current.dateType.init().date,
-    project: project,
-    user: user,
-    body: body
-  )
-
-  // Post the new comment.
-  return AppEnvironment.current.apiService.postComment(
-    input: .init(
-      body: body,
-      commentableId: commentableId
-    )
-  )
-  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-  // Immediately return a failable comment with a generated ID.
-  .prefix(value: failableComment)
-  // If the request errors we return the failableComment in a failed state.
-  .demoteErrors(replaceErrorWith: failableComment.updatingStatus(to: .failed))
-  // Once the request completes return the actual comment and replace it by its ID.
-  .map { commentOrFailable in (commentOrFailable, failableComment.id) }
-}
-
 private func commentsReplacingCommentById(
   _ comments: [Comment],
   replacingComment: Comment,
@@ -509,5 +478,44 @@ private func commentsNextPage(
     guard let id = updateID else { return .empty }
     return AppEnvironment.current.apiService
       .fetchUpdateComments(id: id, cursor: cursor, limit: nil)
+  }
+}
+
+extension CommentsViewModel {
+  // MARK: Properties
+  static let concurrentCommentLimit: UInt = 5
+  
+  // MARK: Helpers
+  static func postCommentProducer(
+    project: Project,
+    commentableId: String,
+    parentId: String?,
+    user: User,
+    body: String
+  ) -> SignalProducer<(Comment, String), Never> {
+    let failableComment = Comment.failableComment(
+      withId: AppEnvironment.current.uuidType.init().uuidString,
+      date: AppEnvironment.current.dateType.init().date,
+      project: project,
+      parentId: parentId,
+      user: user,
+      body: body
+    )
+
+    // Post the new comment or comment reply.
+    return AppEnvironment.current.apiService.postComment(
+      input: .init(
+        body: body,
+        commentableId: commentableId,
+        parentId: parentId
+      )
+    )
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    // Immediately return a failable comment with a generated ID.
+    .prefix(value: failableComment)
+    // If the request errors we return the failableComment in a failed state.
+    .demoteErrors(replaceErrorWith: failableComment.updatingStatus(to: .failed))
+    // Once the request completes return the actual comment and replace it by its ID.
+    .map { commentOrFailable in (commentOrFailable, failableComment.id) }
   }
 }
