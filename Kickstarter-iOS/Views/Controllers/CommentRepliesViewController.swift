@@ -68,7 +68,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
-    
+
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
@@ -83,7 +83,7 @@ final class CommentRepliesViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
-    
+
     self.viewModel.outputs.resetCommentComposer
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -106,32 +106,38 @@ final class CommentRepliesViewController: UITableViewController {
         self.dataSource.load(comments: replies, project: project)
         self.tableView.reloadData()
       }
-    
+
     self.viewModel.outputs.loadFailableReplyIntoDataSource
       .observeForUI()
       .observeValues { failableComment, replaceableCommentId, project in
-        self.dataSource.replace(comment: failableComment,
-                                                                and: project,
-                                                                byCommentId: replaceableCommentId)
+        self.dataSource.replace(
+          comment: failableComment,
+          and: project,
+          byCommentId: replaceableCommentId
+        )
         self.tableView.reloadData()
         self.scrollToBottom()
       }
-    
+
     self.viewModel.outputs.configureCommentComposerViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.commentComposer.configure(with: data)
       }
   }
-  
+
   private func scrollToBottom() {
     let repliesSectionValue = CommentRepliesDataSource.Section.replies.rawValue
     let numberOfReplies = self.tableView.numberOfRows(inSection: repliesSectionValue) - 1
-    let indexPath = IndexPath(row: numberOfReplies,
-                              section: repliesSectionValue)
-    self.tableView.scrollToRow(at: indexPath,
-                               at: .bottom,
-                               animated: true)
+    let indexPath = IndexPath(
+      row: numberOfReplies,
+      section: repliesSectionValue
+    )
+    self.tableView.scrollToRow(
+      at: indexPath,
+      at: .bottom,
+      animated: true
+    )
   }
 }
 

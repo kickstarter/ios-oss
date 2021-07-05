@@ -119,6 +119,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   }
 
   // MARK: Helpers
+
   /**
    Loads a `Comment` into the data source at a given `IndexPath`.
 

@@ -16,7 +16,7 @@ public protocol CommentRepliesViewModelInputs {
 
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
-  
+
   /// Call when the view appears.
   func viewDidAppear()
 
@@ -33,10 +33,10 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits a `Comment`, `String` and `Project` to replace an optimistically posted comment after a network request completes.
   var loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never> { get }
-  
+
   /// Emits a list of `Comments` and `Project` to load into the data source
   var loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
-  
+
   /// Emits when a comment has been posted reset the composer.
   var resetCommentComposer: Signal<(), Never> { get }
 }
@@ -74,7 +74,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     self.resetCommentComposer = self.commentComposerDidSubmitTextProperty.signal.skipNil()
       .ignoreValues()
-    
+
     self.configureCommentComposerViewWithData = Signal
       .combineLatest(
         project,
@@ -102,17 +102,18 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       }
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
-    
+
     let commentableId = project.flatMap { project in
       SignalProducer.init(value: project.graphID)
     }
-    
+
     let parentId = rootComment.flatMap { comment in
       SignalProducer.init(value: comment.id)
     }
-    
+
     let failablePostReplyCommentConfigData:
-      Signal<(project: Project, commentableId: String, parentId: String, user: User), Never> = Signal.combineLatest(
+      Signal<(project: Project, commentableId: String, parentId: String, user: User), Never> = Signal
+      .combineLatest(
         project,
         commentableId,
         parentId,
@@ -120,15 +121,18 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       ).map { project, commentableId, parentId, user in
         (project, commentableId, parentId, user)
       }
-    
+
     let failableCommentWithReplacementId = failablePostReplyCommentConfigData
       .takePairWhen(commentComposerDidSubmitText)
       .map { data in
         let ((project, commentableId, parentId, user), text) = data
         return (project, commentableId, parentId, user, text)
       }
-      .flatMap(.concurrent(limit: CommentsViewModel.concurrentCommentLimit), CommentsViewModel.postCommentProducer)
-    
+      .flatMap(
+        .concurrent(limit: CommentsViewModel.concurrentCommentLimit),
+        CommentsViewModel.postCommentProducer
+      )
+
     let repliesEvent = rootComment
       .switchMap { comment in
         AppEnvironment.current.apiService.fetchCommentReplies(
@@ -141,11 +145,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .map { $0.replies }
 
     self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(replies, project)
-    
+
     self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableCommentWithReplacementId, project)
       .map(unpack)
   }
-  
+
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
   public func commentComposerDidSubmitText(_ text: String) {
     self.commentComposerDidSubmitTextProperty.value = text

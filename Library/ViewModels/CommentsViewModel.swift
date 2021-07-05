@@ -71,6 +71,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
   // MARK: Initializers
+
   public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
@@ -276,7 +277,10 @@ public final class CommentsViewModel: CommentsViewModelType,
         let ((project, commentableId, user), text) = data
         return (project, commentableId, nil, user, text)
       }
-      .flatMap(.concurrent(limit: CommentsViewModel.concurrentCommentLimit), CommentsViewModel.postCommentProducer)
+      .flatMap(
+        .concurrent(limit: CommentsViewModel.concurrentCommentLimit),
+        CommentsViewModel.postCommentProducer
+      )
 
     let currentlyRetrying = MutableProperty<Set<String>>([])
 
@@ -483,9 +487,11 @@ private func commentsNextPage(
 
 extension CommentsViewModel {
   // MARK: Properties
+
   static let concurrentCommentLimit: UInt = 5
-  
+
   // MARK: Helpers
+
   static func postCommentProducer(
     project: Project,
     commentableId: String,
