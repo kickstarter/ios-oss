@@ -1,0 +1,7 @@
+fragment LocationFragment on Location {
+  country
+  countryName
+  displayableName
+  id
+  name
+}

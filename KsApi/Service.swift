@@ -188,7 +188,7 @@ public struct Service: ServiceType {
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
+      .fetch(query: GraphAPI.FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
@@ -198,7 +198,7 @@ public struct Service: ServiceType {
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit))
+      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 

@@ -4,7 +4,7 @@ extension CommentsEnvelope {
   /**
    Returns a minimal `CommentsEnvelope` from a `FetchProjectCommentsQuery.Data`
    */
-  static func commentsEnvelope(from data: FetchProjectCommentsQuery.Data) -> CommentsEnvelope? {
+  static func commentsEnvelope(from data: GraphAPI.FetchProjectCommentsQuery.Data) -> CommentsEnvelope? {
     guard let comments = data.project?.comments?.edges?
       .compactMap({ $0?.node?.fragments.commentFragment })
       .compactMap(Comment.comment(from:))
@@ -23,7 +23,7 @@ extension CommentsEnvelope {
   /**
    Returns a minimal `CommentsEnvelope` from a `FetchUpdateCommentsQuery.Data`
    */
-  static func commentsEnvelope(from data: FetchUpdateCommentsQuery.Data) -> CommentsEnvelope? {
+  static func commentsEnvelope(from data: GraphAPI.FetchUpdateCommentsQuery.Data) -> CommentsEnvelope? {
     guard let comments = data.post?.asFreeformPost?.comments?.edges?
       .compactMap({ $0?.node?.fragments.commentFragment })
       .compactMap(Comment.comment(from:))
