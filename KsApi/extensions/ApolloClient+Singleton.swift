@@ -27,7 +27,7 @@ class GraphQL {
     headers: [String: String],
     additionalHeaders: @escaping () -> [String: String]
   ) {
-    let store = ApolloStore(cache: InMemoryNormalizedCache())
+    let store = ApolloStore()
     let provider = NetworkInterceptorProvider(store: store, additionalHeaders: additionalHeaders)
     let transport = RequestChainNetworkTransport(
       interceptorProvider: provider,
