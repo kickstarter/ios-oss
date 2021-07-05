@@ -11,7 +11,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     case error
   }
 
-  internal func createContext(comment: Comment) {
+  internal func loadRootComment(_ comment: Comment) {
     let section = Section.rootComment.rawValue
     self.clearValues()
 

@@ -93,8 +93,8 @@ final class CommentRepliesViewController: UITableViewController {
     self.viewModel.outputs.loadCommentIntoDataSource
       .observeForUI()
       .observeValues { [weak self] comment in
-        self?.dataSource.createContext(
-          comment: comment
+        self?.dataSource.loadRootComment(
+          comment
         )
 
         self?.tableView.reloadData()
