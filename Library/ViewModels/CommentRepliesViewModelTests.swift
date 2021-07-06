@@ -15,6 +15,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let loadCommentIntoDataSourceComment = TestObserver<Comment, Never>()
   private let loadRepliesAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
+  private let loadRepliesAndProjectIntoDataSourceTotalCount = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()
@@ -32,6 +33,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
       .map(first)
       .map { $0.0 }
       .observe(self.loadRepliesAndProjectIntoDataSourceReplies.observer)
+    self.vm.outputs.loadRepliesAndProjectIntoDataSource
+      .map(first)
+      .map { $0.1 }
+      .observe(self.loadRepliesAndProjectIntoDataSourceTotalCount.observer)
   }
 
   func testDataSource_WithComment_HasComment() {
@@ -214,11 +219,13 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([])
 
       self.scheduler.advance()
 
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
     }
   }
 }
