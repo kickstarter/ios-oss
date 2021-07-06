@@ -102,24 +102,39 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.viewModel.outputs.loadRepliesAndProjectIntoDataSource
       .observeForUI()
-      .observeValues { replies, project in
+      .observeValues { [weak self] replies, project in
+        guard let self = self else { return }
+
         self.dataSource.load(comments: replies, project: project)
         self.tableView.reloadData()
       }
 
     self.viewModel.outputs.loadFailableReplyIntoDataSource
       .observeForUI()
-      .observeValues { failableComment, replaceableCommentId, project in
+      .observeValues { [weak self] failableComment, replaceableCommentId, project in
+        guard let self = self else { return }
+
         let (indexPath, newComment) = self.dataSource.replace(
           comment: failableComment,
           and: project,
           byCommentId: replaceableCommentId
         )
-        self.tableView.reloadData()
 
-        if let lastIndexPath = indexPath,
-          newComment {
-          self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
+        guard let lastIndexPath = indexPath else { return }
+
+        let rowUpdate: Void = newComment ?
+          self.tableView.insertRows(at: [lastIndexPath], with: .fade) :
+          self.tableView.reloadRows(at: [lastIndexPath], with: .fade)
+
+        self.tableView.performBatchUpdates {
+          rowUpdate
+        } completion: { isComplete in
+          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            if isComplete,
+              newComment {
+              self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
+            }
+          }
         }
       }
 
