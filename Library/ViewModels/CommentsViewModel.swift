@@ -516,7 +516,7 @@ extension CommentsViewModel {
         parentId: parentId
       )
     )
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
     // Immediately return a failable comment with a generated ID.
     .prefix(value: failableComment)
     // If the request errors we return the failableComment in a failed state.

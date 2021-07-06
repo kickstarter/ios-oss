@@ -129,11 +129,9 @@ final class CommentRepliesViewController: UITableViewController {
         self.tableView.performBatchUpdates {
           rowUpdate
         } completion: { isComplete in
-          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            if isComplete,
-              newComment {
-              self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
-            }
+          if isComplete,
+            newComment {
+            self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
           }
         }
       }
