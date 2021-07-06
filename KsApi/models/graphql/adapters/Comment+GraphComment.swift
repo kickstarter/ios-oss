@@ -26,12 +26,12 @@ extension Comment {
   /**
    Returns a minimal `Comment` from a `CommentFragment`
    */
-  static func comment(from commentFragment: CommentFragment) -> Comment? {
+  static func comment(from commentFragment: GraphAPI.CommentFragment) -> Comment? {
     guard
-      let authorId = commentFragment.author?.id,
+      let authorId = commentFragment.author?.fragments.userFragment.id,
       let decomposedAuthorId = decompose(id: authorId),
-      let authorImageUrl = commentFragment.author?.imageUrl,
-      let authorName = commentFragment.author?.name
+      let authorImageUrl = commentFragment.author?.fragments.userFragment.imageUrl,
+      let authorName = commentFragment.author?.fragments.userFragment.name
     else { return nil }
 
     let authorBadges = commentFragment.authorBadges?
@@ -42,7 +42,7 @@ extension Comment {
       author: Author(
         id: "\(decomposedAuthorId)",
         imageUrl: authorImageUrl,
-        isCreator: commentFragment.author?.isCreator ?? false,
+        isCreator: commentFragment.author?.fragments.userFragment.isCreator ?? false,
         name: authorName
       ),
       authorBadges: authorBadges,

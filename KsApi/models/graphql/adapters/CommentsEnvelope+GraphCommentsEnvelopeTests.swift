@@ -8,7 +8,7 @@ final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
     // FIXME: Add templates for Apollo models and update these tests.
     return
     guard
-      let project = try? FetchProjectCommentsQuery.Data(jsonObject: [:]),
+      let project = try? GraphAPI.FetchProjectCommentsQuery.Data(jsonObject: [:]),
       let envelope = CommentsEnvelope.commentsEnvelope(from: project) else {
       XCTFail()
       return
@@ -29,7 +29,7 @@ final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
     // FIXME: Add templates for Apollo models and update these tests.
     return
     guard
-      let update = try? FetchUpdateCommentsQuery.Data(jsonObject: [:]),
+      let update = try? GraphAPI.FetchUpdateCommentsQuery.Data(jsonObject: [:]),
       let env = CommentsEnvelope.commentsEnvelope(from: update) else {
       XCTFail()
       return
