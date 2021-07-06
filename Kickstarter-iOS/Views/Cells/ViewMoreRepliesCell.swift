@@ -60,8 +60,8 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value _: Void) {
-//    self.viewModel.inputs.configureWith(value)
+  func configureWith() {
+    self.viewModel.inputs.configureWith()
   }
 
   private func configureViews() {

@@ -31,7 +31,7 @@ public protocol CommentRepliesViewModelOutputs {
   /// Emits a root `Comment`s  to load into the data source.
   var loadCommentIntoDataSource: Signal<Comment, Never> { get }
 
-  /// Emits a list of `Replies` and `Project` to load into the data source
+  /// Emits a tuple of (`Comment`,`Int`) and a `Project` to load into the data source
   var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never> { get }
 }
 
