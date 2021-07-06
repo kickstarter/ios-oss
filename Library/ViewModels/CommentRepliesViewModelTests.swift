@@ -200,9 +200,24 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_loadRepliesProjectAndTestCountIntoDataSource() {
+  func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationSuccessful() {
     let project = Project.template
     let envelope = CommentRepliesEnvelope.template
+    let updatedEnvelope = CommentRepliesEnvelope(
+      comment: .template,
+      cursor: "nextCursor",
+      hasPreviousPage: false,
+      replies: [
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate
+      ],
+      totalCount: 14
+    )
 
     let mockService = MockService(
       fetchCommentRepliesEnvelopeResult: .success(envelope)
@@ -226,6 +241,19 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
+
+      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
+        self.vm.inputs.viewMoreRepliesCellWasTapped()
+
+        self.scheduler.advance()
+
+        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
+        print(self.loadRepliesAndProjectIntoDataSourceReplies.values)
+        self.loadRepliesAndProjectIntoDataSourceReplies
+          .assertValues([envelope.replies, updatedEnvelope.replies])
+        self.loadRepliesAndProjectIntoDataSourceTotalCount
+          .assertValues([updatedEnvelope.totalCount, updatedEnvelope.totalCount])
+      }
     }
   }
 }
