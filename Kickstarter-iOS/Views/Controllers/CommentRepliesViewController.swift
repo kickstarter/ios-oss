@@ -66,6 +66,9 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
+    self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.registerCellClass(CommentPostFailedCell.self)
+
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
@@ -81,11 +84,17 @@ final class CommentRepliesViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.resetCommentComposer
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.commentComposer.resetInput()
+      }
+
     self.viewModel.outputs.loadCommentIntoDataSource
       .observeForUI()
       .observeValues { [weak self] comment in
-        self?.dataSource.createContext(
-          comment: comment
+        self?.dataSource.loadRootComment(
+          comment
         )
 
         self?.tableView.reloadData()
@@ -93,9 +102,38 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.viewModel.outputs.loadRepliesAndProjectIntoDataSource
       .observeForUI()
-      .observeValues { replies, project in
+      .observeValues { [weak self] replies, project in
+        guard let self = self else { return }
+
         self.dataSource.load(comments: replies, project: project)
         self.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.loadFailableReplyIntoDataSource
+      .observeForUI()
+      .observeValues { [weak self] failableComment, replaceableCommentId, project in
+        guard let self = self else { return }
+
+        let (indexPath, newComment) = self.dataSource.replace(
+          comment: failableComment,
+          and: project,
+          byCommentId: replaceableCommentId
+        )
+
+        guard let lastIndexPath = indexPath else { return }
+
+        let rowUpdate: Void = newComment ?
+          self.tableView.insertRows(at: [lastIndexPath], with: .fade) :
+          self.tableView.reloadRows(at: [lastIndexPath], with: .fade)
+
+        self.tableView.performBatchUpdates {
+          rowUpdate
+        } completion: { isComplete in
+          if isComplete,
+            newComment {
+            self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
+          }
+        }
       }
 
     self.viewModel.outputs.configureCommentComposerViewWithData
@@ -108,10 +146,9 @@ final class CommentRepliesViewController: UITableViewController {
 
 // MARK: - CommentComposerViewDelegate
 
-// TODO: Drive `resetInput()` from a ViewModel when we are implementing post comment for replies.
 extension CommentRepliesViewController: CommentComposerViewDelegate {
-  func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
-    self.commentComposer.resetInput()
+  func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
+    self.viewModel.inputs.commentComposerDidSubmitText(text)
   }
 }
 

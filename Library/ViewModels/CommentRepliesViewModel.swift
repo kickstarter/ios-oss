@@ -14,6 +14,9 @@ public protocol CommentRepliesViewModelInputs {
    **/
   func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
 
+  /// Call when the User is posting a comment or reply.
+  func commentComposerDidSubmitText(_ text: String)
+
   /// Call when the view appears.
   func viewDidAppear()
 
@@ -28,8 +31,14 @@ public protocol CommentRepliesViewModelOutputs {
   /// Emits a root `Comment`s  to load into the data source.
   var loadCommentIntoDataSource: Signal<Comment, Never> { get }
 
-  /// Emits a list of `Replies` and `Project` to load into the data source
+  /// Emits a `Comment`, `String` and `Project` to replace an optimistically posted comment after a network request completes.
+  var loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never> { get }
+
+  /// Emits a list of `Comments` and `Project` to load into the data source
   var loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
+
+  /// Emits when a comment has been posted reset the composer.
+  var resetCommentComposer: Signal<(), Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -63,11 +72,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       self.viewDidLoadProperty.signal.mapConst(false)
     ).skipRepeats()
 
-    /**
-     FIXME: There's currently an issue raised here: https://github.com/kickstarter/ios-oss/pull/1523#discussion_r655679914 where
-     `project.memberData.permissions` is not covered in this logic, as it also controls the reply button show/hide.
-      This has been logged in this ticket https://kickstarter.atlassian.net/browse/NT-2034.
-     */
+    self.resetCommentComposer = self.commentComposerDidSubmitTextProperty.signal.skipNil()
+      .ignoreValues()
+
     self.configureCommentComposerViewWithData = Signal
       .combineLatest(
         project,
@@ -94,6 +101,38 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         return (url, canPostComment, false, inputAreaBecomeFirstResponder)
       }
 
+    let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
+
+    let commentableId = project.flatMap { project in
+      SignalProducer.init(value: project.graphID)
+    }
+
+    let parentId = rootComment.flatMap { comment in
+      SignalProducer.init(value: comment.id)
+    }
+
+    let failablePostReplyCommentConfigData:
+      Signal<(project: Project, commentableId: String, parentId: String, user: User), Never> = Signal
+      .combineLatest(
+        project,
+        commentableId,
+        parentId,
+        currentUser.skipNil()
+      ).map { project, commentableId, parentId, user in
+        (project, commentableId, parentId, user)
+      }
+
+    let failableCommentWithReplacementId = failablePostReplyCommentConfigData
+      .takePairWhen(commentComposerDidSubmitText)
+      .map { data in
+        let ((project, commentableId, parentId, user), text) = data
+        return (project, commentableId, parentId, user, text)
+      }
+      .flatMap(
+        .concurrent(limit: CommentsViewModel.concurrentCommentLimit),
+        CommentsViewModel.postCommentProducer
+      )
+
     let repliesEvent = rootComment
       .switchMap { comment in
         AppEnvironment.current.apiService.fetchCommentReplies(
@@ -106,6 +145,14 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .map { $0.replies }
 
     self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(replies, project)
+
+    self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableCommentWithReplacementId, project)
+      .map(unpack)
+  }
+
+  fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
+  public func commentComposerDidSubmitText(_ text: String) {
+    self.commentComposerDidSubmitTextProperty.value = text
   }
 
   fileprivate let commentProjectProperty = MutableProperty<(Comment, Project, Bool)?>(nil)
@@ -125,7 +172,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
-  public var loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public let loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never>
+  public let loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public let resetCommentComposer: Signal<(), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }

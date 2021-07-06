@@ -53,6 +53,7 @@ extension Comment {
     withId id: String,
     date: Date,
     project: Project,
+    parentId: String?,
     user: User,
     body: String
   ) -> Comment {
@@ -69,6 +70,7 @@ extension Comment {
       createdAt: date.timeIntervalSince1970,
       id: id,
       isDeleted: false,
+      parentId: parentId,
       replyCount: 0,
       status: .success
     )

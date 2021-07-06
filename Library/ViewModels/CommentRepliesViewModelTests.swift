@@ -13,8 +13,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
   private let loadCommentIntoDataSourceComment = TestObserver<Comment, Never>()
+  private let loadFailableReplyIntoDataSource = TestObserver<Comment, Never>()
+  private let loadFailableCommentIDIntoDataSource = TestObserver<String, Never>()
+  private let loadFailableProjectIntoDataSource = TestObserver<Project, Never>()
   private let loadRepliesAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
+  private let resetCommentComposer = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -26,10 +30,17 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.loadCommentIntoDataSource.observe(self.loadCommentIntoDataSourceComment.observer)
+    self.vm.outputs.loadFailableReplyIntoDataSource.map(first)
+      .observe(self.loadFailableReplyIntoDataSource.observer)
+    self.vm.outputs.loadFailableReplyIntoDataSource.map(second)
+      .observe(self.loadFailableCommentIDIntoDataSource.observer)
+    self.vm.outputs.loadFailableReplyIntoDataSource.map(third)
+      .observe(self.loadFailableProjectIntoDataSource.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(second)
       .observe(self.loadRepliesAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(first)
       .observe(self.loadRepliesAndProjectIntoDataSourceReplies.observer)
+    self.vm.outputs.resetCommentComposer.observe(self.resetCommentComposer.observer)
   }
 
   func testDataSource_WithComment_HasComment() {
@@ -193,9 +204,75 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  func testOutput_SubmitText_FromCommentComposer_ResetsCommentComposerTextInput() {
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    self.resetCommentComposer.assertDidNotEmitValue()
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.resetCommentComposer.assertDidNotEmitValue()
+
+      self.vm.inputs.commentComposerDidSubmitText("Text")
+
+      self.resetCommentComposer.assertDidEmitValue()
+    }
+  }
+
+  func testOutput_SubmitText_FromCommentComposer_ReturnsFailableCommentAndSuccessfulComment() {
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    let mockService = MockService(
+      postCommentResult: .success(.replyTemplate)
+    )
+
+    self.loadFailableReplyIntoDataSource.assertDidNotEmitValue()
+    self.loadFailableProjectIntoDataSource.assertDidNotEmitValue()
+    self.loadFailableCommentIDIntoDataSource.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(
+        comment: .replyRootCommentTemplate,
+        project: project,
+        inputAreaBecomeFirstResponder: true
+      )
+      self.vm.inputs.viewDidLoad()
+
+      self.loadFailableReplyIntoDataSource.assertDidNotEmitValue()
+      self.loadFailableProjectIntoDataSource.assertDidNotEmitValue()
+      self.loadFailableCommentIDIntoDataSource.assertDidNotEmitValue()
+
+      self.vm.inputs.commentComposerDidSubmitText("Text")
+
+      self.loadFailableReplyIntoDataSource.assertValueCount(1)
+      self.loadFailableProjectIntoDataSource.assertLastValue(project)
+      self.loadFailableCommentIDIntoDataSource.assertLastValue(MockUUID().uuidString)
+
+      XCTAssertEqual(self.loadFailableReplyIntoDataSource.lastValue!.body, "Text")
+      XCTAssertEqual(self.loadFailableReplyIntoDataSource.lastValue!.author.id, "\(User.template.id)")
+      XCTAssertEqual(
+        self.loadFailableReplyIntoDataSource.lastValue!.parentId!,
+        Comment.replyRootCommentTemplate.id
+      )
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.loadFailableReplyIntoDataSource.assertValueCount(2)
+      self.loadFailableReplyIntoDataSource.assertLastValue(.replyTemplate)
+      self.loadFailableProjectIntoDataSource.assertLastValue(project)
+      self.loadFailableCommentIDIntoDataSource.assertLastValue(MockUUID().uuidString)
+    }
+  }
+
   func testOutput_loadRepliesAndProjectIntoDataSource() {
     let project = Project.template
-    let envelope = CommentRepliesEnvelope.template
+    let envelope = CommentRepliesEnvelope.multipleReplyTemplate
 
     let mockService = MockService(
       fetchCommentRepliesEnvelopeResult: .success(envelope)

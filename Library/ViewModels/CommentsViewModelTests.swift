@@ -612,6 +612,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
@@ -628,7 +629,7 @@ internal final class CommentsViewModelTests: TestCase {
         "The amount of comments in the data source doesn't change."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       XCTAssertEqual(
         self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first,
@@ -668,6 +669,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
@@ -721,6 +723,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
@@ -821,6 +824,7 @@ internal final class CommentsViewModelTests: TestCase {
         withId: self.uuidType.init().uuidString,
         date: MockDate().date,
         project: .template,
+        parentId: nil,
         user: .template,
         body: bodyText
       )
