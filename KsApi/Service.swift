@@ -1,3 +1,4 @@
+import Apollo
 import Foundation
 import PerimeterX
 import Prelude
@@ -47,6 +48,13 @@ public struct Service: ServiceType {
 
     // Initialize PerimeterX
     PXManager.sharedInstance().start(with: Secrets.PerimeterX.appId)
+
+    // Configure GraphQL Client
+    GraphQL.shared.configure(
+      with: serverConfig.graphQLEndpointUrl,
+      headers: self.defaultHeaders,
+      additionalHeaders: { perimeterXClient.headers() }
+    )
   }
 
   public func login(_ oauthToken: OauthTokenAuthType) -> Service {
@@ -174,9 +182,23 @@ public struct Service: ServiceType {
     return request(.projectComments(project))
   }
 
-  public func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
+  public func fetchProjectComments(
+    slug: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
+      .flatMap(CommentsEnvelope.envelopeProducer(from:))
+  }
+
+  public func fetchUpdateComments(
+    id: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 

@@ -1,0 +1,19 @@
+query FetchUpdateComments($postId: ID!, $cursor: String, $limit: Int) {
+  post(id: $postId) {
+    ... on FreeformPost {
+      comments(after: $cursor, first: $limit) {
+        edges {
+          node {
+            ...CommentFragment
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+      id
+    }
+  }
+}
