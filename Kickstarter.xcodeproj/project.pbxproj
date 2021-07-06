@@ -452,6 +452,7 @@
 		8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
+		8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */; };
 		8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */; };
 		8A1A93D224C602300012FB43 /* PledgeShippingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */; };
 		8A1F155624DB609D00E0C000 /* DateFormatter+ISOFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */; };
@@ -2067,6 +2068,16 @@
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
 		8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUpdateComments.graphql; sourceTree = "<group>"; };
+		8A1556D7269394A400017845 /* BackingFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BackingFragment.graphql; sourceTree = "<group>"; };
+		8A1556DF269394B600017845 /* RewardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RewardFragment.graphql; sourceTree = "<group>"; };
+		8A1556EE269398CA00017845 /* CategoryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CategoryFragment.graphql; sourceTree = "<group>"; };
+		8A1556EF269398CB00017845 /* ProjectFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectFragment.graphql; sourceTree = "<group>"; };
+		8A1556F0269398CB00017845 /* MoneyFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = MoneyFragment.graphql; sourceTree = "<group>"; };
+		8A1556F1269398CB00017845 /* UserFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserFragment.graphql; sourceTree = "<group>"; };
+		8A1556F2269398CB00017845 /* CreditCardFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreditCardFragment.graphql; sourceTree = "<group>"; };
+		8A1556F3269398CB00017845 /* CountryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CountryFragment.graphql; sourceTree = "<group>"; };
+		8A1556F4269398CB00017845 /* LocationFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LocationFragment.graphql; sourceTree = "<group>"; };
+		8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackingQuery.graphql; sourceTree = "<group>"; };
 		8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryView.swift; sourceTree = "<group>"; };
 		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISOFormatter.swift"; sourceTree = "<group>"; };
@@ -3267,6 +3278,7 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
 				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
@@ -3405,7 +3417,16 @@
 		8ADCCDAA2656BC020079D308 /* fragments */ = {
 			isa = PBXGroup;
 			children = (
+				8A1556D7269394A400017845 /* BackingFragment.graphql */,
+				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
 				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
+				8A1556F3269398CB00017845 /* CountryFragment.graphql */,
+				8A1556F2269398CB00017845 /* CreditCardFragment.graphql */,
+				8A1556F4269398CB00017845 /* LocationFragment.graphql */,
+				8A1556F0269398CB00017845 /* MoneyFragment.graphql */,
+				8A1556EF269398CB00017845 /* ProjectFragment.graphql */,
+				8A1556DF269394B600017845 /* RewardFragment.graphql */,
+				8A1556F1269398CB00017845 /* UserFragment.graphql */,
 			);
 			path = fragments;
 			sourceTree = "<group>";
@@ -5311,6 +5332,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5365,7 +5387,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SCRIPT_PATH=\"${SRCROOT}/Carthage/Checkouts/apollo-ios/scripts\"\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"${SRCROOT}/KsApi/graphql-schema.json\" GraphAPI.swift\n";
+			shellScript = "SCRIPT_PATH=\"${SRCROOT}/Carthage/Checkouts/apollo-ios/scripts\"\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"${SRCROOT}/KsApi/graphql-schema.json\" --namespace=GraphAPI GraphAPI.swift\n";
 		};
 		D0D58D772257F95E00532AC1 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;

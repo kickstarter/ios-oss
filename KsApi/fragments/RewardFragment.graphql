@@ -1,0 +1,36 @@
+fragment RewardFragment on Reward {
+  amount {
+    ...MoneyFragment
+  }
+  backersCount
+  convertedAmount {
+    ...MoneyFragment
+  }
+  description
+  displayName
+  endsAt
+  estimatedDeliveryOn
+  id
+  isMaxPledge
+  items {
+    nodes {
+      id
+      name
+    }
+  }
+  limit
+  limitPerBacker
+  name
+  remainingQuantity
+  shippingPreference
+  shippingRules {
+    cost {
+      ...MoneyFragment
+    }
+    id
+    location {
+      ...LocationFragment
+    }
+  }
+  startsAt
+}

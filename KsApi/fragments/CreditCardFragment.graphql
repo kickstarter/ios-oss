@@ -1,0 +1,10 @@
+fragment CreditCardFragment on PaymentSource {
+  ... on CreditCard {
+    expirationDate
+    id
+    lastFour
+    paymentType
+    state
+    type
+  }
+}

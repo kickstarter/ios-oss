@@ -1,9 +1,6 @@
 fragment CommentFragment on Comment {
   author {
-    id
-    imageUrl(width: 200)
-    isCreator
-    name
+    ...UserFragment
   }
   authorBadges
   body
