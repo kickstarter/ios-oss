@@ -248,7 +248,6 @@ internal final class CommentRepliesViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
-        print(self.loadRepliesAndProjectIntoDataSourceReplies.values)
         self.loadRepliesAndProjectIntoDataSourceReplies
           .assertValues([envelope.replies, updatedEnvelope.replies])
         self.loadRepliesAndProjectIntoDataSourceTotalCount
