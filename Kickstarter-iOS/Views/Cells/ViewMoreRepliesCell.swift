@@ -12,8 +12,6 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
   private let titleTextLabel = UILabel(frame: .zero)
 
-  private let viewModel: ViewMoreRepliesCellViewModelType = ViewMoreRepliesCellViewModel()
-
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -21,7 +19,6 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
     self.bindStyles()
     self.configureViews()
-    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -52,16 +49,10 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text .~ localizedString(key: "View more replies", defaultValue: "View more replies")
   }
 
-  // MARK: - View model
-
-  override func bindViewModel() {
-    super.bindViewModel()
-  }
-
   // MARK: - Configuration
 
   func configureWith(value _: Void) {
-    self.viewModel.inputs.configureWith()
+    return
   }
 
   private func configureViews() {

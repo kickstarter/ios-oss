@@ -7,6 +7,7 @@ import XCTest
 class CommentRepliesDataSourceTests: XCTestCase {
   let commentSection = CommentRepliesDataSource.Section.rootComment.rawValue
   let repliesSection = CommentRepliesDataSource.Section.replies.rawValue
+  let viewMoreRepliesSection = CommentRepliesDataSource.Section.viewMoreReplies.rawValue
   let dataSource = CommentRepliesDataSource()
   let tableView = UITableView()
 
@@ -272,6 +273,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
     }
 
     XCTAssertEqual(firstPageComments, firstPage)
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.viewMoreRepliesSection), 1)
 
     self.dataSource.load(repliesAndTotalCount: (nextPage, totalCount), project: .template)
 

@@ -34,7 +34,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
     self.clearValues(section: Section.replies.rawValue)
 
-    let newReplies = replies.map { [project] reply in
+    let newReplies = replies.map { reply in
       (reply, project)
     }
 
@@ -227,7 +227,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     return nil
   }
 
-  func isCellInViewMoreRepliesSection(_ indexPath: IndexPath) -> Bool {
-    return indexPath.section == Section.viewMoreReplies.rawValue ? true : false
+  public func isCellInViewMoreRepliesSection(_ indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.viewMoreReplies.rawValue
   }
 }

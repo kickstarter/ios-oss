@@ -31,11 +31,11 @@ internal final class CommentRepliesViewModelTests: TestCase {
       .observe(self.loadRepliesAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource
       .map(first)
-      .map { $0.0 }
+      .map { replies, _ in replies }
       .observe(self.loadRepliesAndProjectIntoDataSourceReplies.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource
       .map(first)
-      .map { $0.1 }
+      .map { _, totalCount in totalCount }
       .observe(self.loadRepliesAndProjectIntoDataSourceTotalCount.observer)
   }
 
@@ -200,7 +200,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_loadRepliesAndProjectIntoDataSource() {
+  func testOutput_loadRepliesProjectAndTestCountIntoDataSource() {
     let project = Project.template
     let envelope = CommentRepliesEnvelope.template
 

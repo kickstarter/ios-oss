@@ -14,7 +14,7 @@ public protocol CommentRepliesViewModelInputs {
    **/
   func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
 
-  /// Call when a `ViewMoreRepliesCell` on the `CommentRepliesViewController` is selected.
+  /// Call in `didSelectRow` when the `ViewMoreRepliesCell` is tapped.
   func viewMoreRepliesCellWasTapped()
 
   /// Call when the view appears
@@ -115,9 +115,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         AppEnvironment.current.apiService
           .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id))
       },
-      requestFromCursor: {
+      requestFromCursor: { comment, cursor in
         AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: $0.0.id, before: $0.1))
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id, before: cursor))
       },
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
