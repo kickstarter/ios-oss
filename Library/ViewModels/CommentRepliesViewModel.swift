@@ -123,8 +123,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       concater: { _, value in value }
     )
 
-    let repliesAndTotalCount = replies.on(value: { print($0.count) })
-      .withLatestFrom(totalCountProperty.signal)
+    let repliesAndTotalCount = replies.withLatestFrom(totalCountProperty.signal)
 
     self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(repliesAndTotalCount, project)
   }
