@@ -629,7 +629,7 @@ internal final class CommentsViewModelTests: TestCase {
         "The amount of comments in the data source doesn't change."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       XCTAssertEqual(
         self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first,

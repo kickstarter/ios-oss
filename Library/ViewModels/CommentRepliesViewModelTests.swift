@@ -261,7 +261,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         Comment.replyRootCommentTemplate.id
       )
 
-      scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.loadFailableReplyIntoDataSource.assertValueCount(2)
       self.loadFailableReplyIntoDataSource.assertLastValue(.replyTemplate)
