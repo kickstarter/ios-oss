@@ -23,12 +23,12 @@ internal final class CommentsViewControllerTests: TestCase {
           .failedRemovedSuccessfulCommentsTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
 
         let (parent, _) = traitControllers(
-          device: .phone4_7inch,
+          device: device,
           orientation: .portrait,
           child: controller
         )
@@ -37,7 +37,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -51,7 +51,7 @@ internal final class CommentsViewControllerTests: TestCase {
           .failedRemovedSuccessfulCommentsTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: .template,
@@ -61,7 +61,7 @@ internal final class CommentsViewControllerTests: TestCase {
         let controller = CommentsViewController.configuredWith(project: Project.template)
 
         let (parent, _) = traitControllers(
-          device: .phone4_7inch,
+          device: device,
           orientation: .portrait,
           child: controller
         )
@@ -70,7 +70,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -81,12 +81,12 @@ internal final class CommentsViewControllerTests: TestCase {
           .successFailedRetryingRetrySuccessCommentsTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: Project.template)
 
         let (parent, _) = traitControllers(
-          device: .phone4_7inch,
+          device: device,
           orientation: .portrait,
           child: controller
         )
@@ -95,7 +95,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -105,16 +105,16 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, currentUser: nil, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -127,15 +127,15 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -145,15 +145,15 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -163,10 +163,10 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 600
 
         self.scheduler.advance()
@@ -176,7 +176,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
           self.scheduler.advance()
 
-          FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+          FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
         }
       }
     }
@@ -193,7 +193,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: .template,
@@ -201,12 +201,12 @@ internal final class CommentsViewControllerTests: TestCase {
         optimizelyClient: mockOptimizelyClient
       ) {
         let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -222,7 +222,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: .template,
@@ -230,12 +230,12 @@ internal final class CommentsViewControllerTests: TestCase {
         optimizelyClient: mockOptimizelyClient
       ) {
         let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -251,7 +251,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: .template,
@@ -259,12 +259,12 @@ internal final class CommentsViewControllerTests: TestCase {
         optimizelyClient: mockOptimizelyClient
       ) {
         let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -280,7 +280,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.personalization.isBacking .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(
         apiService: mockService,
         currentUser: .template,
@@ -288,12 +288,12 @@ internal final class CommentsViewControllerTests: TestCase {
         optimizelyClient: mockOptimizelyClient
       ) {
         let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -306,15 +306,15 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {
         let controller = CommentsViewController.configuredWith(project: .template)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -327,8 +327,16 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
-      withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {}
+      language, device in
+      withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = CommentsViewController.configuredWith(project: .template)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+      }
     }
   }
 
@@ -342,15 +350,15 @@ internal final class CommentsViewControllerTests: TestCase {
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
+      language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
       }
     }
   }
