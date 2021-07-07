@@ -90,16 +90,10 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.shouldIndentContent
       .observeForUI()
       .observeValues { shouldIndent in
+        guard shouldIndent else { return }
+
         _ = self.rootStackView
-          |> \.axis .~ .vertical
-          |> \.layoutMargins .~ .init(
-            top: Styles.grid(1),
-            left: Styles.grid(shouldIndent ? CommentCellStyles.Content.leftIndentWidth : 1),
-            bottom: Styles.grid(3),
-            right: Styles.grid(1)
-          )
-          |> \.isLayoutMarginsRelativeArrangement .~ true
-          |> \.spacing .~ Styles.grid(3)
+          |> commentCellIndentedRootStackViewStyle
       }
   }
 }

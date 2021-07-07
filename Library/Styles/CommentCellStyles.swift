@@ -8,6 +8,19 @@ public enum CommentCellStyles {
   }
 }
 
+public let commentCellIndentedRootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(1),
+      left: Styles.grid(CommentCellStyles.Content.leftIndentWidth),
+      bottom: Styles.grid(3),
+      right: Styles.grid(1)
+    )
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(3)
+}
+
 public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
