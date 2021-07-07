@@ -107,7 +107,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     let totalCountProperty = MutableProperty<Int>(0)
 
     // TODO: Handle isLoading from here
-    let (replies, _, _, _) = paginate(
+    let (replies, _, _, error) = paginate(
       requestFirstPageWith: rootComment,
       requestNextPageWhen: self.viewMoreRepliesCellWasTappedProperty.signal,
       clearOnNewRequest: true,
@@ -162,9 +162,21 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         CommentsViewModel.postCommentProducer
       )
 
-    let repliesAndTotalCount = replies.withLatestFrom(totalCountProperty.signal)
+    let errorLoadingMoreReplies =
+      error
+        .withLatestFrom(totalCountProperty.signal)
+        .combineLatest(with: project)
+        .map { errorAndTotalCount, project -> (([Comment], Int), Project) in
+          let (_, totalCount) = errorAndTotalCount
+          return (([], totalCount), project)
+        }
 
-    self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(repliesAndTotalCount, project)
+    let repliesAndTotalCount = replies.withLatestFrom(totalCountProperty.signal).combineLatest(with: project)
+
+    self.loadRepliesAndProjectIntoDataSource = Signal.merge(
+      repliesAndTotalCount,
+      errorLoadingMoreReplies
+    )
 
     self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableCommentWithReplacementId, project)
       .map(unpack)

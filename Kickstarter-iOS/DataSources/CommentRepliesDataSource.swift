@@ -6,6 +6,7 @@ import UIKit
 internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case rootComment
+    case viewMoreRepliesError
     case viewMoreReplies
     case replies
     case empty
@@ -24,6 +25,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     let (replies, totalCount) = repliesAndTotalCount
 
     // Clear all but rootComment section.
+    self.clearValues(section: Section.viewMoreRepliesError.rawValue)
     self.clearValues(section: Section.viewMoreReplies.rawValue)
     self.clearValues(section: Section.empty.rawValue)
     self.clearValues(section: Section.error.rawValue)
@@ -44,6 +46,12 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       self.loadValue(reply, project: project)
     }
 
+    // If newReplies.count == 0 there was an issue loading more replies and we should show the error cell.
+    guard newReplies.count > 0 else {
+      self.showErrorState()
+      return
+    }
+
     // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the current count.
     if totalCount > allReplies.count {
       self.set(
@@ -54,29 +62,28 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
   }
 
-  // TODO: Implement and write tests
-  internal func showErrorState() {
-    self.clearValues()
-
-    self.appendRow(
-      value: (),
-      cellClass: CommentsErrorCell.self,
-      toSection: Section.error.rawValue
+  private func showErrorState() {
+    self.set(
+      values: [()],
+      cellClass: CommentViewMoreRepliesFailedCell.self,
+      inSection: Section.viewMoreRepliesError.rawValue
     )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as RootCommentCell, value as Comment):
-      cell.configureWith(value: value)
     case let (cell as CommentCell, value as (Comment, Project)):
       cell.configureWith(value: value)
-    case let (cell as ViewMoreRepliesCell, _):
-      cell.configureWith(value: ())
     case let (cell as CommentPostFailedCell, value as Comment):
       cell.configureWith(value: value)
     case let (cell as CommentRemovedCell, value as Comment):
       cell.configureWith(value: value)
+    case let (cell as CommentViewMoreRepliesFailedCell, _):
+      cell.configureWith(value: ())
+    case let (cell as RootCommentCell, value as Comment):
+      cell.configureWith(value: value)
+    case let (cell as ViewMoreRepliesCell, _):
+      cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }

@@ -72,10 +72,11 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
+    self.tableView.registerCellClass(CommentPostFailedCell.self)
+    self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.registerCellClass(CommentViewMoreRepliesFailedCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.registerCellClass(ViewMoreRepliesCell.self)
-    self.tableView.registerCellClass(CommentRemovedCell.self)
-    self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
