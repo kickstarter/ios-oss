@@ -151,6 +151,9 @@ extension CommentRepliesViewController {
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if self.dataSource.isCellInViewMoreRepliesSection(indexPath) {
       self.viewModel.inputs.viewMoreRepliesCellWasTapped()
+    } else if self.dataSource.isCellInRepliesSection(indexPath),
+      let comment = self.dataSource.comment(at: indexPath) {
+      self.viewModel.inputs.didSelectComment(comment)
     }
   }
 }

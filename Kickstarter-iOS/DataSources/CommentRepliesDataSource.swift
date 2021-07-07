@@ -237,4 +237,8 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   public func isCellInViewMoreRepliesSection(_ indexPath: IndexPath) -> Bool {
     return indexPath.section == Section.viewMoreReplies.rawValue
   }
+
+  public func isCellInRepliesSection(_ indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.replies.rawValue
+  }
 }
