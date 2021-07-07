@@ -18,6 +18,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let loadFailableProjectIntoDataSource = TestObserver<Project, Never>()
   private let loadRepliesAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
+  private let loadRepliesAndProjectIntoDataSourceTotalCount = TestObserver<Int, Never>()
   private let resetCommentComposer = TestObserver<(), Never>()
 
   override func setUp() {
@@ -38,8 +39,14 @@ internal final class CommentRepliesViewModelTests: TestCase {
       .observe(self.loadFailableProjectIntoDataSource.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(second)
       .observe(self.loadRepliesAndProjectIntoDataSourceProject.observer)
-    self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(first)
+    self.vm.outputs.loadRepliesAndProjectIntoDataSource
+      .map(first)
+      .map { replies, _ in replies }
       .observe(self.loadRepliesAndProjectIntoDataSourceReplies.observer)
+    self.vm.outputs.loadRepliesAndProjectIntoDataSource
+      .map(first)
+      .map { _, totalCount in totalCount }
+      .observe(self.loadRepliesAndProjectIntoDataSourceTotalCount.observer)
     self.vm.outputs.resetCommentComposer.observe(self.resetCommentComposer.observer)
   }
 
@@ -204,6 +211,58 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationSuccessful() {
+    let project = Project.template
+    let envelope = CommentRepliesEnvelope.multipleReplyTemplate
+    let updatedEnvelope = CommentRepliesEnvelope(
+      comment: .template,
+      cursor: "nextCursor",
+      hasPreviousPage: false,
+      replies: [
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate
+      ],
+      totalCount: 14
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        comment: .template,
+        project: project,
+        inputAreaBecomeFirstResponder: false
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([])
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
+
+      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
+        self.vm.inputs.viewMoreRepliesCellWasTapped()
+
+        self.scheduler.advance()
+
+        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
+        self.loadRepliesAndProjectIntoDataSourceReplies
+          .assertValues([envelope.replies, updatedEnvelope.replies])
+        self.loadRepliesAndProjectIntoDataSourceTotalCount
+          .assertValues([updatedEnvelope.totalCount, updatedEnvelope.totalCount])
+      }
+    }
+  }
+
   func testOutput_SubmitText_FromCommentComposer_ResetsCommentComposerTextInput() {
     let project = Project.template
       |> \.personalization.isBacking .~ false
@@ -267,31 +326,6 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadFailableReplyIntoDataSource.assertLastValue(.replyTemplate)
       self.loadFailableProjectIntoDataSource.assertLastValue(project)
       self.loadFailableCommentIDIntoDataSource.assertLastValue(MockUUID().uuidString)
-    }
-  }
-
-  func testOutput_loadRepliesAndProjectIntoDataSource() {
-    let project = Project.template
-    let envelope = CommentRepliesEnvelope.multipleReplyTemplate
-
-    let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(envelope)
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(
-        comment: .template,
-        project: project,
-        inputAreaBecomeFirstResponder: false
-      )
-
-      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
-      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
-
-      self.vm.inputs.viewDidLoad()
-
-      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
-      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
     }
   }
 }

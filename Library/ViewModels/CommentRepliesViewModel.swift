@@ -14,6 +14,9 @@ public protocol CommentRepliesViewModelInputs {
    **/
   func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
 
+  /// Call in `didSelectRow` when the `ViewMoreRepliesCell` is tapped.
+  func viewMoreRepliesCellWasTapped()
+
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
@@ -31,11 +34,11 @@ public protocol CommentRepliesViewModelOutputs {
   /// Emits a root `Comment`s  to load into the data source.
   var loadCommentIntoDataSource: Signal<Comment, Never> { get }
 
+  /// Emits a tuple of (`Comment`,`Int`) and a `Project` to load into the data source
+  var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never> { get }
+
   /// Emits a `Comment`, `String` and `Project` to replace an optimistically posted comment after a network request completes.
   var loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never> { get }
-
-  /// Emits a list of `Comments` and `Project` to load into the data source
-  var loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
   /// Emits when a comment has been posted reset the composer.
   var resetCommentComposer: Signal<(), Never> { get }
@@ -101,6 +104,32 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         return (url, canPostComment, false, inputAreaBecomeFirstResponder)
       }
 
+    let totalCountProperty = MutableProperty<Int>(0)
+
+    // TODO: Handle isLoading from here
+    let (replies, _, _, _) = paginate(
+      requestFirstPageWith: rootComment,
+      requestNextPageWhen: self.viewMoreRepliesCellWasTappedProperty.signal,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: { [totalCountProperty] envelope -> [Comment] in
+        totalCountProperty.value = envelope.totalCount
+        return envelope.replies
+      },
+      cursorFromEnvelope: { envelope in
+        (envelope.comment, envelope.cursor)
+      },
+      requestFromParams: { comment in
+        AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id))
+      },
+      requestFromCursor: { comment, cursor in
+        AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id, before: cursor))
+      },
+      // only return new pages, we'll concat them ourselves
+      concater: { _, value in value }
+    )
+
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
     let commentableId = project.flatMap { project in
@@ -133,18 +162,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         CommentsViewModel.postCommentProducer
       )
 
-    let repliesEvent = rootComment
-      .switchMap { comment in
-        AppEnvironment.current.apiService.fetchCommentReplies(
-          query: commentRepliesQuery(withCommentId: comment.id)
-        )
-        .materialize()
-      }
+    let repliesAndTotalCount = replies.withLatestFrom(totalCountProperty.signal)
 
-    let replies = repliesEvent.values()
-      .map { $0.replies }
-
-    self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(replies, project)
+    self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(repliesAndTotalCount, project)
 
     self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableCommentWithReplacementId, project)
       .map(unpack)
@@ -170,10 +190,15 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  private let viewMoreRepliesCellWasTappedProperty = MutableProperty(())
+  public func viewMoreRepliesCellWasTapped() {
+    self.viewMoreRepliesCellWasTappedProperty.value = ()
+  }
+
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
+  public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
   public let loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never>
-  public let loadRepliesAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let resetCommentComposer: Signal<(), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }

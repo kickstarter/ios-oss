@@ -6,6 +6,7 @@ import UIKit
 internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case rootComment
+    case viewMoreReplies
     case replies
     case empty
     case error
@@ -19,8 +20,11 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   }
 
   /// Loads in a new page of comments.
-  internal func load(comments: [Comment], project: Project) {
+  internal func load(repliesAndTotalCount: ([Comment], Int), project: Project) {
+    let (replies, totalCount) = repliesAndTotalCount
+
     // Clear all but rootComment section.
+    self.clearValues(section: Section.viewMoreReplies.rawValue)
     self.clearValues(section: Section.empty.rawValue)
     self.clearValues(section: Section.error.rawValue)
 
@@ -30,14 +34,23 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
     self.clearValues(section: Section.replies.rawValue)
 
-    let newComments = comments.map { comment in
-      (comment, project)
+    let newReplies = replies.map { reply in
+      (reply, project)
     }
 
-    let allComments = newComments + current
+    let allReplies = newReplies + current
 
-    allComments.forEach { comment, project in
-      self.loadValue(comment, project: project)
+    allReplies.forEach { reply, project in
+      self.loadValue(reply, project: project)
+    }
+
+    // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the current count.
+    if totalCount > allReplies.count {
+      self.set(
+        values: [()],
+        cellClass: ViewMoreRepliesCell.self,
+        inSection: Section.viewMoreReplies.rawValue
+      )
     }
   }
 
@@ -58,6 +71,8 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as CommentCell, value as (Comment, Project)):
       cell.configureWith(value: value)
+    case let (cell as ViewMoreRepliesCell, _):
+      cell.configureWith(value: ())
     case let (cell as CommentPostFailedCell, value as Comment):
       cell.configureWith(value: value)
     case let (cell as CommentRemovedCell, value as Comment):
@@ -217,5 +232,9 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
 
     return nil
+  }
+
+  public func isCellInViewMoreRepliesSection(_ indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.viewMoreReplies.rawValue
   }
 }

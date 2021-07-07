@@ -2,6 +2,12 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+public enum CommentCellStyles {
+  public enum Layout {
+    public static let leftIndentWidth: Int = 5
+  }
+}
+
 public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
