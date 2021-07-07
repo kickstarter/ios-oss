@@ -17,7 +17,7 @@ final class CommentRepliesViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testViewController_WithRootComment() {
+  func testViewController_WithRootCommentNoReplies() {
     let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
@@ -39,9 +39,9 @@ final class CommentRepliesViewControllerTests: TestCase {
     }
   }
 
-  func testViewController_WithRootCommentAndReplies() {
+  func testViewController_WithRootCommentAndSuccessfulReplies() {
     let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.multipleReplyTemplate)
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.successfulRepliesTemplate)
     )
     let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
@@ -63,5 +63,27 @@ final class CommentRepliesViewControllerTests: TestCase {
     }
   }
 
-  // TODO: When implementing error state of posting `CommentPostFailedCell` are tested here.
+  func testViewController_WithRootCommentAndFailingReplies() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.failedAndSuccessRepliesTemplate)
+    )
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentRepliesViewController
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }
