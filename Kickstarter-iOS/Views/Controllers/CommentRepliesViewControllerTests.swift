@@ -7,7 +7,7 @@ import XCTest
 final class CommentRepliesViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-    
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }

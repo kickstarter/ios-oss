@@ -49,7 +49,7 @@ extension Comment {
     replyCount: 0,
     status: .success
   )
-  
+
   public static let replyFailedTemplate = Comment(
     author: Author(
       id: "1",
