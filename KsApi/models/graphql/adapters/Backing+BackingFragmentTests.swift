@@ -18,15 +18,15 @@ final class Backing_BackingFragmentTests: XCTestCase {
   func test_noReward() {
     do {
       var dict = backingDictionary()
-      dict["addOns"] = nil
-      dict["reward"] = nil
+      dict["addOns"] = NSNull()
+      dict["reward"] = NSNull()
 
-      let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary())
+      let fragment = try GraphAPI.BackingFragment(jsonObject: dict)
       XCTAssertNotNil(fragment)
 
       let backing = Backing.backing(from: fragment)
       XCTAssertNotNil(backing)
-      //XCTAssertEqual(backing?.reward?.isNoReward, true)
+      XCTAssertEqual(backing?.reward?.isNoReward, true)
     } catch {
       XCTFail(error.localizedDescription)
     }
