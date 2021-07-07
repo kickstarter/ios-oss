@@ -46,8 +46,25 @@ extension Comment {
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: false,
     parentId: "Q29tbWVudC0zMjY2NDAxMg==",
-    replyCount: 2,
+    replyCount: 0,
     status: .success
+  )
+  
+  public static let replyFailedTemplate = Comment(
+    author: Author(
+      id: "1",
+      imageUrl: "http://www.kickstarter.com/medium.jpg",
+      isCreator: true,
+      name: "Blob"
+    ),
+    authorBadges: [.superbacker],
+    body: "Hello World",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "89DJa89jdS4J89sd8==",
+    isDeleted: false,
+    parentId: "Q29tbWVudC0zMjY2NDAxMg==",
+    replyCount: 0,
+    status: .failed
   )
 
   public static let replyRootCommentTemplate = Comment(

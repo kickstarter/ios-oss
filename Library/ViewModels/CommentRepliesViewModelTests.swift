@@ -17,7 +17,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let loadFailableCommentIDIntoDataSource = TestObserver<String, Never>()
   private let loadFailableProjectIntoDataSource = TestObserver<Project, Never>()
   private let loadRepliesAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
-  private let loadRepliesAndProjxectIntoDataSourceReplies = TestObserver<[Comment], Never>()
+  private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
   private let resetCommentComposer = TestObserver<(), Never>()
 
   override func setUp() {
@@ -272,7 +272,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
   func testOutput_loadRepliesAndProjectIntoDataSource() {
     let project = Project.template
-    let envelope = CommentRepliesEnvelope.multipleReplyTemplate
+    let envelope = CommentRepliesEnvelope.successfulRepliesTemplate
 
     let mockService = MockService(
       fetchCommentRepliesEnvelopeResult: .success(envelope)
