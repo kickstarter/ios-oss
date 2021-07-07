@@ -26,6 +26,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
 
       let backing = Backing.backing(from: fragment)
       XCTAssertNotNil(backing)
+      //XCTAssertEqual(backing?.reward?.isNoReward, true)
     } catch {
       XCTFail(error.localizedDescription)
     }
