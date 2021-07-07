@@ -4,6 +4,7 @@ extension Comment {
   /**
    Returns a minimal `Comment` from a `CommentFragment`
    */
+  // TODO: Add test
   static func comment(from commentFragment: GraphAPI.CommentFragment) -> Comment? {
     guard
       let authorId = commentFragment.author?.fragments.userFragment.id,
