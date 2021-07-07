@@ -22,6 +22,7 @@ public struct PostCommentMutation<T: GraphMutationInput>: GraphMutation {
           body
           createdAt
           deleted
+          parentId
           id
           replies {
             totalCount

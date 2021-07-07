@@ -12,7 +12,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     case error
   }
 
-  internal func createContext(comment: Comment) {
+  internal func loadRootComment(_ comment: Comment) {
     let section = Section.rootComment.rawValue
     self.clearValues()
 
@@ -73,6 +73,10 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ViewMoreRepliesCell, _):
       cell.configureWith(value: ())
+    case let (cell as CommentPostFailedCell, value as Comment):
+      cell.configureWith(value: value)
+    case let (cell as CommentRemovedCell, value as Comment):
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }
@@ -98,10 +102,11 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
    - returns: An optional tuple of `(IndexPath?, Bool)?`. The `Bool` object determines if the tableView needs to be reloaded.
    */
+  @discardableResult
   internal func replace(
     comment: Comment, and project: Project,
     byCommentId id: String
-  ) -> (IndexPath?, Bool)? {
+  ) -> (IndexPath?, Bool) {
     let section = Section.replies.rawValue
     let values = self.items(in: section)
 
@@ -127,6 +132,8 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     // If the comment we're replacing is not found, it's new, append it.
     return (self.loadValue(comment, project: project, append: true), true)
   }
+
+  // MARK: Helpers
 
   /**
    Loads a `Comment` into the data source at a given `IndexPath`.

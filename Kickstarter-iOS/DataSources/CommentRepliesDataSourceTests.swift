@@ -18,7 +18,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.dataSource.createContext(comment: .template)
+    self.dataSource.loadRootComment(.template)
   }
 
   func testDataSource_WithComment_HasLoadedRootComment() {
@@ -80,13 +80,8 @@ class CommentRepliesDataSourceTests: XCTestCase {
       commentToReplace
     )
 
-    guard
-      let (indexPath, reload) = self.dataSource
+    let (indexPath, reload) = self.dataSource
       .replace(comment: replacement, and: .template, byCommentId: replacement.id)
-    else {
-      XCTFail("Should return and indexPath and Bool.")
-      return
-    }
 
     XCTAssertEqual(
       self.dataSource.comment(at: IndexPath(row: 2, section: self.repliesSection)),
@@ -95,6 +90,45 @@ class CommentRepliesDataSourceTests: XCTestCase {
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
     XCTAssertEqual(indexPath?.row, 2)
     XCTAssertEqual(reload, false)
+  }
+
+  func testReplace_NonExistingComment_HasAppendedComment() {
+    let commentToReplace = Comment.replyTemplate
+      |> \.id .~ "3"
+      |> \.body .~ "Old Body"
+
+    let comments = [
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      Comment.replyTemplate |> \.id .~ "4",
+      Comment.replyTemplate |> \.id .~ "5"
+    ]
+
+    let totalCount = 4
+
+    self.dataSource.load(repliesAndTotalCount: (comments, totalCount), project: .template)
+
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 4)
+
+    let replacement = Comment.replyTemplate
+      |> \.id .~ "3"
+      |> \.body .~ "New Body"
+
+    XCTAssertNotEqual(
+      self.dataSource.comment(at: IndexPath(row: 2, section: self.repliesSection)),
+      commentToReplace
+    )
+
+    let (indexPath, reload) = self.dataSource
+      .replace(comment: replacement, and: .template, byCommentId: replacement.id)
+
+    XCTAssertEqual(
+      self.dataSource.comment(at: IndexPath(row: 4, section: self.repliesSection)),
+      replacement
+    )
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 5)
+    XCTAssertEqual(indexPath?.row, 4)
+    XCTAssertEqual(reload, true)
   }
 
   func testReplace_NewComment() {
@@ -116,13 +150,8 @@ class CommentRepliesDataSourceTests: XCTestCase {
       |> \.id .~ "123"
       |> \.body .~ "New Body"
 
-    guard
-      let (indexPath, reload) = self.dataSource
+    let (indexPath, reload) = self.dataSource
       .replace(comment: newComment, and: .template, byCommentId: newComment.id)
-    else {
-      XCTFail("Should return and indexPath and Bool.")
-      return
-    }
 
     XCTAssertEqual(
       self.dataSource.comment(at: IndexPath(row: 5, section: self.repliesSection)),
@@ -151,13 +180,8 @@ class CommentRepliesDataSourceTests: XCTestCase {
     let deletedComment = Comment.deletedTemplate
       |> \.id .~ "123"
 
-    guard
-      let (indexPath, reload) = self.dataSource
+    let (indexPath, reload) = self.dataSource
       .replace(comment: deletedComment, and: .template, byCommentId: "2")
-    else {
-      XCTFail("Should return and indexPath and Bool.")
-      return
-    }
 
     XCTAssertEqual(
       self.dataSource.comment(at: IndexPath(row: 1, section: self.repliesSection)),
@@ -186,13 +210,8 @@ class CommentRepliesDataSourceTests: XCTestCase {
     let failedComment = Comment.failedTemplate
       |> \.id .~ "123"
 
-    guard
-      let (indexPath, reload) = self.dataSource
+    let (indexPath, reload) = self.dataSource
       .replace(comment: failedComment, and: .template, byCommentId: "2")
-    else {
-      XCTFail("Should return and indexPath and Bool.")
-      return
-    }
 
     XCTAssertEqual(
       self.dataSource.comment(at: IndexPath(row: 1, section: self.repliesSection)),

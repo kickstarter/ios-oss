@@ -18,7 +18,7 @@ final class CommentRepliesViewControllerTests: TestCase {
   }
 
   func testViewController_WithRootComment() {
-    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
@@ -41,9 +41,9 @@ final class CommentRepliesViewControllerTests: TestCase {
 
   func testViewController_WithRootCommentAndReplies() {
     let mockService = MockService(
-      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.template)
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.multipleReplyTemplate)
     )
-    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
@@ -62,4 +62,6 @@ final class CommentRepliesViewControllerTests: TestCase {
       }
     }
   }
+
+  // TODO: When implementing error state of posting `CommentPostFailedCell` are tested here.
 }

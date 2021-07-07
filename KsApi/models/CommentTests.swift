@@ -7,6 +7,7 @@ final class CommentTests: XCTestCase {
       withId: "comment-id",
       date: ApiMockDate().date,
       project: .template,
+      parentId: nil,
       user: .template,
       body: "Nice project!"
     )

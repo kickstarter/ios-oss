@@ -25,6 +25,7 @@ final class PostCommentMutationTests: XCTestCase {
             body
             createdAt
             deleted
+            parentId
             id
             replies {
               totalCount
@@ -63,6 +64,7 @@ final class PostCommentMutationTests: XCTestCase {
             body
             createdAt
             deleted
+            parentId
             id
             replies {
               totalCount
