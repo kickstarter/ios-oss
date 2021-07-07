@@ -57,6 +57,12 @@ final class CommentRepliesViewController: UITableViewController {
     return true
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -64,11 +70,12 @@ final class CommentRepliesViewController: UITableViewController {
     self.navigationItem.title = localizedString(key: "Replies", defaultValue: "Replies")
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
+    self.tableView.registerCellClass(ViewMoreRepliesCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
-
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
@@ -76,13 +83,14 @@ final class CommentRepliesViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.viewModel.inputs.viewDidAppear()
-  }
-
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.configureCommentComposerViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.commentComposer.configure(with: data)
+      }
 
     self.viewModel.outputs.resetCommentComposer
       .observeForUI()
@@ -102,10 +110,9 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.viewModel.outputs.loadRepliesAndProjectIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] replies, project in
+      .observeValues { [weak self] repliesAndTotalCount, project in
         guard let self = self else { return }
-
-        self.dataSource.load(comments: replies, project: project)
+        self.dataSource.load(repliesAndTotalCount: repliesAndTotalCount, project: project)
         self.tableView.reloadData()
       }
 
@@ -135,12 +142,16 @@ final class CommentRepliesViewController: UITableViewController {
           }
         }
       }
+  }
+}
 
-    self.viewModel.outputs.configureCommentComposerViewWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.commentComposer.configure(with: data)
-      }
+// MARK: - UITableViewDelegate
+
+extension CommentRepliesViewController {
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if self.dataSource.isCellInViewMoreRepliesSection(indexPath) {
+      self.viewModel.inputs.viewMoreRepliesCellWasTapped()
+    }
   }
 }
 
