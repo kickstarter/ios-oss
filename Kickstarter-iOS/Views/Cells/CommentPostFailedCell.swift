@@ -86,6 +86,21 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
         _ = self.retryButton
           |> status == .retrying ? postingButtonStyle : retryButtonStyle
       }
+
+    self.viewModel.outputs.shouldIndentContent
+      .observeForUI()
+      .observeValues { shouldIndent in
+        _ = self.rootStackView
+          |> \.axis .~ .vertical
+          |> \.layoutMargins .~ .init(
+            top: Styles.grid(1),
+            left: Styles.grid(shouldIndent ? CommentCellStyles.Content.leftIndentWidth : 1),
+            bottom: Styles.grid(3),
+            right: Styles.grid(1)
+          )
+          |> \.isLayoutMarginsRelativeArrangement .~ true
+          |> \.spacing .~ Styles.grid(3)
+      }
   }
 }
 

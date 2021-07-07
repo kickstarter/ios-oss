@@ -3,12 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Content {
-    static let leftIndentWidth: Int = 5
-  }
-}
-
 protocol CommentCellDelegate: AnyObject {
   func commentCellDidTapReply(_ cell: CommentCell, comment: Comment)
   func commentCellDidTapViewReplies(_ cell: CommentCell, comment: Comment)
@@ -155,7 +149,7 @@ final class CommentCell: UITableViewCell, ValueCell {
           |> \.axis .~ .vertical
           |> \.layoutMargins .~ .init(
             top: Styles.grid(1),
-            left: Styles.grid(shouldIndent ? Layout.Content.leftIndentWidth : 1),
+            left: Styles.grid(shouldIndent ? CommentCellStyles.Content.leftIndentWidth : 1),
             bottom: Styles.grid(3),
             right: Styles.grid(1)
           )
