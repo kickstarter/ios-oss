@@ -26,6 +26,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_638_316_800.0)
       XCTAssertEqual(v1Reward?.id, 8_173_901)
       XCTAssertEqual(v1Reward?.limit, nil)
+      XCTAssertEqual(v1Reward?.limitPerBacker, 1)
       XCTAssertEqual(v1Reward?.minimum, 25.0)
       XCTAssertEqual(v1Reward?.remaining, nil)
       XCTAssertEqual(v1Reward?.rewardsItems[0].item.id, 1_170_799)
@@ -35,6 +36,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
 
       XCTAssertEqual(v1Reward?.shipping.enabled, true)
       XCTAssertEqual(v1Reward?.shipping.preference, .unrestricted)
+      XCTAssertEqual(v1Reward?.shippingRules?.count, 2)
       XCTAssertEqual(v1Reward?.startsAt, 0)
       XCTAssertEqual(v1Reward?.title, "Soft Cover Book (Signed)")
 
