@@ -62,14 +62,6 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
   }
 
-  private func showErrorState() {
-    self.set(
-      values: [()],
-      cellClass: CommentViewMoreRepliesFailedCell.self,
-      inSection: Section.viewMoreRepliesError.rawValue
-    )
-  }
-
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as CommentCell, value as (Comment, Project)):
@@ -239,6 +231,15 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
 
     return nil
+  }
+
+  /// When this function is called we set a `CommentViewMoreRepliesFailedCell` in the `viewMoreRepliesError` section of the data source.
+  private func showErrorState() {
+    self.set(
+      values: [()],
+      cellClass: CommentViewMoreRepliesFailedCell.self,
+      inSection: Section.viewMoreRepliesError.rawValue
+    )
   }
 
   /**

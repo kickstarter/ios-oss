@@ -250,7 +250,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
 
       withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
-        self.vm.inputs.viewMoreRepliesCellWasTapped()
+        self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
 
         self.scheduler.advance()
 
@@ -259,6 +259,77 @@ internal final class CommentRepliesViewModelTests: TestCase {
           .assertValues([envelope.replies, updatedEnvelope.replies])
         self.loadRepliesAndProjectIntoDataSourceTotalCount
           .assertValues([updatedEnvelope.totalCount, updatedEnvelope.totalCount])
+      }
+    }
+  }
+
+  func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationFailedThenSuccesful() {
+    let project = Project.template
+    let envelope = CommentRepliesEnvelope.multipleReplyTemplate
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: .AccessTokenInvalid,
+      httpCode: 0,
+      exception: .init(backtrace: nil, message: nil),
+      graphError: .invalidJson(responseString: nil)
+    )
+    let updatedEnvelope = CommentRepliesEnvelope(
+      comment: .template,
+      cursor: "nextCursor",
+      hasPreviousPage: false,
+      replies: [
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate
+      ],
+      totalCount: 14
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        comment: .template,
+        project: project,
+        inputAreaBecomeFirstResponder: false
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([])
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
+
+      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(errorEnvelope))) {
+        self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+
+        self.scheduler.advance()
+
+        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
+        self.loadRepliesAndProjectIntoDataSourceReplies
+          .assertValues([envelope.replies, []])
+        self.loadRepliesAndProjectIntoDataSourceTotalCount
+          .assertValues([envelope.totalCount, envelope.totalCount])
+
+        withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
+          self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+
+          self.scheduler.advance()
+
+          self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project, project])
+          self.loadRepliesAndProjectIntoDataSourceReplies
+            .assertValues([envelope.replies, [], updatedEnvelope.replies])
+          self.loadRepliesAndProjectIntoDataSourceTotalCount
+            .assertValues([envelope.totalCount, envelope.totalCount, updatedEnvelope.totalCount])
+        }
       }
     }
   }
