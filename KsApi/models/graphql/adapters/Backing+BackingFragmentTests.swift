@@ -402,6 +402,7 @@ private func backingDictionary() -> [String: Any] {
       "currency": "USD",
       "deadlineAt": 1620478771,
       "description": "Dark Fantasy Novel & Tarot Cards",
+      "finalCollectionDate": null,
       "fxRate": 1.23244501,
       "goal": {
         "__typename": "Money",
@@ -477,6 +478,10 @@ private func backingDictionary() -> [String: Any] {
       "limit": null,
       "limitPerBacker": 1,
       "name": "Soft Cover Book (Signed)",
+      "project": {
+        "__typename": "Project",
+        "id": "UHJvamVjdC0xNTk2NTk0NDYz"
+      },
       "remainingQuantity": null,
       "shippingPreference": "unrestricted",
       "shippingRules": [

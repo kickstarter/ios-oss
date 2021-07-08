@@ -4,7 +4,6 @@ extension User {
   /**
    Returns a minimal `User` from a `GraphUser`
    */
-  // TODO: Add test
   static func user(from userFragment: GraphAPI.UserFragment) -> User? {
     guard let id = decompose(id: userFragment.id) else { return nil }
 
