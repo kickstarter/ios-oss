@@ -4,7 +4,10 @@ extension Backing {
   /**
    Returns a minimal `Backing` from a `BackingFragment`
    */
-  static func backing(from backingFragment: GraphAPI.BackingFragment) -> Backing? {
+  static func backing(
+    from backingFragment: GraphAPI.BackingFragment,
+    addOns: [Reward]? = nil
+  ) -> Backing? {
     guard
       let id = decompose(id: backingFragment.id),
       let backerIdString = backingFragment.backer?.fragments.userFragment.uid,
@@ -24,7 +27,7 @@ extension Backing {
     }
 
     return Backing(
-      addOns: backingAddOns(from: backingFragment, projectId: projectId),
+      addOns: addOns,
       amount: backingFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
       backer: backer,
       backerId: backerId,
@@ -47,21 +50,14 @@ extension Backing {
   }
 }
 
-private func backingAddOns(from _: GraphAPI.BackingFragment, projectId _: Int) -> [Reward]? {
-  return []
-  // TODO: `Reward` adapter to be implemented
-  // backingFragment.addOns?.nodes.compactMap { addOn in Reward.reward(from: addOn, projectId: projectId) }
-}
-
 private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Backing.Status? {
   return Backing.Status(rawValue: backingFragment.status.rawValue)
 }
 
-private func backingReward(from backingFragment: GraphAPI.BackingFragment, projectId _: Int) -> Reward? {
-  guard let _ = backingFragment.reward else { return .noReward }
+private func backingReward(from backingFragment: GraphAPI.BackingFragment, projectId: Int) -> Reward? {
+  guard let reward = backingFragment.reward?.fragments.rewardFragment else { return .noReward }
 
-  // TODO: `Reward` adapter to be implemented
-  return nil // Reward.reward(from: graphReward, projectId: projectId)
+  return Reward.reward(from: reward, projectId: projectId)
 }
 
 private func backingPaymentSource(from backingFragment: GraphAPI.BackingFragment) -> Backing.PaymentSource? {
