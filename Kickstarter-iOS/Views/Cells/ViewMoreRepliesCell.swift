@@ -38,7 +38,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
       |> commentCellRootStackViewStyle
       |> \.layoutMargins .~ .init(
         top: Styles.grid(1),
-        left: Styles.grid(CommentCellStyles.Layout.leftIndentWidth),
+        left: Styles.grid(CommentCellStyles.Content.leftIndentWidth),
         bottom: Styles.grid(1),
         right: Styles.grid(1)
       )
