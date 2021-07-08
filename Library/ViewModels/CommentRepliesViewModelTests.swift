@@ -266,13 +266,6 @@ internal final class CommentRepliesViewModelTests: TestCase {
   func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationFailedThenSuccesful() {
     let project = Project.template
     let envelope = CommentRepliesEnvelope.multipleReplyTemplate
-    let errorEnvelope = ErrorEnvelope(
-      errorMessages: [],
-      ksrCode: .AccessTokenInvalid,
-      httpCode: 0,
-      exception: .init(backtrace: nil, message: nil),
-      graphError: .invalidJson(responseString: nil)
-    )
     let updatedEnvelope = CommentRepliesEnvelope(
       comment: .template,
       cursor: "nextCursor",
@@ -308,7 +301,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
 
-      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(errorEnvelope))) {
+      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
         self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
 
         self.scheduler.advance()

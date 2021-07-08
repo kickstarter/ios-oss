@@ -14,7 +14,7 @@ final class CommentRepliesViewController: UITableViewController {
   // MARK: Properties
 
   private let dataSource = CommentRepliesDataSource()
-  private let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
+  internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
