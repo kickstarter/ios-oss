@@ -265,7 +265,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
   func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationFailedThenSuccesful() {
     let project = Project.template
-    let envelope = CommentRepliesEnvelope.multipleReplyTemplate
+    let envelope = CommentRepliesEnvelope.successfulRepliesTemplate
     let updatedEnvelope = CommentRepliesEnvelope(
       comment: .template,
       cursor: "nextCursor",
