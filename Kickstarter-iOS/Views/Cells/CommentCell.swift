@@ -149,7 +149,7 @@ final class CommentCell: UITableViewCell, ValueCell {
           |> \.axis .~ .vertical
           |> \.layoutMargins .~ .init(
             top: Styles.grid(1),
-            left: Styles.grid(shouldIndent ? CommentCellStyles.Layout.leftIndentWidth : 1),
+            left: Styles.grid(shouldIndent ? CommentCellStyles.Content.leftIndentWidth : 1),
             bottom: Styles.grid(3),
             right: Styles.grid(1)
           )
