@@ -13,12 +13,12 @@ final class CommentViewMoreRepliesFailedCell: UITableViewCell, ValueCell {
       |> \.image .~ Library.image(named: "circle-back")
       |> \.contentMode .~ .scaleAspectFit
   }()
-  
+
   private lazy var retryImageViewStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -82,9 +82,9 @@ private let bodyTextLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_subhead()
     |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
     |> \.textColor .~ .ksr_celebrate_700
     |> \.text .~ Strings.Couldnt_load_more_comments_Tap_to_retry()
-    |> \.numberOfLines .~ 0
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

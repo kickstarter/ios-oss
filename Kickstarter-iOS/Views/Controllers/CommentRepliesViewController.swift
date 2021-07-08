@@ -150,9 +150,8 @@ final class CommentRepliesViewController: UITableViewController {
 
 extension CommentRepliesViewController {
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if self.dataSource.isCellInViewMoreRepliesSection(indexPath) {
-      self.viewModel.inputs.viewMoreRepliesCellWasTapped()
-    }
+    guard self.dataSource.sectionFor(indexPath) else { return }
+    self.viewModel.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
   }
 }
 

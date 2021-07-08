@@ -14,9 +14,6 @@ public protocol CommentRepliesViewModelInputs {
    **/
   func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
 
-  /// Call in `didSelectRow` when the `ViewMoreRepliesCell` is tapped.
-  func viewMoreRepliesCellWasTapped()
-
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
@@ -25,6 +22,9 @@ public protocol CommentRepliesViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
+  func viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
 }
 
 public protocol CommentRepliesViewModelOutputs {
@@ -109,7 +109,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     // TODO: Handle isLoading from here
     let (replies, _, _, error) = paginate(
       requestFirstPageWith: rootComment,
-      requestNextPageWhen: self.viewMoreRepliesCellWasTappedProperty.signal,
+      requestNextPageWhen: self.cellWasTappedProperty.signal,
       clearOnNewRequest: true,
       valuesFromEnvelope: { [totalCountProperty] envelope -> [Comment] in
         totalCountProperty.value = envelope.totalCount
@@ -202,9 +202,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewMoreRepliesCellWasTappedProperty = MutableProperty(())
-  public func viewMoreRepliesCellWasTapped() {
-    self.viewMoreRepliesCellWasTappedProperty.value = ()
+  private let cellWasTappedProperty = MutableProperty(())
+  public func viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped() {
+    self.cellWasTappedProperty.value = ()
   }
 
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
