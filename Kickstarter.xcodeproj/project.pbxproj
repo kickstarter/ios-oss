@@ -202,6 +202,7 @@
 		47AC212F264AD2590090AEDF /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC212E264AD2590090AEDF /* CommentsViewController.swift */; };
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
+		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
 		47F4CA5F267A7B1800356DBF /* OptimizelyFeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */; };
 		47F4CA63267A7B2300356DBF /* OptimizelyFeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */; };
 		47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F95ECF2672C587001365B2 /* ViewRepliesView.swift */; };
@@ -1849,6 +1850,7 @@
 		47AC212E264AD2590090AEDF /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
+		47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewMoreRepliesFailedCell.swift; sourceTree = "<group>"; };
 		47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
 		47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
@@ -3658,6 +3660,7 @@
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				94114D47264EEA2D0063E8F6 /* CommentCell.swift */,
+				47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */,
 				94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */,
 				94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */,
 				20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */,
@@ -6275,6 +6278,7 @@
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
 				3767EDAB22CFFED40088E8E4 /* ShippingRuleCell.swift in Sources */,
 				5955E64F1D21800300B4153D /* DashboardReferrersCell.swift in Sources */,
+				47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */,
 				9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */,
 				8ACB32A824ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift in Sources */,
 				D63BBCD0217E5460007E01F0 /* PaymentMethodsViewController.swift in Sources */,

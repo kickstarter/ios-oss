@@ -14,7 +14,7 @@ final class CommentRepliesViewController: UITableViewController {
   // MARK: Properties
 
   private let dataSource = CommentRepliesDataSource()
-  private let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
+  internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
@@ -72,10 +72,11 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
+    self.tableView.registerCellClass(CommentPostFailedCell.self)
+    self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.registerCellClass(CommentViewMoreRepliesFailedCell.self)
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.registerCellClass(ViewMoreRepliesCell.self)
-    self.tableView.registerCellClass(CommentRemovedCell.self)
-    self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.tableFooterView = UIView()
 
     self.commentComposer.delegate = self
@@ -142,6 +143,14 @@ final class CommentRepliesViewController: UITableViewController {
           }
         }
       }
+
+    self.viewModel.outputs.showPaginationErrorState
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let self = self else { return }
+        self.dataSource.showPaginationErrorState()
+        self.tableView.reloadData()
+      }
   }
 }
 
@@ -149,10 +158,11 @@ final class CommentRepliesViewController: UITableViewController {
 
 extension CommentRepliesViewController {
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if self.dataSource.isCellInViewMoreRepliesSection(indexPath) {
-      self.viewModel.inputs.viewMoreRepliesCellWasTapped()
-    } else if self.dataSource.isCellInRepliesSection(indexPath),
-      let comment = self.dataSource.comment(at: indexPath) {
+    if self.dataSource.sectionForViewMoreReplies(indexPath) {
+      self.viewModel.inputs.paginateOrErrorCellWasTapped()
+    } else if let comment = self.dataSource.comment(at: indexPath),
+              self.dataSource.sectionForReplies(indexPath) {
+      
       self.viewModel.inputs.didSelectComment(comment)
     }
   }

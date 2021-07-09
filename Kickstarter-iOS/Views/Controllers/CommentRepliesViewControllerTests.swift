@@ -112,4 +112,33 @@ final class CommentRepliesViewControllerTests: TestCase {
       }
     }
   }
+
+  func testViewController_WithRootCommentRepliesandViewMoreRepliesFailedCell() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.successfulRepliesTemplate))
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentRepliesViewController
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.advance()
+
+        withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
+          controller.viewModel.inputs.paginateOrErrorCellWasTapped()
+
+          self.scheduler.advance()
+
+          FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        }
+      }
+    }
+  }
 }

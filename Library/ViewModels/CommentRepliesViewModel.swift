@@ -20,14 +20,14 @@ public protocol CommentRepliesViewModelInputs {
   /// Call with a `Comment` when it is selected.
   func didSelectComment(_ comment: Comment)
 
+  /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
+  func paginateOrErrorCellWasTapped()
+
   /// Call when the view appears.
   func viewDidAppear()
 
   /// Call when the view loads.
   func viewDidLoad()
-
-  /// Called in `didSelectRow` when the `ViewMoreRepliesCell` is tapped.
-  func viewMoreRepliesCellWasTapped()
 }
 
 public protocol CommentRepliesViewModelOutputs {
@@ -45,6 +45,9 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits when a comment has been posted reset the composer.
   var resetCommentComposer: Signal<(), Never> { get }
+
+  /// Emits when a pagination error has occurred.
+  var showPaginationErrorState: Signal<(), Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -113,9 +116,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     let totalCountProperty = MutableProperty<Int>(0)
 
     // TODO: Handle isLoading from here
-    let (replies, _, _, _) = paginate(
+    let (replies, _, _, error) = paginate(
       requestFirstPageWith: rootComment,
-      requestNextPageWhen: self.viewMoreRepliesCellWasTappedProperty.signal,
+      requestNextPageWhen: self.paginateOrErrorCellWasTappedProperty.signal,
       clearOnNewRequest: true,
       valuesFromEnvelope: { [totalCountProperty] envelope -> [Comment] in
         totalCountProperty.value = envelope.totalCount
@@ -192,14 +195,15 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         currentlyRetrying.value.remove(id)
       })
 
-    let repliesAndTotalCount = replies.withLatestFrom(totalCountProperty.signal)
-
-    self.loadRepliesAndProjectIntoDataSource = Signal.combineLatest(repliesAndTotalCount, project)
+    self.loadRepliesAndProjectIntoDataSource = replies.withLatestFrom(totalCountProperty.signal)
+      .combineLatest(with: project)
 
     let failableOrRetriedComment = Signal.merge(retryingComment, failableCommentWithReplacementId)
 
     self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableOrRetriedComment, project)
       .map(unpack)
+
+    self.showPaginationErrorState = error.ignoreValues()
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
@@ -217,6 +221,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.commentProjectProperty.value = (comment, project, inputAreaBecomeFirstResponder)
   }
 
+  fileprivate let paginateOrErrorCellWasTappedProperty = MutableProperty(())
+  public func paginateOrErrorCellWasTapped() {
+    self.paginateOrErrorCellWasTappedProperty.value = ()
+  }
+
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -227,16 +236,12 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  private let viewMoreRepliesCellWasTappedProperty = MutableProperty(())
-  public func viewMoreRepliesCellWasTapped() {
-    self.viewMoreRepliesCellWasTappedProperty.value = ()
-  }
-
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
   public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
   public let loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never>
   public let resetCommentComposer: Signal<(), Never>
+  public let showPaginationErrorState: Signal<(), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }

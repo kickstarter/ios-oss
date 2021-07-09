@@ -20,6 +20,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
   private let loadRepliesAndProjectIntoDataSourceTotalCount = TestObserver<Int, Never>()
   private let resetCommentComposer = TestObserver<(), Never>()
+  private let showPaginationErrorState = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -52,6 +53,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       .map { _, totalCount in totalCount }
       .observe(self.loadRepliesAndProjectIntoDataSourceTotalCount.observer)
     self.vm.outputs.resetCommentComposer.observe(self.resetCommentComposer.observer)
+    self.vm.outputs.showPaginationErrorState.observe(self.showPaginationErrorState.observer)
   }
 
   func testDataSource_WithComment_HasComment() {
@@ -254,7 +256,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
 
       withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
-        self.vm.inputs.viewMoreRepliesCellWasTapped()
+        self.vm.inputs.paginateOrErrorCellWasTapped()
 
         self.scheduler.advance()
 
@@ -263,6 +265,76 @@ internal final class CommentRepliesViewModelTests: TestCase {
           .assertValues([envelope.replies, updatedEnvelope.replies])
         self.loadRepliesAndProjectIntoDataSourceTotalCount
           .assertValues([updatedEnvelope.totalCount, updatedEnvelope.totalCount])
+      }
+    }
+  }
+
+  func testOutput_LoadRepliesProjectAndTotalCountIntoDataSource_PaginationFailedThenSuccesful() {
+    let project = Project.template
+    let envelope = CommentRepliesEnvelope.successfulRepliesTemplate
+    let updatedEnvelope = CommentRepliesEnvelope(
+      comment: .template,
+      cursor: "nextCursor",
+      hasPreviousPage: false,
+      replies: [
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate,
+        .collaboratorTemplate
+      ],
+      totalCount: 14
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        comment: .template,
+        project: project,
+        inputAreaBecomeFirstResponder: false
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([])
+      self.showPaginationErrorState.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
+      self.showPaginationErrorState.assertDidNotEmitValue()
+      self.showPaginationErrorState.assertValueCount(0)
+
+      withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
+        self.vm.inputs.paginateOrErrorCellWasTapped()
+
+        self.scheduler.advance()
+
+        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
+        self.loadRepliesAndProjectIntoDataSourceReplies
+          .assertValues([envelope.replies])
+        self.loadRepliesAndProjectIntoDataSourceTotalCount
+          .assertValues([envelope.totalCount])
+        self.showPaginationErrorState.assertDidEmitValue()
+        self.showPaginationErrorState.assertValueCount(1)
+
+        withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
+          self.vm.inputs.paginateOrErrorCellWasTapped()
+
+          self.scheduler.advance()
+
+          self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
+          self.loadRepliesAndProjectIntoDataSourceReplies
+            .assertValues([envelope.replies, updatedEnvelope.replies])
+          self.loadRepliesAndProjectIntoDataSourceTotalCount
+            .assertValues([envelope.totalCount, updatedEnvelope.totalCount])
+          self.showPaginationErrorState.assertValueCount(1)
+        }
       }
     }
   }
