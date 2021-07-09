@@ -6,6 +6,7 @@ import UIKit
 internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case rootComment
+    case viewMoreRepliesError
     case viewMoreReplies
     case replies
     case empty
@@ -24,6 +25,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     let (replies, totalCount) = repliesAndTotalCount
 
     // Clear all but rootComment section.
+    self.clearValues(section: Section.viewMoreRepliesError.rawValue)
     self.clearValues(section: Section.viewMoreReplies.rawValue)
     self.clearValues(section: Section.empty.rawValue)
     self.clearValues(section: Section.error.rawValue)
@@ -54,29 +56,20 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     }
   }
 
-  // TODO: Implement and write tests
-  internal func showErrorState() {
-    self.clearValues()
-
-    self.appendRow(
-      value: (),
-      cellClass: CommentsErrorCell.self,
-      toSection: Section.error.rawValue
-    )
-  }
-
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as RootCommentCell, value as Comment):
-      cell.configureWith(value: value)
     case let (cell as CommentCell, value as (Comment, Project)):
       cell.configureWith(value: value)
-    case let (cell as ViewMoreRepliesCell, _):
-      cell.configureWith(value: ())
     case let (cell as CommentPostFailedCell, value as Comment):
       cell.configureWith(value: value)
     case let (cell as CommentRemovedCell, value as Comment):
       cell.configureWith(value: value)
+    case let (cell as CommentViewMoreRepliesFailedCell, _):
+      cell.configureWith(value: ())
+    case let (cell as RootCommentCell, value as Comment):
+      cell.configureWith(value: value)
+    case let (cell as ViewMoreRepliesCell, _):
+      cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }
@@ -234,7 +227,30 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     return nil
   }
 
-  public func isCellInViewMoreRepliesSection(_ indexPath: IndexPath) -> Bool {
-    return indexPath.section == Section.viewMoreReplies.rawValue
+  /**
+   Returns `true` when  the `IndexPath`provided is from `Section.viewMoreReplies` or `Section.viewMoreRepliesError`.
+
+   - parameter indexPath: `IndexPath` object that we need the `Section` value from.
+
+   - returns: A  `Bool` which is only true is the section is either `viewMoreReplies` or `viewMoreRepliesError`.
+   */
+  public func sectionFor(_ indexPath: IndexPath) -> Bool {
+    switch indexPath.section {
+    case Section.viewMoreReplies.rawValue, Section.viewMoreRepliesError.rawValue:
+      return true
+    default:
+      return false
+    }
+  }
+
+  /// When this function is called we clear the `viewMoreReplies` section and set a `CommentViewMoreRepliesFailedCell` in the `viewMoreRepliesError` section of the data source.
+  public func showPaginationErrorState() {
+    self.clearValues(section: Section.viewMoreReplies.rawValue)
+
+    self.set(
+      values: [()],
+      cellClass: CommentViewMoreRepliesFailedCell.self,
+      inSection: Section.viewMoreRepliesError.rawValue
+    )
   }
 }

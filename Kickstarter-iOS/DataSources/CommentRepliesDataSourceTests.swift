@@ -8,6 +8,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
   let commentSection = CommentRepliesDataSource.Section.rootComment.rawValue
   let repliesSection = CommentRepliesDataSource.Section.replies.rawValue
   let viewMoreRepliesSection = CommentRepliesDataSource.Section.viewMoreReplies.rawValue
+  let viewMoreRepliesErrorSection = CommentRepliesDataSource.Section.viewMoreRepliesError.rawValue
   let dataSource = CommentRepliesDataSource()
   let tableView = UITableView()
 
@@ -35,7 +36,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
   func testDataSource_WithReplies_HasRepliesSection() {
     self.dataSource.load(repliesAndTotalCount: self.templateRepliesAndTotalCount, project: .template)
     XCTAssertEqual(3, self.dataSource.numberOfItems(in: self.repliesSection))
-    XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
   }
 
   func testDataSource_WithReplies_HasCommentCell() {
@@ -301,5 +302,59 @@ class CommentRepliesDataSourceTests: XCTestCase {
     }
 
     XCTAssertEqual(allComments, nextPage + firstPage)
+  }
+
+  func testLoadComments_Pagination_FailureThenSuccessful() {
+    let firstPage = [
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      Comment.replyTemplate |> \.id .~ "3",
+      Comment.replyTemplate |> \.id .~ "4",
+      Comment.replyTemplate |> \.id .~ "5",
+      Comment.replyTemplate |> \.id .~ "6",
+      Comment.replyTemplate |> \.id .~ "7"
+    ]
+
+    let nextPage = [
+      Comment.replyTemplate |> \.id .~ "8",
+      Comment.replyTemplate |> \.id .~ "9",
+      Comment.replyTemplate |> \.id .~ "10",
+      Comment.replyTemplate |> \.id .~ "11",
+      Comment.replyTemplate |> \.id .~ "12",
+      Comment.replyTemplate |> \.id .~ "13",
+      Comment.replyTemplate |> \.id .~ "14"
+    ]
+
+    let totalCount = 21
+
+    self.dataSource.load(repliesAndTotalCount: (firstPage, totalCount), project: .template)
+
+    XCTAssertEqual(
+      self.dataSource
+        .numberOfItems(in: self.viewMoreRepliesErrorSection),
+      0
+    )
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.viewMoreRepliesSection), 1)
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 7)
+
+    self.dataSource.showPaginationErrorState()
+
+    XCTAssertEqual(
+      self.dataSource
+        .numberOfItems(in: self.viewMoreRepliesErrorSection),
+      1
+    )
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.viewMoreRepliesSection), 0)
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 7)
+
+    self.dataSource.load(repliesAndTotalCount: (nextPage, totalCount), project: .template)
+
+    XCTAssertEqual(
+      self.dataSource
+        .numberOfItems(in: self.viewMoreRepliesErrorSection),
+      0
+    )
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.viewMoreRepliesSection), 1)
+    XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 14)
   }
 }
