@@ -27,13 +27,7 @@ fragment RewardFragment on Reward {
   remainingQuantity
   shippingPreference
   shippingRules {
-    cost {
-      ...MoneyFragment
-    }
-    id
-    location {
-      ...LocationFragment
-    }
+    ...ShippingRuleFragment
   }
   startsAt
 }

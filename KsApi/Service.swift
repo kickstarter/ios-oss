@@ -352,6 +352,15 @@ public struct Service: ServiceType {
       .flatMap(Project.projectProducer(from:))
   }
 
+  public func fetchRewardAddOnsSelectionViewRewards(
+    slug: String,
+    locationId: String?
+  ) -> SignalProducer<Project, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchAddOnsQuery(projectSlug: slug, locationId: locationId))
+      .flatMap(Project.projectProducer(from:))
+  }
+
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
     return request(.shippingRules(projectId: projectId, rewardId: rewardId))

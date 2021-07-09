@@ -1,0 +1,15 @@
+query FetchAddOns($projectSlug: String!, $locationId: ID) {
+  project(slug: $projectSlug) {
+    ...ProjectFragment
+    addOns {
+      nodes {
+        ...RewardFragment
+        shippingRulesExpanded(forLocation: $locationId) {
+          nodes {
+            ...ShippingRuleFragment
+          }
+        }
+      }
+    }
+  }
+}
