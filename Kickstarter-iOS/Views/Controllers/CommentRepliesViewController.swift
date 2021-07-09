@@ -161,8 +161,7 @@ extension CommentRepliesViewController {
     if self.dataSource.sectionForViewMoreReplies(indexPath) {
       self.viewModel.inputs.paginateOrErrorCellWasTapped()
     } else if let comment = self.dataSource.comment(at: indexPath),
-              self.dataSource.sectionForReplies(indexPath) {
-      
+      self.dataSource.sectionForReplies(indexPath) {
       self.viewModel.inputs.didSelectComment(comment)
     }
   }
