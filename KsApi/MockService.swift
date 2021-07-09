@@ -887,6 +887,10 @@
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
+    func fetchManagePledgeViewBacking(id _: Int) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
+    }
+
     func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
       -> SignalProducer<Project, ErrorEnvelope> {
       return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)

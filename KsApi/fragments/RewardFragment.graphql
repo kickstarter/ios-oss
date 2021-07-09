@@ -21,6 +21,9 @@ fragment RewardFragment on Reward {
   limit
   limitPerBacker
   name
+  project {
+    id
+  }
   remainingQuantity
   shippingPreference
   shippingRules {

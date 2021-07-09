@@ -15,6 +15,7 @@ fragment ProjectFragment on Project {
   currency
   deadlineAt
   description
+  finalCollectionDate
   fxRate
   goal {
     ...MoneyFragment

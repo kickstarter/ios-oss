@@ -14,7 +14,6 @@ final class Reward_RewardFragmentTests: XCTestCase {
 
       let v1Reward = Reward.reward(
         from: fragment,
-        projectId: Project.template.id,
         dateFormatter: dateFormatter
       )
 
@@ -89,6 +88,10 @@ private func rewardDictionary() -> [String: Any] {
     "limit": null,
     "limitPerBacker": 1,
     "name": "Soft Cover Book (Signed)",
+    "project": {
+      "__typename": "Project",
+      "id": "UHJvamVjdC0xNTk2NTk0NDYz"
+    },
     "remainingQuantity": null,
     "shippingPreference": "unrestricted",
     "shippingRules": [

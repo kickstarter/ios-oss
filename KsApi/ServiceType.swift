@@ -160,8 +160,12 @@ public protocol ServiceType {
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
 
-  /// Fetch Backing data for ManagePledgeViewController
+  /// Fetch `Backing` data for ManagePledgeViewController with a query.
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
+
+  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID.
+  func fetchManagePledgeViewBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.

@@ -279,6 +279,13 @@ public struct Service: ServiceType {
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
+  public func fetchManagePledgeViewBacking(id: Int)
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)"))
+      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
+  }
+
   public func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
     return request(.messagesForThread(messageThreadId: messageThreadId))

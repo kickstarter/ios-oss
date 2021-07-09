@@ -14,11 +14,14 @@ extension Reward {
 
   static func reward(
     from rewardFragment: GraphAPI.RewardFragment,
-    projectId: Int,
     dateFormatter: DateFormatter = DateFormatter.isoDateFormatter,
     expandedShippingRules: [ShippingRule]? = nil
   ) -> Reward? {
-    guard let rewardId = decompose(id: rewardFragment.id) else { return nil }
+    guard
+      let rewardId = decompose(id: rewardFragment.id),
+      let projectRelayId = rewardFragment.project?.id,
+      let projectId = decompose(id: projectRelayId)
+    else { return nil }
 
     let estimatedDeliveryOn = rewardFragment.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970

@@ -1,4 +1,5 @@
 import Foundation
+import ReactiveSwift
 
 extension Backing {
   /**
@@ -19,7 +20,7 @@ extension Backing {
       let user = backingFragment.backer?.fragments.userFragment
     else { return nil }
 
-    let reward = backingReward(from: backingFragment, projectId: projectId)
+    let reward = backingReward(from: backingFragment)
     let backer = User.user(from: user)
     var locationId: Int?
     if let locationGraphId = backingFragment.location?.fragments.locationFragment.id {
@@ -54,10 +55,10 @@ private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Ba
   return Backing.Status(rawValue: backingFragment.status.rawValue)
 }
 
-private func backingReward(from backingFragment: GraphAPI.BackingFragment, projectId: Int) -> Reward? {
+private func backingReward(from backingFragment: GraphAPI.BackingFragment) -> Reward? {
   guard let reward = backingFragment.reward?.fragments.rewardFragment else { return .noReward }
 
-  return Reward.reward(from: reward, projectId: projectId)
+  return Reward.reward(from: reward)
 }
 
 private func backingPaymentSource(from backingFragment: GraphAPI.BackingFragment) -> Backing.PaymentSource? {
