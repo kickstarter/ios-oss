@@ -11,6 +11,10 @@ class CommentRepliesDataSourceTests: XCTestCase {
   let viewMoreRepliesErrorSection = CommentRepliesDataSource.Section.viewMoreRepliesError.rawValue
   let dataSource = CommentRepliesDataSource()
   let tableView = UITableView()
+  
+  private let replyCellIndexPath = IndexPath(row: 0, section: 3)
+  private let viewMoreRepliesCellIndexPath = IndexPath(row: 0, section: 1)
+  private let viewMoreRepliesErrorCellIndexPath = IndexPath(row: 0, section: 2)
 
   private let templateRepliesAndTotalCount: (
     [Comment],
@@ -356,5 +360,17 @@ class CommentRepliesDataSourceTests: XCTestCase {
     )
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.viewMoreRepliesSection), 1)
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 14)
+  }
+  
+  func testCell_InSection_ViewMoreRepliesOrErroredPagination() {
+    XCTAssertTrue(self.dataSource.sectionForViewMoreReplies(viewMoreRepliesCellIndexPath))
+    XCTAssertTrue(self.dataSource.sectionForViewMoreReplies(viewMoreRepliesErrorCellIndexPath))
+    XCTAssertFalse(self.dataSource.sectionForViewMoreReplies(replyCellIndexPath))
+  }
+  
+  func testCell_InSection_Replies() {
+    XCTAssertFalse(self.dataSource.sectionForReplies(viewMoreRepliesCellIndexPath))
+    XCTAssertFalse(self.dataSource.sectionForReplies(viewMoreRepliesErrorCellIndexPath))
+    XCTAssertTrue(self.dataSource.sectionForReplies(replyCellIndexPath))
   }
 }
