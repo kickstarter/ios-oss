@@ -143,6 +143,14 @@ final class CommentRepliesViewController: UITableViewController {
           }
         }
       }
+
+    self.viewModel.outputs.showPaginationErrorState
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let self = self else { return }
+        self.dataSource.showPaginationErrorState()
+        self.tableView.reloadData()
+      }
   }
 }
 
@@ -151,7 +159,7 @@ final class CommentRepliesViewController: UITableViewController {
 extension CommentRepliesViewController {
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard self.dataSource.sectionFor(indexPath) else { return }
-    self.viewModel.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+    self.viewModel.inputs.paginateOrErrorCellWasTapped()
   }
 }
 

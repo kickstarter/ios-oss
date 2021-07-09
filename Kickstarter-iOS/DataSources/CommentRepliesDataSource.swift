@@ -46,12 +46,6 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
       self.loadValue(reply, project: project)
     }
 
-    // If newReplies.count == 0 there was an issue loading more replies and we should show the error cell.
-    guard newReplies.count > 0 else {
-      self.showErrorState()
-      return
-    }
-
     // Add ViewMoreRepliesCell to the top if the totalCount from the response is larger than the current count.
     if totalCount > allReplies.count {
       self.set(
@@ -233,15 +227,6 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     return nil
   }
 
-  /// When this function is called we set a `CommentViewMoreRepliesFailedCell` in the `viewMoreRepliesError` section of the data source.
-  private func showErrorState() {
-    self.set(
-      values: [()],
-      cellClass: CommentViewMoreRepliesFailedCell.self,
-      inSection: Section.viewMoreRepliesError.rawValue
-    )
-  }
-
   /**
    Returns `true` when  the `IndexPath`provided is from `Section.viewMoreReplies` or `Section.viewMoreRepliesError`.
 
@@ -256,5 +241,16 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     default:
       return false
     }
+  }
+
+  /// When this function is called we clear the `viewMoreReplies` section and set a `CommentViewMoreRepliesFailedCell` in the `viewMoreRepliesError` section of the data source.
+  public func showPaginationErrorState() {
+    self.clearValues(section: Section.viewMoreReplies.rawValue)
+
+    self.set(
+      values: [()],
+      cellClass: CommentViewMoreRepliesFailedCell.self,
+      inSection: Section.viewMoreRepliesError.rawValue
+    )
   }
 }

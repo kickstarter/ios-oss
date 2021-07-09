@@ -20,6 +20,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
   private let loadRepliesAndProjectIntoDataSourceTotalCount = TestObserver<Int, Never>()
   private let resetCommentComposer = TestObserver<(), Never>()
+  private let showPaginationErrorState = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -48,6 +49,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       .map { _, totalCount in totalCount }
       .observe(self.loadRepliesAndProjectIntoDataSourceTotalCount.observer)
     self.vm.outputs.resetCommentComposer.observe(self.resetCommentComposer.observer)
+    self.vm.outputs.showPaginationErrorState.observe(self.showPaginationErrorState.observer)
   }
 
   func testDataSource_WithComment_HasComment() {
@@ -250,7 +252,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
 
       withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
-        self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+        self.vm.inputs.paginateOrErrorCellWasTapped()
 
         self.scheduler.advance()
 
@@ -294,34 +296,40 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([])
+      self.showPaginationErrorState.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
       self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
       self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([envelope.totalCount])
+      self.showPaginationErrorState.assertDidNotEmitValue()
+      self.showPaginationErrorState.assertValueCount(0)
 
       withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
-        self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+        self.vm.inputs.paginateOrErrorCellWasTapped()
 
         self.scheduler.advance()
 
-        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
+        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project])
         self.loadRepliesAndProjectIntoDataSourceReplies
-          .assertValues([envelope.replies, []])
+          .assertValues([envelope.replies])
         self.loadRepliesAndProjectIntoDataSourceTotalCount
-          .assertValues([envelope.totalCount, envelope.totalCount])
+          .assertValues([envelope.totalCount])
+        self.showPaginationErrorState.assertDidEmitValue()
+        self.showPaginationErrorState.assertValueCount(1)
 
         withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(updatedEnvelope))) {
-          self.vm.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+          self.vm.inputs.paginateOrErrorCellWasTapped()
 
           self.scheduler.advance()
 
-          self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project, project])
+          self.loadRepliesAndProjectIntoDataSourceProject.assertValues([project, project])
           self.loadRepliesAndProjectIntoDataSourceReplies
-            .assertValues([envelope.replies, [], updatedEnvelope.replies])
+            .assertValues([envelope.replies, updatedEnvelope.replies])
           self.loadRepliesAndProjectIntoDataSourceTotalCount
-            .assertValues([envelope.totalCount, envelope.totalCount, updatedEnvelope.totalCount])
+            .assertValues([envelope.totalCount, updatedEnvelope.totalCount])
+          self.showPaginationErrorState.assertValueCount(1)
         }
       }
     }

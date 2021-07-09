@@ -17,14 +17,14 @@ public protocol CommentRepliesViewModelInputs {
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
+  /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
+  func paginateOrErrorCellWasTapped()
+
   /// Call when the view appears.
   func viewDidAppear()
 
   /// Call when the view loads.
   func viewDidLoad()
-
-  /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
-  func viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
 }
 
 public protocol CommentRepliesViewModelOutputs {
@@ -42,6 +42,9 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits when a comment has been posted reset the composer.
   var resetCommentComposer: Signal<(), Never> { get }
+
+  /// Emits when a pagination error has occurred.
+  var showPaginationErrorState: Signal<(), Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -109,7 +112,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     // TODO: Handle isLoading from here
     let (replies, _, _, error) = paginate(
       requestFirstPageWith: rootComment,
-      requestNextPageWhen: self.cellWasTappedProperty.signal,
+      requestNextPageWhen: self.paginateOrErrorCellWasTappedProperty.signal,
       clearOnNewRequest: true,
       valuesFromEnvelope: { [totalCountProperty] envelope -> [Comment] in
         totalCountProperty.value = envelope.totalCount
@@ -162,24 +165,13 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         CommentsViewModel.postCommentProducer
       )
 
-    let errorLoadingMoreReplies =
-      error
-        .withLatestFrom(totalCountProperty.signal)
-        .combineLatest(with: project)
-        .map { errorAndTotalCount, project -> (([Comment], Int), Project) in
-          let (_, totalCount) = errorAndTotalCount
-          return (([], totalCount), project)
-        }
-
-    let repliesAndTotalCount = replies.withLatestFrom(totalCountProperty.signal).combineLatest(with: project)
-
-    self.loadRepliesAndProjectIntoDataSource = Signal.merge(
-      repliesAndTotalCount,
-      errorLoadingMoreReplies
-    )
+    self.loadRepliesAndProjectIntoDataSource = replies.withLatestFrom(totalCountProperty.signal)
+      .combineLatest(with: project)
 
     self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableCommentWithReplacementId, project)
       .map(unpack)
+
+    self.showPaginationErrorState = error.ignoreValues()
   }
 
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
@@ -192,6 +184,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.commentProjectProperty.value = (comment, project, inputAreaBecomeFirstResponder)
   }
 
+  fileprivate let paginateOrErrorCellWasTappedProperty = MutableProperty(())
+  public func paginateOrErrorCellWasTapped() {
+    self.paginateOrErrorCellWasTappedProperty.value = ()
+  }
+
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -202,16 +199,12 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  private let cellWasTappedProperty = MutableProperty(())
-  public func viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped() {
-    self.cellWasTappedProperty.value = ()
-  }
-
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let loadCommentIntoDataSource: Signal<Comment, Never>
   public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
   public let loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never>
   public let resetCommentComposer: Signal<(), Never>
+  public let showPaginationErrorState: Signal<(), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }

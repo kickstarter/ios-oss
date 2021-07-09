@@ -34,7 +34,7 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -58,7 +58,7 @@ final class CommentRepliesViewControllerTests: TestCase {
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -82,7 +82,7 @@ final class CommentRepliesViewControllerTests: TestCase {
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
       }
     }
   }
@@ -106,11 +106,11 @@ final class CommentRepliesViewControllerTests: TestCase {
         self.scheduler.advance()
 
         withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
-          controller.viewModel.inputs.viewMoreRepliesOrViewMoreRepliesFailedCellWasTapped()
+          controller.viewModel.inputs.paginateOrErrorCellWasTapped()
 
           self.scheduler.advance()
 
-          FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+          FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
         }
       }
     }

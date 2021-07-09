@@ -337,7 +337,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.viewMoreRepliesSection), 1)
     XCTAssertEqual(self.dataSource.numberOfItems(in: self.repliesSection), 7)
 
-    self.dataSource.load(repliesAndTotalCount: ([], totalCount), project: .template)
+    self.dataSource.showPaginationErrorState()
 
     XCTAssertEqual(
       self.dataSource
