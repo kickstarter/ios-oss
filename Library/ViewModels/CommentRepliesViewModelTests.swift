@@ -32,12 +32,16 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.loadCommentIntoDataSource.observe(self.loadCommentIntoDataSourceComment.observer)
+
     self.vm.outputs.loadFailableReplyIntoDataSource.map(first)
       .observe(self.loadFailableReplyIntoDataSource.observer)
+
     self.vm.outputs.loadFailableReplyIntoDataSource.map(second)
       .observe(self.loadFailableCommentIDIntoDataSource.observer)
+
     self.vm.outputs.loadFailableReplyIntoDataSource.map(third)
       .observe(self.loadFailableProjectIntoDataSource.observer)
+
     self.vm.outputs.loadRepliesAndProjectIntoDataSource.map(second)
       .observe(self.loadRepliesAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.loadRepliesAndProjectIntoDataSource
@@ -398,6 +402,185 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadFailableReplyIntoDataSource.assertLastValue(.replyTemplate)
       self.loadFailableProjectIntoDataSource.assertLastValue(project)
       self.loadFailableCommentIDIntoDataSource.assertLastValue(MockUUID().uuidString)
+    }
+  }
+
+  func testRetryCommentFlow_Success() {
+    let envelope = CommentRepliesEnvelope.singleReplyTemplate
+
+    let mockService1 = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(envelope),
+      postCommentResult: .failure(.couldNotParseJSON)
+    )
+
+    withEnvironment(apiService: mockService1, currentUser: .template) {
+      self.vm.inputs
+        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+
+      let bodyText = "I just posted a reply."
+
+      self.vm.inputs.commentComposerDidSubmitText(bodyText)
+
+      let expectedFailableReply = Comment.failableComment(
+        withId: MockUUID.init().uuidString,
+        date: MockDate().date,
+        project: .template,
+        parentId: Comment.template.id,
+        user: .template,
+        body: bodyText
+      )
+
+      // optimistically posted failable comment
+      XCTAssertEqual(
+        self.loadFailableReplyIntoDataSource.values.last,
+        expectedFailableReply,
+        "Failable temporary reply is emitted first."
+      )
+
+      self.scheduler.advance()
+
+      let expectedFailedComment = expectedFailableReply
+        |> \.status .~ .failed
+
+      // failed comment after network request fails.
+      XCTAssertEqual(
+        self.loadFailableReplyIntoDataSource.values.last,
+        expectedFailedComment,
+        "If the request fails the failable reply is placed back in the data source with a failed status."
+      )
+
+      let expectedSuccessfulPostedComment = expectedFailedComment
+        |> \.status .~ .success
+
+      let mockService2 = MockService(
+        fetchCommentRepliesEnvelopeResult: .success(envelope),
+        postCommentResult: .success(expectedSuccessfulPostedComment)
+      )
+
+      withEnvironment(apiService: mockService2) {
+        // Tap on the failed comment to retry
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+
+        // Tapping repeatedly is ignored (in the case where retries may be in flight).
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+
+        let expectedRetryingComment = expectedFailedComment
+          |> \.status .~ .retrying
+
+        // previously failed comment is in retrying status
+        XCTAssertEqual(
+          self.loadFailableReplyIntoDataSource.values.last,
+          expectedRetryingComment,
+          "Comment is replaced with one with a retrying status."
+        )
+
+        self.scheduler.advance(by: .seconds(1))
+
+        let expectedRetryingSuccessComment = expectedFailedComment
+          |> \.status .~ .retrySuccess
+
+        XCTAssertEqual(
+          self.loadFailableReplyIntoDataSource.values.last,
+          expectedRetryingSuccessComment,
+          "Comment is replaced with one with a retry success status after elapsed time."
+        )
+
+        self.scheduler.advance(by: .seconds(3))
+
+        // comment posts and is successful
+        XCTAssertEqual(
+          self.loadFailableReplyIntoDataSource.values.last,
+          expectedSuccessfulPostedComment,
+          "Comment is replaced with one with a success status after elapsed time."
+        )
+      }
+    }
+  }
+
+  func testRetryCommentFlow_Error() {
+    let envelope = CommentRepliesEnvelope.singleReplyTemplate
+
+    let mockService1 = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(envelope),
+      postCommentResult: .failure(.couldNotParseJSON)
+    )
+
+    withEnvironment(apiService: mockService1, currentUser: .template) {
+      self.vm.inputs
+        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+
+      let bodyText = "I just posted a reply."
+
+      self.vm.inputs.commentComposerDidSubmitText(bodyText)
+
+      let expectedFailableReply = Comment.failableComment(
+        withId: MockUUID.init().uuidString,
+        date: MockDate().date,
+        project: .template,
+        parentId: Comment.template.id,
+        user: .template,
+        body: bodyText
+      )
+
+      // optimistically posted failable comment
+      XCTAssertEqual(
+        self.loadFailableReplyIntoDataSource.values.last,
+        expectedFailableReply,
+        "Failable temporary reply is emitted first."
+      )
+
+      self.scheduler.advance()
+
+      let expectedFailedReply = expectedFailableReply
+        |> \.status .~ .failed
+
+      // failed comment after network request fails.
+      XCTAssertEqual(
+        self.loadFailableReplyIntoDataSource.values.last,
+        expectedFailedReply,
+        "If the request fails the failable reply is placed back in the data source with a failed status."
+      )
+
+      let mockService2 = MockService(
+        fetchCommentRepliesEnvelopeResult: .success(envelope),
+        postCommentResult: .failure(.couldNotParseJSON)
+      )
+
+      withEnvironment(apiService: mockService2) {
+        // Tap on the failed comment to retry
+        self.vm.inputs.didSelectComment(expectedFailedReply)
+
+        let expectedRetryingReply = expectedFailedReply
+          |> \.status .~ .retrying
+
+        // failed comment shows retrying when posting again.
+        XCTAssertEqual(
+          self.loadFailableReplyIntoDataSource.values.last,
+          expectedRetryingReply,
+          "Reply is replaced with one with a retrying status."
+        )
+
+        self.scheduler.advance(by: .seconds(1))
+
+        // retry fails so original failed comment placed back
+        XCTAssertEqual(
+          self.loadFailableReplyIntoDataSource.values.last,
+          expectedFailedReply,
+          "Reply is replaced with original failed comment."
+        )
+      }
     }
   }
 }

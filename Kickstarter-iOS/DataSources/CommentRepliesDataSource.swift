@@ -234,13 +234,24 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
 
    - returns: A  `Bool` which is only true is the section is either `viewMoreReplies` or `viewMoreRepliesError`.
    */
-  public func sectionFor(_ indexPath: IndexPath) -> Bool {
+  public func sectionForViewMoreReplies(_ indexPath: IndexPath) -> Bool {
     switch indexPath.section {
     case Section.viewMoreReplies.rawValue, Section.viewMoreRepliesError.rawValue:
       return true
     default:
       return false
     }
+  }
+
+  /**
+   Returns `true` when  the `IndexPath`provided is from `Section.replies`
+
+   - parameter indexPath: `IndexPath` object that we need the `Section` value from.
+
+   - returns: A  `Bool` which is only true is the section is `replies`
+   */
+  public func sectionForReplies(_ indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.replies.rawValue
   }
 
   /// When this function is called we clear the `viewMoreReplies` section and set a `CommentViewMoreRepliesFailedCell` in the `viewMoreRepliesError` section of the data source.

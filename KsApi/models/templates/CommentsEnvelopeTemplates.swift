@@ -48,6 +48,6 @@ extension CommentsEnvelope {
     cursor: nil,
     hasNextPage: false,
     slug: "slug",
-    totalCount: 0
+    totalCount: 4
   )
 }

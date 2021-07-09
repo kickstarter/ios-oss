@@ -17,6 +17,9 @@ public protocol CommentRepliesViewModelInputs {
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
+  /// Call with a `Comment` when it is selected.
+  func didSelectComment(_ comment: Comment)
+
   /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
   func paginateOrErrorCellWasTapped()
 
@@ -107,6 +110,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         return (url, canPostComment, false, inputAreaBecomeFirstResponder)
       }
 
+    let commentCellTapped = self.didSelectCommentProperty.signal.skipNil()
+    let erroredCommentTapped = commentCellTapped.filter { comment in comment.status == .failed }
+
     let totalCountProperty = MutableProperty<Int>(0)
 
     // TODO: Handle isLoading from here
@@ -165,13 +171,44 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         CommentsViewModel.postCommentProducer
       )
 
+    let currentlyRetrying = MutableProperty<Set<String>>([])
+
+    let newErroredCommentTapped = erroredCommentTapped
+      // Check that we are not currently retrying this comment.
+      .filter { [currentlyRetrying] comment in !currentlyRetrying.value.contains(comment.id) }
+      // If we pass the filter add it to our set of retrying comments.
+      .on(value: { [currentlyRetrying] comment in
+        currentlyRetrying.value.insert(comment.id)
+      })
+
+    let retryingComment = commentableId
+      .takePairWhen(newErroredCommentTapped)
+      .map { commentableId, comment in
+        (comment, commentableId, comment.parentId)
+      }
+      .flatMap(
+        .concurrent(limit: CommentsViewModel.concurrentCommentLimit),
+        CommentsViewModel.retryCommentProducer
+      )
+      // Once we've emitted a value here the comment has been retried and can be removed.
+      .on(value: { [currentlyRetrying] _, id in
+        currentlyRetrying.value.remove(id)
+      })
+
     self.loadRepliesAndProjectIntoDataSource = replies.withLatestFrom(totalCountProperty.signal)
       .combineLatest(with: project)
 
-    self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableCommentWithReplacementId, project)
+    let failableOrRetriedComment = Signal.merge(retryingComment, failableCommentWithReplacementId)
+
+    self.loadFailableReplyIntoDataSource = Signal.combineLatest(failableOrRetriedComment, project)
       .map(unpack)
 
     self.showPaginationErrorState = error.ignoreValues()
+  }
+
+  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
+  public func didSelectComment(_ comment: Comment) {
+    self.didSelectCommentProperty.value = comment
   }
 
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
