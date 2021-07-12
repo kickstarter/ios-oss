@@ -896,6 +896,11 @@
       return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }
 
+    func fetchRewardAddOnsSelectionViewRewards(slug _: String, locationId _: String?)
+      -> SignalProducer<Project, ErrorEnvelope> {
+      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
+    }
+
     internal func fetchMessageThread(messageThreadId _: Int)
       -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
       if let error = self.fetchMessageThreadResult?.error {

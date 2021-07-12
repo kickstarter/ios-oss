@@ -31,7 +31,7 @@ extension Reward {
       convertedMinimum: rewardFragment.convertedAmount.fragments.moneyFragment.amount
         .flatMap(Double.init) ?? 0,
       description: rewardFragment.description,
-      endsAt: rewardFragment.endsAt.flatMap(TimeInterval.init) ?? 0,
+      endsAt: rewardFragment.endsAt.flatMap(TimeInterval.init),
       estimatedDeliveryOn: estimatedDeliveryOn,
       hasAddOns: false, // This value is only sent via the v1 API to indicate that a base reward has add-ons
       id: rewardId,
@@ -43,7 +43,7 @@ extension Reward {
       shipping: shippingData(from: rewardFragment),
       shippingRules: shippingRulesData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
-      startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init) ?? 0,
+      startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name
     )
   }
@@ -100,19 +100,10 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
 }
 
 private func shippingRulesData(
-  from graphReward: GraphAPI.RewardFragment
+  from rewardFragment: GraphAPI.RewardFragment
 ) -> [ShippingRule]? {
-  return graphReward.shippingRules.compactMap { shippingRule -> ShippingRule? in
-    guard
-      let shippingRule = shippingRule,
-      let locationFragment = shippingRule.location?.fragments.locationFragment,
-      let location = Location.location(from: locationFragment)
-    else { return nil }
-
-    return ShippingRule(
-      cost: shippingRule.cost?.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
-      id: decompose(id: shippingRule.id),
-      location: location
-    )
+  return rewardFragment.shippingRules.compactMap { shippingRule -> ShippingRule? in
+    guard let fragment = shippingRule?.fragments.shippingRuleFragment else { return nil }
+    return ShippingRule.shippingRule(from: fragment)
   }
 }

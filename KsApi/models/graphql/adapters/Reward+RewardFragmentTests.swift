@@ -21,7 +21,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward?.backersCount, 13)
       XCTAssertEqual(v1Reward?.convertedMinimum, 31.0)
       XCTAssertEqual(v1Reward?.description, "Description")
-      XCTAssertEqual(v1Reward?.endsAt, 0)
+      XCTAssertEqual(v1Reward?.endsAt, nil)
       XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_638_316_800.0)
       XCTAssertEqual(v1Reward?.id, 8_173_901)
       XCTAssertEqual(v1Reward?.limit, nil)
@@ -36,11 +36,11 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward?.shipping.enabled, true)
       XCTAssertEqual(v1Reward?.shipping.preference, .unrestricted)
       XCTAssertEqual(v1Reward?.shippingRules?.count, 2)
-      XCTAssertEqual(v1Reward?.startsAt, 0)
+      XCTAssertEqual(v1Reward?.startsAt, nil)
       XCTAssertEqual(v1Reward?.title, "Soft Cover Book (Signed)")
 
       XCTAssertEqual(v1Reward?.isLimitedQuantity, false)
-      XCTAssertEqual(v1Reward?.isLimitedTime, true)
+      XCTAssertEqual(v1Reward?.isLimitedTime, false)
     } catch {
       XCTFail(error.localizedDescription)
     }
