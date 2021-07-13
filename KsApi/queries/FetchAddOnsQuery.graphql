@@ -1,10 +1,10 @@
-query FetchAddOns($projectSlug: String!, $locationId: ID) {
+query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID) {
   project(slug: $projectSlug) {
     ...ProjectFragment
     addOns {
       nodes {
         ...RewardFragment
-        shippingRulesExpanded(forLocation: $locationId) {
+        shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) {
           nodes {
             ...ShippingRuleFragment
           }
