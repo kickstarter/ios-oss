@@ -418,7 +418,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
 
@@ -442,7 +442,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         "Failable temporary reply is emitted first."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       let expectedFailedComment = expectedFailableReply
         |> \.status .~ .failed
@@ -517,7 +517,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
 
@@ -541,7 +541,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         "Failable temporary reply is emitted first."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       let expectedFailedReply = expectedFailableReply
         |> \.status .~ .failed
