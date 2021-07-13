@@ -121,24 +121,20 @@ final class CommentRepliesViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] failableComment, replaceableCommentId, project in
         guard let self = self else { return }
-
         let (indexPath, newComment) = self.dataSource.replace(
           comment: failableComment,
           and: project,
           byCommentId: replaceableCommentId
         )
-
         guard let lastIndexPath = indexPath else { return }
-
-        let rowUpdate: Void = newComment ?
+        let (insert, scroll) = commentRepliesRowBehaviour(for: failableComment, newComment: newComment)
+        let rowUpdate: Void = insert ?
           self.tableView.insertRows(at: [lastIndexPath], with: .fade) :
           self.tableView.reloadRows(at: [lastIndexPath], with: .fade)
-
         self.tableView.performBatchUpdates {
           rowUpdate
         } completion: { isComplete in
-          if isComplete,
-            newComment {
+          if isComplete, scroll {
             self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
           }
         }
@@ -188,4 +184,17 @@ private let tableViewStyle: TableViewStyle = { tableView in
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorStyle .~ .none
+}
+
+/**
+ Returns `true` for insert and scrolling when  the `newComment`provided is `true`. Scrolling is false only if `comment`  status is `failed` and `newComment` is `false`.
+
+ - parameter comment: `Comment` object that we need the `status` value from.
+ - parameter newComment: `Bool` that we need to check if the comment is new to the table view.
+
+ - returns: A  `Bool, Bool` which tells the caller to insert a table row and if the table view should scroll
+ */
+internal func commentRepliesRowBehaviour(for comment: Comment,
+                                         newComment: Bool) -> (insert: Bool, scroll: Bool) {
+  (insert: newComment, scroll: newComment || comment.status == .failed)
 }

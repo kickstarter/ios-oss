@@ -513,7 +513,6 @@ extension CommentsViewModel {
       user: user,
       body: body
     )
-
     // Post the new comment or comment reply.
     return AppEnvironment.current.apiService.postComment(
       input: .init(
@@ -526,7 +525,10 @@ extension CommentsViewModel {
     // Immediately return a failable comment with a generated ID.
     .prefix(value: failableComment)
     // If the request errors we return the failableComment in a failed state.
-    .demoteErrors(replaceErrorWith: failableComment.updatingStatus(to: .failed))
+    .flatMapError { _ in
+      SignalProducer(value: failableComment.updatingStatus(to: .failed))
+        .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+    }
     // Once the request completes return the actual comment and replace it by its ID.
     .map { commentOrFailable in (commentOrFailable, failableComment.id) }
   }

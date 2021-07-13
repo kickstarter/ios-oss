@@ -680,7 +680,7 @@ internal final class CommentsViewModelTests: TestCase {
         "Failable temporary comment is emitted first."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       let expectedFailedComment = expectedFailableComment
         |> \.status .~ .failed
@@ -711,7 +711,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, update: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
 
@@ -734,7 +734,7 @@ internal final class CommentsViewModelTests: TestCase {
         "Failable temporary comment is emitted first."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       let expectedFailedComment = expectedFailableComment
         |> \.status .~ .failed
@@ -812,7 +812,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, update: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
 
@@ -835,7 +835,7 @@ internal final class CommentsViewModelTests: TestCase {
         "Failable temporary comment is emitted first."
       )
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       let expectedFailedComment = expectedFailableComment
         |> \.status .~ .failed
