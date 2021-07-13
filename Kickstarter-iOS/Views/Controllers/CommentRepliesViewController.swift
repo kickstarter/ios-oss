@@ -138,10 +138,12 @@ final class CommentRepliesViewController: UITableViewController {
           rowUpdate
         } completion: { isComplete in
           if isComplete,
-             !newComment {
-            self.tableView.scrollToRow(at: lastIndexPath,
-                                       at: .bottom,
-                                       animated: true)
+            !newComment {
+            self.tableView.scrollToRow(
+              at: lastIndexPath,
+              at: .bottom,
+              animated: true
+            )
           }
         }
       }
