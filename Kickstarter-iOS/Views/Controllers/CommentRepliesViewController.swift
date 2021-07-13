@@ -180,6 +180,14 @@ private let tableViewStyle: TableViewStyle = { tableView in
     |> \.separatorStyle .~ .none
 }
 
+/**
+ Returns `true` for insert and scrolling when  the `newComment`provided is `true`. Scrolling is false only if `comment`  status is `failed` and `newComment` is `false`.
+
+ - parameter comment: `Comment` object that we need the `status` value from.
+ - parameter newComment: `Bool` that we need to check if the comment is new to the table view.
+
+ - returns: A  `Bool, Bool` which tells the caller to insert a table row and if the table view should scroll
+ */
 internal func commentRepliesRowBehaviour(for comment: Comment,
                                          newComment: Bool) -> (insert: Bool, scroll: Bool) {
   (insert: newComment, scroll: newComment || comment.status == .failed)
