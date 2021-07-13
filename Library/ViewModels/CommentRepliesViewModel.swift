@@ -23,6 +23,9 @@ public protocol CommentRepliesViewModelInputs {
   /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
   func paginateOrErrorCellWasTapped()
 
+  /// Call when there is a failure in requesting the first page of the data and the `CommentViewMoreRepliesFailedCell` is tapped.
+  func retryFirstPage()
+
   /// Call when the view appears.
   func viewDidAppear()
 
@@ -113,11 +116,16 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     let commentCellTapped = self.didSelectCommentProperty.signal.skipNil()
     let erroredCommentTapped = commentCellTapped.filter { comment in comment.status == .failed }
 
+    let requestFirstPageWith = Signal.merge(
+      rootComment,
+      rootComment.takeWhen(self.retryFirstPageProperty.signal)
+    )
+
     let totalCountProperty = MutableProperty<Int>(0)
 
     // TODO: Handle isLoading from here
     let (replies, _, _, error) = paginate(
-      requestFirstPageWith: rootComment,
+      requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: self.paginateOrErrorCellWasTappedProperty.signal,
       clearOnNewRequest: true,
       valuesFromEnvelope: { [totalCountProperty] envelope -> [Comment] in
@@ -224,6 +232,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   fileprivate let paginateOrErrorCellWasTappedProperty = MutableProperty(())
   public func paginateOrErrorCellWasTapped() {
     self.paginateOrErrorCellWasTappedProperty.value = ()
+  }
+
+  fileprivate let retryFirstPageProperty = MutableProperty(())
+  public func retryFirstPage() {
+    self.retryFirstPageProperty.value = ()
   }
 
   fileprivate let viewDidAppearProperty = MutableProperty(())

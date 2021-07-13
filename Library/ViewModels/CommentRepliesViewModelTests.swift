@@ -583,4 +583,45 @@ internal final class CommentRepliesViewModelTests: TestCase {
       }
     }
   }
+
+  func testRetryFirstPage_Success() {
+    let envelope = CommentRepliesEnvelope.successfulRepliesTemplate
+
+    let mockService1 = MockService(
+      fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON)
+    )
+
+    withEnvironment(apiService: mockService1, currentUser: .template) {
+      self.vm.inputs
+        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceProject.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([])
+      self.loadRepliesAndProjectIntoDataSourceTotalCount.assertValues([])
+      self.showPaginationErrorState.assertDidEmitValue()
+      self.showPaginationErrorState.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      let mockService2 = MockService(
+        fetchCommentRepliesEnvelopeResult: .success(envelope)
+      )
+
+      withEnvironment(apiService: mockService2) {
+        self.vm.inputs.retryFirstPage()
+
+        self.scheduler.advance()
+
+        self.loadRepliesAndProjectIntoDataSourceProject.assertValues([.template])
+        self.loadRepliesAndProjectIntoDataSourceReplies
+          .assertValues([envelope.replies])
+        self.loadRepliesAndProjectIntoDataSourceTotalCount
+          .assertValues([envelope.totalCount])
+        self.showPaginationErrorState.assertValueCount(1)
+      }
+    }
+  }
 }

@@ -142,6 +142,29 @@ final class CommentRepliesViewControllerTests: TestCase {
     }
   }
 
+  func testViewController_WithRootCommentAndFailureToRequestFirstPage() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentRepliesViewController
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.advance()
+
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testInsert_NewComment_ShouldScroll() {
     let (insert, scroll) = commentRepliesRowBehaviour(for: .template, newComment: true)
 

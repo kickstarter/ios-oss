@@ -153,8 +153,14 @@ final class CommentRepliesViewController: UITableViewController {
 // MARK: - UITableViewDelegate
 
 extension CommentRepliesViewController {
-  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if self.dataSource.sectionForViewMoreReplies(indexPath) {
+      // If there are no replies, retry the request for the first page.
+      guard !self.dataSource.isRepliesSectionEmpty(in: tableView) else {
+        self.viewModel.inputs.retryFirstPage()
+        return
+      }
+
       self.viewModel.inputs.paginateOrErrorCellWasTapped()
     } else if let comment = self.dataSource.comment(at: indexPath),
       self.dataSource.sectionForReplies(indexPath) {
