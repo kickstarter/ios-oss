@@ -138,11 +138,10 @@ final class CommentRepliesViewController: UITableViewController {
           rowUpdate
         } completion: { isComplete in
           if isComplete,
-             newComment {
+             !newComment {
             self.tableView.scrollToRow(at: lastIndexPath,
                                        at: .bottom,
-                                       animated: false)
-            // FIXME: Turned off scroll animation because in the case of really long replies thread, a 1 second delay is too short. The interruption happens on the reload rows call above.
+                                       animated: true)
           }
         }
       }
