@@ -896,7 +896,7 @@
       return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }
 
-    func fetchRewardAddOnsSelectionViewRewards(slug _: String, locationId _: String?)
+    func fetchRewardAddOnsSelectionViewRewards(slug _: String, shippingEnabled: Bool, locationId _: String?)
       -> SignalProducer<Project, ErrorEnvelope> {
       return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }

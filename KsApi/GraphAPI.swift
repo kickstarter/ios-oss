@@ -1810,7 +1810,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchAddOns($projectSlug: String!, $locationId: ID) {
+      query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID) {
         project(slug: $projectSlug) {
           __typename
           ...ProjectFragment
@@ -1819,7 +1819,7 @@ public enum GraphAPI {
             nodes {
               __typename
               ...RewardFragment
-              shippingRulesExpanded(forLocation: $locationId) {
+              shippingRulesExpanded(forLocation: $locationId) @include(if: $shippingEnabled) {
                 __typename
                 nodes {
                   __typename
@@ -1848,15 +1848,17 @@ public enum GraphAPI {
     }
 
     public var projectSlug: String
+    public var shippingEnabled: Bool
     public var locationId: GraphQLID?
 
-    public init(projectSlug: String, locationId: GraphQLID? = nil) {
+    public init(projectSlug: String, shippingEnabled: Bool, locationId: GraphQLID? = nil) {
       self.projectSlug = projectSlug
+      self.shippingEnabled = shippingEnabled
       self.locationId = locationId
     }
 
     public var variables: GraphQLMap? {
-      return ["projectSlug": projectSlug, "locationId": locationId]
+      return ["projectSlug": projectSlug, "shippingEnabled": shippingEnabled, "locationId": locationId]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -1996,7 +1998,9 @@ public enum GraphAPI {
               return [
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                 GraphQLFragmentSpread(RewardFragment.self),
-                GraphQLField("shippingRulesExpanded", arguments: ["forLocation": GraphQLVariable("locationId")], type: .object(ShippingRulesExpanded.selections)),
+                GraphQLBooleanCondition(variableName: "shippingEnabled", inverted: false, selections: [
+                  GraphQLField("shippingRulesExpanded", arguments: ["forLocation": GraphQLVariable("locationId")], type: .object(ShippingRulesExpanded.selections)),
+                ]),
               ]
             }
 
