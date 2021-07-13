@@ -228,11 +228,25 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   }
 
   /**
+   Returns `true` when  the `replies`section of the data source is empty.
+
+   - parameter in: `UITableView` object that we need the number of sections from.
+
+   - returns: A  `Bool` which is only true if the number of items in the `replies` section is 0.
+   */
+  public func isRepliesSectionEmpty(in tableView: UITableView) -> Bool {
+    if self.numberOfSections(in: tableView) > Section.replies.rawValue {
+      return self.numberOfItems(in: Section.replies.rawValue) == 0
+    }
+    return true
+  }
+
+  /**
    Returns `true` when  the `IndexPath`provided is from `Section.viewMoreReplies` or `Section.viewMoreRepliesError`.
 
    - parameter indexPath: `IndexPath` object that we need the `Section` value from.
 
-   - returns: A  `Bool` which is only true is the section is either `viewMoreReplies` or `viewMoreRepliesError`.
+   - returns: A  `Bool` which is only true if the section is either `viewMoreReplies` or `viewMoreRepliesError`.
    */
   public func sectionForViewMoreReplies(_ indexPath: IndexPath) -> Bool {
     switch indexPath.section {

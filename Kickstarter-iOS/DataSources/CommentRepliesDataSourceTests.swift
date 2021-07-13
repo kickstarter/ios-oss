@@ -57,6 +57,18 @@ class CommentRepliesDataSourceTests: XCTestCase {
     )
   }
 
+  func testIsRepliesSectionEmpty_False() {
+    self.dataSource.load(repliesAndTotalCount: self.templateRepliesAndTotalCount, project: .template)
+
+    XCTAssertFalse(self.dataSource.isRepliesSectionEmpty(in: self.tableView))
+  }
+
+  func testIsRepliesSectionEmpty_True() {
+    self.dataSource.load(repliesAndTotalCount: ([], 7), project: .template)
+
+    XCTAssertTrue(self.dataSource.isRepliesSectionEmpty(in: self.tableView))
+  }
+
   func testReplace_ExistingComment() {
     let commentToReplace = Comment.replyTemplate
       |> \.id .~ "3"
@@ -330,6 +342,8 @@ class CommentRepliesDataSourceTests: XCTestCase {
     ]
 
     let totalCount = 21
+
+    XCTAssertTrue(self.dataSource.isRepliesSectionEmpty(in: self.tableView))
 
     self.dataSource.load(repliesAndTotalCount: (firstPage, totalCount), project: .template)
 
