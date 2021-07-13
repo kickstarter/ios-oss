@@ -121,29 +121,21 @@ final class CommentRepliesViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] failableComment, replaceableCommentId, project in
         guard let self = self else { return }
-
         let (indexPath, newComment) = self.dataSource.replace(
           comment: failableComment,
           and: project,
           byCommentId: replaceableCommentId
         )
-
         guard let lastIndexPath = indexPath else { return }
-
-        let rowUpdate: Void = newComment ?
+        let (insert, scroll) = commentRepliesRowBehaviour(for: failableComment, newComment: newComment)
+        let rowUpdate: Void = insert ?
           self.tableView.insertRows(at: [lastIndexPath], with: .fade) :
           self.tableView.reloadRows(at: [lastIndexPath], with: .fade)
-
         self.tableView.performBatchUpdates {
           rowUpdate
         } completion: { isComplete in
-          if isComplete,
-            !newComment {
-            self.tableView.scrollToRow(
-              at: lastIndexPath,
-              at: .bottom,
-              animated: true
-            )
+          if isComplete, scroll {
+            self.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
           }
         }
       }
@@ -186,4 +178,9 @@ private let tableViewStyle: TableViewStyle = { tableView in
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorStyle .~ .none
+}
+
+internal func commentRepliesRowBehaviour(for comment: Comment,
+                                         newComment: Bool) -> (insert: Bool, scroll: Bool) {
+  (insert: newComment, scroll: newComment || comment.status == .failed)
 }

@@ -141,4 +141,25 @@ final class CommentRepliesViewControllerTests: TestCase {
       }
     }
   }
+
+  func testInsert_NewComment_ShouldScroll() {
+    let (insert, scroll) = commentRepliesRowBehaviour(for: .template, newComment: true)
+
+    XCTAssertTrue(insert)
+    XCTAssertTrue(scroll)
+  }
+
+  func testReplace_ExistingCommentWithSuccessfulComment_ShouldNotScroll() {
+    let (insert, scroll) = commentRepliesRowBehaviour(for: .template, newComment: false)
+
+    XCTAssertFalse(insert)
+    XCTAssertFalse(scroll)
+  }
+
+  func testReplace_ExistingCommentWithFailedComment_ShouldScroll() {
+    let (insert, scroll) = commentRepliesRowBehaviour(for: .replyFailedTemplate, newComment: false)
+
+    XCTAssertFalse(insert)
+    XCTAssertTrue(scroll)
+  }
 }
