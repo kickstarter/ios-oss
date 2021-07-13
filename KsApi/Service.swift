@@ -354,10 +354,17 @@ public struct Service: ServiceType {
 
   public func fetchRewardAddOnsSelectionViewRewards(
     slug: String,
+    shippingEnabled: Bool,
     locationId: String?
   ) -> SignalProducer<Project, ErrorEnvelope> {
+    let query = GraphAPI.FetchAddOnsQuery(
+      projectSlug: slug,
+      shippingEnabled: shippingEnabled,
+      locationId: locationId
+    )
+
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchAddOnsQuery(projectSlug: slug, locationId: locationId))
+      .fetch(query: query)
       .flatMap(Project.projectProducer(from:))
   }
 

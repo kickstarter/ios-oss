@@ -97,6 +97,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let projectEvent = slugAndShippingRule.switchMap { slug, shippingRule in
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
         slug: slug,
+        shippingEnabled: shippingRule?.location.graphID != nil,
         locationId: shippingRule?.location.graphID
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
