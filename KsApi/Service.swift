@@ -107,8 +107,10 @@ public struct Service: ServiceType {
   }
 
   public func createBacking(input: CreateBackingInput) ->
-    SignalProducer<CreateBackingEnvelope, GraphError> {
-    return applyMutation(mutation: CreateBackingMutation(input: input))
+    SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input)))
+      .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
   public func createPassword(input: CreatePasswordInput) ->

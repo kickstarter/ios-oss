@@ -1892,7 +1892,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateApplePayBackingError() {
-    let mockService = MockService(createBackingResult: .failure(.invalidInput))
+    let mockService = MockService(createBackingResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
@@ -2153,10 +2153,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateBacking_Failure() {
-    let mockService = MockService(
-      createBackingResult:
-      Result.failure(GraphError.invalidInput)
-    )
+    let mockService = MockService(createBackingResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template

@@ -1,0 +1,12 @@
+mutation CreateBacking($input: CreateBackingInput!) {
+  createBacking(input: $input) {
+    checkout {
+      backing {
+        clientSecret
+        requiresAction
+      }
+      id
+      state
+    }
+  }
+}

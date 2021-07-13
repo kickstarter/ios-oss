@@ -25,7 +25,7 @@
 
     fileprivate let changePasswordError: GraphError?
 
-    fileprivate let createBackingResult: Result<CreateBackingEnvelope, GraphError>?
+    fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordError: GraphError?
 
@@ -221,7 +221,7 @@
         me: .template
       ),
       changePasswordError: GraphError? = nil,
-      createBackingResult: Result<CreateBackingEnvelope, GraphError>? = nil,
+      createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createPasswordError: GraphError? = nil,
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
       changeCurrencyError: GraphError? = nil,
@@ -583,7 +583,7 @@
     }
 
     internal func createBacking(input _: CreateBackingInput)
-      -> SignalProducer<CreateBackingEnvelope, GraphError> {
+      -> SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.createBackingResult)
     }
 

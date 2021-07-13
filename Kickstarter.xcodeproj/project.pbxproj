@@ -612,6 +612,11 @@
 		8AC3E0A42698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0A32698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift */; };
 		8AC3E0AC2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0AB2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift */; };
 		8AC3E0B42698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */; };
+		8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */; };
+		8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */; };
+		8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0D1269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift */; };
+		8AC3E0DA269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0D9269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.swift */; };
+		8AC3E0E2269E53E900168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */; };
 		8ACB32A824ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */; };
 		8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */; };
 		8ACF36D1262745520026E74D /* MockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587761EEB2ED6006E7684 /* MockService.swift */; };
@@ -2244,6 +2249,11 @@
 		8AC3E0A32698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShippingRule+ShippingRuleFragmentTests.swift"; sourceTree = "<group>"; };
 		8AC3E0AB2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchAddOnsQueryData.swift"; sourceTree = "<group>"; };
 		8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchAddOnsQueryDataTests.swift"; sourceTree = "<group>"; };
+		8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateBacking.graphql; sourceTree = "<group>"; };
+		8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateBackingInput+CreateBackingInput.swift"; sourceTree = "<group>"; };
+		8AC3E0D1269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateBackingEnvelope+CreateBackingMutation.Data.swift"; sourceTree = "<group>"; };
+		8AC3E0D9269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateBackingEnvelope+CreateBackingMutation.swift"; sourceTree = "<group>"; };
+		8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateBackingInput+CreateBackingInputTests.swift"; sourceTree = "<group>"; };
 		8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
 		8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		8ACF36E92627486D0026E74D /* KsApiNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KsApiNotification.swift; sourceTree = "<group>"; };
@@ -3290,14 +3300,15 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
+				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
-				4753C773264DC17900BB10B6 /* PostCommentMutation.swift */,
-				47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
 				D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */,
 				D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */,
+				4753C773264DC17900BB10B6 /* PostCommentMutation.swift */,
+				47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */,
 				D6F5C60E2437DD2A00C1A79D /* SignInWithAppleMutation.swift */,
 				D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */,
 				8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */,
@@ -3493,6 +3504,10 @@
 				8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */,
 				8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */,
 				8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */,
+				8AC3E0D1269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift */,
+				8AC3E0D9269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.swift */,
+				8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */,
+				8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */,
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
 				8AC3E016269626A400168BF8 /* Location+LocationFragment.swift */,
 				8AC3E01E2696368A00168BF8 /* Location+LocationFragmentTests.swift */,
@@ -5402,6 +5417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
+				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,
 				8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */,
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
 			);
@@ -6632,7 +6648,9 @@
 				D01588931EEB2ED7006E7684 /* DiscoveryParamsLenses.swift in Sources */,
 				D01588AB1EEB2ED7006E7684 /* Project.PhotoLenses.swift in Sources */,
 				D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */,
+				8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
+				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
 				D6B686E92191FE5E005F5DA7 /* EmptyInput.swift in Sources */,
 				D0158A2A1EEB30A2006E7684 /* SurveyResponseTemplates.swift in Sources */,
 				8AE3F73124DA29FC002B03C3 /* Project+GraphProject.swift in Sources */,
@@ -6863,6 +6881,7 @@
 				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,
 				8A8831C524DA2B9D002BCA5E /* Backing+GraphBackingTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
+				8AC3E0DA269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.swift in Sources */,
 				D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */,
 				8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */,
 				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
@@ -6900,6 +6919,7 @@
 				47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
+				8AC3E0E2269E53E900168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift in Sources */,
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
