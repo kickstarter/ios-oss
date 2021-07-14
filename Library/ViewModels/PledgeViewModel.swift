@@ -819,24 +819,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.title = context.map { $0.title }
 
-    let trackCheckoutPageViewData = Signal
-      .zip(
-        project,
-        baseReward,
-        rewards,
-        selectedQuantities,
-        refTag,
-        initialAdditionalPledgeAmount,
-        pledgeTotal,
-        baseRewardShippingTotal,
-        context
-      )
+    let trackCheckoutPageViewData = Signal.zip(
+      project,
+      baseReward,
+      rewards,
+      selectedQuantities,
+      refTag,
+      initialAdditionalPledgeAmount,
+      pledgeTotal,
+      baseRewardShippingTotal,
+      context
+    )
 
-    // Tracking
+    // MARK: - Tracking
 
     trackCheckoutPageViewData
       .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, pledgeViewContext in
-
         let checkoutData = checkoutProperties(
           from: project,
           baseReward: baseReward,
@@ -868,7 +866,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     pledgeSubmitEventsSignal
       .takeWhen(createButtonTapped)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
-
         let checkoutData = checkoutProperties(
           from: data.project,
           baseReward: baseReward,
@@ -896,7 +893,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     pledgeSubmitEventsSignal
       .takeWhen(goToApplePayPaymentAuthorization)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
-
         let checkoutData = checkoutProperties(
           from: data.project,
           baseReward: baseReward,

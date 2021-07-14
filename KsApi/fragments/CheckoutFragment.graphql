@@ -1,0 +1,8 @@
+fragment CheckoutFragment on Checkout {
+  backing {
+    clientSecret
+    requiresAction
+  }
+  id
+  state
+}
