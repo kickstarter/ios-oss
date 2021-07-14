@@ -72,6 +72,7 @@
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "プレッジをすることにより、Kickstarter の <a href=\"%{terms_of_use_link}\">利用規約</a>、<a href=\"%{privacy_policy_link}\">プライバシーポリシー</a>、<a href=\"%{cookie_policy_link}\">Cookie ポリシー</a>に同意したとみなされます。";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "サインアップすることで、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意するものとみなされます。当社のポリシーでは、Kickstarter のサービスとサイトを配信、改善、促進するために、同社がお客様のデータをどのように使用しているか、そしてそのようなデータ使用を管理するためのお客様の権利について説明しています。";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "サインアップすることで、Kickstarter に Facebook アカウントを使ってログインすることになります。Facebook を使用したくない場合は、このアプリを再起動して別のオプションをお選びください。";
+"By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "プレッジを送信することで、Kickstarter の決済サービスプロバイダー、Stripe がご利用のお支払い方法へ請求を行うことに同意するものとみなされます。";
 "CVC" = "CVC";
 "Cancel" = "キャンセル";
 "Cancel_pledge" = "プレッジを取り消す";
@@ -99,6 +100,7 @@
 "Closes_filters" = "フィルターを閉じる";
 "Closes_live_stream" = "ライブ配信を閉じる";
 "Closes_project" = "プロジェクトを閉じる";
+"Collaborator" = "コラボレーター（協力者）";
 "Collapses_subcategories" = "サブカテゴリーを閉じる";
 "Collections" = "コレクション";
 "Comment_reply_digest" = "コメント返信のダイジェスト";
@@ -475,6 +477,7 @@
 "Replay_live_stream_with_creator_name" = "<b>%{creator_name}</b>のライブ配信を再生";
 "Replay_past_live_stream" = "過去のライブ配信をリプレイ";
 "Replay_past_live_streams" = "過去のライブ配信をリプレイ";
+"Replies" = "返信";
 "Reply_to_user_name" = "%{user_nameに返信";
 "Request_my_data" = "自分のデータをリクエストする";
 "Request_my_personal_data" = "自分の個人データをリクエストする";
@@ -648,6 +651,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
 "View" = "みる";
 "View_dashboard" = "ダッシュボードを表示";
+"View_more_replies" = "他の返信を表示";
 "View_progress" = "進捗状況を表示";
 "View_project" = "プロジェクトを見る";
 "View_replies" = "返信を表示";
