@@ -35,6 +35,12 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Backer")
   }
 
+  func testAuthorBadge_Collaborator() {
+    self.commentCellHeaderStackView
+      .configureWith(comment: Comment.collaboratorTemplate)
+    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Colaborator")
+  }
+
   func testAuthorBadge_Creator() {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.template)

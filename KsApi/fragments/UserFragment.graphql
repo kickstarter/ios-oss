@@ -1,0 +1,7 @@
+fragment UserFragment on User {
+  id
+  imageUrl: imageUrl(blur: false, width: 1024)
+  isCreator
+  name
+  uid
+}

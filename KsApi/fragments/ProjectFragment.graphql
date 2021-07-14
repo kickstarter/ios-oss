@@ -1,0 +1,42 @@
+fragment ProjectFragment on Project {
+  actions {
+    displayConvertAmount
+  }
+  backersCount
+  category {
+    ...CategoryFragment
+  }
+  country {
+    ...CountryFragment
+  }
+  creator {
+    ...UserFragment
+  }
+  currency
+  deadlineAt
+  description
+  finalCollectionDate
+  fxRate
+  goal {
+    ...MoneyFragment
+  }
+  image {
+    id
+    url(width: 1024)
+  }
+  isProjectWeLove
+  launchedAt
+  location {
+    ...LocationFragment
+  }
+  name
+  pid
+  pledged {
+    ...MoneyFragment
+  }
+  slug
+  state
+  stateChangedAt
+  url
+  usdExchangeRate
+}

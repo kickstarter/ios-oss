@@ -17,6 +17,73 @@ extension Comment {
     status: .success
   )
 
+  public static let collaboratorTemplate = Comment(
+    author: Author(
+      id: "ERShsfh7gsS34==",
+      imageUrl: "https://ks_.imag/fedrico.jpg",
+      isCreator: false,
+      name: "Dre' Anata"
+    ),
+    authorBadges: [.collaborator],
+    body: "I'm a collaborator.",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "89DJa89jdSDJ89sd8==",
+    isDeleted: false,
+    replyCount: 2,
+    status: .success
+  )
+
+  public static let replyTemplate = Comment(
+    author: Author(
+      id: "1",
+      imageUrl: "http://www.kickstarter.com/medium.jpg",
+      isCreator: true,
+      name: "Blob"
+    ),
+    authorBadges: [.creator],
+    body: "Hello World",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "89DJa89jdSDJ89sd8==",
+    isDeleted: false,
+    parentId: "Q29tbWVudC0zMjY2NDAxMg==",
+    replyCount: 0,
+    status: .success
+  )
+
+  public static let replyFailedTemplate = Comment(
+    author: Author(
+      id: "1",
+      imageUrl: "http://www.kickstarter.com/medium.jpg",
+      isCreator: true,
+      name: "Blob"
+    ),
+    authorBadges: [.superbacker],
+    body: "Hello World",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "89DJa89jdS4J89sd8==",
+    isDeleted: false,
+    parentId: "Q29tbWVudC0zMjY2NDAxMg==",
+    replyCount: 0,
+    status: .failed
+  )
+
+  public static let replyRootCommentTemplate = Comment(
+    author: Author(
+      id: "AFD8hsfh7gsSf9==",
+      imageUrl: "https://ks_.imag/fedrico.jpg",
+      isCreator: true,
+      name: "Federico Fellini"
+    ),
+    authorBadges: [.creator],
+    body: "Hello World",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
+    id: "Q29tbWVudC0zMjY2NDAxMg==",
+    isDeleted: false,
+    parentId: nil,
+    replyCount: 2,
+    status: .success
+  )
+
   public static let deletedTemplate = Comment(
     author: Author(
       id: "AFD8hsfh7gsSf9==",
@@ -125,6 +192,8 @@ extension Comment {
 extension Comment {
   public static func template(for badge: AuthorBadge) -> Comment {
     switch badge {
+    case .collaborator:
+      return .collaboratorTemplate
     case .creator:
       return .template
     case .backer:

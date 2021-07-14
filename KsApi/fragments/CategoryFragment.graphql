@@ -1,0 +1,8 @@
+fragment CategoryFragment on Category {
+  id
+  name
+  parentCategory {
+    id
+    name
+  }
+}

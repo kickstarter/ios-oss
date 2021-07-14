@@ -875,4 +875,5 @@ extension Query.Notifications {
 
 public extension Query {
   static let defaultPaginationCount: Int = 25
+  static let repliesPaginationCount: Int = 7
 }

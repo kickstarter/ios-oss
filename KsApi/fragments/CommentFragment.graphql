@@ -1,0 +1,14 @@
+fragment CommentFragment on Comment {
+  author {
+    ...UserFragment
+  }
+  authorBadges
+  body
+  createdAt
+  deleted
+  id
+  parentId
+  replies {
+    totalCount
+  }
+}

@@ -99,8 +99,19 @@ public protocol ServiceType {
   /// Fetch comments for a project.
   func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for a project with a query.
-  func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+  /// Fetch comments for a project with a slug, cursor and limit.
+  func fetchProjectComments(
+    slug: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+
+  /// Fetch comments for an update with an id, cursor and limit.
+  func fetchUpdateComments(
+    id: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comment replies for a comment with a query.
   func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
@@ -149,8 +160,12 @@ public protocol ServiceType {
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
 
-  /// Fetch Backing data for ManagePledgeViewController
+  /// Fetch `Backing` data for ManagePledgeViewController with a query.
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
+
+  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID.
+  func fetchManagePledgeViewBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.
@@ -199,6 +214,10 @@ public protocol ServiceType {
 
   /// Fetch the add-on rewards for the add-on selection view with a given query.
   func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
+    -> SignalProducer<Project, ErrorEnvelope>
+
+  /// Fetch the add-on rewards for the add-on selection view with a `Project` slug and optional `Location` ID.
+  func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
     -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetches a reward for a project and reward id.
@@ -486,7 +505,7 @@ extension ServiceType {
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
   }
 
-  fileprivate var defaultHeaders: [String: String] {
+  internal var defaultHeaders: [String: String] {
     var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
     headers["Authorization"] = self.authorizationHeader
@@ -500,7 +519,7 @@ extension ServiceType {
   }
 
   // PerimeterX authorization header
-  fileprivate var pxHeaders: [String: String] {
+  internal var pxHeaders: [String: String] {
     return self.perimeterXClient.headers()
   }
 

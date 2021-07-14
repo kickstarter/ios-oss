@@ -2,6 +2,25 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+public enum CommentCellStyles {
+  public enum Content {
+    public static let leftIndentWidth: Int = 5
+  }
+}
+
+public let commentCellIndentedRootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(1),
+      left: Styles.grid(CommentCellStyles.Content.leftIndentWidth),
+      bottom: Styles.grid(3),
+      right: Styles.grid(1)
+    )
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(3)
+}
+
 public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
@@ -12,27 +31,23 @@ public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
 }
 
 public let commentBodyTextViewStyle: TextViewStyle = { textView in
-  textView
+  let t = textView
     |> UITextView.lens.isScrollEnabled .~ false
     |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
     |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
     |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
     |> \.textColor .~ .ksr_support_700
     |> \.textAlignment .~ .left
+
+  let b = t
     |> \.font .~ UIFont.ksr_callout()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.isEditable .~ false
-    |> \.isUserInteractionEnabled .~ false
-}
+    |> \.isSelectable .~ true
+    |> \.isUserInteractionEnabled .~ true
+    |> \.dataDetectorTypes .~ .link
 
-public let creatorAuthorBadgeStyle: PaddingLabelStyle = { label in
-  label
-    |> \.text .~ Strings.Creator()
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ UIColor.ksr_create_700
-    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.adjustsFontForContentSizeCategory .~ true
+  return b
 }
 
 public let superbackerAuthorBadgeStyle: PaddingLabelStyle = { label in

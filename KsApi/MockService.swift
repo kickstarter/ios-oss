@@ -50,7 +50,8 @@
     fileprivate let fetchCommentsResponse: [DeprecatedComment]?
     fileprivate let fetchCommentsError: ErrorEnvelope?
 
-    fileprivate let fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
+    fileprivate let fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
+    fileprivate let fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>?
 
@@ -200,7 +201,8 @@
         currency: currency,
         buildVersion: buildVersion,
         deviceIdentifier: deviceIdentifier,
-        perimeterXClient: perimeterXClient
+        perimeterXClient: perimeterXClient,
+        fetchProjectResponse: nil
       )
     }
 
@@ -236,7 +238,8 @@
       fetchGraphCategoriesError: GraphError? = nil,
       fetchCommentsResponse: [DeprecatedComment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
-      fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
+      fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
+      fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
       fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>? = nil,
       fetchConfigResponse: Config? = nil,
       fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
@@ -386,7 +389,8 @@
 
       self.fetchCommentsError = fetchCommentsError
 
-      self.fetchCommentsEnvelopeResult = fetchCommentsEnvelopeResult
+      self.fetchProjectCommentsEnvelopeResult = fetchProjectCommentsEnvelopeResult
+      self.fetchUpdateCommentsEnvelopeResult = fetchUpdateCommentsEnvelopeResult
 
       self.fetchCommentRepliesEnvelopeResult = fetchCommentRepliesEnvelopeResult
 
@@ -655,8 +659,20 @@
       return .empty
     }
 
-    func fetchComments(query _: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchCommentsEnvelopeResult)
+    func fetchProjectComments(
+      slug _: String,
+      cursor _: String?,
+      limit _: Int?
+    ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchProjectCommentsEnvelopeResult)
+    }
+
+    func fetchUpdateComments(
+      id _: String,
+      cursor _: String?,
+      limit _: Int?
+    ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchUpdateCommentsEnvelopeResult)
     }
 
     func fetchCommentReplies(query _: NonEmptySet<Query>)
@@ -871,7 +887,16 @@
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
+    func fetchManagePledgeViewBacking(id _: Int) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
+    }
+
     func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
+      -> SignalProducer<Project, ErrorEnvelope> {
+      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
+    }
+
+    func fetchRewardAddOnsSelectionViewRewards(slug _: String, shippingEnabled: Bool, locationId _: String?)
       -> SignalProducer<Project, ErrorEnvelope> {
       return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }
@@ -1439,7 +1464,7 @@
             fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
             fetchCommentsResponse: $1.fetchCommentsResponse,
             fetchCommentsError: $1.fetchCommentsError,
-            fetchCommentsEnvelopeResult: $1.fetchCommentsEnvelopeResult,
+            fetchProjectCommentsEnvelopeResult: $1.fetchProjectCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
             fetchDiscoveryError: $1.fetchDiscoveryError,
