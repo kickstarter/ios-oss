@@ -482,8 +482,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          // FIXME: Remove once UpdateBacking mutation is aligned on error type.
-          .mapError { _ in GraphError.invalidInput }
           .on(
             starting: {
               processingViewIsHidden.value = false

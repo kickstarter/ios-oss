@@ -46,6 +46,7 @@ public struct ErrorEnvelope {
     case ErrorEnvelopeJSONParsingFailed = "error_json_parsing_failed"
     case DecodingJSONFailed = "decoding_json_failed"
     case InvalidPaginationUrl = "invalid_pagination_url"
+    case GraphQLError = "graphql_error"
   }
 
   public struct AltErrorMessage {
@@ -124,6 +125,15 @@ public struct ErrorEnvelope {
     facebookUser: nil,
     graphError: nil
   )
+
+  internal static func graphError(_ message: String) -> ErrorEnvelope {
+    return ErrorEnvelope(
+      errorMessages: [message],
+      ksrCode: .GraphQLError,
+      httpCode: 200,
+      exception: nil
+    )
+  }
 }
 
 extension ErrorEnvelope: Error {}
