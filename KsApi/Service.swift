@@ -539,8 +539,11 @@ public struct Service: ServiceType {
     return request(.unfollowFriend(userId: id))
   }
 
-  public func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateBackingMutation(input: input))
+  public func updateBacking(input: UpdateBackingInput)
+    -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.UpdateBackingMutation(input: GraphAPI.UpdateBackingInput.from(input)))
+      .flatMap(UpdateBackingEnvelope.producer(from:))
   }
 
   public func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)

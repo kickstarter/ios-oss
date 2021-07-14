@@ -163,7 +163,7 @@
 
     fileprivate let unfollowFriendError: ErrorEnvelope?
 
-    fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, GraphError>?
+    fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let updateDraftError: ErrorEnvelope?
 
@@ -309,7 +309,7 @@
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
-      updateBackingResult: Result<UpdateBackingEnvelope, GraphError>? = nil,
+      updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>? = nil,
       updateDraftError: ErrorEnvelope? = nil,
       updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
       updateProjectNotificationResponse: ProjectNotification? = nil,
@@ -1382,7 +1382,7 @@
     }
 
     internal func updateBacking(input _: UpdateBackingInput)
-      -> SignalProducer<UpdateBackingEnvelope, GraphError> {
+      -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.updateBackingResult)
     }
 
