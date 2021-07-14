@@ -19,6 +19,7 @@ extension Project {
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state),
       let userFragment = projectFragment.creator?.fragments.userFragment,
+      let isWatched = projectFragment.isWatched,
       let creator = User.user(from: userFragment)
     else { return nil }
 
@@ -36,7 +37,7 @@ extension Project {
       id: projectFragment.pid,
       location: location,
       name: projectFragment.name,
-      personalization: Personalization(),
+      personalization: projectPersonalization(isStarred: isWatched),
       photo: photo,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
       slug: projectFragment.slug,
@@ -46,6 +47,10 @@ extension Project {
       urls: urls
     )
   }
+}
+
+private func projectPersonalization(isStarred: Bool) -> Project.Personalization {
+  return Project.Personalization(isStarred: isStarred)
 }
 
 private func projectRewards(from rewardFragments: [GraphAPI.RewardFragment]?) -> [Reward]? {

@@ -25,6 +25,7 @@ fragment ProjectFragment on Project {
     url(width: 1024)
   }
   isProjectWeLove
+  isWatched
   launchedAt
   location {
     ...LocationFragment
