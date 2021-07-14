@@ -72,6 +72,7 @@
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Lorsque vous vous engagez, vous acceptez les <a href=\"%{terms_of_use_link}\">Conditions d'utilisation</a> de Kickstarter, notre <a href=\"%{privacy_policy_link}\">Politique de confidentialité</a> et notre <a href=\"%{cookie_policy_link}\">Politique en matière de cookies</a>.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "En vous inscrivant, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer.";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "En vous inscrivant ici, vous vous connecterez à Kickstarter avec votre compte Facebook. Si vous préférez ne pas utiliser Facebook, veuillez redémarrer cette application et choisir une autre option.";
+"By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "En vous engageant, vous acceptez que Stripe, notre prestataire de traitement des règlements, débite votre moyen de paiement.";
 "CVC" = "Cryptogramme";
 "Cancel" = "Annuler";
 "Cancel_pledge" = "Annuler mon engagement";
@@ -99,6 +100,7 @@
 "Closes_filters" = "Ferme les filtres.";
 "Closes_live_stream" = "Ferme la diffusion en direct.";
 "Closes_project" = "Ferme le projet.";
+"Collaborator" = "Collaborateur";
 "Collapses_subcategories" = "Masque les sous-catégories.";
 "Collections" = "Collections";
 "Comment_reply_digest" = "Résumé des réponses aux commentaires";
@@ -475,6 +477,7 @@
 "Replay_live_stream_with_creator_name" = "Revoir la diffusion en direct de <br><b>%{creator_name}</b>";
 "Replay_past_live_stream" = "Rediffusion";
 "Replay_past_live_streams" = "Revoir des diffusions en direct passées";
+"Replies" = "Réponses";
 "Reply_to_user_name" = "Répondre à %{user_name}…";
 "Request_my_data" = "Demander mes données";
 "Request_my_personal_data" = "Demander mes données personnelles";
@@ -648,6 +651,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Vidéo désactivée en attente d'une meilleure connexion Internet";
 "View" = "Afficher";
 "View_dashboard" = "Tableau de bord";
+"View_more_replies" = "Afficher davantage de réponses";
 "View_progress" = "Voir les progrès";
 "View_project" = "Afficher le projet";
 "View_replies" = "Afficher les réponses";
