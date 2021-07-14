@@ -122,10 +122,9 @@ public final class ManagePledgeViewModel:
     let graphBackingEvent = shouldFetchGraphBackingWithParam
       .map { param in param.id }
       .skipNil()
-      .map(String.init)
       .switchMap { backingId in
         AppEnvironment.current.apiService
-          .fetchManagePledgeViewBacking(query: managePledgeViewProjectBackingQuery(withBackingId: backingId))
+          .fetchManagePledgeViewBacking(id: backingId)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }

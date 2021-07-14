@@ -2,48 +2,6 @@ import Foundation
 import Prelude
 
 /**
- Constructs a query to fetch a list of top-level `Comment`s. Accepts an optional cursor to page in
- the comments after that cursor from oldest to most recent.
-
- - parameter slug: A `Project`'s slug to fetch comments for.
- - parameter first: An optional limit parameter, defaulted to `Query.defaultPaginationCount`.
- - parameter after: An optional cursor to fetch the comments after.
-
- - returns: A `NonEmptySet<Query>`.
- */
-public func commentsQuery(
-  withProjectSlug slug: String,
-  first: Int = Query.defaultPaginationCount,
-  after cursor: String? = nil
-) -> NonEmptySet<Query> {
-  let args = Set([cursor.flatMap(QueryArg<Never>.after), .first(first)].compact())
-
-  return Query.project(
-    slug: slug,
-    .id +| [
-      .slug,
-      .comments(
-        args,
-        .edges(
-          .node(
-            GraphComment.baseQueryProperties.op(
-              .replies([], Connection<Query.Comment>.totalCount +| []) +| []
-            )
-          ) +| []
-        ) +| [
-          .pageInfo(
-            .endCursor +| [
-              .hasNextPage
-            ]
-          ),
-          .totalCount
-        ]
-      )
-    ]
-  ) +| []
-}
-
-/**
  Constructs a query to fetch a `Comment`'s replies. Accepts an optional cursor to page in the
  replies before that cursor from most recent to oldest.
 
@@ -55,7 +13,7 @@ public func commentsQuery(
  */
 public func commentRepliesQuery(
   withCommentId id: String,
-  last: Int = Query.defaultPaginationCount,
+  last: Int = Query.repliesPaginationCount,
   before cursor: String? = nil
 ) -> NonEmptySet<Query> {
   let args = Set([cursor.flatMap(QueryArg<Never>.before), .last(last)].compact())
@@ -75,46 +33,5 @@ public func commentRepliesQuery(
         .totalCount
       ]) +| []
     )
-  ) +| []
-}
-
-/**
- Constructs a query to fetch a list of top-level `Comment`s for a project update. Accepts an optional cursor to page in
- the comments after that cursor from oldest to most recent.
-
- - parameter id: A `Update`'s id to fetch comments for.
- - parameter first: An optional limit parameter, defaulted to `Query.defaultPaginationCount`.
- - parameter after: An optional cursor to fetch the comments after.
-
- - returns: A `NonEmptySet<Query>`.
- */
-public func projectUpdateCommentsQuery(
-  id: String,
-  first: Int = Query.defaultPaginationCount,
-  after cursor: String? = nil
-) -> NonEmptySet<Query> {
-  let args = Set([cursor.flatMap(QueryArg<Never>.after), .first(first)].compact())
-
-  return Query.post(
-    id: id,
-    .id +| [
-      .comments(
-        args,
-        .edges(
-          .node(
-            GraphComment.baseQueryProperties.op(
-              .replies([], Connection<Query.Comment>.totalCount +| []) +| []
-            )
-          ) +| []
-        ) +| [
-          .pageInfo(
-            .endCursor +| [
-              .hasNextPage
-            ]
-          ),
-          .totalCount
-        ]
-      )
-    ]
   ) +| []
 }

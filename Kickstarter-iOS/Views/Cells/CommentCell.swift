@@ -141,6 +141,21 @@ final class CommentCell: UITableViewCell, ValueCell {
         guard let self = self else { return }
         self.delegate?.commentCellDidTapViewReplies(self, comment: comment)
       }
+
+    self.viewModel.outputs.shouldIndentContent
+      .observeForUI()
+      .observeValues { shouldIndent in
+        _ = self.rootStackView
+          |> \.axis .~ .vertical
+          |> \.layoutMargins .~ .init(
+            top: Styles.grid(1),
+            left: Styles.grid(shouldIndent ? CommentCellStyles.Content.leftIndentWidth : 1),
+            bottom: Styles.grid(3),
+            right: Styles.grid(1)
+          )
+          |> \.isLayoutMarginsRelativeArrangement .~ true
+          |> \.spacing .~ Styles.grid(3)
+      }
   }
 }
 

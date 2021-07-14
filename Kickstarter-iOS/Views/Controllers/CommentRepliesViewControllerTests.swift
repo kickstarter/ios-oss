@@ -17,14 +17,15 @@ final class CommentRepliesViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testViewController_WithComment_HasRootComment() {
-    Language.allLanguages.forEach { language in
+  func testViewController_WithRootCommentNoReplies() {
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
 
         let (parent, _) = traitControllers(
-          device: .phone4_7inch,
+          device: device,
           orientation: .portrait,
           child: controller
         )
@@ -33,60 +34,155 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
       }
     }
   }
 
-  func testView_CurrentUserLoggedOut_HasRootCommentAndNoCommentComposer() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
-      withEnvironment(currentUser: nil, language: language) {
+  func testViewController_WithRootCommentAndSuccessfulReplies() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.successfulRepliesTemplate)
+    )
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
 
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
       }
     }
   }
 
-  func testView_CurrentUserLoggedInIsBacking_HasRootCommentAndCommentComposer() {
-    let project = Project.template
-      |> \.personalization.isBacking .~ true
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
-      withEnvironment(currentUser: .template, language: language) {
-        let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_100
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
-      }
-    }
-  }
-
-  func testView_CurrentUserLoggedInNotBacking_HasRootCommentAndBlockedCommentComposer() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, _ in
-      withEnvironment(currentUser: .template, language: language) {
+  func testViewController_WithRootCommentAndFailingReplies() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.failedAndSuccessRepliesTemplate)
+    )
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
           .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testViewController_WithRootCommentAndSuccessFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
+    let mockService =
+      MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+          .successFailedRetryingRetrySuccessRepliesTemplate))
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentRepliesViewController
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
       }
     }
+  }
+
+  func testViewController_WithRootCommentRepliesandViewMoreRepliesFailedCell() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope.successfulRepliesTemplate))
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentRepliesViewController
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.advance()
+
+        withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))) {
+          controller.viewModel.inputs.paginateOrErrorCellWasTapped()
+
+          self.scheduler.advance()
+
+          FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        }
+      }
+    }
+  }
+
+  func testViewController_WithRootCommentAndFailureToRequestFirstPage() {
+    let mockService = MockService(
+      fetchCommentRepliesEnvelopeResult: .failure(.couldNotParseJSON))
+    let devices = [Device.phone4_7inch, Device.pad]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentRepliesViewController
+          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.advance()
+
+        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testInsert_NewComment_ShouldScroll() {
+    let (insert, scroll) = commentRepliesRowBehaviour(for: .template, newComment: true)
+
+    XCTAssertTrue(insert)
+    XCTAssertTrue(scroll)
+  }
+
+  func testReplace_ExistingCommentWithSuccessfulComment_ShouldNotScroll() {
+    let (insert, scroll) = commentRepliesRowBehaviour(for: .template, newComment: false)
+
+    XCTAssertFalse(insert)
+    XCTAssertFalse(scroll)
+  }
+
+  func testReplace_ExistingCommentWithFailedComment_ShouldScroll() {
+    let (insert, scroll) = commentRepliesRowBehaviour(for: .replyFailedTemplate, newComment: false)
+
+    XCTAssertFalse(insert)
+    XCTAssertTrue(scroll)
   }
 }

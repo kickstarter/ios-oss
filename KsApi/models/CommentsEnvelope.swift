@@ -11,8 +11,15 @@ public struct CommentsEnvelope: Decodable {
 }
 
 extension CommentsEnvelope {
-  static func envelopeProducer(from envelope: GraphCommentsEnvelope)
+  static func envelopeProducer(from data: GraphAPI.FetchProjectCommentsQuery.Data)
     -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return SignalProducer(value: CommentsEnvelope.commentsEnvelope(from: envelope))
+    guard let envelope = CommentsEnvelope.commentsEnvelope(from: data) else { return .empty }
+    return SignalProducer(value: envelope)
+  }
+
+  static func envelopeProducer(from data: GraphAPI.FetchUpdateCommentsQuery.Data)
+    -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    guard let envelope = CommentsEnvelope.commentsEnvelope(from: data) else { return .empty }
+    return SignalProducer(value: envelope)
   }
 }

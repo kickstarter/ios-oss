@@ -1,0 +1,9 @@
+fragment ShippingRuleFragment on ShippingRule {
+  cost {
+    ...MoneyFragment
+  }
+  id
+  location {
+    ...LocationFragment
+  }
+}

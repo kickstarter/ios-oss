@@ -1,0 +1,18 @@
+query FetchProjectComments($slug: String!, $cursor: String, $limit: Int) {
+  project(slug: $slug) {
+    comments(after: $cursor, first: $limit) {
+      edges {
+        node {
+          ...CommentFragment
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      totalCount
+    }
+    id
+    slug
+  }
+}

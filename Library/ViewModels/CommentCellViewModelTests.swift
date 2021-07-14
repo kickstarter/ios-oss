@@ -20,6 +20,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let postedButtonIsHidden = TestObserver<Bool, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
   private let replyCommentTapped = TestObserver<Comment, Never>()
+  private let shouldIndentContent = TestObserver<Bool, Never>()
   private let viewCommentReplies = TestObserver<Comment, Never>()
   private let viewRepliesStackViewIsHidden = TestObserver<Bool, Never>()
 
@@ -37,6 +38,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
     self.vm.outputs.replyCommentTapped.observe(self.replyCommentTapped.observer)
+    self.vm.outputs.shouldIndentContent.observe(self.shouldIndentContent.observer)
     self.vm.outputs.viewCommentReplies.observe(self.viewCommentReplies.observer)
     self.vm.outputs.viewRepliesViewHidden.observe(self.viewRepliesStackViewIsHidden.observer)
   }
@@ -145,6 +147,43 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
+  func testOutput_bottomRowStackViewIsHidden_IsReply() {
+    self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
+
+    self.bottomRowStackViewIsHidden
+      .assertValue(
+        true,
+        "The bottom row stack view should be hidden if comment is a reply."
+      )
+  }
+
+  func testOutput_bottomRowStackViewIsHidden_FeatureFlagFalse_LoggedOut_IsReplyTrue() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
+
+    withEnvironment(currentUser: nil, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
+
+      self.bottomRowStackViewIsHidden
+        .assertValue(
+          true,
+          "The bottom row stack view should be hidden if comment is a reply."
+        )
+    }
+  }
+
+  func testOutput_shouldIndentContent_True() {
+    self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
+    self.vm.inputs.bindStyles()
+    self.shouldIndentContent.assertValue(true)
+  }
+
+  func testOutput_shouldIndentContent_False() {
+    self.vm.inputs.configureWith(comment: .template, project: .template)
+    self.vm.inputs.bindStyles()
+    self.shouldIndentContent.assertValue(false)
+  }
+
   func testOutputs_flagButtonIsHidden_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
@@ -210,6 +249,40 @@ internal final class CommentCellViewModelTests: TestCase {
 
       self.replyButtonIsHidden
         .assertValue(true, "The replyButton is hidden because the user is logged in but not a backer.")
+    }
+  }
+
+  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_False() {
+    let user = User.template |> \.id .~ 12_345
+
+    let project = Project.template
+      |> \.memberData.permissions .~ [.post, .comment]
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: project)
+
+      self.replyButtonIsHidden
+        .assertValue(false, "The replyButton is not hidden because the user is a creator collaborator.")
+    }
+  }
+
+  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_True() {
+    let user = User.template |> \.id .~ 12_345
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: .template)
+
+      self.replyButtonIsHidden
+        .assertValue(
+          true,
+          "The replyButton is hidden because the user is not backing, and not a creator or collaborator."
+        )
     }
   }
 
