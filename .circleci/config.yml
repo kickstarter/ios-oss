@@ -45,7 +45,7 @@ test_job: &test_job
         command: make bootstrap
     - run:
         name: Download GraphQL Schema
-        command: apollo schema:download --endpoint=https://www.kickstarter.com/graph KsApi/graphql-schema.json --header "Authorization: token $GRAPHQL_API_AUTH_TOKEN"
+        command: $(apollo schema:download --endpoint=https://www.kickstarter.com/graph KsApi/graphql-schema.json --header "Authorization: token $GRAPHQL_API_AUTH_TOKEN")
     - run:
         name: Pre-load simulator
         command: *preload_simulator
