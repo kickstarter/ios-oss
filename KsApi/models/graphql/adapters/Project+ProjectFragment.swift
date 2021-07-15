@@ -26,7 +26,7 @@ extension Project {
     let urls = Project.UrlsEnvelope(
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: nil)
     )
-    
+
     let friends = projectFragment.friends?.edges?
       .compactMap { $0?.node }
       .compactMap { $0.fragments.userFragment }
