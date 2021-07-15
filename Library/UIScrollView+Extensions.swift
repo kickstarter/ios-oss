@@ -35,7 +35,7 @@ extension UIScrollView {
           let bottomInsets = max(insets.bottom, change.frame.height - bottomEdgeInWindowCoordinates)
 
           self.contentInset.bottom = bottomInsets
-          self.scrollIndicatorInsets.bottom = bottomInsets
+          self.verticalScrollIndicatorInsets.bottom = bottomInsets
 
         case UIResponder.keyboardWillHideNotification:
           self.contentInset = insets

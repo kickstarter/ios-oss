@@ -3,7 +3,10 @@ import UIKit
 
 public final class NavigationController: UINavigationController {
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    self.topViewController?.preferredStatusBarStyle ?? UIApplication.shared.statusBarStyle
+    self.topViewController?.preferredStatusBarStyle
+      ?? UIApplication.shared.windows.first { $0.isKeyWindow }?.windowScene?
+      .statusBarManager?
+      .statusBarStyle ?? .default
   }
 
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
