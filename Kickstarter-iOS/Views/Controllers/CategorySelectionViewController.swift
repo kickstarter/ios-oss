@@ -161,9 +161,9 @@ public final class CategorySelectionViewController: UIViewController {
     )
     self.collectionView.scrollIndicatorInsets = .init(
       top: topInset,
-      left: self.collectionView.scrollIndicatorInsets.left,
+      left: self.collectionView.verticalScrollIndicatorInsets.left,
       bottom: bottomInset,
-      right: self.collectionView.scrollIndicatorInsets.right
+      right: self.collectionView.verticalScrollIndicatorInsets.right
     )
   }
 
