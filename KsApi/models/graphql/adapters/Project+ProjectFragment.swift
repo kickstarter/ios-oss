@@ -7,7 +7,8 @@ extension Project {
   static func project(
     from projectFragment: GraphAPI.ProjectFragment,
     rewards: [Reward] = [],
-    addOns: [Reward]? = nil
+    addOns: [Reward]? = nil,
+    backing: Backing? = nil
   ) -> Project? {
     guard
       let country = Country.country(from: projectFragment.country.fragments.countryFragment),
@@ -19,7 +20,6 @@ extension Project {
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state),
       let userFragment = projectFragment.creator?.fragments.userFragment,
-      let isWatched = projectFragment.isWatched,
       let creator = User.user(from: userFragment)
     else { return nil }
 
@@ -37,7 +37,9 @@ extension Project {
       id: projectFragment.pid,
       location: location,
       name: projectFragment.name,
-      personalization: projectPersonalization(isStarred: isWatched),
+      personalization: projectPersonalization(isStarred: projectFragment.isWatched,
+                                              backing: backing,
+                                              projectBackingUserId: projectFragment.backing?.backer?.uid),
       photo: photo,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
       slug: projectFragment.slug,
@@ -49,8 +51,23 @@ extension Project {
   }
 }
 
-private func projectPersonalization(isStarred: Bool) -> Project.Personalization {
-  return Project.Personalization(isStarred: isStarred)
+private func projectPersonalization(isStarred: Bool,
+                                    backing: Backing?,
+                                    projectBackingUserId: String?) -> Project.Personalization {
+  
+  var currentUserIsBacker: Bool {
+    guard let userId = projectBackingUserId,
+          let userIdValue = Int(userId) else {
+      return false
+    }
+    
+    return backing?.backerId == userIdValue
+  }
+  
+  return Project.Personalization(backing: backing,
+                                 friends: nil,
+                                 isBacking: currentUserIsBacker,
+                                 isStarred: isStarred)
 }
 
 private func projectRewards(from rewardFragments: [GraphAPI.RewardFragment]?) -> [Reward]? {
