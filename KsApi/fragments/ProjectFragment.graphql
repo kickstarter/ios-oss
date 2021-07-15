@@ -3,6 +3,11 @@ fragment ProjectFragment on Project {
     displayConvertAmount
   }
   backersCount
+  backing {
+    backer {
+      uid
+    }
+  }
   category {
     ...CategoryFragment
   }

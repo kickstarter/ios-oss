@@ -5369,6 +5369,13 @@ public enum GraphAPI {
           displayConvertAmount
         }
         backersCount
+        backing {
+          __typename
+          backer {
+            __typename
+            uid
+          }
+        }
         category {
           __typename
           ...CategoryFragment
@@ -5423,6 +5430,7 @@ public enum GraphAPI {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("actions", type: .nonNull(.object(Action.selections))),
         GraphQLField("backersCount", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("backing", type: .object(Backing.selections)),
         GraphQLField("category", type: .object(Category.selections)),
         GraphQLField("country", type: .nonNull(.object(Country.selections))),
         GraphQLField("creator", type: .object(Creator.selections)),
@@ -5454,8 +5462,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(actions: Action, backersCount: Int, category: Category? = nil, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isWatched: Bool, launchedAt: String? = nil, location: Location? = nil, name: String, pid: Int, pledged: Pledged, slug: String, state: ProjectState, stateChangedAt: String, url: String, usdExchangeRate: Double? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "actions": actions.resultMap, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isWatched": isWatched, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "pledged": pledged.resultMap, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "url": url, "usdExchangeRate": usdExchangeRate])
+    public init(actions: Action, backersCount: Int, backing: Backing? = nil, category: Category? = nil, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isWatched: Bool, launchedAt: String? = nil, location: Location? = nil, name: String, pid: Int, pledged: Pledged, slug: String, state: ProjectState, stateChangedAt: String, url: String, usdExchangeRate: Double? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "actions": actions.resultMap, "backersCount": backersCount, "backing": backing.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isWatched": isWatched, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "pledged": pledged.resultMap, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "url": url, "usdExchangeRate": usdExchangeRate])
     }
 
     public var __typename: String {
@@ -5484,6 +5492,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "backersCount")
+      }
+    }
+
+    /// The current user's backing of this project.
+    public var backing: Backing? {
+      get {
+        return (resultMap["backing"] as? ResultMap).flatMap { Backing(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "backing")
       }
     }
 
@@ -5743,6 +5761,86 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "displayConvertAmount")
+        }
+      }
+    }
+
+    public struct Backing: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Backing"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("backer", type: .object(Backer.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(backer: Backer? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Backing", "backer": backer.flatMap { (value: Backer) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// The backer
+      public var backer: Backer? {
+        get {
+          return (resultMap["backer"] as? ResultMap).flatMap { Backer(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "backer")
+        }
+      }
+
+      public struct Backer: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("uid", type: .nonNull(.scalar(String.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(uid: String) {
+          self.init(unsafeResultMap: ["__typename": "User", "uid": uid])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// A user's uid
+        public var uid: String {
+          get {
+            return resultMap["uid"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "uid")
+          }
         }
       }
     }
