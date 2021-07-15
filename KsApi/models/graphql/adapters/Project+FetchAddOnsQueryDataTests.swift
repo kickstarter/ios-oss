@@ -9,6 +9,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
       XCTAssertNotNil(fragment)
 
       let project = Project.project(from: fragment)
+      XCTAssertEqual(project?.memberData.permissions.count, 6)
       XCTAssertNotNil(project)
     } catch {
       XCTFail(error.localizedDescription)
@@ -443,6 +444,14 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
           "name": "Art"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "AU",
