@@ -1,4 +1,5 @@
 @testable import KsApi
+import Prelude
 import XCTest
 
 final class Project_ProjectFragmentTests: XCTestCase {
@@ -13,18 +14,41 @@ final class Project_ProjectFragmentTests: XCTestCase {
         .compactMap { try? GraphAPI.RewardFragment(jsonObject: $0) }
         .compactMap { Reward.reward(from: $0) } ?? []
 
+      let backing = Backing.template |>
+        Backing.lens.backerId .~ 618_005_886
+
       let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary())
       XCTAssertNotNil(fragment)
 
       let project = Project.project(
         from: fragment,
         rewards: rewards,
-        addOns: addOns
+        addOns: addOns,
+        backing: backing
       )
 
-      XCTAssertNotNil(project)
-      XCTAssertEqual(project?.addOns?.count, 2)
-      XCTAssertEqual(project?.rewards.count, 2)
+      guard let project = project else {
+        XCTFail("project should not be nil")
+
+        return
+      }
+
+      XCTAssertEqual(project.addOns?.count, 2)
+      XCTAssertEqual(project.rewards.count, 2)
+
+      guard let _ = project.personalization.backing,
+        let isUserBackingProject = project.personalization.isBacking,
+        let isProjectWatched = project.personalization.isStarred,
+        let friends = project.personalization.friends
+      else {
+        XCTFail("project should contain all properties of personalization")
+
+        return
+      }
+
+      XCTAssertTrue(isUserBackingProject)
+      XCTAssertTrue(isProjectWatched)
+      XCTAssertEqual(friends.count, 2)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -41,6 +65,13 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "displayConvertAmount": false
       },
       "backersCount": 136,
+      "backing": {
+        "__typename": "Backing",
+        "backer": {
+          "__typename": "User",
+          "uid": "618005886"
+        }
+      },
       "category": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktNDc=",
@@ -69,6 +100,33 @@ final class Project_ProjectFragmentTests: XCTestCase {
       "description": "Dark Fantasy Novel & Tarot Cards",
       "finalCollectionDate": null,
       "fxRate": 1.25195501,
+      "friends": {
+        "__typename": "ProjectBackerFriendsConnection",
+        "edges": [
+          {
+            "__typename": "UserEdge",
+            "node": {
+              "__typename": "User",
+              "id": "Q2F0ZWdvcnktNDc=",
+              "imageUrl": "http://www.kickstarter.com/image.jpg",
+              "isCreator": false,
+              "name": "Billy Bob",
+              "uid": "23"
+            }
+          },
+          {
+            "__typename": "UserEdge",
+            "node": {
+              "__typename": "User",
+              "id": "D2F0ZWdvcnktNDc=",
+              "imageUrl": "http://www.kickstarter.com/image2.jpg",
+              "isCreator": false,
+              "name": "Billy Bob's Nephew",
+              "uid": "24"
+            }
+          }
+        ]
+      },
       "goal": {
         "__typename": "Money",
         "amount": "3000.0",
@@ -81,6 +139,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
       },
       "isProjectWeLove": true,
+      "isWatched": true,
       "launchedAt": 1617886771,
       "location": {
         "__typename": "Location",
