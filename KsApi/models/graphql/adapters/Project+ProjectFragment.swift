@@ -91,6 +91,7 @@ private func projectMemberData(from projectFragment: GraphAPI.ProjectFragment) -
     Project.MemberData.Permission(rawValue: permission.rawValue.lowercased())
   }
 
+  // TODO: - Once we are receiving the other three properties of MemberData back from a Project on Graph, extend this functionality.
   return Project.MemberData(permissions: collaboratorPermissions)
 }
 
