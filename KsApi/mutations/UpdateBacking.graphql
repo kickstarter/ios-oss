@@ -1,0 +1,7 @@
+mutation UpdateBacking($input: UpdateBackingInput!) {
+  updateBacking(input: $input) {
+    checkout {
+      ...CheckoutFragment
+    }
+  }
+}

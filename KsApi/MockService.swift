@@ -25,7 +25,7 @@
 
     fileprivate let changePasswordError: GraphError?
 
-    fileprivate let createBackingResult: Result<CreateBackingEnvelope, GraphError>?
+    fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordError: GraphError?
 
@@ -163,7 +163,7 @@
 
     fileprivate let unfollowFriendError: ErrorEnvelope?
 
-    fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, GraphError>?
+    fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let updateDraftError: ErrorEnvelope?
 
@@ -221,7 +221,7 @@
         me: .template
       ),
       changePasswordError: GraphError? = nil,
-      createBackingResult: Result<CreateBackingEnvelope, GraphError>? = nil,
+      createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createPasswordError: GraphError? = nil,
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
       changeCurrencyError: GraphError? = nil,
@@ -309,7 +309,7 @@
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
-      updateBackingResult: Result<UpdateBackingEnvelope, GraphError>? = nil,
+      updateBackingResult: Result<UpdateBackingEnvelope, ErrorEnvelope>? = nil,
       updateDraftError: ErrorEnvelope? = nil,
       updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
       updateProjectNotificationResponse: ProjectNotification? = nil,
@@ -583,7 +583,7 @@
     }
 
     internal func createBacking(input _: CreateBackingInput)
-      -> SignalProducer<CreateBackingEnvelope, GraphError> {
+      -> SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.createBackingResult)
     }
 
@@ -1382,7 +1382,7 @@
     }
 
     internal func updateBacking(input _: UpdateBackingInput)
-      -> SignalProducer<UpdateBackingEnvelope, GraphError> {
+      -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.updateBackingResult)
     }
 

@@ -72,6 +72,7 @@
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option.";
+"By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "By submitting your pledge, you agree that our payment processor, Stripe, may charge your payment method.";
 "CVC" = "CVC";
 "Cancel" = "Cancel";
 "Cancel_pledge" = "Cancel pledge";
@@ -99,6 +100,7 @@
 "Closes_filters" = "Closes filters.";
 "Closes_live_stream" = "Closes live stream.";
 "Closes_project" = "Closes project.";
+"Collaborator" = "Collaborator";
 "Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
 "Comment_reply_digest" = "Comment reply digest";
@@ -475,6 +477,7 @@
 "Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
 "Replay_past_live_stream" = "Replay past live stream";
 "Replay_past_live_streams" = "Replay past live streams";
+"Replies" = "Replies";
 "Reply_to_user_name" = "Reply to %{user_name}…";
 "Request_my_data" = "Request my data";
 "Request_my_personal_data" = "Request my personal data";
@@ -648,6 +651,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Video disabled until the internet connection improves";
 "View" = "View";
 "View_dashboard" = "View dashboard";
+"View_more_replies" = "View more replies";
 "View_progress" = "View progress";
 "View_project" = "View project";
 "View_replies" = "View replies";

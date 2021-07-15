@@ -1892,7 +1892,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateApplePayBackingError() {
-    let mockService = MockService(createBackingResult: .failure(.invalidInput))
+    let mockService = MockService(createBackingResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
@@ -2153,10 +2153,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateBacking_Failure() {
-    let mockService = MockService(
-      createBackingResult:
-      Result.failure(GraphError.invalidInput)
-    )
+    let mockService = MockService(createBackingResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
@@ -2327,7 +2324,7 @@ final class PledgeViewModelTests: TestCase {
       )
 
     let mockService = MockService(
-      updateBackingResult: .failure(.invalidInput)
+      updateBackingResult: .failure(.couldNotParseJSON)
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
@@ -3163,7 +3160,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testChangePaymentMethod_ApplePay_Failure() {
     let mockService = MockService(
-      updateBackingResult: .failure(.invalidInput)
+      updateBackingResult: .failure(.couldNotParseJSON)
     )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -3315,7 +3312,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testApplePayBackingFails_ThenSucceeds_SignalsDoNotOverlap_UpdateContext() {
     let mockService1 = MockService(
-      updateBackingResult: .failure(.invalidInput)
+      updateBackingResult: .failure(.couldNotParseJSON)
     )
 
     let reward = Reward.postcards
@@ -3581,7 +3578,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testApplePayBackingFails_ThenStoredCardSucceeds_SignalsDoNotOverlap_UpdateContext() {
     let mockService1 = MockService(
-      updateBackingResult: .failure(.invalidInput)
+      updateBackingResult: .failure(.couldNotParseJSON)
     )
 
     let reward = Reward.postcards
@@ -3803,7 +3800,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testStoredCardFails_ThenApplePaySucceeds_SignalsDoNotOverlap_UpdateContext() {
     let mockService1 = MockService(
-      updateBackingResult: .failure(.invalidInput)
+      updateBackingResult: .failure(.couldNotParseJSON)
     )
 
     let reward = Reward.postcards
@@ -4012,7 +4009,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testStoredCardFails_ThenApplePayFails_SignalsDoNotOverlap_UpdateContext() {
     let mockService = MockService(
-      updateBackingResult: .failure(.invalidInput)
+      updateBackingResult: .failure(.couldNotParseJSON)
     )
 
     let reward = Reward.postcards

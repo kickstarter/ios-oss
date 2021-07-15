@@ -72,6 +72,7 @@
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al contribuir, aceptas las <a href=\"%{terms_of_use_link}\">Condiciones de uso</a>, <a href=\"%{privacy_policy_link}\">Política de privacidad</a> y <a href=\"%{cookie_policy_link}\">Política de cookies</a> de Kickstarter.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al registrarte, aceptas nuestros Términos de uso, Política de privacidad y Política de cookies. Nuestras políticas explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso.";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "Si te registras, deberás iniciar sesión en Kickstarter con tu cuenta de Facebook. Si prefieres no usar Facebook, vuelve a abrir la aplicación y elige otra opción.";
+"By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "Si envías tu contribución, aceptas que Stripe, nuestro proveedor de procesamiento de pagos, te cobre a tu método de pago.";
 "CVC" = "CVC";
 "Cancel" = "Cancelar";
 "Cancel_pledge" = "Cancelar contribución";
@@ -99,6 +100,7 @@
 "Closes_filters" = "Cierra filtros.";
 "Closes_live_stream" = "Cierra Live-Stream.";
 "Closes_project" = "Cierra el proyecto.";
+"Collaborator" = "Colaborador";
 "Collapses_subcategories" = "Muestra menos subcategorías.";
 "Collections" = "Colecciones";
 "Comment_reply_digest" = "Resumen de respuestas a comentarios";
@@ -475,6 +477,7 @@
 "Replay_live_stream_with_creator_name" = "Repetir live stream de<br><b>%{creator_name}</b>";
 "Replay_past_live_stream" = "Repetir live stream pasado";
 "Replay_past_live_streams" = "Repetir live streams pasados";
+"Replies" = "Respuestas";
 "Reply_to_user_name" = "Responder a %{user_name}…";
 "Request_my_data" = "Solicitar mis datos";
 "Request_my_personal_data" = "Solicitar mis datos personales";
@@ -648,6 +651,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Video desactivado hasta se reestablezca la conexión de internet";
 "View" = "Ver";
 "View_dashboard" = "Ver panel";
+"View_more_replies" = "Ver más respuestas";
 "View_progress" = "Ver progreso";
 "View_project" = "Ver proyecto";
 "View_replies" = "Ver respuestas";

@@ -27,7 +27,6 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  // TODO: - Internationalize string
   override func bindStyles() {
     super.bindStyles()
 
@@ -46,7 +45,7 @@ final class ViewMoreRepliesCell: UITableViewCell, ValueCell {
     _ = self.titleTextLabel
       |> \.font .~ UIFont.ksr_callout()
       |> UILabel.lens.textColor .~ .ksr_create_700
-      |> UILabel.lens.text .~ localizedString(key: "View more replies", defaultValue: "View more replies")
+      |> UILabel.lens.text .~ Strings.View_more_replies()
   }
 
   // MARK: - Configuration

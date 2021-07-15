@@ -98,12 +98,11 @@ internal final class CommentCellHeaderStackView: UIStackView {
     var stackViewAlignment: UIStackView.Alignment = .center
 
     switch badge {
-    // TODO: Internationalize `Collaborator` string.
     case .collaborator, .creator:
       style = setStyleForCreatorAndCollaborator(
         text: badge == .creator
           ? Strings.Creator()
-          : localizedString(key: "Collaborator", defaultValue: "Collaborator")
+          : Strings.Collaborator()
       )
       stackViewAlignment = .center
     case .superbacker:

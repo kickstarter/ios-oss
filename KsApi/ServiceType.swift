@@ -63,7 +63,7 @@ public protocol ServiceType {
     -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
 
   func createBacking(input: CreateBackingInput) ->
-    SignalProducer<CreateBackingEnvelope, GraphError>
+    SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
@@ -330,7 +330,7 @@ public protocol ServiceType {
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
   /// Updates a backing
-  func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, GraphError>
+  func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope>
 
   /// Update the project notification setting.
   func updateProjectNotification(_ notification: ProjectNotification)
