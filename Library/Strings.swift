@@ -1209,6 +1209,23 @@ contributeurs"
     )
   }
   /**
+   "By submitting your pledge, you agree that our payment processor, Stripe, may charge your payment method."
+
+   - **en**: "By submitting your pledge, you agree that our payment processor, Stripe, may charge your payment method."
+   - **de**: "Durch das Einsenden deines Finanzierungsbeitrags erklärst du dich mit einer Abbuchung von deiner Zahlungsweise durch unseren Zahlungsdienstleister Stripe einverstanden."
+   - **es**: "Si envías tu contribución, aceptas que Stripe, nuestro proveedor de procesamiento de pagos, te cobre a tu método de pago."
+   - **fr**: "En vous engageant, vous acceptez que Stripe, notre prestataire de traitement des règlements, débite votre moyen de paiement."
+   - **ja**: "プレッジを送信することで、Kickstarter の決済サービスプロバイダー、Stripe がご利用のお支払い方法へ請求を行うことに同意するものとみなされます。"
+  */
+  public static func By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method() -> String {
+    return localizedString(
+      key: "By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method",
+      defaultValue: "By submitting your pledge, you agree that our payment processor, Stripe, may charge your payment method.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "CVC"
 
    - **en**: "CVC"
@@ -1663,6 +1680,23 @@ contributeurs"
     return localizedString(
       key: "Closes_project",
       defaultValue: "Closes project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Collaborator"
+
+   - **en**: "Collaborator"
+   - **de**: "Mitarbeiter"
+   - **es**: "Colaborador"
+   - **fr**: "Collaborateur"
+   - **ja**: "コラボレーター（協力者）"
+  */
+  public static func Collaborator() -> String {
+    return localizedString(
+      key: "Collaborator",
+      defaultValue: "Collaborator",
       count: nil,
       substitutions: [:]
     )
@@ -7877,6 +7911,23 @@ daring ideas."
     )
   }
   /**
+   "Replies"
+
+   - **en**: "Replies"
+   - **de**: "Antworten"
+   - **es**: "Respuestas"
+   - **fr**: "Réponses"
+   - **ja**: "返信"
+  */
+  public static func Replies() -> String {
+    return localizedString(
+      key: "Replies",
+      defaultValue: "Replies",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Reply to %{user_name}…"
 
    - **en**: "Reply to %{user_name}…"
@@ -10543,6 +10594,23 @@ catch your eye?"
     return localizedString(
       key: "View_dashboard",
       defaultValue: "View dashboard",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View more replies"
+
+   - **en**: "View more replies"
+   - **de**: "Weitere Antworten ansehen"
+   - **es**: "Ver más respuestas"
+   - **fr**: "Afficher davantage de réponses"
+   - **ja**: "他の返信を表示"
+  */
+  public static func View_more_replies() -> String {
+    return localizedString(
+      key: "View_more_replies",
+      defaultValue: "View more replies",
       count: nil,
       substitutions: [:]
     )

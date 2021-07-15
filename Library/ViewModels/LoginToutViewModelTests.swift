@@ -591,7 +591,7 @@ final class LoginToutViewModelTests: TestCase {
 
       self.isLoading.assertValues([true, false])
       self.showAppleErrorAlert.assertValue(
-        "The operation couldn’t be completed. (KsApi.ErrorEnvelope error 1.)"
+        "Something went wrong."
       )
     }
   }

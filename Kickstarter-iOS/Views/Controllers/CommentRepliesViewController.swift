@@ -66,8 +66,7 @@ final class CommentRepliesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    // TODO: Internationalize
-    self.navigationItem.title = localizedString(key: "Replies", defaultValue: "Replies")
+    self.navigationItem.title = Strings.Replies()
 
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
