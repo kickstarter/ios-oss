@@ -79,7 +79,7 @@ private let processingViewStyle: ViewStyle = { view in
 
 private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
   activityIndicator
-    |> \.style .~ .white
+    |> \.style .~ .medium
 }
 
 private let processingLabelStyle: LabelStyle = { label in
@@ -110,7 +110,7 @@ extension ProcessingViewPresenting where Self: UIViewController {
   func showProcessingView() {
     self.processingView?.removeFromSuperview()
 
-    guard let window = UIApplication.shared.keyWindow, let processingView = self.processingView else {
+    guard let window = UIApplication.shared.windows.first, let processingView = self.processingView else {
       return
     }
 

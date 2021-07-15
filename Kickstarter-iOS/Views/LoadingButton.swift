@@ -8,12 +8,12 @@ final class LoadingButton: UIButton {
   private let viewModel: LoadingButtonViewModelType = LoadingButtonViewModel()
 
   private lazy var activityIndicator: UIActivityIndicatorView = {
-    UIActivityIndicatorView(style: .white)
+    UIActivityIndicatorView(style: .medium)
       |> \.hidesWhenStopped .~ true
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  public var activityIndicatorStyle: UIActivityIndicatorView.Style = .white {
+  public var activityIndicatorStyle: UIActivityIndicatorView.Style = .medium {
     didSet {
       self.activityIndicator.style = self.activityIndicatorStyle
     }

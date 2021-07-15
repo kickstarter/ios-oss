@@ -42,7 +42,7 @@ public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) 
 public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-    |> UIActivityIndicatorView.lens.style .~ .white
+    |> UIActivityIndicatorView.lens.style .~ .medium
     |> UIActivityIndicatorView.lens.color .~ UIColor.ksr_support_700
 }
 
@@ -103,12 +103,15 @@ public func dropShadowStyleLarge<V: UIViewProtocol>() -> ((V) -> V) {
   return dropShadowStyle(radius: 6.0, offset: .init(width: 0, height: 3.0))
 }
 
-public let feedTableViewCellStyle = baseTableViewCellStyle()
-  <> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-    cell.traitCollection.isRegularRegular
-      ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
-      : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
-  }
+public let feedTableViewCellStyle: (UITableViewCell) -> UITableViewCell = { cell in
+  cell
+    |> baseTableViewCellStyle()
+    |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+      cell.traitCollection.isRegularRegular
+        ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
+        : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
+    }
+}
 
 public let formTextInputStyle: TextFieldStyle = { (textField: UITextField) in
   textField

@@ -31,19 +31,23 @@ public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
 }
 
 public let commentBodyTextViewStyle: TextViewStyle = { textView in
-  textView
+  let t = textView
     |> UITextView.lens.isScrollEnabled .~ false
     |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
     |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
     |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
     |> \.textColor .~ .ksr_support_700
     |> \.textAlignment .~ .left
+
+  let b = t
     |> \.font .~ UIFont.ksr_callout()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.isEditable .~ false
     |> \.isSelectable .~ true
     |> \.isUserInteractionEnabled .~ true
     |> \.dataDetectorTypes .~ .link
+
+  return b
 }
 
 public let superbackerAuthorBadgeStyle: PaddingLabelStyle = { label in
