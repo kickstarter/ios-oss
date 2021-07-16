@@ -18,6 +18,11 @@ fragment ProjectFragment on Project {
   description
   finalCollectionDate
   fxRate
+  friends {
+    nodes {
+      ...UserFragment
+    }
+  }
   goal {
     ...MoneyFragment
   }
@@ -26,6 +31,7 @@ fragment ProjectFragment on Project {
     url(width: 1024)
   }
   isProjectWeLove
+  isWatched
   launchedAt
   location {
     ...LocationFragment

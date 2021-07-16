@@ -7,7 +7,8 @@ extension Project {
   static func project(
     from projectFragment: GraphAPI.ProjectFragment,
     rewards: [Reward] = [],
-    addOns: [Reward]? = nil
+    addOns: [Reward]? = nil,
+    backing: Backing? = nil
   ) -> Project? {
     guard
       let country = Country.country(from: projectFragment.country.fragments.countryFragment),
@@ -27,6 +28,10 @@ extension Project {
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: nil)
     )
 
+    let friends = projectFragment.friends?.nodes?
+      .compactMap { $0?.fragments.userFragment }
+      .compactMap { User.user(from: $0) } ?? []
+
     return Project(
       blurb: projectFragment.description,
       category: category,
@@ -37,7 +42,11 @@ extension Project {
       id: projectFragment.pid,
       location: location,
       name: projectFragment.name,
-      personalization: Personalization(),
+      personalization: projectPersonalization(
+        isStarred: projectFragment.isWatched,
+        backing: backing,
+        friends: friends
+      ),
       photo: photo,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
       slug: projectFragment.slug,
@@ -47,6 +56,17 @@ extension Project {
       urls: urls
     )
   }
+}
+
+private func projectPersonalization(isStarred: Bool,
+                                    backing: Backing?,
+                                    friends: [User]) -> Project.Personalization {
+  return Project.Personalization(
+    backing: backing,
+    friends: friends,
+    isBacking: backing != nil,
+    isStarred: isStarred
+  )
 }
 
 private func projectRewards(from rewardFragments: [GraphAPI.RewardFragment]?) -> [Reward]? {

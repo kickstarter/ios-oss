@@ -376,6 +376,13 @@ private func backingDictionary() -> [String: Any] {
         "displayConvertAmount": false
       },
       "backersCount": 135,
+      "backing": {
+        "__typename": "Backing",
+        "backer": {
+          "__typename": "User",
+          "uid": "618005886"
+        }
+      },
       "category": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktNDc=",
@@ -411,6 +418,10 @@ private func backingDictionary() -> [String: Any] {
       "deadlineAt": 1620478771,
       "description": "Dark Fantasy Novel & Tarot Cards",
       "finalCollectionDate": null,
+      "friends": {
+        "__typename": "ProjectBackerFriendsConnection",
+        "nodes": []
+      },
       "fxRate": 1.23244501,
       "goal": {
         "__typename": "Money",
@@ -424,6 +435,7 @@ private func backingDictionary() -> [String: Any] {
         "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
       },
       "isProjectWeLove": true,
+      "isWatched": false,
       "launchedAt": 1617886771,
       "location": {
         "__typename": "Location",
@@ -488,7 +500,12 @@ private func backingDictionary() -> [String: Any] {
       "name": "Soft Cover Book (Signed)",
       "project": {
         "__typename": "Project",
-        "id": "UHJvamVjdC0xNTk2NTk0NDYz"
+        "id": "UHJvamVjdC0xNTk2NTk0NDYz",
+        "friends": {
+          "__typename": "ProjectBackerFriendsConnection",
+          "nodes": []
+        },
+        "isWatched": false
       },
       "remainingQuantity": null,
       "shippingPreference": "unrestricted",
