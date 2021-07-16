@@ -24,6 +24,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
 
       XCTAssertNotNil(project)
       XCTAssertEqual(project?.addOns?.count, 2)
+      XCTAssertEqual(project?.memberData.permissions.count, 6)
       XCTAssertEqual(project?.rewards.count, 2)
     } catch {
       XCTFail(error.localizedDescription)
@@ -51,6 +52,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "name": "Publishing"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "US",
