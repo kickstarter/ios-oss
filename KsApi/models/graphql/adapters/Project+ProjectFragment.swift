@@ -17,6 +17,7 @@ extension Project {
       let dates = projectDates(from: projectFragment),
       let locationFragment = projectFragment.location?.fragments.locationFragment,
       let location = Location.location(from: locationFragment),
+      let memberData = projectMemberData(from: projectFragment),
       let photo = projectPhoto(from: projectFragment),
       let state = projectState(from: projectFragment.state),
       let userFragment = projectFragment.creator?.fragments.userFragment,
@@ -37,7 +38,7 @@ extension Project {
       category: category,
       country: country,
       creator: creator,
-      memberData: MemberData(permissions: []),
+      memberData: memberData,
       dates: dates,
       id: projectFragment.pid,
       location: location,
@@ -115,21 +116,15 @@ private func finalCollectionDateTimeInterval(
 }
 
 /**
- Returns a minimal `Project.Stats` from a `ProjectFragment`
+ Returns a minimal `Project.MemberData` from a `ProjectFragment`
  */
-private func projectStats(from projectFragment: GraphAPI.ProjectFragment) -> Project.Stats {
-  return Project.Stats(
-    backersCount: projectFragment.backersCount,
-    commentsCount: nil,
-    convertedPledgedAmount: nil,
-    currency: projectFragment.currency.rawValue,
-    currentCurrency: nil,
-    currentCurrencyRate: nil,
-    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
-    pledged: projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
-    staticUsdRate: projectFragment.usdExchangeRate.flatMap(Float.init) ?? 0,
-    updatesCount: nil
-  )
+private func projectMemberData(from projectFragment: GraphAPI.ProjectFragment) -> Project.MemberData? {
+  let collaboratorPermissions = projectFragment.collaboratorPermissions.compactMap { permission in
+    Project.MemberData.Permission(rawValue: permission.rawValue.lowercased())
+  }
+
+  // TODO: - Once we are receiving the other three properties of MemberData back from a Project on Graph, extend this functionality.
+  return Project.MemberData(permissions: collaboratorPermissions)
 }
 
 /**
@@ -148,4 +143,22 @@ private func projectPhoto(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 
 private func projectState(from projectState: GraphAPI.ProjectState) -> Project.State? {
   return Project.State(rawValue: projectState.rawValue.lowercased())
+}
+
+/**
+ Returns a minimal `Project.Stats` from a `ProjectFragment`
+ */
+private func projectStats(from projectFragment: GraphAPI.ProjectFragment) -> Project.Stats {
+  return Project.Stats(
+    backersCount: projectFragment.backersCount,
+    commentsCount: nil,
+    convertedPledgedAmount: nil,
+    currency: projectFragment.currency.rawValue,
+    currentCurrency: nil,
+    currentCurrencyRate: nil,
+    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
+    pledged: projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
+    staticUsdRate: projectFragment.usdExchangeRate.flatMap(Float.init) ?? 0,
+    updatesCount: nil
+  )
 }

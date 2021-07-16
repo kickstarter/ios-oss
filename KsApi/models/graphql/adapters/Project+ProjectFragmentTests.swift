@@ -35,6 +35,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
 
       XCTAssertEqual(project.addOns?.count, 2)
       XCTAssertEqual(project.rewards.count, 2)
+      XCTAssertEqual(project.memberData.permissions.count, 6)
 
       guard let _ = project.personalization.backing,
         let isUserBackingProject = project.personalization.isBacking,
@@ -82,6 +83,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "name": "Publishing"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "US",

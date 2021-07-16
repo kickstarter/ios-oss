@@ -393,6 +393,14 @@ private func backingDictionary() -> [String: Any] {
           "name": "Publishing"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "US",
