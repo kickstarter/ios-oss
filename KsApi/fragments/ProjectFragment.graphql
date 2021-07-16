@@ -3,11 +3,6 @@ fragment ProjectFragment on Project {
     displayConvertAmount
   }
   backersCount
-  backing {
-    backer {
-      uid
-    }
-  }
   category {
     ...CategoryFragment
   }
@@ -24,10 +19,8 @@ fragment ProjectFragment on Project {
   finalCollectionDate
   fxRate
   friends {
-    edges {
-      node {
-        ...UserFragment
-      }
+    nodes {
+      ...UserFragment
     }
   }
   goal {

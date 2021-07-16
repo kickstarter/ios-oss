@@ -66,13 +66,6 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "displayConvertAmount": false
       },
       "backersCount": 136,
-      "backing": {
-        "__typename": "Backing",
-        "backer": {
-          "__typename": "User",
-          "uid": "618005886"
-        }
-      },
       "category": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktNDc=",
@@ -111,28 +104,22 @@ final class Project_ProjectFragmentTests: XCTestCase {
       "fxRate": 1.25195501,
       "friends": {
         "__typename": "ProjectBackerFriendsConnection",
-        "edges": [
+        "nodes": [
           {
-            "__typename": "UserEdge",
-            "node": {
-              "__typename": "User",
-              "id": "Q2F0ZWdvcnktNDc=",
-              "imageUrl": "http://www.kickstarter.com/image.jpg",
-              "isCreator": false,
-              "name": "Billy Bob",
-              "uid": "23"
-            }
+            "__typename": "User",
+            "id": "Q2F0ZWdvcnktNDc=",
+            "imageUrl": "http://www.kickstarter.com/image.jpg",
+            "isCreator": false,
+            "name": "Billy Bob",
+            "uid": "23"
           },
           {
-            "__typename": "UserEdge",
-            "node": {
-              "__typename": "User",
-              "id": "D2F0ZWdvcnktNDc=",
-              "imageUrl": "http://www.kickstarter.com/image2.jpg",
-              "isCreator": false,
-              "name": "Billy Bob's Nephew",
-              "uid": "24"
-            }
+            "__typename": "User",
+            "id": "D2F0ZWdvcnktNDc=",
+            "imageUrl": "http://www.kickstarter.com/image2.jpg",
+            "isCreator": false,
+            "name": "Billy Bob's Nephew",
+            "uid": "24"
           }
         ]
       },

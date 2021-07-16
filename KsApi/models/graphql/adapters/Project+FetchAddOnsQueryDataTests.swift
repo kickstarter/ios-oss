@@ -478,7 +478,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
       "finalCollectionDate": null,
       "friends": {
         "__typename": "ProjectBackerFriendsConnection",
-        "edges": []
+        "nodes": []
       },
       "fxRate": 0.93110152,
       "goal": {

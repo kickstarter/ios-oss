@@ -420,7 +420,7 @@ private func backingDictionary() -> [String: Any] {
       "finalCollectionDate": null,
       "friends": {
         "__typename": "ProjectBackerFriendsConnection",
-        "edges": []
+        "nodes": []
       },
       "fxRate": 1.23244501,
       "goal": {
@@ -503,7 +503,7 @@ private func backingDictionary() -> [String: Any] {
         "id": "UHJvamVjdC0xNTk2NTk0NDYz",
         "friends": {
           "__typename": "ProjectBackerFriendsConnection",
-          "edges": []
+          "nodes": []
         },
         "isWatched": false
       },

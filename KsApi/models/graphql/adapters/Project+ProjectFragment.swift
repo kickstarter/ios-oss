@@ -28,11 +28,10 @@ extension Project {
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: nil)
     )
 
-    let friends = projectFragment.friends?.edges?
-      .compactMap { $0?.node }
-      .compactMap { $0.fragments.userFragment }
+    let friends = projectFragment.friends?.nodes?
+      .compactMap { $0?.fragments.userFragment }
       .compactMap { User.user(from: $0) } ?? []
-
+    
     return Project(
       blurb: projectFragment.description,
       category: category,
@@ -46,8 +45,7 @@ extension Project {
       personalization: projectPersonalization(
         isStarred: projectFragment.isWatched,
         backing: backing,
-        friends: friends,
-        projectBackingUserId: projectFragment.backing?.backer?.uid
+        friends: friends
       ),
       photo: photo,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
@@ -62,21 +60,11 @@ extension Project {
 
 private func projectPersonalization(isStarred: Bool,
                                     backing: Backing?,
-                                    friends: [User],
-                                    projectBackingUserId: String?) -> Project.Personalization {
-  var currentUserIsBacker: Bool {
-    guard let userId = projectBackingUserId,
-      let userIdValue = Int(userId) else {
-      return false
-    }
-
-    return backing?.backerId == userIdValue
-  }
-
+                                    friends: [User]) -> Project.Personalization {
   return Project.Personalization(
     backing: backing,
     friends: friends,
-    isBacking: currentUserIsBacker,
+    isBacking: backing != nil,
     isStarred: isStarred
   )
 }
