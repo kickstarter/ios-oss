@@ -31,7 +31,7 @@ extension Project {
     let friends = projectFragment.friends?.nodes?
       .compactMap { $0?.fragments.userFragment }
       .compactMap { User.user(from: $0) } ?? []
-
+    
     return Project(
       blurb: projectFragment.description,
       category: category,
