@@ -43,7 +43,7 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
     )
     .switchMap { _ in
       AppEnvironment.current.apiService
-        .fetchGraphUserAccountFields(query: UserQueries.account.query)
+        .fetchGraphUserAccountFields()
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }

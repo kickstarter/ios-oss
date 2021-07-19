@@ -80,7 +80,7 @@
     fileprivate let fetchGraphCreditCardsError: GraphError?
 
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
-    fileprivate let fetchGraphUserAccountFieldsError: GraphError?
+    fileprivate let fetchGraphUserAccountFieldsError: ErrorEnvelope?
 
     fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
 
@@ -257,7 +257,7 @@
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
-      fetchGraphUserAccountFieldsError: GraphError? = nil,
+      fetchGraphUserAccountFieldsError: ErrorEnvelope? = nil,
       fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -767,8 +767,8 @@
       return SignalProducer(value: UserEnvelope(me: response))
     }
 
-    internal func fetchGraphUserAccountFields(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<GraphUser>, GraphError> {
+    internal func fetchGraphUserAccountFields()
+      -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
       if let error = self.fetchGraphUserAccountFieldsError {
         return SignalProducer(error: error)
       } else if let response = self.fetchGraphUserAccountFieldsResponse {
