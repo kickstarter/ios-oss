@@ -7,6 +7,7 @@ public struct GraphUser: Decodable {
   public var email: String?
   public var hasPassword: Bool?
   public var id: String
+  public var isCreator: Bool?
   public var imageUrl: String
   public var isAppleConnected: Bool?
   public var isEmailVerified: Bool?
@@ -34,6 +35,7 @@ extension GraphUser: Equatable {
       lhs.email == rhs.email &&
       lhs.hasPassword == rhs.hasPassword &&
       lhs.id == rhs.id &&
+      lhs.isCreator == rhs.isCreator &&
       lhs.imageUrl == rhs.imageUrl &&
       lhs.isAppleConnected == rhs.isAppleConnected &&
       lhs.isEmailVerified == rhs.isEmailVerified &&

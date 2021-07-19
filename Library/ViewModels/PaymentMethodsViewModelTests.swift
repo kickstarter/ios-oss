@@ -33,8 +33,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnViewDidLoad() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let apiService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
@@ -48,8 +48,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_errorFetchingPaymentMethods() {
-    let error = GraphResponseError(message: "Something went wrong")
-    let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
+    let apiService = MockService(fetchGraphUserError: .couldNotParseJSON)
 
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
@@ -58,14 +57,14 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.errorLoadingPaymentMethods.assertValue(error.message)
+      self.errorLoadingPaymentMethods.assertValue(ErrorEnvelope.couldNotParseJSON.localizedDescription)
       self.paymentMethods.assertDidNotEmitValue()
     }
   }
 
   func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let apiService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
@@ -87,8 +86,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnAddNewCardDismissed() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let apiService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
@@ -108,10 +107,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonIsEnabledAndTitle_HasPaymentMethods() {
-    let response = UserEnvelope<GraphUserCreditCard>(
-      me: GraphUserCreditCard.template
-    )
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let apiService = MockService(fetchGraphUserResponse: response)
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.editButtonTitle.assertDidNotEmitValue()
@@ -136,10 +133,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonIsNotEnabled_NoPaymentMethods() {
-    let response = UserEnvelope<GraphUserCreditCard>(
-      me: GraphUserCreditCard.emptyTemplate
-    )
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    let emptyTemplate = GraphUser.template |> \.storedCards .~ .emptyTemplate
+    let response = UserEnvelope<GraphUser>(me: emptyTemplate)
+    let apiService = MockService(fetchGraphUserResponse: response)
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.vm.inputs.viewDidLoad()

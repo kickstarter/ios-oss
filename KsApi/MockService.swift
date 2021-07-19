@@ -76,8 +76,8 @@
 
     fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
 
-    fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
-    fileprivate let fetchGraphUserAccountFieldsError: ErrorEnvelope?
+    fileprivate let fetchGraphUserResponse: UserEnvelope<GraphUser>?
+    fileprivate let fetchGraphUserError: ErrorEnvelope?
 
     fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
 
@@ -251,8 +251,8 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
-      fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
-      fetchGraphUserAccountFieldsError: ErrorEnvelope? = nil,
+      fetchGraphUserResponse: UserEnvelope<GraphUser>? = nil,
+      fetchGraphUserError: ErrorEnvelope? = nil,
       fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -369,9 +369,9 @@
 
       self.fetchGraphCategoriesError = fetchGraphCategoriesError
 
-      self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
+      self.fetchGraphUserResponse = fetchGraphUserResponse
         ?? UserEnvelope(me: GraphUser.template)
-      self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
+      self.fetchGraphUserError = fetchGraphUserError
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
@@ -749,9 +749,9 @@
 
     internal func fetchGraphUser()
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
-      if let error = self.fetchGraphUserAccountFieldsError {
+      if let error = self.fetchGraphUserError {
         return SignalProducer(error: error)
-      } else if let response = self.fetchGraphUserAccountFieldsResponse {
+      } else if let response = self.fetchGraphUserResponse {
         return SignalProducer(value: response)
       } else {
         return .empty

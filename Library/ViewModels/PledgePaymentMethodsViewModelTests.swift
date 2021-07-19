@@ -50,8 +50,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   // MARK: - New card added
 
   func testReloadPaymentMethods_NewCardAdded_UnavailableIsLast() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let mockService = MockService(fetchGraphUserResponse: response)
     let userCreditCard = GraphUserCreditCard.visa |> \.id .~ "10"
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
@@ -68,7 +68,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.reloadPaymentMethodsCards.assertValues([[], response.me.storedCards.nodes])
+      self.reloadPaymentMethodsCards.assertValues([[], response.me.storedCards.storedCards.nodes])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [],
         [true, true, true, true, true, true, true, false]
@@ -79,9 +79,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
-      self.reloadPaymentMethodsSelectedCard.assertValues([nil, response.me.storedCards.nodes.first])
+      self.reloadPaymentMethodsSelectedCard
+        .assertValues([nil, response.me.storedCards.storedCards.nodes.first])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false])
 
@@ -124,12 +125,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
-        (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
+        (0...response.me.storedCards.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "New and available card added")
       self.reloadPaymentMethodsSelectedCard.assertValues([
         nil,
-        response.me.storedCards.nodes.first,
+        response.me.storedCards.storedCards.nodes.first,
         userCreditCard
       ])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
@@ -144,8 +145,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       GraphUserCreditCard.diners,
       GraphUserCreditCard.generic
     ])
-    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResponse: response)
 
     self.reloadPaymentMethodsCards.assertDidNotEmitValue()
     self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
@@ -190,7 +192,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard.assertValues(
         [nil, GraphUserCreditCard.visa],
@@ -234,8 +236,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
-        (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
+        (0...response.me.storedCards.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard.assertValues(
         [
@@ -250,8 +252,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   }
 
   func testReloadPaymentMethods_NewCardAdded_NoStoredCards() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.emptyTemplate)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let emptyTemplate = GraphUser.template |> \.storedCards .~ .emptyTemplate
+    let response = UserEnvelope<GraphUser>(me: emptyTemplate)
+    let mockService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -292,8 +295,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       GraphUserCreditCard.visa,
       GraphUserCreditCard.amex
     ])
-    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResponse: response)
     let project = Project.template
       |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
 
@@ -331,8 +336,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   }
 
   func testReloadPaymentMethods_LoggedOut() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let mockService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: mockService, currentUser: nil) {
       self.vm.inputs.viewDidLoad()
@@ -360,8 +365,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   }
 
   func testCreditCardSelected() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
+    let mockService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
@@ -392,8 +397,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       GraphUserCreditCard.discover,
       GraphUserCreditCard.amex
     ])
-    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResponse: response)
     let project = Project.template
       |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
 
@@ -449,9 +455,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   func testGoToAddNewCard_NoStoredCards() {
     let project = Project.template
-    let cards = GraphUserCreditCard.withCards([])
-    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
-    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let graphUser = GraphUser.template |> \.storedCards .~ GraphUserCreditCard.withCards([])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResponse: response)
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.inputs.viewDidLoad()
