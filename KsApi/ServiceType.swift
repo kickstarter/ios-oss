@@ -66,7 +66,7 @@ public protocol ServiceType {
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
   func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
 
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, GraphError>

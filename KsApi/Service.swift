@@ -112,10 +112,11 @@ public struct Service: ServiceType {
       .perform(mutation: GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input)))
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
-
-  public func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+  
+  public func createPassword(input: CreatePasswordInput) -> SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap(UpdateAccountEnvelope.producer(from:))
   }
 
   public func clearUserUnseenActivity(input: EmptyInput)

@@ -27,7 +27,7 @@
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
-    fileprivate let createPasswordError: GraphError?
+    fileprivate let createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
@@ -222,7 +222,7 @@
       ),
       changePasswordError: GraphError? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
-      createPasswordError: GraphError? = nil,
+      createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
       changeCurrencyError: GraphError? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
@@ -343,7 +343,7 @@
 
       self.createBackingResult = createBackingResult
 
-      self.createPasswordError = createPasswordError
+      self.createPasswordResult = createPasswordResult
 
       self.changePaymentMethodResult = changePaymentMethodResult
       self.deletePaymentMethodResult = deletePaymentMethodResult
@@ -588,12 +588,15 @@
     }
 
     internal func createPassword(input _: CreatePasswordInput) ->
-      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      if let error = self.createPasswordError {
+      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+      
+      if let error = self.createPasswordResult?.error {
         return SignalProducer(error: error)
-      } else {
-        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      } else if let response = self.createPasswordResult?.value {
+        return SignalProducer(value: response)
       }
+      
+      return SignalProducer(error: .couldNotParseJSON)
     }
 
     internal func changeCurrency(input _: ChangeCurrencyInput) ->

@@ -71,6 +71,10 @@
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
+		06643F3826A5FD33002C5997 /* UpdateAcccountEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3726A5FD33002C5997 /* UpdateAcccountEnvelope.swift */; };
+		06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
+		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
+		06643F3E26A62FBC002C5997 /* CreateUpdateAccountEnvelope+CreateUpdateAccountEnvelope.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3D26A62FBC002C5997 /* CreateUpdateAccountEnvelope+CreateUpdateAccountEnvelope.Data.swift */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
@@ -1749,6 +1753,10 @@
 		0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModel.swift; sourceTree = "<group>"; };
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
 		061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
+		06643F3726A5FD33002C5997 /* UpdateAcccountEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAcccountEnvelope.swift; sourceTree = "<group>"; };
+		06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserAccount.graphql; sourceTree = "<group>"; };
+		06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift"; sourceTree = "<group>"; };
+		06643F3D26A62FBC002C5997 /* CreateUpdateAccountEnvelope+CreateUpdateAccountEnvelope.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateUpdateAccountEnvelope+CreateUpdateAccountEnvelope.Data.swift"; sourceTree = "<group>"; };
 		0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
@@ -3320,6 +3328,7 @@
 			children = (
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
+				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
@@ -3527,11 +3536,13 @@
 				8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */,
 				8AC3E0D1269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift */,
 				8AC3E0D9269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.DataTests.swift */,
+				06643F3D26A62FBC002C5997 /* CreateUpdateAccountEnvelope+CreateUpdateAccountEnvelope.Data.swift */,
 				8AC3E104269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift */,
 				8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */,
 				8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */,
 				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
 				8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */,
+				06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */,
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
 				8AC3E016269626A400168BF8 /* Location+LocationFragment.swift */,
 				8AC3E01E2696368A00168BF8 /* Location+LocationFragmentTests.swift */,
@@ -4889,6 +4900,7 @@
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
 				D015881A1EEB2ED7006E7684 /* Update.swift */,
+				06643F3726A5FD33002C5997 /* UpdateAcccountEnvelope.swift */,
 				8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */,
 				8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */,
 				D015881B1EEB2ED7006E7684 /* UpdateDraft.swift */,
@@ -6586,6 +6598,7 @@
 				D0198F3521793FCF0090A9EC /* GraphMutation.swift in Sources */,
 				D01588451EEB2ED7006E7684 /* ActivityEnvelope.swift in Sources */,
 				D01588991EEB2ED7006E7684 /* FriendStatsEnvelopeLenses.swift in Sources */,
+				06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */,
 				D6B9F943220358D1003282A5 /* AuthorTemplates.swift in Sources */,
 				D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */,
 				8AE3F72C24DA1D2A002B03C3 /* GraphProjectTemplates.swift in Sources */,
@@ -6638,6 +6651,7 @@
 				D0158A181EEB30A2006E7684 /* MessageTemplates.swift in Sources */,
 				8AC3E017269626A400168BF8 /* Location+LocationFragment.swift in Sources */,
 				D0158A191EEB30A2006E7684 /* MessageThreadTemplates.swift in Sources */,
+				06643F3E26A62FBC002C5997 /* CreateUpdateAccountEnvelope+CreateUpdateAccountEnvelope.Data.swift in Sources */,
 				D01588AF1EEB2ED7006E7684 /* Project.VideoLenses.swift in Sources */,
 				D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */,
 				8A1557152693B28300017845 /* User+UserFragment.swift in Sources */,
@@ -6698,6 +6712,7 @@
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
 				77776BC6234BA6B700A42388 /* CancelBackingMutation.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
+				06643F3826A5FD33002C5997 /* UpdateAcccountEnvelope.swift in Sources */,
 				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
 				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
@@ -6777,6 +6792,7 @@
 				8ADCCCD0264CA18E0079D308 /* GraphCommentTemplates.swift in Sources */,
 				D0158A201EEB30A2006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift in Sources */,
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
+				06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */,
 				8A49396124B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift in Sources */,
 				D015890B1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift in Sources */,
 				D015889B1EEB2ED7006E7684 /* ItemLenses.swift in Sources */,
