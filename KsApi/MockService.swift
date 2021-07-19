@@ -23,7 +23,7 @@
     fileprivate let changeEmailError: GraphError?
     fileprivate let changeEmailResponse: UserEnvelope<UserEmailFields>?
 
-    fileprivate let changePasswordError: GraphError?
+    fileprivate let changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
@@ -220,7 +220,7 @@
       changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
         me: .template
       ),
-      changePasswordError: GraphError? = nil,
+      changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
@@ -337,7 +337,7 @@
       self.changeEmailResponse = changeEmailResponse
       self.changeEmailError = changeEmailError
 
-      self.changePasswordError = changePasswordError
+      self.changePasswordResult = changePasswordResult
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
 
@@ -574,12 +574,15 @@
     }
 
     internal func changePassword(input _: ChangePasswordInput) ->
-      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      if let error = self.changePasswordError {
-        return SignalProducer(error: error)
-      } else {
-        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-      }
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    
+    if let error = self.changePasswordResult?.error {
+      return SignalProducer(error: error)
+    } else if let response = self.changePasswordResult?.value {
+      return SignalProducer(value: response)
+    }
+    
+    return SignalProducer(error: .couldNotParseJSON)
     }
 
     internal func createBacking(input _: CreateBackingInput)

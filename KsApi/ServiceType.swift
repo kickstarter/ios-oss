@@ -53,7 +53,7 @@ public protocol ServiceType {
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
   func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+  SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
 
   func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
