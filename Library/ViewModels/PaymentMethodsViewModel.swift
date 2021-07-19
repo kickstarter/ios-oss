@@ -41,7 +41,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       self.addNewCardDismissedProperty.signal
     )
     .switchMap { _ in
-      AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
+      AppEnvironment.current.apiService.fetchGraphUser()
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
@@ -63,7 +63,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       }
 
     let initialPaymentMethodsValues = paymentMethodsEvent
-      .values().map { $0.me.storedCards.nodes }
+      .values().map { $0.me.storedCards.storedCards.nodes }
 
     let deletePaymentMethodValues = deletePaymentMethodEvents.values()
       .map { $0.storedCards }

@@ -76,9 +76,6 @@
 
     fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
 
-    fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
-    fileprivate let fetchGraphCreditCardsError: GraphError?
-
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: ErrorEnvelope?
 
@@ -250,8 +247,6 @@
       fetchFriendStatsError: ErrorEnvelope? = nil,
       fetchExportStateResponse: ExportDataEnvelope? = nil,
       fetchExportStateError: ErrorEnvelope? = nil,
-      fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>? = nil,
-      fetchGraphCreditCardsError: GraphError? = nil,
       exportDataError: ErrorEnvelope? = nil,
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
@@ -474,9 +469,6 @@
 
       self.fetchUserResponse = fetchUserResponse
       self.fetchUserError = fetchUserError
-      self.fetchGraphCreditCardsError = fetchGraphCreditCardsError
-
-      self.fetchGraphCreditCardsResponse = fetchGraphCreditCardsResponse
 
       self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
       self.fetchUserSelfError = fetchUserSelfError
@@ -748,18 +740,6 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphCreditCards(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
-      if let error = fetchGraphCreditCardsError {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(
-        value: self.fetchGraphCreditCardsResponse ??
-          UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-      )
-    }
-
     internal func fetchGraphUserEmailFields(query _: NonEmptySet<Query>)
       -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
       let response = self.fetchGraphUserEmailFieldsResponse ?? .template
@@ -767,7 +747,7 @@
       return SignalProducer(value: UserEnvelope(me: response))
     }
 
-    internal func fetchGraphUserAccountFields()
+    internal func fetchGraphUser()
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
       if let error = self.fetchGraphUserAccountFieldsError {
         return SignalProducer(error: error)

@@ -11,6 +11,13 @@ extension GraphUser {
     isEmailVerified: true,
     isDeliverable: true,
     name: "Backer McGee",
+    storedCards: GraphUserCreditCard(storedCards: GraphUserCreditCard
+      .CreditCardConnection(nodes: [GraphUserCreditCard.CreditCard(
+        expirationDate: "2024-02-21",
+        id: "100",
+        lastFour: "4242",
+        type: .amex
+      )])),
     uid: "12345"
   )
 }

@@ -201,6 +201,7 @@
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
 		4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4778EE1E26A1E8230059EA69 /* FetchUser.graphql */; };
 		4778EE2126A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */; };
+		47A0432226A609C30011728E /* GraphUserCreditCard+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0432126A609C30011728E /* GraphUserCreditCard+UserFragment.swift */; };
 		47AC212F264AD2590090AEDF /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC212E264AD2590090AEDF /* CommentsViewController.swift */; };
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
@@ -1878,6 +1879,7 @@
 		477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
 		4778EE1E26A1E8230059EA69 /* FetchUser.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUser.graphql; sourceTree = "<group>"; };
 		4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelope.swift"; sourceTree = "<group>"; };
+		47A0432126A609C30011728E /* GraphUserCreditCard+UserFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphUserCreditCard+UserFragment.swift"; sourceTree = "<group>"; };
 		47AC212E264AD2590090AEDF /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3537,6 +3539,7 @@
 				8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */,
 				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
 				8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */,
+				47A0432126A609C30011728E /* GraphUserCreditCard+UserFragment.swift */,
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
 				8AC3E016269626A400168BF8 /* Location+LocationFragment.swift */,
 				8AC3E01E2696368A00168BF8 /* Location+LocationFragmentTests.swift */,
@@ -6875,6 +6878,7 @@
 				D6F5C60F2437DD2A00C1A79D /* SignInWithAppleMutation.swift in Sources */,
 				D67B6CD8221F46D700B63A6B /* Project.Country+Encode.swift in Sources */,
 				8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */,
+				47A0432226A609C30011728E /* GraphUserCreditCard+UserFragment.swift in Sources */,
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,

@@ -252,12 +252,7 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
-  public func fetchGraphCreditCards(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
-    return fetch(query: query)
-  }
-
-  public func fetchGraphUserAccountFields()
+  public func fetchGraphUser()
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUserQuery())
