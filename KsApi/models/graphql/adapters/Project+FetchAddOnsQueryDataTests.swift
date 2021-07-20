@@ -9,6 +9,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
       XCTAssertNotNil(fragment)
 
       let project = Project.project(from: fragment)
+      XCTAssertEqual(project?.memberData.permissions.count, 6)
       XCTAssertNotNil(project)
     } catch {
       XCTFail(error.localizedDescription)
@@ -433,6 +434,13 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
         "displayConvertAmount": false
       },
       "backersCount": 46,
+      "backing": {
+        "__typename": "Backing",
+        "backer": {
+          "__typename": "User",
+          "uid": "618005886"
+        }
+      },
       "category": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktMjI=",
@@ -443,6 +451,14 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
           "name": "Art"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "AU",
@@ -460,6 +476,10 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
       "deadlineAt": 1622195758,
       "description": "Notebooks, paper tape and sticker sets from the Peppermint Fox Press, inspired by vintage books. For poets, planners, and storytellers.",
       "finalCollectionDate": null,
+      "friends": {
+        "__typename": "ProjectBackerFriendsConnection",
+        "nodes": []
+      },
       "fxRate": 0.93110152,
       "goal": {
         "__typename": "Money",
@@ -473,6 +493,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
         "url": "https://ksr-qa-ugc.imgix.net/assets/033/395/412/618ee8bdcfcfd731cc0404270a79d98c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1620193138&auto=format&frame=1&q=92&s=518067d52053dd4f523b5ced0bb1487d"
       },
       "isProjectWeLove": true,
+      "isWatched": false,
       "launchedAt": 1619603758,
       "location": {
         "__typename": "Location",
