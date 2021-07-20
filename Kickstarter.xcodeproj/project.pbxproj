@@ -179,6 +179,7 @@
 		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
 		4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */; };
+		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
 		4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */; };
 		4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C14425B1021D0098E89E /* FirebaseABTesting.framework */; };
 		4748C15625B105DF0098E89E /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C15525B105DE0098E89E /* Protobuf.framework */; };
@@ -1856,6 +1857,7 @@
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRepliesCell.swift; sourceTree = "<group>"; };
+		473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTests.swift"; sourceTree = "<group>"; };
 		4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
 		4748C14425B1021D0098E89E /* FirebaseABTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseABTesting.framework; path = Carthage/Build/iOS/FirebaseABTesting.framework; sourceTree = "<group>"; };
 		4748C15525B105DE0098E89E /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
@@ -3568,6 +3570,7 @@
 				8A1557142693B28300017845 /* User+UserFragment.swift */,
 				8AC3E0652697AC0400168BF8 /* User+UserFragmentTests.swift */,
 				4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */,
+				473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */,
 			);
 			path = adapters;
 			sourceTree = "<group>";
@@ -6951,6 +6954,7 @@
 				4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
 				8ADCCCCB264CA13F0079D308 /* Comment+GraphCommentTests.swift in Sources */,
+				473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */,
 				8A45169124B3E2CE00D8CAEF /* RewardAddOnSelectionViewQueriesTests.swift in Sources */,
 				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,

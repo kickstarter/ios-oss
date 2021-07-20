@@ -13,6 +13,7 @@ extension UserEnvelope {
       email: userFragment.email,
       hasPassword: userFragment.hasPassword,
       id: userFragment.id,
+      isCreator: userFragment.isCreator,
       imageUrl: userFragment.imageUrl,
       isAppleConnected: userFragment.isAppleConnected,
       isEmailVerified: userFragment.isEmailVerified,
