@@ -20,9 +20,6 @@ public extension Analytics {
 
     Analytics.setup(with: configuration)
 
-    // Disabled when initialized and enabled by our feature-flag configuration.
-    Analytics.shared().disable()
-
     return Analytics.shared()
   }
 }
