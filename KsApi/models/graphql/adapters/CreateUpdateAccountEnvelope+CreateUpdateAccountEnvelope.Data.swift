@@ -9,7 +9,7 @@ extension UpdateAccountEnvelope {
 
     return UpdateAccountEnvelope(clientMutationId: updateUserAccount.clientMutationId)
   }
-  
+
   static func producer(from data: GraphAPI.UpdateUserAccountMutation
     .Data) -> SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
     guard let envelope = UpdateAccountEnvelope.from(data) else {

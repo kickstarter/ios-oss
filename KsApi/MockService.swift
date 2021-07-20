@@ -20,8 +20,7 @@
     fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
     fileprivate let changeCurrencyError: GraphError?
 
-    fileprivate let changeEmailError: GraphError?
-    fileprivate let changeEmailResponse: UserEnvelope<UserEmailFields>?
+    fileprivate let changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
 
     fileprivate let changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
 
@@ -216,10 +215,7 @@
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
       cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
-      changeEmailError: GraphError? = nil,
-      changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
-        me: .template
-      ),
+      changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
@@ -334,8 +330,7 @@
       self.changeCurrencyResponse = changeCurrencyResponse
       self.changeCurrencyError = changeCurrencyError
 
-      self.changeEmailResponse = changeEmailResponse
-      self.changeEmailError = changeEmailError
+      self.changeEmailResult = changeEmailResult
 
       self.changePasswordResult = changePasswordResult
 
@@ -549,12 +544,15 @@
     }
 
     internal func changeEmail(input _: ChangeEmailInput) ->
-      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      if let error = self.changeEmailError {
+      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+      
+      if let error = self.changeEmailResult?.error {
         return SignalProducer(error: error)
+      } else if let response = self.changeEmailResult?.value {
+        return SignalProducer(value: response)
       }
 
-      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      return SignalProducer(error: .couldNotParseJSON)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
@@ -574,15 +572,15 @@
     }
 
     internal func changePassword(input _: ChangePasswordInput) ->
-    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-    
-    if let error = self.changePasswordResult?.error {
-      return SignalProducer(error: error)
-    } else if let response = self.changePasswordResult?.value {
-      return SignalProducer(value: response)
-    }
-    
-    return SignalProducer(error: .couldNotParseJSON)
+      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+      
+      if let error = self.changePasswordResult?.error {
+        return SignalProducer(error: error)
+      } else if let response = self.changePasswordResult?.value {
+        return SignalProducer(value: response)
+      }
+
+      return SignalProducer(error: .couldNotParseJSON)
     }
 
     internal func createBacking(input _: CreateBackingInput)
@@ -598,7 +596,7 @@
       } else if let response = self.createPasswordResult?.value {
         return SignalProducer(value: response)
       }
-      
+
       return SignalProducer(error: .couldNotParseJSON)
     }
 
