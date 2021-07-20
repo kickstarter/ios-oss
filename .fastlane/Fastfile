@@ -138,6 +138,12 @@ platform :ios do
       precheck_include_in_app_purchases: false
     )
 
+    upload_symbols_to_crashlytics(
+      gsp_path: "./Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
+      binary_path: "./bin/upload-symbols",
+      dsym_path: "#{gym_dir}/Kickstarter.app.dSYM.zip"
+    )
+
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
       message: slack_message(
@@ -200,10 +206,6 @@ platform :ios do
       version: "latest"
     )
 
-    upload_symbols_to_crashlytics(
-      gsp_path: "./Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
-      binary_path: "./bin/upload-symbols"
-    )
     clean_build_artifacts
 
     slack(
