@@ -10,7 +10,9 @@ public struct UserEnvelope<T: Decodable>: Decodable {
 extension UserEnvelope {
   static func envelopeProducer(from data: GraphAPI.FetchUserQuery.Data)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
-    guard let envelope = UserEnvelope.userEnvelope(from: data) else { return .empty }
+    guard let envelope = UserEnvelope.userEnvelope(from: data) else {
+      return .empty
+    }
     return SignalProducer(value: envelope)
   }
 }

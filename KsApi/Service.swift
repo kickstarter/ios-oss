@@ -266,11 +266,6 @@ public struct Service: ServiceType {
       .flatMap(BackingsEnvelope.envelopeProducer(from:))
   }
 
-  public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
-    return fetch(query: query)
-  }
-
   public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return fetch(query: query)

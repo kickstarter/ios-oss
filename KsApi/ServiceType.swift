@@ -152,10 +152,6 @@ public protocol ServiceType {
   func fetchGraphUserBackings(query: NonEmptySet<Query>)
     -> SignalProducer<BackingsEnvelope, ErrorEnvelope>
 
-  /// Fetch User's email fields object using graphQL.
-  func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
-
   /// Fetch `Backing` data for ManagePledgeViewController with a query.
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>

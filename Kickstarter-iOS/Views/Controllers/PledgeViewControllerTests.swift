@@ -5,6 +5,13 @@ import Prelude
 import UIKit
 
 final class PledgeViewControllerTests: TestCase {
+  private let userWithCards = GraphUser.template |> \.storedCards .~ GraphUserCreditCard(
+    nodes: [
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]
+  )
+
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -19,14 +26,7 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_PledgeContext_UnavailableStoredCards() {
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
     let project = Project.template
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
@@ -59,14 +59,7 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_PledgeContext_FixPaymentMethod_ErroredCard() {
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
     let project = Project.template
       |> Project.lens.state .~ .successful
@@ -108,14 +101,7 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_PledgeContext_NeedsConversion_IsFalse() {
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
@@ -148,14 +134,7 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_PledgeContext_NeedsConversion_IsTrue() {
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
     let reward = Reward.template
       |> Reward.lens.minimum .~ 10.0
@@ -323,14 +302,7 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_ChangePaymentMethodContext_NeedsConversion_IsTrue() {
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -392,14 +364,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.amount .~ 700.0
       )
 
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -426,14 +391,7 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_ChangePaymentMethodContext_UnavailableStoredCards() {
-    let cardTemplate = GraphUserCreditCard(
-      nodes: [
-        GraphUserCreditCard.visa,
-        GraphUserCreditCard.masterCard
-      ]
-    )
-    let withCards = GraphUser.template |> \.storedCards .~ cardTemplate
-    let response = UserEnvelope<GraphUser>(me: withCards)
+    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResponse: response)
     let project = Project.template
       |> Project.lens.personalization.backing .~ (Backing.template

@@ -74,8 +74,6 @@
     fileprivate let fetchDraftResponse: UpdateDraft?
     fileprivate let fetchDraftError: ErrorEnvelope?
 
-    fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
-
     fileprivate let fetchGraphUserResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserError: ErrorEnvelope?
 
@@ -250,7 +248,6 @@
       exportDataError: ErrorEnvelope? = nil,
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
-      fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserError: ErrorEnvelope? = nil,
       fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
@@ -372,8 +369,6 @@
       self.fetchGraphUserResponse = fetchGraphUserResponse
         ?? UserEnvelope(me: GraphUser.template)
       self.fetchGraphUserError = fetchGraphUserError
-
-      self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
       self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
@@ -738,13 +733,6 @@
     internal func fetchGraphCategory(query: NonEmptySet<Query>)
       -> SignalProducer<CategoryEnvelope, GraphError> {
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
-    }
-
-    internal func fetchGraphUserEmailFields(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
-      let response = self.fetchGraphUserEmailFieldsResponse ?? .template
-
-      return SignalProducer(value: UserEnvelope(me: response))
     }
 
     internal func fetchGraphUser()
