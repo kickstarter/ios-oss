@@ -7,7 +7,12 @@ import ReactiveExtensions_TestHelpers
 
 final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()
-
+  private let failureService = MockService(createPasswordResult: .failure(ErrorEnvelope(errorMessages: ["Error creating password"],
+                                                                                        ksrCode: nil,
+                                                                                        httpCode: 1,
+                                                                                        exception: nil)))
+  private let successService = MockService(createPasswordResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))
+  
   private let accessibilityFocusValidationLabel = TestObserver<Void, Never>()
   private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
   private let cellAtIndexPathDidBecomeFirstResponder = TestObserver<IndexPath, Never>()
@@ -48,10 +53,7 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testCreatePasswordFailure() {
-    let graphError = GraphError.decodeError(GraphResponseError(message: "Error creating password"))
-    let service = MockService(createPasswordError: graphError)
-
-    withEnvironment(apiService: service) {
+    withEnvironment(apiService: failureService) {
       self.vm.inputs.viewDidAppear()
 
       self.newPasswordTextFieldBecomeFirstResponder.assertValueCount(1)
@@ -75,7 +77,7 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testCreatePassword() {
-    withEnvironment(apiService: MockService()) {
+    withEnvironment(apiService: successService) {
       self.vm.inputs.viewDidAppear()
 
       self.newPasswordTextFieldBecomeFirstResponder.assertValueCount(1)
@@ -345,7 +347,7 @@ final class CreatePasswordViewModelTests: TestCase {
     let segmentClient = MockTrackingClient()
 
     withEnvironment(
-      apiService: MockService(),
+      apiService: successService,
       ksrAnalytics: KSRAnalytics(segmentClient: segmentClient)
     ) {
       XCTAssertEqual([], segmentClient.events)

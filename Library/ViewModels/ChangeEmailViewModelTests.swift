@@ -55,9 +55,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testChangeEmail_OnSuccess() {
-    let updatedEmail = UserEmailFields.template |> \.email .~ "apple@kickstarter.com"
-    let response = UserEnvelope<UserEmailFields>(me: updatedEmail)
-    let mockService = MockService(changeEmailResponse: response)
+    let mockService = MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -87,9 +85,12 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidFailToChangeEmailEmits_OnFailure() {
-    let error = GraphError.emptyResponse(nil)
+    let errorEnvelope = ErrorEnvelope(errorMessages: ["error"],
+                                      ksrCode: nil,
+                                      httpCode: 1,
+                                      exception: nil)
 
-    withEnvironment(apiService: MockService(changeEmailError: error)) {
+    withEnvironment(apiService: MockService(changeEmailResult: .failure(errorEnvelope))) {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
@@ -107,9 +108,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testEmailText_AfterFetchingUsersEmail() {
-    let response = UserEnvelope<UserEmailFields>(me: .template)
-
-    withEnvironment(apiService: MockService(changeEmailResponse: response)) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -118,9 +117,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testSaveButtonEnabledStatus() {
-    let response = UserEnvelope<UserEmailFields>(me: .template)
-
-    withEnvironment(apiService: MockService(changeEmailResponse: response)) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -222,11 +219,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden_whenEmailIsUnverifiedAndUndeliverable() {
-    let userEmailFields = UserEmailFields.template
-      |> \.isDeliverable .~ false
-      |> \.isEmailVerified .~ false
-
-    withEnvironment(apiService: MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -315,21 +308,23 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
-    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
-    self.vm.inputs.saveButtonIsEnabled(true)
-
-    self.scheduler.advance()
-
-    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
-    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
-    self.vm.inputs.saveButtonIsEnabled(true)
-
-    self.vm.inputs.saveButtonTapped()
-
-    self.scheduler.advance()
-
-    self.resetFields.assertValue("")
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+      self.vm.inputs.saveButtonIsEnabled(true)
+      
+      self.scheduler.advance()
+      
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+      self.vm.inputs.saveButtonIsEnabled(true)
+      
+      self.vm.inputs.saveButtonTapped()
+      
+      self.scheduler.advance()
+      
+      self.resetFields.assertValue("")
+    }
   }
 
   func testTextFieldsAreEnabled() {

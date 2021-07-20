@@ -41,7 +41,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testChangePassword() {
-    let service = MockService()
+    let service = MockService(changePasswordResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))
 
     withEnvironment(apiService: service) {
       self.vm.inputs.viewDidAppear()
@@ -303,8 +303,10 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testChangePasswordFailure() {
-    let graphError = GraphError.decodeError(GraphResponseError(message: "Error changing password"))
-    let service = MockService(changePasswordError: graphError)
+    let service = MockService(changePasswordResult: .failure(ErrorEnvelope(errorMessages: ["Error changing password"],
+                                                                           ksrCode: nil,
+                                                                           httpCode: 1,
+                                                                           exception: nil)))
 
     withEnvironment(apiService: service) {
       self.vm.inputs.viewDidAppear()
