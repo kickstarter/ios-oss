@@ -67,10 +67,29 @@ final class Project_ProjectFragmentTests: XCTestCase {
       },
       "creator": {
         "__typename": "User",
+        "chosenCurrency": "USD",
+        "email": "foo@bar.com",
+        "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
         "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1617736562&auto=format&frame=1&q=92&s=085218a7258d22c455492bed76f5433a",
+        "isAppleConnected": false,
         "isCreator": null,
+        "isDeliverable": true,
+        "isEmailVerified": true,
         "name": "Hugh Alan Samples",
+        "storedCards": {
+          "__typename": "UserCreditCardTypeConnection",
+          "nodes": [
+            {
+            "__typename": "CreditCard",
+              "expirationDate": "2023-01-01",
+              "id": "6",
+              "lastFour": "4242",
+              "type": "VISA"
+            }
+          ],
+          "totalCount": 1
+        },
         "uid": "631811387"
       },
       "currency": "USD",

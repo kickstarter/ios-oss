@@ -459,11 +459,30 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
       },
       "creator": {
         "__typename": "User",
+        "chosenCurrency": "USD",
+        "email": "foo@bar.com",
+        "hasPassword": true,
         "id": "VXNlci0xNzA1MzA0MDA2",
         "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/033/090/101/8667751e512228a62d426c77f6eb8a0b_original.jpg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1618227451&auto=format&frame=1&q=92&s=36de925b6797139e096d7b6219f743d0",
+        "isAppleConnected": false,
         "isCreator": null,
+        "isDeliverable": true,
+        "isEmailVerified": true,
         "name": "Peppermint Fox",
-        "uid": "1705304006"
+        "storedCards": {
+          "__typename": "UserCreditCardTypeConnection",
+          "nodes": [
+            {
+            "__typename": "CreditCard",
+              "expirationDate": "2023-01-01",
+              "id": "6",
+              "lastFour": "4242",
+              "type": "VISA"
+            }
+          ],
+          "totalCount": 1
+        },
+      "uid": "1705304006"
       },
       "currency": "AUD",
       "deadlineAt": 1622195758,

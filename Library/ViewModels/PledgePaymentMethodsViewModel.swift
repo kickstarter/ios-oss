@@ -71,7 +71,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .filter(second >>> isFalse)
       .map(first)
       .skipNil()
-      .map { $0.me.storedCards.storedCards.nodes }
+      .map { $0.me.storedCards.nodes }
 
     let backing = configureWithValue
       .map { $0.project.personalization.backing }

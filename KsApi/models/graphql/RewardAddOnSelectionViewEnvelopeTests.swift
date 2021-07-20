@@ -39,6 +39,19 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
           "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "id": "VXNlci0xMjA3OTk3NjQ5",
           "name": "Creator McBaggins",
+          "storedCards": [
+            "__typename": "UserCreditCardTypeConnection",
+            "nodes": [
+              [
+                "__typename": "CreditCard",
+                "expirationDate": "2023-01-01",
+                "id": "6",
+                "lastFour": "4242",
+                "type": "VISA"
+              ]
+            ],
+            "totalCount": 1
+          ],
           "uid": "32434234"
         ],
         "currency": "USD",

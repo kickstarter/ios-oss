@@ -63,7 +63,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       }
 
     let initialPaymentMethodsValues = paymentMethodsEvent
-      .values().map { $0.me.storedCards.storedCards.nodes }
+      .values().map { $0.me.storedCards.nodes }
 
     let deletePaymentMethodValues = deletePaymentMethodEvents.values()
       .map { $0.storedCards }

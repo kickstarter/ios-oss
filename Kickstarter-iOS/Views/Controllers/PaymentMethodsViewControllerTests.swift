@@ -17,26 +17,26 @@ class PaymentMethodsViewControllerTests: TestCase {
   }
 
   func testView_WithCreditCards() {
-    let response = UserEnvelope<GraphUserCreditCard>(
-      me: GraphUserCreditCard.template
-    )
+    let graphUser = GraphUser.template |> \.storedCards .~ .template
+    let response = UserEnvelope<GraphUser>(me: graphUser)
 
     self.generateSnapshots(with: response)
   }
 
   func testView_NoCreditCards() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.emptyTemplate)
+    let graphUser = GraphUser.template |> \.storedCards .~ .emptyTemplate
+    let response = UserEnvelope<GraphUser>(me: graphUser)
 
     self.generateSnapshots(with: response)
   }
 
-  private func generateSnapshots(with response: UserEnvelope<GraphUserCreditCard>) {
+  private func generateSnapshots(with response: UserEnvelope<GraphUser>) {
     combos(Language.allLanguages, Device.allCases).forEach {
       arg in
 
       let (language, device) = arg
       withEnvironment(
-        apiService: MockService(fetchGraphCreditCardsResponse: response),
+        apiService: MockService(fetchGraphUserResponse: response),
         language: language,
         userDefaults: MockKeyValueStore()
       ) {

@@ -18,6 +18,6 @@ extension GraphUserCreditCard {
       )
     }
 
-    return GraphUserCreditCard(storedCards: CreditCardConnection(nodes: creditCards))
+    return GraphUserCreditCard(nodes: creditCards)
   }
 }

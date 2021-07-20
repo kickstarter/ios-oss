@@ -68,7 +68,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.reloadPaymentMethodsCards.assertValues([[], response.me.storedCards.storedCards.nodes])
+      self.reloadPaymentMethodsCards.assertValues([[], response.me.storedCards.nodes])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [],
         [true, true, true, true, true, true, true, false]
@@ -79,10 +79,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard
-        .assertValues([nil, response.me.storedCards.storedCards.nodes.first])
+        .assertValues([nil, response.me.storedCards.nodes.first])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false])
 
@@ -125,12 +125,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
-        (0...response.me.storedCards.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
+        (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "New and available card added")
       self.reloadPaymentMethodsSelectedCard.assertValues([
         nil,
-        response.me.storedCards.storedCards.nodes.first,
+        response.me.storedCards.nodes.first,
         userCreditCard
       ])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
@@ -192,7 +192,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard.assertValues(
         [nil, GraphUserCreditCard.visa],
@@ -236,8 +236,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        (0...response.me.storedCards.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
-        (0...response.me.storedCards.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
+        (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
+        (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard.assertValues(
         [
