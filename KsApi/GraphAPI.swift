@@ -6307,10 +6307,6 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String, uid: String) {
-          self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name, "uid": uid])
-        }
-
         public var __typename: String {
           get {
             return resultMap["__typename"]! as! String
