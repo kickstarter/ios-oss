@@ -6,7 +6,7 @@ final class Comment_CommentFragmentTests: XCTestCase {
   func test() {
     do {
       let commentFragment = try GraphAPI.CommentFragment(jsonObject: commentDictionary())
-      
+
       XCTAssertNotNil(commentFragment)
       XCTAssertNotNil(commentFragment.author)
       XCTAssertEqual(commentFragment.authorBadges?.count, 0)
@@ -14,7 +14,7 @@ final class Comment_CommentFragmentTests: XCTestCase {
       XCTAssertEqual(commentFragment.id, "Q29tbWVudC0zMjY2NDEwNQ==")
       XCTAssertNil(commentFragment.parentId)
       XCTAssertEqual(commentFragment.replies?.totalCount, 3)
-      
+
     } catch {
       XCTFail(error.localizedDescription)
     }
