@@ -261,14 +261,11 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
-  public func fetchGraphCreditCards(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
-    return fetch(query: query)
-  }
-
-  public func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUser>, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphUser()
+    -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserQuery())
+      .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
 
   public func fetchGraphUserBackings(query: NonEmptySet<Query>)
@@ -276,11 +273,6 @@ public struct Service: ServiceType {
     return fetch(query: query)
       .mapError(ErrorEnvelope.envelope(from:))
       .flatMap(BackingsEnvelope.envelopeProducer(from:))
-  }
-
-  public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
-    return fetch(query: query)
   }
 
   public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)

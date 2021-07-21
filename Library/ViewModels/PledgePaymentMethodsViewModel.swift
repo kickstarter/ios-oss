@@ -60,7 +60,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let storedCardsEvent = configureWithValue
       .switchMap { _ in
         AppEnvironment.current.apiService
-          .fetchGraphCreditCards(query: UserQueries.storedCards.query)
+          .fetchGraphUser()
           .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
           .map { envelope in (envelope, false) }
           .prefix(value: (nil, true))

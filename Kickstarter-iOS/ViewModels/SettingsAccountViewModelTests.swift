@@ -33,7 +33,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
 
   func testReloadData() {
     let userEnvelope = UserEnvelope(me: GraphUser.template)
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: userEnvelope)
+    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
 
     withEnvironment(apiService: mockService) {
       self.reloadDataCurrency.assertValueCount(0)
@@ -70,8 +70,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testFetchUserAccountFields_Failure() {
-    let graphError = GraphError.emptyResponse(nil)
-    let mockService = MockService(fetchGraphUserAccountFieldsError: graphError)
+    let mockService = MockService(fetchGraphUserError: .couldNotParseJSON)
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -93,7 +92,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     let user = GraphUser.template
       |> \.hasPassword .~ false
 
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+    let mockService = MockService(fetchGraphUserResponse: UserEnvelope(me: user))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -121,7 +120,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     let user = GraphUser.template
       |> \.hasPassword .~ true
 
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+    let mockService = MockService(fetchGraphUserResponse: UserEnvelope(me: user))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -151,7 +150,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       |> \.isEmailVerified .~ false
       |> \.isDeliverable .~ true
 
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+    let mockService = MockService(fetchGraphUserResponse: UserEnvelope(me: user))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -176,7 +175,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       |> \.isEmailVerified .~ true
       |> \.isDeliverable .~ false
 
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+    let mockService = MockService(fetchGraphUserResponse: UserEnvelope(me: user))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -199,7 +198,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     let user = GraphUser.template
       |> \.isAppleConnected .~ true
 
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+    let mockService = MockService(fetchGraphUserResponse: UserEnvelope(me: user))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()

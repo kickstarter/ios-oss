@@ -1,0 +1,5 @@
+query FetchUser {
+  me {
+    ...UserFragment
+  }
+}

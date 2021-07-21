@@ -41,7 +41,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
             "uid": "1100793144",
-            "name": "Creator McBaggins"
+            "name": "Creator McBaggins",
+            "storedCards": [
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [
+                [
+                  "__typename": "CreditCard",
+                  "expirationDate": "2023-01-01",
+                  "id": "6",
+                  "lastFour": "4242",
+                  "type": "VISA"
+                ]
+              ],
+              "totalCount": 1
+            ]
           ],
           "currency": "USD",
           "country": [
@@ -178,7 +191,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "id": "UmV3YXJkSXRlbS04NzMzMDY=",
           "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
-          "name": "Backer McGee"
+          "name": "Backer McGee",
+          "storedCards": [
+            "__typename": "UserCreditCardTypeConnection",
+            "nodes": [
+              [
+                "__typename": "CreditCard",
+                "expirationDate": "2023-01-01",
+                "id": "6",
+                "lastFour": "4242",
+                "type": "VISA"
+              ]
+            ],
+            "totalCount": 1
+          ]
         ]
       ]
     ]
@@ -352,7 +378,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
             "uid": "1100793144",
-            "name": "Creator McBaggins"
+            "name": "Creator McBaggins",
+            "storedCards": [
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [
+                [
+                  "__typename": "CreditCard",
+                  "expirationDate": "2023-01-01",
+                  "id": "6",
+                  "lastFour": "4242",
+                  "type": "VISA"
+                ]
+              ],
+              "totalCount": 1
+            ]
           ],
           "currency": "USD",
           "country": [
@@ -412,7 +451,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "id": "UmV3YXJkSXRlbS04NzMzMDY=",
           "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
-          "name": "Backer McGee"
+          "name": "Backer McGee",
+          "storedCards": [
+            "__typename": "UserCreditCardTypeConnection",
+            "nodes": [
+              [
+                "__typename": "CreditCard",
+                "expirationDate": "2023-01-01",
+                "id": "6",
+                "lastFour": "4242",
+                "type": "VISA"
+              ]
+            ],
+            "totalCount": 1
+          ]
         ]
       ]
     ]
@@ -482,7 +534,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
             "uid": "1100793144",
-            "name": "Creator McBaggins"
+            "name": "Creator McBaggins",
+            "storedCards": [
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [
+                [
+                  "__typename": "CreditCard",
+                  "expirationDate": "2023-01-01",
+                  "id": "6",
+                  "lastFour": "4242",
+                  "type": "VISA"
+                ]
+              ],
+              "totalCount": 1
+            ]
           ],
           "currency": "USD",
           "country": [
@@ -523,7 +588,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "id": "UmV3YXJkSXRlbS04NzMzMDY=",
           "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
-          "name": "Backer McGee"
+          "name": "Backer McGee",
+          "storedCards": [
+            "__typename": "UserCreditCardTypeConnection",
+            "nodes": [
+              [
+                "__typename": "CreditCard",
+                "expirationDate": "2023-01-01",
+                "id": "6",
+                "lastFour": "4242",
+                "type": "VISA"
+              ]
+            ],
+            "totalCount": 1
+          ]
         ]
       ]
     ]
@@ -583,7 +661,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "id": "UmV3YXJkSXRlbS04NzMzMDY=",
           "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "name": "Backer McGee",
-          "uid": "110079315"
+          "uid": "110079315",
+          "storedCards": [
+            "__typename": "UserCreditCardTypeConnection",
+            "nodes": [
+              [
+                "__typename": "CreditCard",
+                "expirationDate": "2023-01-01",
+                "id": "6",
+                "lastFour": "4242",
+                "type": "VISA"
+              ]
+            ],
+            "totalCount": 1
+          ]
         ],
         "cancelable": false,
         "creditCard": nil,
@@ -605,7 +696,20 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
             "uid": "1100793144",
-            "name": "Creator McBaggins"
+            "name": "Creator McBaggins",
+            "storedCards": [
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [
+                [
+                  "__typename": "CreditCard",
+                  "expirationDate": "2023-01-01",
+                  "id": "6",
+                  "lastFour": "4242",
+                  "type": "VISA"
+                ]
+              ],
+              "totalCount": 1
+            ]
           ],
           "currency": "USD",
           "country": [

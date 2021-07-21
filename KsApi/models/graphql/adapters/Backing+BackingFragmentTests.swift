@@ -336,10 +336,29 @@ private func backingDictionary() -> [String: Any] {
     },
     "backer": {
       "__typename": "User",
+      "chosenCurrency": "USD",
+      "email": "foo@bar.com",
+      "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
       "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1476734758&auto=format&frame=1&q=92&s=81a3c902ee2131666a590702b71ba5c2",
+      "isAppleConnected": false,
       "isCreator": false,
+      "isDeliverable": true,
+      "isEmailVerified": true,
       "name": "Justin Swart",
+      "storedCards": {
+        "__typename": "UserCreditCardTypeConnection",
+        "nodes": [
+          {
+          "__typename": "CreditCard",
+            "expirationDate": "2023-01-01",
+            "id": "6",
+            "lastFour": "4242",
+            "type": "VISA"
+          }
+        ],
+        "totalCount": 1
+      },
       "uid": "1108924640"
     },
     "backerCompleted": false,
@@ -408,10 +427,29 @@ private func backingDictionary() -> [String: Any] {
       },
       "creator": {
         "__typename": "User",
+        "chosenCurrency": "USD",
+        "email": "foo@bar.com",
+        "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
         "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1617736562&auto=format&frame=1&q=92&s=085218a7258d22c455492bed76f5433a",
+        "isAppleConnected": false,
         "isCreator": null,
+        "isDeliverable": true,
+        "isEmailVerified": true,
         "name": "Hugh Alan Samples",
+        "storedCards": {
+          "__typename": "UserCreditCardTypeConnection",
+          "nodes": [
+            {
+            "__typename": "CreditCard",
+              "expirationDate": "2023-01-01",
+              "id": "6",
+              "lastFour": "4242",
+              "type": "VISA"
+            }
+          ],
+          "totalCount": 1
+        },
         "uid": "631811387"
       },
       "currency": "USD",
