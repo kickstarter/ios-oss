@@ -545,7 +545,6 @@
 
     internal func changeEmail(input _: ChangeEmailInput) ->
       SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-      
       if let error = self.changeEmailResult?.error {
         return SignalProducer(error: error)
       } else if let response = self.changeEmailResult?.value {
@@ -573,7 +572,6 @@
 
     internal func changePassword(input _: ChangePasswordInput) ->
       SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-      
       if let error = self.changePasswordResult?.error {
         return SignalProducer(error: error)
       } else if let response = self.changePasswordResult?.value {
@@ -590,7 +588,6 @@
 
     internal func createPassword(input _: CreatePasswordInput) ->
       SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-      
       if let error = self.createPasswordResult?.error {
         return SignalProducer(error: error)
       } else if let response = self.createPasswordResult?.value {

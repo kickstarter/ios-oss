@@ -85,10 +85,12 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidFailToChangeEmailEmits_OnFailure() {
-    let errorEnvelope = ErrorEnvelope(errorMessages: ["error"],
-                                      ksrCode: nil,
-                                      httpCode: 1,
-                                      exception: nil)
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: ["error"],
+      ksrCode: nil,
+      httpCode: 1,
+      exception: nil
+    )
 
     withEnvironment(apiService: MockService(changeEmailResult: .failure(errorEnvelope))) {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
@@ -312,17 +314,17 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
       self.vm.inputs.saveButtonIsEnabled(true)
-      
+
       self.scheduler.advance()
-      
+
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
       self.vm.inputs.saveButtonIsEnabled(true)
-      
+
       self.vm.inputs.saveButtonTapped()
-      
+
       self.scheduler.advance()
-      
+
       self.resetFields.assertValue("")
     }
   }

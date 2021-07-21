@@ -3,7 +3,7 @@ import Foundation
 
 extension GraphAPI.UpdateUserAccountInput {
   /**
-    Maps a `CreatePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
+   Maps a `CreatePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
    */
   static func from(_ input: CreatePasswordInput) -> GraphAPI.UpdateUserAccountInput {
     return GraphAPI.UpdateUserAccountInput(
@@ -13,7 +13,7 @@ extension GraphAPI.UpdateUserAccountInput {
   }
 
   /**
-    Maps a `ChangePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
+   Maps a `ChangePasswordInput` to a `GraphAPI.UpdateUserAccountInput`
    */
   static func from(_ input: ChangePasswordInput) -> GraphAPI.UpdateUserAccountInput {
     return GraphAPI.UpdateUserAccountInput(
@@ -24,7 +24,7 @@ extension GraphAPI.UpdateUserAccountInput {
   }
 
   /**
-    Maps a `ChangeEmailInput` to a `GraphAPI.UpdateUserAccountInput`
+   Maps a `ChangeEmailInput` to a `GraphAPI.UpdateUserAccountInput`
    */
   static func from(_ input: ChangeEmailInput) -> GraphAPI.UpdateUserAccountInput {
     return GraphAPI.UpdateUserAccountInput(

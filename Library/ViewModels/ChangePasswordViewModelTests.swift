@@ -303,10 +303,13 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testChangePasswordFailure() {
-    let service = MockService(changePasswordResult: .failure(ErrorEnvelope(errorMessages: ["Error changing password"],
-                                                                           ksrCode: nil,
-                                                                           httpCode: 1,
-                                                                           exception: nil)))
+    let service =
+      MockService(changePasswordResult: .failure(ErrorEnvelope(
+        errorMessages: ["Error changing password"],
+        ksrCode: nil,
+        httpCode: 1,
+        exception: nil
+      )))
 
     withEnvironment(apiService: service) {
       self.vm.inputs.viewDidAppear()
