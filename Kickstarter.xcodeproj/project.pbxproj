@@ -79,6 +79,7 @@
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
+		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
@@ -1766,6 +1767,7 @@
 		06643F3D26A62FBC002C5997 /* UpdateAccountEnvelope+UpdateAccountEnvelope.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateAccountEnvelope+UpdateAccountEnvelope.Data.swift"; sourceTree = "<group>"; };
 		0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
+		06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentFragmentTests.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
@@ -3543,6 +3545,7 @@
 				8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */,
 				8AC3E0FF269F498900168BF8 /* Checkout+CheckoutFragment.swift */,
 				8A15571C2693B29600017845 /* Comment+CommentFragment.swift */,
+				06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */,
 				8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */,
 				8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */,
 				8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */,
@@ -6932,6 +6935,7 @@
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
+				06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */,
 				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
 				8A1F65F2262660EF00A28E74 /* PerimeterXClientTests.swift in Sources */,
