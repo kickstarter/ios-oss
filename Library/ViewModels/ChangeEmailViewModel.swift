@@ -72,7 +72,7 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
       .switchMap { _ in
         AppEnvironment.current
           .apiService
-          .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(changeEmailQueryFields())))
+          .fetchGraphUser()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
@@ -91,7 +91,7 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
 
     self.emailText = Signal.merge(
       changeEmailEvent.values(),
-      userEmailEvent.values().map { $0.me.email }
+      userEmailEvent.values().map { $0.me.email ?? "" }
     )
 
     let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()

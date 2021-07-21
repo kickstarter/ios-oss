@@ -39,15 +39,13 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
     let userEmailEvent = self.configureWithUserProperty.signal.skipNil()
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUserEmailFields(
-          query: NonEmptySet(Query.user(changeEmailQueryFields()))
-        )
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
+        AppEnvironment.current.apiService.fetchGraphUser()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
       }
 
     let requestDataAlertText = userEmailEvent.values().map {
-      Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: $0.me.email)
+      Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: $0.me.email ?? "")
     }
 
     let exportEnvelope = initialUser

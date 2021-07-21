@@ -9,7 +9,7 @@ internal final class PaymentMethodsDataSourceTests: XCTestCase {
   let tableView = UITableView(frame: .zero)
 
   func testDataSource() {
-    let cards = GraphUserCreditCard.template.storedCards.nodes
+    let cards = GraphUserCreditCard.template.nodes
     self.dataSource.load(creditCards: cards)
 
     XCTAssertEqual(8, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
@@ -18,7 +18,7 @@ internal final class PaymentMethodsDataSourceTests: XCTestCase {
   }
 
   func testCardDeletion() {
-    let cards = GraphUserCreditCard.template.storedCards.nodes
+    let cards = GraphUserCreditCard.template.nodes
     self.dataSource.load(creditCards: cards)
 
     guard let card = cards.first else {

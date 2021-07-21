@@ -144,21 +144,13 @@ public protocol ServiceType {
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
 
-  /// Fetch User's stored cards.
-  func fetchGraphCreditCards(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError>
-
-  /// Fetch a User's account fields
-  func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUser>, GraphError>
+  /// Fetches various fields of a given User using graphQL.
+  func fetchGraphUser()
+    -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
 
   /// Fetch User's backings with a specific status.
   func fetchGraphUserBackings(query: NonEmptySet<Query>)
     -> SignalProducer<BackingsEnvelope, ErrorEnvelope>
-
-  /// Fetch User's email fields object using graphQL.
-  func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
 
   /// Fetch `Backing` data for ManagePledgeViewController with a query.
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)

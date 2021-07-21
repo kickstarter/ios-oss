@@ -35,7 +35,8 @@ internal final class SettingsAccountViewControllerTests: TestCase {
     let user = GraphUser.template
       |> \.hasPassword .~ false
 
-    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+    let response = UserEnvelope<GraphUser>(me: user)
+    let mockService = MockService(fetchGraphUserResponse: response)
 
     Device.allCases.forEach { device in
 
@@ -56,7 +57,7 @@ internal final class SettingsAccountViewControllerTests: TestCase {
         |> \.isEmailVerified .~ false
       let response = UserEnvelope(me: fields)
 
-      withEnvironment(apiService: MockService(fetchGraphUserAccountFieldsResponse: response)) {
+      withEnvironment(apiService: MockService(fetchGraphUserResponse: response)) {
         let vc = SettingsAccountViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
@@ -69,9 +70,7 @@ internal final class SettingsAccountViewControllerTests: TestCase {
 
   func testAccountView_FetchUserAccountFieldsFailure() {
     Device.allCases.forEach { device in
-      let error = GraphError.invalidInput
-
-      withEnvironment(apiService: MockService(fetchGraphUserAccountFieldsError: error)) {
+      withEnvironment(apiService: MockService(fetchGraphUserError: .couldNotParseJSON)) {
         let vc = SettingsAccountViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 

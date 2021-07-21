@@ -58,7 +58,7 @@ extension GraphUserCreditCard {
   )
 
   public static let template = GraphUserCreditCard(
-    storedCards: CreditCardConnection(nodes: [
+    nodes: [
       GraphUserCreditCard.amex,
       GraphUserCreditCard.masterCard,
       GraphUserCreditCard.visa,
@@ -67,14 +67,14 @@ extension GraphUserCreditCard {
       GraphUserCreditCard.discover,
       GraphUserCreditCard.unionPay,
       GraphUserCreditCard.generic
-    ])
+    ]
   )
 
   public static let emptyTemplate = GraphUserCreditCard(
-    storedCards: CreditCardConnection(nodes: [])
+    nodes: []
   )
 
   public static func withCards(_ cards: [GraphUserCreditCard.CreditCard]) -> GraphUserCreditCard {
-    return GraphUserCreditCard(storedCards: .init(nodes: cards))
+    return GraphUserCreditCard(nodes: cards)
   }
 }

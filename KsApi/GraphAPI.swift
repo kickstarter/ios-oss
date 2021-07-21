@@ -3871,6 +3871,112 @@ public enum GraphAPI {
     }
   }
 
+  public final class FetchUserQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchUser {
+        me {
+          __typename
+          ...UserFragment
+        }
+      }
+      """
+
+    public let operationName: String = "FetchUser"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + UserFragment.fragmentDefinition)
+      return document
+    }
+
+    public init() {
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("me", type: .object(Me.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(me: Me? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "me": me.flatMap { (value: Me) -> ResultMap in value.resultMap }])
+      }
+
+      /// You.
+      public var me: Me? {
+        get {
+          return (resultMap["me"] as? ResultMap).flatMap { Me(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "me")
+        }
+      }
+
+      public struct Me: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLFragmentSpread(UserFragment.self),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var userFragment: UserFragment {
+            get {
+              return UserFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+
   public struct BackingFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
@@ -4168,10 +4274,6 @@ public enum GraphAPI {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
-      }
-
-      public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String, uid: String) {
-        self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name, "uid": uid])
       }
 
       public var __typename: String {
@@ -4947,10 +5049,6 @@ public enum GraphAPI {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
-      }
-
-      public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String, uid: String) {
-        self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name, "uid": uid])
       }
 
       public var __typename: String {
@@ -5960,10 +6058,6 @@ public enum GraphAPI {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
-      }
-
-      public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String, uid: String) {
-        self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name, "uid": uid])
       }
 
       public var __typename: String {
@@ -7077,10 +7171,27 @@ public enum GraphAPI {
       """
       fragment UserFragment on User {
         __typename
+        chosenCurrency
+        email
+        hasPassword
         id
         imageUrl: imageUrl(blur: false, width: 1024)
+        isAppleConnected
         isCreator
+        isDeliverable
+        isEmailVerified
         name
+        storedCards {
+          __typename
+          nodes {
+            __typename
+            expirationDate
+            id
+            lastFour
+            type
+          }
+          totalCount
+        }
         uid
       }
       """
@@ -7090,10 +7201,17 @@ public enum GraphAPI {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("chosenCurrency", type: .scalar(String.self)),
+        GraphQLField("email", type: .scalar(String.self)),
+        GraphQLField("hasPassword", type: .scalar(Bool.self)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("imageUrl", alias: "imageUrl", arguments: ["blur": false, "width": 1024], type: .nonNull(.scalar(String.self))),
+        GraphQLField("isAppleConnected", type: .scalar(Bool.self)),
         GraphQLField("isCreator", type: .scalar(Bool.self)),
+        GraphQLField("isDeliverable", type: .scalar(Bool.self)),
+        GraphQLField("isEmailVerified", type: .scalar(Bool.self)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        GraphQLField("storedCards", type: .object(StoredCard.selections)),
         GraphQLField("uid", type: .nonNull(.scalar(String.self))),
       ]
     }
@@ -7104,8 +7222,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String, uid: String) {
-      self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name, "uid": uid])
+    public init(chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, name: String, storedCards: StoredCard? = nil, uid: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "name": name, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }, "uid": uid])
     }
 
     public var __typename: String {
@@ -7114,6 +7232,36 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// The user's chosen currency
+    public var chosenCurrency: String? {
+      get {
+        return resultMap["chosenCurrency"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "chosenCurrency")
+      }
+    }
+
+    /// A user's email address.
+    public var email: String? {
+      get {
+        return resultMap["email"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "email")
+      }
+    }
+
+    /// Whether or not the user has a password.
+    public var hasPassword: Bool? {
+      get {
+        return resultMap["hasPassword"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "hasPassword")
       }
     }
 
@@ -7136,6 +7284,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Whether or not the user has authenticated with Apple.
+    public var isAppleConnected: Bool? {
+      get {
+        return resultMap["isAppleConnected"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isAppleConnected")
+      }
+    }
+
     /// Whether a user is a creator
     public var isCreator: Bool? {
       get {
@@ -7143,6 +7301,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "isCreator")
+      }
+    }
+
+    /// Whether a user's email address is deliverable
+    public var isDeliverable: Bool? {
+      get {
+        return resultMap["isDeliverable"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isDeliverable")
+      }
+    }
+
+    /// Whether or not the user's email is verified.
+    public var isEmailVerified: Bool? {
+      get {
+        return resultMap["isEmailVerified"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isEmailVerified")
       }
     }
 
@@ -7156,6 +7334,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Stored Cards
+    public var storedCards: StoredCard? {
+      get {
+        return (resultMap["storedCards"] as? ResultMap).flatMap { StoredCard(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "storedCards")
+      }
+    }
+
     /// A user's uid
     public var uid: String {
       get {
@@ -7163,6 +7351,129 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "uid")
+      }
+    }
+
+    public struct StoredCard: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["UserCreditCardTypeConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("nodes", type: .list(.object(Node.selections))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(nodes: [Node?]? = nil, totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "UserCreditCardTypeConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// A list of nodes.
+      public var nodes: [Node?]? {
+        get {
+          return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+        }
+        set {
+          resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+
+      public struct Node: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["CreditCard"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("expirationDate", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(String.self))),
+            GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
+            GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(expirationDate: String, id: String, lastFour: String, type: CreditCardTypes) {
+          self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "type": type])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// When the credit card expires.
+        public var expirationDate: String {
+          get {
+            return resultMap["expirationDate"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "expirationDate")
+          }
+        }
+
+        /// The card ID
+        public var id: String {
+          get {
+            return resultMap["id"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        /// The last four digits of the credit card number.
+        public var lastFour: String {
+          get {
+            return resultMap["lastFour"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "lastFour")
+          }
+        }
+
+        /// The card type.
+        public var type: CreditCardTypes {
+          get {
+            return resultMap["type"]! as! CreditCardTypes
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "type")
+          }
+        }
       }
     }
   }

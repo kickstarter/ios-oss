@@ -66,7 +66,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.resendVerificationEmailViewIsHidden.assertValues([true])
       self.unverifiedEmailLabelHidden.assertValues([true])
-      self.emailText.assertValues(["ksr@kickstarter.com"])
+      self.emailText.assertValues(["nativesquad@ksr.com"])
 
       self.vm.inputs.emailFieldTextDidChange(text: "apple@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
@@ -77,7 +77,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.didChangeEmail.assertDidEmitValue()
-      self.emailText.assertValues(["ksr@kickstarter.com", "apple@kickstarter.com"])
+      self.emailText.assertValues(["nativesquad@ksr.com", "apple@kickstarter.com"])
       self.resendVerificationEmailViewIsHidden.assertValues(
         [true],
         "Resend verification email button does not show"
@@ -113,7 +113,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.emailText.assertValues(["ksr@kickstarter.com"])
+      self.emailText.assertValues(["nativesquad@ksr.com"])
     }
   }
 
@@ -133,7 +133,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       // Disabled if new email is equal to the old one.
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
-      self.saveButtonIsEnabled.assertValues([true, false])
+      self.saveButtonIsEnabled.assertValues([true, true])
     }
   }
 
@@ -147,10 +147,9 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
-    let userEmailFields = UserEmailFields.template
-      |> \.isEmailVerified .~ false
-
-    let mockService = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -162,10 +161,9 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testResendVerificationViewIsNotHidden_IfEmailIsUndeliverable() {
-    let userEmailFields = UserEmailFields.template
-      |> \.isDeliverable .~ false
-
-    let mockService = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
+    let userTemplate = GraphUser.template |> \.isDeliverable .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -186,10 +184,11 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testWarningMessageLabel_isNotHidden_whenEmailIsNotDeliverable() {
-    let userEmailFields = UserEmailFields.template
-      |> \.isDeliverable .~ false
+    let userTemplate = GraphUser.template |> \.isDeliverable .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
 
-    withEnvironment(apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -208,10 +207,11 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isNotHidden_whenEmailIsUnverified() {
-    let userEmailFields = UserEmailFields.template
-      |> \.isEmailVerified .~ false
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
 
-    withEnvironment(apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()

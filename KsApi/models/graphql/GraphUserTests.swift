@@ -15,6 +15,19 @@ final class GraphUserTests: XCTestCase {
       "isDeliverable": true,
       "isEmailVerified": true,
       "name": "User Name",
+      "storedCards": {
+        "__typename": "UserCreditCardTypeConnection",
+        "nodes": [
+          {
+          "__typename": "CreditCard",
+            "expirationDate": "2023-01-01",
+            "id": "6",
+            "lastFour": "4242",
+            "type": "VISA"
+          }
+        ],
+        "totalCount": 1
+      },
       "uid": "45454545"
     }
     """
@@ -55,6 +68,19 @@ final class GraphUserTests: XCTestCase {
       "isDeliverable": null,
       "isEmailVerified": null,
       "name": "User Name",
+      "storedCards": {
+        "__typename": "UserCreditCardTypeConnection",
+        "nodes": [
+          {
+          "__typename": "CreditCard",
+            "expirationDate": "2023-01-01",
+            "id": "6",
+            "lastFour": "4242",
+            "type": "VISA"
+          }
+        ],
+        "totalCount": 1
+      },
       "uid": "45454545"
     }
     """
