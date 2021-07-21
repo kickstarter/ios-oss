@@ -50,10 +50,10 @@ public protocol ServiceType {
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
   func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
 
   func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
 
   func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
@@ -66,7 +66,7 @@ public protocol ServiceType {
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
   func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
 
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, GraphError>

@@ -126,19 +126,41 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "nodes": [
           {
             "__typename": "User",
+            "chosenCurrency": null,
+            "email": "blob@me.com",
+            "hasPassword": null,
             "id": "Q2F0ZWdvcnktNDc=",
             "imageUrl": "http://www.kickstarter.com/image.jpg",
+            "isAppleConnected": null,
+            "isDeliverable": null,
+            "isEmailVerified": null,
             "isCreator": false,
             "name": "Billy Bob",
-            "uid": "23"
+            "uid": "23",
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            }
           },
           {
             "__typename": "User",
+            "chosenCurrency": null,
+            "email": "blob@me.com",
+            "hasPassword": null,
             "id": "D2F0ZWdvcnktNDc=",
             "imageUrl": "http://www.kickstarter.com/image2.jpg",
+            "isAppleConnected": null,
+            "isDeliverable": null,
+            "isEmailVerified": null,
             "isCreator": false,
             "name": "Billy Bob's Nephew",
-            "uid": "24"
+            "uid": "24",
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            }
           }
         ]
       },

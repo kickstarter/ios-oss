@@ -97,13 +97,19 @@ public struct Service: ServiceType {
   }
 
   public func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap(UpdateAccountEnvelope.producer(from:))
   }
 
   public func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap(UpdateAccountEnvelope.producer(from:))
   }
 
   public func createBacking(input: CreateBackingInput) ->
@@ -113,9 +119,12 @@ public struct Service: ServiceType {
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
-  public func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+  public func createPassword(input: CreatePasswordInput)
+    -> SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap(UpdateAccountEnvelope.producer(from:))
   }
 
   public func clearUserUnseenActivity(input: EmptyInput)
