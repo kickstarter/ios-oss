@@ -55,7 +55,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testChangeEmail_OnSuccess() {
-    let mockService = MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))
+    let mockService = MockService(changeEmailResult: .success(UpdateUserEnvelope(clientMutationId: nil)))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -110,7 +110,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testEmailText_AfterFetchingUsersEmail() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateUserEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -119,7 +119,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testSaveButtonEnabledStatus() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateUserEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -221,7 +221,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden_whenEmailIsUnverifiedAndUndeliverable() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateUserEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -310,7 +310,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateUserEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
       self.vm.inputs.saveButtonIsEnabled(true)

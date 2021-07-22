@@ -97,19 +97,19 @@ public struct Service: ServiceType {
   }
 
   public func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
-      .flatMap(UpdateAccountEnvelope.producer(from:))
+      .flatMap(UpdateUserEnvelope.producer(from:))
   }
 
   public func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
-      .flatMap(UpdateAccountEnvelope.producer(from:))
+      .flatMap(UpdateUserEnvelope.producer(from:))
   }
 
   public func createBacking(input: CreateBackingInput) ->
@@ -120,11 +120,11 @@ public struct Service: ServiceType {
   }
 
   public func createPassword(input: CreatePasswordInput)
-    -> SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+    -> SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
-      .flatMap(UpdateAccountEnvelope.producer(from:))
+      .flatMap(UpdateUserEnvelope.producer(from:))
   }
 
   public func clearUserUnseenActivity(input: EmptyInput)
@@ -138,8 +138,11 @@ public struct Service: ServiceType {
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserProfileMutation(input: input))
+  SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input)))
+      .flatMap(UpdateUserEnvelope.producer(from:))
   }
 
   public func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)

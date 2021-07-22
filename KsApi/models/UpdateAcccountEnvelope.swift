@@ -1,5 +1,5 @@
 import Foundation
 
-public struct UpdateAccountEnvelope: Decodable {
+public struct UpdateUserEnvelope: Decodable {
   public let clientMutationId: String?
 }

@@ -15,7 +15,7 @@ final class CreatePasswordViewModelTests: TestCase {
       exception: nil
     )))
   private let successService =
-    MockService(createPasswordResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))
+    MockService(createPasswordResult: .success(UpdateUserEnvelope(clientMutationId: nil)))
 
   private let accessibilityFocusValidationLabel = TestObserver<Void, Never>()
   private let activityIndicatorShouldShow = TestObserver<Bool, Never>()

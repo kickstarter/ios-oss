@@ -1,8 +1,8 @@
 @testable import KsApi
 import XCTest
 
-final class UpdateAccountEnvelope_UpdateAccountEnvelopeTests: XCTestCase {
-  func testUpdateUserAccount_Success() {
+final class UpdateUserEnvelope_UpdateUserEnvelopeTests: XCTestCase {
+  func testUpdateUserAccount_WithUserAcccountMutation_Success() {
     let dict: [String: Any?] = [
       "updateUserAccount": [
         "clientMutationId": nil
@@ -11,20 +11,20 @@ final class UpdateAccountEnvelope_UpdateAccountEnvelopeTests: XCTestCase {
 
     let data = GraphAPI.UpdateUserAccountMutation.Data(unsafeResultMap: dict)
 
-    let env = UpdateAccountEnvelope.from(data)
+    let env = UpdateUserEnvelope.from(data)
 
     XCTAssertNotNil(env)
     XCTAssertNil(env?.clientMutationId)
   }
 
-  func testUpdateUserAccount_Error() {
+  func testUpdateUserAccount_WithUserAcccountMutation_Error() {
     let dict: [String: Any?] = [
       "updateUserAccount": nil
     ]
 
     let data = GraphAPI.UpdateUserAccountMutation.Data(unsafeResultMap: dict)
 
-    let env = UpdateAccountEnvelope.from(data)
+    let env = UpdateUserEnvelope.from(data)
 
     XCTAssertNil(env)
     XCTAssertNil(env?.clientMutationId)

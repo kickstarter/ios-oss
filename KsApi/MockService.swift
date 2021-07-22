@@ -17,16 +17,15 @@
 
     fileprivate let cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>?
 
-    fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
-    fileprivate let changeCurrencyError: GraphError?
+    fileprivate let changeCurrencyResult: Result<UpdateUserEnvelope, ErrorEnvelope>?
 
-    fileprivate let changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
+    fileprivate let changeEmailResult: Result<UpdateUserEnvelope, ErrorEnvelope>?
 
-    fileprivate let changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
+    fileprivate let changePasswordResult: Result<UpdateUserEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
-    fileprivate let createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
+    fileprivate let createPasswordResult: Result<UpdateUserEnvelope, ErrorEnvelope>?
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
@@ -210,12 +209,11 @@
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
       cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
-      changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
-      changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
+      changeEmailResult: Result<UpdateUserEnvelope, ErrorEnvelope>? = nil,
+      changePasswordResult: Result<UpdateUserEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
-      createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
-      changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
-      changeCurrencyError: GraphError? = nil,
+      createPasswordResult: Result<UpdateUserEnvelope, ErrorEnvelope>? = nil,
+      changeCurrencyResult: Result<UpdateUserEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
@@ -319,11 +317,10 @@
 
       self.cancelBackingResult = cancelBackingResult
 
-      self.changeCurrencyResponse = changeCurrencyResponse
-      self.changeCurrencyError = changeCurrencyError
-
       self.changeEmailResult = changeEmailResult
 
+      self.changeCurrencyResult = changeCurrencyResult
+      
       self.changePasswordResult = changePasswordResult
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
@@ -531,7 +528,7 @@
     }
 
     internal func changeEmail(input _: ChangeEmailInput) ->
-      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+      SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
       if let error = self.changeEmailResult?.error {
         return SignalProducer(error: error)
       } else if let response = self.changeEmailResult?.value {
@@ -558,7 +555,7 @@
     }
 
     internal func changePassword(input _: ChangePasswordInput) ->
-      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+      SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
       if let error = self.changePasswordResult?.error {
         return SignalProducer(error: error)
       } else if let response = self.changePasswordResult?.value {
@@ -574,7 +571,7 @@
     }
 
     internal func createPassword(input _: CreatePasswordInput) ->
-      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
+      SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
       if let error = self.createPasswordResult?.error {
         return SignalProducer(error: error)
       } else if let response = self.createPasswordResult?.value {
@@ -585,13 +582,14 @@
     }
 
     internal func changeCurrency(input _: ChangeCurrencyInput) ->
-      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      if let response = self.changeCurrencyResponse {
+    SignalProducer<UpdateUserEnvelope, ErrorEnvelope> {
+      if let response = self.changeCurrencyResult?.value {
         return SignalProducer(value: response)
-      } else if let error = self.changeCurrencyError {
+      } else if let error = self.changeCurrencyResult?.error {
         return SignalProducer(error: error)
       }
-      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      
+      return SignalProducer(error: .couldNotParseJSON)
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
