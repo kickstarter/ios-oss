@@ -61,7 +61,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.updateCurrencyDidSucceed.assertValueCount(0)
     self.selectCellAtIndex.assertValues([0])
 
-    withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
+    withEnvironment(apiService: MockService(changeCurrencyResult: .success(UpdateUserEnvelope(clientMutationId: nil)))) {
       self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
@@ -124,7 +124,14 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.updateCurrencyDidSucceed.assertValueCount(0)
     self.selectCellAtIndex.assertValues([0])
 
-    withEnvironment(apiService: MockService(changeCurrencyError: .invalidInput)) {
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: ["Something went wrong."],
+      ksrCode: nil,
+      httpCode: 1,
+      exception: nil
+    )
+    
+    withEnvironment(apiService: MockService(changeCurrencyResult: .failure(errorEnvelope))) {
       self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
