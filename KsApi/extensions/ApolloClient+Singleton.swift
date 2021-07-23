@@ -51,19 +51,19 @@ extension ApolloClient {
 
    - returns: An `ApolloClient` instance.
    */
-  static func client(
-    with url: URL,
-    headers: [String: String],
-    additionalHeaders: @escaping () -> [String: String]
-  ) -> ApolloClient {
-    let store = ApolloStore(cache: InMemoryNormalizedCache())
-    let provider = NetworkInterceptorProvider(store: store, additionalHeaders: additionalHeaders)
-    let transport = RequestChainNetworkTransport(
-      interceptorProvider: provider,
-      endpointURL: url,
-      additionalHeaders: headers
-    )
-
-    return ApolloClient(networkTransport: transport, store: store)
-  }
+//  static func client(
+//    with url: URL,
+//    headers: [String: String],
+//    additionalHeaders: @escaping () -> [String: String]
+//  ) -> ApolloClient {
+//    let store = ApolloStore(cache: InMemoryNormalizedCache())
+//    let provider = NetworkInterceptorProvider(store: store, additionalHeaders: additionalHeaders)
+//    let transport = RequestChainNetworkTransport(
+//      interceptorProvider: provider,
+//      endpointURL: url,
+//      additionalHeaders: headers
+//    )
+//
+//    return ApolloClient(networkTransport: transport, store: store)
+//  }
 }

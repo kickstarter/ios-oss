@@ -58,9 +58,15 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
+      .on(value: {
+        print("***\($0.user.id)")
+       })
       .switchMap { _ in
         AppEnvironment.current.apiService
-          .fetchGraphUser()
+          .fetchGraphUserStoredCards()
+          .on(value: {
+            print("***\($0.me.storedCards)")
+           })
           .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
           .map { envelope in (envelope, false) }
           .prefix(value: (nil, true))
@@ -71,7 +77,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .filter(second >>> isFalse)
       .map(first)
       .skipNil()
-      .map { $0.me.storedCards.nodes }
+      .map { $0.me.storedCards }
 
     let backing = configureWithValue
       .map { $0.project.personalization.backing }

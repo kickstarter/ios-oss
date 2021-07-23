@@ -2,10 +2,11 @@ import Foundation
 
 extension GraphUserCreditCard {
   /**
-   Returns a `GraphUserCreditCard` from a `GraphAPI.UserFragment`
+   Returns an optional `GraphUserCreditCard` from a `GraphAPI.UserStoredCardsFragment`
    */
-  static func graphUserCreditCard(from userFragment: GraphAPI.UserFragment) -> GraphUserCreditCard? {
-    guard let storedCards = userFragment.storedCards,
+  static func graphUserCreditCard(from userStoredCardsFragment: GraphAPI
+    .UserStoredCardsFragment) -> GraphUserCreditCard? {
+    guard let storedCards = userStoredCardsFragment.storedCards,
       let nodes = storedCards.nodes else { return nil }
 
     let creditCards = nodes.compactMap { node -> CreditCard? in
@@ -18,6 +19,6 @@ extension GraphUserCreditCard {
       )
     }
 
-    return GraphUserCreditCard(nodes: creditCards)
+    return GraphUserCreditCard(storedCards: creditCards)
   }
 }

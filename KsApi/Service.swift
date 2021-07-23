@@ -268,6 +268,13 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
 
+  public func fetchGraphUserStoredCards()
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserStoredCardsQuery())
+      .flatMap(UserEnvelope<GraphUserCreditCard>.envelopeProducer(from:))
+  }
+
   public func fetchGraphUserBackings(query: NonEmptySet<Query>)
     -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
     return fetch(query: query)

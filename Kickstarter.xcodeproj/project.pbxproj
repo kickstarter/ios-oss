@@ -80,6 +80,18 @@
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
+		06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F1269398CB00017845 /* UserFragment.graphql */; };
+		06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556DF269394B600017845 /* RewardFragment.graphql */; };
+		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
+		06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F0269398CB00017845 /* MoneyFragment.graphql */; };
+		06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F4269398CB00017845 /* LocationFragment.graphql */; };
+		06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F2269398CB00017845 /* CreditCardFragment.graphql */; };
+		06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F3269398CB00017845 /* CountryFragment.graphql */; };
+		06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */; };
+		06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EE269398CA00017845 /* CategoryFragment.graphql */; };
+		06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556D7269394A400017845 /* BackingFragment.graphql */; };
+		06DAAE5D26AA3CF500194E58 /* UserStoredCardsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */; };
+		06DAAE5F26AA3D1E00194E58 /* FetchUserStoredCards.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06DAAE5E26AA3D1E00194E58 /* FetchUserStoredCards.graphql */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
@@ -1769,6 +1781,8 @@
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentFragmentTests.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
+		06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserStoredCardsFragment.graphql; sourceTree = "<group>"; };
+		06DAAE5E26AA3D1E00194E58 /* FetchUserStoredCards.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserStoredCards.graphql; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
 		06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -3383,6 +3397,8 @@
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
 				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
+				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
+				06DAAE5E26AA3D1E00194E58 /* FetchUserStoredCards.graphql */,
 				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
 				8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */,
 				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,
@@ -3392,7 +3408,6 @@
 				8A45169024B3E2CE00D8CAEF /* RewardAddOnSelectionViewQueriesTests.swift */,
 				7798B5602174F3CD008BC50D /* UserQueries.swift */,
 				7798B5662175035E008BC50D /* UserQueriesTests.swift */,
-				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
 			);
 			path = queries;
 			sourceTree = "<group>";
@@ -3532,6 +3547,7 @@
 				8A1556DF269394B600017845 /* RewardFragment.graphql */,
 				8AC3E08D2698CE8200168BF8 /* ShippingRuleFragment.graphql */,
 				8A1556F1269398CB00017845 /* UserFragment.graphql */,
+				06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */,
 			);
 			path = fragments;
 			sourceTree = "<group>";
@@ -5479,13 +5495,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */,
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
+				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
 				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,
+				06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */,
 				8AC3E0F5269F48A400168BF8 /* UpdateBacking.graphql in Resources */,
 				8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */,
+				06DAAE5D26AA3CF500194E58 /* UserStoredCardsFragment.graphql in Resources */,
+				06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */,
+				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
+				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
+				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
+				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
+				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
+				06DAAE5F26AA3D1E00194E58 /* FetchUserStoredCards.graphql in Resources */,
+				06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,11 @@
+fragment UserStoredCardsFragment on User {
+  storedCards {
+    nodes {
+      expirationDate
+      id
+      lastFour
+      type
+    }
+    totalCount
+  }
+}

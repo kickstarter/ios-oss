@@ -9,14 +9,5 @@ fragment UserFragment on User {
   isDeliverable
   isEmailVerified
   name
-  storedCards {
-    nodes {
-      expirationDate
-      id
-      lastFour
-      type
-    }
-    totalCount
-  }
   uid
 }

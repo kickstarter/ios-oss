@@ -11,7 +11,6 @@ extension GraphUser {
     isEmailVerified: true,
     isDeliverable: true,
     name: "Backer McGee",
-    storedCards: .template,
     uid: "12345"
   )
 }

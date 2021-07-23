@@ -13,7 +13,6 @@ public struct GraphUser: Decodable {
   public var isEmailVerified: Bool?
   public var isDeliverable: Bool?
   public var name: String
-  public var storedCards: GraphUserCreditCard
   public var uid: String
 }
 
@@ -41,7 +40,6 @@ extension GraphUser: Equatable {
       lhs.isEmailVerified == rhs.isEmailVerified &&
       lhs.isDeliverable == rhs.isDeliverable &&
       lhs.name == rhs.name &&
-      lhs.storedCards == rhs.storedCards &&
       lhs.uid == rhs.uid
   }
 }
