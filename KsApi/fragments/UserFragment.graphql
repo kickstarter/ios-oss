@@ -10,4 +10,7 @@ fragment UserFragment on User {
   isEmailVerified
   name
   uid
+  storedCards @include(if: $withStoredCards) {
+    ...UserStoredCardsFragment
+  }
 }

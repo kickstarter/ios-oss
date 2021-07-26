@@ -24,3 +24,9 @@ public struct GraphUserCreditCard: Decodable {
     }
   }
 }
+
+extension GraphUserCreditCard: Equatable {
+  public static func == (lhs: GraphUserCreditCard, rhs: GraphUserCreditCard) -> Bool {
+    lhs.storedCards == rhs.storedCards
+  }
+}

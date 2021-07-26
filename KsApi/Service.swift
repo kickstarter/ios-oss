@@ -199,7 +199,7 @@ public struct Service: ServiceType {
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
+      .fetch(query: GraphAPI.FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit, withStoredCards: false))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
@@ -209,7 +209,7 @@ public struct Service: ServiceType {
     limit: Int?
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit))
+      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit, withStoredCards: false))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
@@ -261,18 +261,11 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
-  public func fetchGraphUser()
+  public func fetchGraphUser(withStoredCards: Bool)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchUserQuery())
+      .fetch(query: GraphAPI.FetchUserQuery(withStoredCards: withStoredCards))
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
-  }
-
-  public func fetchGraphUserStoredCards()
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope> {
-    return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchUserStoredCardsQuery())
-      .flatMap(UserEnvelope<GraphUserCreditCard>.envelopeProducer(from:))
   }
 
   public func fetchGraphUserBackings(query: NonEmptySet<Query>)
@@ -292,7 +285,7 @@ public struct Service: ServiceType {
   public func fetchManagePledgeViewBacking(id: Int)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)"))
+      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)", withStoredCards: false))
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
@@ -370,7 +363,7 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchAddOnsQuery(
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
-      locationId: locationId
+      locationId: locationId, withStoredCards: false
     )
 
     return GraphQL.shared.client

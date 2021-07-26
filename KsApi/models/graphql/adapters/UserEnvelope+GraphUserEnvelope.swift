@@ -6,7 +6,26 @@ extension UserEnvelope {
    */
   static func userEnvelope(from data: GraphAPI.FetchUserQuery.Data) -> UserEnvelope<GraphUser>? {
     guard let userFragment = data.me?.fragments.userFragment else { return nil }
-
+    
+    var allStoredCards = [GraphUserCreditCard.CreditCard]()
+    
+    if let storedCards = userFragment.storedCards {
+      let cards = storedCards.fragments.userStoredCardsFragment.nodes?.compactMap { card -> GraphUserCreditCard.CreditCard? in
+        guard let node = card else { return nil }
+        
+        return GraphUserCreditCard.CreditCard(
+          expirationDate: node.expirationDate,
+          id: node.id,
+          lastFour: node.lastFour,
+          type: CreditCardType(rawValue: node.type.rawValue)
+        )
+      }
+      
+      allStoredCards = cards ?? []
+    }
+    
+    let graphUserCreditCards = GraphUserCreditCard(storedCards: allStoredCards)
+    
     let graphUser = GraphUser(
       chosenCurrency: userFragment.chosenCurrency,
       email: userFragment.email,
@@ -18,33 +37,10 @@ extension UserEnvelope {
       isEmailVerified: userFragment.isEmailVerified,
       isDeliverable: userFragment.isDeliverable,
       name: userFragment.name,
+      storedCards: graphUserCreditCards,
       uid: userFragment.uid
     )
-
-    return UserEnvelope<GraphUser>(me: graphUser)
-  }
-
-  /**
-   Returns a `UserEnvelope<GraphUserCreditCard>` from a `FetchUserStoredCardsQuery.Data` object.
-   */
-  static func userEnvelope(from data: GraphAPI.FetchUserStoredCardsQuery
-    .Data) -> UserEnvelope<GraphUserCreditCard>? {
-    guard let storedCards = data.me?.storedCards else { return nil }
     
-    guard let nodes = storedCards.nodes else { return nil }
-
-    let creditCards = nodes.compactMap { node -> GraphUserCreditCard.CreditCard? in
-      guard let node = node else { return nil }
-      return GraphUserCreditCard.CreditCard(
-        expirationDate: node.expirationDate,
-        id: node.id,
-        lastFour: node.lastFour,
-        type: CreditCardType(rawValue: node.type.rawValue)
-      )
-    }
-
-    let goInUserEnvelope = GraphUserCreditCard(storedCards: creditCards)
-
-    return UserEnvelope<GraphUserCreditCard>(me: goInUserEnvelope)
+    return UserEnvelope<GraphUser>(me: graphUser)
   }
 }

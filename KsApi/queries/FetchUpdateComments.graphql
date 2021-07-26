@@ -1,4 +1,4 @@
-query FetchUpdateComments($postId: ID!, $cursor: String, $limit: Int) {
+query FetchUpdateComments($postId: ID!, $cursor: String, $limit: Int, $withStoredCards: Boolean!) {
   post(id: $postId) {
     ... on FreeformPost {
       comments(after: $cursor, first: $limit) {

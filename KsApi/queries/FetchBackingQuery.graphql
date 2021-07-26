@@ -1,4 +1,4 @@
-query FetchBacking($id: ID!) {
+query FetchBacking($id: ID!, $withStoredCards: Boolean!) {
   backing(id: $id) {
     addOns {
       nodes {

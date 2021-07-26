@@ -74,7 +74,6 @@
     fileprivate let fetchDraftError: ErrorEnvelope?
 
     fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
-    fileprivate let fetchGraphUserCreditCardResult: Result<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope>?
     fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -361,8 +360,6 @@
       self.fetchGraphCategoriesError = fetchGraphCategoriesError
 
       self.fetchGraphUserResult = fetchGraphUserResult
-
-      self.fetchGraphUserCreditCardResult = fetchGraphUserCreditCardResult
 
       self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
@@ -735,18 +732,7 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphUserStoredCards()
-      -> SignalProducer<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope> {
-      if let error = self.fetchGraphUserCreditCardResult?.error {
-        return SignalProducer(error: error)
-      } else if let response = self.fetchGraphUserCreditCardResult?.value {
-        return SignalProducer(value: response)
-      } else {
-        return .empty
-      }
-    }
-
-    internal func fetchGraphUser()
+    internal func fetchGraphUser(withStoredCards: Bool)
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
       if let error = self.fetchGraphUserResult?.error {
         return SignalProducer(error: error)

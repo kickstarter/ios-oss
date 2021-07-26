@@ -72,7 +72,7 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
       .switchMap { _ in
         AppEnvironment.current
           .apiService
-          .fetchGraphUser()
+          .fetchGraphUser(withStoredCards: false)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }

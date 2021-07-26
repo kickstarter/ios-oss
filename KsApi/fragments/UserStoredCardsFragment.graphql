@@ -1,5 +1,4 @@
-fragment UserStoredCardsFragment on User {
-  storedCards {
+fragment UserStoredCardsFragment on UserCreditCardTypeConnection {
     nodes {
       expirationDate
       id
@@ -7,5 +6,4 @@ fragment UserStoredCardsFragment on User {
       type
     }
     totalCount
-  }
 }

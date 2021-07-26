@@ -145,12 +145,8 @@ public protocol ServiceType {
     -> SignalProducer<CategoryEnvelope, GraphError>
 
   /// Fetches various fields of a given User using graphQL.
-  func fetchGraphUser()
+  func fetchGraphUser(withStoredCards: Bool)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
-
-  /// Fetches various fields of the currently logged in User's credit cards using graphQL.
-  func fetchGraphUserStoredCards()
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope>
 
   /// Fetch User's backings with a specific status.
   func fetchGraphUserBackings(query: NonEmptySet<Query>)

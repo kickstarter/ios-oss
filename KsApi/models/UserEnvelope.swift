@@ -15,12 +15,4 @@ extension UserEnvelope {
     }
     return SignalProducer(value: envelope)
   }
-
-  static func envelopeProducer(from data: GraphAPI.FetchUserStoredCardsQuery.Data)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope> {
-    guard let envelope = UserEnvelope.userEnvelope(from: data) else {
-      return .empty
-    }
-    return SignalProducer(value: envelope)
-  }
 }
