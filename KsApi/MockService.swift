@@ -243,7 +243,6 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
-      fetchGraphUserCreditCardResult: Result<UserEnvelope<GraphUserCreditCard>, ErrorEnvelope>? = nil,
       fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -646,7 +645,8 @@
     func fetchProjectComments(
       slug _: String,
       cursor _: String?,
-      limit _: Int?
+      limit _: Int?,
+      withStoredCards _: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchProjectCommentsEnvelopeResult)
     }
@@ -654,7 +654,8 @@
     func fetchUpdateComments(
       id _: String,
       cursor _: String?,
-      limit _: Int?
+      limit _: Int?,
+      withStoredCards _: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchUpdateCommentsEnvelopeResult)
     }
@@ -732,7 +733,7 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphUser(withStoredCards: Bool)
+    internal func fetchGraphUser(withStoredCards _: Bool)
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
       if let error = self.fetchGraphUserResult?.error {
         return SignalProducer(error: error)
@@ -852,7 +853,7 @@
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
-    func fetchManagePledgeViewBacking(id _: Int) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    func fetchManagePledgeViewBacking(id _: Int, withStoredCards: Bool) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 

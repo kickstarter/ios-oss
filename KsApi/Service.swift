@@ -196,20 +196,32 @@ public struct Service: ServiceType {
   public func fetchProjectComments(
     slug: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit, withStoredCards: false))
+      .fetch(query: GraphAPI.FetchProjectCommentsQuery(
+        slug: slug,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
   public func fetchUpdateComments(
     id: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit, withStoredCards: false))
+      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(
+        postId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
@@ -282,10 +294,10 @@ public struct Service: ServiceType {
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
-  public func fetchManagePledgeViewBacking(id: Int)
+  public func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)", withStoredCards: false))
+      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)", withStoredCards: withStoredCards))
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 

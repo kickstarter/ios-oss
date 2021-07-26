@@ -11,8 +11,10 @@ extension GraphUser {
     isEmailVerified: true,
     isDeliverable: true,
     name: "Backer McGee",
-    storedCards: GraphUserCreditCard.withCards([GraphUserCreditCard.visa,
-                                                GraphUserCreditCard.masterCard]),
+    storedCards: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]),
     uid: "12345"
   )
 }
