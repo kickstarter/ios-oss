@@ -336,14 +336,15 @@ public protocol ServiceType {
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
 
   func unwatchProject(input: WatchProjectInput) ->
-    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope>
 
   /// Verifies an email address with a given access token.
   func verifyEmail(withToken token: String)
     -> SignalProducer<EmailVerificationResponseEnvelope, ErrorEnvelope>
 
+  /// Watches (also known as favoriting) a project.
   func watchProject(input: WatchProjectInput) ->
-    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope>
 }
 
 extension ServiceType {

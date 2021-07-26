@@ -170,12 +170,15 @@
 
     fileprivate let unwatchProjectMutationResult: Result<
       GraphMutationWatchProjectResponseEnvelope,
-      GraphError
+      ErrorEnvelope
     >?
 
     fileprivate let verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
+    fileprivate let watchProjectMutationResult: Result<
+      GraphMutationWatchProjectResponseEnvelope,
+      ErrorEnvelope
+    >?
 
     internal init(
       appId: String = "com.kickstarter.kickstarter.mock",
@@ -303,9 +306,9 @@
       updateProjectNotificationResponse: ProjectNotification? = nil,
       updateProjectNotificationError: ErrorEnvelope? = nil,
       updateUserSelfError: ErrorEnvelope? = nil,
-      unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
+      unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope>? = nil,
       verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>? = nil,
-      watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil
+      watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope>? = nil
     ) {
       self.appId = appId
       self.serverConfig = serverConfig
@@ -1356,7 +1359,7 @@
     }
 
     internal func unwatchProject(input _: WatchProjectInput)
-      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.unwatchProjectMutationResult)
     }
 
@@ -1366,7 +1369,7 @@
     }
 
     internal func watchProject(input _: WatchProjectInput)
-      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.watchProjectMutationResult)
     }
 
