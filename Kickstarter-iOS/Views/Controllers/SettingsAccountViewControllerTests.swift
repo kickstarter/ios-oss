@@ -24,7 +24,7 @@ internal final class SettingsAccountViewControllerTests: TestCase {
 
     let response = UserEnvelope<GraphUser>(me: user)
     let mockService = MockService(fetchGraphUserResult: .success(response))
-    
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(apiService: mockService, language: language) {

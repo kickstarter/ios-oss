@@ -9,7 +9,7 @@ import XCTest
 final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
   private let userTemplate = GraphUser.template |> \.storedCards .~ GraphUserCreditCard.template
-  
+
   private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()

@@ -8,7 +8,8 @@ import XCTest
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
-  fileprivate let fetchUserQueryData = GraphAPI.FetchUserQuery.Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
+  fileprivate let fetchUserQueryData = GraphAPI.FetchUserQuery
+    .Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
   private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
   private let didChangeEmail = TestObserver<Void, Never>()
   private let didFailToChangeEmail = TestObserver<String, Never>()
@@ -26,19 +27,19 @@ final class ChangeEmailViewModelTests: TestCase {
   private let unverifiedEmailLabelHidden = TestObserver<Bool, Never>()
   private let warningMessageLabelHidden = TestObserver<Bool, Never>()
   private let verificationEmailButtonTitle = TestObserver<String, Never>()
-  
+
   // MARK: Computed Properties
+
   private var userChangeEmailSuccessMockService: MockService {
     guard let envelope = UserEnvelope<GraphUser>.userEnvelope(from: fetchUserQueryData) else {
-      
       return MockService()
     }
-    
+
     let mockService = MockService(
       changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)),
       fetchGraphUserResult: .success(envelope)
     )
-    
+
     return mockService
   }
 
@@ -70,7 +71,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testChangeEmail_OnSuccess() {
-    withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -123,7 +124,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testEmailText_AfterFetchingUsersEmail() {
-    withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -132,7 +133,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testSaveButtonEnabledStatus() {
-   withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -188,7 +189,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testWarningMessageLabel_isHidden() {
-    withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -213,11 +214,11 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden_whenEmailIsVerified() {
-    withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
-      
+
       self.scheduler.advance()
-      
+
       self.unverifiedEmailLabelHidden.assertValues([true], "Email is verified & deliverable")
     }
   }
@@ -238,7 +239,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden_whenEmailIsUnverifiedAndUndeliverable() {
-    withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -327,7 +328,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    withEnvironment(apiService: userChangeEmailSuccessMockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
       self.vm.inputs.saveButtonIsEnabled(true)

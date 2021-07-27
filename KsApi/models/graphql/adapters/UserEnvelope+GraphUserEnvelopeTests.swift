@@ -4,8 +4,9 @@ import XCTest
 
 final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
   func test() {
-    let fetchUserQueryData = GraphAPI.FetchUserQuery.Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
-    
+    let fetchUserQueryData = GraphAPI.FetchUserQuery
+      .Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
+
     guard let envelope = UserEnvelope<GraphUser>.userEnvelope(from: fetchUserQueryData) else {
       XCTFail()
       return

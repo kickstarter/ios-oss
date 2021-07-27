@@ -157,7 +157,10 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let result = DeletePaymentMethodEnvelope(storedCards: [card])
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService = MockService(deletePaymentMethodResult: .success(result), fetchGraphUserResult: .success(response))
+    let apiService = MockService(
+      deletePaymentMethodResult: .success(result),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
@@ -187,8 +190,10 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let result = DeletePaymentMethodEnvelope(storedCards: [])
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService = MockService(deletePaymentMethodResult: .success(result),
-                                 fetchGraphUserResult: .success(response))
+    let apiService = MockService(
+      deletePaymentMethodResult: .success(result),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
@@ -247,8 +252,10 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards)
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService = MockService(deletePaymentMethodResult: .success(result),
-                                 fetchGraphUserResult: .success(response))
+    let apiService = MockService(
+      deletePaymentMethodResult: .success(result),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -281,10 +288,12 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
-    
+
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput),
-                                 fetchGraphUserResult: .success(response))
+    let apiService = MockService(
+      deletePaymentMethodResult: .failure(.invalidInput),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -322,8 +331,10 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let result1 = DeletePaymentMethodEnvelope(storedCards: [card, card])
     let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService1 = MockService(deletePaymentMethodResult: .success(result1),
-                                  fetchGraphUserResult: .success(response))
+    let apiService1 = MockService(
+      deletePaymentMethodResult: .success(result1),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService1) {
       self.vm.inputs.viewDidLoad()
 
@@ -350,9 +361,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
 
     let response2 = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService2 = MockService(deletePaymentMethodResult: .failure(.invalidInput),
-                                  fetchGraphUserResult: .success(response2))
-    
+    let apiService2 = MockService(
+      deletePaymentMethodResult: .failure(.invalidInput),
+      fetchGraphUserResult: .success(response2)
+    )
+
     withEnvironment(apiService: apiService2) {
       self.vm.inputs.didDelete(card, visibleCellCount: 0)
 

@@ -21,7 +21,7 @@ final class ChangeEmailViewControllerTests: TestCase {
     let userTemplate = GraphUser.template |> \.isEmailVerified .~ true
     let userEnvelope = UserEnvelope(me: userTemplate)
     let service = MockService(fetchGraphUserResult: .success(userEnvelope))
-    
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
