@@ -15,9 +15,9 @@
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
 
-    fileprivate let cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>?
+    fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let changeCurrencyResponse: EmptyResponseEnvelope?
     fileprivate let changeCurrencyError: GraphError?
 
     fileprivate let changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
@@ -145,7 +145,7 @@
     fileprivate let resetPasswordResponse: User?
     fileprivate let resetPasswordError: ErrorEnvelope?
 
-    fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let sendEmailVerificationResponse: EmptyResponseEnvelope?
     fileprivate let sendEmailVerificationError: GraphError?
 
     fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>?
@@ -210,12 +210,12 @@
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
-      cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
+      cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
-      changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      changeCurrencyResponse: EmptyResponseEnvelope? = nil,
       changeCurrencyError: GraphError? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
@@ -291,7 +291,7 @@
       resendCodeError: ErrorEnvelope? = nil,
       resetPasswordResponse: User? = nil,
       resetPasswordError: ErrorEnvelope? = nil,
-      sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      sendEmailVerificationResponse: EmptyResponseEnvelope? = nil,
       sendEmailVerificationError: GraphError? = nil,
       signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
@@ -524,7 +524,7 @@
     }
 
     public func cancelBacking(input _: CancelBackingInput)
-      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.cancelBackingResult)
     }
 
@@ -583,13 +583,13 @@
     }
 
     internal func changeCurrency(input _: ChangeCurrencyInput) ->
-      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      SignalProducer<EmptyResponseEnvelope, GraphError> {
       if let response = self.changeCurrencyResponse {
         return SignalProducer(value: response)
       } else if let error = self.changeCurrencyError {
         return SignalProducer(error: error)
       }
-      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      return SignalProducer(value: EmptyResponseEnvelope())
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
@@ -1258,11 +1258,11 @@
     }
 
     internal func sendVerificationEmail(input _: EmptyInput)
-      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      -> SignalProducer<EmptyResponseEnvelope, GraphError> {
       if let error = sendEmailVerificationError {
         return SignalProducer(error: error)
       }
-      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      return SignalProducer(value: EmptyResponseEnvelope())
     }
 
     internal func signInWithApple(input _: SignInWithAppleInput)

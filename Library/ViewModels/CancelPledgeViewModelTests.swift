@@ -173,7 +173,7 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testCancelPledgeButtonEnabled() {
-    let envelope = GraphMutationEmptyResponseEnvelope()
+    let envelope = EmptyResponseEnvelope()
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
@@ -215,7 +215,7 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testCancelPledge_Success() {
-    let envelope = GraphMutationEmptyResponseEnvelope()
+    let envelope = EmptyResponseEnvelope()
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
@@ -267,11 +267,7 @@ final class CancelPledgeViewModelTests: TestCase {
   func testCancelPledge_Error() {
     let mockService = MockService(
       cancelBackingResult:
-      .failure(
-        .decodeError(
-          .init(message: "You can't cancel your pledge right now.")
-        )
-      )
+      .failure(.couldNotParseJSON)
     )
 
     withEnvironment(apiService: mockService) {
@@ -301,12 +297,12 @@ final class CancelPledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCancelPledgeSuccess.assertDidNotEmitValue()
-      self.cancelPledgeError.assertValues(["You can't cancel your pledge right now."])
+      self.cancelPledgeError.assertValues(["Something went wrong."])
     }
   }
 
   func testTrackingEvents() {
-    let envelope = GraphMutationEmptyResponseEnvelope()
+    let envelope = EmptyResponseEnvelope()
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
@@ -347,7 +343,7 @@ final class CancelPledgeViewModelTests: TestCase {
       pledgeAmount: project.personalization.backing?.amount ?? 0
     )
 
-    let envelope = GraphMutationEmptyResponseEnvelope()
+    let envelope = EmptyResponseEnvelope()
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
