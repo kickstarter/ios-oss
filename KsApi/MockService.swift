@@ -166,13 +166,16 @@
     fileprivate let updateUserSelfError: ErrorEnvelope?
 
     fileprivate let unwatchProjectMutationResult: Result<
-      GraphMutationWatchProjectResponseEnvelope,
-      GraphError
+      WatchProjectResponseEnvelope,
+      ErrorEnvelope
     >?
 
     fileprivate let verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
+    fileprivate let watchProjectMutationResult: Result<
+      WatchProjectResponseEnvelope,
+      ErrorEnvelope
+    >?
 
     internal init(
       appId: String = "com.kickstarter.kickstarter.mock",
@@ -298,9 +301,9 @@
       updateProjectNotificationResponse: ProjectNotification? = nil,
       updateProjectNotificationError: ErrorEnvelope? = nil,
       updateUserSelfError: ErrorEnvelope? = nil,
-      unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
+      unwatchProjectMutationResult: Result<WatchProjectResponseEnvelope, ErrorEnvelope>? = nil,
       verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>? = nil,
-      watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil
+      watchProjectMutationResult: Result<WatchProjectResponseEnvelope, ErrorEnvelope>? = nil
     ) {
       self.appId = appId
       self.serverConfig = serverConfig
@@ -1353,7 +1356,7 @@
     }
 
     internal func unwatchProject(input _: WatchProjectInput)
-      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.unwatchProjectMutationResult)
     }
 
@@ -1363,7 +1366,7 @@
     }
 
     internal func watchProject(input _: WatchProjectInput)
-      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.watchProjectMutationResult)
     }
 

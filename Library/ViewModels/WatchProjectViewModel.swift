@@ -246,7 +246,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
 private func watchProjectProducer(
   with project: Project,
   shouldWatch: Bool
-) -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+) -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
   guard shouldWatch else {
     return AppEnvironment.current.apiService.unwatchProject(input: .init(id: project.graphID))
   }

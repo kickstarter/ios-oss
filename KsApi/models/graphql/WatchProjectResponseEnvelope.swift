@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GraphMutationWatchProjectResponseEnvelope: Decodable {
+public struct WatchProjectResponseEnvelope: Decodable {
   public var watchProject: WatchProject
 
   public struct WatchProject: Decodable {
