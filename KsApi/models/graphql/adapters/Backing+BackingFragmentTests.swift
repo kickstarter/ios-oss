@@ -5,7 +5,8 @@ import XCTest
 final class Backing_BackingFragmentTests: XCTestCase {
   func test() {
     do {
-      let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary())
+      let variables = ["withStoredCards": true]
+      let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let backing = Backing.backing(from: fragment)
@@ -17,11 +18,12 @@ final class Backing_BackingFragmentTests: XCTestCase {
 
   func test_noReward() {
     do {
+      let variables = ["withStoredCards": true]
       var dict = backingDictionary()
       dict["addOns"] = NSNull()
       dict["reward"] = NSNull()
 
-      let fragment = try GraphAPI.BackingFragment(jsonObject: dict)
+      let fragment = try GraphAPI.BackingFragment(jsonObject: dict, variables: variables)
       XCTAssertNotNil(fragment)
 
       let backing = Backing.backing(from: fragment)

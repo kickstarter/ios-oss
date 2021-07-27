@@ -135,12 +135,16 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
   func testShowRequestDataPrompt() {
     let user = User.template
+    let userEnvelope = UserEnvelope(me: GraphUser.template)
     let export = .template
       |> ExportDataEnvelope.lens.state .~ .expired
       |> ExportDataEnvelope.lens.expiresAt .~ nil
       |> ExportDataEnvelope.lens.dataUrl .~ nil
 
-    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+    withEnvironment(apiService: MockService(
+      fetchExportStateResponse: export,
+      fetchGraphUserResult: .success(userEnvelope)
+    )) {
       self.vm.inputs.awakeFromNib()
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()

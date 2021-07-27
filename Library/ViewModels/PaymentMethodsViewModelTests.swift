@@ -8,6 +8,7 @@ import XCTest
 
 internal final class PaymentMethodsViewModelTests: TestCase {
   private let vm = PaymentMethodsViewModel()
+  private let userTemplate = GraphUser.template |> \.storedCards .~ GraphUserCreditCard.template
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
   private let editButtonTitle = TestObserver<String, Never>()
   private let errorLoadingPaymentMethods = TestObserver<String, Never>()
@@ -33,8 +34,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnViewDidLoad() {
-    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
-    let apiService = MockService(fetchGraphUserResponse: response)
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(fetchGraphUserResult: .success(response))
 
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
@@ -43,12 +44,12 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
     }
   }
 
   func testPaymentMethodsFetch_errorFetchingPaymentMethods() {
-    let apiService = MockService(fetchGraphUserError: .couldNotParseJSON)
+    let apiService = MockService(fetchGraphUserResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
@@ -63,8 +64,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
-    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
-    let apiService = MockService(fetchGraphUserResponse: response)
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(fetchGraphUserResult: .success(response))
 
     withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
@@ -86,8 +87,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnAddNewCardDismissed() {
-    let response = UserEnvelope<GraphUser>(me: GraphUser.template)
-    let apiService = MockService(fetchGraphUserResponse: response)
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(fetchGraphUserResult: .success(response))
 
     withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
@@ -96,7 +97,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
     }
   }
 
@@ -108,7 +109,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
   func testEditButtonIsEnabledAndTitle_HasPaymentMethods() {
     let response = UserEnvelope<GraphUser>(me: GraphUser.template)
-    let apiService = MockService(fetchGraphUserResponse: response)
+    let apiService = MockService(fetchGraphUserResult: .success(response))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.editButtonTitle.assertDidNotEmitValue()
@@ -135,7 +136,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testEditButtonIsNotEnabled_NoPaymentMethods() {
     let emptyTemplate = GraphUser.template |> \.storedCards .~ .emptyTemplate
     let response = UserEnvelope<GraphUser>(me: emptyTemplate)
-    let apiService = MockService(fetchGraphUserResponse: response)
+    let apiService = MockService(fetchGraphUserResult: .success(response))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.vm.inputs.viewDidLoad()
@@ -149,14 +150,17 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonEnabled_AfterDeletePaymentMethod() {
-    guard let card = GraphUserCreditCard.template.nodes.first else {
+    guard let card = GraphUserCreditCard.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
 
     let result = DeletePaymentMethodEnvelope(storedCards: [card])
-
-    let apiService = MockService(deletePaymentMethodResult: .success(result))
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      deletePaymentMethodResult: .success(result),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
@@ -179,14 +183,17 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonNotEnabled_AfterDeleteLastPaymentMethod() {
-    guard let card = GraphUserCreditCard.template.nodes.first else {
+    guard let card = GraphUserCreditCard.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
 
     let result = DeletePaymentMethodEnvelope(storedCards: [])
-
-    let apiService = MockService(deletePaymentMethodResult: .success(result))
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      deletePaymentMethodResult: .success(result),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
@@ -238,14 +245,17 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testDeletePaymentMethod() {
-    guard let card = GraphUserCreditCard.template.nodes.first else {
+    guard let card = GraphUserCreditCard.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
 
-    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.nodes)
-
-    let apiService = MockService(deletePaymentMethodResult: .success(result))
+    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards)
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      deletePaymentMethodResult: .success(result),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -253,13 +263,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
 
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
@@ -267,19 +277,23 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([], "No errors emitted")
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.nodes],
+        [GraphUserCreditCard.template.storedCards],
         "Emits once"
       )
     }
   }
 
   func testDeletePaymentMethod_Error() {
-    guard let card = GraphUserCreditCard.template.nodes.first else {
+    guard let card = GraphUserCreditCard.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
 
-    let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      deletePaymentMethodResult: .failure(.invalidInput),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -287,13 +301,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
 
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
@@ -303,21 +317,24 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Something went wrong and we were unable to remove your payment method, please try again."
       ])
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.nodes, GraphUserCreditCard.template.nodes],
+        [GraphUserCreditCard.template.storedCards, GraphUserCreditCard.template.storedCards],
         "Emits again to reload the tableview after an error occurred"
       )
     }
   }
 
   func testDeletePaymentMethod_SuccessThenError() {
-    guard let card = GraphUserCreditCard.template.nodes.first else {
+    guard let card = GraphUserCreditCard.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
 
     let result1 = DeletePaymentMethodEnvelope(storedCards: [card, card])
-
-    let apiService1 = MockService(deletePaymentMethodResult: .success(result1))
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService1 = MockService(
+      deletePaymentMethodResult: .success(result1),
+      fetchGraphUserResult: .success(response)
+    )
     withEnvironment(apiService: apiService1) {
       self.vm.inputs.viewDidLoad()
 
@@ -325,14 +342,14 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
       self.editButtonIsEnabled.assertValues([false, true], "Edit button enabled, we have cards")
 
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.editButtonIsEnabled.assertValues([false, true], "Editing button remains enabled")
@@ -343,7 +360,12 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.showAlert.assertValues([])
     }
 
-    let apiService2 = MockService(deletePaymentMethodResult: .failure(.invalidInput))
+    let response2 = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService2 = MockService(
+      deletePaymentMethodResult: .failure(.invalidInput),
+      fetchGraphUserResult: .success(response2)
+    )
+
     withEnvironment(apiService: apiService2) {
       self.vm.inputs.didDelete(card, visibleCellCount: 0)
 
@@ -357,7 +379,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Something went wrong and we were unable to remove your payment method, please try again."
       ])
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.nodes, result1.storedCards],
+        [GraphUserCreditCard.template.storedCards, result1.storedCards],
         "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
       )
 
@@ -372,9 +394,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       )
       self.paymentMethods.assertValues(
         [
-          GraphUserCreditCard.template.nodes,
+          GraphUserCreditCard.template.storedCards,
           result1.storedCards,
-          GraphUserCreditCard.template.nodes
+          GraphUserCreditCard.template.storedCards
         ],
         "Cards are refreshed normally"
       )

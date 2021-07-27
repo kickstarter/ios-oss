@@ -73,9 +73,7 @@
     fileprivate let fetchDraftResponse: UpdateDraft?
     fileprivate let fetchDraftError: ErrorEnvelope?
 
-    fileprivate let fetchGraphUserResponse: UserEnvelope<GraphUser>?
-    fileprivate let fetchGraphUserError: ErrorEnvelope?
-
+    fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
     fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -247,8 +245,7 @@
       exportDataError: ErrorEnvelope? = nil,
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
-      fetchGraphUserResponse: UserEnvelope<GraphUser>? = nil,
-      fetchGraphUserError: ErrorEnvelope? = nil,
+      fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
       fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -364,9 +361,7 @@
 
       self.fetchGraphCategoriesError = fetchGraphCategoriesError
 
-      self.fetchGraphUserResponse = fetchGraphUserResponse
-        ?? UserEnvelope(me: GraphUser.template)
-      self.fetchGraphUserError = fetchGraphUserError
+      self.fetchGraphUserResult = fetchGraphUserResult
 
       self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
@@ -653,7 +648,8 @@
     func fetchProjectComments(
       slug _: String,
       cursor _: String?,
-      limit _: Int?
+      limit _: Int?,
+      withStoredCards _: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchProjectCommentsEnvelopeResult)
     }
@@ -661,7 +657,8 @@
     func fetchUpdateComments(
       id _: String,
       cursor _: String?,
-      limit _: Int?
+      limit _: Int?,
+      withStoredCards _: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchUpdateCommentsEnvelopeResult)
     }
@@ -739,11 +736,11 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphUser()
+    internal func fetchGraphUser(withStoredCards _: Bool)
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
-      if let error = self.fetchGraphUserError {
+      if let error = self.fetchGraphUserResult?.error {
         return SignalProducer(error: error)
-      } else if let response = self.fetchGraphUserResponse {
+      } else if let response = self.fetchGraphUserResult?.value {
         return SignalProducer(value: response)
       } else {
         return .empty
@@ -859,7 +856,9 @@
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
-    func fetchManagePledgeViewBacking(id _: Int) -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
+    func fetchManagePledgeViewBacking(id _: Int,
+                                      withStoredCards: Bool)
+      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 

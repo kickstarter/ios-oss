@@ -4,13 +4,15 @@ extension GraphUserCreditCard {
   /**
    Returns a `GraphUserCreditCard` from a `GraphAPI.UserFragment`
    */
-  static func graphUserCreditCard(from userFragment: GraphAPI.UserFragment) -> GraphUserCreditCard? {
-    guard let storedCards = userFragment.storedCards,
-      let nodes = storedCards.nodes else { return nil }
+  static func graphUserCreditCard(from userFragment: GraphAPI.UserFragment) -> GraphUserCreditCard {
+    guard let storedCards = userFragment.storedCards?.fragments.userStoredCardsFragment.nodes else {
+      return GraphUserCreditCard(storedCards: [])
+    }
 
-    let creditCards = nodes.compactMap { node -> CreditCard? in
-      guard let node = node else { return nil }
-      return CreditCard(
+    let allCards = storedCards.compactMap { card -> GraphUserCreditCard.CreditCard? in
+      guard let node = card else { return nil }
+
+      return GraphUserCreditCard.CreditCard(
         expirationDate: node.expirationDate,
         id: node.id,
         lastFour: node.lastFour,
@@ -18,6 +20,6 @@ extension GraphUserCreditCard {
       )
     }
 
-    return GraphUserCreditCard(nodes: creditCards)
+    return GraphUserCreditCard(storedCards: allCards)
   }
 }

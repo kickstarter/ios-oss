@@ -8,7 +8,8 @@ import XCTest
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
-
+  fileprivate let fetchUserQueryData = GraphAPI.FetchUserQuery
+    .Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
   private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
   private let didChangeEmail = TestObserver<Void, Never>()
   private let didFailToChangeEmail = TestObserver<String, Never>()
@@ -26,6 +27,21 @@ final class ChangeEmailViewModelTests: TestCase {
   private let unverifiedEmailLabelHidden = TestObserver<Bool, Never>()
   private let warningMessageLabelHidden = TestObserver<Bool, Never>()
   private let verificationEmailButtonTitle = TestObserver<String, Never>()
+
+  // MARK: Computed Properties
+
+  private var userChangeEmailSuccessMockService: MockService {
+    guard let envelope = UserEnvelope<GraphUser>.userEnvelope(from: fetchUserQueryData) else {
+      return MockService()
+    }
+
+    let mockService = MockService(
+      changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)),
+      fetchGraphUserResult: .success(envelope)
+    )
+
+    return mockService
+  }
 
   override func setUp() {
     super.setUp()
@@ -55,9 +71,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testChangeEmail_OnSuccess() {
-    let mockService = MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))
-
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -110,7 +124,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testEmailText_AfterFetchingUsersEmail() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -119,7 +133,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testSaveButtonEnabledStatus() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -148,7 +162,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
     let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
+    let mockService = MockService(fetchGraphUserResult: .success(userEnvelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -162,7 +176,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testResendVerificationViewIsNotHidden_IfEmailIsUndeliverable() {
     let userTemplate = GraphUser.template |> \.isDeliverable .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
+    let mockService = MockService(fetchGraphUserResult: .success(userEnvelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -175,17 +189,19 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testWarningMessageLabel_isHidden() {
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
+      self.vm.inputs.viewDidLoad()
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.warningMessageLabelHidden.assertValues([true], "Email is deliverable")
+      self.warningMessageLabelHidden.assertValues([true], "Email is deliverable")
+    }
   }
 
   func testWarningMessageLabel_isNotHidden_whenEmailIsNotDeliverable() {
     let userTemplate = GraphUser.template |> \.isDeliverable .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
+    let mockService = MockService(fetchGraphUserResult: .success(userEnvelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -198,17 +214,19 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden_whenEmailIsVerified() {
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
+      self.vm.inputs.viewDidLoad()
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.unverifiedEmailLabelHidden.assertValues([true], "Email is verified & deliverable")
+      self.unverifiedEmailLabelHidden.assertValues([true], "Email is verified & deliverable")
+    }
   }
 
   func testUnverifiedEmailLabel_isNotHidden_whenEmailIsUnverified() {
     let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResponse: userEnvelope)
+    let mockService = MockService(fetchGraphUserResult: .success(userEnvelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -221,7 +239,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden_whenEmailIsUnverifiedAndUndeliverable() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -310,7 +328,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    withEnvironment(apiService: MockService(changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: self.userChangeEmailSuccessMockService) {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
       self.vm.inputs.saveButtonIsEnabled(true)
