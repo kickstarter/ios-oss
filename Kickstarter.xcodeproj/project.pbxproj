@@ -71,12 +71,13 @@
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
-		06643F3826A5FD33002C5997 /* UpdateAcccountEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3726A5FD33002C5997 /* UpdateAcccountEnvelope.swift */; };
+		06643F3826A5FD33002C5997 /* UpdateUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3726A5FD33002C5997 /* UpdateUserEnvelope.swift */; };
 		06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
 		06643F3E26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3D26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
+		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06B9AF4126AF44CE00735908 /* GraphUserCreditCard+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4026AF44CE00735908 /* GraphUserCreditCard+UserFragment.swift */; };
@@ -226,7 +227,6 @@
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
 		4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4778EE1E26A1E8230059EA69 /* FetchUser.graphql */; };
 		4778EE2126A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */; };
-		47A0432226A609C30011728E /* GraphUserCreditCard+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0432126A609C30011728E /* GraphUserCreditCard+UserFragment.swift */; };
 		47A662F126AF1FCC001CE7B1 /* WatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47A662F026AF1FCC001CE7B1 /* WatchProject.graphql */; };
 		47A662F326AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F226AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift */; };
 		47A662F526AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F426AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift */; };
@@ -1783,11 +1783,12 @@
 		0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModel.swift; sourceTree = "<group>"; };
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
 		061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
-		06643F3726A5FD33002C5997 /* UpdateAcccountEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAcccountEnvelope.swift; sourceTree = "<group>"; };
+		06643F3726A5FD33002C5997 /* UpdateUserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserEnvelope.swift; sourceTree = "<group>"; };
 		06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserAccount.graphql; sourceTree = "<group>"; };
 		06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift"; sourceTree = "<group>"; };
 		06643F3D26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateUserEnvelope+UpdateUserEnvelope.Data.swift"; sourceTree = "<group>"; };
 		0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06B9AF4026AF44CE00735908 /* GraphUserCreditCard+UserFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphUserCreditCard+UserFragment.swift"; sourceTree = "<group>"; };
 		06B9AF4226AF465000735908 /* GraphUserCreditCard+UserFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphUserCreditCard+UserFragmentTests.swift"; sourceTree = "<group>"; };
@@ -3598,14 +3599,12 @@
 				06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */,
 				06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */,
 				06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */,
-				06B9AF4026AF44CE00735908 /* GraphUserCreditCard+UserFragment.swift */,
-				06B9AF4226AF465000735908 /* GraphUserCreditCard+UserFragmentTests.swift */,
+				069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */,
 				47A662F226AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift */,
 				47A662F626AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift */,
 				47A662F426AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift */,
 				47A662FA26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift */,
 				47A0432126A609C30011728E /* GraphUserCreditCard+UserFragment.swift */,
-				470E1B6326A78CA700179848 /* GraphUserCreditCard+UserFragmentTests.swift */,
 				06B9AF4026AF44CE00735908 /* GraphUserCreditCard+UserFragment.swift */,
 				06B9AF4226AF465000735908 /* GraphUserCreditCard+UserFragmentTests.swift */,
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
@@ -4970,7 +4969,7 @@
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
 				D015881A1EEB2ED7006E7684 /* Update.swift */,
-				06643F3726A5FD33002C5997 /* UpdateAcccountEnvelope.swift */,
+				06643F3726A5FD33002C5997 /* UpdateUserEnvelope.swift */,
 				8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */,
 				8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */,
 				D015881B1EEB2ED7006E7684 /* UpdateDraft.swift */,
@@ -6801,7 +6800,7 @@
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
 				77776BC6234BA6B700A42388 /* CancelBackingMutation.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
-				06643F3826A5FD33002C5997 /* UpdateAcccountEnvelope.swift in Sources */,
+				06643F3826A5FD33002C5997 /* UpdateUserEnvelope.swift in Sources */,
 				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
 				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
@@ -7057,6 +7056,7 @@
 				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
 				47A662F726AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
+				069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
 				8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */,
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
