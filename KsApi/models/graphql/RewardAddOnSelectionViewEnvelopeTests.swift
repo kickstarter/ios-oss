@@ -41,7 +41,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
           "name": "Creator McBaggins",
           "storedCards": [
             "__typename": "UserCreditCardTypeConnection",
-            "nodes": [
+            "storedCards": [
               [
                 "__typename": "CreditCard",
                 "expirationDate": "2023-01-01",

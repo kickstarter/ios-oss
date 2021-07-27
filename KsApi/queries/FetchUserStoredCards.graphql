@@ -1,0 +1,17 @@
+query FetchUserStoredCards {
+  me {
+    id
+    imageUrl: imageUrl(blur: false, width: 1024)
+    name
+      storedCards {
+    nodes {
+      expirationDate
+      id
+      lastFour
+      type
+    }
+    totalCount
+  }
+    uid
+  }
+}

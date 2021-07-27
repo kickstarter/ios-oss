@@ -24,7 +24,7 @@ final class GraphBackingTests: XCTestCase {
               "name": "Backer McGee",
               "imageUrl": "http://www.kickstarter.com/avatar.jpg",
               "storedCards": [
-                "nodes": [
+                "storedCards": [
                   [
                     "expirationDate": "2023-01-01",
                     "id": "6",
@@ -75,7 +75,7 @@ final class GraphBackingTests: XCTestCase {
                 "id": "VXNlci0xMjA3OTk3NjQ5",
                 "name": "Creator McBaggins",
                 "storedCards": [
-                  "nodes": [
+                  "storedCards": [
                     [
                       "expirationDate": "2023-01-01",
                       "id": "6",

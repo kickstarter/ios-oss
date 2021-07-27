@@ -36,7 +36,7 @@ class PaymentMethodsViewControllerTests: TestCase {
 
       let (language, device) = arg
       withEnvironment(
-        apiService: MockService(fetchGraphUserResponse: response),
+        apiService: MockService(fetchGraphUserResult: .success(response)),
         language: language,
         userDefaults: MockKeyValueStore()
       ) {

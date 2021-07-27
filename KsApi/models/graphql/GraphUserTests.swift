@@ -17,7 +17,7 @@ final class GraphUserTests: XCTestCase {
       "name": "User Name",
       "storedCards": {
         "__typename": "UserCreditCardTypeConnection",
-        "nodes": [
+        "storedCards": [
           {
           "__typename": "CreditCard",
             "expirationDate": "2023-01-01",
@@ -70,7 +70,7 @@ final class GraphUserTests: XCTestCase {
       "name": "User Name",
       "storedCards": {
         "__typename": "UserCreditCardTypeConnection",
-        "nodes": [
+        "storedCards": [
           {
           "__typename": "CreditCard",
             "expirationDate": "2023-01-01",

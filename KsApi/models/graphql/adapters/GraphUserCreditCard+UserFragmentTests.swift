@@ -3,34 +3,74 @@ import Apollo
 import XCTest
 
 class GraphUserCreditCard_UserFragmentTests: XCTestCase {
-  func test() {
-    let userFragment = GraphAPI.UserFragment(
-      chosenCurrency: "USD",
-      email: "foo@bar.com",
-      hasPassword: true,
-      id: GraphQLID(),
-      imageUrl: "http://www.kickstarter.com/medium.jpg",
-      isAppleConnected: true,
-      isCreator: false,
-      isDeliverable: true,
-      isEmailVerified: true,
-      name: "Hari Singh",
-      storedCards: GraphAPI.UserFragment
-        .StoredCard(
-          nodes: [
-            GraphAPI.UserFragment.StoredCard
-              .Node(
-                expirationDate: "2023-01-01",
-                id: "123456",
-                lastFour: "4242",
-                type: .visa
-              )
-          ],
-          totalCount: 1
-        ),
-      uid: "12345"
-    )
+  func test_WithStoredCards() {
+    let variables = ["withStoredCards": true]
+    let sampleCardDict: [String: Any] = [
+      "__typename": "UserCreditCardTypeConnection",
+      "nodes":
+        [[
+          "__typename": "CreditCard",
+          "expirationDate": "2025-02-01",
+          "id": "69021256",
+          "lastFour": "4242",
+          "type": "VISA"
+        ]],
+      "totalCount": 1
+    ]
 
-    XCTAssertNotNil(GraphUserCreditCard.graphUserCreditCard(from: userFragment))
+    do {
+      let storedCardsFragment = try GraphAPI.UserFragment
+        .StoredCard(jsonObject: sampleCardDict, variables: variables)
+      let userFragment = GraphAPI.UserFragment(
+        chosenCurrency: "USD",
+        email: "foo@bar.com",
+        hasPassword: true,
+        id: "id",
+        imageUrl: "http://www.kickstarter.com/medium.jpg",
+        isAppleConnected: true,
+        isCreator: false,
+        isDeliverable: true,
+        isEmailVerified: true,
+        name: "Hari Singh",
+        uid: "12345",
+        storedCards: storedCardsFragment
+      )
+
+      XCTAssertTrue(GraphUserCreditCard.graphUserCreditCard(from: userFragment).storedCards.count == 1)
+    } catch {
+      XCTFail()
+    }
+  }
+
+  func test_WithNoStoredCards() {
+    let variables = ["withStoredCards": false]
+    let sampleCardDict: [String: Any] = [
+      "__typename": "UserCreditCardTypeConnection",
+      "nodes": [],
+      "totalCount": 1
+    ]
+
+    do {
+      let storedCardsFragment = try GraphAPI.UserFragment
+        .StoredCard(jsonObject: sampleCardDict, variables: variables)
+      let userFragment = GraphAPI.UserFragment(
+        chosenCurrency: "USD",
+        email: "foo@bar.com",
+        hasPassword: true,
+        id: "id",
+        imageUrl: "http://www.kickstarter.com/medium.jpg",
+        isAppleConnected: true,
+        isCreator: false,
+        isDeliverable: true,
+        isEmailVerified: true,
+        name: "Hari Singh",
+        uid: "12345",
+        storedCards: storedCardsFragment
+      )
+
+      XCTAssertTrue(GraphUserCreditCard.graphUserCreditCard(from: userFragment).storedCards.count == 0)
+    } catch {
+      XCTFail()
+    }
   }
 }

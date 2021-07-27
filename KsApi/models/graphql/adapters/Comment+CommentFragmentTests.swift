@@ -5,7 +5,11 @@ import XCTest
 final class Comment_CommentFragmentTests: XCTestCase {
   func test() {
     do {
-      let commentFragment = try GraphAPI.CommentFragment(jsonObject: commentDictionary())
+      let variables = ["withStoredCards": true]
+      let commentFragment = try GraphAPI.CommentFragment(
+        jsonObject: commentDictionary(),
+        variables: variables
+      )
 
       XCTAssertNotNil(commentFragment)
       XCTAssertNotNil(commentFragment.author)
@@ -37,7 +41,7 @@ private func commentDictionary() -> [String: Any] {
         "__typename": "UserCreditCardTypeConnection",
         "nodes": [
           {
-          "__typename": "CreditCard",
+            "__typename": "CreditCard",
             "expirationDate": "2023-01-01",
             "id": "6",
             "lastFour": "4242",

@@ -2,7 +2,7 @@
 
 // TODO: Remove public access
 public struct GraphUserCreditCard: Decodable {
-  public var nodes: [CreditCard]
+  public var storedCards: [CreditCard]
 
   public struct CreditCard: Decodable, Equatable {
     public var expirationDate: String
@@ -27,6 +27,6 @@ public struct GraphUserCreditCard: Decodable {
 
 extension GraphUserCreditCard: Equatable {
   public static func == (lhs: GraphUserCreditCard, rhs: GraphUserCreditCard) -> Bool {
-    lhs.nodes == rhs.nodes
+    lhs.storedCards == rhs.storedCards
   }
 }

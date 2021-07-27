@@ -18,8 +18,12 @@ final class ChangeEmailViewControllerTests: TestCase {
   }
 
   func testChangeEmail() {
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ true
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(currentUser: User.template, language: language) {
+      withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -33,7 +37,7 @@ final class ChangeEmailViewControllerTests: TestCase {
   func testChangeEmailScreen_unverifiedEmail() {
     let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let service = MockService(fetchGraphUserResponse: userEnvelope)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
@@ -51,7 +55,7 @@ final class ChangeEmailViewControllerTests: TestCase {
       |> \.stats.createdProjectsCount .~ 3
     let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let service = MockService(fetchGraphUserResponse: userEnvelope)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
@@ -74,7 +78,7 @@ final class ChangeEmailViewControllerTests: TestCase {
       |> \.isEmailVerified .~ false
       |> \.isDeliverable .~ false
     let userEnvelope = UserEnvelope(me: userTemplate)
-    let service = MockService(fetchGraphUserResponse: userEnvelope)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()

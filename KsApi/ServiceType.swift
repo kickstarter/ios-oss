@@ -103,18 +103,20 @@ public protocol ServiceType {
   /// Fetch comments for a project.
   func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for a project with a slug, cursor and limit.
+  /// Fetch comments for a project with a slug, cursor, limit and comments' users' stored cards.
   func fetchProjectComments(
     slug: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for an update with an id, cursor and limit.
+  /// Fetch comments for an update with an id, cursor, limit and comments' users' stored cards.
   func fetchUpdateComments(
     id: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comment replies for a comment with a query.
@@ -149,7 +151,7 @@ public protocol ServiceType {
     -> SignalProducer<CategoryEnvelope, GraphError>
 
   /// Fetches various fields of a given User using graphQL.
-  func fetchGraphUser()
+  func fetchGraphUser(withStoredCards: Bool)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
 
   /// Fetch User's backings with a specific status.
@@ -160,8 +162,8 @@ public protocol ServiceType {
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
-  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID.
-  func fetchManagePledgeViewBacking(id: Int)
+  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID and the backers' stored cards.
+  func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.

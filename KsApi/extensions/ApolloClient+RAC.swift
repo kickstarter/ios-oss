@@ -14,6 +14,7 @@ extension ApolloClient {
   public func fetch<Query: GraphQLQuery>(query: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
     SignalProducer { observer, _ in
       self.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
+
         switch result {
         case let .success(response):
           if let error = response.errors?.first?.errorDescription {
@@ -22,6 +23,7 @@ extension ApolloClient {
           guard let data = response.data else {
             return observer.send(error: .couldNotParseJSON)
           }
+
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):

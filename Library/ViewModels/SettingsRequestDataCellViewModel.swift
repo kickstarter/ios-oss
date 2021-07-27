@@ -39,7 +39,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
     let userEmailEvent = self.configureWithUserProperty.signal.skipNil()
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUser()
+        AppEnvironment.current.apiService.fetchGraphUser(withStoredCards: true)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }

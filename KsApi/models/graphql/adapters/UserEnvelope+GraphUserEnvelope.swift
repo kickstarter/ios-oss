@@ -5,8 +5,11 @@ extension UserEnvelope {
    Returns a `UserEnvelope<GraphUser>` from a `FetchUserQuery.Data` object.
    */
   static func userEnvelope(from data: GraphAPI.FetchUserQuery.Data) -> UserEnvelope<GraphUser>? {
-    guard let userFragment = data.me?.fragments.userFragment,
-      let storedCards = GraphUserCreditCard.graphUserCreditCard(from: userFragment) else { return nil }
+    guard let userFragment = data.me?.fragments.userFragment else { return nil }
+
+    let allStoredCards = GraphUserCreditCard.graphUserCreditCard(from: userFragment)
+
+    let graphUserCreditCards = GraphUserCreditCard(storedCards: allStoredCards.storedCards)
 
     let graphUser = GraphUser(
       chosenCurrency: userFragment.chosenCurrency,
@@ -19,7 +22,7 @@ extension UserEnvelope {
       isEmailVerified: userFragment.isEmailVerified,
       isDeliverable: userFragment.isDeliverable,
       name: userFragment.name,
-      storedCards: storedCards,
+      storedCards: graphUserCreditCards,
       uid: userFragment.uid
     )
 
