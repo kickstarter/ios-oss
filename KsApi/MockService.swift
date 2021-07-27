@@ -733,7 +733,7 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphUser(withStoredCards _: Bool)
+    internal func fetchGraphUser(withStoredCards: Bool)
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
       if let error = self.fetchGraphUserResult?.error {
         return SignalProducer(error: error)
