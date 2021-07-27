@@ -1,7 +1,7 @@
 @testable import KsApi
 import XCTest
 
-final class GraphMutationWatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
+final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
   func test_envelopeFrom() {
     let dict: [String: Any] = [
       "watchProject": [
@@ -15,7 +15,7 @@ final class GraphMutationWatchProjectResponseEnvelope_WatchProjectMutationTests:
 
     let data = GraphAPI.WatchProjectMutation.Data(unsafeResultMap: dict)
 
-    let envelope = GraphMutationWatchProjectResponseEnvelope.from(data)
+    let envelope = WatchProjectResponseEnvelope.from(data)
 
     XCTAssertEqual(envelope?.watchProject.project.id, "id")
     XCTAssertEqual(envelope?.watchProject.project.isWatched, true)
@@ -34,6 +34,6 @@ final class GraphMutationWatchProjectResponseEnvelope_WatchProjectMutationTests:
 
     let data = GraphAPI.WatchProjectMutation.Data(unsafeResultMap: dict)
 
-    XCTAssertNil(GraphMutationWatchProjectResponseEnvelope.from(data))
+    XCTAssertNil(WatchProjectResponseEnvelope.from(data))
   }
 }

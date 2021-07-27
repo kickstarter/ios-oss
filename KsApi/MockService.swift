@@ -169,14 +169,14 @@
     fileprivate let updateUserSelfError: ErrorEnvelope?
 
     fileprivate let unwatchProjectMutationResult: Result<
-      GraphMutationWatchProjectResponseEnvelope,
+      WatchProjectResponseEnvelope,
       ErrorEnvelope
     >?
 
     fileprivate let verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let watchProjectMutationResult: Result<
-      GraphMutationWatchProjectResponseEnvelope,
+      WatchProjectResponseEnvelope,
       ErrorEnvelope
     >?
 
@@ -306,9 +306,9 @@
       updateProjectNotificationResponse: ProjectNotification? = nil,
       updateProjectNotificationError: ErrorEnvelope? = nil,
       updateUserSelfError: ErrorEnvelope? = nil,
-      unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope>? = nil,
+      unwatchProjectMutationResult: Result<WatchProjectResponseEnvelope, ErrorEnvelope>? = nil,
       verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>? = nil,
-      watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope>? = nil
+      watchProjectMutationResult: Result<WatchProjectResponseEnvelope, ErrorEnvelope>? = nil
     ) {
       self.appId = appId
       self.serverConfig = serverConfig
@@ -1359,7 +1359,7 @@
     }
 
     internal func unwatchProject(input _: WatchProjectInput)
-      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.unwatchProjectMutationResult)
     }
 
@@ -1369,7 +1369,7 @@
     }
 
     internal func watchProject(input _: WatchProjectInput)
-      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.watchProjectMutationResult)
     }
 
