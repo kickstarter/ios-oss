@@ -7,25 +7,9 @@ extension UserEnvelope {
   static func userEnvelope(from data: GraphAPI.FetchUserQuery.Data) -> UserEnvelope<GraphUser>? {
     guard let userFragment = data.me?.fragments.userFragment else { return nil }
 
-    var allStoredCards = [GraphUserCreditCard.CreditCard]()
+    let allStoredCards = GraphUserCreditCard.graphUserCreditCard(from: userFragment)
 
-    if let storedCards = userFragment.storedCards {
-      let cards = storedCards.fragments.userStoredCardsFragment.nodes?
-        .compactMap { card -> GraphUserCreditCard.CreditCard? in
-          guard let node = card else { return nil }
-
-          return GraphUserCreditCard.CreditCard(
-            expirationDate: node.expirationDate,
-            id: node.id,
-            lastFour: node.lastFour,
-            type: CreditCardType(rawValue: node.type.rawValue)
-          )
-        }
-
-      allStoredCards = cards ?? []
-    }
-
-    let graphUserCreditCards = GraphUserCreditCard(storedCards: allStoredCards)
+    let graphUserCreditCards = GraphUserCreditCard(storedCards: allStoredCards.storedCards)
 
     let graphUser = GraphUser(
       chosenCurrency: userFragment.chosenCurrency,

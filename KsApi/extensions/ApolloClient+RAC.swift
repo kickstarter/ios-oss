@@ -12,7 +12,7 @@ extension ApolloClient {
    - returns: A `SignalProducer` generic over `Query.Data` and `ErrorEnvelope`.
    */
   public func fetch<Query: GraphQLQuery>(query: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
-    return SignalProducer { observer, _ in
+    SignalProducer { observer, _ in
       self.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
 
         switch result {

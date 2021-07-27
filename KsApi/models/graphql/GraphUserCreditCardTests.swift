@@ -5,7 +5,7 @@ final class GraphUserCreditCardTests: XCTestCase {
   func testCreditCardsDecoding_noCards() {
     let jsonString = """
     {
-      "nodes": [],
+      "storedCards": [],
       "totalCount": 0
     }
     """
@@ -14,7 +14,7 @@ final class GraphUserCreditCardTests: XCTestCase {
     do {
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
-      XCTAssertEqual(cards.nodes.count, 0)
+      XCTAssertEqual(cards.storedCards.count, 0)
     } catch {
       XCTFail("Failed to decode GraphUserCreditCard")
     }
@@ -23,7 +23,7 @@ final class GraphUserCreditCardTests: XCTestCase {
   func testCreditCardsDecoding_hasCards() {
     let jsonString = """
     {
-      "nodes": [
+      "storedCards": [
          {
             "expirationDate": "2023-02-01",
             "lastFour": "4242",
@@ -46,9 +46,9 @@ final class GraphUserCreditCardTests: XCTestCase {
     do {
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
-      XCTAssertEqual(cards.nodes.count, 2)
+      XCTAssertEqual(cards.storedCards.count, 2)
 
-      guard let firstCard = cards.nodes.first else {
+      guard let firstCard = cards.storedCards.first else {
         XCTFail("Failed to decode GraphUserCreditCard")
         return
       }
@@ -65,7 +65,7 @@ final class GraphUserCreditCardTests: XCTestCase {
   func testCreditCardsDecoding_nilCardType() {
     let jsonString = """
     {
-      "nodes": [
+      "storedCards": [
           {
             "expirationDate": "2020-02-01",
             "lastFour": "1111",
@@ -81,7 +81,7 @@ final class GraphUserCreditCardTests: XCTestCase {
     do {
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
-      guard let card = cards.nodes.first else {
+      guard let card = cards.storedCards.first else {
         XCTFail("Failed to decode GraphUserCreditCard")
         return
       }
@@ -98,7 +98,7 @@ final class GraphUserCreditCardTests: XCTestCase {
   func testCreditCardsDecoding_unrecognizedCardType() {
     let jsonString = """
     {
-      "nodes": [
+      "storedCards": [
           {
             "expirationDate": "2020-02-01",
             "lastFour": "1111",
@@ -115,7 +115,7 @@ final class GraphUserCreditCardTests: XCTestCase {
     do {
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
-      guard let card = cards.nodes.first else {
+      guard let card = cards.storedCards.first else {
         XCTFail("Failed to decode GraphUserCreditCard")
         return
       }

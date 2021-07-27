@@ -5,7 +5,8 @@ import XCTest
 final class Project_FetchAddOnsQueryDataTests: XCTestCase {
   func test() {
     do {
-      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary())
+      let variables = ["withStoredCards": true]
+      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let project = Project.project(from: fragment)

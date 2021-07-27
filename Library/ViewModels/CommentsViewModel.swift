@@ -433,16 +433,20 @@ private func commentsReplacingCommentById(
 private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
   -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
   return projectOrUpdate.ifLeft { project in
-    AppEnvironment.current.apiService.fetchProjectComments(slug: project.slug,
-                                                           cursor: nil,
-                                                           limit: nil,
-                                                           withStoredCards: false)
+    AppEnvironment.current.apiService.fetchProjectComments(
+      slug: project.slug,
+      cursor: nil,
+      limit: nil,
+      withStoredCards: false
+    )
   } ifRight: {
     AppEnvironment.current.apiService
-      .fetchUpdateComments(id: $0.id.description,
-                           cursor: nil,
-                           limit: nil,
-                           withStoredCards: false)
+      .fetchUpdateComments(
+        id: $0.id.description,
+        cursor: nil,
+        limit: nil,
+        withStoredCards: false
+      )
   }
 }
 

@@ -99,7 +99,7 @@ public protocol ServiceType {
   /// Fetch comments for a project.
   func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for a project with a slug, cursor, limit and comments' users' display stored cards.
+  /// Fetch comments for a project with a slug, cursor, limit and comments' users' stored cards.
   func fetchProjectComments(
     slug: String,
     cursor: String?,
@@ -107,7 +107,7 @@ public protocol ServiceType {
     withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for an update with an id, cursor, limit and comments' users' display stored cards.
+  /// Fetch comments for an update with an id, cursor, limit and comments' users' stored cards.
   func fetchUpdateComments(
     id: String,
     cursor: String?,
@@ -158,7 +158,7 @@ public protocol ServiceType {
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
-  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID and if the backer should display their stored cards.
+  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID and the backers' stored cards.
   func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 

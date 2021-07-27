@@ -17,7 +17,8 @@ final class Project_ProjectFragmentTests: XCTestCase {
       let backing = Backing.template |>
         Backing.lens.backerId .~ 618_005_886
 
-      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary())
+      let variables = ["withStoredCards": true]
+      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let project = Project.project(

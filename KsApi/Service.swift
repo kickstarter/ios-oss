@@ -375,7 +375,8 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchAddOnsQuery(
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
-      locationId: locationId, withStoredCards: false
+      locationId: locationId,
+      withStoredCards: false
     )
 
     return GraphQL.shared.client

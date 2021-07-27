@@ -44,7 +44,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "name": "Creator McBaggins",
             "storedCards": [
               "__typename": "UserCreditCardTypeConnection",
-              "nodes": [
+              "storedCards": [
                 [
                   "__typename": "CreditCard",
                   "expirationDate": "2023-01-01",
@@ -194,7 +194,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "Backer McGee",
           "storedCards": [
             "__typename": "UserCreditCardTypeConnection",
-            "nodes": [
+            "storedCards": [
               [
                 "__typename": "CreditCard",
                 "expirationDate": "2023-01-01",
@@ -381,7 +381,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "name": "Creator McBaggins",
             "storedCards": [
               "__typename": "UserCreditCardTypeConnection",
-              "nodes": [
+              "storedCards": [
                 [
                   "__typename": "CreditCard",
                   "expirationDate": "2023-01-01",
@@ -454,7 +454,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "Backer McGee",
           "storedCards": [
             "__typename": "UserCreditCardTypeConnection",
-            "nodes": [
+            "storedCards": [
               [
                 "__typename": "CreditCard",
                 "expirationDate": "2023-01-01",
@@ -537,7 +537,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "name": "Creator McBaggins",
             "storedCards": [
               "__typename": "UserCreditCardTypeConnection",
-              "nodes": [
+              "storedCards": [
                 [
                   "__typename": "CreditCard",
                   "expirationDate": "2023-01-01",
@@ -591,7 +591,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "Backer McGee",
           "storedCards": [
             "__typename": "UserCreditCardTypeConnection",
-            "nodes": [
+            "storedCards": [
               [
                 "__typename": "CreditCard",
                 "expirationDate": "2023-01-01",
@@ -664,7 +664,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "uid": "110079315",
           "storedCards": [
             "__typename": "UserCreditCardTypeConnection",
-            "nodes": [
+            "storedCards": [
               [
                 "__typename": "CreditCard",
                 "expirationDate": "2023-01-01",
@@ -699,7 +699,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "name": "Creator McBaggins",
             "storedCards": [
               "__typename": "UserCreditCardTypeConnection",
-              "nodes": [
+              "storedCards": [
                 [
                   "__typename": "CreditCard",
                   "expirationDate": "2023-01-01",
