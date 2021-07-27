@@ -81,7 +81,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     let project = Project.template
 
     withEnvironment(
-      apiService: MockService(watchProjectMutationResult: .failure(.invalidInput)),
+      apiService: MockService(watchProjectMutationResult: .failure(.couldNotParseJSON)),
       currentUser: .template
     ) {
       self.vm.inputs.configure(with: (project, .projectPage, nil))
