@@ -71,10 +71,9 @@
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
-		06643F3826A5FD33002C5997 /* UpdateUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3726A5FD33002C5997 /* UpdateUserEnvelope.swift */; };
+		065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */; };
 		06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
-		06643F3E26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3D26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
@@ -101,7 +100,6 @@
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
-		06FFCE4826A7184700D315EF /* UpdateUserEnvelope+UpdateUserEnvelope.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FFCE4726A7184700D315EF /* UpdateUserEnvelope+UpdateUserEnvelope.DataTests.swift */; };
 		06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */; };
 		1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */; };
 		1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */; };
@@ -219,6 +217,7 @@
 		4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */; };
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
+		475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 475DEC0026B07BB9001B961B /* CancelBacking.graphql */; };
 		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
 		47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplates.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
@@ -657,7 +656,6 @@
 		8AC3E105269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E104269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift */; };
 		8AC3E10D269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */; };
 		8AC3E112269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */; };
-		8AC3E123269F5B7A00168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E122269F5B7A00168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */; };
 		8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */; };
 		8AC3E13A269F781D00168BF8 /* ErrorEnvelope+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E135269F781200168BF8 /* ErrorEnvelope+LocalizedDescription.swift */; };
 		8ACB32A824ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */; };
@@ -1783,10 +1781,9 @@
 		0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModel.swift; sourceTree = "<group>"; };
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
 		061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
-		06643F3726A5FD33002C5997 /* UpdateUserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserEnvelope.swift; sourceTree = "<group>"; };
+		065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UpdateBackingEnvelope+UpdateBackingMutation.Data.swift"; sourceTree = "<group>"; };
 		06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserAccount.graphql; sourceTree = "<group>"; };
 		06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift"; sourceTree = "<group>"; };
-		06643F3D26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateUserEnvelope+UpdateUserEnvelope.Data.swift"; sourceTree = "<group>"; };
 		0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
@@ -1801,7 +1798,6 @@
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
 		06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModelTests.swift; sourceTree = "<group>"; };
-		06FFCE4726A7184700D315EF /* UpdateUserEnvelope+UpdateUserEnvelope.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateUserEnvelope+UpdateUserEnvelope.DataTests.swift"; sourceTree = "<group>"; };
 		06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift"; sourceTree = "<group>"; };
 		1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultType.swift; sourceTree = "<group>"; };
 		1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOptimizelyResult.swift; sourceTree = "<group>"; };
@@ -1916,6 +1912,7 @@
 		4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		475DEC0026B07BB9001B961B /* CancelBacking.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CancelBacking.graphql; sourceTree = "<group>"; };
 		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
 		47613FC52652CD11006F09FF /* CommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
@@ -2327,7 +2324,6 @@
 		8AC3E104269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.ApplePay+ApplePayParams.swift"; sourceTree = "<group>"; };
 		8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateBackingInput+UpdateBackingInput.swift"; sourceTree = "<group>"; };
 		8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift"; sourceTree = "<group>"; };
-		8AC3E122269F5B7A00168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingEnvelope+UpdateBackingMutation.Data.swift"; sourceTree = "<group>"; };
 		8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift"; sourceTree = "<group>"; };
 		8AC3E135269F781200168BF8 /* ErrorEnvelope+LocalizedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorEnvelope+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
@@ -3377,6 +3373,7 @@
 			isa = PBXGroup;
 			children = (
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
+				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
 				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */,
@@ -3628,10 +3625,8 @@
 				8AC3E00B26961E8A00168BF8 /* Reward+RewardFragmentTests.swift */,
 				8AC3E0952698CF0500168BF8 /* ShippingRule+ShippingRuleFragment.swift */,
 				8AC3E0A32698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift */,
-				8AC3E122269F5B7A00168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */,
+				065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */,
 				8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */,
-				06643F3D26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift */,
-				06FFCE4726A7184700D315EF /* UpdateUserEnvelope+UpdateUserEnvelope.DataTests.swift */,
 				8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */,
 				8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */,
 				8A1557142693B28300017845 /* User+UserFragment.swift */,
@@ -4969,7 +4964,6 @@
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
 				D015881A1EEB2ED7006E7684 /* Update.swift */,
-				06643F3726A5FD33002C5997 /* UpdateUserEnvelope.swift */,
 				8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */,
 				8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */,
 				D015881B1EEB2ED7006E7684 /* UpdateDraft.swift */,
@@ -5541,6 +5535,7 @@
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
 				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
+				475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */,
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
 				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
 				06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */,
@@ -6739,7 +6734,6 @@
 				D0158A181EEB30A2006E7684 /* MessageTemplates.swift in Sources */,
 				8AC3E017269626A400168BF8 /* Location+LocationFragment.swift in Sources */,
 				D0158A191EEB30A2006E7684 /* MessageThreadTemplates.swift in Sources */,
-				06643F3E26A62FBC002C5997 /* UpdateUserEnvelope+UpdateUserEnvelope.Data.swift in Sources */,
 				D01588AF1EEB2ED7006E7684 /* Project.VideoLenses.swift in Sources */,
 				D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */,
 				8A1557152693B28300017845 /* User+UserFragment.swift in Sources */,
@@ -6800,7 +6794,6 @@
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
 				77776BC6234BA6B700A42388 /* CancelBackingMutation.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
-				06643F3826A5FD33002C5997 /* UpdateUserEnvelope.swift in Sources */,
 				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
 				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
@@ -6904,6 +6897,7 @@
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
 				8AA407CA24DB453C008C5FB0 /* Project.Category+GraphCategory.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,
+				065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */,
 				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				8A0B1E2524D4C491009E90C0 /* GraphReward.swift in Sources */,
@@ -6927,7 +6921,6 @@
 				D6B9F90A22035840003282A5 /* DeprecatedAuthor.swift in Sources */,
 				8A0B1E2724DA0DC3009E90C0 /* GraphLocation.swift in Sources */,
 				8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */,
-				8AC3E123269F5B7A00168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */,
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
 				D08C71DC22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift in Sources */,
 				8AF34C742342CBC2000B211D /* UpdateBackingInput.swift in Sources */,
@@ -7040,7 +7033,6 @@
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
 				D0D10C071EEB4550005EBAD0 /* DeprecatedCommentTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
-				06FFCE4826A7184700D315EF /* UpdateUserEnvelope+UpdateUserEnvelope.DataTests.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */,

@@ -47,19 +47,19 @@ public protocol ServiceType {
 
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Changes the email on a user account
   func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<UpdateUserEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Changes the password on a user account
   func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<UpdateUserEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Changes the currency code on a user profile
   func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<UpdateUserEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
@@ -70,7 +70,7 @@ public protocol ServiceType {
 
   /// Creates the password on a user account
   func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<UpdateUserEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, GraphError>
@@ -308,7 +308,7 @@ public protocol ServiceType {
 
   /// Sends a verification email (after updating the email from account settings).
   func sendVerificationEmail(input: EmptyInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, GraphError>
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)

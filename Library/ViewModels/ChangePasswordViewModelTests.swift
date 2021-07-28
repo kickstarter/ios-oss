@@ -41,7 +41,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testChangePassword() {
-    let service = MockService(changePasswordResult: .success(UpdateUserEnvelope(clientMutationId: nil)))
+    let service = MockService(changePasswordResult: .success(EmptyResponseEnvelope()))
 
     withEnvironment(apiService: service) {
       self.vm.inputs.viewDidAppear()

@@ -61,7 +61,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.updateCurrencyDidSucceed.assertValueCount(0)
     self.selectCellAtIndex.assertValues([0])
 
-    withEnvironment(apiService: MockService(changeCurrencyResult: .success(UpdateUserEnvelope(clientMutationId: nil)))) {
+    withEnvironment(apiService: MockService(changeCurrencyResult: .success(EmptyResponseEnvelope()))) {
       self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
