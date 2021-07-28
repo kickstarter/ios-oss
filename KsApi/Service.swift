@@ -106,7 +106,7 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
-      .flatMap{ _ in
+      .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
   }
@@ -116,7 +116,7 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
-      .flatMap{ _ in
+      .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
   }
@@ -133,7 +133,7 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
-      .flatMap{ _ in
+      .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
   }
@@ -149,11 +149,11 @@ public struct Service: ServiceType {
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
-  SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input)))
-      .flatMap{ _ in
+      .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
   }

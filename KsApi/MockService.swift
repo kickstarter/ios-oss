@@ -320,7 +320,7 @@
       self.changeEmailResult = changeEmailResult
 
       self.changeCurrencyResult = changeCurrencyResult
-      
+
       self.changePasswordResult = changePasswordResult
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
@@ -526,7 +526,7 @@
     }
 
     internal func changeEmail(input _: ChangeEmailInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.changeEmailResult)
     }
 
@@ -547,7 +547,7 @@
     }
 
     internal func changePassword(input _: ChangePasswordInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.changePasswordResult)
     }
 
@@ -557,12 +557,12 @@
     }
 
     internal func createPassword(input _: CreatePasswordInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.createPasswordResult)
     }
 
     internal func changeCurrency(input _: ChangeCurrencyInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       return producer(for: self.changeCurrencyResult)
     }
 

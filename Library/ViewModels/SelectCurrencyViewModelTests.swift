@@ -123,7 +123,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.updateCurrencyDidFailWithError.assertValues([])
     self.updateCurrencyDidSucceed.assertValueCount(0)
     self.selectCellAtIndex.assertValues([0])
-    
+
     withEnvironment(apiService: MockService(changeCurrencyResult: .failure(.couldNotParseJSON))) {
       self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
