@@ -49,14 +49,17 @@ public protocol ServiceType {
   func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Changes the email on a user account
   func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Changes the password on a user account
   func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Changes the currency code on a user profile
   func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<EmptyResponseEnvelope, GraphError>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
@@ -65,8 +68,9 @@ public protocol ServiceType {
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
+  /// Creates the password on a user account
   func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, GraphError>

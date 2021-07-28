@@ -36,7 +36,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
 
     let mockService = MockService(
-      changeEmailResult: .success(UpdateAccountEnvelope(clientMutationId: nil)),
+      changeEmailResult: .success(EmptyResponseEnvelope()),
       fetchGraphUserResult: .success(envelope)
     )
 

@@ -17,16 +17,15 @@
 
     fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let changeCurrencyResponse: EmptyResponseEnvelope?
-    fileprivate let changeCurrencyError: GraphError?
+    fileprivate let changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
+    fileprivate let changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
+    fileprivate let changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
-    fileprivate let createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>?
+    fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
@@ -211,12 +210,11 @@
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
-      changeEmailResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
-      changePasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
+      changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
-      createPasswordResult: Result<UpdateAccountEnvelope, ErrorEnvelope>? = nil,
-      changeCurrencyResponse: EmptyResponseEnvelope? = nil,
-      changeCurrencyError: GraphError? = nil,
+      createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
@@ -319,10 +317,9 @@
 
       self.cancelBackingResult = cancelBackingResult
 
-      self.changeCurrencyResponse = changeCurrencyResponse
-      self.changeCurrencyError = changeCurrencyError
-
       self.changeEmailResult = changeEmailResult
+
+      self.changeCurrencyResult = changeCurrencyResult
 
       self.changePasswordResult = changePasswordResult
 
@@ -528,15 +525,9 @@
       return producer(for: self.cancelBackingResult)
     }
 
-    internal func changeEmail(input _: ChangeEmailInput) ->
-      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-      if let error = self.changeEmailResult?.error {
-        return SignalProducer(error: error)
-      } else if let response = self.changeEmailResult?.value {
-        return SignalProducer(value: response)
-      }
-
-      return SignalProducer(error: .couldNotParseJSON)
+    internal func changeEmail(input _: ChangeEmailInput)
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      return producer(for: self.changeEmailResult)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
@@ -555,15 +546,9 @@
       )
     }
 
-    internal func changePassword(input _: ChangePasswordInput) ->
-      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-      if let error = self.changePasswordResult?.error {
-        return SignalProducer(error: error)
-      } else if let response = self.changePasswordResult?.value {
-        return SignalProducer(value: response)
-      }
-
-      return SignalProducer(error: .couldNotParseJSON)
+    internal func changePassword(input _: ChangePasswordInput)
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      return producer(for: self.changePasswordResult)
     }
 
     internal func createBacking(input _: CreateBackingInput)
@@ -571,25 +556,14 @@
       return producer(for: self.createBackingResult)
     }
 
-    internal func createPassword(input _: CreatePasswordInput) ->
-      SignalProducer<UpdateAccountEnvelope, ErrorEnvelope> {
-      if let error = self.createPasswordResult?.error {
-        return SignalProducer(error: error)
-      } else if let response = self.createPasswordResult?.value {
-        return SignalProducer(value: response)
-      }
-
-      return SignalProducer(error: .couldNotParseJSON)
+    internal func createPassword(input _: CreatePasswordInput)
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      return producer(for: self.createPasswordResult)
     }
 
-    internal func changeCurrency(input _: ChangeCurrencyInput) ->
-      SignalProducer<EmptyResponseEnvelope, GraphError> {
-      if let response = self.changeCurrencyResponse {
-        return SignalProducer(value: response)
-      } else if let error = self.changeCurrencyError {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: EmptyResponseEnvelope())
+    internal func changeCurrency(input _: ChangeCurrencyInput)
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      return producer(for: self.changeCurrencyResult)
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
