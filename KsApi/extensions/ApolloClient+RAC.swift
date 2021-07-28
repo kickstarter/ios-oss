@@ -55,9 +55,8 @@ extension ApolloClient {
           }
           observer.send(value: data)
           observer.sendCompleted()
-        case let .failure(error):
-          // TODO: Update this to send a more descriptive error.
-          observer.send(error: .couldNotDecodeJSON(error))
+        case .failure:
+          observer.send(error: .couldNotParseJSON)
         }
       }
     }
