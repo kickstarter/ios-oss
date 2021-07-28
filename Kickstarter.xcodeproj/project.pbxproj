@@ -216,6 +216,7 @@
 		4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */; };
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
+		475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 475DEC0026B07BB9001B961B /* CancelBacking.graphql */; };
 		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
 		47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplates.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
@@ -1911,6 +1912,7 @@
 		4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		475DEC0026B07BB9001B961B /* CancelBacking.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CancelBacking.graphql; sourceTree = "<group>"; };
 		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
 		47613FC52652CD11006F09FF /* CommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
@@ -3372,6 +3374,7 @@
 			isa = PBXGroup;
 			children = (
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
+				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
 				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				47A662F026AF1FCC001CE7B1 /* WatchProject.graphql */,
@@ -5533,6 +5536,7 @@
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
 				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
+				475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */,
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
 				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
 				06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */,

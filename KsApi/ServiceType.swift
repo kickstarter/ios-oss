@@ -47,7 +47,7 @@ public protocol ServiceType {
 
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
@@ -56,7 +56,7 @@ public protocol ServiceType {
     SignalProducer<UpdateAccountEnvelope, ErrorEnvelope>
 
   func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<EmptyResponseEnvelope, GraphError>
 
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
@@ -304,7 +304,7 @@ public protocol ServiceType {
 
   /// Sends a verification email (after updating the email from account settings).
   func sendVerificationEmail(input: EmptyInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, GraphError>
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)

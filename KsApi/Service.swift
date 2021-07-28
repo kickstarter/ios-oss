@@ -92,8 +92,13 @@ public struct Service: ServiceType {
   }
 
   public func cancelBacking(input: CancelBackingInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: CancelBackingMutation(input: input))
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func changeEmail(input: ChangeEmailInput) ->
@@ -138,7 +143,7 @@ public struct Service: ServiceType {
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    SignalProducer<EmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: UpdateUserProfileMutation(input: input))
   }
 
@@ -519,7 +524,7 @@ public struct Service: ServiceType {
   }
 
   public func sendVerificationEmail(input: EmptyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    SignalProducer<EmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
   }
 
