@@ -87,8 +87,10 @@ public struct Service: ServiceType {
   }
 
   public func addNewCreditCard(input: CreatePaymentSourceInput)
-    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
-    return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
+    -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
+      .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
   public func cancelBacking(input: CancelBackingInput)
