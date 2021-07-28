@@ -123,15 +123,8 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.updateCurrencyDidFailWithError.assertValues([])
     self.updateCurrencyDidSucceed.assertValueCount(0)
     self.selectCellAtIndex.assertValues([0])
-
-    let errorEnvelope = ErrorEnvelope(
-      errorMessages: ["Something went wrong."],
-      ksrCode: nil,
-      httpCode: 1,
-      exception: nil
-    )
     
-    withEnvironment(apiService: MockService(changeCurrencyResult: .failure(errorEnvelope))) {
+    withEnvironment(apiService: MockService(changeCurrencyResult: .failure(.couldNotParseJSON))) {
       self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
