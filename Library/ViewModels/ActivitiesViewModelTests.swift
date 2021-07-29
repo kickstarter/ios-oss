@@ -578,7 +578,7 @@ final class ActivitiesViewModelTests: TestCase {
     }
   }
 
-  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_fetchGraphUserBackingsResultFailure() {
+  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_FetchGraphUserBackingsResultFailure() {
     let user = User.template
 
     let mockService = MockService(fetchGraphUserBackingsResult: .failure(.couldNotParseJSON))
