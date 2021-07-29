@@ -9,7 +9,7 @@ extension CreatePaymentSourceEnvelope {
       return nil
     }
     
-    let creditCard = GraphUserCreditCard.CreditCard(expirationDate: rawCreditCardData.expirationDate,
+    let creditCard = UserCreditCards.CreditCard(expirationDate: rawCreditCardData.expirationDate,
                                                        id: rawCreditCardData.id,
                                                        lastFour: rawCreditCardData.lastFour,
                                                        type: rawCardType)

@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 public typealias PledgePaymentMethodCellData = (
-  card: GraphUserCreditCard.CreditCard,
+  card: UserCreditCards.CreditCard,
   isEnabled: Bool,
   isSelected: Bool,
   projectCountry: String,
@@ -17,7 +17,7 @@ public protocol PledgePaymentMethodCellViewModelInputs {
   func configureWith(value: PledgePaymentMethodCellData)
 
   /// Call with the currently selected card.
-  func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
+  func setSelectedCard(_ creditCard: UserCreditCards.CreditCard)
 }
 
 public protocol PledgePaymentMethodCellViewModelOutputs {
@@ -130,8 +130,8 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
     self.configureValueProperty.value = value
   }
 
-  private let selectedCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
-  public func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard) {
+  private let selectedCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
+  public func setSelectedCard(_ creditCard: UserCreditCards.CreditCard) {
     self.selectedCardProperty.value = creditCard
   }
 

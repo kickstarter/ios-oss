@@ -7,7 +7,7 @@ public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
   func addNewCardDismissed()
   func addNewCardPresented()
-  func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int)
+  func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func viewDidLoad()
@@ -18,7 +18,7 @@ public protocol PaymentMethodsViewModelOutputs {
   var editButtonTitle: Signal<String, Never> { get }
   var errorLoadingPaymentMethods: Signal<String, Never> { get }
   var goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never> { get }
-  var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
+  var paymentMethods: Signal<[UserCreditCards.CreditCard], Never> { get }
   var presentBanner: Signal<String, Never> { get }
   var reloadData: Signal<Void, Never> { get }
   var showAlert: Signal<String, Never> { get }
@@ -126,10 +126,10 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
   fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
     Signal<
-      (GraphUserCreditCard.CreditCard, Int),
+      (UserCreditCards.CreditCard, Int),
       Never
     >.pipe()
-  public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int) {
+  public func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int) {
     self.didDeleteCreditCardObserver.send(value: (creditCard, visibleCellCount))
   }
 
@@ -167,7 +167,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   public let editButtonTitle: Signal<String, Never>
   public let errorLoadingPaymentMethods: Signal<String, Never>
   public let goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never>
-  public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
+  public let paymentMethods: Signal<[UserCreditCards.CreditCard], Never>
   public let presentBanner: Signal<String, Never>
   public let reloadData: Signal<Void, Never>
   public let showAlert: Signal<String, Never>

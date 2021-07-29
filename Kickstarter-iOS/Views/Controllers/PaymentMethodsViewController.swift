@@ -195,7 +195,7 @@ extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
   func addNewCardViewController(
     _: AddNewCardViewController,
-    didAdd _: GraphUserCreditCard.CreditCard,
+    didAdd _: UserCreditCards.CreditCard,
     withMessage message: String
   ) {
     self.dismiss(animated: true) {

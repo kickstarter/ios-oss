@@ -13,7 +13,7 @@ public struct GraphUser: Decodable {
   public var isEmailVerified: Bool?
   public var isDeliverable: Bool?
   public var name: String
-  public var storedCards: GraphUserCreditCard
+  public var storedCards: UserCreditCards
   public var uid: String
 }
 

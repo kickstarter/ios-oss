@@ -7,9 +7,9 @@ extension UserEnvelope {
   static func userEnvelope(from data: GraphAPI.FetchUserQuery.Data) -> UserEnvelope<GraphUser>? {
     guard let userFragment = data.me?.fragments.userFragment else { return nil }
 
-    let allStoredCards = GraphUserCreditCard.graphUserCreditCard(from: userFragment)
+    let allStoredCards = UserCreditCards.userCreditCards(from: userFragment)
 
-    let graphUserCreditCards = GraphUserCreditCard(storedCards: allStoredCards.storedCards)
+    let userCreditCards = UserCreditCards(storedCards: allStoredCards.storedCards)
 
     let graphUser = GraphUser(
       chosenCurrency: userFragment.chosenCurrency,
@@ -22,7 +22,7 @@ extension UserEnvelope {
       isEmailVerified: userFragment.isEmailVerified,
       isDeliverable: userFragment.isDeliverable,
       name: userFragment.name,
-      storedCards: graphUserCreditCards,
+      storedCards: userCreditCards,
       uid: userFragment.uid
     )
 

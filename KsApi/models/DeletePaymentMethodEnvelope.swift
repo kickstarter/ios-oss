@@ -1,7 +1,7 @@
 import Foundation
 
 public struct DeletePaymentMethodEnvelope {
-  public let storedCards: [GraphUserCreditCard.CreditCard]
+  public let storedCards: [UserCreditCards.CreditCard]
 }
 
 extension DeletePaymentMethodEnvelope: Decodable {
@@ -17,6 +17,6 @@ extension DeletePaymentMethodEnvelope: Decodable {
     self.storedCards = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .paymentSourceDelete)
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .user)
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .storedCards)
-      .decode([GraphUserCreditCard.CreditCard].self, forKey: .nodes)
+      .decode([UserCreditCards.CreditCard].self, forKey: .nodes)
   }
 }
