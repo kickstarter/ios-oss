@@ -5,7 +5,6 @@ extension GraphAPI.CreatePaymentSourceInput {
     return GraphAPI.CreatePaymentSourceInput(paymentType: .creditCard,
                                              stripeToken: input.stripeToken,
                                              stripeCardId: input.stripeCardId,
-                                             reusable: input.reusable,
-                                             clientMutationId: nil)
+                                             reusable: input.reusable)
     }
 }
