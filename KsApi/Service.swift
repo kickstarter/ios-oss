@@ -296,11 +296,14 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
 
-  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(BackingsEnvelope.envelopeProducer(from:))
+  public func fetchGraphUserBackings(status: BackingState)
+    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
+    guard let status = GraphAPI.BackingState.from(status) else
+    { return SignalProducer(error: .couldNotParseJSON) }
+
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserBackingsQuery(status: status, withStoredCards: false))
+      .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
   public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)

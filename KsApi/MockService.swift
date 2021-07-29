@@ -73,7 +73,7 @@
     fileprivate let fetchDraftError: ErrorEnvelope?
 
     fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
-    fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
+    fileprivate let fetchGraphUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
@@ -244,7 +244,7 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
-      fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
+      fetchGraphUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -721,8 +721,8 @@
       }
     }
 
-    internal func fetchGraphUserBackings(query _: NonEmptySet<Query>)
-      -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
+    internal func fetchGraphUserBackings(status _: BackingState)
+      -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchGraphUserBackingsResult)
     }
 

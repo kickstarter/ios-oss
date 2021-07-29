@@ -155,8 +155,8 @@ public protocol ServiceType {
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
 
   /// Fetch User's backings with a specific status.
-  func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<BackingsEnvelope, ErrorEnvelope>
+  func fetchGraphUserBackings(status: BackingState)
+    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
 
   /// Fetch `Backing` data for ManagePledgeViewController with a query.
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)

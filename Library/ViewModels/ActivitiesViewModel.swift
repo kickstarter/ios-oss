@@ -214,11 +214,9 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     let erroredBackingsEvent = currentUser
       .skipNil()
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUserBackings(
-          query: UserQueries.backings(BackingState.errored.rawValue).query
-        )
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
+        AppEnvironment.current.apiService.fetchGraphUserBackings(status: .errored)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
       }
 
     self.erroredBackings = erroredBackingsEvent.values().map(\.projectsAndBackings)

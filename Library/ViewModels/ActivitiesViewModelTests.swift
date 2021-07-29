@@ -552,7 +552,7 @@ final class ActivitiesViewModelTests: TestCase {
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {
     let user = User.template
 
-    let env = BackingsEnvelope(projectsAndBackings: [
+    let env = ErroredBackingsEnvelope(projectsAndBackings: [
       ProjectAndBackingEnvelope.template
     ])
 
@@ -575,6 +575,31 @@ final class ActivitiesViewModelTests: TestCase {
 
       self.updateUserInEnvironment.assertValues([user])
       self.erroredBackings.assertValues([env.projectsAndBackings])
+    }
+  }
+
+  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_fetchGraphUserBackingsResultFailure() {
+    let user = User.template
+
+    let mockService = MockService(fetchGraphUserBackingsResult: .failure(.couldNotParseJSON))
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.updateUserInEnvironment.assertDidNotEmitValue()
+      self.erroredBackings.assertDidNotEmitValue()
+
+      self.vm.inputs.managePledgeViewControllerDidFinish()
+
+      self.scheduler.advance()
+
+      self.updateUserInEnvironment.assertValues([user])
+      self.erroredBackings.assertDidNotEmitValue()
+
+      self.vm.inputs.currentUserUpdated()
+
+      self.scheduler.advance()
+
+      self.updateUserInEnvironment.assertValues([user])
+      self.erroredBackings.assertValues([])
     }
   }
 
