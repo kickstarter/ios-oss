@@ -89,7 +89,8 @@ public struct Service: ServiceType {
   public func addNewCreditCard(input: CreatePaymentSourceInput)
     -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI.CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
+      .perform(mutation: GraphAPI
+        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 

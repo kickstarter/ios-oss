@@ -25,7 +25,7 @@ final class CreatePaymentSourceEnvelope_CreatePaymentSourceMutationTests: XCTest
 
     guard let env = CreatePaymentSourceEnvelope.from(data) else {
       XCTFail("Payment source envelope should exist.")
-      
+
       return
     }
 
