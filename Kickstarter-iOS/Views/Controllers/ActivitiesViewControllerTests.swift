@@ -229,11 +229,11 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
 
-    let env = BackingsEnvelope(projectsAndBackings: [projectAndBacking, projectAndBacking])
+    let env = ErroredBackingsEnvelope(projectsAndBackings: [projectAndBacking, projectAndBacking])
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchGraphUserBackingsResult: .success(env)),
+        apiService: MockService(fetchErroredUserBackingsResult: .success(env)),
         currentUser: .template |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ false,
         language: language
       ) {
