@@ -4,34 +4,7 @@ query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!) {
       nodes {
         addOns {
           nodes {
-            amount {
-              ...MoneyFragment
-            }
-            backersCount
-            convertedAmount {
-              ...MoneyFragment
-            }
-            description
-            displayName
-            endsAt
-            estimatedDeliveryOn
-            id
-            isMaxPledge
-            items {
-              nodes {
-                id
-                name
-              }
-            }
-            limit
-            limitPerBacker
-            name
-            remainingQuantity
-            shippingPreference
-            shippingRules {
-              ...ShippingRuleFragment
-            }
-            startsAt
+          ...RewardFragment
           }
         }
         ...BackingFragment

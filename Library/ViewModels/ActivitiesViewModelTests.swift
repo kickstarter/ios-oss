@@ -549,14 +549,14 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToManagePledgeBackingParam.assertValues([.id(env.backing.id)])
   }
 
-  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {
+  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_DidReturnUserAndErroredBackings() {
     let user = User.template
 
     let env = ErroredBackingsEnvelope(projectsAndBackings: [
       ProjectAndBackingEnvelope.template
     ])
 
-    let mockService = MockService(fetchGraphUserBackingsResult: .success(env))
+    let mockService = MockService(fetchErroredUserBackingsResult: .success(env))
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.updateUserInEnvironment.assertDidNotEmitValue()
@@ -578,10 +578,10 @@ final class ActivitiesViewModelTests: TestCase {
     }
   }
 
-  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_FetchGraphUserBackingsResultFailure() {
+  func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish_DidReturnUserAndNoErroredBackings() {
     let user = User.template
 
-    let mockService = MockService(fetchGraphUserBackingsResult: .failure(.couldNotParseJSON))
+    let mockService = MockService(fetchErroredUserBackingsResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.updateUserInEnvironment.assertDidNotEmitValue()

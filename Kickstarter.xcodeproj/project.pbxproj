@@ -210,6 +210,7 @@
 		4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */; };
 		4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */; };
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
+		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
 		4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */; };
 		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
 		4753C779264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */; };
@@ -1908,6 +1909,7 @@
 		4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelopeTests.swift; sourceTree = "<group>"; };
 		4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.swift; sourceTree = "<group>"; };
 		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
 		4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelope.swift; sourceTree = "<group>"; };
@@ -4887,6 +4889,7 @@
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				77272D362370AB5C003B7A9C /* BackingPaymentSourceTests.swift */,
 				8A67DDB724DDB21100B4AB10 /* ErroredBackingsEnvelope.swift */,
+				474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */,
 				8A4E954824525EC100A578CF /* BackingState.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
@@ -7024,6 +7027,7 @@
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
+				474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */,
 				8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */,
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,

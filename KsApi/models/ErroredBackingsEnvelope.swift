@@ -8,22 +8,6 @@ public struct ErroredBackingsEnvelope {
 // MARK: - GraphQL Adapters
 
 extension ErroredBackingsEnvelope {
-  internal static func envelopeProducer(
-    from envelope: UserEnvelope<GraphBackingEnvelope>
-  ) -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
-    let envelopes = envelope.me.backings.nodes.compactMap { graphBacking -> ProjectAndBackingEnvelope? in
-      guard
-        let backing = Backing.backing(from: graphBacking),
-        let graphProject = graphBacking.project,
-        let project = Project.project(from: graphProject)
-      else { return nil }
-
-      return ProjectAndBackingEnvelope(project: project, backing: backing)
-    }
-
-    return SignalProducer(value: ErroredBackingsEnvelope(projectsAndBackings: envelopes))
-  }
-
   /**
    Returns a `SignalProducer` containing either a `ErroredBackingsEnvelope` on success  or an `ErrorEnvelope`.
 

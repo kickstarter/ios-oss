@@ -714,52 +714,6 @@ public enum GraphAPI {
     }
   }
 
-  /// A preference for shipping a reward
-  public enum ShippingPreference: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-    public typealias RawValue = String
-    case `none`
-    case restricted
-    case unrestricted
-    /// Auto generated constant for unknown enum values
-    case __unknown(RawValue)
-
-    public init?(rawValue: RawValue) {
-      switch rawValue {
-        case "none": self = .none
-        case "restricted": self = .restricted
-        case "unrestricted": self = .unrestricted
-        default: self = .__unknown(rawValue)
-      }
-    }
-
-    public var rawValue: RawValue {
-      switch self {
-        case .none: return "none"
-        case .restricted: return "restricted"
-        case .unrestricted: return "unrestricted"
-        case .__unknown(let value): return value
-      }
-    }
-
-    public static func == (lhs: ShippingPreference, rhs: ShippingPreference) -> Bool {
-      switch (lhs, rhs) {
-        case (.none, .none): return true
-        case (.restricted, .restricted): return true
-        case (.unrestricted, .unrestricted): return true
-        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-        default: return false
-      }
-    }
-
-    public static var allCases: [ShippingPreference] {
-      return [
-        .none,
-        .restricted,
-        .unrestricted,
-      ]
-    }
-  }
-
   /// Credit card types.
   public enum CreditCardTypes: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -2450,6 +2404,52 @@ public enum GraphAPI {
         .purged,
         .successful,
         .failed,
+      ]
+    }
+  }
+
+  /// A preference for shipping a reward
+  public enum ShippingPreference: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    case `none`
+    case restricted
+    case unrestricted
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "none": self = .none
+        case "restricted": self = .restricted
+        case "unrestricted": self = .unrestricted
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .none: return "none"
+        case .restricted: return "restricted"
+        case .unrestricted: return "unrestricted"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: ShippingPreference, rhs: ShippingPreference) -> Bool {
+      switch (lhs, rhs) {
+        case (.none, .none): return true
+        case (.restricted, .restricted): return true
+        case (.unrestricted, .unrestricted): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [ShippingPreference] {
+      return [
+        .none,
+        .restricted,
+        .unrestricted,
       ]
     }
   }
@@ -4662,39 +4662,7 @@ public enum GraphAPI {
                 __typename
                 nodes {
                   __typename
-                  amount {
-                    __typename
-                    ...MoneyFragment
-                  }
-                  backersCount
-                  convertedAmount {
-                    __typename
-                    ...MoneyFragment
-                  }
-                  description
-                  displayName
-                  endsAt
-                  estimatedDeliveryOn
-                  id
-                  isMaxPledge
-                  items {
-                    __typename
-                    nodes {
-                      __typename
-                      id
-                      name
-                    }
-                  }
-                  limit
-                  limitPerBacker
-                  name
-                  remainingQuantity
-                  shippingPreference
-                  shippingRules {
-                    __typename
-                    ...ShippingRuleFragment
-                  }
-                  startsAt
+                  ...RewardFragment
                 }
               }
               ...BackingFragment
@@ -4714,6 +4682,7 @@ public enum GraphAPI {
 
     public var queryDocument: String {
       var document: String = operationDefinition
+      document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -4724,7 +4693,6 @@ public enum GraphAPI {
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
-      document.append("\n" + RewardFragment.fragmentDefinition)
       return document
     }
 
@@ -5019,23 +4987,7 @@ public enum GraphAPI {
                 public static var selections: [GraphQLSelection] {
                   return [
                     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                    GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
-                    GraphQLField("backersCount", type: .scalar(Int.self)),
-                    GraphQLField("convertedAmount", type: .nonNull(.object(ConvertedAmount.selections))),
-                    GraphQLField("description", type: .nonNull(.scalar(String.self))),
-                    GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
-                    GraphQLField("endsAt", type: .scalar(String.self)),
-                    GraphQLField("estimatedDeliveryOn", type: .scalar(String.self)),
-                    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-                    GraphQLField("isMaxPledge", type: .nonNull(.scalar(Bool.self))),
-                    GraphQLField("items", type: .object(Item.selections)),
-                    GraphQLField("limit", type: .scalar(Int.self)),
-                    GraphQLField("limitPerBacker", type: .scalar(Int.self)),
-                    GraphQLField("name", type: .scalar(String.self)),
-                    GraphQLField("remainingQuantity", type: .scalar(Int.self)),
-                    GraphQLField("shippingPreference", type: .scalar(ShippingPreference.self)),
-                    GraphQLField("shippingRules", type: .nonNull(.list(.object(ShippingRule.selections)))),
-                    GraphQLField("startsAt", type: .scalar(String.self)),
+                    GraphQLFragmentSpread(RewardFragment.self),
                   ]
                 }
 
@@ -5043,10 +4995,6 @@ public enum GraphAPI {
 
                 public init(unsafeResultMap: ResultMap) {
                   self.resultMap = unsafeResultMap
-                }
-
-                public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, name: String? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingRules: [ShippingRule?], startsAt: String? = nil) {
-                  self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "name": name, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingRules": shippingRules.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } }, "startsAt": startsAt])
                 }
 
                 public var __typename: String {
@@ -5058,425 +5006,28 @@ public enum GraphAPI {
                   }
                 }
 
-                /// Amount for claiming this reward.
-                public var amount: Amount {
+                public var fragments: Fragments {
                   get {
-                    return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
+                    return Fragments(unsafeResultMap: resultMap)
                   }
                   set {
-                    resultMap.updateValue(newValue.resultMap, forKey: "amount")
+                    resultMap += newValue.resultMap
                   }
                 }
 
-                /// count of backers for this reward
-                public var backersCount: Int? {
-                  get {
-                    return resultMap["backersCount"] as? Int
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "backersCount")
-                  }
-                }
-
-                /// Amount for claiming this reward, in the current user's chosen currency
-                public var convertedAmount: ConvertedAmount {
-                  get {
-                    return ConvertedAmount(unsafeResultMap: resultMap["convertedAmount"]! as! ResultMap)
-                  }
-                  set {
-                    resultMap.updateValue(newValue.resultMap, forKey: "convertedAmount")
-                  }
-                }
-
-                /// A reward description.
-                public var description: String {
-                  get {
-                    return resultMap["description"]! as! String
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "description")
-                  }
-                }
-
-                /// A reward's title plus the amount, or a default title (the reward amount) if it doesn't have a title.
-                public var displayName: String {
-                  get {
-                    return resultMap["displayName"]! as! String
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "displayName")
-                  }
-                }
-
-                /// When the reward is scheduled to end
-                public var endsAt: String? {
-                  get {
-                    return resultMap["endsAt"] as? String
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "endsAt")
-                  }
-                }
-
-                /// Estimated delivery day.
-                public var estimatedDeliveryOn: String? {
-                  get {
-                    return resultMap["estimatedDeliveryOn"] as? String
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "estimatedDeliveryOn")
-                  }
-                }
-
-                public var id: GraphQLID {
-                  get {
-                    return resultMap["id"]! as! GraphQLID
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "id")
-                  }
-                }
-
-                /// Does reward amount meet or exceed maximum pledge for the project
-                public var isMaxPledge: Bool {
-                  get {
-                    return resultMap["isMaxPledge"]! as! Bool
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "isMaxPledge")
-                  }
-                }
-
-                /// Items in the reward.
-                public var items: Item? {
-                  get {
-                    return (resultMap["items"] as? ResultMap).flatMap { Item(unsafeResultMap: $0) }
-                  }
-                  set {
-                    resultMap.updateValue(newValue?.resultMap, forKey: "items")
-                  }
-                }
-
-                /// A reward limit.
-                public var limit: Int? {
-                  get {
-                    return resultMap["limit"] as? Int
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "limit")
-                  }
-                }
-
-                /// Per backer reward limit.
-                public var limitPerBacker: Int? {
-                  get {
-                    return resultMap["limitPerBacker"] as? Int
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "limitPerBacker")
-                  }
-                }
-
-                /// A reward title.
-                public var name: String? {
-                  get {
-                    return resultMap["name"] as? String
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "name")
-                  }
-                }
-
-                /// Remaining reward quantity.
-                public var remainingQuantity: Int? {
-                  get {
-                    return resultMap["remainingQuantity"] as? Int
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "remainingQuantity")
-                  }
-                }
-
-                /// Shipping preference for this reward
-                public var shippingPreference: ShippingPreference? {
-                  get {
-                    return resultMap["shippingPreference"] as? ShippingPreference
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "shippingPreference")
-                  }
-                }
-
-                /// Shipping rules defined by the creator for this reward
-                public var shippingRules: [ShippingRule?] {
-                  get {
-                    return (resultMap["shippingRules"] as! [ResultMap?]).map { (value: ResultMap?) -> ShippingRule? in value.flatMap { (value: ResultMap) -> ShippingRule in ShippingRule(unsafeResultMap: value) } }
-                  }
-                  set {
-                    resultMap.updateValue(newValue.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } }, forKey: "shippingRules")
-                  }
-                }
-
-                /// When the reward is scheduled to start
-                public var startsAt: String? {
-                  get {
-                    return resultMap["startsAt"] as? String
-                  }
-                  set {
-                    resultMap.updateValue(newValue, forKey: "startsAt")
-                  }
-                }
-
-                public struct Amount: GraphQLSelectionSet {
-                  public static let possibleTypes: [String] = ["Money"]
-
-                  public static var selections: [GraphQLSelection] {
-                    return [
-                      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                      GraphQLFragmentSpread(MoneyFragment.self),
-                    ]
-                  }
-
+                public struct Fragments {
                   public private(set) var resultMap: ResultMap
 
                   public init(unsafeResultMap: ResultMap) {
                     self.resultMap = unsafeResultMap
                   }
 
-                  public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
-                    self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
-                  }
-
-                  public var __typename: String {
+                  public var rewardFragment: RewardFragment {
                     get {
-                      return resultMap["__typename"]! as! String
-                    }
-                    set {
-                      resultMap.updateValue(newValue, forKey: "__typename")
-                    }
-                  }
-
-                  public var fragments: Fragments {
-                    get {
-                      return Fragments(unsafeResultMap: resultMap)
+                      return RewardFragment(unsafeResultMap: resultMap)
                     }
                     set {
                       resultMap += newValue.resultMap
-                    }
-                  }
-
-                  public struct Fragments {
-                    public private(set) var resultMap: ResultMap
-
-                    public init(unsafeResultMap: ResultMap) {
-                      self.resultMap = unsafeResultMap
-                    }
-
-                    public var moneyFragment: MoneyFragment {
-                      get {
-                        return MoneyFragment(unsafeResultMap: resultMap)
-                      }
-                      set {
-                        resultMap += newValue.resultMap
-                      }
-                    }
-                  }
-                }
-
-                public struct ConvertedAmount: GraphQLSelectionSet {
-                  public static let possibleTypes: [String] = ["Money"]
-
-                  public static var selections: [GraphQLSelection] {
-                    return [
-                      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                      GraphQLFragmentSpread(MoneyFragment.self),
-                    ]
-                  }
-
-                  public private(set) var resultMap: ResultMap
-
-                  public init(unsafeResultMap: ResultMap) {
-                    self.resultMap = unsafeResultMap
-                  }
-
-                  public init(amount: String? = nil, currency: CurrencyCode? = nil, symbol: String? = nil) {
-                    self.init(unsafeResultMap: ["__typename": "Money", "amount": amount, "currency": currency, "symbol": symbol])
-                  }
-
-                  public var __typename: String {
-                    get {
-                      return resultMap["__typename"]! as! String
-                    }
-                    set {
-                      resultMap.updateValue(newValue, forKey: "__typename")
-                    }
-                  }
-
-                  public var fragments: Fragments {
-                    get {
-                      return Fragments(unsafeResultMap: resultMap)
-                    }
-                    set {
-                      resultMap += newValue.resultMap
-                    }
-                  }
-
-                  public struct Fragments {
-                    public private(set) var resultMap: ResultMap
-
-                    public init(unsafeResultMap: ResultMap) {
-                      self.resultMap = unsafeResultMap
-                    }
-
-                    public var moneyFragment: MoneyFragment {
-                      get {
-                        return MoneyFragment(unsafeResultMap: resultMap)
-                      }
-                      set {
-                        resultMap += newValue.resultMap
-                      }
-                    }
-                  }
-                }
-
-                public struct Item: GraphQLSelectionSet {
-                  public static let possibleTypes: [String] = ["RewardItemsConnection"]
-
-                  public static var selections: [GraphQLSelection] {
-                    return [
-                      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                      GraphQLField("nodes", type: .list(.object(Node.selections))),
-                    ]
-                  }
-
-                  public private(set) var resultMap: ResultMap
-
-                  public init(unsafeResultMap: ResultMap) {
-                    self.resultMap = unsafeResultMap
-                  }
-
-                  public init(nodes: [Node?]? = nil) {
-                    self.init(unsafeResultMap: ["__typename": "RewardItemsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
-                  }
-
-                  public var __typename: String {
-                    get {
-                      return resultMap["__typename"]! as! String
-                    }
-                    set {
-                      resultMap.updateValue(newValue, forKey: "__typename")
-                    }
-                  }
-
-                  /// A list of nodes.
-                  public var nodes: [Node?]? {
-                    get {
-                      return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
-                    }
-                    set {
-                      resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
-                    }
-                  }
-
-                  public struct Node: GraphQLSelectionSet {
-                    public static let possibleTypes: [String] = ["RewardItem"]
-
-                    public static var selections: [GraphQLSelection] {
-                      return [
-                        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-                        GraphQLField("name", type: .scalar(String.self)),
-                      ]
-                    }
-
-                    public private(set) var resultMap: ResultMap
-
-                    public init(unsafeResultMap: ResultMap) {
-                      self.resultMap = unsafeResultMap
-                    }
-
-                    public init(id: GraphQLID, name: String? = nil) {
-                      self.init(unsafeResultMap: ["__typename": "RewardItem", "id": id, "name": name])
-                    }
-
-                    public var __typename: String {
-                      get {
-                        return resultMap["__typename"]! as! String
-                      }
-                      set {
-                        resultMap.updateValue(newValue, forKey: "__typename")
-                      }
-                    }
-
-                    public var id: GraphQLID {
-                      get {
-                        return resultMap["id"]! as! GraphQLID
-                      }
-                      set {
-                        resultMap.updateValue(newValue, forKey: "id")
-                      }
-                    }
-
-                    /// An item name.
-                    public var name: String? {
-                      get {
-                        return resultMap["name"] as? String
-                      }
-                      set {
-                        resultMap.updateValue(newValue, forKey: "name")
-                      }
-                    }
-                  }
-                }
-
-                public struct ShippingRule: GraphQLSelectionSet {
-                  public static let possibleTypes: [String] = ["ShippingRule"]
-
-                  public static var selections: [GraphQLSelection] {
-                    return [
-                      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                      GraphQLFragmentSpread(ShippingRuleFragment.self),
-                    ]
-                  }
-
-                  public private(set) var resultMap: ResultMap
-
-                  public init(unsafeResultMap: ResultMap) {
-                    self.resultMap = unsafeResultMap
-                  }
-
-                  public var __typename: String {
-                    get {
-                      return resultMap["__typename"]! as! String
-                    }
-                    set {
-                      resultMap.updateValue(newValue, forKey: "__typename")
-                    }
-                  }
-
-                  public var fragments: Fragments {
-                    get {
-                      return Fragments(unsafeResultMap: resultMap)
-                    }
-                    set {
-                      resultMap += newValue.resultMap
-                    }
-                  }
-
-                  public struct Fragments {
-                    public private(set) var resultMap: ResultMap
-
-                    public init(unsafeResultMap: ResultMap) {
-                      self.resultMap = unsafeResultMap
-                    }
-
-                    public var shippingRuleFragment: ShippingRuleFragment {
-                      get {
-                        return ShippingRuleFragment(unsafeResultMap: resultMap)
-                      }
-                      set {
-                        resultMap += newValue.resultMap
-                      }
                     }
                   }
                 }

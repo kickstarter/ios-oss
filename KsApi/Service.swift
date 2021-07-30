@@ -296,7 +296,7 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
 
-  public func fetchGraphUserBackings(status: BackingState)
+  public func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
     guard let status = GraphAPI.BackingState.from(status) else
     { return SignalProducer(error: .couldNotParseJSON) }
