@@ -1,4 +1,6 @@
 # Reference: https://docs.codecov.io/docs/codecovyml-reference
+ignore: 
+  - "*Tests.swift"
 coverage:
   status:
     project:
