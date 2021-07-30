@@ -233,7 +233,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchGraphUserBackingsResult: .success(env)),
+        apiService: MockService(fetchErroredUserBackingsResult: .success(env)),
         currentUser: .template |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ false,
         language: language
       ) {
