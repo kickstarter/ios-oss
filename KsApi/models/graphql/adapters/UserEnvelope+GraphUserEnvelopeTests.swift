@@ -27,8 +27,8 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.me.name, "Hari Singh")
     XCTAssertEqual(
       envelope.me.storedCards,
-      GraphUserCreditCard(storedCards: [
-        GraphUserCreditCard
+      UserCreditCards(storedCards: [
+        UserCreditCards
           .CreditCard(expirationDate: "2023-01-01", id: "6", lastFour: "4242", type: .visa)
       ])
     )

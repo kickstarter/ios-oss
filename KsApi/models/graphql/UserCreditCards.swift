@@ -1,7 +1,7 @@
 
 
 // TODO: Remove public access
-public struct GraphUserCreditCard: Decodable {
+public struct UserCreditCards: Decodable {
   public var storedCards: [CreditCard]
 
   public struct CreditCard: Decodable, Equatable {
@@ -25,8 +25,8 @@ public struct GraphUserCreditCard: Decodable {
   }
 }
 
-extension GraphUserCreditCard: Equatable {
-  public static func == (lhs: GraphUserCreditCard, rhs: GraphUserCreditCard) -> Bool {
+extension UserCreditCards: Equatable {
+  public static func == (lhs: UserCreditCards, rhs: UserCreditCards) -> Bool {
     lhs.storedCards == rhs.storedCards
   }
 }

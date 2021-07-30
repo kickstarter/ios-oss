@@ -5,10 +5,10 @@ import Prelude
 import UIKit
 
 final class PledgeViewControllerTests: TestCase {
-  private let userWithCards = GraphUser.template |> \.storedCards .~ GraphUserCreditCard(
+  private let userWithCards = GraphUser.template |> \.storedCards .~ UserCreditCards(
     storedCards: [
-      GraphUserCreditCard.visa,
-      GraphUserCreditCard.masterCard
+      UserCreditCards.visa,
+      UserCreditCards.masterCard
     ]
   )
 

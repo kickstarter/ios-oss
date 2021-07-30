@@ -72,8 +72,9 @@ public protocol ServiceType {
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Adds a new credit card to users' payment methods
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
-    SignalProducer<CreatePaymentSourceEnvelope, GraphError>
+    SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope>
 
   /// Deletes a payment method
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->

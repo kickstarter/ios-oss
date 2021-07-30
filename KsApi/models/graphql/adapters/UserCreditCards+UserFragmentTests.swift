@@ -2,7 +2,7 @@ import Apollo
 @testable import KsApi
 import XCTest
 
-class GraphUserCreditCard_UserFragmentTests: XCTestCase {
+class UserCreditCards_UserFragmentTests: XCTestCase {
   func test_WithStoredCards() {
     let variables = ["withStoredCards": true]
     let sampleCardDict: [String: Any] = [
@@ -36,7 +36,7 @@ class GraphUserCreditCard_UserFragmentTests: XCTestCase {
         storedCards: storedCardsFragment
       )
 
-      XCTAssertTrue(GraphUserCreditCard.graphUserCreditCard(from: userFragment).storedCards.count == 1)
+      XCTAssertTrue(UserCreditCards.userCreditCards(from: userFragment).storedCards.count == 1)
     } catch {
       XCTFail()
     }
@@ -68,7 +68,7 @@ class GraphUserCreditCard_UserFragmentTests: XCTestCase {
         storedCards: storedCardsFragment
       )
 
-      XCTAssertTrue(GraphUserCreditCard.graphUserCreditCard(from: userFragment).storedCards.count == 0)
+      XCTAssertTrue(UserCreditCards.userCreditCards(from: userFragment).storedCards.count == 0)
     } catch {
       XCTFail()
     }

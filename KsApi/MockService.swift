@@ -13,7 +13,7 @@
     internal let deviceIdentifier: String
     internal let perimeterXClient: PerimeterXClientType
 
-    fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
+    fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
     fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
@@ -208,7 +208,7 @@
       currency: String = "USD",
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-      addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
+      addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -516,7 +516,7 @@
     }
 
     public func addNewCreditCard(input _: CreatePaymentSourceInput)
-      -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
+      -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
       return producer(for: self.addNewCreditCardResult)
     }
 

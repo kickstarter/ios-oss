@@ -11,14 +11,14 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
   func testLoadValues() {
     let cellData = [
       (
-        card: GraphUserCreditCard.amex,
+        card: UserCreditCards.amex,
         isEnabled: true,
         isSelected: true,
         projectCountry: "Country 1",
         isErroredPaymentMethod: false
       ),
       (
-        card: GraphUserCreditCard.visa,
+        card: UserCreditCards.visa,
         isEnabled: false,
         isSelected: false,
         projectCountry: "Country 2",

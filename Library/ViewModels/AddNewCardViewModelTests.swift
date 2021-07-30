@@ -18,7 +18,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let cardExpMonth = TestObserver<Month, Never>()
   private let cardExpYear = TestObserver<Year, Never>()
   private let cardCVC = TestObserver<String, Never>()
-  private let newCardAddedCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
+  private let newCardAddedCard = TestObserver<UserCreditCards.CreditCard, Never>()
   private let newCardAddedMessage = TestObserver<String, Never>()
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, Never>()
   private let rememberThisCardToggleViewControllerContainerIsHidden = TestObserver<Bool, Never>()
@@ -79,7 +79,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.newCardAddedCard.assertValues([GraphUserCreditCard.amex])
+      self.newCardAddedCard.assertValues([UserCreditCards.amex])
       self.newCardAddedMessage.assertValues([Strings.Got_it_your_changes_have_been_saved()])
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
@@ -108,7 +108,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.newCardAddedCard.assertValues([GraphUserCreditCard.amex])
+      self.newCardAddedCard.assertValues([UserCreditCards.amex])
       self.newCardAddedMessage.assertValues([Strings.Got_it_your_changes_have_been_saved()])
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
@@ -138,10 +138,10 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.activityIndicatorShouldShow.assertValues([true, false])
   }
 
-  func testAddCardFailure_GraphError() {
-    let error = GraphError.emptyResponse(nil)
+  func testAddCardFailure_ErrorEnvelope() {
+    let error = ErrorEnvelope.couldNotParseJSON
 
-    withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
+    withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.couldNotParseJSON))) {
       self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.cardholderNameChanged("Native Squad")

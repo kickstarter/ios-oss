@@ -22,7 +22,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
       pledgeTotal: 10,
       selectedQuantities: [reward.id: 1],
       shippingRule: nil,
-      paymentSourceId: GraphUserCreditCard.amex.id,
+      paymentSourceId: UserCreditCards.amex.id,
       applePayParams: applePayParams,
       refTag: RefTag.projectPage
     )

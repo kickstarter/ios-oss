@@ -20,13 +20,13 @@ public typealias PledgePaymentMethodsValue = (
 
 public typealias PledgePaymentMethodsAndSelectionData = (
   paymentMethodsCellData: [PledgePaymentMethodCellData],
-  selectedCard: GraphUserCreditCard.CreditCard?,
+  selectedCard: UserCreditCards.CreditCard?,
   shouldReload: Bool,
   isLoading: Bool
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
-  func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
+  func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func viewDidLoad()
@@ -185,8 +185,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.configureWithValueProperty.value = value
   }
 
-  private let newCreditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
-  public func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard) {
+  private let newCreditCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
+  public func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard) {
     self.newCreditCardProperty.value = card
   }
 
@@ -217,11 +217,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 }
 
 private func pledgePaymentMethodCellDataAndSelectedCard(
-  with cards: [GraphUserCreditCard.CreditCard],
+  with cards: [UserCreditCards.CreditCard],
   availableCardTypes: [String],
   project: Project,
   newCardAdded: Bool
-) -> ([PledgePaymentMethodCellData], GraphUserCreditCard.CreditCard?) {
+) -> ([PledgePaymentMethodCellData], UserCreditCards.CreditCard?) {
   let data = cards.compactMap { card -> PledgePaymentMethodCellData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
@@ -276,7 +276,7 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
 
 private func cellData(
   _ data: [PledgePaymentMethodCellData],
-  selecting card: GraphUserCreditCard.CreditCard?
+  selecting card: UserCreditCards.CreditCard?
 ) -> [PledgePaymentMethodCellData] {
   return data.map { value in
     (
@@ -296,8 +296,8 @@ private func isCreatingPledge(_ project: Project) -> Bool {
 }
 
 private func cards(
-  _ cards: [GraphUserCreditCard.CreditCard],
+  _ cards: [UserCreditCards.CreditCard],
   orderedBy backing: Backing?
-) -> [GraphUserCreditCard.CreditCard] {
+) -> [UserCreditCards.CreditCard] {
   return cards.sorted { card1, _ in card1.id == backing?.paymentSource?.id }
 }

@@ -1,7 +1,7 @@
 @testable import KsApi
 import XCTest
 
-final class GraphUserCreditCardTests: XCTestCase {
+final class UserCreditCardsTests: XCTestCase {
   func testCreditCardsDecoding_noCards() {
     let jsonString = """
     {
@@ -12,11 +12,11 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
+      let cards = try JSONDecoder().decode(UserCreditCards.self, from: data!)
 
       XCTAssertEqual(cards.storedCards.count, 0)
     } catch {
-      XCTFail("Failed to decode GraphUserCreditCard")
+      XCTFail("Failed to decode UserCreditCards")
     }
   }
 
@@ -44,12 +44,12 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
+      let cards = try JSONDecoder().decode(UserCreditCards.self, from: data!)
 
       XCTAssertEqual(cards.storedCards.count, 2)
 
       guard let firstCard = cards.storedCards.first else {
-        XCTFail("Failed to decode GraphUserCreditCard")
+        XCTFail("Failed to decode UserCreditCards")
         return
       }
 
@@ -58,7 +58,7 @@ final class GraphUserCreditCardTests: XCTestCase {
       XCTAssertEqual(firstCard.expirationDate, "2023-02-01")
       XCTAssertEqual(firstCard.id, "3021")
     } catch {
-      XCTFail("Failed to decode GraphUserCreditCard")
+      XCTFail("Failed to decode UserCreditCards")
     }
   }
 
@@ -79,10 +79,10 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
+      let cards = try JSONDecoder().decode(UserCreditCards.self, from: data!)
 
       guard let card = cards.storedCards.first else {
-        XCTFail("Failed to decode GraphUserCreditCard")
+        XCTFail("Failed to decode UserCreditCards")
         return
       }
 
@@ -91,7 +91,7 @@ final class GraphUserCreditCardTests: XCTestCase {
       XCTAssertEqual(card.expirationDate, "2020-02-01")
       XCTAssertEqual(card.id, "2768")
     } catch {
-      XCTFail("Failed to decode GraphUserCreditCard")
+      XCTFail("Failed to decode UserCreditCards")
     }
   }
 
@@ -113,10 +113,10 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
+      let cards = try JSONDecoder().decode(UserCreditCards.self, from: data!)
 
       guard let card = cards.storedCards.first else {
-        XCTFail("Failed to decode GraphUserCreditCard")
+        XCTFail("Failed to decode UserCreditCards")
         return
       }
 
@@ -125,7 +125,7 @@ final class GraphUserCreditCardTests: XCTestCase {
       XCTAssertEqual(card.expirationDate, "2020-02-01")
       XCTAssertEqual(card.id, "2768")
     } catch {
-      XCTFail("Failed to decode GraphUserCreditCard")
+      XCTFail("Failed to decode UserCreditCards")
     }
   }
 }

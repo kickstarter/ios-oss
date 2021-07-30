@@ -12,7 +12,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var cardNumberLabel: UILabel!
   @IBOutlet fileprivate var expirationDateLabel: UILabel!
 
-  public func configureWith(value card: GraphUserCreditCard.CreditCard) {
+  public func configureWith(value card: UserCreditCards.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: card)
   }
 

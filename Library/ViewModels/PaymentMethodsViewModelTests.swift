@@ -8,12 +8,12 @@ import XCTest
 
 internal final class PaymentMethodsViewModelTests: TestCase {
   private let vm = PaymentMethodsViewModel()
-  private let userTemplate = GraphUser.template |> \.storedCards .~ GraphUserCreditCard.template
+  private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
   private let editButtonTitle = TestObserver<String, Never>()
   private let errorLoadingPaymentMethods = TestObserver<String, Never>()
   private let goToAddCardScreenWithIntent = TestObserver<AddNewCardIntent, Never>()
-  private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
+  private let paymentMethods = TestObserver<[UserCreditCards.CreditCard], Never>()
   private let presentBanner = TestObserver<String, Never>()
   private let reloadData = TestObserver<Void, Never>()
   private let showAlert = TestObserver<String, Never>()
@@ -44,7 +44,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
     }
   }
 
@@ -97,7 +97,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
     }
   }
 
@@ -150,7 +150,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonEnabled_AfterDeletePaymentMethod() {
-    guard let card = GraphUserCreditCard.template.storedCards.first else {
+    guard let card = UserCreditCards.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
@@ -183,7 +183,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonNotEnabled_AfterDeleteLastPaymentMethod() {
-    guard let card = GraphUserCreditCard.template.storedCards.first else {
+    guard let card = UserCreditCards.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
@@ -245,12 +245,12 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testDeletePaymentMethod() {
-    guard let card = GraphUserCreditCard.template.storedCards.first else {
+    guard let card = UserCreditCards.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
 
-    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards)
+    let result = DeletePaymentMethodEnvelope(storedCards: UserCreditCards.template.storedCards)
     let response = UserEnvelope<GraphUser>(me: userTemplate)
     let apiService = MockService(
       deletePaymentMethodResult: .success(result),
@@ -263,13 +263,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
 
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
@@ -277,14 +277,14 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([], "No errors emitted")
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.storedCards],
+        [UserCreditCards.template.storedCards],
         "Emits once"
       )
     }
   }
 
   func testDeletePaymentMethod_Error() {
-    guard let card = GraphUserCreditCard.template.storedCards.first else {
+    guard let card = UserCreditCards.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
@@ -301,13 +301,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
 
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
@@ -317,14 +317,14 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Something went wrong and we were unable to remove your payment method, please try again."
       ])
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.storedCards, GraphUserCreditCard.template.storedCards],
+        [UserCreditCards.template.storedCards, UserCreditCards.template.storedCards],
         "Emits again to reload the tableview after an error occurred"
       )
     }
   }
 
   func testDeletePaymentMethod_SuccessThenError() {
-    guard let card = GraphUserCreditCard.template.storedCards.first else {
+    guard let card = UserCreditCards.template.storedCards.first else {
       XCTFail("Card should exist")
       return
     }
@@ -342,14 +342,14 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
       self.editButtonIsEnabled.assertValues([false, true], "Edit button enabled, we have cards")
 
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards])
+      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.editButtonIsEnabled.assertValues([false, true], "Editing button remains enabled")
@@ -379,7 +379,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Something went wrong and we were unable to remove your payment method, please try again."
       ])
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.storedCards, result1.storedCards],
+        [UserCreditCards.template.storedCards, result1.storedCards],
         "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
       )
 
@@ -394,9 +394,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       )
       self.paymentMethods.assertValues(
         [
-          GraphUserCreditCard.template.storedCards,
+          UserCreditCards.template.storedCards,
           result1.storedCards,
-          GraphUserCreditCard.template.storedCards
+          UserCreditCards.template.storedCards
         ],
         "Cards are refreshed normally"
       )
