@@ -291,7 +291,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let response = UserEnvelope<GraphUser>(me: userTemplate)
     let apiService = MockService(
-      deletePaymentMethodResult: .failure(.invalidInput),
+      deletePaymentMethodResult: .failure(.couldNotParseJSON),
       fetchGraphUserResult: .success(response)
     )
     withEnvironment(apiService: apiService) {
@@ -362,7 +362,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let response2 = UserEnvelope<GraphUser>(me: userTemplate)
     let apiService2 = MockService(
-      deletePaymentMethodResult: .failure(.invalidInput),
+      deletePaymentMethodResult: .failure(.couldNotParseJSON),
       fetchGraphUserResult: .success(response2)
     )
 
