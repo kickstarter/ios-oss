@@ -18,7 +18,7 @@ public struct Backing {
   public let reward: Reward?
   public let rewardId: Int?
   public let sequence: Int
-  public let shippingAmount: Int?
+  public let shippingAmount: Double?
   public let status: Status
 
   public struct PaymentSource {
@@ -88,7 +88,7 @@ extension Backing: Decodable {
     self.reward = try values.decodeIfPresent(Reward.self, forKey: .reward)
     self.rewardId = try values.decodeIfPresent(Int.self, forKey: .rewardId)
     self.sequence = try values.decode(Int.self, forKey: .sequence)
-    self.shippingAmount = try values.decodeIfPresent(Int.self, forKey: .shippingAmount)
+    self.shippingAmount = try values.decodeIfPresent(Double.self, forKey: .shippingAmount)
     self.status = try values.decode(Status.self, forKey: .status)
   }
 }
