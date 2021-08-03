@@ -24,7 +24,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing?.projectCountry, "US")
       XCTAssertEqual(backing?.projectId, 1_596_594_463)
       XCTAssertNotNil(backing?.reward)
-      XCTAssertEqual(backing?.rewardId, 8_173_901)
+      XCTAssertEqual(backing?.rewardId, decompose(id: "UmV3YXJkLTgxNzM5MDE="))
       XCTAssertEqual(backing?.sequence, 148)
       XCTAssertEqual(backing?.shippingAmount, 10.0)
       XCTAssertEqual(backing?.status, .pledged)
