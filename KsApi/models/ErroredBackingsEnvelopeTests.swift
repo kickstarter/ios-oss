@@ -170,6 +170,7 @@ final class ErroredBackingsEnvelopeTests: XCTestCase {
 
     let data = GraphAPI.FetchUserBackingsQuery.Data(unsafeResultMap: unsafeResultMap)
 
+    // TODO: After creating a mock client we need to re test this method.
     XCTAssertNotNil(ErroredBackingsEnvelope.producer(from: data))
   }
 }
