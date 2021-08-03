@@ -10,6 +10,24 @@ final class Backing_BackingFragmentTests: XCTestCase {
 
       let backing = Backing.backing(from: fragment)
       XCTAssertNotNil(backing)
+      XCTAssertEqual(backing?.amount, 90.0)
+      XCTAssertNotNil(backing?.backer)
+      XCTAssertNotNil(backing?.backerId)
+      XCTAssertEqual(backing?.backerCompleted, false)
+      XCTAssertEqual(backing?.bonusAmount, 5.0)
+      XCTAssertEqual(backing?.cancelable, true)
+      XCTAssertEqual(backing?.id, decompose(id: "QmFja2luZy0xNDQ5NTI3MTc="))
+      XCTAssertEqual(backing?.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
+      XCTAssertEqual(backing?.locationName, "Canada")
+      XCTAssertEqual(backing?.paymentSource?.type, .visa)
+      XCTAssertEqual(backing?.pledgedAt, 1_625_613_342.0)
+      XCTAssertEqual(backing?.projectCountry, "US")
+      XCTAssertEqual(backing?.projectId, 1_596_594_463)
+      XCTAssertNotNil(backing?.reward)
+      XCTAssertEqual(backing?.rewardId, 8_173_901)
+      XCTAssertEqual(backing?.sequence, 148)
+      XCTAssertEqual(backing?.shippingAmount, 10.0)
+      XCTAssertEqual(backing?.status, .pledged)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -527,7 +545,7 @@ private func backingDictionary() -> [String: Any] {
     "sequence": 148,
     "shippingAmount": {
       "__typename": "Money",
-      "amount": "0.0",
+      "amount": "10.0",
       "currency": "USD",
       "symbol": "$"
     },

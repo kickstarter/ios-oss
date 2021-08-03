@@ -428,7 +428,7 @@ extension Backing {
       ) }
     )
 
-    public static let shippingAmount = Lens<Backing, Int?>(
+    public static let shippingAmount = Lens<Backing, Double?>(
       view: { $0.shippingAmount },
       set: { Backing(
         addOns: $1.addOns,
