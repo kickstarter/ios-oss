@@ -5,13 +5,13 @@ class GraphQL {
   // MARK: - Properties
 
   private var apollo: ApolloClient?
-  private(set) lazy var client: ApolloClient = {
-    guard let client = self.apollo else {
+  var client: ApolloClient {
+    guard let client = apollo else {
       fatalError("Apollo Client accessed before calling configure(with:headers:additionalHeaders:)")
     }
 
     return client
-  }()
+  }
 
   static let shared = GraphQL()
 
@@ -25,7 +25,7 @@ class GraphQL {
   func configure(
     with url: URL,
     headers: [String: String],
-    additionalHeaders: @escaping () -> [String: String]
+    additionalHeaders: [String: String]
   ) {
     let store = ApolloStore()
     let provider = NetworkInterceptorProvider(store: store, additionalHeaders: additionalHeaders)
@@ -54,7 +54,7 @@ extension ApolloClient {
   static func client(
     with url: URL,
     headers: [String: String],
-    additionalHeaders: @escaping () -> [String: String]
+    additionalHeaders: [String: String]
   ) -> ApolloClient {
     let store = ApolloStore(cache: InMemoryNormalizedCache())
     let provider = NetworkInterceptorProvider(store: store, additionalHeaders: additionalHeaders)

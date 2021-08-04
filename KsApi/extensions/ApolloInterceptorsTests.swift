@@ -8,7 +8,7 @@ class ApolloInterceptorsTests: XCTestCase {
       "test-header-key-1": "test-header-value-1",
       "test-header-key-2": "test-header-value-2"
     ]
-    let interceptor = HeadersInterceptor { headers }
+    let interceptor = HeadersInterceptor(headers)
     let query = MockApolloQuery()
     let url = URL(string: "https://www.kickstarter.com")!
     let request = HTTPRequest(
