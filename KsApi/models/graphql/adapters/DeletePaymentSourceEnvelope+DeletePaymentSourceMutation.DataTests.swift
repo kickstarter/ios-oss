@@ -36,14 +36,14 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
     }
 
     XCTAssertEqual(env.storedCards.count, 2)
-    
+
     guard let firstCard = env.storedCards.first,
-          let secondCard = env.storedCards.last else {
+      let secondCard = env.storedCards.last else {
       XCTFail()
-      
+
       return
     }
-    
+
     XCTAssertEqual(firstCard.id, "69021326")
     XCTAssertEqual(firstCard.expirationDate, "2023-02-01")
     XCTAssertEqual(firstCard.lastFour, "4242")
