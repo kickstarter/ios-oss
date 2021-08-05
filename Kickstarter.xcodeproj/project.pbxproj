@@ -3399,13 +3399,13 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
-				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
+				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
+				065E6BA726B1E2B8007F67CA /* CreatePaymentSource.graphql */,
+				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
 				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */,
-				065E6BA726B1E2B8007F67CA /* CreatePaymentSource.graphql */,
-				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47A662F026AF1FCC001CE7B1 /* WatchProject.graphql */,
 				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,

@@ -3,7 +3,6 @@ import XCTest
 
 final class CreatePaymentSourceEnvelope_CreatePaymentSourceMutationTests: XCTestCase {
   func testPaymentSource_WithValidData_Success() {
-    // NOTE: Cannot convert directly from a String to the payment type, state or type. Apollo seems to return the Mutation.Data with these types created.
     let resultMap: [String: Any?] = [
       "createPaymentSource": [
         "__typename": "CreatePaymentSourcePayload",

@@ -3,7 +3,6 @@ import XCTest
 
 final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTestCase {
   func testPaymentSource_WithValidData_Success() {
-    // NOTE: Cannot convert directly from a String to the payment type, state or type. Apollo seems to return the Mutation.Data with these types created.
     let resultMap: [String: Any?] = [
       "paymentSourceDelete": [
         "user": [
@@ -37,14 +36,22 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
     }
 
     XCTAssertEqual(env.storedCards.count, 2)
-    XCTAssertEqual(env.storedCards.first!.id, "69021326")
-    XCTAssertEqual(env.storedCards.first!.expirationDate, "2023-02-01")
-    XCTAssertEqual(env.storedCards.first!.lastFour, "4242")
-    XCTAssertEqual(env.storedCards.first!.type, .visa)
-    XCTAssertEqual(env.storedCards.last!.id, "69021329")
-    XCTAssertEqual(env.storedCards.last!.expirationDate, "2024-01-01")
-    XCTAssertEqual(env.storedCards.last!.lastFour, "4243")
-    XCTAssertEqual(env.storedCards.last!.type, .discover)
+    
+    guard let firstCard = env.storedCards.first,
+          let secondCard = env.storedCards.last else {
+      XCTFail()
+      
+      return
+    }
+    
+    XCTAssertEqual(firstCard.id, "69021326")
+    XCTAssertEqual(firstCard.expirationDate, "2023-02-01")
+    XCTAssertEqual(firstCard.lastFour, "4242")
+    XCTAssertEqual(firstCard.type, .visa)
+    XCTAssertEqual(secondCard.id, "69021329")
+    XCTAssertEqual(secondCard.expirationDate, "2024-01-01")
+    XCTAssertEqual(secondCard.lastFour, "4243")
+    XCTAssertEqual(secondCard.type, .discover)
   }
 
   func testPaymentSource_WithInvalidData_Error() {
@@ -72,9 +79,9 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
       ]
     ]
 
-    let data = GraphAPI.CreatePaymentSourceMutation.Data(unsafeResultMap: resultMap)
+    let data = GraphAPI.DeletePaymentSourceMutation.Data(unsafeResultMap: resultMap)
 
-    let env = CreatePaymentSourceEnvelope.from(data)
+    let env = DeletePaymentMethodEnvelope.from(data)
 
     XCTAssertNil(env)
   }
