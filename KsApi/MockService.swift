@@ -29,7 +29,7 @@
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
-    fileprivate let clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>?
+    fileprivate let clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>?
 
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>?
 
@@ -216,8 +216,8 @@
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
-      clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>? = nil,
+      clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
       facebookConnectError: ErrorEnvelope? = nil,
       fetchActivitiesResponse: [Activity]? = nil,
@@ -567,7 +567,7 @@
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
-      -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
+      -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
       return producer(for: self.clearUserUnseenActivityResult)
     }
 
@@ -1399,8 +1399,8 @@
             buildVersion: $1.buildVersion,
             addNewCreditCardResult: $1.addNewCreditCardResult,
             changePaymentMethodResult: $1.changePaymentMethodResult,
-            clearUserUnseenActivityResult: $1.clearUserUnseenActivityResult,
             deletePaymentMethodResult: $1.deletePaymentMethodResult,
+            clearUserUnseenActivityResult: $1.clearUserUnseenActivityResult,
             facebookConnectResponse: $1.facebookConnectResponse,
             facebookConnectError: $1.facebookConnectError,
             fetchActivitiesResponse: $1.fetchActivitiesResponse,

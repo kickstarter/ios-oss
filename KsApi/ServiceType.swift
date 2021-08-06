@@ -63,7 +63,7 @@ public protocol ServiceType {
 
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
-    -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
+    -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope>
 
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
