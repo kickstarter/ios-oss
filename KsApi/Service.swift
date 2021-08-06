@@ -53,7 +53,7 @@ public struct Service: ServiceType {
     GraphQL.shared.configure(
       with: serverConfig.graphQLEndpointUrl,
       headers: self.defaultHeaders,
-      additionalHeaders: self.perimeterXClient.headers()
+      additionalHeaders: { perimeterXClient.headers() }
     )
   }
 

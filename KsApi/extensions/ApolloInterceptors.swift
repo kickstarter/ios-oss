@@ -3,13 +3,13 @@ import Apollo
 // MARK: - NetworkInterceptorProvider
 
 class NetworkInterceptorProvider: LegacyInterceptorProvider {
-  private let additionalHeaders: [String: String]
+  private let additionalHeaders: () -> [String: String]
 
   override func interceptors<Operation: GraphQLOperation>(for operation: Operation) -> [ApolloInterceptor] {
     return [HeadersInterceptor(self.additionalHeaders)] + super.interceptors(for: operation)
   }
 
-  init(store: ApolloStore, additionalHeaders: [String: String]) {
+  init(store: ApolloStore, additionalHeaders: @escaping () -> [String: String]) {
     self.additionalHeaders = additionalHeaders
     super.init(store: store)
   }
@@ -18,9 +18,9 @@ class NetworkInterceptorProvider: LegacyInterceptorProvider {
 // MARK: - HeadersInterceptor
 
 class HeadersInterceptor: ApolloInterceptor {
-  private let additionalHeaders: [String: String]
+  private let additionalHeaders: () -> [String: String]
 
-  init(_ additionalHeaders: [String: String]) {
+  init(_ additionalHeaders: @escaping () -> [String: String]) {
     self.additionalHeaders = additionalHeaders
   }
 
@@ -31,7 +31,7 @@ class HeadersInterceptor: ApolloInterceptor {
     completion: @escaping (Swift.Result<GraphQLResult<Operation.Data>, Error>
     ) -> Void
   ) {
-    self.additionalHeaders.forEach(request.addHeader)
+    self.additionalHeaders().forEach(request.addHeader)
 
     chain.proceedAsync(
       request: request,
