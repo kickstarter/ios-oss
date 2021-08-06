@@ -42,7 +42,7 @@ final class SharedFunctionsTests: TestCase {
     mockApplication.applicationIconBadgeNumber = initialActivitiesCount
 
     let mockService = MockService(
-      clearUserUnseenActivityResult: Result.failure(.invalidInput)
+      clearUserUnseenActivityResult: Result.failure(.couldNotParseJSON)
     )
 
     let user = User.template

@@ -29,7 +29,7 @@
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
-    fileprivate let clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>?
+    fileprivate let clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>?
 
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
@@ -216,7 +216,7 @@
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
-      clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
+      clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
       facebookConnectResponse: User? = nil,
       facebookConnectError: ErrorEnvelope? = nil,
@@ -567,7 +567,7 @@
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
-      -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
+      -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
       return producer(for: self.clearUserUnseenActivityResult)
     }
 
