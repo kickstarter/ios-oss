@@ -5,13 +5,13 @@ class GraphQL {
   // MARK: - Properties
 
   private var apollo: ApolloClient?
-  private(set) lazy var client: ApolloClient = {
+  var client: ApolloClient {
     guard let client = self.apollo else {
       fatalError("Apollo Client accessed before calling configure(with:headers:additionalHeaders:)")
     }
 
     return client
-  }()
+  }
 
   static let shared = GraphQL()
 
