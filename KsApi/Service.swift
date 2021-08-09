@@ -150,8 +150,11 @@ public struct Service: ServiceType {
   }
 
   public func deletePaymentMethod(input: PaymentSourceDeleteInput)
-    -> SignalProducer<DeletePaymentMethodEnvelope, GraphError> {
-    return applyMutation(mutation: PaymentSourceDeleteMutation(input: input))
+    -> SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input)))
+      .flatMap(DeletePaymentMethodEnvelope.producer(from:))
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->

@@ -78,7 +78,7 @@ public protocol ServiceType {
 
   /// Deletes a payment method
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
-    SignalProducer<DeletePaymentMethodEnvelope, GraphError>
+    SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope>
 
   /// Removes an image from a project update draft.
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
