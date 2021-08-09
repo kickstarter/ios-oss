@@ -1,5 +1,4 @@
 import Apollo
-import Foundation
 
 // MARK: - NetworkInterceptorProvider
 
