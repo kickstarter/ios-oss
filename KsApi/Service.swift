@@ -601,8 +601,9 @@ public struct Service: ServiceType {
 
   public func unwatchProject(input: WatchProjectInput) ->
     SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
-    return applyMutation(mutation: UnwatchProjectMutation(input: input))
-      .mapError(ErrorEnvelope.envelope(from:))
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.UnwatchProjectMutation(input: GraphAPI.UnwatchProjectInput.from(input)))
+      .flatMap(WatchProjectResponseEnvelope.producer(from:))
   }
 
   public func verifyEmail(withToken token: String)
