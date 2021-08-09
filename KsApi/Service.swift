@@ -141,9 +141,12 @@ public struct Service: ServiceType {
       }
   }
 
-  public func clearUserUnseenActivity(input: EmptyInput)
-    -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
-    return applyMutation(mutation: ClearUserUnseenActivityMutation(input: input))
+  public func clearUserUnseenActivity(input _: EmptyInput)
+    -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput()))
+      .flatMap(ClearUserUnseenActivityEnvelope.producer(from:))
   }
 
   public func deletePaymentMethod(input: PaymentSourceDeleteInput)

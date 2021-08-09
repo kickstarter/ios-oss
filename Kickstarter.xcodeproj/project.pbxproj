@@ -245,6 +245,9 @@
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
 		47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */; };
 		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
+		47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */; };
+		47D8619B26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */; };
+		47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */; };
 		47F4CA5F267A7B1800356DBF /* OptimizelyFeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */; };
 		47F4CA63267A7B2300356DBF /* OptimizelyFeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */; };
 		47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F95ECF2672C587001365B2 /* ViewRepliesView.swift */; };
@@ -1950,6 +1953,9 @@
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
 		47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingStateTests.swift"; sourceTree = "<group>"; };
 		47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewMoreRepliesFailedCell.swift; sourceTree = "<group>"; };
+		47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ClearUserUnseenActivity.graphql; sourceTree = "<group>"; };
+		47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift"; sourceTree = "<group>"; };
+		47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift"; sourceTree = "<group>"; };
 		47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
 		47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
@@ -3389,6 +3395,7 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
+				47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */,
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
@@ -3597,6 +3604,8 @@
 				8A8831C224DA2B27002BCA5E /* Backing+GraphBacking.swift */,
 				8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */,
 				8AC3E0FF269F498900168BF8 /* Checkout+CheckoutFragment.swift */,
+				47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */,
+				47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */,
 				8A15571C2693B29600017845 /* Comment+CommentFragment.swift */,
 				06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */,
 				8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */,
@@ -5557,6 +5566,7 @@
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
+				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
 				4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */,
@@ -6783,6 +6793,7 @@
 				D01589831EEB2ED7006E7684 /* UpdateDraft.swift in Sources */,
 				8AB64FE52576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift in Sources */,
 				D0158A1F1EEB30A2006E7684 /* ProjectStatsEnvelope.ReferrerStatsTemplates.swift in Sources */,
+				47D8619B26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift in Sources */,
 				D01588F11EEB2ED7006E7684 /* MessageThreadEnvelope.swift in Sources */,
 				D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */,
 				D015886F1EEB2ED7006E7684 /* ErrorEnvelope.swift in Sources */,
@@ -7014,6 +7025,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC3E00C26961E8A00168BF8 /* Reward+RewardFragmentTests.swift in Sources */,
+				47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */,
 				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
 				8A49396324B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift in Sources */,
 				8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */,
