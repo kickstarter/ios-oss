@@ -546,7 +546,7 @@ public struct Service: ServiceType {
     return request(.sendMessage(body: body, messageSubject: subject))
   }
 
-  public func sendVerificationEmail(input: EmptyInput) ->
+  public func sendVerificationEmail(input _: EmptyInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
