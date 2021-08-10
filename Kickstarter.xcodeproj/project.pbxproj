@@ -71,6 +71,7 @@
 		0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */; };
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
+		061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 061A64FC26C3037600A5DDCA /* UserSendEmailVerification.graphql */; };
 		062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */; };
 		062868E826B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */; };
 		062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */; };
@@ -1803,6 +1804,7 @@
 		0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModel.swift; sourceTree = "<group>"; };
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
 		061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
+		061A64FC26C3037600A5DDCA /* UserSendEmailVerification.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserSendEmailVerification.graphql; sourceTree = "<group>"; };
 		062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = DeletePaymentSource.graphql; sourceTree = "<group>"; };
 		062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift"; sourceTree = "<group>"; };
 		062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
@@ -3416,16 +3418,15 @@
 			isa = PBXGroup;
 			children = (
 				47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */,
-				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
-				065E6BA726B1E2B8007F67CA /* CreatePaymentSource.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
 				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */,
 				065E6BA726B1E2B8007F67CA /* CreatePaymentSource.graphql */,
 				478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */,
+				061A64FC26C3037600A5DDCA /* UserSendEmailVerification.graphql */,
 				47A662F026AF1FCC001CE7B1 /* WatchProject.graphql */,
 				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
@@ -5595,6 +5596,7 @@
 				8AC3E0F5269F48A400168BF8 /* UpdateBacking.graphql in Resources */,
 				8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */,
 				06DAAE5D26AA3CF500194E58 /* UserStoredCardsFragment.graphql in Resources */,
+				061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */,
 				06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */,
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,

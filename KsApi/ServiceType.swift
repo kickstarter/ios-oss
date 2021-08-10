@@ -309,7 +309,7 @@ public protocol ServiceType {
 
   /// Sends a verification email (after updating the email from account settings).
   func sendVerificationEmail(input: EmptyInput)
-    -> SignalProducer<EmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)

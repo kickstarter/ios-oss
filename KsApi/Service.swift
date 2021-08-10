@@ -547,8 +547,13 @@ public struct Service: ServiceType {
   }
 
   public func sendVerificationEmail(input: EmptyInput) ->
-    SignalProducer<EmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput()))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func signInWithApple(input: SignInWithAppleInput)
