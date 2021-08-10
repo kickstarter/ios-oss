@@ -545,7 +545,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testShowAppleErrorAlert_SignInWithAppleMutationError() {
-    withEnvironment(apiService: MockService(signInWithAppleResult: .failure(.invalidInput))) {
+    withEnvironment(apiService: MockService(signInWithAppleResult: .failure(.couldNotParseJSON))) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 

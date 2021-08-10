@@ -147,7 +147,7 @@
     fileprivate let sendEmailVerificationResponse: EmptyResponseEnvelope?
     fileprivate let sendEmailVerificationError: GraphError?
 
-    fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>?
+    fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, ErrorEnvelope>?
 
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
@@ -291,7 +291,7 @@
       resetPasswordError: ErrorEnvelope? = nil,
       sendEmailVerificationResponse: EmptyResponseEnvelope? = nil,
       sendEmailVerificationError: GraphError? = nil,
-      signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>? = nil,
+      signInWithAppleResult: Result<SignInWithAppleEnvelope, ErrorEnvelope>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
@@ -1240,7 +1240,7 @@
     }
 
     internal func signInWithApple(input _: SignInWithAppleInput)
-      -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
+      -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope> {
       if let error = self.signInWithAppleResult?.error {
         return SignalProducer(error: error)
       }

@@ -1,0 +1,8 @@
+mutation signInWithApple($input: SignInWithAppleInput!) {
+  signInWithApple(input: $input) {
+    apiAccessToken
+    user {
+      uid
+    }
+  }
+}

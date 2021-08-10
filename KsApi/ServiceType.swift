@@ -313,7 +313,7 @@ public protocol ServiceType {
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)
-    -> SignalProducer<SignInWithAppleEnvelope, GraphError>
+    -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope>
 
   /// Signup with email.
   func signup(
