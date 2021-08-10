@@ -8,7 +8,7 @@ final class WatchProjectResponseEnvelope_UnwatchProjectMutationTests: XCTestCase
         "clientMutationId": nil,
         "project": [
           "id": "id",
-          "isWatched": true
+          "isWatched": false
         ]
       ]
     ]
@@ -18,7 +18,7 @@ final class WatchProjectResponseEnvelope_UnwatchProjectMutationTests: XCTestCase
     let envelope = WatchProjectResponseEnvelope.from(data)
 
     XCTAssertEqual(envelope?.watchProject.project.id, "id")
-    XCTAssertEqual(envelope?.watchProject.project.isWatched, true)
+    XCTAssertEqual(envelope?.watchProject.project.isWatched, false)
 
     // TODO: See if a more robust test can be written after mock client is introduced.
     XCTAssertEqual(WatchProjectResponseEnvelope.producer(from: data).allValues().count, 1)
@@ -30,7 +30,7 @@ final class WatchProjectResponseEnvelope_UnwatchProjectMutationTests: XCTestCase
         "clientMutationId": nil,
         "project": [
           "id": "id",
-          "isWatched": true
+          "isWatched": false
         ]
       ]
     ]
