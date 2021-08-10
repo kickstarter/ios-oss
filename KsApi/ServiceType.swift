@@ -342,6 +342,7 @@ public protocol ServiceType {
   func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
 
+  /// Unwatches a project.
   func unwatchProject(input: WatchProjectInput) ->
     SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope>
 

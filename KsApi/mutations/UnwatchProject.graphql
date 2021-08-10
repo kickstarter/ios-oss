@@ -1,0 +1,9 @@
+mutation unwatchProject($input: UnwatchProjectInput!) {
+  watchProject: unwatchProject(input: $input) {
+    clientMutationId
+    project {
+      id
+      isWatched
+    }
+  }
+}
