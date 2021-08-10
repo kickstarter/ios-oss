@@ -570,7 +570,13 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testShowAppleErrorAlert_FetchUserEventError() {
-    withEnvironment(apiService: MockService(fetchUserError: .couldNotParseJSON)) {
+    let envelope = SignInWithAppleEnvelope.template
+      |> \.signInWithApple.apiAccessToken .~ "some_token"
+
+    withEnvironment(apiService: MockService(
+      fetchUserResult: .failure(.couldNotParseJSON),
+      signInWithAppleResult: .success(envelope)
+    )) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
@@ -602,7 +608,7 @@ final class LoginToutViewModelTests: TestCase {
     let envelope = SignInWithAppleEnvelope.template
       |> \.signInWithApple.apiAccessToken .~ "some_token"
 
-    let service = MockService(fetchUserResponse: user, signInWithAppleResult: .success(envelope))
+    let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
 
     withEnvironment(apiService: service) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
