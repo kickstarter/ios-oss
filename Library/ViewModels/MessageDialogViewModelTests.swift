@@ -45,7 +45,7 @@ internal final class MessageDialogViewModelTests: TestCase {
     let backer = User.template
       |> \.name .~ name
 
-    withEnvironment(apiService: MockService(fetchUserResponse: backer)) {
+    withEnvironment(apiService: MockService(fetchUserResult: .success(backer))) {
       self.vm.inputs.configureWith(messageSubject: .backing(backing), context: .messages)
       self.vm.inputs.viewDidLoad()
 

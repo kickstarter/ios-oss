@@ -116,8 +116,7 @@
     fileprivate let fetchUserProjectsBackedResponse: [Project]?
     fileprivate let fetchUserProjectsBackedError: ErrorEnvelope?
 
-    fileprivate let fetchUserResponse: User?
-    fileprivate let fetchUserError: ErrorEnvelope?
+    fileprivate let fetchUserResult: Result<User, ErrorEnvelope>?
 
     fileprivate let fetchUserSelfResponse: User?
     fileprivate let fetchUserSelfError: ErrorEnvelope?
@@ -146,7 +145,7 @@
 
     fileprivate let sendEmailVerificationResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
-    fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>?
+    fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, ErrorEnvelope>?
 
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
@@ -265,8 +264,7 @@
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
       fetchUserProjectsBackedResponse: [Project]? = nil,
       fetchUserProjectsBackedError: ErrorEnvelope? = nil,
-      fetchUserResponse: User? = nil,
-      fetchUserError: ErrorEnvelope? = nil,
+      fetchUserResult: Result<User, ErrorEnvelope>? = nil,
       fetchUserSelfResponse: User? = nil,
       followFriendError: ErrorEnvelope? = nil,
       incrementVideoCompletionError: ErrorEnvelope? = nil,
@@ -289,7 +287,7 @@
       resetPasswordResponse: User? = nil,
       resetPasswordError: ErrorEnvelope? = nil,
       sendEmailVerificationResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
-      signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>? = nil,
+      signInWithAppleResult: Result<SignInWithAppleEnvelope, ErrorEnvelope>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
@@ -450,8 +448,7 @@
       self.fetchUserProjectsBackedResponse = fetchUserProjectsBackedResponse
       self.fetchUserProjectsBackedError = fetchUserProjectsBackedError
 
-      self.fetchUserResponse = fetchUserResponse
-      self.fetchUserError = fetchUserError
+      self.fetchUserResult = fetchUserResult
 
       self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
       self.fetchUserSelfError = fetchUserSelfError
@@ -1079,18 +1076,12 @@
       return SignalProducer(value: self.fetchUnansweredSurveyResponsesResponse)
     }
 
-    internal func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {
-      if let error = self.fetchUserError {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: self.fetchUserResponse ?? (.template |> \.id .~ userId))
+    internal func fetchUser(userId _: Int) -> SignalProducer<User, ErrorEnvelope> {
+      return producer(for: self.fetchUserResult)
     }
 
-    internal func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
-      if let error = self.fetchUserError {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: self.fetchUserResponse ?? user)
+    internal func fetchUser(_: User) -> SignalProducer<User, ErrorEnvelope> {
+      return producer(for: self.fetchUserResult)
     }
 
     internal func fetchCategory(param: Param)
@@ -1233,11 +1224,8 @@
     }
 
     internal func signInWithApple(input _: SignInWithAppleInput)
-      -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
-      if let error = self.signInWithAppleResult?.error {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: self.signInWithAppleResult?.value ?? SignInWithAppleEnvelope.template)
+      -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope> {
+      return producer(for: self.signInWithAppleResult)
     }
 
     internal func signup(
@@ -1434,8 +1422,7 @@
             fetchShippingRulesResult: $1.fetchShippingRulesResult,
             fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
             fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
-            fetchUserResponse: $1.fetchUserResponse,
-            fetchUserError: $1.fetchUserError,
+            fetchUserResult: $1.fetchUserResult,
             fetchUserSelfResponse: $1.fetchUserSelfResponse,
             followFriendError: $1.followFriendError,
             incrementVideoCompletionError: $1.incrementVideoCompletionError,

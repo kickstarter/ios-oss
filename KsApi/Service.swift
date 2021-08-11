@@ -557,8 +557,10 @@ public struct Service: ServiceType {
   }
 
   public func signInWithApple(input: SignInWithAppleInput)
-    -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
-    return applyMutation(mutation: SignInWithAppleMutation(input: input))
+    -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.SignInWithAppleMutation(input: GraphAPI.SignInWithAppleInput.from(input)))
+      .flatMap(SignInWithAppleEnvelope.producer(from:))
   }
 
   public func signup(
