@@ -250,21 +250,21 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidFailToSendVerificationEmailEmits_OnFailure() {
-    let error = GraphError.invalidInput
-
-    withEnvironment(apiService: MockService(sendEmailVerificationError: error)) {
+    withEnvironment(apiService: MockService(sendEmailVerificationResult: .failure(.couldNotParseJSON))) {
       self.vm.inputs.resendVerificationEmailButtonTapped()
       self.scheduler.advance()
 
-      self.didFailToSendVerificationEmail.assertValue(GraphError.invalidInput.localizedDescription)
+      self.didFailToSendVerificationEmail.assertValue(ErrorEnvelope.couldNotParseJSON.localizedDescription)
     }
   }
 
   func testDidSendVerificationEmailEmits_OnSuccess() {
-    self.vm.inputs.resendVerificationEmailButtonTapped()
-    self.scheduler.advance()
+    withEnvironment(apiService: MockService(sendEmailVerificationResult: .success(EmptyResponseEnvelope()))) {
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
 
-    self.didSendVerificationEmail.assertDidEmitValue()
+      self.didSendVerificationEmail.assertDidEmitValue()
+    }
   }
 
   func testVerificationEmailButtonTitle_Backer() {
