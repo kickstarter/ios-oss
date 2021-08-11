@@ -144,8 +144,7 @@
     fileprivate let resetPasswordResponse: User?
     fileprivate let resetPasswordError: ErrorEnvelope?
 
-    fileprivate let sendEmailVerificationResponse: EmptyResponseEnvelope?
-    fileprivate let sendEmailVerificationError: GraphError?
+    fileprivate let sendEmailVerificationResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>?
 
@@ -289,8 +288,7 @@
       resendCodeError: ErrorEnvelope? = nil,
       resetPasswordResponse: User? = nil,
       resetPasswordError: ErrorEnvelope? = nil,
-      sendEmailVerificationResponse: EmptyResponseEnvelope? = nil,
-      sendEmailVerificationError: GraphError? = nil,
+      sendEmailVerificationResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
@@ -484,9 +482,7 @@
 
       self.resetPasswordError = resetPasswordError
 
-      self.sendEmailVerificationResponse = sendEmailVerificationResponse
-
-      self.sendEmailVerificationError = sendEmailVerificationError
+      self.sendEmailVerificationResult = sendEmailVerificationResult
 
       self.signInWithAppleResult = signInWithAppleResult
 
@@ -1232,11 +1228,8 @@
     }
 
     internal func sendVerificationEmail(input _: EmptyInput)
-      -> SignalProducer<EmptyResponseEnvelope, GraphError> {
-      if let error = sendEmailVerificationError {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: EmptyResponseEnvelope())
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      return producer(for: self.sendEmailVerificationResult)
     }
 
     internal func signInWithApple(input _: SignInWithAppleInput)
