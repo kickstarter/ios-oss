@@ -6,6 +6,7 @@ import Prelude
 final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
+    
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -19,9 +20,7 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
   func testOptimizelyFeatureFlagToolsViewController() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.commentThreading.rawValue: true,
-        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
       ]
 
     withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {

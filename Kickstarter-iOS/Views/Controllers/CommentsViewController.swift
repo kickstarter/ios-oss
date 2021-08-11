@@ -267,7 +267,5 @@ internal func commentsViewController(
   for project: Project? = nil,
   update: Update? = nil
 ) -> UIViewController {
-  return featureCommentThreadingIsEnabled() ?
-    CommentsViewController.configuredWith(project: project, update: update) :
-    DeprecatedCommentsViewController.configuredWith(project: project, update: update)
+  return CommentsViewController.configuredWith(project: project, update: update)
 }

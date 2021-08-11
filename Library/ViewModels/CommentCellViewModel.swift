@@ -206,11 +206,9 @@ private func userIsBackingCreatorOrCollaborator(_ project: Project) -> Bool {
 }
 
 private func replyButtonHidden(isLoggedOut: Bool, isNotABackerCreatorOrCollaborator: Bool) -> Bool {
-  guard featureCommentThreadingRepliesIsEnabled() else { return true }
   return isLoggedOut || isNotABackerCreatorOrCollaborator
 }
 
 private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
-  guard featureCommentThreadingRepliesIsEnabled() else { return true }
   return replyCount == 0
 }

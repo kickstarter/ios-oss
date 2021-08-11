@@ -47,9 +47,6 @@
     fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
     fileprivate let fetchGraphCategoriesError: GraphError?
 
-    fileprivate let fetchCommentsResponse: [DeprecatedComment]?
-    fileprivate let fetchCommentsError: ErrorEnvelope?
-
     fileprivate let fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
     fileprivate let fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
 
@@ -117,8 +114,6 @@
     fileprivate let fetchSurveyResponseError: ErrorEnvelope?
 
     fileprivate let fetchUnansweredSurveyResponsesResponse: [SurveyResponse]
-
-    fileprivate let fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchUpdateResponse: Update
 
@@ -291,7 +286,6 @@
       fetchSurveyResponseResponse: SurveyResponse? = nil,
       fetchSurveyResponseError: ErrorEnvelope? = nil,
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
-      fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>? = nil,
       fetchUpdateResponse: Update = .template,
       fetchUserSelfError: ErrorEnvelope? = nil,
       deprecatedPostCommentResponse: DeprecatedComment? = nil,
@@ -382,13 +376,6 @@
 
       self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
-      self.fetchCommentsResponse = fetchCommentsResponse ?? [
-        .template |> DeprecatedComment.lens.id .~ 2,
-        .template |> DeprecatedComment.lens.id .~ 1
-      ]
-
-      self.fetchCommentsError = fetchCommentsError
-
       self.fetchProjectCommentsEnvelopeResult = fetchProjectCommentsEnvelopeResult
       self.fetchUpdateCommentsEnvelopeResult = fetchUpdateCommentsEnvelopeResult
 
@@ -464,8 +451,6 @@
       self.fetchSurveyResponseError = fetchSurveyResponseError
 
       self.fetchUnansweredSurveyResponsesResponse = fetchUnansweredSurveyResponsesResponse
-
-      self.fetchUpdateCommentsResponse = fetchUpdateCommentsResponse
 
       self.fetchUpdateResponse = fetchUpdateResponse
 
@@ -609,54 +594,6 @@
     internal func clearUserUnseenActivity(input _: EmptyInput)
       -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
       return producer(for: self.clearUserUnseenActivityResult)
-    }
-
-    internal func fetchComments(project _: Project)
-      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchCommentsError {
-        return SignalProducer(error: error)
-      } else if let comments = fetchCommentsResponse {
-        return SignalProducer(
-          value: DeprecatedCommentsEnvelope(
-            comments: comments,
-            urls: DeprecatedCommentsEnvelope.UrlsEnvelope(
-              api: DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(
-                moreComments: ""
-              )
-            )
-          )
-        )
-      }
-      return .empty
-    }
-
-    internal func fetchComments(paginationUrl _: String)
-      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchCommentsError {
-        return SignalProducer(error: error)
-      } else if let comments = fetchCommentsResponse {
-        return SignalProducer(
-          value: DeprecatedCommentsEnvelope(
-            comments: comments,
-            urls: DeprecatedCommentsEnvelope.UrlsEnvelope(
-              api: DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(
-                moreComments: ""
-              )
-            )
-          )
-        )
-      }
-      return .empty
-    }
-
-    internal func fetchComments(update _: Update)
-      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchUpdateCommentsResponse?.error {
-        return SignalProducer(error: error)
-      } else if let comments = fetchUpdateCommentsResponse {
-        return SignalProducer(value: comments.value ?? .template)
-      }
-      return .empty
     }
 
     func fetchProjectComments(
@@ -1462,8 +1399,6 @@
             fetchActivitiesError: $1.fetchActivitiesError,
             fetchBackingResponse: $1.fetchBackingResponse,
             fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
-            fetchCommentsResponse: $1.fetchCommentsResponse,
-            fetchCommentsError: $1.fetchCommentsError,
             fetchProjectCommentsEnvelopeResult: $1.fetchProjectCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
@@ -1505,7 +1440,6 @@
             fetchSurveyResponseResponse: $1.fetchSurveyResponseResponse,
             fetchSurveyResponseError: $1.fetchSurveyResponseError,
             fetchUnansweredSurveyResponsesResponse: $1.fetchUnansweredSurveyResponsesResponse,
-            fetchUpdateCommentsResponse: $1.fetchUpdateCommentsResponse,
             fetchUpdateResponse: $1.fetchUpdateResponse,
             fetchUserSelfError: $1.fetchUserSelfError,
             deprecatedPostCommentResponse: $1.deprecatedPostCommentResponse,

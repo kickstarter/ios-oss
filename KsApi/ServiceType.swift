@@ -93,12 +93,6 @@ public protocol ServiceType {
   func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope>
 
-  /// Fetch comments from a pagination url.
-  func fetchComments(paginationUrl url: String) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
-
-  /// Fetch comments for a project.
-  func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
-
   /// Fetch comments for a project with a slug, cursor and limit.
   func fetchProjectComments(
     slug: String,
@@ -115,9 +109,6 @@ public protocol ServiceType {
 
   /// Fetch comment replies for a comment with a query.
   func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
-
-  /// Fetch comments for an update.
-  func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
   /// Fetch the config.
   func fetchConfig() -> SignalProducer<Config, ErrorEnvelope>
