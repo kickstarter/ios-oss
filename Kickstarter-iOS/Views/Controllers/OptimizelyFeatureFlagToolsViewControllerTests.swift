@@ -6,7 +6,7 @@ import Prelude
 final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-    
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }

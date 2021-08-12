@@ -86,7 +86,6 @@
 		06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */; };
 		06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */; };
 		06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */; };
-		06BD75D726C44C2600A12D4E /* DeprecatedCommentLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75D426C44BE700A12D4E /* DeprecatedCommentLenses.swift */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
@@ -1746,7 +1745,6 @@
 		06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
 		06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
 		06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewController.swift; sourceTree = "<group>"; };
-		06BD75D426C44BE700A12D4E /* DeprecatedCommentLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentLenses.swift; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
@@ -4873,7 +4871,6 @@
 				D015879A1EEB2ED6006E7684 /* BackingLenses.swift */,
 				D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */,
 				378CA24522C4449F004E3C86 /* CountryLenses.swift */,
-				06BD75D426C44BE700A12D4E /* DeprecatedCommentLenses.swift */,
 				D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */,
 				D01587A21EEB2ED6006E7684 /* DiscoveryParamsLenses.swift */,
 				D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */,
@@ -6555,7 +6552,6 @@
 				D01588391EEB2ED7006E7684 /* Method.swift in Sources */,
 				3706408A22A8B2B700889CBD /* ShippingTemplates.swift in Sources */,
 				8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */,
-				06BD75D726C44C2600A12D4E /* DeprecatedCommentLenses.swift in Sources */,
 				D01588D91EEB2ED7006E7684 /* User.AvatarLenses.swift in Sources */,
 				8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */,
 				D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */,

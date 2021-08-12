@@ -174,6 +174,7 @@ public struct Service: ServiceType {
     -> SignalProducer<Backing, ErrorEnvelope> {
     return request(.backing(projectId: project.id, backerId: user.id))
   }
+
   public func fetchProjectComments(
     slug: String,
     cursor: String?,

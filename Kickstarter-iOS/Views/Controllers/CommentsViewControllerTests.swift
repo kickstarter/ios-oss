@@ -177,7 +177,7 @@ internal final class CommentsViewControllerTests: TestCase {
       }
     }
   }
-  
+
   func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
