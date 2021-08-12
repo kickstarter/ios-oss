@@ -2,14 +2,14 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public struct DeprecatedCommentDialogData {
+public struct CommentDialogData {
   public let project: Project
   public let update: Update?
   public let recipient: DeprecatedAuthor?
   public let context: KSRAnalytics.CommentDialogContext
 }
 
-public protocol DeprecatedCommentDialogViewModelInputs {
+public protocol CommentDialogViewModelInputs {
   /// Call when the view appears.
   func viewWillAppear()
 
@@ -34,7 +34,7 @@ public protocol DeprecatedCommentDialogViewModelInputs {
   func cancelButtonPressed()
 }
 
-public protocol DeprecatedCommentDialogViewModelOutputs {
+public protocol CommentDialogViewModelOutputs {
   /// Emits a string that should be put into the body text view.
   var bodyTextViewText: Signal<String, Never> { get }
 
@@ -58,20 +58,20 @@ public protocol DeprecatedCommentDialogViewModelOutputs {
   var showKeyboard: Signal<Bool, Never> { get }
 }
 
-public protocol DeprecatedCommentDialogViewModelErrors {
+public protocol CommentDialogViewModelErrors {
   /// Emits a string error description when there has been an error posting a comment.
   var presentError: Signal<String, Never> { get }
 }
 
-public protocol DeprecatedCommentDialogViewModelType {
-  var inputs: DeprecatedCommentDialogViewModelInputs { get }
-  var outputs: DeprecatedCommentDialogViewModelOutputs { get }
-  var errors: DeprecatedCommentDialogViewModelErrors { get }
+public protocol CommentDialogViewModelType {
+  var inputs: CommentDialogViewModelInputs { get }
+  var outputs: CommentDialogViewModelOutputs { get }
+  var errors: CommentDialogViewModelErrors { get }
 }
 
-public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogViewModelType,
-  DeprecatedCommentDialogViewModelInputs,
-  DeprecatedCommentDialogViewModelOutputs, DeprecatedCommentDialogViewModelErrors {
+public final class CommentDialogViewModel: CommentDialogViewModelType,
+  CommentDialogViewModelInputs,
+  CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
@@ -82,12 +82,12 @@ public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogView
     self.viewWillDisappearProperty.value = ()
   }
 
-  fileprivate let configurationDataProperty = MutableProperty<DeprecatedCommentDialogData?>(nil)
+  fileprivate let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
   public func configureWith(
     project: Project, update: Update?, recipient: DeprecatedAuthor?,
     context: KSRAnalytics.CommentDialogContext
   ) {
-    self.configurationDataProperty.value = DeprecatedCommentDialogData(
+    self.configurationDataProperty.value = CommentDialogData(
       project: project, update: update,
       recipient: recipient, context: context
     )
@@ -118,9 +118,9 @@ public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogView
 
   public let presentError: Signal<String, Never>
 
-  public var inputs: DeprecatedCommentDialogViewModelInputs { return self }
-  public var outputs: DeprecatedCommentDialogViewModelOutputs { return self }
-  public var errors: DeprecatedCommentDialogViewModelErrors { return self }
+  public var inputs: CommentDialogViewModelInputs { return self }
+  public var outputs: CommentDialogViewModelOutputs { return self }
+  public var errors: CommentDialogViewModelErrors { return self }
 
   public init() {
     let isLoading = MutableProperty(false)

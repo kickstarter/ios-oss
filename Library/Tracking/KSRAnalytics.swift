@@ -138,42 +138,6 @@ public final class KSRAnalytics {
   }
 
   /**
-   Determines the type of comment in which the dialog was presented for.
-
-   - project: A project comment.
-   - update: An update comment.
-   */
-  public enum DeprecatedCommentDialogType {
-    case project
-    case update
-
-    var trackingString: String {
-      switch self {
-      case .project: return "project"
-      case .update: return "update"
-      }
-    }
-  }
-
-  /**
-   Determines the place from which the comments were presented.
-
-   - project: The comments for a project.
-   - update: The comments for an update.
-   */
-  public enum DeprecatedCommentsContext {
-    case project
-    case update
-
-    var trackingString: String {
-      switch self {
-      case .project: return "project"
-      case .update: return "update"
-      }
-    }
-  }
-
-  /**
    Indicates which button or link the user has clicked or tapped; describes CTA Clicked events.
    */
   public enum CTAContext {
