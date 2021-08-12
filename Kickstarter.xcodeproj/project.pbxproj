@@ -86,7 +86,6 @@
 		06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */; };
 		06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */; };
 		06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */; };
-		06BD75D026C437A500A12D4E /* DeprecatedCommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CE26C4379D00A12D4E /* DeprecatedCommentTemplates.swift */; };
 		06BD75D726C44C2600A12D4E /* DeprecatedCommentLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75D426C44BE700A12D4E /* DeprecatedCommentLenses.swift */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
@@ -1747,7 +1746,6 @@
 		06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
 		06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
 		06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewController.swift; sourceTree = "<group>"; };
-		06BD75CE26C4379D00A12D4E /* DeprecatedCommentTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentTemplates.swift; sourceTree = "<group>"; };
 		06BD75D426C44BE700A12D4E /* DeprecatedCommentLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentLenses.swift; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
@@ -4938,7 +4936,6 @@
 				47613FC52652CD11006F09FF /* CommentTemplates.swift */,
 				D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */,
 				D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */,
-				06BD75CE26C4379D00A12D4E /* DeprecatedCommentTemplates.swift */,
 				D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */,
 				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
@@ -6622,7 +6619,6 @@
 				D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */,
 				8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
-				06BD75D026C437A500A12D4E /* DeprecatedCommentTemplates.swift in Sources */,
 				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
 				D6B686E92191FE5E005F5DA7 /* EmptyInput.swift in Sources */,
 				D0158A2A1EEB30A2006E7684 /* SurveyResponseTemplates.swift in Sources */,

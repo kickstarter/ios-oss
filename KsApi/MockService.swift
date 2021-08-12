@@ -474,7 +474,7 @@
 
       self.perimeterXClient = perimeterXClient
 
-      self.deprecatedPostCommentResponse = deprecatedPostCommentResponse ?? .template
+      self.deprecatedPostCommentResponse = deprecatedPostCommentResponse
 
       self.deprecatedPostCommentError = deprecatedPostCommentError
 
