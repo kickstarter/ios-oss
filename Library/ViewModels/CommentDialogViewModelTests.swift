@@ -31,7 +31,8 @@ internal final class CommentDialogViewModelTests: TestCase {
   }
 
   func testBodyTextViewText_WithoutRecipient() {
-    self.vm.inputs.configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
+    self.vm.inputs
+      .configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
     self.vm.inputs.viewWillAppear()
 
     self.bodyTextViewText.assertValueCount(0)
@@ -52,7 +53,8 @@ internal final class CommentDialogViewModelTests: TestCase {
 
   internal func testPostingFlow_Project() {
     withEnvironment(apiService: MockService(postCommentResult: .success(.template)), currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
+      self.vm.inputs
+        .configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
 
       self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
@@ -76,16 +78,23 @@ internal final class CommentDialogViewModelTests: TestCase {
       )
 
       self.vm.inputs.postButtonPressed()
-      
+
       self.scheduler.advance(by: .seconds(1))
-      
+
       self.loadingViewIsHidden.assertValues(
         [true, false, true],
         "Comment is posting and then done after pressing button."
       )
-      self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(2, "Comment posts successfully. Two comments are posted, one optimistically and another when network returns response.")
+      self.notifyPresenterCommentWasPostedSuccesfully
+        .assertValueCount(
+          2,
+          "Comment posts successfully. Two comments are posted, one optimistically and another when network returns response."
+        )
       self.notifyPresenterDialogWantsDismissal
-        .assertValueCount(2, "Dialog is dismissed after posting of comment. Two dismissals because of two comments being posted, not ideal.")
+        .assertValueCount(
+          2,
+          "Dialog is dismissed after posting of comment. Two dismissals because of two comments being posted, not ideal."
+        )
 
       XCTAssertEqual(
         [],
@@ -127,16 +136,23 @@ internal final class CommentDialogViewModelTests: TestCase {
       )
 
       self.vm.inputs.postButtonPressed()
-      
+
       self.scheduler.advance(by: .seconds(1))
 
       self.loadingViewIsHidden.assertValues(
         [true, false, true],
         "Comment is posting and then done after pressing button."
       )
-      self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(2, "Comment posts successfully. Two comments are posted, one optimistically and another when network returns response.")
+      self.notifyPresenterCommentWasPostedSuccesfully
+        .assertValueCount(
+          2,
+          "Comment posts successfully. Two comments are posted, one optimistically and another when network returns response."
+        )
       self.notifyPresenterDialogWantsDismissal
-        .assertValueCount(2, "Dialog is dismissed after posting of comment. Two dismissals because of two comments being posted, not ideal.")
+        .assertValueCount(
+          2,
+          "Dialog is dismissed after posting of comment. Two dismissals because of two comments being posted, not ideal."
+        )
 
       XCTAssertEqual(
         [],
@@ -150,15 +166,19 @@ internal final class CommentDialogViewModelTests: TestCase {
   }
 
   internal func testPostingErrorFlow() {
-    withEnvironment(apiService: MockService(postCommentResult: .failure(.couldNotParseJSON)), currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
+    withEnvironment(
+      apiService: MockService(postCommentResult: .failure(.couldNotParseJSON)),
+      currentUser: .template
+    ) {
+      self.vm.inputs
+        .configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.commentBodyChanged("hello")
 
       self.vm.inputs.postButtonPressed()
 
       self.scheduler.advance(by: .seconds(1))
-      
+
       self.presentError.assertValues(["Something went wrong, please try again."], "Error message is emitted.")
       self.loadingViewIsHidden.assertValues(
         [true, false, true],
@@ -166,30 +186,45 @@ internal final class CommentDialogViewModelTests: TestCase {
       )
 
       self.notifyPresenterCommentWasPostedSuccesfully
-        .assertValueCount(1, "Comment does not post successfuly. However, because comments are posted optimistically, we still count this as successful post. See //FIXME in view model for more info.")
+        .assertValueCount(
+          1,
+          "Comment does not post successfuly. However, because comments are posted optimistically, we still count this as successful post. See //FIXME in view model for more info."
+        )
       self.notifyPresenterDialogWantsDismissal
-        .assertValueCount(1, "Comment dialog does not dismiss automatically. However, because comments are posted optimistically, we still dismiss the dialog. See //FIXME in view model for more info.")
+        .assertValueCount(
+          1,
+          "Comment dialog does not dismiss automatically. However, because comments are posted optimistically, we still dismiss the dialog. See //FIXME in view model for more info."
+        )
     }
   }
 
   internal func testPostingErrorFlow_WithMissingErrorMessage() {
-    withEnvironment(apiService: MockService(postCommentResult: .failure(.couldNotParseJSON)), currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
+    withEnvironment(
+      apiService: MockService(postCommentResult: .failure(.couldNotParseJSON)),
+      currentUser: .template
+    ) {
+      self.vm.inputs
+        .configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.commentBodyChanged("hello")
 
       self.vm.inputs.postButtonPressed()
-      
+
       self.scheduler.advance(by: .seconds(1))
 
-      self.presentError.assertValueCount(1, "Error message is emitted. Not displayed to user. See //FIXME in view model for more info.")
+      self.presentError
+        .assertValueCount(
+          1,
+          "Error message is emitted. Not displayed to user. See //FIXME in view model for more info."
+        )
 
       XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
 
   internal func testCancellingFlow() {
-    self.vm.inputs.configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
+    self.vm.inputs
+      .configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
     self.vm.inputs.viewWillAppear()
 
     self.vm.inputs.cancelButtonPressed()
@@ -199,7 +234,8 @@ internal final class CommentDialogViewModelTests: TestCase {
   }
 
   func testShowKeyboard() {
-    self.vm.inputs.configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
+    self.vm.inputs
+      .configureWith(project: .template, update: nil, recipientName: nil, context: .projectComments)
     self.vm.inputs.viewWillAppear()
 
     self.showKeyboard.assertValues([true])

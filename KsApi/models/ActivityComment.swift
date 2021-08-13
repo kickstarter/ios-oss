@@ -5,8 +5,6 @@ import Foundation
  There is no graph support for this endpoint at time of writing. O
  Our existing `Comment` model relies on Graph to be created.
  When we have graph support for these endpoints we should do a direct replacement of `ActivityComment` and `ActivityCommentAuthor` with `Comment` and `Comment.Author`
-  - `POST /v1/projects/\(u.projectId)/updates/\(u.id)/comments`
-  - `POST /v1/projects/\(p.id)/comments`
   - `GET /v1/projects/\(project.id)/activities`
  Use cases:
   - `ProjectActivitiesViewController`

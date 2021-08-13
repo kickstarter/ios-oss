@@ -4751,6 +4751,8 @@
 			children = (
 				D01587781EEB2ED6006E7684 /* AccessTokenEnvelope.swift */,
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
+				06BD75BD26C42D5600A12D4E /* ActivityComment.swift */,
+				06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */,
 				06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */,
 				06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
@@ -4781,8 +4783,6 @@
 				8A4E95382450FBB500A578CF /* CreditCardType.swift */,
 				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
-				06BD75BD26C42D5600A12D4E /* ActivityComment.swift */,
-				06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */,
 				D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */,
 				D015878D1EEB2ED6006E7684 /* DiscoveryParams.swift */,
 				D015878E1EEB2ED6006E7684 /* DiscoveryParamsTests.swift */,
