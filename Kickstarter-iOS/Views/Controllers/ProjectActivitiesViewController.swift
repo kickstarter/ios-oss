@@ -188,5 +188,5 @@ extension ProjectActivitiesViewController: CommentDialogDelegate {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func commentDialog(_: CommentDialogViewController, postedComment _: ActivityComment) {}
+  internal func commentDialog(_: CommentDialogViewController, postedComment _: Comment) {}
 }

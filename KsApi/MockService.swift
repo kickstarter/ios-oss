@@ -132,9 +132,6 @@
 
     fileprivate let incrementVideoStartError: ErrorEnvelope?
 
-    fileprivate let deprecatedPostCommentResponse: ActivityComment?
-    fileprivate let deprecatedPostCommentError: ErrorEnvelope?
-
     fileprivate let postCommentResult: Result<Comment, ErrorEnvelope>?
 
     fileprivate let fetchProjectActivitiesResponse: [Activity]?
@@ -288,8 +285,6 @@
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
       fetchUpdateResponse: Update = .template,
       fetchUserSelfError: ErrorEnvelope? = nil,
-      deprecatedPostCommentResponse: ActivityComment? = nil,
-      deprecatedPostCommentError: ErrorEnvelope? = nil,
       postCommentResult: Result<Comment, ErrorEnvelope>? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
       loginError: ErrorEnvelope? = nil,
@@ -473,10 +468,6 @@
       self.incrementVideoStartError = incrementVideoStartError
 
       self.perimeterXClient = perimeterXClient
-
-      self.deprecatedPostCommentResponse = deprecatedPostCommentResponse
-
-      self.deprecatedPostCommentError = deprecatedPostCommentError
 
       self.postCommentResult = postCommentResult
 
@@ -1152,26 +1143,6 @@
       return SignalProducer(value: messageThread)
     }
 
-    internal func deprecatedPostComment(_: String, toProject _: Project) ->
-      SignalProducer<ActivityComment, ErrorEnvelope> {
-      if let error = self.deprecatedPostCommentError {
-        return SignalProducer(error: error)
-      } else if let comment = self.deprecatedPostCommentResponse {
-        return SignalProducer(value: comment)
-      }
-      return .empty
-    }
-
-    func deprecatedPostComment(_: String,
-                               toUpdate _: Update) -> SignalProducer<ActivityComment, ErrorEnvelope> {
-      if let error = self.deprecatedPostCommentError {
-        return SignalProducer(error: error)
-      } else if let comment = self.deprecatedPostCommentResponse {
-        return SignalProducer(value: comment)
-      }
-      return .empty
-    }
-
     func postComment(input _: PostCommentInput)
       -> SignalProducer<Comment, ErrorEnvelope> {
       return producer(for: self.postCommentResult)
@@ -1442,8 +1413,6 @@
             fetchUnansweredSurveyResponsesResponse: $1.fetchUnansweredSurveyResponsesResponse,
             fetchUpdateResponse: $1.fetchUpdateResponse,
             fetchUserSelfError: $1.fetchUserSelfError,
-            deprecatedPostCommentResponse: $1.deprecatedPostCommentResponse,
-            deprecatedPostCommentError: $1.deprecatedPostCommentError,
             postCommentResult: $1.postCommentResult,
             loginResponse: $1.loginResponse,
             loginError: $1.loginError,

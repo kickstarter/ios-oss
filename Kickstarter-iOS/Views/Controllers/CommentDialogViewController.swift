@@ -7,7 +7,7 @@ import UIKit
 
 internal protocol CommentDialogDelegate: AnyObject {
   func commentDialogWantsDismissal(_ dialog: CommentDialogViewController)
-  func commentDialog(_ dialog: CommentDialogViewController, postedComment: ActivityComment)
+  func commentDialog(_ dialog: CommentDialogViewController, postedComment: Comment)
 }
 
 internal final class CommentDialogViewController: UIViewController {
@@ -38,7 +38,7 @@ internal final class CommentDialogViewController: UIViewController {
   ) -> CommentDialogViewController {
     let vc = Storyboard.CommentsDialog.instantiate(CommentDialogViewController.self)
     vc.viewModel.inputs.configureWith(
-      project: project, update: update, recipient: recipient,
+      project: project, update: update, recipientName: recipient?.name,
       context: context
     )
     return vc
@@ -108,7 +108,7 @@ internal final class CommentDialogViewController: UIViewController {
     self.delegate?.commentDialogWantsDismissal(self)
   }
 
-  fileprivate func commentPostedSuccessfully(_ comment: ActivityComment) {
+  fileprivate func commentPostedSuccessfully(_ comment: Comment) {
     self.delegate?.commentDialog(self, postedComment: comment)
   }
 

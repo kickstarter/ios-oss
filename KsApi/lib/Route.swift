@@ -28,8 +28,6 @@ internal enum Route {
   case messagesForThread(messageThreadId: Int)
   case messagesForBacking(Backing)
   case messageThreads(mailbox: Mailbox, project: Project?)
-  case postProjectComment(Project, body: String)
-  case postUpdateComment(Update, body: String)
   case project(Param)
   case projectActivities(Project)
   case projectNotifications
@@ -163,12 +161,6 @@ internal enum Route {
           return (.GET, "/v1/projects/\(project.id)/message_threads/\(mailbox.rawValue)", [:], nil)
         }
         return (.GET, "/v1/message_threads/\(mailbox.rawValue)", [:], nil)
-
-      case let .postProjectComment(p, body):
-        return (.POST, "/v1/projects/\(p.id)/comments", ["body": body], nil)
-
-      case let .postUpdateComment(u, body):
-        return (.POST, "/v1/projects/\(u.projectId)/updates/\(u.id)/comments", ["body": body], nil)
 
       case let .project(param):
         return (.GET, "/v1/projects/\(param.escapedUrlComponent)", [:], nil)
