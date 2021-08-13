@@ -14,8 +14,8 @@ final class ProjectActivitiesViewModelTests: TestCase {
   fileprivate let project = TestObserver<Project, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
 
-  private var sampleAuthor: DeprecatedAuthor {
-    DeprecatedAuthor(
+  private var sampleAuthor: ActivityCommentAuthor {
+    ActivityCommentAuthor(
       avatar: .template,
       id: 1,
       name: "test",
@@ -23,8 +23,8 @@ final class ProjectActivitiesViewModelTests: TestCase {
     )
   }
 
-  private var sampleComment: DeprecatedComment {
-    DeprecatedComment(
+  private var sampleComment: ActivityComment {
+    ActivityComment(
       author: sampleAuthor,
       body: "Love this project!",
       createdAt: .leastNonzeroMagnitude,

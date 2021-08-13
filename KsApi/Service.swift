@@ -451,14 +451,18 @@ public struct Service: ServiceType {
     return request(.markAsRead(messageThread))
   }
 
+  /** FIXME: Can `deprecatedPostComment(_: toProject:)` be interchanged with `postComment(input: PostCommentInput)`?
+   */
   public func deprecatedPostComment(_ body: String, toProject project: Project) ->
-    SignalProducer<DeprecatedComment, ErrorEnvelope> {
+    SignalProducer<ActivityComment, ErrorEnvelope> {
     return request(.postProjectComment(project, body: body))
   }
 
+  /** FIXME: Can `deprecatedPostComment(_: toUpdate:)` be interchanged with `postComment(input: PostCommentInput)`?
+   */
   public func deprecatedPostComment(_ body: String,
                                     toUpdate update: Update)
-    -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
+    -> SignalProducer<ActivityComment, ErrorEnvelope> {
     return request(.postUpdateComment(update, body: body))
   }
 

@@ -269,11 +269,11 @@ public protocol ServiceType {
 
   /// Posts a comment to a project.
   func deprecatedPostComment(_ body: String, toProject project: Project)
-    -> SignalProducer<DeprecatedComment, ErrorEnvelope>
+    -> SignalProducer<ActivityComment, ErrorEnvelope>
 
   /// Posts a comment to an update.
   func deprecatedPostComment(_ body: String, toUpdate update: Update)
-    -> SignalProducer<DeprecatedComment, ErrorEnvelope>
+    -> SignalProducer<ActivityComment, ErrorEnvelope>
 
   /// Posts a comment to a project or replies in a thread
   func postComment(input: PostCommentInput)

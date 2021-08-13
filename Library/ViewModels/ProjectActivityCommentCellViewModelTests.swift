@@ -13,12 +13,12 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 9
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
-  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, DeprecatedComment), Never>()
+  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, ActivityComment), Never>()
   fileprivate let pledgeFooterIsHidden = TestObserver<Bool, Never>()
   fileprivate let title = TestObserver<String, Never>()
 
-  private var sampleAuthor: DeprecatedAuthor {
-    DeprecatedAuthor(
+  private var sampleAuthor: ActivityCommentAuthor {
+    ActivityCommentAuthor(
       avatar: .template,
       id: 1,
       name: "test",
@@ -26,8 +26,8 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     )
   }
 
-  private var sampleComment: DeprecatedComment {
-    DeprecatedComment(
+  private var sampleComment: ActivityComment {
+    ActivityComment(
       author: self.sampleAuthor,
       body: "Love this project!",
       createdAt: .leastNonzeroMagnitude,
@@ -68,7 +68,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let body1 = "Thanks for the update!"
 
-    let comment = DeprecatedComment(
+    let comment = ActivityComment(
       author: sampleAuthor,
       body: body1,
       createdAt: .leastNonzeroMagnitude,
@@ -84,7 +84,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     self.body.assertValues([body1], "Emits post comment's body")
 
     let body2 = "Aw, the limited bundle is all gone!"
-    let comment2 = DeprecatedComment(
+    let comment2 = ActivityComment(
       author: sampleAuthor,
       body: body2,
       createdAt: .leastNonzeroMagnitude,
@@ -118,7 +118,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   func testCellAccessibilityValue() {
     let project = Project.template
     let body = "Thanks for the update!"
-    let comment = DeprecatedComment(
+    let comment = ActivityComment(
       author: sampleAuthor,
       body: body,
       createdAt: .leastNonzeroMagnitude,

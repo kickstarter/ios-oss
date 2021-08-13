@@ -32,7 +32,6 @@ internal enum Route {
   case postUpdateComment(Update, body: String)
   case project(Param)
   case projectActivities(Project)
-  case projectComments(Project)
   case projectNotifications
   case projects(member: Bool)
   case projectStats(projectId: Int)
@@ -176,9 +175,6 @@ internal enum Route {
 
       case let .projectActivities(project):
         return (.GET, "/v1/projects/\(project.id)/activities", [:], nil)
-
-      case let .projectComments(p):
-        return (.GET, "/v1/projects/\(p.id)/comments", [:], nil)
 
       case .projectNotifications:
         return (.GET, "/v1/users/self/notifications", [:], nil)

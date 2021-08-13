@@ -12,12 +12,12 @@ internal final class CommentDialogViewModelTests: TestCase {
   internal var postButtonEnabled = TestObserver<Bool, Never>()
   internal var loadingViewIsHidden = TestObserver<Bool, Never>()
   internal var presentError = TestObserver<String, Never>()
-  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<DeprecatedComment, Never>()
+  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<ActivityComment, Never>()
   internal let notifyPresenterDialogWantsDismissal = TestObserver<(), Never>()
   internal let showKeyboard = TestObserver<Bool, Never>()
 
-  private var sampleAuthor: DeprecatedAuthor {
-    DeprecatedAuthor(
+  private var sampleAuthor: ActivityCommentAuthor {
+    ActivityCommentAuthor(
       avatar: .template,
       id: 1,
       name: "test",
@@ -25,8 +25,8 @@ internal final class CommentDialogViewModelTests: TestCase {
     )
   }
 
-  private var sampleComment: DeprecatedComment {
-    DeprecatedComment(
+  private var sampleComment: ActivityComment {
+    ActivityComment(
       author: self.sampleAuthor,
       body: "Love this project!",
       createdAt: .leastNonzeroMagnitude,
@@ -57,7 +57,7 @@ internal final class CommentDialogViewModelTests: TestCase {
   }
 
   func testBodyTextViewText_WithRecipient() {
-    let author = DeprecatedAuthor.template
+    let author = ActivityCommentAuthor.template
     self.vm.inputs.configureWith(
       project: .template,
       update: nil,

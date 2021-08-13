@@ -79,10 +79,10 @@
 		06BD75B926C42B9B00A12D4E /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */; };
 		06BD75BA26C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */; };
 		06BD75BC26C42BA100A12D4E /* OptimizelyFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */; };
-		06BD75C126C42D5700A12D4E /* DeprecatedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BD26C42D5600A12D4E /* DeprecatedComment.swift */; };
-		06BD75C226C42D5700A12D4E /* DeprecatedAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BE26C42D5600A12D4E /* DeprecatedAuthor.swift */; };
-		06BD75C526C42D6600A12D4E /* DeprecatedAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BF26C42D5700A12D4E /* DeprecatedAuthorTests.swift */; };
-		06BD75C626C42D6900A12D4E /* DeprecatedCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C026C42D5700A12D4E /* DeprecatedCommentTests.swift */; };
+		06BD75C126C42D5700A12D4E /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BD26C42D5600A12D4E /* ActivityComment.swift */; };
+		06BD75C226C42D5700A12D4E /* ActivityCommentAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */; };
+		06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */; };
+		06BD75C626C42D6900A12D4E /* ActivityCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */; };
 		06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */; };
 		06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */; };
 		06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */; };
@@ -1738,10 +1738,10 @@
 		06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+Helpers.swift"; sourceTree = "<group>"; };
 		06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+HelpersTests.swift"; sourceTree = "<group>"; };
-		06BD75BD26C42D5600A12D4E /* DeprecatedComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedComment.swift; sourceTree = "<group>"; };
-		06BD75BE26C42D5600A12D4E /* DeprecatedAuthor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedAuthor.swift; sourceTree = "<group>"; };
-		06BD75BF26C42D5700A12D4E /* DeprecatedAuthorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedAuthorTests.swift; sourceTree = "<group>"; };
-		06BD75C026C42D5700A12D4E /* DeprecatedCommentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentTests.swift; sourceTree = "<group>"; };
+		06BD75BD26C42D5600A12D4E /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
+		06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCommentAuthor.swift; sourceTree = "<group>"; };
+		06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCommentAuthorTests.swift; sourceTree = "<group>"; };
+		06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCommentTests.swift; sourceTree = "<group>"; };
 		06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
 		06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
 		06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewController.swift; sourceTree = "<group>"; };
@@ -4751,6 +4751,8 @@
 			children = (
 				D01587781EEB2ED6006E7684 /* AccessTokenEnvelope.swift */,
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
+				06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */,
+				06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
@@ -4779,10 +4781,8 @@
 				8A4E95382450FBB500A578CF /* CreditCardType.swift */,
 				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
-				06BD75BE26C42D5600A12D4E /* DeprecatedAuthor.swift */,
-				06BD75BF26C42D5700A12D4E /* DeprecatedAuthorTests.swift */,
-				06BD75BD26C42D5600A12D4E /* DeprecatedComment.swift */,
-				06BD75C026C42D5700A12D4E /* DeprecatedCommentTests.swift */,
+				06BD75BD26C42D5600A12D4E /* ActivityComment.swift */,
+				06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */,
 				D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */,
 				D015878D1EEB2ED6006E7684 /* DiscoveryParams.swift */,
 				D015878E1EEB2ED6006E7684 /* DiscoveryParamsTests.swift */,
@@ -6605,7 +6605,7 @@
 				D01588AD1EEB2ED7006E7684 /* Project.StatsLenses.swift in Sources */,
 				D0158A211EEB30A2006E7684 /* ProjectStatsEnvelope.VideoStatsTemplates.swift in Sources */,
 				D0158A141EEB30A2006E7684 /* FindFriendsEnvelopeTemplates.swift in Sources */,
-				06BD75C126C42D5700A12D4E /* DeprecatedComment.swift in Sources */,
+				06BD75C126C42D5700A12D4E /* ActivityComment.swift in Sources */,
 				8ADCCD812655CA290079D308 /* ApolloInterceptors.swift in Sources */,
 				8A8831C324DA2B27002BCA5E /* Backing+GraphBacking.swift in Sources */,
 				D79440902208970E00D0A747 /* CreatePaymentSourceTemplate.swift in Sources */,
@@ -6693,7 +6693,7 @@
 				8A15571D2693B29600017845 /* Comment+CommentFragment.swift in Sources */,
 				8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */,
 				D01588A11EEB2ED7006E7684 /* MessageThreadLenses.swift in Sources */,
-				06BD75C226C42D5700A12D4E /* DeprecatedAuthor.swift in Sources */,
+				06BD75C226C42D5700A12D4E /* ActivityCommentAuthor.swift in Sources */,
 				D01588BB1EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsLenses.swift in Sources */,
 				D01589071EEB2ED7006E7684 /* ProjectNotification.swift in Sources */,
 				D01588D31EEB2ED7006E7684 /* SurveyResponseLenses.swift in Sources */,
@@ -6823,9 +6823,9 @@
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
-				06BD75C626C42D6900A12D4E /* DeprecatedCommentTests.swift in Sources */,
+				06BD75C626C42D6900A12D4E /* ActivityCommentTests.swift in Sources */,
 				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
-				06BD75C526C42D6600A12D4E /* DeprecatedAuthorTests.swift in Sources */,
+				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
 				8A1F65F2262660EF00A28E74 /* PerimeterXClientTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,

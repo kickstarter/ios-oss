@@ -132,7 +132,7 @@
 
     fileprivate let incrementVideoStartError: ErrorEnvelope?
 
-    fileprivate let deprecatedPostCommentResponse: DeprecatedComment?
+    fileprivate let deprecatedPostCommentResponse: ActivityComment?
     fileprivate let deprecatedPostCommentError: ErrorEnvelope?
 
     fileprivate let postCommentResult: Result<Comment, ErrorEnvelope>?
@@ -231,7 +231,7 @@
       backingUpdate: Backing = .template,
       fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
       fetchGraphCategoriesError: GraphError? = nil,
-      fetchCommentsResponse _: [DeprecatedComment]? = nil,
+      fetchCommentsResponse _: [ActivityComment]? = nil,
       fetchCommentsError _: ErrorEnvelope? = nil,
       fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
       fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
@@ -288,7 +288,7 @@
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
       fetchUpdateResponse: Update = .template,
       fetchUserSelfError: ErrorEnvelope? = nil,
-      deprecatedPostCommentResponse: DeprecatedComment? = nil,
+      deprecatedPostCommentResponse: ActivityComment? = nil,
       deprecatedPostCommentError: ErrorEnvelope? = nil,
       postCommentResult: Result<Comment, ErrorEnvelope>? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
@@ -1153,7 +1153,7 @@
     }
 
     internal func deprecatedPostComment(_: String, toProject _: Project) ->
-      SignalProducer<DeprecatedComment, ErrorEnvelope> {
+      SignalProducer<ActivityComment, ErrorEnvelope> {
       if let error = self.deprecatedPostCommentError {
         return SignalProducer(error: error)
       } else if let comment = self.deprecatedPostCommentResponse {
@@ -1163,7 +1163,7 @@
     }
 
     func deprecatedPostComment(_: String,
-                               toUpdate _: Update) -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
+                               toUpdate _: Update) -> SignalProducer<ActivityComment, ErrorEnvelope> {
       if let error = self.deprecatedPostCommentError {
         return SignalProducer(error: error)
       } else if let comment = self.deprecatedPostCommentResponse {
