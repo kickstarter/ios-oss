@@ -13,9 +13,28 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 9
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
-  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, DeprecatedComment), Never>()
+  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, ActivityComment), Never>()
   fileprivate let pledgeFooterIsHidden = TestObserver<Bool, Never>()
   fileprivate let title = TestObserver<String, Never>()
+
+  private var sampleAuthor: ActivityCommentAuthor {
+    ActivityCommentAuthor(
+      avatar: .template,
+      id: 1,
+      name: "test",
+      urls: .template
+    )
+  }
+
+  private var sampleComment: ActivityComment {
+    ActivityComment(
+      author: self.sampleAuthor,
+      body: "Love this project!",
+      createdAt: .leastNonzeroMagnitude,
+      deletedAt: nil,
+      id: 1
+    )
+  }
 
   internal override func setUp() {
     super.setUp()
@@ -48,18 +67,34 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   func testBody() {
     let project = Project.template
     let body1 = "Thanks for the update!"
+
+    let comment = ActivityComment(
+      author: sampleAuthor,
+      body: body1,
+      createdAt: .leastNonzeroMagnitude,
+      deletedAt: nil,
+      id: 1
+    )
     let commentPostActivity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ body1)
       |> Activity.lens.project .~ project
+      |> Activity.lens.comment .~ comment
 
     self.vm.inputs.configureWith(activity: commentPostActivity, project: project)
     self.body.assertValues([body1], "Emits post comment's body")
 
     let body2 = "Aw, the limited bundle is all gone!"
+    let comment2 = ActivityComment(
+      author: sampleAuthor,
+      body: body2,
+      createdAt: .leastNonzeroMagnitude,
+      deletedAt: nil,
+      id: 1
+    )
+
     let commentProjectActivity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ body2)
+      |> Activity.lens.comment .~ comment2
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: commentProjectActivity, project: project)
@@ -70,7 +105,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Will this ship to Europe?")
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
@@ -83,9 +118,16 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   func testCellAccessibilityValue() {
     let project = Project.template
     let body = "Thanks for the update!"
+    let comment = ActivityComment(
+      author: sampleAuthor,
+      body: body,
+      createdAt: .leastNonzeroMagnitude,
+      deletedAt: nil,
+      id: 1
+    )
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ body)
+      |> Activity.lens.comment .~ comment
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: activity, project: project)
@@ -113,7 +155,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let user = User.template |> \.name .~ "Christopher"
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ .template
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ user
 
@@ -128,7 +170,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let user = User.template |> \.name .~ "Christopher"
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ .template
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.update .~ update
       |> Activity.lens.user .~ user
@@ -140,9 +182,10 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
   func testTitleProject() {
     let project = Project.template
+
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Love this project!")
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
@@ -155,7 +198,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Love this project!")
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ self.defaultUser
 
@@ -168,7 +211,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Good update!")
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
       |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
@@ -186,7 +229,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Good update!")
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
       |> Activity.lens.user .~ self.defaultUser
@@ -204,7 +247,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = .template |> Project.lens.creator .~ creator
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Good update!")
+      |> Activity.lens.comment .~ self.sampleComment
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ creator
 

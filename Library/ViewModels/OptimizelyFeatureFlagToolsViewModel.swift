@@ -95,12 +95,6 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .commentFlaggingEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue]
-  case .commentThreading:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.commentThreading.rawValue]
-  case .commentThreadingRepliesEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.commentThreadingRepliesEnabled.rawValue]
   }
 }
 
@@ -111,12 +105,5 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .commentFlaggingEnabled:
     AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue] = value
-  case .commentThreading:
-    AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.commentThreading.rawValue] = value
-  case .commentThreadingRepliesEnabled:
-    AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.commentThreadingRepliesEnabled.rawValue] =
-      value
   }
 }

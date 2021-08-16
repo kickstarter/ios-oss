@@ -14,6 +14,25 @@ final class ProjectActivitiesViewModelTests: TestCase {
   fileprivate let project = TestObserver<Project, Never>()
   fileprivate let showEmptyState = TestObserver<Bool, Never>()
 
+  private var sampleAuthor: ActivityCommentAuthor {
+    ActivityCommentAuthor(
+      avatar: .template,
+      id: 1,
+      name: "test",
+      urls: .template
+    )
+  }
+
+  private var sampleComment: ActivityComment {
+    ActivityComment(
+      author: sampleAuthor,
+      body: "Love this project!",
+      createdAt: .leastNonzeroMagnitude,
+      deletedAt: nil,
+      id: 1
+    )
+  }
+
   override func setUp() {
     super.setUp()
 
@@ -97,7 +116,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
   func testGoTo() {
     let backing = Backing.template |> Backing.lens.projectId .~ Project.template.id
     let project = Project.template |> Project.lens.personalization.backing .~ backing
-    let comment = DeprecatedComment.template
+    let comment = self.sampleComment
     let update = Update.template
     let user = User.template
 

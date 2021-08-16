@@ -79,8 +79,7 @@ internal final class CommentCellViewModelTests: TestCase {
   func testOutputs_bottomRowStackViewIsHidden_LoggedIn_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
       ]
 
     let user = User.template |> \.id .~ 12_345
@@ -99,8 +98,7 @@ internal final class CommentCellViewModelTests: TestCase {
   func testOutputs_bottomRowStackViewIsHidden_IsBacking_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
       ]
 
     let project = Project.template
@@ -210,9 +208,6 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutput_notifyDelegateLinkTappedWithURL() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
-      ]
 
     guard let expectedURL = HelpType.community
       .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) else {
@@ -252,14 +247,13 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_False() {
+  func testOutputs_replyButtonIsHidden_IsNotBacker_IsNotCreatorOrCollaborator_False() {
     let user = User.template |> \.id .~ 12_345
 
     let project = Project.template
       |> \.memberData.permissions .~ [.post, .comment]
 
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: project)
@@ -269,11 +263,10 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_replyButtonIsHidden_FeatureFlag_True_IsNotBacker_IsNotCreatorOrCollaborator_True() {
+  func testOutputs_replyButtonIsHidden_IsNotBacker_IsNotCreatorOrCollaborator_True() {
     let user = User.template |> \.id .~ 12_345
 
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -286,9 +279,8 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_True_IsLoggedIn_FeatureFlag_True() {
+  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_True_IsLoggedIn() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let project = Project.template
       |> \.personalization.isBacking .~ true
@@ -299,15 +291,14 @@ internal final class CommentCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(comment: .template, project: project)
 
       self.replyButtonIsHidden
-        .assertValue(false, "The replyButton is not hidden because the feature flag is true.")
+        .assertValue(false, "The replyButton is not hidden.")
     }
     self.viewRepliesStackViewIsHidden
-      .assertValue(false, "The stack view is not hidden because the feature flag is true.")
+      .assertValue(false, "The stack view is not hidden.")
   }
 
-  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn_FeatureFlag_True() {
+  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true]
 
     let user = User.template |> \.id .~ 12_345
 
@@ -320,38 +311,8 @@ internal final class CommentCellViewModelTests: TestCase {
     self.viewRepliesStackViewIsHidden
       .assertValue(
         false,
-        "The stack view is not hidden because the feature flag is true and there are replies on the comment."
+        "The stack view is not hidden when there are replies on the comment."
       )
-  }
-
-  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
-
-    let user = User.template |> \.id .~ 12_345
-
-    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
-
-      self.replyButtonIsHidden
-        .assertValue(true, "The replyButton is hidden because the flag is false.")
-    }
-    self.viewRepliesStackViewIsHidden
-      .assertValue(true, "The stack view is hidden because the flag is false.")
-  }
-
-  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsLoggedOut_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
-
-    withEnvironment(currentUser: nil, optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
-
-      self.replyButtonIsHidden
-        .assertValue(true, "The replyButton is hidden because the user is not backing.")
-    }
-    self.viewRepliesStackViewIsHidden
-      .assertValue(true, "The stack view is hidden because the flag is false.")
   }
 
   func testOutputs_UserIs_LoggedOut() {
@@ -476,12 +437,11 @@ internal final class CommentCellViewModelTests: TestCase {
     self.viewRepliesStackViewIsHidden.assertValues([true])
   }
 
-  func testViewRepliesContainerHidden_IsNotHiddenWhenCommentHasReplies_CommentThreadingRepliesEnabledFeatureFlag_False() {
+  func testViewRepliesContainerHidden_IsHiddenWhenCommentHasReplies_False() {
     let comment = Comment.template
       |> \.replyCount .~ 1
 
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: false]
 
     self.viewRepliesStackViewIsHidden.assertDidNotEmitValue()
 
@@ -489,7 +449,7 @@ internal final class CommentCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(comment: comment, project: .template)
 
       self.viewRepliesStackViewIsHidden
-        .assertValue(true, "The stack view is hidden because the flag is false.")
+        .assertValue(false, "The stack view is not hidden because there are replies.")
     }
   }
 }

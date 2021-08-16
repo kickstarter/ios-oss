@@ -1,7 +1,7 @@
 import Foundation
 
-extension DeprecatedAuthor {
-  internal static let template = DeprecatedAuthor(
+extension ActivityCommentAuthor {
+  internal static let template = ActivityCommentAuthor(
     avatar: .template,
     id: 1,
     name: "Nino Teixeira",
@@ -9,16 +9,16 @@ extension DeprecatedAuthor {
   )
 }
 
-extension DeprecatedAuthor.Avatar {
-  internal static let template = DeprecatedAuthor.Avatar(
+extension ActivityCommentAuthor.Avatar {
+  internal static let template = ActivityCommentAuthor.Avatar(
     medium: "http://www.kickstarter.com/large.jpg",
     small: "http://www.kickstarter.com/medium.jpg",
     thumb: "http://www.kickstarter.com/small.jpg"
   )
 }
 
-extension DeprecatedAuthor.Url {
-  internal static let template = DeprecatedAuthor.Url(
+extension ActivityCommentAuthor.Url {
+  internal static let template = ActivityCommentAuthor.Url(
     api: "http://api.kickstarter.com",
     web: "http://www.kickstarter.com"
   )

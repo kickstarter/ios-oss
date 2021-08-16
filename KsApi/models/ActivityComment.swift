@@ -1,14 +1,25 @@
 import Foundation
 
-public struct DeprecatedComment {
-  public let author: DeprecatedAuthor
+/**
+ FIXME: Previously `DeprecatedComment`, simply renamed because this model is reliant on `/v1/projects/\(project.id)/activities`
+ There is no graph support for this endpoint at time of writing. O
+ Our existing `Comment` model relies on Graph to be created.
+ When we have graph support for these endpoints we should do a direct replacement of `ActivityComment` and `ActivityCommentAuthor` with `Comment` and `Comment.Author`
+  - `GET /v1/projects/\(project.id)/activities`
+ Use cases:
+  - `ProjectActivitiesViewController`
+  - `KSRAnalytics`
+  - `CommentDialogViewController`
+ */
+public struct ActivityComment {
+  public let author: ActivityCommentAuthor
   public let body: String
   public let createdAt: TimeInterval
   public let deletedAt: TimeInterval?
   public let id: Int
 }
 
-extension DeprecatedComment: Decodable {
+extension ActivityComment: Decodable {
   enum CodingKeys: String, CodingKey {
     case author
     case body
@@ -19,7 +30,8 @@ extension DeprecatedComment: Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.author = try values.decode(DeprecatedAuthor.self, forKey: .author)
+
+    self.author = try values.decode(ActivityCommentAuthor.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     self.id = try values.decode(Int.self, forKey: .id)
@@ -31,8 +43,8 @@ extension DeprecatedComment: Decodable {
   }
 }
 
-extension DeprecatedComment: Equatable {}
+extension ActivityComment: Equatable {}
 
-public func == (lhs: DeprecatedComment, rhs: DeprecatedComment) -> Bool {
+public func == (lhs: ActivityComment, rhs: ActivityComment) -> Bool {
   return lhs.id == rhs.id
 }

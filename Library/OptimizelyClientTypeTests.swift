@@ -7,12 +7,10 @@ final class OptimizelyClientTypeTests: TestCase {
   func testAllFeatures() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
-        OptimizelyFeature.commentThreading.rawValue: true,
-        OptimizelyFeature.commentThreadingRepliesEnabled.rawValue: true
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: true
       ]
 
-    XCTAssert(mockOptimizelyClient.allFeatures().count == 3)
+    XCTAssert(mockOptimizelyClient.allFeatures().count == 1)
   }
 
   func testVariantForExperiment_NoError() {

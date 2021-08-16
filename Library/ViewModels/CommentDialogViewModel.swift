@@ -2,25 +2,25 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public struct DeprecatedCommentDialogData {
+public struct CommentDialogData {
   public let project: Project
   public let update: Update?
-  public let recipient: DeprecatedAuthor?
+  public let recipientName: String?
   public let context: KSRAnalytics.CommentDialogContext
 }
 
-public protocol DeprecatedCommentDialogViewModelInputs {
+public protocol CommentDialogViewModelInputs {
   /// Call when the view appears.
   func viewWillAppear()
 
   /// Call when the view disappears.
   func viewWillDisappear()
 
-  /// Call with the project, update (optional), recipient (optional) and context given to the view.
+  /// Call with the project, update (optional), recipient name (optional) and context given to the view.
   func configureWith(
     project: Project,
     update: Update?,
-    recipient: DeprecatedAuthor?,
+    recipientName: String?,
     context: KSRAnalytics.CommentDialogContext
   )
 
@@ -34,7 +34,7 @@ public protocol DeprecatedCommentDialogViewModelInputs {
   func cancelButtonPressed()
 }
 
-public protocol DeprecatedCommentDialogViewModelOutputs {
+public protocol CommentDialogViewModelOutputs {
   /// Emits a string that should be put into the body text view.
   var bodyTextViewText: Signal<String, Never> { get }
 
@@ -46,7 +46,7 @@ public protocol DeprecatedCommentDialogViewModelOutputs {
 
   /// Emits the newly posted comment when the present of this dialog should be notified that posting
   /// was successful.
-  var notifyPresenterCommentWasPostedSuccesfully: Signal<DeprecatedComment, Never> { get }
+  var notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, Never> { get }
 
   /// Emits when the dialog should notify its presenter that it wants to be dismissed.
   var notifyPresenterDialogWantsDismissal: Signal<(), Never> { get }
@@ -58,20 +58,20 @@ public protocol DeprecatedCommentDialogViewModelOutputs {
   var showKeyboard: Signal<Bool, Never> { get }
 }
 
-public protocol DeprecatedCommentDialogViewModelErrors {
+public protocol CommentDialogViewModelErrors {
   /// Emits a string error description when there has been an error posting a comment.
   var presentError: Signal<String, Never> { get }
 }
 
-public protocol DeprecatedCommentDialogViewModelType {
-  var inputs: DeprecatedCommentDialogViewModelInputs { get }
-  var outputs: DeprecatedCommentDialogViewModelOutputs { get }
-  var errors: DeprecatedCommentDialogViewModelErrors { get }
+public protocol CommentDialogViewModelType {
+  var inputs: CommentDialogViewModelInputs { get }
+  var outputs: CommentDialogViewModelOutputs { get }
+  var errors: CommentDialogViewModelErrors { get }
 }
 
-public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogViewModelType,
-  DeprecatedCommentDialogViewModelInputs,
-  DeprecatedCommentDialogViewModelOutputs, DeprecatedCommentDialogViewModelErrors {
+public final class CommentDialogViewModel: CommentDialogViewModelType,
+  CommentDialogViewModelInputs,
+  CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
@@ -82,14 +82,14 @@ public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogView
     self.viewWillDisappearProperty.value = ()
   }
 
-  fileprivate let configurationDataProperty = MutableProperty<DeprecatedCommentDialogData?>(nil)
+  fileprivate let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
   public func configureWith(
-    project: Project, update: Update?, recipient: DeprecatedAuthor?,
+    project: Project, update: Update?, recipientName: String?,
     context: KSRAnalytics.CommentDialogContext
   ) {
-    self.configurationDataProperty.value = DeprecatedCommentDialogData(
+    self.configurationDataProperty.value = CommentDialogData(
       project: project, update: update,
-      recipient: recipient, context: context
+      recipientName: recipientName, context: context
     )
   }
 
@@ -111,16 +111,16 @@ public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogView
   public let bodyTextViewText: Signal<String, Never>
   public let postButtonEnabled: Signal<Bool, Never>
   public let loadingViewIsHidden: Signal<Bool, Never>
-  public let notifyPresenterCommentWasPostedSuccesfully: Signal<DeprecatedComment, Never>
+  public let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, Never>
   public let notifyPresenterDialogWantsDismissal: Signal<(), Never>
   public let subtitle: Signal<String, Never>
   public let showKeyboard: Signal<Bool, Never>
 
   public let presentError: Signal<String, Never>
 
-  public var inputs: DeprecatedCommentDialogViewModelInputs { return self }
-  public var outputs: DeprecatedCommentDialogViewModelOutputs { return self }
-  public var errors: DeprecatedCommentDialogViewModelErrors { return self }
+  public var inputs: CommentDialogViewModelInputs { return self }
+  public var outputs: CommentDialogViewModelOutputs { return self }
+  public var errors: CommentDialogViewModelErrors { return self }
 
   public init() {
     let isLoading = MutableProperty(false)
@@ -143,20 +143,43 @@ public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogView
     ])
       .skipRepeats()
 
-    let commentPostedEvent = Signal.combineLatest(self.commentBodyProperty.signal, updateOrProject)
-      .takeWhen(self.postButtonPressedProperty.signal)
-      .switchMap { body, updateOrProject in
-        postComment(body, toUpdateOrComment: updateOrProject)
-          .on(
-            starting: {
-              isLoading.value = true
-            },
-            terminated: {
-              isLoading.value = false
-            }
-          )
-          .materialize()
+    let currentUser = self.viewWillAppearProperty.signal
+      .map { _ in AppEnvironment.current.currentUser }
+
+    // get an id needed to post a comment to either a project or a project update
+    let commentableId = updateOrProject
+      .flatMap { updateOrProject in
+        updateOrProject.ifLeft { update in
+          SignalProducer.init(value: encodeToBase64("FreeformPost-\(update.id)"))
+        } ifRight: { project in
+          SignalProducer.init(value: project.graphID)
+        }
       }
+
+    let commentPostedEvent = Signal.combineLatest(
+      self.commentBodyProperty.signal,
+      currentUser.signal.skipNil(),
+      project.signal,
+      commentableId.signal
+    )
+    .takeWhen(self.postButtonPressedProperty.signal)
+    .switchMap { body, currentUser, project, commentableId in
+      postComment(
+        body,
+        project: project,
+        commentableId: commentableId,
+        from: currentUser
+      )
+      .on(
+        starting: {
+          isLoading.value = true
+        },
+        terminated: {
+          isLoading.value = false
+        }
+      )
+      .materialize()
+    }
 
     self.notifyPresenterCommentWasPostedSuccesfully = commentPostedEvent.values()
 
@@ -185,18 +208,43 @@ public final class DeprecatedCommentDialogViewModel: DeprecatedCommentDialogView
     )
 
     self.bodyTextViewText = configurationData
-      .map { data in data.recipient?.name }
+      .map { data in data.recipientName }
       .skipNil()
       .map { "@\($0): " }
   }
 }
 
-private func postComment(_ body: String, toUpdateOrComment updateOrComment: Either<Update, Project>)
-  -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
-  switch updateOrComment {
-  case let .left(update):
-    return AppEnvironment.current.apiService.deprecatedPostComment(body, toUpdate: update)
-  case let .right(project):
-    return AppEnvironment.current.apiService.deprecatedPostComment(body, toProject: project)
+/**
+ FIXME: Issues related to design that need to be discussed as a product change to the `ProjectActivitiesViewController` and removal of `CommentDialogViewController`.
+ - Errors are not displayed to the user as the function uses optimistic posting and the `CommentDialogViewController` is dismissed before the error has a chance to be shown.
+ - Replies are posted as comments on main thread with `@User` tagged.
+ */
+
+private func postComment(_ body: String,
+                         project: Project,
+                         commentableId: String,
+                         from user: User)
+  -> SignalProducer<Comment, ErrorEnvelope> {
+  return CommentsViewModel.postCommentProducer(
+    project: project,
+    commentableId: commentableId,
+    parentId: nil,
+    user: user,
+    body: body
+  )
+  .promoteError(ErrorEnvelope.self)
+  .switchMap { (comment, _) -> SignalProducer<Comment, ErrorEnvelope> in
+    guard comment.status == .failed else {
+      return SignalProducer<Comment, ErrorEnvelope>(value: comment)
+    }
+
+    let failureEnvelope = ErrorEnvelope(
+      errorMessages: [Strings.Something_went_wrong_please_try_again()],
+      ksrCode: nil,
+      httpCode: -1,
+      exception: nil
+    )
+
+    return SignalProducer<Comment, ErrorEnvelope>(error: failureEnvelope)
   }
 }

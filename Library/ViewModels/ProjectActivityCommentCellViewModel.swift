@@ -31,7 +31,7 @@ public protocol ProjectActivityCommentCellViewModelOutputs {
   var notifyDelegateGoToBacking: Signal<(Project, User), Never> { get }
 
   /// Go to the comment reply dialog for the project/update comment.
-  var notifyDelegateGoToSendReply: Signal<(Project, Update?, DeprecatedComment), Never> { get }
+  var notifyDelegateGoToSendReply: Signal<(Project, Update?, ActivityComment), Never> { get }
 
   /// Emits a Bool whether the footer pledge and reply stack view is hidden or not.
   var pledgeFooterIsHidden: Signal<Bool, Never> { get }
@@ -65,14 +65,14 @@ public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCe
 
     let projectComment = activityAndProject
       .filter { activity, _ in activity.category == .commentProject }
-      .flatMap { activity, project -> SignalProducer<(Project, Update?, DeprecatedComment), Never> in
+      .flatMap { activity, project -> SignalProducer<(Project, Update?, ActivityComment), Never> in
         guard let comment = activity.comment else { return .empty }
         return .init(value: (project, nil, comment))
       }
 
     let updateComment = activityAndProject
       .filter { activity, _ in activity.category == .commentPost }
-      .flatMap { activity, project -> SignalProducer<(Project, Update?, DeprecatedComment), Never> in
+      .flatMap { activity, project -> SignalProducer<(Project, Update?, ActivityComment), Never> in
         guard let update = activity.update, let comment = activity.comment else { return .empty }
         return .init(value: (project, update, comment))
       }
@@ -121,7 +121,7 @@ public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCe
   public let cellAccessibilityLabel: Signal<String, Never>
   public let cellAccessibilityValue: Signal<String, Never>
   public let notifyDelegateGoToBacking: Signal<(Project, User), Never>
-  public let notifyDelegateGoToSendReply: Signal<(Project, Update?, DeprecatedComment), Never>
+  public let notifyDelegateGoToSendReply: Signal<(Project, Update?, ActivityComment), Never>
   public let pledgeFooterIsHidden: Signal<Bool, Never>
   public let title: Signal<String, Never>
 

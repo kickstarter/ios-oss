@@ -1,7 +1,7 @@
 
 import Foundation
 
-public struct DeprecatedAuthor: Decodable {
+public struct ActivityCommentAuthor: Decodable {
   public var avatar: Avatar
   public var id: Int
   public var name: String
@@ -19,7 +19,7 @@ public struct DeprecatedAuthor: Decodable {
   }
 }
 
-extension DeprecatedAuthor.Url: Decodable {
+extension ActivityCommentAuthor.Url: Decodable {
   enum CodingKeys: String, CodingKey {
     case api
     case user

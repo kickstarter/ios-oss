@@ -1,9 +1,9 @@
 @testable import KsApi
 import XCTest
 
-final class DeprecatedCommentTests: XCTestCase {
+final class ActivityCommentTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let comment: DeprecatedComment! = DeprecatedComment.decodeJSONDictionary([
+    let comment: ActivityComment! = ActivityComment.decodeJSONDictionary([
       "author": [
         "id": 1,
         "name": "Blob",
@@ -32,7 +32,7 @@ final class DeprecatedCommentTests: XCTestCase {
   }
 
   func testJSONParsing_ZeroDeletedAt() {
-    let comment: DeprecatedComment! = DeprecatedComment.decodeJSONDictionary([
+    let comment: ActivityComment! = ActivityComment.decodeJSONDictionary([
       "author": [
         "id": 1,
         "name": "Blob",

@@ -47,9 +47,6 @@
     fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
     fileprivate let fetchGraphCategoriesError: GraphError?
 
-    fileprivate let fetchCommentsResponse: [DeprecatedComment]?
-    fileprivate let fetchCommentsError: ErrorEnvelope?
-
     fileprivate let fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
     fileprivate let fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
 
@@ -118,8 +115,6 @@
 
     fileprivate let fetchUnansweredSurveyResponsesResponse: [SurveyResponse]
 
-    fileprivate let fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>?
-
     fileprivate let fetchUpdateResponse: Update
 
     fileprivate let fetchUserProjectsBackedResponse: [Project]?
@@ -136,9 +131,6 @@
     fileprivate let incrementVideoCompletionError: ErrorEnvelope?
 
     fileprivate let incrementVideoStartError: ErrorEnvelope?
-
-    fileprivate let deprecatedPostCommentResponse: DeprecatedComment?
-    fileprivate let deprecatedPostCommentError: ErrorEnvelope?
 
     fileprivate let postCommentResult: Result<Comment, ErrorEnvelope>?
 
@@ -236,8 +228,8 @@
       backingUpdate: Backing = .template,
       fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
       fetchGraphCategoriesError: GraphError? = nil,
-      fetchCommentsResponse: [DeprecatedComment]? = nil,
-      fetchCommentsError: ErrorEnvelope? = nil,
+      fetchCommentsResponse _: [ActivityComment]? = nil,
+      fetchCommentsError _: ErrorEnvelope? = nil,
       fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
       fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
       fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>? = nil,
@@ -291,11 +283,8 @@
       fetchSurveyResponseResponse: SurveyResponse? = nil,
       fetchSurveyResponseError: ErrorEnvelope? = nil,
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
-      fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>? = nil,
       fetchUpdateResponse: Update = .template,
       fetchUserSelfError: ErrorEnvelope? = nil,
-      deprecatedPostCommentResponse: DeprecatedComment? = nil,
-      deprecatedPostCommentError: ErrorEnvelope? = nil,
       postCommentResult: Result<Comment, ErrorEnvelope>? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
       loginError: ErrorEnvelope? = nil,
@@ -382,13 +371,6 @@
 
       self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
-      self.fetchCommentsResponse = fetchCommentsResponse ?? [
-        .template |> DeprecatedComment.lens.id .~ 2,
-        .template |> DeprecatedComment.lens.id .~ 1
-      ]
-
-      self.fetchCommentsError = fetchCommentsError
-
       self.fetchProjectCommentsEnvelopeResult = fetchProjectCommentsEnvelopeResult
       self.fetchUpdateCommentsEnvelopeResult = fetchUpdateCommentsEnvelopeResult
 
@@ -465,8 +447,6 @@
 
       self.fetchUnansweredSurveyResponsesResponse = fetchUnansweredSurveyResponsesResponse
 
-      self.fetchUpdateCommentsResponse = fetchUpdateCommentsResponse
-
       self.fetchUpdateResponse = fetchUpdateResponse
 
       self.fetchUserProjectsBackedResponse = fetchUserProjectsBackedResponse
@@ -488,10 +468,6 @@
       self.incrementVideoStartError = incrementVideoStartError
 
       self.perimeterXClient = perimeterXClient
-
-      self.deprecatedPostCommentResponse = deprecatedPostCommentResponse ?? .template
-
-      self.deprecatedPostCommentError = deprecatedPostCommentError
 
       self.postCommentResult = postCommentResult
 
@@ -609,54 +585,6 @@
     internal func clearUserUnseenActivity(input _: EmptyInput)
       -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
       return producer(for: self.clearUserUnseenActivityResult)
-    }
-
-    internal func fetchComments(project _: Project)
-      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchCommentsError {
-        return SignalProducer(error: error)
-      } else if let comments = fetchCommentsResponse {
-        return SignalProducer(
-          value: DeprecatedCommentsEnvelope(
-            comments: comments,
-            urls: DeprecatedCommentsEnvelope.UrlsEnvelope(
-              api: DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(
-                moreComments: ""
-              )
-            )
-          )
-        )
-      }
-      return .empty
-    }
-
-    internal func fetchComments(paginationUrl _: String)
-      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchCommentsError {
-        return SignalProducer(error: error)
-      } else if let comments = fetchCommentsResponse {
-        return SignalProducer(
-          value: DeprecatedCommentsEnvelope(
-            comments: comments,
-            urls: DeprecatedCommentsEnvelope.UrlsEnvelope(
-              api: DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(
-                moreComments: ""
-              )
-            )
-          )
-        )
-      }
-      return .empty
-    }
-
-    internal func fetchComments(update _: Update)
-      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchUpdateCommentsResponse?.error {
-        return SignalProducer(error: error)
-      } else if let comments = fetchUpdateCommentsResponse {
-        return SignalProducer(value: comments.value ?? .template)
-      }
-      return .empty
     }
 
     func fetchProjectComments(
@@ -1215,26 +1143,6 @@
       return SignalProducer(value: messageThread)
     }
 
-    internal func deprecatedPostComment(_: String, toProject _: Project) ->
-      SignalProducer<DeprecatedComment, ErrorEnvelope> {
-      if let error = self.deprecatedPostCommentError {
-        return SignalProducer(error: error)
-      } else if let comment = self.deprecatedPostCommentResponse {
-        return SignalProducer(value: comment)
-      }
-      return .empty
-    }
-
-    func deprecatedPostComment(_: String,
-                               toUpdate _: Update) -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
-      if let error = self.deprecatedPostCommentError {
-        return SignalProducer(error: error)
-      } else if let comment = self.deprecatedPostCommentResponse {
-        return SignalProducer(value: comment)
-      }
-      return .empty
-    }
-
     func postComment(input _: PostCommentInput)
       -> SignalProducer<Comment, ErrorEnvelope> {
       return producer(for: self.postCommentResult)
@@ -1462,8 +1370,6 @@
             fetchActivitiesError: $1.fetchActivitiesError,
             fetchBackingResponse: $1.fetchBackingResponse,
             fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
-            fetchCommentsResponse: $1.fetchCommentsResponse,
-            fetchCommentsError: $1.fetchCommentsError,
             fetchProjectCommentsEnvelopeResult: $1.fetchProjectCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
@@ -1505,11 +1411,8 @@
             fetchSurveyResponseResponse: $1.fetchSurveyResponseResponse,
             fetchSurveyResponseError: $1.fetchSurveyResponseError,
             fetchUnansweredSurveyResponsesResponse: $1.fetchUnansweredSurveyResponsesResponse,
-            fetchUpdateCommentsResponse: $1.fetchUpdateCommentsResponse,
             fetchUpdateResponse: $1.fetchUpdateResponse,
             fetchUserSelfError: $1.fetchUserSelfError,
-            deprecatedPostCommentResponse: $1.deprecatedPostCommentResponse,
-            deprecatedPostCommentError: $1.deprecatedPostCommentError,
             postCommentResult: $1.postCommentResult,
             loginResponse: $1.loginResponse,
             loginError: $1.loginError,

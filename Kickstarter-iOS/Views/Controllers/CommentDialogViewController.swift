@@ -5,14 +5,14 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-internal protocol DeprecatedCommentDialogDelegate: AnyObject {
-  func commentDialogWantsDismissal(_ dialog: DeprecatedCommentDialogViewController)
-  func commentDialog(_ dialog: DeprecatedCommentDialogViewController, postedComment: DeprecatedComment)
+internal protocol CommentDialogDelegate: AnyObject {
+  func commentDialogWantsDismissal(_ dialog: CommentDialogViewController)
+  func commentDialog(_ dialog: CommentDialogViewController, postedComment: Comment)
 }
 
-internal final class DeprecatedCommentDialogViewController: UIViewController {
-  fileprivate let viewModel: DeprecatedCommentDialogViewModelType = DeprecatedCommentDialogViewModel()
-  internal weak var delegate: DeprecatedCommentDialogDelegate?
+internal final class CommentDialogViewController: UIViewController {
+  fileprivate let viewModel: CommentDialogViewModelType = CommentDialogViewModel()
+  internal weak var delegate: CommentDialogDelegate?
 
   @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelButton: UIBarButtonItem!
@@ -33,12 +33,12 @@ internal final class DeprecatedCommentDialogViewController: UIViewController {
   }
 
   internal static func configuredWith(
-    project: Project, update: Update?, recipient: DeprecatedAuthor?,
+    project: Project, update: Update?, recipient: ActivityCommentAuthor?,
     context: KSRAnalytics.CommentDialogContext
-  ) -> DeprecatedCommentDialogViewController {
-    let vc = Storyboard.DeprecatedComments.instantiate(DeprecatedCommentDialogViewController.self)
+  ) -> CommentDialogViewController {
+    let vc = Storyboard.CommentsDialog.instantiate(CommentDialogViewController.self)
     vc.viewModel.inputs.configureWith(
-      project: project, update: update, recipient: recipient,
+      project: project, update: update, recipientName: recipient?.name,
       context: context
     )
     return vc
@@ -108,7 +108,7 @@ internal final class DeprecatedCommentDialogViewController: UIViewController {
     self.delegate?.commentDialogWantsDismissal(self)
   }
 
-  fileprivate func commentPostedSuccessfully(_ comment: DeprecatedComment) {
+  fileprivate func commentPostedSuccessfully(_ comment: Comment) {
     self.delegate?.commentDialog(self, postedComment: comment)
   }
 
@@ -127,7 +127,7 @@ internal final class DeprecatedCommentDialogViewController: UIViewController {
   }
 }
 
-extension DeprecatedCommentDialogViewController: UITextViewDelegate {
+extension CommentDialogViewController: UITextViewDelegate {
   internal func textViewDidChange(_ textView: UITextView) {
     self.viewModel.inputs.commentBodyChanged(textView.text)
   }
