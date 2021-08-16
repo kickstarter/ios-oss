@@ -204,6 +204,7 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
+  // FIXME: Should be able to convert this to Apollo.
   public func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return request(.backing(projectId: project.id, backerId: user.id))
@@ -241,6 +242,7 @@ public struct Service: ServiceType {
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
+  // FIXME: Should be able to convert this to Apollo.
   public func fetchCommentReplies(query: NonEmptySet<Query>)
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
     return fetch(query: query)

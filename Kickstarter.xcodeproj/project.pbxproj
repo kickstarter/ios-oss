@@ -84,12 +84,25 @@
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
+		066A518526C598390009898C /* CommentsDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066A518426C598390009898C /* CommentsDialog.storyboard */; };
+		066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */; };
+		066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */; };
 		06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
 		06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
+		06BD75B926C42B9B00A12D4E /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */; };
+		06BD75BA26C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */; };
+		06BD75BC26C42BA100A12D4E /* OptimizelyFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */; };
+		06BD75C126C42D5700A12D4E /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BD26C42D5600A12D4E /* ActivityComment.swift */; };
+		06BD75C226C42D5700A12D4E /* ActivityCommentAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */; };
+		06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */; };
+		06BD75C626C42D6900A12D4E /* ActivityCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */; };
+		06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */; };
+		06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */; };
+		06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */; };
 		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
 		06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */; };
 		06C38CBB26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */; };
@@ -104,19 +117,6 @@
 		06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EE269398CA00017845 /* CategoryFragment.graphql */; };
 		06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556D7269394A400017845 /* BackingFragment.graphql */; };
 		06DAAE5D26AA3CF500194E58 /* UserStoredCardsFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */; };
-		066A518526C598390009898C /* CommentsDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066A518426C598390009898C /* CommentsDialog.storyboard */; };
-		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
-		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
-		06BD75B926C42B9B00A12D4E /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */; };
-		06BD75BA26C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */; };
-		06BD75BC26C42BA100A12D4E /* OptimizelyFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */; };
-		06BD75C126C42D5700A12D4E /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BD26C42D5600A12D4E /* ActivityComment.swift */; };
-		06BD75C226C42D5700A12D4E /* ActivityCommentAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */; };
-		06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BF26C42D5700A12D4E /* ActivityCommentAuthorTests.swift */; };
-		06BD75C626C42D6900A12D4E /* ActivityCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C026C42D5700A12D4E /* ActivityCommentTests.swift */; };
-		06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */; };
-		06BD75CB26C431B400A12D4E /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */; };
-		06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
@@ -1805,15 +1805,13 @@
 		06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserAccount.graphql; sourceTree = "<group>"; };
 		06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift"; sourceTree = "<group>"; };
 		0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		066A518426C598390009898C /* CommentsDialog.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommentsDialog.storyboard; sourceTree = "<group>"; };
+		066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceMutationTemplate.swift; sourceTree = "<group>"; };
+		066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityMutationTemplate.swift; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCreditCards+UserFragmentTests.swift"; sourceTree = "<group>"; };
 		06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTemplates.swift"; sourceTree = "<group>"; };
-		06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentFragmentTests.swift"; sourceTree = "<group>"; };
-		06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserProfile.graphql; sourceTree = "<group>"; };
-		06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift"; sourceTree = "<group>"; };
-		066A518426C598390009898C /* CommentsDialog.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommentsDialog.storyboard; sourceTree = "<group>"; };
-		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+Helpers.swift"; sourceTree = "<group>"; };
 		06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+HelpersTests.swift"; sourceTree = "<group>"; };
@@ -1824,6 +1822,9 @@
 		06BD75C726C431A000A12D4E /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
 		06BD75C826C431A000A12D4E /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
 		06BD75CC26C4322C00A12D4E /* CommentDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewController.swift; sourceTree = "<group>"; };
+		06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentFragmentTests.swift"; sourceTree = "<group>"; };
+		06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserProfile.graphql; sourceTree = "<group>"; };
+		06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserStoredCardsFragment.graphql; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
@@ -3383,6 +3384,15 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		066C0ADF26CB114A0048F4D8 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */,
+				066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */,
+			);
+			path = templates;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3421,6 +3431,7 @@
 				D6B686EA2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift */,
 				D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */,
 				D6ED1B3C216D617E007F7547 /* inputs */,
+				066C0ADF26CB114A0048F4D8 /* templates */,
 			);
 			path = mutations;
 			sourceTree = "<group>";
@@ -7066,6 +7077,7 @@
 				8A30C6B32491689300EE12E4 /* ManagePledgeViewQueriesTests.swift in Sources */,
 				8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */,
 				8AC3E05E2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift in Sources */,
+				066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */,
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
@@ -7109,6 +7121,7 @@
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
 				8A49396724B68FA500C3C3CE /* Reward+GraphRewardTests.swift in Sources */,
+				066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */,
 				8AE3F73324DA2A53002B03C3 /* Project+GraphProjectTests.swift in Sources */,
 				8A4E953D2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift in Sources */,
 				06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */,
