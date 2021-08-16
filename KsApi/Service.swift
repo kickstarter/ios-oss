@@ -209,15 +209,6 @@ public struct Service: ServiceType {
     return request(.backing(projectId: project.id, backerId: user.id))
   }
 
-  public func fetchComments(paginationUrl url: String)
-    -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-    return requestPaginationDecodable(url)
-  }
-
-  public func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-    return request(.projectComments(project))
-  }
-
   public func fetchProjectComments(
     slug: String,
     cursor: String?,
@@ -255,10 +246,6 @@ public struct Service: ServiceType {
     return fetch(query: query)
       .mapError(ErrorEnvelope.envelope(from:))
       .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
-  }
-
-  public func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
-    return request(.updateComments(update))
   }
 
   public func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
@@ -506,17 +493,7 @@ public struct Service: ServiceType {
     return request(.markAsRead(messageThread))
   }
 
-  public func deprecatedPostComment(_ body: String, toProject project: Project) ->
-    SignalProducer<DeprecatedComment, ErrorEnvelope> {
-    return request(.postProjectComment(project, body: body))
-  }
-
-  public func deprecatedPostComment(_ body: String,
-                                    toUpdate update: Update)
-    -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
-    return request(.postUpdateComment(update, body: body))
-  }
-
+  // FIXME: Convert to using Apollo instead of DSL
   public func postComment(input: PostCommentInput)
     -> SignalProducer<Comment, ErrorEnvelope> {
     return applyMutation(mutation: PostCommentMutation(input: input))

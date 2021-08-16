@@ -62,7 +62,19 @@ internal class WebViewController: UIViewController {
   }
 }
 
-extension WebViewController: WKUIDelegate {}
+extension WebViewController: WKUIDelegate {
+  func webView(
+    _ webView: WKWebView,
+    createWebViewWith _: WKWebViewConfiguration,
+    for navigationAction: WKNavigationAction,
+    windowFeatures _: WKWindowFeatures
+  ) -> WKWebView? {
+    if navigationAction.targetFrame == nil {
+      webView.load(navigationAction.request)
+    }
+    return nil
+  }
+}
 
 extension WebViewController: WKNavigationDelegate {}
 

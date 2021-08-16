@@ -1,9 +1,9 @@
 @testable import KsApi
 import XCTest
 
-final class DeprecatedCommentTests: XCTestCase {
+final class ActivityCommentAuthorTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let author: DeprecatedAuthor! = DeprecatedAuthor.decodeJSONDictionary([
+    let author: ActivityCommentAuthor! = ActivityCommentAuthor.decodeJSONDictionary([
       "id": 382_491_714,
       "name": "Nino Teixeira",
       "avatar": [
@@ -26,7 +26,7 @@ final class DeprecatedCommentTests: XCTestCase {
   }
 
   func testJSONParsing_WithIncompleteData() {
-    let author: DeprecatedComment! = DeprecatedComment.decodeJSONDictionary([
+    let author: ActivityComment! = ActivityComment.decodeJSONDictionary([
       "id": 1,
       "name": "Blob",
       "avatar": [
@@ -59,7 +59,7 @@ final class DeprecatedCommentTests: XCTestCase {
     """
 
     let data = jsonString.data(using: .utf8)!
-    let author = try? JSONDecoder().decode(DeprecatedAuthor.self, from: data)
+    let author = try? JSONDecoder().decode(ActivityCommentAuthor.self, from: data)
 
     XCTAssertEqual(author?.id, 382_491_714)
     XCTAssertEqual(author?.name, "Nino Teixeira")

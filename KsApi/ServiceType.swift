@@ -98,13 +98,7 @@ public protocol ServiceType {
   func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope>
 
-  /// Fetch comments from a pagination url.
-  func fetchComments(paginationUrl url: String) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
-
-  /// Fetch comments for a project.
-  func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
-
-  /// Fetch comments for a project with a slug, cursor, limit and comments' users' stored cards.
+  /// Fetch comments for a project with a slug, cursor and limit.
   func fetchProjectComments(
     slug: String,
     cursor: String?,
@@ -122,9 +116,6 @@ public protocol ServiceType {
 
   /// Fetch comment replies for a comment with a query.
   func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
-
-  /// Fetch comments for an update.
-  func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
   /// Fetch the config.
   func fetchConfig() -> SignalProducer<Config, ErrorEnvelope>
@@ -274,14 +265,6 @@ public protocol ServiceType {
 
   /// Marks all the messages in a particular thread as read.
   func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope>
-
-  /// Posts a comment to a project.
-  func deprecatedPostComment(_ body: String, toProject project: Project)
-    -> SignalProducer<DeprecatedComment, ErrorEnvelope>
-
-  /// Posts a comment to an update.
-  func deprecatedPostComment(_ body: String, toUpdate update: Update)
-    -> SignalProducer<DeprecatedComment, ErrorEnvelope>
 
   /// Posts a comment to a project or replies in a thread
   func postComment(input: PostCommentInput)

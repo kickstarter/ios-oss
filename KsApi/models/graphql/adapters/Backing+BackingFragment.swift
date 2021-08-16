@@ -45,7 +45,7 @@ extension Backing {
       reward: reward,
       rewardId: reward?.id,
       sequence: backingFragment.sequence ?? 0,
-      shippingAmount: backingFragment.shippingAmount?.fragments.moneyFragment.amount.flatMap(Int.init),
+      shippingAmount: backingFragment.shippingAmount?.fragments.moneyFragment.amount.flatMap(Double.init),
       status: backingStatus
     )
   }
