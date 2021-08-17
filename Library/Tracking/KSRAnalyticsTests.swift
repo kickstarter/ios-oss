@@ -1550,20 +1550,6 @@ final class KSRAnalyticsTests: TestCase {
     }
   }
 
-  func testIdentifyingTrackingClient_DoesNotRepeatAfterInitialUserSet() {
-    let user = User.template
-
-    withEnvironment {
-      AppEnvironment.updateCurrentUser(user)
-      self.segmentTrackingClient.userId = nil
-      self.segmentTrackingClient.traits = nil
-      AppEnvironment.updateCurrentUser(user)
-
-      XCTAssertNil(self.segmentTrackingClient.userId)
-      XCTAssertNil(self.segmentTrackingClient.traits)
-    }
-  }
-
   func testIdentifyingTrackingClient_RepeatsIfAnalyticsIdentityDataChanges() {
     let user = User.template
       |> User.lens.notifications.follower .~ false

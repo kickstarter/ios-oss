@@ -10,7 +10,7 @@ public final class KSRAnalytics {
   private let device: UIDeviceType
   internal private(set) var loggedInUser: User? {
     willSet {
-      self.identify(oldUser: self.loggedInUser, newUser: newValue)
+      self.identify(newUser: newValue)
     }
   }
 
@@ -495,17 +495,13 @@ public final class KSRAnalytics {
   }
 
   /// Configure Tracking Client's supporting user identity
-  private func identify(oldUser: User?, newUser: User?) {
+  private func identify(newUser: User?) {
     guard let newUser = newUser else {
       self.segmentClient?.reset()
       return
     }
 
     let newData = KSRAnalyticsIdentityData(newUser)
-    if let oldUser = oldUser, newData == KSRAnalyticsIdentityData(oldUser) {
-      return
-    }
-
     self.segmentClient?.identify(
       "\(newData.userId)",
       traits: newData.allTraits
