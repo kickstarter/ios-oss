@@ -8,7 +8,11 @@ final class SignInWithAppleEnvelope_SignInWithAppleMutation_DataTests: XCTestCas
     XCTAssertEqual(env?.signInWithApple.apiAccessToken, "foobar")
     XCTAssertEqual(env?.signInWithApple.user.uid, "deadbeef")
 
-    XCTAssertEqual(SignInWithAppleEnvelope.producer(from: SignInWithAppleMutationTemplate.valid.data).allValues().count, 1)
+    XCTAssertEqual(
+      SignInWithAppleEnvelope.producer(from: SignInWithAppleMutationTemplate.valid.data)
+        .allValues().count,
+      1
+    )
   }
 
   func testSignInWithAppleEnvelope_Data_Failed() {

@@ -29,7 +29,6 @@ public enum SignInWithAppleMutationTemplate {
     ]
   }
 
-  
   private var signInWithAppleMutationErroredResultMap: [String: Any?] {
     let resultMap = self.signInWithAppleMutationResultMap
 

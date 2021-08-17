@@ -7,10 +7,10 @@ public enum WatchProjectResponseMutationTemplate {
 
   var data: GraphAPI.WatchProjectMutation.Data {
     switch self {
-    case .valid(let watched):
+    case let .valid(watched):
       return GraphAPI.WatchProjectMutation
         .Data(unsafeResultMap: self.watchProjectMutationResultMap(watched: watched))
-    case .errored(let watched):
+    case let .errored(watched):
       return GraphAPI.WatchProjectMutation
         .Data(unsafeResultMap: self.watchProjectMutationErroredResultMap(watched: watched))
     }
@@ -30,7 +30,6 @@ public enum WatchProjectResponseMutationTemplate {
     ]
   }
 
-  
   func watchProjectMutationErroredResultMap(watched: Bool) -> [String: Any?] {
     [
       "wrongKey": [
