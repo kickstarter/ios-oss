@@ -49,7 +49,7 @@ public enum DeletePaymentSourceMutationTemplate {
 
     let topLevelMap = resultMap["paymentSourceDelete"] ?? [:]
 
-    let erroredMap = ["sourcePaymentDelete": topLevelMap]
+    let erroredMap = ["wrongKey": topLevelMap]
 
     return erroredMap
   }
