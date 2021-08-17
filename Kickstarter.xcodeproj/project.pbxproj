@@ -87,6 +87,7 @@
 		066A518526C598390009898C /* CommentsDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066A518426C598390009898C /* CommentsDialog.storyboard */; };
 		066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */; };
 		066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */; };
+		066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
@@ -1808,6 +1809,7 @@
 		066A518426C598390009898C /* CommentsDialog.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommentsDialog.storyboard; sourceTree = "<group>"; };
 		066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceMutationTemplate.swift; sourceTree = "<group>"; };
 		066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityMutationTemplate.swift; sourceTree = "<group>"; };
+		066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutationTemplate.swift; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCreditCards+UserFragmentTests.swift"; sourceTree = "<group>"; };
@@ -3389,6 +3391,7 @@
 			children = (
 				066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */,
 				066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */,
+				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -7125,6 +7128,7 @@
 				8AE3F73324DA2A53002B03C3 /* Project+GraphProjectTests.swift in Sources */,
 				8A4E953D2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift in Sources */,
 				06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */,
+				066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */,
 				8AC3E0A42698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift in Sources */,
 				D0D10C161EEB4550005EBAD0 /* ProjectTests.swift in Sources */,
 				777B88E522BD911F0027640F /* CategoryTests.swift in Sources */,

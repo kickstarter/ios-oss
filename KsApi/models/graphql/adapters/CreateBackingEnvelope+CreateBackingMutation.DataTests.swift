@@ -3,22 +3,8 @@ import XCTest
 
 final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   func test_SCA() {
-    let dict: [String: Any] = [
-      "createBacking": [
-        "checkout": [
-          "id": "id",
-          "state": GraphAPI.CheckoutState.authorizing,
-          "backing": [
-            "clientSecret": "client-secret",
-            "requiresAction": true
-          ]
-        ]
-      ]
-    ]
-
-    let data = GraphAPI.CreateBackingMutation.Data(unsafeResultMap: dict)
-
-    let env = CreateBackingEnvelope.from(data)
+    let env = CreateBackingEnvelope
+      .from(CreateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, "client-secret")
@@ -27,22 +13,8 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   }
 
   func test_NonSCA_Successful() {
-    let dict: [String: Any] = [
-      "createBacking": [
-        "checkout": [
-          "id": "id",
-          "state": GraphAPI.CheckoutState.successful,
-          "backing": [
-            "clientSecret": nil,
-            "requiresAction": false
-          ]
-        ]
-      ]
-    ]
-
-    let data = GraphAPI.CreateBackingMutation.Data(unsafeResultMap: dict)
-
-    let env = CreateBackingEnvelope.from(data)
+    let env = CreateBackingEnvelope
+      .from(CreateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
@@ -51,26 +23,18 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   }
 
   func test_NonSCA_Failed() {
-    let dict: [String: Any] = [
-      "createBacking": [
-        "checkout": [
-          "id": "id",
-          "state": GraphAPI.CheckoutState.failed,
-          "backing": [
-            "clientSecret": nil,
-            "requiresAction": false
-          ]
-        ]
-      ]
-    ]
-
-    let data = GraphAPI.CreateBackingMutation.Data(unsafeResultMap: dict)
-
-    let env = CreateBackingEnvelope.from(data)
+    let env = CreateBackingEnvelope
+      .from(CreateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
     XCTAssertEqual(env?.createBacking.checkout.backing.requiresAction, false)
     XCTAssertEqual(env?.createBacking.checkout.state, .failed)
+  }
+
+  func test_BadResponse_Error() {
+    let env = CreateBackingEnvelope.from(CreateBackingMutationTemplate.errored.data)
+
+    XCTAssertNil(env)
   }
 }
