@@ -3,33 +3,7 @@ import XCTest
 
 final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTestCase {
   func testPaymentSource_WithValidData_Success() {
-    let resultMap: [String: Any?] = [
-      "paymentSourceDelete": [
-        "user": [
-          "storedCards": [
-            "nodes": [
-              [
-                "expirationDate": "2023-02-01",
-                "id": "69021326",
-                "lastFour": "4242",
-                "type": GraphAPI.CreditCardTypes.visa
-              ],
-              [
-                "expirationDate": "2024-01-01",
-                "id": "69021329",
-                "lastFour": "4243",
-                "type": GraphAPI.CreditCardTypes.discover
-              ]
-            ]
-          ],
-          "totalCount": 2
-        ]
-      ]
-    ]
-
-    let data = GraphAPI.DeletePaymentSourceMutation.Data(unsafeResultMap: resultMap)
-
-    guard let env = DeletePaymentMethodEnvelope.from(data) else {
+    guard let env = DeletePaymentMethodEnvelope.from(DeletePaymentSourceMutationTemplate.valid.data) else {
       XCTFail("Delete payment source envelope should exist.")
 
       return
@@ -55,33 +29,7 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
   }
 
   func testPaymentSource_WithInvalidData_Error() {
-    let resultMap: [String: Any?] = [
-      "deletePaymentSource": [
-        "user": [
-          "storedCards": [
-            "nodes": [
-              [
-                "expirationDate": "2023-02-01",
-                "id": "69021326",
-                "lastFour": "4242",
-                "type": "VISA"
-              ],
-              [
-                "expirationDate": "2024-01-01",
-                "id": "69021329",
-                "lastFour": "4243",
-                "type": "DISCOVER"
-              ]
-            ]
-          ],
-          "totalCount": 2
-        ]
-      ]
-    ]
-
-    let data = GraphAPI.DeletePaymentSourceMutation.Data(unsafeResultMap: resultMap)
-
-    let env = DeletePaymentMethodEnvelope.from(data)
+    let env = DeletePaymentMethodEnvelope.from(DeletePaymentSourceMutationTemplate.errored.data)
 
     XCTAssertNil(env)
   }
