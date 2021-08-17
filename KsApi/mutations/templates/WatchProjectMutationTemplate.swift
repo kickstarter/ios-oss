@@ -2,41 +2,44 @@ import Apollo
 @testable import KsApi
 
 public enum WatchProjectResponseMutationTemplate {
-  case valid
-  case errored
+  case valid(watched: Bool)
+  case errored(watched: Bool)
 
   var data: GraphAPI.WatchProjectMutation.Data {
     switch self {
-    case .valid:
+    case .valid(let watched):
       return GraphAPI.WatchProjectMutation
-        .Data(unsafeResultMap: self.watchProjectMutationResultMap)
-    case .errored:
+        .Data(unsafeResultMap: self.watchProjectMutationResultMap(watched: watched))
+    case .errored(let watched):
       return GraphAPI.WatchProjectMutation
-        .Data(unsafeResultMap: self.watchProjectMutationErroredResultMap)
+        .Data(unsafeResultMap: self.watchProjectMutationErroredResultMap(watched: watched))
     }
   }
 
   // MARK: Private Properties
 
-  private var watchProjectMutationResultMap: [String: Any?] {
+  func watchProjectMutationResultMap(watched: Bool) -> [String: Any?] {
     [
       "watchProject": [
         "clientMutationId": nil,
         "project": [
           "id": "id",
-          "isWatched": true
+          "isWatched": watched
         ]
       ]
     ]
   }
 
-  private var watchProjectMutationErroredResultMap: [String: Any?] {
-    let resultMap = self.watchProjectMutationResultMap
-
-    let topLevelMap = resultMap["watchProject"] ?? [:]
-
-    let erroredMap = ["wrongKey": topLevelMap]
-
-    return erroredMap
+  
+  func watchProjectMutationErroredResultMap(watched: Bool) -> [String: Any?] {
+    [
+      "wrongKey": [
+        "clientMutationId": nil,
+        "project": [
+          "id": "id",
+          "isWatched": watched
+        ]
+      ]
+    ]
   }
 }

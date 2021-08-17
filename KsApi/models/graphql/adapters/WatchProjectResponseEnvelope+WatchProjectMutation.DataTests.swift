@@ -3,13 +3,13 @@ import XCTest
 
 final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
   func test_envelopeFrom() {
-    let envelope = WatchProjectResponseEnvelope.from(WatchProjectResponseMutationTemplate.valid.data)
+    let envelope = WatchProjectResponseEnvelope.from(WatchProjectResponseMutationTemplate.valid(watched: true).data)
 
     XCTAssertEqual(envelope?.watchProject.project.id, "id")
     XCTAssertEqual(envelope?.watchProject.project.isWatched, true)
   }
 
   func test_envelopeFrom_ReturnsNil() {
-    XCTAssertNil(WatchProjectResponseEnvelope.from(WatchProjectResponseMutationTemplate.errored.data))
+    XCTAssertNil(WatchProjectResponseEnvelope.from(WatchProjectResponseMutationTemplate.errored(watched: true).data))
   }
 }

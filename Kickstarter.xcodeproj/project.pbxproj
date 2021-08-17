@@ -90,6 +90,7 @@
 		066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */; };
 		066C0AE526CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */; };
 		066C0AE726CC17610048F4D8 /* WatchProjectMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */; };
+		066C0AE926CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
@@ -1814,6 +1815,7 @@
 		066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutationTemplate.swift; sourceTree = "<group>"; };
 		066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentSourceMutationTemplate.swift; sourceTree = "<group>"; };
 		066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectMutationTemplate.swift; sourceTree = "<group>"; };
+		066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleMutationTemplate.swift; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCreditCards+UserFragmentTests.swift"; sourceTree = "<group>"; };
@@ -3398,6 +3400,7 @@
 				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
 				066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */,
 				066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */,
+				066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -7128,6 +7131,7 @@
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
 				8AC3E0E2269E53E900168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift in Sources */,
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
+				066C0AE926CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
