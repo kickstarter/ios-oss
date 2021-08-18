@@ -307,13 +307,6 @@ public struct Service: ServiceType {
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
-  public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
-  }
-
   public func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
@@ -378,13 +371,6 @@ public struct Service: ServiceType {
   public func fetchProjectStats(projectId: Int) ->
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
     return request(.projectStats(projectId: projectId))
-  }
-
-  public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<Project, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(Project.projectProducer(from:))
   }
 
   public func fetchRewardAddOnsSelectionViewRewards(

@@ -488,19 +488,28 @@
       self.watchProjectMutationResult = watchProjectMutationResult
     }
 
-    public func addNewCreditCard(input _: CreatePaymentSourceInput)
+    public func addNewCreditCard(input: CreatePaymentSourceInput)
       -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
-      return producer(for: self.addNewCreditCardResult)
+      let mutation = GraphAPI
+        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.addNewCreditCardResult)
     }
 
-    public func cancelBacking(input _: CancelBackingInput)
+    public func cancelBacking(input: CancelBackingInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.cancelBackingResult)
+      let mutation = GraphAPI
+        .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.cancelBackingResult)
     }
 
-    internal func changeEmail(input _: ChangeEmailInput)
+    internal func changeEmail(input: ChangeEmailInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.changeEmailResult)
+      let mutation = GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.changeEmailResult)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
@@ -519,38 +528,61 @@
       )
     }
 
-    internal func changePassword(input _: ChangePasswordInput)
+    internal func changePassword(input: ChangePasswordInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.changePasswordResult)
+      let mutation = GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.changePasswordResult)
     }
 
-    internal func createBacking(input _: CreateBackingInput)
+    internal func createBacking(input: CreateBackingInput)
       -> SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.createBackingResult)
+      let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.createBackingResult)
     }
 
-    internal func createPassword(input _: CreatePasswordInput)
+    internal func createPassword(input: CreatePasswordInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.createPasswordResult)
+      let mutation = GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.createPasswordResult)
     }
 
-    internal func changeCurrency(input _: ChangeCurrencyInput)
+    internal func changeCurrency(input: ChangeCurrencyInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.changeCurrencyResult)
+      let mutation = GraphAPI
+        .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.changeCurrencyResult)
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
       -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
-      return producer(for: self.clearUserUnseenActivityResult)
+      let mutation = GraphAPI
+        .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput())
+
+      return self.apolloClient
+        .performWithResult(mutation: mutation, result: self.clearUserUnseenActivityResult)
     }
 
     func fetchProjectComments(
-      slug _: String,
-      cursor _: String?,
-      limit _: Int?,
-      withStoredCards _: Bool
+      slug: String,
+      cursor: String?,
+      limit: Int?,
+      withStoredCards: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchProjectCommentsEnvelopeResult)
+      let fetchProjectCommentsQuery = GraphAPI.FetchProjectCommentsQuery(
+        slug: slug,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      )
+
+      return self.apolloClient
+        .fetchWithResult(query: fetchProjectCommentsQuery, result: self.fetchProjectCommentsEnvelopeResult)
     }
 
     func fetchUpdateComments(
@@ -643,17 +675,15 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphUser(withStoredCards _: Bool)
+    internal func fetchGraphUser(withStoredCards: Bool)
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
-      if let error = self.fetchGraphUserResult?.error {
-        return SignalProducer(error: error)
-      } else if let response = self.fetchGraphUserResult?.value {
-        return SignalProducer(value: response)
-      } else {
-        return .empty
-      }
+      let fetchGraphUserQuery = GraphAPI.FetchUserQuery(withStoredCards: withStoredCards)
+
+      return self.apolloClient
+        .fetchWithResult(query: fetchGraphUserQuery, result: self.fetchGraphUserResult)
     }
 
+    // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.
     internal func fetchErroredUserBackings(status _: BackingState)
       -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchErroredUserBackingsResult)
@@ -758,25 +788,27 @@
       return SignalProducer(value: envelope)
     }
 
-    func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
-      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchManagePledgeViewBackingResult)
-    }
-
+    // TODO: Refactor this test to use `self.apolloClient`, `ProjectAndBackingEnvelope` needs to be `Decodable` and tested in-app.
     func fetchManagePledgeViewBacking(id _: Int,
-                                      withStoredCards: Bool)
+                                      withStoredCards _: Bool)
       -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
-    func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
+    func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
       -> SignalProducer<Project, ErrorEnvelope> {
-      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
-    }
+      let fetchRewardAddOnsSelectionViewRewardsQuery = GraphAPI.FetchAddOnsQuery(
+        projectSlug: slug,
+        shippingEnabled: shippingEnabled,
+        locationId: locationId,
+        withStoredCards: false
+      )
 
-    func fetchRewardAddOnsSelectionViewRewards(slug _: String, shippingEnabled: Bool, locationId _: String?)
-      -> SignalProducer<Project, ErrorEnvelope> {
-      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
+      return self.apolloClient
+        .fetchWithResult(
+          query: fetchRewardAddOnsSelectionViewRewardsQuery,
+          result: self.fetchRewardAddOnsSelectionViewRewardsResult
+        )
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)
@@ -1140,12 +1172,20 @@
 
     internal func sendVerificationEmail(input _: EmptyInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.sendEmailVerificationResult)
+      let mutationSendVerificationEmail = GraphAPI
+        .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput())
+
+      return self.apolloClient
+        .performWithResult(mutation: mutationSendVerificationEmail, result: self.sendEmailVerificationResult)
     }
 
-    internal func signInWithApple(input _: SignInWithAppleInput)
+    internal func signInWithApple(input: SignInWithAppleInput)
       -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope> {
-      return producer(for: self.signInWithAppleResult)
+      let mutationSignInWithApple = GraphAPI
+        .SignInWithAppleMutation(input: GraphAPI.SignInWithAppleInput.from(input))
+
+      return self.apolloClient
+        .performWithResult(mutation: mutationSignInWithApple, result: self.signInWithAppleResult)
     }
 
     internal func signup(
@@ -1227,14 +1267,22 @@
       return SignalProducer(value: updatedDraft)
     }
 
-    internal func updateBacking(input _: UpdateBackingInput)
+    internal func updateBacking(input: UpdateBackingInput)
       -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.updateBackingResult)
+      let mutationUpdateBacking = GraphAPI
+        .UpdateBackingMutation(input: GraphAPI.UpdateBackingInput.from(input))
+
+      return self.apolloClient
+        .performWithResult(mutation: mutationUpdateBacking, result: self.updateBackingResult)
     }
 
-    internal func unwatchProject(input _: WatchProjectInput)
+    internal func unwatchProject(input: WatchProjectInput)
       -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.unwatchProjectMutationResult)
+      let mutationUnwatchProject = GraphAPI
+        .UnwatchProjectMutation(input: GraphAPI.UnwatchProjectInput.from(input))
+
+      return self.apolloClient
+        .performWithResult(mutation: mutationUnwatchProject, result: self.unwatchProjectMutationResult)
     }
 
     internal func verifyEmail(withToken _: String)
@@ -1242,9 +1290,12 @@
       return producer(for: self.verifyEmailResult)
     }
 
-    internal func watchProject(input _: WatchProjectInput)
+    internal func watchProject(input: WatchProjectInput)
       -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.watchProjectMutationResult)
+      let mutationWatchProject = GraphAPI.WatchProjectMutation(input: GraphAPI.WatchProjectInput.from(input))
+
+      return self.apolloClient
+        .performWithResult(mutation: mutationWatchProject, result: self.watchProjectMutationResult)
     }
 
     internal func addImage(file _: URL, toDraft _: UpdateDraft)
@@ -1265,10 +1316,13 @@
       return SignalProducer(value: self.removeAttachmentResponse ?? .template)
     }
 
-    internal func deletePaymentMethod(input _: PaymentSourceDeleteInput) -> SignalProducer<
+    internal func deletePaymentMethod(input: PaymentSourceDeleteInput) -> SignalProducer<
       DeletePaymentMethodEnvelope, ErrorEnvelope
     > {
-      return producer(for: self.deletePaymentMethodResult)
+      let mutation = GraphAPI
+        .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input))
+
+      return self.apolloClient.performWithResult(mutation: mutation, result: self.deletePaymentMethodResult)
     }
 
     internal func publish(draft _: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {

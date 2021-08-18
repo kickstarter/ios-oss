@@ -34,16 +34,13 @@ extension ApolloClientType {
   public func fetchWithResult<Query: GraphQLQuery, Data: Decodable>(
     query _: Query,
     result: Result<Data, ErrorEnvelope>?
-  ) -> SignalProducer<
-    Data,
-    ErrorEnvelope
-  > {
+  ) -> SignalProducer<Data, ErrorEnvelope> {
     producer(for: result)
   }
 
   public func performWithResult<Mutation: GraphQLMutation, Data: Decodable>(
     mutation _: Mutation,
-    result: Result<Data, ErrorEnvelope>
+    result: Result<Data, ErrorEnvelope>?
   ) -> SignalProducer<Data, ErrorEnvelope> {
     return producer(for: result)
   }
