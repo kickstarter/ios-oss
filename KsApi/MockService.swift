@@ -1,4 +1,5 @@
 #if DEBUG
+  import Apollo
   import Foundation
   import Prelude
   import ReactiveSwift
@@ -12,6 +13,7 @@
     internal let buildVersion: String
     internal let deviceIdentifier: String
     internal let perimeterXClient: PerimeterXClientType
+    internal let apolloClient: ApolloClientType
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
@@ -300,6 +302,8 @@
 
       self.addNewCreditCardResult = addNewCreditCardResult
 
+      self.apolloClient = MockGraphQLClient.shared.client
+
       self.cancelBackingResult = cancelBackingResult
 
       self.changeEmailResult = changeEmailResult
@@ -550,12 +554,20 @@
     }
 
     func fetchUpdateComments(
-      id _: String,
-      cursor _: String?,
-      limit _: Int?,
-      withStoredCards _: Bool
+      id: String,
+      cursor: String?,
+      limit: Int?,
+      withStoredCards: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchUpdateCommentsEnvelopeResult)
+      let fetchUpdateCommentsQuery = GraphAPI.FetchUpdateCommentsQuery(
+        postId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      )
+
+      return self.apolloClient
+        .fetchWithResult(query: fetchUpdateCommentsQuery, result: self.fetchUpdateCommentsEnvelopeResult)
     }
 
     func fetchCommentReplies(query _: NonEmptySet<Query>)

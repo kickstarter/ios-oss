@@ -128,6 +128,8 @@
 		06F7BE1826B31A020094BF37 /* UserCreditCards+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0432126A609C30011728E /* UserCreditCards+UserFragment.swift */; };
 		06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */; };
 		06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */; };
+		06FE2D7426CD844E00A4C0F4 /* ApolloClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */; };
+		06FE2D7726CDB01E00A4C0F4 /* MockGraphQLClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FE2D7526CD851300A4C0F4 /* MockGraphQLClient.swift */; };
 		06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */; };
 		1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */; };
 		1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */; };
@@ -1842,6 +1844,8 @@
 		06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
+		06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloClientType.swift; sourceTree = "<group>"; };
+		06FE2D7526CD851300A4C0F4 /* MockGraphQLClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGraphQLClient.swift; sourceTree = "<group>"; };
 		06FFCE4926A71CC700D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift"; sourceTree = "<group>"; };
 		1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultType.swift; sourceTree = "<group>"; };
 		1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOptimizelyResult.swift; sourceTree = "<group>"; };
@@ -4887,6 +4891,7 @@
 		D01587691EEB2ED6006E7684 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */,
 				8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */,
 				8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */,
 				8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */,
@@ -4894,6 +4899,7 @@
 				8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */,
 				8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */,
 				8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */,
+				06FE2D7526CD851300A4C0F4 /* MockGraphQLClient.swift */,
 				D015876A1EEB2ED6006E7684 /* NSURLSession.swift */,
 			);
 			path = extensions;
@@ -6957,6 +6963,7 @@
 				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				8A0B1E2524D4C491009E90C0 /* GraphReward.swift in Sources */,
+				06FE2D7426CD844E00A4C0F4 /* ApolloClientType.swift in Sources */,
 				8A49396524B54F9B00C3C3CE /* Reward+GraphReward.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
@@ -6968,6 +6975,7 @@
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				8AC3E0962698CF0600168BF8 /* ShippingRule+ShippingRuleFragment.swift in Sources */,
+				06FE2D7726CDB01E00A4C0F4 /* MockGraphQLClient.swift in Sources */,
 				4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
