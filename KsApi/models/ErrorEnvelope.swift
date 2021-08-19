@@ -101,7 +101,7 @@ public struct ErrorEnvelope {
    */
   internal static func couldNotDecodeJSON(_ decodeError: Error) -> ErrorEnvelope {
     return ErrorEnvelope(
-      errorMessages: ["JSONDecoder decoding error: \(decodeError.localizedDescription)"],
+      errorMessages: [decodeError.localizedDescription],
       ksrCode: .DecodingJSONFailed,
       httpCode: 400,
       exception: nil,

@@ -27,6 +27,7 @@ extension ApolloClient {
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):
+          print("🔴 [KsApi] ApolloClient query failure - error : \((error as NSError).description)")
           observer.send(error: .couldNotDecodeJSON(error))
         }
       }
@@ -56,6 +57,7 @@ extension ApolloClient {
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):
+          print("🔴 [KsApi] ApolloClient mutation failure - error : \((error as NSError).description)")
           observer.send(error: .couldNotDecodeJSON(error))
         }
       }
