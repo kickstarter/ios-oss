@@ -15,7 +15,7 @@ public enum WatchProjectResponseMutationTemplate {
         .Data(unsafeResultMap: self.watchProjectMutationErroredResultMap(watched: watched))
     }
   }
-  
+
   var unwatchData: GraphAPI.UnwatchProjectMutation.Data {
     switch self {
     case let .valid(watched):

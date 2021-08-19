@@ -17,7 +17,7 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
     let envProducer = CreateBackingEnvelope
       .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
     let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
-    
+
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
     XCTAssertEqual(env?.createBacking.checkout.backing.requiresAction, false)
@@ -28,7 +28,7 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
     let envProducer = CreateBackingEnvelope
       .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
     let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
-    
+
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
     XCTAssertEqual(env?.createBacking.checkout.backing.requiresAction, false)

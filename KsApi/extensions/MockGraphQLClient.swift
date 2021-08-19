@@ -4,6 +4,7 @@ import ReactiveSwift
 
 class MockGraphQLClient: ApolloClientType {
   // MARK: - Base Properties
+
   var client: ApolloClient {
     let url = URL(string: "https://kickstarter.com")!
 
@@ -43,19 +44,20 @@ extension ApolloClientType {
   ) -> SignalProducer<Data, ErrorEnvelope> {
     return producer(for: result)
   }
-  
-  public func dataFromProducer<Data: Decodable>(_ producer: (SignalProducer<Data, ErrorEnvelope>)) -> Data? {
+
+  public func dataFromProducer<Data: Decodable>(_ producer: SignalProducer<Data, ErrorEnvelope>) -> Data? {
     switch producer.first() {
-    case .success(let data):
+    case let .success(data):
       return data
     default:
       return nil
     }
   }
-  
-  public func errorFromProducer<Data: Decodable>(_ producer: (SignalProducer<Data, ErrorEnvelope>)) -> ErrorEnvelope? {
+
+  public func errorFromProducer<Data: Decodable>(_ producer: SignalProducer<Data, ErrorEnvelope>)
+    -> ErrorEnvelope? {
     switch producer.first() {
-    case .failure(let errorEnvelope):
+    case let .failure(errorEnvelope):
       return errorEnvelope
     default:
       return nil
