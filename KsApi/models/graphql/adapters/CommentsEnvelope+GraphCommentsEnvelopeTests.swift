@@ -5,46 +5,32 @@ import XCTest
 
 final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
   func testProjectComments() {
-    // FIXME: Add templates for Apollo models and update these tests.
-    return
-    guard
-      let project = try? GraphAPI.FetchProjectCommentsQuery.Data(jsonObject: [:]),
-      let envelope = CommentsEnvelope.commentsEnvelope(from: project) else {
+    guard let envelope = CommentsEnvelope
+      .commentsEnvelope(from: FetchProjectCommentsQueryTemplate.valid.data) else {
       XCTFail()
       return
     }
 
-    XCTAssertEqual(
-      envelope.comments,
-      [Comment.comment(from: .template), Comment.comment(from: .template), Comment.comment(from: .template)]
-    )
-    XCTAssertEqual(envelope.hasNextPage, true)
-    XCTAssertEqual(envelope.cursor, "WzMwNDkwNDY0XQ==")
-    XCTAssertEqual(envelope.totalCount, 100)
+    XCTAssertEqual(envelope.comments.count, 25)
+    XCTAssertEqual(envelope.hasNextPage, false)
+    XCTAssertEqual(envelope.cursor, "WzMzNTc0MTMzXQ==")
+    XCTAssertEqual(envelope.totalCount, 34)
     XCTAssertNil(envelope.updateID)
-    XCTAssertEqual(envelope.slug, "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer")
+    XCTAssertEqual(envelope.slug, "jonhodgsonmaptiles2/a-state-rpg-second-edition")
   }
 
   func testProjectUpdateComments() {
-    // FIXME: Add templates for Apollo models and update these tests.
-    return
-    guard
-      let update = try? GraphAPI.FetchUpdateCommentsQuery.Data(jsonObject: [:]),
-      let env = CommentsEnvelope.commentsEnvelope(from: update) else {
+    guard let envelope = CommentsEnvelope.commentsEnvelope(from: FetchUpdateCommentsQueryTemplate.valid.data)
+    else {
       XCTFail()
       return
     }
 
-    let envelope = env |> \.updateID .~ "GDgOaVFgU4ODDGdfS=="
-
-    XCTAssertEqual(
-      envelope.comments,
-      [Comment.comment(from: .template), Comment.comment(from: .template), Comment.comment(from: .template)]
-    )
-    XCTAssertEqual(envelope.hasNextPage, true)
-    XCTAssertEqual(envelope.cursor, "WzMwNDkwNDY0XQ==")
-    XCTAssertEqual(envelope.totalCount, 100)
-    XCTAssertEqual(envelope.updateID, "GDgOaVFgU4ODDGdfS==")
+    XCTAssertEqual(envelope.comments.count, 11)
+    XCTAssertEqual(envelope.hasNextPage, false)
+    XCTAssertEqual(envelope.cursor, "WzMzNjQ4MTM0XQ==")
+    XCTAssertEqual(envelope.totalCount, 11)
+    XCTAssertEqual(envelope.updateID, "RnJlZWZvcm1Qb3N0LTMyNjQ5MDU=")
     XCTAssertNil(envelope.slug)
   }
 }
