@@ -3,8 +3,9 @@ import XCTest
 
 final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
   func test_SCA() {
-    let env = UpdateBackingEnvelope
-      .from(UpdateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
+    let envProducer = UpdateBackingEnvelope
+      .producer(from: UpdateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
+    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
 
     XCTAssertEqual(env?.updateBacking.checkout.id, "id")
     XCTAssertEqual(env?.updateBacking.checkout.backing.clientSecret, "client-secret")
@@ -33,8 +34,9 @@ final class UpdateBackingEnvelope_UpdateBackingMutationTests: XCTestCase {
   }
 
   func test_BadResponse_Error() {
-    let env = UpdateBackingEnvelope.from(UpdateBackingMutationTemplate.errored.data)
+    let errorProducer = UpdateBackingEnvelope.producer(from: UpdateBackingMutationTemplate.errored.data)
+    let error = MockGraphQLClient.shared.client.errorFromProducer(errorProducer)
 
-    XCTAssertNil(env)
+    XCTAssertNotNil(error?.ksrCode)
   }
 }

@@ -3,8 +3,7 @@ import Foundation
 import ReactiveSwift
 
 class MockGraphQLClient: ApolloClientType {
-  // MARK: - Properties
-
+  // MARK: - Base Properties
   var client: ApolloClient {
     let url = URL(string: "https://kickstarter.com")!
 
@@ -43,6 +42,24 @@ extension ApolloClientType {
     result: Result<Data, ErrorEnvelope>?
   ) -> SignalProducer<Data, ErrorEnvelope> {
     return producer(for: result)
+  }
+  
+  public func dataFromProducer<Data: Decodable>(_ producer: (SignalProducer<Data, ErrorEnvelope>)) -> Data? {
+    switch producer.first() {
+    case .success(let data):
+      return data
+    default:
+      return nil
+    }
+  }
+  
+  public func errorFromProducer<Data: Decodable>(_ producer: (SignalProducer<Data, ErrorEnvelope>)) -> ErrorEnvelope? {
+    switch producer.first() {
+    case .failure(let errorEnvelope):
+      return errorEnvelope
+    default:
+      return nil
+    }
   }
 }
 

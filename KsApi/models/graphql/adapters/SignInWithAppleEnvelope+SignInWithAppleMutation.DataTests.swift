@@ -3,7 +3,8 @@ import XCTest
 
 final class SignInWithAppleEnvelope_SignInWithAppleMutation_DataTests: XCTestCase {
   func testSignInWithAppleEnvelope_Data_Success() {
-    let env = SignInWithAppleEnvelope.from(SignInWithAppleMutationTemplate.valid.data)
+    let envProducer = SignInWithAppleEnvelope.producer(from: SignInWithAppleMutationTemplate.valid.data)
+    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
 
     XCTAssertEqual(env?.signInWithApple.apiAccessToken, "foobar")
     XCTAssertEqual(env?.signInWithApple.user.uid, "deadbeef")
@@ -16,8 +17,9 @@ final class SignInWithAppleEnvelope_SignInWithAppleMutation_DataTests: XCTestCas
   }
 
   func testSignInWithAppleEnvelope_Data_Failed() {
-    let env = SignInWithAppleEnvelope.from(SignInWithAppleMutationTemplate.errored.data)
+    let errorProducer = SignInWithAppleEnvelope.producer(from: SignInWithAppleMutationTemplate.errored.data)
+    let error = MockGraphQLClient.shared.client.errorFromProducer(errorProducer)
 
-    XCTAssertNil(env)
+    XCTAssertNotNil(error?.ksrCode)
   }
 }

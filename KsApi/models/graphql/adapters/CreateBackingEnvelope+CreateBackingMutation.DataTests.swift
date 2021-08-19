@@ -3,8 +3,9 @@ import XCTest
 
 final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   func test_SCA() {
-    let env = CreateBackingEnvelope
-      .from(CreateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
+    let envProducer = CreateBackingEnvelope
+      .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
+    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, "client-secret")
@@ -13,9 +14,10 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   }
 
   func test_NonSCA_Successful() {
-    let env = CreateBackingEnvelope
-      .from(CreateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
-
+    let envProducer = CreateBackingEnvelope
+      .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
+    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
+    
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
     XCTAssertEqual(env?.createBacking.checkout.backing.requiresAction, false)
@@ -23,9 +25,10 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   }
 
   func test_NonSCA_Failed() {
-    let env = CreateBackingEnvelope
-      .from(CreateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
-
+    let envProducer = CreateBackingEnvelope
+      .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
+    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
+    
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
     XCTAssertEqual(env?.createBacking.checkout.backing.requiresAction, false)
@@ -33,8 +36,9 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   }
 
   func test_BadResponse_Error() {
-    let env = CreateBackingEnvelope.from(CreateBackingMutationTemplate.errored.data)
+    let errorProducer = CreateBackingEnvelope.producer(from: CreateBackingMutationTemplate.errored.data)
+    let error = MockGraphQLClient.shared.client.errorFromProducer(errorProducer)
 
-    XCTAssertNil(env)
+    XCTAssertNotNil(error)
   }
 }
