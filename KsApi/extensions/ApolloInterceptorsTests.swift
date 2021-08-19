@@ -30,29 +30,3 @@ class ApolloInterceptorsTests: XCTestCase {
     XCTAssertEqual(request.additionalHeaders["test-header-key-2"], "test-header-value-2")
   }
 }
-
-// TODO: Move to shared mock file
-public final class MockApolloQuery: GraphQLQuery {
-  public let operationDefinition: String = ""
-  public let operationName: String = "OperationName"
-  public let operationIdentifier: String? = "operation-identifier"
-
-  public init() {}
-
-  public var variables: GraphQLMap? {
-    return [:]
-  }
-
-  public struct Data: GraphQLSelectionSet {
-    public static let possibleTypes: [String] = ["Query"]
-    public static var selections: [GraphQLSelection] {
-      return []
-    }
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
-    }
-  }
-}
