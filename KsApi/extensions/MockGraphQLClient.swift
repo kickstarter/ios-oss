@@ -89,7 +89,7 @@ private extension Result {
   }
 }
 
-/// TODO: Make use of this in the future to return a type of `Query.Data` instead of `Decodable`
+// TODO: Is it possible in the future to return a type of `Query.Data` instead of `Decodable` using this?
 public final class MockApolloQuery: GraphQLQuery {
   public let operationDefinition: String = ""
   public let operationName: String = "OperationName"
