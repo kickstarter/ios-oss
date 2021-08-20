@@ -2,8 +2,7 @@ import Apollo
 import Foundation
 import ReactiveSwift
 
-// TODO: would be good to get some dependency injection and test coverage for these functions.
-extension ApolloClient {
+extension ApolloClient: ApolloClientType {
   /**
    Performs a GraphQL fetch request with a given query.
 

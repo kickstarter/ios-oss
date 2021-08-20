@@ -1041,7 +1041,4 @@ internal final class CommentsViewModelTests: TestCase {
       }
     }
   }
-
-  // TODO: Empty state not tested yet https://kickstarter.atlassian.net/browse/NT-1942
-  // TODO: Post comments can be fully tested after this ticket is merged: https://kickstarter.atlassian.net/browse/NT-1893
 }

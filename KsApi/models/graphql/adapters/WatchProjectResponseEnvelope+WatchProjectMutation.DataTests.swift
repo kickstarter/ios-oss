@@ -3,37 +3,20 @@ import XCTest
 
 final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
   func test_envelopeFrom() {
-    let dict: [String: Any] = [
-      "watchProject": [
-        "clientMutationId": nil,
-        "project": [
-          "id": "id",
-          "isWatched": true
-        ]
-      ]
-    ]
+    let envelopeProducer = WatchProjectResponseEnvelope
+      .producer(from: WatchProjectResponseMutationTemplate.valid(watched: true).watchData)
 
-    let data = GraphAPI.WatchProjectMutation.Data(unsafeResultMap: dict)
-
-    let envelope = WatchProjectResponseEnvelope.from(data)
+    let envelope = MockGraphQLClient.shared.client.data(from: envelopeProducer)
 
     XCTAssertEqual(envelope?.watchProject.project.id, "id")
     XCTAssertEqual(envelope?.watchProject.project.isWatched, true)
   }
 
   func test_envelopeFrom_ReturnsNil() {
-    let dict: [String: Any] = [
-      "wrongKey": [
-        "clientMutationId": nil,
-        "project": [
-          "id": "id",
-          "isWatched": true
-        ]
-      ]
-    ]
+    let errorProducer = WatchProjectResponseEnvelope
+      .producer(from: WatchProjectResponseMutationTemplate.errored(watched: true).watchData)
+    let error = MockGraphQLClient.shared.client.error(from: errorProducer)
 
-    let data = GraphAPI.WatchProjectMutation.Data(unsafeResultMap: dict)
-
-    XCTAssertNil(WatchProjectResponseEnvelope.from(data))
+    XCTAssertNotNil(error?.ksrCode)
   }
 }

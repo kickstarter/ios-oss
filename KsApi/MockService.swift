@@ -4,6 +4,7 @@
   import ReactiveSwift
 
   internal struct MockService: ServiceType {
+    internal let apolloClient: ApolloClientType?
     internal let appId: String
     internal let serverConfig: ServerConfigType
     internal let oauthToken: OauthTokenAuthType?
@@ -175,6 +176,7 @@
       currency: String,
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+      apolloClient: ApolloClientType? = nil,
       perimeterXClient: PerimeterXClientType
     ) {
       self.init(
@@ -185,6 +187,7 @@
         currency: currency,
         buildVersion: buildVersion,
         deviceIdentifier: deviceIdentifier,
+        apolloClient: apolloClient,
         perimeterXClient: perimeterXClient,
         fetchProjectResponse: nil
       )
@@ -199,6 +202,7 @@
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
+      apolloClient: ApolloClientType? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -299,6 +303,8 @@
       self.deviceIdentifier = deviceIdentifier
 
       self.addNewCreditCardResult = addNewCreditCardResult
+
+      self.apolloClient = apolloClient ?? MockGraphQLClient.shared.client
 
       self.cancelBackingResult = cancelBackingResult
 
@@ -484,19 +490,40 @@
       self.watchProjectMutationResult = watchProjectMutationResult
     }
 
-    public func addNewCreditCard(input _: CreatePaymentSourceInput)
+    public func addNewCreditCard(input: CreatePaymentSourceInput)
       -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
-      return producer(for: self.addNewCreditCardResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.addNewCreditCardResult)
     }
 
-    public func cancelBacking(input _: CancelBackingInput)
+    public func cancelBacking(input: CancelBackingInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.cancelBackingResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId))
+
+      return client.performWithResult(mutation: mutation, result: self.cancelBackingResult)
     }
 
-    internal func changeEmail(input _: ChangeEmailInput)
+    internal func changeEmail(input: ChangeEmailInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.changeEmailResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.changeEmailResult)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
@@ -515,47 +542,105 @@
       )
     }
 
-    internal func changePassword(input _: ChangePasswordInput)
+    internal func changePassword(input: ChangePasswordInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.changePasswordResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.changePasswordResult)
     }
 
-    internal func createBacking(input _: CreateBackingInput)
+    internal func createBacking(input: CreateBackingInput)
       -> SignalProducer<CreateBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.createBackingResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createBackingResult)
     }
 
-    internal func createPassword(input _: CreatePasswordInput)
+    internal func createPassword(input: CreatePasswordInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.createPasswordResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createPasswordResult)
     }
 
-    internal func changeCurrency(input _: ChangeCurrencyInput)
+    internal func changeCurrency(input: ChangeCurrencyInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.changeCurrencyResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.changeCurrencyResult)
     }
 
     internal func clearUserUnseenActivity(input _: EmptyInput)
       -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
-      return producer(for: self.clearUserUnseenActivityResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput())
+
+      return client.performWithResult(mutation: mutation, result: self.clearUserUnseenActivityResult)
     }
 
     func fetchProjectComments(
-      slug _: String,
-      cursor _: String?,
-      limit _: Int?,
-      withStoredCards _: Bool
+      slug: String,
+      cursor: String?,
+      limit: Int?,
+      withStoredCards: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchProjectCommentsEnvelopeResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchProjectCommentsQuery = GraphAPI.FetchProjectCommentsQuery(
+        slug: slug,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      )
+
+      return client
+        .fetchWithResult(query: fetchProjectCommentsQuery, result: self.fetchProjectCommentsEnvelopeResult)
     }
 
     func fetchUpdateComments(
-      id _: String,
-      cursor _: String?,
-      limit _: Int?,
-      withStoredCards _: Bool
+      id: String,
+      cursor: String?,
+      limit: Int?,
+      withStoredCards: Bool
     ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchUpdateCommentsEnvelopeResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchUpdateCommentsQuery = GraphAPI.FetchUpdateCommentsQuery(
+        postId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      )
+
+      return client
+        .fetchWithResult(query: fetchUpdateCommentsQuery, result: self.fetchUpdateCommentsEnvelopeResult)
     }
 
     func fetchCommentReplies(query _: NonEmptySet<Query>)
@@ -631,17 +716,18 @@
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
     }
 
-    internal func fetchGraphUser(withStoredCards _: Bool)
+    internal func fetchGraphUser(withStoredCards: Bool)
       -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
-      if let error = self.fetchGraphUserResult?.error {
-        return SignalProducer(error: error)
-      } else if let response = self.fetchGraphUserResult?.value {
-        return SignalProducer(value: response)
-      } else {
+      guard let client = self.apolloClient else {
         return .empty
       }
+
+      let fetchGraphUserQuery = GraphAPI.FetchUserQuery(withStoredCards: withStoredCards)
+
+      return client.fetchWithResult(query: fetchGraphUserQuery, result: self.fetchGraphUserResult)
     }
 
+    // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.
     internal func fetchErroredUserBackings(status _: BackingState)
       -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchErroredUserBackingsResult)
@@ -746,25 +832,31 @@
       return SignalProducer(value: envelope)
     }
 
-    func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
-      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchManagePledgeViewBackingResult)
-    }
-
+    // TODO: Refactor this test to use `self.apolloClient`, `ProjectAndBackingEnvelope` needs to be `Decodable` and tested in-app.
     func fetchManagePledgeViewBacking(id _: Int,
-                                      withStoredCards: Bool)
+                                      withStoredCards _: Bool)
       -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
-    func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
+    func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
       -> SignalProducer<Project, ErrorEnvelope> {
-      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
-    }
+      guard let client = self.apolloClient else {
+        return .empty
+      }
 
-    func fetchRewardAddOnsSelectionViewRewards(slug _: String, shippingEnabled: Bool, locationId _: String?)
-      -> SignalProducer<Project, ErrorEnvelope> {
-      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
+      let fetchRewardAddOnsSelectionViewRewardsQuery = GraphAPI.FetchAddOnsQuery(
+        projectSlug: slug,
+        shippingEnabled: shippingEnabled,
+        locationId: locationId,
+        withStoredCards: false
+      )
+
+      return client
+        .fetchWithResult(
+          query: fetchRewardAddOnsSelectionViewRewardsQuery,
+          result: self.fetchRewardAddOnsSelectionViewRewardsResult
+        )
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)
@@ -1128,12 +1220,28 @@
 
     internal func sendVerificationEmail(input _: EmptyInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.sendEmailVerificationResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutationSendVerificationEmail = GraphAPI
+        .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput())
+
+      return client
+        .performWithResult(mutation: mutationSendVerificationEmail, result: self.sendEmailVerificationResult)
     }
 
-    internal func signInWithApple(input _: SignInWithAppleInput)
+    internal func signInWithApple(input: SignInWithAppleInput)
       -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope> {
-      return producer(for: self.signInWithAppleResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutationSignInWithApple = GraphAPI
+        .SignInWithAppleMutation(input: GraphAPI.SignInWithAppleInput.from(input))
+
+      return client
+        .performWithResult(mutation: mutationSignInWithApple, result: self.signInWithAppleResult)
     }
 
     internal func signup(
@@ -1215,14 +1323,30 @@
       return SignalProducer(value: updatedDraft)
     }
 
-    internal func updateBacking(input _: UpdateBackingInput)
+    internal func updateBacking(input: UpdateBackingInput)
       -> SignalProducer<UpdateBackingEnvelope, ErrorEnvelope> {
-      return producer(for: self.updateBackingResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutationUpdateBacking = GraphAPI
+        .UpdateBackingMutation(input: GraphAPI.UpdateBackingInput.from(input))
+
+      return client
+        .performWithResult(mutation: mutationUpdateBacking, result: self.updateBackingResult)
     }
 
-    internal func unwatchProject(input _: WatchProjectInput)
+    internal func unwatchProject(input: WatchProjectInput)
       -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.unwatchProjectMutationResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutationUnwatchProject = GraphAPI
+        .UnwatchProjectMutation(input: GraphAPI.UnwatchProjectInput.from(input))
+
+      return client
+        .performWithResult(mutation: mutationUnwatchProject, result: self.unwatchProjectMutationResult)
     }
 
     internal func verifyEmail(withToken _: String)
@@ -1230,9 +1354,16 @@
       return producer(for: self.verifyEmailResult)
     }
 
-    internal func watchProject(input _: WatchProjectInput)
+    internal func watchProject(input: WatchProjectInput)
       -> SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
-      return producer(for: self.watchProjectMutationResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutationWatchProject = GraphAPI.WatchProjectMutation(input: GraphAPI.WatchProjectInput.from(input))
+
+      return client
+        .performWithResult(mutation: mutationWatchProject, result: self.watchProjectMutationResult)
     }
 
     internal func addImage(file _: URL, toDraft _: UpdateDraft)
@@ -1253,10 +1384,17 @@
       return SignalProducer(value: self.removeAttachmentResponse ?? .template)
     }
 
-    internal func deletePaymentMethod(input _: PaymentSourceDeleteInput) -> SignalProducer<
+    internal func deletePaymentMethod(input: PaymentSourceDeleteInput) -> SignalProducer<
       DeletePaymentMethodEnvelope, ErrorEnvelope
     > {
-      return producer(for: self.deletePaymentMethodResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.deletePaymentMethodResult)
     }
 
     internal func publish(draft _: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {

@@ -20,6 +20,7 @@ public protocol ServiceType {
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
   var perimeterXClient: PerimeterXClientType { get }
+  var apolloClient: ApolloClientType? { get }
 
   init(
     appId: String,
@@ -29,6 +30,7 @@ public protocol ServiceType {
     currency: String,
     buildVersion: String,
     deviceIdentifier: String,
+    apolloClient: ApolloClientType?,
     perimeterXClient: PerimeterXClientType
   )
 
@@ -150,10 +152,6 @@ public protocol ServiceType {
   func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
 
-  /// Fetch `Backing` data for ManagePledgeViewController with a query.
-  func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
-
   /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID and the backers' stored cards.
   func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
@@ -201,10 +199,6 @@ public protocol ServiceType {
 
   /// Fetches the stats for a particular project.
   func fetchProjectStats(projectId: Int) -> SignalProducer<ProjectStatsEnvelope, ErrorEnvelope>
-
-  /// Fetch the add-on rewards for the add-on selection view with a given query.
-  func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetch the add-on rewards for the add-on selection view with a `Project` slug and optional `Location` ID.
   func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)

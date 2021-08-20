@@ -23,6 +23,7 @@ public struct Service: ServiceType {
   public let buildVersion: String
   public let deviceIdentifier: String
   public let perimeterXClient: PerimeterXClientType
+  public let apolloClient: ApolloClientType?
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -32,6 +33,7 @@ public struct Service: ServiceType {
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
+    apolloClient: ApolloClientType? = nil,
     perimeterXClient: PerimeterXClientType = PerimeterXClient()
   ) {
     self.appId = appId
@@ -42,6 +44,8 @@ public struct Service: ServiceType {
     self.buildVersion = buildVersion
     self.deviceIdentifier = deviceIdentifier
     self.perimeterXClient = perimeterXClient
+    /// Dummy client, only required to satisfy `ApolloClientType` protocol, not used.
+    self.apolloClient = apolloClient
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
@@ -204,6 +208,7 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
+  // FIXME: Should be able to convert this to Apollo.
   public func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return request(.backing(projectId: project.id, backerId: user.id))
@@ -241,6 +246,7 @@ public struct Service: ServiceType {
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
+  // FIXME: Should be able to convert this to Apollo.
   public func fetchCommentReplies(query: NonEmptySet<Query>)
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
     return fetch(query: query)
@@ -300,13 +306,6 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUserBackingsQuery(status: status, withStoredCards: false))
       .flatMap(ErroredBackingsEnvelope.producer(from:))
-  }
-
-  public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
   public func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
@@ -373,13 +372,6 @@ public struct Service: ServiceType {
   public func fetchProjectStats(projectId: Int) ->
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
     return request(.projectStats(projectId: projectId))
-  }
-
-  public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<Project, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(Project.projectProducer(from:))
   }
 
   public func fetchRewardAddOnsSelectionViewRewards(
