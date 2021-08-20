@@ -495,7 +495,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
 
@@ -507,7 +507,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId))
 
@@ -519,7 +519,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
 
@@ -547,7 +547,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
 
@@ -559,7 +559,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
@@ -570,7 +570,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
 
@@ -582,7 +582,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input))
 
@@ -594,7 +594,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput())
 
@@ -610,7 +610,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let fetchProjectCommentsQuery = GraphAPI.FetchProjectCommentsQuery(
         slug: slug,
         cursor: cursor,
@@ -631,7 +631,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let fetchUpdateCommentsQuery = GraphAPI.FetchUpdateCommentsQuery(
         postId: id,
         cursor: cursor,
@@ -717,13 +717,13 @@
     }
 
     internal func fetchGraphUser(withStoredCards: Bool)
-    -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
+      -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let fetchGraphUserQuery = GraphAPI.FetchUserQuery(withStoredCards: withStoredCards)
-      
+
       return client.fetchWithResult(query: fetchGraphUserQuery, result: self.fetchGraphUserResult)
     }
 
@@ -844,7 +844,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let fetchRewardAddOnsSelectionViewRewardsQuery = GraphAPI.FetchAddOnsQuery(
         projectSlug: slug,
         shippingEnabled: shippingEnabled,
@@ -1223,7 +1223,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutationSendVerificationEmail = GraphAPI
         .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput())
 
@@ -1236,7 +1236,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutationSignInWithApple = GraphAPI
         .SignInWithAppleMutation(input: GraphAPI.SignInWithAppleInput.from(input))
 
@@ -1328,7 +1328,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutationUpdateBacking = GraphAPI
         .UpdateBackingMutation(input: GraphAPI.UpdateBackingInput.from(input))
 
@@ -1341,7 +1341,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutationUnwatchProject = GraphAPI
         .UnwatchProjectMutation(input: GraphAPI.UnwatchProjectInput.from(input))
 
@@ -1359,7 +1359,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutationWatchProject = GraphAPI.WatchProjectMutation(input: GraphAPI.WatchProjectInput.from(input))
 
       return client
@@ -1390,7 +1390,7 @@
       guard let client = self.apolloClient else {
         return .empty
       }
-      
+
       let mutation = GraphAPI
         .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input))
 
