@@ -6,7 +6,7 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
     let envProducer = DeletePaymentMethodEnvelope
       .producer(from: DeletePaymentSourceMutationTemplate.valid.data)
 
-    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
+    let env = MockGraphQLClient.shared.client.data(from: envProducer)
 
     XCTAssertEqual(env?.storedCards.count, 2)
 
@@ -30,7 +30,7 @@ final class DeletePaymentSourceEnvelope_PaymentSourceDeleteMutationTests: XCTest
   func testPaymentSource_WithInvalidData_Error() {
     let errorEnvelope = DeletePaymentMethodEnvelope
       .producer(from: DeletePaymentSourceMutationTemplate.errored.data)
-    let error = MockGraphQLClient.shared.client.errorFromProducer(errorEnvelope)
+    let error = MockGraphQLClient.shared.client.error(from: errorEnvelope)
 
     XCTAssertNotNil(error?.ksrCode)
   }

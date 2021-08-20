@@ -45,7 +45,7 @@ extension ApolloClientType {
     return producer(for: result)
   }
 
-  public func dataFromProducer<Data: Decodable>(_ producer: SignalProducer<Data, ErrorEnvelope>) -> Data? {
+  public func data<Data: Decodable>(from producer: SignalProducer<Data, ErrorEnvelope>) -> Data? {
     switch producer.first() {
     case let .success(data):
       return data
@@ -54,7 +54,7 @@ extension ApolloClientType {
     }
   }
 
-  public func errorFromProducer<Data: Decodable>(_ producer: SignalProducer<Data, ErrorEnvelope>)
+  public func error<Data: Decodable>(from producer: SignalProducer<Data, ErrorEnvelope>)
     -> ErrorEnvelope? {
     switch producer.first() {
     case let .failure(errorEnvelope):
@@ -89,7 +89,6 @@ private extension Result {
   }
 }
 
-// TODO: Is it possible in the future to return a type of `Query.Data` instead of `Decodable` using this?
 public final class MockApolloQuery: GraphQLQuery {
   public let operationDefinition: String = ""
   public let operationName: String = "OperationName"

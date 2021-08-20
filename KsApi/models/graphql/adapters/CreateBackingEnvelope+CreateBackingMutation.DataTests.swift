@@ -5,7 +5,7 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   func test_SCA() {
     let envProducer = CreateBackingEnvelope
       .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .authorizing, sca: true).data)
-    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
+    let env = MockGraphQLClient.shared.client.data(from: envProducer)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, "client-secret")
@@ -16,7 +16,7 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   func test_NonSCA_Successful() {
     let envProducer = CreateBackingEnvelope
       .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .successful, sca: false).data)
-    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
+    let env = MockGraphQLClient.shared.client.data(from: envProducer)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
@@ -27,7 +27,7 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
   func test_NonSCA_Failed() {
     let envProducer = CreateBackingEnvelope
       .producer(from: CreateBackingMutationTemplate.valid(checkoutState: .failed, sca: false).data)
-    let env = MockGraphQLClient.shared.client.dataFromProducer(envProducer)
+    let env = MockGraphQLClient.shared.client.data(from: envProducer)
 
     XCTAssertEqual(env?.createBacking.checkout.id, "id")
     XCTAssertEqual(env?.createBacking.checkout.backing.clientSecret, nil)
@@ -37,7 +37,7 @@ final class CreateBackingEnvelope_CreateBackingMutationTests: XCTestCase {
 
   func test_BadResponse_Error() {
     let errorProducer = CreateBackingEnvelope.producer(from: CreateBackingMutationTemplate.errored.data)
-    let error = MockGraphQLClient.shared.client.errorFromProducer(errorProducer)
+    let error = MockGraphQLClient.shared.client.error(from: errorProducer)
 
     XCTAssertNotNil(error)
   }

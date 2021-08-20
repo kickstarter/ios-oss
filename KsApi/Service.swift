@@ -23,7 +23,7 @@ public struct Service: ServiceType {
   public let buildVersion: String
   public let deviceIdentifier: String
   public let perimeterXClient: PerimeterXClientType
-  public let apolloClient: ApolloClientType
+  public let apolloClient: ApolloClientType?
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -33,6 +33,7 @@ public struct Service: ServiceType {
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
+    apolloClient: ApolloClientType? = nil,
     perimeterXClient: PerimeterXClientType = PerimeterXClient()
   ) {
     self.appId = appId
@@ -44,7 +45,7 @@ public struct Service: ServiceType {
     self.deviceIdentifier = deviceIdentifier
     self.perimeterXClient = perimeterXClient
     /// Dummy client, only required to satisfy `ApolloClientType` protocol, not used.
-    self.apolloClient = ApolloClient(url: URL(string: "https://kickstarter.com")!)
+    self.apolloClient = apolloClient
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])

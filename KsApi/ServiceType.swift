@@ -20,7 +20,7 @@ public protocol ServiceType {
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
   var perimeterXClient: PerimeterXClientType { get }
-  var apolloClient: ApolloClientType { get }
+  var apolloClient: ApolloClientType? { get }
 
   init(
     appId: String,
@@ -30,6 +30,7 @@ public protocol ServiceType {
     currency: String,
     buildVersion: String,
     deviceIdentifier: String,
+    apolloClient: ApolloClientType?,
     perimeterXClient: PerimeterXClientType
   )
 
