@@ -701,7 +701,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.brazeWillDisplayInAppMessageReturnProperty <~ self.brazeWillDisplayInAppMessageProperty.signal
       .skipNil()
-      .map { _ in featureBrazeIsEnabled() ? .displayInAppMessageNow : .discardInAppMessage }
+      .map { _ in .displayInAppMessageNow }
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }

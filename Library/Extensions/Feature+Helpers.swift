@@ -1,10 +1,6 @@
 import Foundation
 import KsApi
 
-public func featureBrazeIsEnabled() -> Bool {
-  return Feature.braze.isEnabled()
-}
-
 public func featureSegmentIsEnabled() -> Bool {
   return Feature.segment.isEnabled()
 }

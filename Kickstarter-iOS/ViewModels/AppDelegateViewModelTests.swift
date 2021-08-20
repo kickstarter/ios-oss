@@ -2624,28 +2624,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testBrazeInAppMessagingIsEnabled_FlagIsEnabled() {
-    let config = Config.template
-      |> Config.lens.features .~ [Feature.braze.rawValue: true]
-
-    let message = MockBrazeMessage()
-
-    withEnvironment(config: config) {
-      XCTAssertTrue(self.vm.inputs.brazeWillDisplayInAppMessage(message) == .displayInAppMessageNow)
-    }
-  }
-
-  func testBrazeInAppMessagingIsEnabled_FlagIsDisabled() {
-    let config = Config.template
-      |> Config.lens.features .~ [Feature.braze.rawValue: false]
-
-    let message = MockBrazeMessage()
-
-    withEnvironment(config: config) {
-      XCTAssertTrue(self.vm.inputs.brazeWillDisplayInAppMessage(message) == .discardInAppMessage)
-    }
-  }
-
   func testDeepLink_UserDidUpdateNotificationSettings() {
     self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
 
