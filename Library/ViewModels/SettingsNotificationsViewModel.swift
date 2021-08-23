@@ -106,6 +106,12 @@ public final class SettingsNotificationsViewModel: SettingsNotificationsViewMode
 
     self.goToManageProjectNotifications = manageProjectNotificationsSelected.signal
       .ignoreValues()
+
+    // MARK: - Tracking
+
+    self.updatedUserProperty.signal.observeValues { user in
+      AppEnvironment.current.ksrAnalytics.identify(newUser: user)
+    }
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

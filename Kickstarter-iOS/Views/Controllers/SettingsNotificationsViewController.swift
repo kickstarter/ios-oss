@@ -77,8 +77,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
-        AppEnvironment.current.ksrAnalytics.identify(newUser: user)
-
         self?.dataSource.load(user: user)
         self?.tableView.reloadData()
       }
