@@ -117,9 +117,6 @@ final class SettingsViewController: UIViewController {
 
   private func logout(params: DiscoveryParams) {
     AppEnvironment.logout()
-
-    // Resetting the segment client
-    AppEnvironment.current.ksrAnalytics.identify(newUser: nil)
     PushNotificationDialog.resetAllContexts()
 
     self.view.window?.rootViewController
