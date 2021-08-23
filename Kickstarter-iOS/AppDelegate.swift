@@ -65,6 +65,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
+        AppEnvironment.current.ksrAnalytics.identify(newUser: user)
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
       }
 
