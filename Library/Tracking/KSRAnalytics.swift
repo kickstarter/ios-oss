@@ -8,11 +8,7 @@ public final class KSRAnalytics {
   private let bundle: NSBundleType
   internal private(set) var config: Config?
   private let device: UIDeviceType
-  internal private(set) var loggedInUser: User? {
-    willSet {
-      self.identify(newUser: newValue)
-    }
-  }
+  private(set) var loggedInUser: User?
 
   public var logEventCallback: ((String, [String: Any]) -> Void)?
   private let screen: UIScreenType
@@ -495,7 +491,7 @@ public final class KSRAnalytics {
   }
 
   /// Configure Tracking Client's supporting user identity
-  private func identify(newUser: User?) {
+  public func identify(newUser: User?) {
     guard let newUser = newUser else {
       self.segmentClient?.reset()
       return

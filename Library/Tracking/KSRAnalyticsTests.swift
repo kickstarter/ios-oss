@@ -1522,7 +1522,7 @@ final class KSRAnalyticsTests: TestCase {
   func testIdentifyingTrackingClient() {
     let user = User.template
 
-    AppEnvironment.updateCurrentUser(user)
+    AppEnvironment.current.ksrAnalytics.identify(newUser: user)
 
     XCTAssertEqual(self.segmentTrackingClient.userId, "\(user.id)")
     XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
@@ -1543,7 +1543,7 @@ final class KSRAnalyticsTests: TestCase {
     let user = User.template
 
     withEnvironment {
-      AppEnvironment.updateCurrentUser(user)
+      AppEnvironment.current.ksrAnalytics.identify(newUser: user)
 
       XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
       XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
@@ -1557,12 +1557,17 @@ final class KSRAnalyticsTests: TestCase {
       |> User.lens.notifications.follower .~ true
 
     withEnvironment {
-      AppEnvironment.updateCurrentUser(user)
+      AppEnvironment.current.ksrAnalytics.identify(newUser: user)
 
-      self.segmentTrackingClient.userId = nil
-      self.segmentTrackingClient.traits = nil
+      XCTAssertNotNil(self.segmentTrackingClient.userId)
+      XCTAssertNotNil(self.segmentTrackingClient.traits)
 
-      AppEnvironment.updateCurrentUser(updatedUser)
+      AppEnvironment.logout()
+
+      XCTAssertNil(self.segmentTrackingClient.userId)
+      XCTAssertNil(self.segmentTrackingClient.traits)
+
+      AppEnvironment.current.ksrAnalytics.identify(newUser: updatedUser)
 
       XCTAssertNotNil(self.segmentTrackingClient.userId)
       XCTAssertNotNil(self.segmentTrackingClient.traits)
@@ -1581,7 +1586,7 @@ final class KSRAnalyticsTests: TestCase {
         |> User.lens.notifications.mobileUpdates .~ true
         |> User.lens.notifications.messages .~ false
 
-      AppEnvironment.updateCurrentUser(updatedUser)
+      AppEnvironment.current.ksrAnalytics.identify(newUser: updatedUser)
 
       XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
       XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
