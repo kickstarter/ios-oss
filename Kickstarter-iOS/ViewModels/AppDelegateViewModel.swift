@@ -414,37 +414,39 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           let rawParams = rawParams,
           let params = DiscoveryParams.decodeJSONDictionary(rawParams)
         else { return .init(value: nil) }
-        
+
         let parentCategoryParams = rawParams["parent_category_id"]
         let subCategoryParams = rawParams["category_id"]
         var categoryParam: Param?
         var subcategoryParam: Param?
-        
+
         switch (parentCategoryParams, subCategoryParams) {
-        case (.some(let rawCategoryParams), .some(let rawSubcategoryParams)):
+        case let (.some(rawCategoryParams), .some(rawSubcategoryParams)):
           categoryParam = .some(Param.slug(rawCategoryParams))
           subcategoryParam = .some(Param.slug(rawSubcategoryParams))
-        case (.some(let rawCategoryParams), nil):
+        case (let .some(rawCategoryParams), nil):
           categoryParam = .some(Param.slug(rawCategoryParams))
-        case (nil, .some(let rawSubcategoryParams)):
+        case (nil, let .some(rawSubcategoryParams)):
           categoryParam = .some(Param.slug(rawSubcategoryParams))
         case (nil, nil):
           return .init(value: params)
         }
-        
+
         guard let existingCategoryParam = categoryParam else {
           return .init(value: params)
         }
-        
+
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .map { envelope in
-            let rootCategory = envelope.rootCategories.filter { $0.name.lowercased() == existingCategoryParam.slug }.first
-            
-            guard let subCategory = rootCategory?.subcategories?.nodes.filter({ $0.name.lowercased() == subcategoryParam?.slug }).first else {
+            let rootCategory = envelope.rootCategories
+              .filter { $0.name.lowercased() == existingCategoryParam.slug }.first
+
+            guard let subCategory = rootCategory?.subcategories?.nodes
+              .filter({ $0.name.lowercased() == subcategoryParam?.slug }).first else {
               return rootCategory
             }
-            
+
             return subCategory
           }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

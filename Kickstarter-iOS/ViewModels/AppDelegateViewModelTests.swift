@@ -813,7 +813,7 @@ final class AppDelegateViewModelTests: TestCase {
     let params = .defaults |> DiscoveryParams.lens.category .~ .art
     self.goToDiscovery.assertValues([params])
   }
-  
+
   func testGoToDiscoveryWithSubcategory() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
