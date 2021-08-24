@@ -813,6 +813,28 @@ final class AppDelegateViewModelTests: TestCase {
     let params = .defaults |> DiscoveryParams.lens.category .~ .art
     self.goToDiscovery.assertValues([params])
   }
+  
+  func testGoToDiscoveryWithSubcategory() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    self.goToDiscovery.assertValues([])
+
+    let url = URL(string: "https://www.kickstarter.com/discover/categories/games/tabletop%20games")!
+    let result = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: url,
+      options: [:]
+    )
+    XCTAssertTrue(result)
+
+    self.scheduler.advance()
+
+    let params = .defaults |> DiscoveryParams.lens.category .~ .tabletopGames
+    self.goToDiscovery.assertValues([params])
+  }
 
   func testGoToLogin() {
     self.vm.inputs.applicationDidFinishLaunching(
