@@ -792,7 +792,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([nil])
   }
 
-  func testGoToDiscoveryWithCategory() {
+  func testGoToDiscoveryWithCategory_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -814,26 +814,39 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([params])
   }
 
-  func testGoToDiscoveryWithSubcategory() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+  func testGoToDiscoveryWithSubcategory_Success() {
+    let gamesTemplate = RootCategoriesEnvelope.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
+        .art,
+        .filmAndVideo,
+        .illustration,
+        .documentary,
+        .games
+      ]
 
-    self.goToDiscovery.assertValues([])
+    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
 
-    let url = URL(string: "https://www.kickstarter.com/discover/categories/games/tabletop%20games")!
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: url,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    self.scheduler.advance()
+      self.goToDiscovery.assertValues([])
 
-    let params = .defaults |> DiscoveryParams.lens.category .~ .tabletopGames
-    self.goToDiscovery.assertValues([params])
+      let url = URL(string: "https://www.kickstarter.com/discover/categories/games/tabletop%20games")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .tabletopGames
+      self.goToDiscovery.assertValues([params])
+    }
   }
 
   func testGoToLogin() {

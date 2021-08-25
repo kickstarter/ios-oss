@@ -358,8 +358,7 @@
           .art,
           .filmAndVideo,
           .illustration,
-          .documentary,
-          .games
+          .documentary
         ]
       )
 
