@@ -44,6 +44,7 @@ public enum Navigation: Equatable {
     case checkout(Int, Navigation.Project.Checkout)
     case root
     case comments
+    case commentThread([String: String]?)
     case creatorBio
     case faqs
     case friends
@@ -312,7 +313,12 @@ private func thanks(_ params: RouteParamsDecoded) -> Navigation? {
 private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
     let refTag = params.refTag()
-    return Navigation.project(projectParam, .comments, refTag: refTag)
+    
+    guard let commentId = params.comment() else {
+      return .project(projectParam, .comments, refTag: refTag)
+    }
+    
+    return .project(projectParam, .commentThread(["comment": commentId]), refTag: refTag)
   }
 
   return nil
@@ -580,6 +586,7 @@ extension Dictionary {
 
 extension RouteParamsDecoded {
   fileprivate enum CodingKeys: String, CodingKey {
+    case comment
     case messageThreadId = "message_thread_id"
     case notificationParam = "notification_param"
     case checkoutParam = "checkout_param"
@@ -593,6 +600,11 @@ extension RouteParamsDecoded {
     case surveyParam = "survey_param"
     case userParam = "user_param"
     case surveyResponseId = "survey_response_id"
+  }
+
+  public func comment() -> String? {
+    let key = CodingKeys.comment.rawValue
+    return self[key].flatMap { String($0) }
   }
 
   public func enabledParam() -> Bool? {

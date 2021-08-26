@@ -551,6 +551,32 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         vcs + [commentsViewController(for: project, update: nil)]
       }
 
+    let projectCommentThreadLink = projectLink
+      .map { project, subpage, vcs, _ -> (Project, [String: String]?, [UIViewController])? in
+        if case let .commentThread(rawParams) = subpage { return (project, rawParams, vcs) }
+        return nil
+      }
+      .skipNil()
+      .switchMap { project, params, vcs -> SignalProducer<[UIViewController], Never> in
+        guard let commentId = params?["comment"] else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: project, update: nil),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                inputAreaBecomeFirstResponder: false
+              )
+            ]
+          }
+      }
+
     let surveyResponseLink = deepLink
       .map { link -> Int? in
         if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
@@ -619,6 +645,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .merge(
         projectRootLink,
         projectCommentsLink,
+        projectCommentThreadLink,
         surveyResponseLink,
         updatesLink,
         updateRootLink,
