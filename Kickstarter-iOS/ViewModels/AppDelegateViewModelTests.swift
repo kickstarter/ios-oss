@@ -717,6 +717,50 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testPresentViewController_ProjectCommentThread() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertDidEmitValue()
+    }
+  }
+
+  func testPresentViewController_UpdateCommentThread() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertDidEmitValue()
+    }
+  }
+
   func testGoToActivity() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
