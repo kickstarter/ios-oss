@@ -313,11 +313,11 @@ private func thanks(_ params: RouteParamsDecoded) -> Navigation? {
 private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
     let refTag = params.refTag()
-    
+
     guard let commentId = params.comment() else {
       return .project(projectParam, .comments, refTag: refTag)
     }
-    
+
     return .project(projectParam, .commentThread(["comment": commentId]), refTag: refTag)
   }
 

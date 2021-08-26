@@ -12,7 +12,7 @@ public struct PushEnvelope {
 
   public struct Activity {
     public let category: KsApi.Activity.Category
-    public let commentId: Int?
+    public let commentId: String?
     public let id: Int
     public let projectId: Int?
     public let projectPhoto: String?
@@ -82,7 +82,7 @@ extension PushEnvelope: Decodable {
 extension PushEnvelope.Activity: Decodable {
   enum CodingKeys: String, CodingKey {
     case category
-    case commentId = "comment_id"
+    case commentId = "comment"
     case id
     case projectId = "project_id"
     case projectPhoto = "project_photo"

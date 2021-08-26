@@ -941,6 +941,10 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
     case .commentProject:
       guard let projectId = activity.projectId else { return nil }
+
+      if let commentId = activity.commentId {
+        return .project(.id(projectId), .commentThread(["comment": commentId]), refTag: .push)
+      }
       return .project(.id(projectId), .comments, refTag: .push)
 
     case .backingAmount, .backingCanceled, .backingDropped, .backingReward:
