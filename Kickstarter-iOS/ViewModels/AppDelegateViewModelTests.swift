@@ -792,7 +792,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([nil])
   }
 
-  func testGoToDiscoveryWithCategory_Success() {
+  func testGoToDiscoveryWithCategory_RouteToCategory_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -814,7 +814,29 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([params])
   }
 
-  func testGoToDiscoveryWithSubcategory_Success() {
+  func testGoToDiscoveryWithCategory_RouteToCategory_Failure() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    self.goToDiscovery.assertValues([])
+
+    let url = URL(string: "https://www.kickstarter.com/discover/categories/random")!
+    let result = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: url,
+      options: [:]
+    )
+    XCTAssertTrue(result)
+
+    self.scheduler.advance()
+
+    let params = .defaults |> DiscoveryParams.lens.category .~ .none
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testGoToDiscoveryWithSubcategory_RoutesToSubcategory_Success() {
     let gamesTemplate = RootCategoriesEnvelope.template
       |> RootCategoriesEnvelope.lens.categories .~ [
         .art,
@@ -845,6 +867,41 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance()
 
       let params = .defaults |> DiscoveryParams.lens.category .~ .tabletopGames
+      self.goToDiscovery.assertValues([params])
+    }
+  }
+
+  func testGoToDiscoveryWithSubcategory_RoutesToCategory_Failure() {
+    let gamesTemplate = RootCategoriesEnvelope.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
+        .art,
+        .filmAndVideo,
+        .illustration,
+        .documentary,
+        .games
+      ]
+
+    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.goToDiscovery.assertValues([])
+
+      let url = URL(string: "https://www.kickstarter.com/discover/categories/games/tabletopgames")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .games
       self.goToDiscovery.assertValues([params])
     }
   }

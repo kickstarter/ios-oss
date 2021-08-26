@@ -403,6 +403,27 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
 
+    let deepLinkCategories: ([String: String]) -> (Param?, Param?) = { rawParams in
+      let parentCategoryParams = rawParams["parent_category_id"]
+      let subCategoryParams = rawParams["category_id"]
+      var categoryParam: Param?
+      var subcategoryParam: Param?
+
+      switch (parentCategoryParams, subCategoryParams) {
+      case let (.some(rawCategoryParams), .some(rawSubcategoryParams)):
+        categoryParam = .some(Param.slug(rawCategoryParams))
+        subcategoryParam = .some(Param.slug(rawSubcategoryParams))
+      case (let .some(rawCategoryParams), nil):
+        categoryParam = .some(Param.slug(rawCategoryParams))
+      case (nil, let .some(rawSubcategoryParams)):
+        categoryParam = .some(Param.slug(rawSubcategoryParams))
+      case (nil, nil):
+        return (nil, nil)
+      }
+
+      return (categoryParam, subcategoryParam)
+    }
+
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
         guard case let .tab(.discovery(rawParams)) = link else { return nil }
@@ -410,29 +431,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
+
         guard
           let rawParams = rawParams,
           let params = DiscoveryParams.decodeJSONDictionary(rawParams)
-        else { return .init(value: nil) }
-
-        let parentCategoryParams = rawParams["parent_category_id"]
-        let subCategoryParams = rawParams["category_id"]
-        var categoryParam: Param?
-        var subcategoryParam: Param?
-
-        switch (parentCategoryParams, subCategoryParams) {
-        case let (.some(rawCategoryParams), .some(rawSubcategoryParams)):
-          categoryParam = .some(Param.slug(rawCategoryParams))
-          subcategoryParam = .some(Param.slug(rawSubcategoryParams))
-        case (let .some(rawCategoryParams), nil):
-          categoryParam = .some(Param.slug(rawCategoryParams))
-        case (nil, let .some(rawSubcategoryParams)):
-          categoryParam = .some(Param.slug(rawSubcategoryParams))
-        case (nil, nil):
-          return .init(value: params)
+        else {
+          return .init(value: nil)
         }
 
-        guard let existingCategoryParam = categoryParam else {
+        let deepLinkCategories = deepLinkCategories(rawParams)
+
+        guard let categoryParam = deepLinkCategories.0 else {
           return .init(value: params)
         }
 
@@ -440,10 +449,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .map { envelope in
             let rootCategory = envelope.rootCategories
-              .filter { $0.name.lowercased() == existingCategoryParam.slug }.first
+              .filter { $0.name.lowercased() == categoryParam.slug }.first
 
             guard let subCategory = rootCategory?.subcategories?.nodes
-              .filter({ $0.name.lowercased() == subcategoryParam?.slug }).first else {
+              .filter({ $0.name.lowercased() == deepLinkCategories.1?.slug }).first else {
               return rootCategory
             }
 
