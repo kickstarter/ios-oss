@@ -965,6 +965,14 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
     case .commentPost:
       guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
+
+      if let commentId = activity.commentId {
+        return .project(
+          .id(projectId),
+          .update(updateId, .commentThread(["comment": commentId])),
+          refTag: .push
+        )
+      }
       return .project(.id(projectId), .update(updateId, .comments), refTag: .push)
 
     case .commentProject:
