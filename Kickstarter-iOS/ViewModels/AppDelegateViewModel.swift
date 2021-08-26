@@ -588,13 +588,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     let projectCommentThreadLink = projectLink
-      .map { project, subpage, vcs, _ -> (Project, [String: String]?, [UIViewController])? in
-        if case let .commentThread(rawParams) = subpage { return (project, rawParams, vcs) }
-        return nil
-      }
-      .skipNil()
-      .switchMap { project, params, vcs -> SignalProducer<[UIViewController], Never> in
-        guard let commentId = params?["comment"] else {
+      .observeForUI()
+      .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(rawParams) = subpage,
+          let commentId = rawParams?["comment"] else {
           return .empty
         }
         return AppEnvironment.current.apiService
@@ -679,13 +676,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let updateCommentThreadLink = updateLink
       .observeForUI()
-      .map { project, update, subpage, vcs -> (Project, Update, [String: String]?, [UIViewController])? in
-        if case let .commentThread(rawParams) = subpage { return (project, update, rawParams, vcs) }
-        return nil
-      }
-      .skipNil()
-      .switchMap { project, update, params, vcs -> SignalProducer<[UIViewController], Never> in
-        guard let commentId = params?["comment"] else {
+      .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(rawParams) = subpage,
+          let commentId = rawParams?["comment"] else {
           return .empty
         }
         return AppEnvironment.current.apiService
