@@ -717,7 +717,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testPresentViewController_ProjectCommentThread() {
+  func testPresentViewController_ProjectCommentThread_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -735,11 +735,11 @@ final class AppDelegateViewModelTests: TestCase {
       )
       XCTAssertTrue(result)
 
-      self.presentViewController.assertDidEmitValue()
+      self.presentViewController.assertValues([3])
     }
   }
 
-  func testPresentViewController_UpdateCommentThread() {
+  func testPresentViewController_UpdateCommentThread_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -748,7 +748,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
         .successfulRepliesTemplate), fetchProjectResponse: .template)) {
       let url =
-        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
 
       let result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
@@ -757,7 +757,7 @@ final class AppDelegateViewModelTests: TestCase {
       )
       XCTAssertTrue(result)
 
-      self.presentViewController.assertDidEmitValue()
+      self.presentViewController.assertValues([4])
     }
   }
 

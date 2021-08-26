@@ -590,8 +590,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let projectCommentThreadLink = projectLink
       .observeForUI()
       .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(rawParams) = subpage,
-          let commentId = rawParams?["comment"] else {
+        guard case let .commentThread(commentId) = subpage,
+          let commentId = commentId else {
           return .empty
         }
         return AppEnvironment.current.apiService
@@ -677,8 +677,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let updateCommentThreadLink = updateLink
       .observeForUI()
       .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(rawParams) = subpage,
-          let commentId = rawParams?["comment"] else {
+        guard case let .commentThread(commentId) = subpage,
+          let commentId = commentId else {
           return .empty
         }
         return AppEnvironment.current.apiService
@@ -998,7 +998,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       if let commentId = activity.commentId {
         return .project(
           .id(projectId),
-          .update(updateId, .commentThread(["comment": commentId])),
+          .update(updateId, .commentThread(commentId)),
           refTag: .push
         )
       }
@@ -1008,7 +1008,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       guard let projectId = activity.projectId else { return nil }
 
       if let commentId = activity.commentId {
-        return .project(.id(projectId), .commentThread(["comment": commentId]), refTag: .push)
+        return .project(.id(projectId), .commentThread(commentId), refTag: .push)
       }
       return .project(.id(projectId), .comments, refTag: .push)
 
