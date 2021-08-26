@@ -403,6 +403,27 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
 
+    let deepLinkCategories: ([String: String]) -> (Param?, Param?) = { rawParams in
+      let parentCategoryParams = rawParams["parent_category_id"]
+      let subCategoryParams = rawParams["category_id"]
+      var categoryParam: Param?
+      var subcategoryParam: Param?
+
+      switch (parentCategoryParams, subCategoryParams) {
+      case let (.some(rawCategoryParams), .some(rawSubcategoryParams)):
+        categoryParam = .some(Param.slug(rawCategoryParams))
+        subcategoryParam = .some(Param.slug(rawSubcategoryParams))
+      case (let .some(rawCategoryParams), nil):
+        categoryParam = .some(Param.slug(rawCategoryParams))
+      case (nil, let .some(rawSubcategoryParams)):
+        categoryParam = .some(Param.slug(rawSubcategoryParams))
+      case (nil, nil):
+        return (nil, nil)
+      }
+
+      return (categoryParam, subcategoryParam)
+    }
+
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
         guard case let .tab(.discovery(rawParams)) = link else { return nil }
@@ -410,21 +431,36 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
+
         guard
           let rawParams = rawParams,
           let params = DiscoveryParams.decodeJSONDictionary(rawParams)
-        else { return .init(value: nil) }
+        else {
+          return .init(value: nil)
+        }
 
-        guard
-          let rawCategoryParam = rawParams["category_id"],
-          let categoryParam = .some(Param.slug(rawCategoryParam))
-        else { return .init(value: params) }
+        let deepLinkCategories = deepLinkCategories(rawParams)
+
+        guard let categoryParam = deepLinkCategories.0 else {
+          return .init(value: params)
+        }
+
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
-          .map { $0.rootCategories.filter { $0.name.lowercased() == categoryParam.slug } }
+          .map { envelope in
+            let rootCategory = envelope.rootCategories
+              .filter { $0.name.lowercased() == categoryParam.slug }.first
+
+            guard let subCategory = rootCategory?.subcategories?.nodes
+              .filter({ $0.name.lowercased() == deepLinkCategories.1?.slug }).first else {
+              return rootCategory
+            }
+
+            return subCategory
+          }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
-          .map { params |> DiscoveryParams.lens.category .~ $0.first }
+          .map { params |> DiscoveryParams.lens.category .~ $0 }
       }
 
     let projectLinkValues = deepLink
