@@ -641,6 +641,33 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
+    let updateCommentThreadLink = updateLink
+      .observeForUI()
+      .map { project, update, subpage, vcs -> (Project, Update, [String: String]?, [UIViewController])? in
+        if case let .commentThread(rawParams) = subpage { return (project, update, rawParams, vcs) }
+        return nil
+      }
+      .skipNil()
+      .switchMap { project, update, params, vcs -> SignalProducer<[UIViewController], Never> in
+        guard let commentId = params?["comment"] else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: nil, update: update),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                inputAreaBecomeFirstResponder: false
+              )
+            ]
+          }
+      }
+
     let viewControllersContainedInNavigationController = Signal
       .merge(
         projectRootLink,
@@ -650,6 +677,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         updatesLink,
         updateRootLink,
         updateCommentsLink,
+        updateCommentThreadLink,
         campaignFaqLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }

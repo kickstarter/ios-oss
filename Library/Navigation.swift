@@ -1,4 +1,3 @@
-
 import Foundation
 import KsApi
 
@@ -71,6 +70,7 @@ public enum Navigation: Equatable {
     public enum Update: Equatable {
       case root
       case comments
+      case commentThread([String: String]?)
     }
   }
 
@@ -90,6 +90,8 @@ public func == (lhs: Navigation.Project.Update, rhs: Navigation.Project.Update) 
     return true
   case (.comments, .comments):
     return true
+  case let (.commentThread(rawParams), .commentThread(otherRawParams)):
+    return rawParams == otherRawParams
   default:
     return false
   }
@@ -462,8 +464,20 @@ private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
     let updateParam = params.updateParam() {
     let refTag = params.refTag()
-    let update = Navigation.Project.update(updateParam, .comments)
-    return Navigation.project(projectParam, update, refTag: refTag)
+
+    guard let commentId = params.comment() else {
+      return .project(
+        projectParam,
+        .update(updateParam, .comments),
+        refTag: refTag
+      )
+    }
+
+    return .project(
+      projectParam,
+      .update(updateParam, .commentThread(["comment": commentId])),
+      refTag: refTag
+    )
   }
 
   return nil
