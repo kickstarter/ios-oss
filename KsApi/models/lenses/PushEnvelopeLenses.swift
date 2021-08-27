@@ -78,7 +78,7 @@ extension PushEnvelope.Activity {
       ) }
     )
 
-    public static let commentId = Lens<PushEnvelope.Activity, Int?>(
+    public static let commentId = Lens<PushEnvelope.Activity, String?>(
       view: { $0.commentId },
       set: { .init(
         category: $1.category, commentId: $0, id: $1.id, projectId: $1.projectId,
