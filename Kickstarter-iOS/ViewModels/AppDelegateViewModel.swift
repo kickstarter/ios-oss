@@ -627,6 +627,29 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         vcs + [commentsViewController(for: project, update: nil)]
       }
 
+    let projectCommentThreadLink = projectLink
+      .observeForUI()
+      .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(commentId) = subpage,
+          let commentId = commentId else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: project, update: nil),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                inputAreaBecomeFirstResponder: false
+              )
+            ]
+          }
+      }
+
     let surveyResponseLink = deepLink
       .map { link -> Int? in
         if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
@@ -691,14 +714,39 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
+    let updateCommentThreadLink = updateLink
+      .observeForUI()
+      .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(commentId) = subpage,
+          let commentId = commentId else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: nil, update: update),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                inputAreaBecomeFirstResponder: false
+              )
+            ]
+          }
+      }
+
     let viewControllersContainedInNavigationController = Signal
       .merge(
         projectRootLink,
         projectCommentsLink,
+        projectCommentThreadLink,
         surveyResponseLink,
         updatesLink,
         updateRootLink,
         updateCommentsLink,
+        updateCommentThreadLink,
         campaignFaqLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
@@ -986,10 +1034,22 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
     case .commentPost:
       guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
+
+      if let commentId = activity.commentId {
+        return .project(
+          .id(projectId),
+          .update(updateId, .commentThread(commentId)),
+          refTag: .push
+        )
+      }
       return .project(.id(projectId), .update(updateId, .comments), refTag: .push)
 
     case .commentProject:
       guard let projectId = activity.projectId else { return nil }
+
+      if let commentId = activity.commentId {
+        return .project(.id(projectId), .commentThread(commentId), refTag: .push)
+      }
       return .project(.id(projectId), .comments, refTag: .push)
 
     case .backingAmount, .backingCanceled, .backingDropped, .backingReward:
