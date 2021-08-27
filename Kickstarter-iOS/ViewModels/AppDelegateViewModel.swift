@@ -409,20 +409,73 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       var categoryParam: Param?
       var subcategoryParam: Param?
 
-      switch (parentCategoryParams, subCategoryParams) {
-      case let (.some(rawCategoryParams), .some(rawSubcategoryParams)):
-        categoryParam = .some(Param.slug(rawCategoryParams))
-        subcategoryParam = .some(Param.slug(rawSubcategoryParams))
-      case (let .some(rawCategoryParams), nil):
-        categoryParam = .some(Param.slug(rawCategoryParams))
-      case (nil, let .some(rawSubcategoryParams)):
-        categoryParam = .some(Param.slug(rawSubcategoryParams))
-      case (nil, nil):
-        return (nil, nil)
+      let rawId: (String?) -> Int? = { rawParam in
+        guard let rawParamValue = rawParam else {
+          return .none
+        }
+
+        return Int(rawParamValue)
+      }
+
+      let rawName: (String?) -> String? = { rawParam in
+        guard let rawParamValue = rawParam else {
+          return .none
+        }
+
+        return String(rawParamValue)
+      }
+
+      if let categoryId = rawId(parentCategoryParams) {
+        categoryParam = Param.id(categoryId)
+      } else if let categoryName = rawName(parentCategoryParams) {
+        categoryParam = Param.slug(categoryName)
+      }
+
+      if let subcategoryId = rawId(subCategoryParams) {
+        subcategoryParam = Param.id(subcategoryId)
+      } else if let subcategoryName = rawName(subCategoryParams) {
+        subcategoryParam = Param.slug(subcategoryName)
       }
 
       return (categoryParam, subcategoryParam)
     }
+
+    let findCategoryFromRootCategories: (RootCategoriesEnvelope, Param, Param?) -> KsApi
+      .Category? = { envelope, categoryParam, subcategoryParam in
+        let rootCategory = envelope.rootCategories
+          .filter { category in
+            var foundCategory = false
+
+            foundCategory = category.name.lowercased() == categoryParam.slug
+
+            if !foundCategory,
+              let categoryParamId = categoryParam.id,
+              String(categoryParamId) == category.id {
+              foundCategory = true
+            }
+
+            return foundCategory
+          }.first
+
+        guard let subCategory = rootCategory?.subcategories?.nodes
+          .filter({ subcategory in
+            var foundSubcategory = false
+
+            foundSubcategory = subcategory.name.lowercased() == subcategoryParam?.slug
+
+            if !foundSubcategory,
+              let subcategoryParamId = subcategoryParam?.id,
+              String(subcategoryParamId) == subcategory.id {
+              foundSubcategory = true
+            }
+
+            return foundSubcategory
+              }).first else {
+          return rootCategory
+        }
+
+        return subCategory
+      }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
@@ -448,15 +501,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .map { envelope in
-            let rootCategory = envelope.rootCategories
-              .filter { $0.name.lowercased() == categoryParam.slug }.first
-
-            guard let subCategory = rootCategory?.subcategories?.nodes
-              .filter({ $0.name.lowercased() == deepLinkCategories.1?.slug }).first else {
-              return rootCategory
-            }
-
-            return subCategory
+            findCategoryFromRootCategories(
+              envelope,
+              categoryParam,
+              deepLinkCategories.1
+            )
           }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
