@@ -403,6 +403,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
 
+    /// INFO: Handles the deeplink route with both an id and text based name for a deeplink for categories.
     let deepLinkCategories: ([String: String]) -> (Param?, Param?) = { rawParams in
       let parentCategoryParams = rawParams["parent_category_id"]
       let subCategoryParams = rawParams["category_id"]
@@ -437,44 +438,34 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         subcategoryParam = Param.slug(subcategoryName)
       }
 
+      let subCategoryWithNoParentCategory = categoryParam == nil && subcategoryParam != nil
+
+      categoryParam = subCategoryWithNoParentCategory ? subcategoryParam : categoryParam
+      subcategoryParam = subCategoryWithNoParentCategory ? nil : subcategoryParam
+
       return (categoryParam, subcategoryParam)
     }
 
+    /// INFO: Will check id and name of category and subcategory against all available categories and subcategories contained inside envelope
     let findCategoryFromRootCategories: (RootCategoriesEnvelope, Param, Param?) -> KsApi
       .Category? = { envelope, categoryParam, subcategoryParam in
-        let rootCategory = envelope.rootCategories
-          .filter { category in
-            var foundCategory = false
+        let allRootCategoryIdsAndNames = envelope.rootCategories.compactMap { $0 }
 
-            foundCategory = category.name.lowercased() == categoryParam.slug
+        let allSubcategoryIdsAndNames = envelope.rootCategories.compactMap { $0.subcategories?.nodes }
+          .flatMap { $0 }
 
-            if !foundCategory,
-              let categoryParamId = categoryParam.id,
-              String(categoryParamId) == category.id {
-              foundCategory = true
-            }
+        let allCategoryIdsAndNames = allRootCategoryIdsAndNames + allSubcategoryIdsAndNames
 
-            return foundCategory
-          }.first
+        let routableCategory = allCategoryIdsAndNames.first(where: { category in
+          category.intID == categoryParam.id || category.name.lowercased() == categoryParam.slug?.lowercased()
+        })
 
-        guard let subCategory = rootCategory?.subcategories?.nodes
-          .filter({ subcategory in
-            var foundSubcategory = false
+        let routableSubcategory = routableCategory != nil ? allCategoryIdsAndNames.first(where: { category in
+          category.intID == subcategoryParam?.id || category.name.lowercased() == subcategoryParam?.slug?
+            .lowercased()
+        }) : nil
 
-            foundSubcategory = subcategory.name.lowercased() == subcategoryParam?.slug
-
-            if !foundSubcategory,
-              let subcategoryParamId = subcategoryParam?.id,
-              String(subcategoryParamId) == subcategory.id {
-              foundSubcategory = true
-            }
-
-            return foundSubcategory
-              }).first else {
-          return rootCategory
-        }
-
-        return subCategory
+        return routableSubcategory ?? routableCategory
       }
 
     self.goToDiscovery = deepLink
