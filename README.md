@@ -95,7 +95,7 @@ behavior violating this base foundation of respect.
 
 ## Find this interesting?
 
-We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)!
+We do too, and we’re [hiring](https://www.kickstarter.com/jobs?ref=gh_ios_oss)! 😉
 
 ## License
 
