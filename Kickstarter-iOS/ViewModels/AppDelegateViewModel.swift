@@ -403,71 +403,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
 
-    /// INFO: Handles the deeplink route with both an id and text based name for a deeplink for categories.
-    let deepLinkCategories: ([String: String]) -> (Param?, Param?) = { rawParams in
-      let parentCategoryParams = rawParams["parent_category_id"]
-      let subCategoryParams = rawParams["category_id"]
-      var categoryParam: Param?
-      var subcategoryParam: Param?
-
-      let rawId: (String?) -> Int? = { rawParam in
-        guard let rawParamValue = rawParam else {
-          return .none
-        }
-
-        return Int(rawParamValue)
-      }
-
-      let rawName: (String?) -> String? = { rawParam in
-        guard let rawParamValue = rawParam else {
-          return .none
-        }
-
-        return String(rawParamValue)
-      }
-
-      if let categoryId = rawId(parentCategoryParams) {
-        categoryParam = Param.id(categoryId)
-      } else if let categoryName = rawName(parentCategoryParams) {
-        categoryParam = Param.slug(categoryName)
-      }
-
-      if let subcategoryId = rawId(subCategoryParams) {
-        subcategoryParam = Param.id(subcategoryId)
-      } else if let subcategoryName = rawName(subCategoryParams) {
-        subcategoryParam = Param.slug(subcategoryName)
-      }
-
-      let subCategoryWithNoParentCategory = categoryParam == nil && subcategoryParam != nil
-
-      categoryParam = subCategoryWithNoParentCategory ? subcategoryParam : categoryParam
-      subcategoryParam = subCategoryWithNoParentCategory ? nil : subcategoryParam
-
-      return (categoryParam, subcategoryParam)
-    }
-
-    /// INFO: Will check id and name of category and subcategory against all available categories and subcategories contained inside envelope
-    let findCategoryFromRootCategories: (RootCategoriesEnvelope, Param, Param?) -> KsApi
-      .Category? = { envelope, categoryParam, subcategoryParam in
-        let allRootCategoryIdsAndNames = envelope.rootCategories.compactMap { $0 }
-
-        let allSubcategoryIdsAndNames = envelope.rootCategories.compactMap { $0.subcategories?.nodes }
-          .flatMap { $0 }
-
-        let allCategoryIdsAndNames = allRootCategoryIdsAndNames + allSubcategoryIdsAndNames
-
-        let routableCategory = allCategoryIdsAndNames.first(where: { category in
-          category.intID == categoryParam.id || category.name.lowercased() == categoryParam.slug?.lowercased()
-        })
-
-        let routableSubcategory = routableCategory != nil ? allCategoryIdsAndNames.first(where: { category in
-          category.intID == subcategoryParam?.id || category.name.lowercased() == subcategoryParam?.slug?
-            .lowercased()
-        }) : nil
-
-        return routableSubcategory ?? routableCategory
-      }
-
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
         guard case let .tab(.discovery(rawParams)) = link else { return nil }
@@ -483,7 +418,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return .init(value: nil)
         }
 
-        let deepLinkCategories = deepLinkCategories(rawParams)
+        let deepLinkCategories = deepLinkCategories(rawParams: rawParams)
 
         guard let categoryParam = deepLinkCategories.0 else {
           return .init(value: params)
@@ -493,9 +428,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .map { envelope in
             findCategoryFromRootCategories(
-              envelope,
-              categoryParam,
-              deepLinkCategories.1
+              envelope: envelope,
+              categoryParam: categoryParam,
+              subcategoryParam: deepLinkCategories.1
             )
           }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -1004,6 +939,72 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
+}
+
+/// Handles the deeplink route with both an id and text based name for a deeplink to categories.
+private func deepLinkCategories(rawParams: [String: String]) -> (Param?, Param?) {
+  let parentCategoryParams = rawParams["parent_category_id"]
+  let subCategoryParams = rawParams["category_id"]
+  var categoryParam: Param?
+  var subcategoryParam: Param?
+
+  let rawId: (String?) -> Int? = { rawParam in
+    guard let rawParamValue = rawParam else {
+      return .none
+    }
+
+    return Int(rawParamValue)
+  }
+
+  let rawName: (String?) -> String? = { rawParam in
+    guard let rawParamValue = rawParam else {
+      return .none
+    }
+
+    return String(rawParamValue)
+  }
+
+  if let categoryId = rawId(parentCategoryParams) {
+    categoryParam = Param.id(categoryId)
+  } else if let categoryName = rawName(parentCategoryParams) {
+    categoryParam = Param.slug(categoryName)
+  }
+
+  if let subcategoryId = rawId(subCategoryParams) {
+    subcategoryParam = Param.id(subcategoryId)
+  } else if let subcategoryName = rawName(subCategoryParams) {
+    subcategoryParam = Param.slug(subcategoryName)
+  }
+
+  let subCategoryWithNoParentCategory = categoryParam == nil && subcategoryParam != nil
+
+  categoryParam = subCategoryWithNoParentCategory ? subcategoryParam : categoryParam
+  subcategoryParam = subCategoryWithNoParentCategory ? nil : subcategoryParam
+
+  return (categoryParam, subcategoryParam)
+}
+
+/// Will check id and name of category and subcategory against all available categories and subcategories inside envelope
+private func findCategoryFromRootCategories(envelope: RootCategoriesEnvelope,
+                                            categoryParam: Param,
+                                            subcategoryParam: Param?) -> KsApi.Category? {
+  let allRootCategoryIdsAndNames = envelope.rootCategories.compactMap { $0 }
+
+  let allSubcategoryIdsAndNames = envelope.rootCategories.compactMap { $0.subcategories?.nodes }
+    .flatMap { $0 }
+
+  let allCategoryIdsAndNames = allRootCategoryIdsAndNames + allSubcategoryIdsAndNames
+
+  let routableCategory = allCategoryIdsAndNames.first(where: { category in
+    category.intID == categoryParam.id || category.name.lowercased() == categoryParam.slug?.lowercased()
+    })
+
+  let routableSubcategory = routableCategory != nil ? allCategoryIdsAndNames.first(where: { category in
+    category.intID == subcategoryParam?.id || category.name.lowercased() == subcategoryParam?.slug?
+      .lowercased()
+    }) : nil
+
+  return routableSubcategory ?? routableCategory
 }
 
 private func deviceToken(fromData data: Data) -> String {
