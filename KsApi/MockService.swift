@@ -338,6 +338,7 @@
 
       self.backingUpdate = backingUpdate
 
+      // FIXME: Once converted to Apollo, remove the default value and combine the `Response` and `Error` into a `Result`
       self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (RootCategoriesEnvelope.template
         |> RootCategoriesEnvelope.lens.categories .~ [
           .art,

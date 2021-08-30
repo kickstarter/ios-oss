@@ -717,6 +717,50 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testPresentViewController_ProjectCommentThread_Success() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertValues([3])
+    }
+  }
+
+  func testPresentViewController_UpdateCommentThread_Success() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertValues([4])
+    }
+  }
+
   func testGoToActivity() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -792,7 +836,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([nil])
   }
 
-  func testGoToDiscoveryWithCategory() {
+  func testGoToDiscoveryWithCategory_RouteToCategory_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -812,6 +856,98 @@ final class AppDelegateViewModelTests: TestCase {
 
     let params = .defaults |> DiscoveryParams.lens.category .~ .art
     self.goToDiscovery.assertValues([params])
+  }
+
+  func testGoToDiscoveryWithCategory_RouteToCategory_Failure() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    self.goToDiscovery.assertValues([])
+
+    let url = URL(string: "https://www.kickstarter.com/discover/categories/random")!
+    let result = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: url,
+      options: [:]
+    )
+    XCTAssertTrue(result)
+
+    self.scheduler.advance()
+
+    let params = .defaults |> DiscoveryParams.lens.category .~ .none
+    self.goToDiscovery.assertValues([params])
+  }
+
+  func testGoToDiscoveryWithSubcategory_RoutesToSubcategory_Success() {
+    let gamesTemplate = RootCategoriesEnvelope.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
+        .art,
+        .filmAndVideo,
+        .illustration,
+        .documentary,
+        .games
+      ]
+
+    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.goToDiscovery.assertValues([])
+
+      let url = URL(string: "https://www.kickstarter.com/discover/categories/games/tabletop%20games")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .tabletopGames
+      self.goToDiscovery.assertValues([params])
+    }
+  }
+
+  func testGoToDiscoveryWithSubcategory_RoutesToCategory_Failure() {
+    let gamesTemplate = RootCategoriesEnvelope.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
+        .art,
+        .filmAndVideo,
+        .illustration,
+        .documentary,
+        .games
+      ]
+
+    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.goToDiscovery.assertValues([])
+
+      let url = URL(string: "https://www.kickstarter.com/discover/categories/games/tabletopgames")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .games
+      self.goToDiscovery.assertValues([params])
+    }
   }
 
   func testGoToLogin() {

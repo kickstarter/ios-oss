@@ -403,6 +403,27 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
 
+    let deepLinkCategories: ([String: String]) -> (Param?, Param?) = { rawParams in
+      let parentCategoryParams = rawParams["parent_category_id"]
+      let subCategoryParams = rawParams["category_id"]
+      var categoryParam: Param?
+      var subcategoryParam: Param?
+
+      switch (parentCategoryParams, subCategoryParams) {
+      case let (.some(rawCategoryParams), .some(rawSubcategoryParams)):
+        categoryParam = .some(Param.slug(rawCategoryParams))
+        subcategoryParam = .some(Param.slug(rawSubcategoryParams))
+      case (let .some(rawCategoryParams), nil):
+        categoryParam = .some(Param.slug(rawCategoryParams))
+      case (nil, let .some(rawSubcategoryParams)):
+        categoryParam = .some(Param.slug(rawSubcategoryParams))
+      case (nil, nil):
+        return (nil, nil)
+      }
+
+      return (categoryParam, subcategoryParam)
+    }
+
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
         guard case let .tab(.discovery(rawParams)) = link else { return nil }
@@ -410,21 +431,36 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
+
         guard
           let rawParams = rawParams,
           let params = DiscoveryParams.decodeJSONDictionary(rawParams)
-        else { return .init(value: nil) }
+        else {
+          return .init(value: nil)
+        }
 
-        guard
-          let rawCategoryParam = rawParams["category_id"],
-          let categoryParam = .some(Param.slug(rawCategoryParam))
-        else { return .init(value: params) }
+        let deepLinkCategories = deepLinkCategories(rawParams)
+
+        guard let categoryParam = deepLinkCategories.0 else {
+          return .init(value: params)
+        }
+
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
-          .map { $0.rootCategories.filter { $0.name.lowercased() == categoryParam.slug } }
+          .map { envelope in
+            let rootCategory = envelope.rootCategories
+              .filter { $0.name.lowercased() == categoryParam.slug }.first
+
+            guard let subCategory = rootCategory?.subcategories?.nodes
+              .filter({ $0.name.lowercased() == deepLinkCategories.1?.slug }).first else {
+              return rootCategory
+            }
+
+            return subCategory
+          }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
-          .map { params |> DiscoveryParams.lens.category .~ $0.first }
+          .map { params |> DiscoveryParams.lens.category .~ $0 }
       }
 
     let projectLinkValues = deepLink
@@ -551,6 +587,29 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         vcs + [commentsViewController(for: project, update: nil)]
       }
 
+    let projectCommentThreadLink = projectLink
+      .observeForUI()
+      .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(commentId) = subpage,
+          let commentId = commentId else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: project, update: nil),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                inputAreaBecomeFirstResponder: false
+              )
+            ]
+          }
+      }
+
     let surveyResponseLink = deepLink
       .map { link -> Int? in
         if case let .user(_, .survey(surveyResponseId)) = link { return surveyResponseId }
@@ -615,14 +674,39 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
+    let updateCommentThreadLink = updateLink
+      .observeForUI()
+      .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
+        guard case let .commentThread(commentId) = subpage,
+          let commentId = commentId else {
+          return .empty
+        }
+        return AppEnvironment.current.apiService
+          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .demoteErrors()
+          .observeForUI()
+          .map { envelope in
+            vcs + [
+              commentsViewController(for: nil, update: update),
+              CommentRepliesViewController.configuredWith(
+                comment: envelope.comment,
+                project: project,
+                inputAreaBecomeFirstResponder: false
+              )
+            ]
+          }
+      }
+
     let viewControllersContainedInNavigationController = Signal
       .merge(
         projectRootLink,
         projectCommentsLink,
+        projectCommentThreadLink,
         surveyResponseLink,
         updatesLink,
         updateRootLink,
         updateCommentsLink,
+        updateCommentThreadLink,
         campaignFaqLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
@@ -910,10 +994,22 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
     case .commentPost:
       guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
+
+      if let commentId = activity.commentId {
+        return .project(
+          .id(projectId),
+          .update(updateId, .commentThread(commentId)),
+          refTag: .push
+        )
+      }
       return .project(.id(projectId), .update(updateId, .comments), refTag: .push)
 
     case .commentProject:
       guard let projectId = activity.projectId else { return nil }
+
+      if let commentId = activity.commentId {
+        return .project(.id(projectId), .commentThread(commentId), refTag: .push)
+      }
       return .project(.id(projectId), .comments, refTag: .push)
 
     case .backingAmount, .backingCanceled, .backingDropped, .backingReward:

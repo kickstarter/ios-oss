@@ -77,7 +77,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
-
         self?.dataSource.load(user: user)
         self?.tableView.reloadData()
       }

@@ -1,4 +1,3 @@
-
 import Foundation
 import KsApi
 
@@ -44,6 +43,7 @@ public enum Navigation: Equatable {
     case checkout(Int, Navigation.Project.Checkout)
     case root
     case comments
+    case commentThread(String?)
     case creatorBio
     case faqs
     case friends
@@ -70,6 +70,7 @@ public enum Navigation: Equatable {
     public enum Update: Equatable {
       case root
       case comments
+      case commentThread(String?)
     }
   }
 
@@ -89,6 +90,8 @@ public func == (lhs: Navigation.Project.Update, rhs: Navigation.Project.Update) 
     return true
   case (.comments, .comments):
     return true
+  case let (.commentThread(commentId), .commentThread(otherCommentId)):
+    return commentId == otherCommentId
   default:
     return false
   }
@@ -312,7 +315,12 @@ private func thanks(_ params: RouteParamsDecoded) -> Navigation? {
 private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
     let refTag = params.refTag()
-    return Navigation.project(projectParam, .comments, refTag: refTag)
+
+    guard let commentId = params.comment() else {
+      return .project(projectParam, .comments, refTag: refTag)
+    }
+
+    return .project(projectParam, .commentThread(commentId), refTag: refTag)
   }
 
   return nil
@@ -456,8 +464,20 @@ private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
     let updateParam = params.updateParam() {
     let refTag = params.refTag()
-    let update = Navigation.Project.update(updateParam, .comments)
-    return Navigation.project(projectParam, update, refTag: refTag)
+
+    guard let commentId = params.comment() else {
+      return .project(
+        projectParam,
+        .update(updateParam, .comments),
+        refTag: refTag
+      )
+    }
+
+    return .project(
+      projectParam,
+      .update(updateParam, .commentThread(commentId)),
+      refTag: refTag
+    )
   }
 
   return nil
@@ -580,6 +600,7 @@ extension Dictionary {
 
 extension RouteParamsDecoded {
   fileprivate enum CodingKeys: String, CodingKey {
+    case comment
     case messageThreadId = "message_thread_id"
     case notificationParam = "notification_param"
     case checkoutParam = "checkout_param"
@@ -593,6 +614,11 @@ extension RouteParamsDecoded {
     case surveyParam = "survey_param"
     case userParam = "user_param"
     case surveyResponseId = "survey_response_id"
+  }
+
+  public func comment() -> String? {
+    let key = CodingKeys.comment.rawValue
+    return self[key].flatMap { String($0) }
   }
 
   public func enabledParam() -> Bool? {
