@@ -74,7 +74,7 @@ extension PushEnvelope.Activity {
       view: { $0.category },
       set: { .init(
         category: $0, commentId: $1.commentId, id: $1.id, projectId: $1.projectId,
-        projectPhoto: $1.projectPhoto, updateId: $1.updateId, userPhoto: $1.userPhoto
+        projectPhoto: $1.projectPhoto, replyId: $1.replyId, updateId: $1.updateId, userPhoto: $1.userPhoto
       ) }
     )
 
@@ -82,7 +82,7 @@ extension PushEnvelope.Activity {
       view: { $0.commentId },
       set: { .init(
         category: $1.category, commentId: $0, id: $1.id, projectId: $1.projectId,
-        projectPhoto: $1.projectPhoto, updateId: $1.updateId, userPhoto: $1.userPhoto
+        projectPhoto: $1.projectPhoto, replyId: $1.replyId, updateId: $1.updateId, userPhoto: $1.userPhoto
       ) }
     )
 
@@ -90,7 +90,7 @@ extension PushEnvelope.Activity {
       view: { $0.id },
       set: { .init(
         category: $1.category, commentId: $1.commentId, id: $0, projectId: $1.projectId,
-        projectPhoto: $1.projectPhoto, updateId: $1.updateId, userPhoto: $1.userPhoto
+        projectPhoto: $1.projectPhoto, replyId: $1.replyId, updateId: $1.updateId, userPhoto: $1.userPhoto
       ) }
     )
 
@@ -98,7 +98,7 @@ extension PushEnvelope.Activity {
       view: { $0.projectId },
       set: { .init(
         category: $1.category, commentId: $1.commentId, id: $1.id, projectId: $0,
-        projectPhoto: $1.projectPhoto, updateId: $1.updateId, userPhoto: $1.userPhoto
+        projectPhoto: $1.projectPhoto, replyId: $1.replyId, updateId: $1.updateId, userPhoto: $1.userPhoto
       ) }
     )
 
@@ -106,7 +106,15 @@ extension PushEnvelope.Activity {
       view: { $0.projectPhoto },
       set: { .init(
         category: $1.category, commentId: $1.commentId, id: $1.id, projectId: $1.projectId,
-        projectPhoto: $0, updateId: $1.updateId, userPhoto: $1.userPhoto
+        projectPhoto: $0, replyId: $1.replyId, updateId: $1.updateId, userPhoto: $1.userPhoto
+      ) }
+    )
+
+    public static let replyId = Lens<PushEnvelope.Activity, String?>(
+      view: { $0.replyId },
+      set: { .init(
+        category: $1.category, commentId: $1.commentId, id: $1.id, projectId: $1.projectId,
+        projectPhoto: $1.projectPhoto, replyId: $0, updateId: $1.updateId, userPhoto: $1.userPhoto
       ) }
     )
 
@@ -114,7 +122,7 @@ extension PushEnvelope.Activity {
       view: { $0.updateId },
       set: { .init(
         category: $1.category, commentId: $1.commentId, id: $1.id, projectId: $1.projectId,
-        projectPhoto: $1.projectPhoto, updateId: $0, userPhoto: $1.userPhoto
+        projectPhoto: $1.projectPhoto, replyId: $1.replyId, updateId: $0, userPhoto: $1.userPhoto
       ) }
     )
 
@@ -122,7 +130,7 @@ extension PushEnvelope.Activity {
       view: { $0.userPhoto },
       set: { .init(
         category: $1.category, commentId: $1.commentId, id: $1.id, projectId: $1.projectId,
-        projectPhoto: $1.projectPhoto, updateId: $1.updateId, userPhoto: $0
+        projectPhoto: $1.projectPhoto, replyId: $1.replyId, updateId: $1.updateId, userPhoto: $0
       ) }
     )
   }

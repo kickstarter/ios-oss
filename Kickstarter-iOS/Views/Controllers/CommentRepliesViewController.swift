@@ -27,13 +27,15 @@ final class CommentRepliesViewController: UITableViewController {
   internal static func configuredWith(
     comment: Comment,
     project: Project,
-    inputAreaBecomeFirstResponder: Bool
+    inputAreaBecomeFirstResponder: Bool,
+    replyId: String?
   ) -> CommentRepliesViewController {
     let vc = CommentRepliesViewController.instantiate()
     vc.viewModel.inputs.configureWith(
       comment: comment,
       project: project,
-      inputAreaBecomeFirstResponder: inputAreaBecomeFirstResponder
+      inputAreaBecomeFirstResponder: inputAreaBecomeFirstResponder,
+      replyId: replyId
     )
 
     return vc
@@ -114,6 +116,7 @@ final class CommentRepliesViewController: UITableViewController {
         guard let self = self else { return }
         self.dataSource.load(repliesAndTotalCount: repliesAndTotalCount, project: project)
         self.tableView.reloadData()
+        self.viewModel.inputs.loadRepliesAndProjectIntoDataSourceComplete()
       }
 
     self.viewModel.outputs.loadFailableReplyIntoDataSource
@@ -145,6 +148,14 @@ final class CommentRepliesViewController: UITableViewController {
         guard let self = self else { return }
         self.dataSource.showPaginationErrorState()
         self.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.scrollToReply
+      .observeForUI()
+      .observeValues { [weak self] replyId in
+        if let indexPath = self?.dataSource.index(for: replyId) {
+          self?.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+        }
       }
   }
 }

@@ -57,6 +57,30 @@ class CommentRepliesDataSourceTests: XCTestCase {
     )
   }
 
+  func testIndexForReplyId_ReplyIdExists() {
+    let commentsAndReplyCount = ([
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      Comment.replyTemplate |> \.id .~ "3"
+    ], 3)
+    self.dataSource.load(repliesAndTotalCount: commentsAndReplyCount, project: .template)
+
+    XCTAssertEqual(self.dataSource.index(for: "1"), IndexPath(row: 0, section: self.repliesSection))
+    XCTAssertEqual(self.dataSource.index(for: "2"), IndexPath(row: 1, section: self.repliesSection))
+    XCTAssertEqual(self.dataSource.index(for: "3"), IndexPath(row: 2, section: self.repliesSection))
+  }
+
+  func testIndexForReplyId_ReplyIdDoesNotExist() {
+    let commentsAndReplyCount = ([
+      Comment.replyTemplate |> \.id .~ "1",
+      Comment.replyTemplate |> \.id .~ "2",
+      Comment.replyTemplate |> \.id .~ "3"
+    ], 3)
+    self.dataSource.load(repliesAndTotalCount: commentsAndReplyCount, project: .template)
+
+    XCTAssertNil(self.dataSource.index(for: "99"))
+  }
+
   func testIsRepliesSectionEmpty_False() {
     self.dataSource.load(repliesAndTotalCount: self.templateRepliesAndTotalCount, project: .template)
 
