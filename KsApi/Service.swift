@@ -400,11 +400,6 @@ public struct Service: ServiceType {
     return request(.surveyResponse(surveyResponseId: id))
   }
 
-  public func fetchUserProjectsBacked(paginationUrl url: String)
-    -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestPaginationDecodable(url)
-  }
-
   public func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
     return request(.userSelf)
   }

@@ -221,9 +221,6 @@ public protocol ServiceType {
   /// Fetches a project update draft.
   func fetchUpdateDraft(forProject project: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope>
 
-  /// Fetches more user backed projects.
-  func fetchUserProjectsBacked(paginationUrl url: String) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope>
-
   /// Fetch the newest data for a particular user.
   func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope>
 

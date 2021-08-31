@@ -109,9 +109,6 @@
 
     fileprivate let fetchUpdateResponse: Update
 
-    fileprivate let fetchUserProjectsBackedResponse: [Project]?
-    fileprivate let fetchUserProjectsBackedError: ErrorEnvelope?
-
     fileprivate let fetchUserResult: Result<User, ErrorEnvelope>?
 
     fileprivate let fetchUserSelfResponse: User?
@@ -258,7 +255,6 @@
       fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
       fetchProjectStatsError: ErrorEnvelope? = nil,
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
-      fetchUserProjectsBackedResponse: [Project]? = nil,
       fetchUserProjectsBackedError: ErrorEnvelope? = nil,
       fetchUserResult: Result<User, ErrorEnvelope>? = nil,
       fetchUserSelfResponse: User? = nil,
@@ -431,9 +427,6 @@
       self.fetchUnansweredSurveyResponsesResponse = fetchUnansweredSurveyResponsesResponse
 
       self.fetchUpdateResponse = fetchUpdateResponse
-
-      self.fetchUserProjectsBackedResponse = fetchUserProjectsBackedResponse
-      self.fetchUserProjectsBackedError = fetchUserProjectsBackedError
 
       self.fetchUserResult = fetchUserResult
 
@@ -1056,25 +1049,6 @@
       return SignalProducer(value: .init(shippingRules: self.fetchShippingRulesResult?.value ?? [.template]))
     }
 
-    internal func fetchUserProjectsBacked(paginationUrl _: String)
-      -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-      if let error = fetchUserProjectsBackedError {
-        return SignalProducer(error: error)
-      } else if let projects = fetchUserProjectsBackedResponse {
-        return SignalProducer(
-          value: ProjectsEnvelope(
-            projects: projects,
-            urls: ProjectsEnvelope.UrlsEnvelope(
-              api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
-                moreProjects: ""
-              )
-            )
-          )
-        )
-      }
-      return .empty
-    }
-
     internal func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
       if let error = fetchUserSelfError {
         return SignalProducer(error: error)
@@ -1465,8 +1439,6 @@
             fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
             fetchProjectStatsError: $1.fetchProjectStatsError,
             fetchShippingRulesResult: $1.fetchShippingRulesResult,
-            fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
-            fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
             fetchUserResult: $1.fetchUserResult,
             fetchUserSelfResponse: $1.fetchUserSelfResponse,
             followFriendError: $1.followFriendError,
