@@ -26,7 +26,7 @@ public protocol CommentRepliesViewModelInputs {
   func paginateOrErrorCellWasTapped()
 
   /// Call after the data source is loaded and the tableView reloads.
-  func loadRepliesAndProjectIntoDataSourceComplete()
+  func dataSourceLoaded()
 
   /// Call when there is a failure in requesting the first page of the data and the `CommentViewMoreRepliesFailedCell` is tapped.
   func retryFirstPage()
@@ -223,7 +223,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     self.scrollToReply = self.replyIdProperty.signal
       .skipNil()
-      .takeWhen(self.loadRepliesAndProjectIntoDataSourceCompleteProperty.signal)
+      .takeWhen(self.dataSourceLoadedProperty.signal)
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
@@ -258,9 +258,9 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.retryFirstPageProperty.value = ()
   }
 
-  fileprivate let loadRepliesAndProjectIntoDataSourceCompleteProperty = MutableProperty(())
-  public func loadRepliesAndProjectIntoDataSourceComplete() {
-    self.loadRepliesAndProjectIntoDataSourceCompleteProperty.value = ()
+  fileprivate let dataSourceLoadedProperty = MutableProperty(())
+  public func dataSourceLoaded() {
+    self.dataSourceLoadedProperty.value = ()
   }
 
   fileprivate let viewDidAppearProperty = MutableProperty(())

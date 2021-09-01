@@ -400,7 +400,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
-      self.vm.inputs.loadRepliesAndProjectIntoDataSourceComplete()
+      self.vm.inputs.dataSourceLoaded()
 
       self.scheduler.advance()
 
@@ -430,7 +430,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
-      self.vm.inputs.loadRepliesAndProjectIntoDataSourceComplete()
+      self.vm.inputs.dataSourceLoaded()
 
       self.scheduler.advance()
 

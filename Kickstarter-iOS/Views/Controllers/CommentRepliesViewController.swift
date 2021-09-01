@@ -116,7 +116,7 @@ final class CommentRepliesViewController: UITableViewController {
         guard let self = self else { return }
         self.dataSource.load(repliesAndTotalCount: repliesAndTotalCount, project: project)
         self.tableView.reloadData()
-        self.viewModel.inputs.loadRepliesAndProjectIntoDataSourceComplete()
+        self.viewModel.inputs.dataSourceLoaded()
       }
 
     self.viewModel.outputs.loadFailableReplyIntoDataSource
