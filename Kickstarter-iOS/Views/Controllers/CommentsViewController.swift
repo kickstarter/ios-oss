@@ -141,7 +141,8 @@ internal final class CommentsViewController: UITableViewController {
         let vc = CommentRepliesViewController.configuredWith(
           comment: comment,
           project: project,
-          inputAreaBecomeFirstResponder: becomeFirstResponder
+          inputAreaBecomeFirstResponder: becomeFirstResponder,
+          replyId: nil
         )
         self?.navigationController?.pushViewController(vc, animated: true)
       }

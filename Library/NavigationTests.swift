@@ -70,8 +70,13 @@ public final class NavigationTests: XCTestCase {
     )
 
     KSRAssertMatch(
-      .project(.slug("project"), .commentThread("dead-b33f"), refTag: nil),
-      "/projects/creator/project/comments?comment=dead-b33f"
+      .project(.slug("project"), .commentThread("dead", nil), refTag: nil),
+      "/projects/creator/project/comments?comment=dead"
+    )
+
+    KSRAssertMatch(
+      .project(.slug("project"), .commentThread("dead", "beef"), refTag: nil),
+      "/projects/creator/project/comments?comment=dead&reply=beef"
     )
 
     KSRAssertMatch(
@@ -145,8 +150,13 @@ public final class NavigationTests: XCTestCase {
     )
 
     KSRAssertMatch(
-      .project(.slug("project"), .update(2, .commentThread("dead-b33f")), refTag: nil),
-      "/projects/creator/project/posts/2/comments?comment=dead-b33f"
+      .project(.slug("project"), .update(2, .commentThread("dead", nil)), refTag: nil),
+      "/projects/creator/project/posts/2/comments?comment=dead"
+    )
+
+    KSRAssertMatch(
+      .project(.slug("project"), .update(2, .commentThread("dead", "beef")), refTag: nil),
+      "/projects/creator/project/posts/2/comments?comment=dead&reply=beef"
     )
 
     KSRAssertMatch(

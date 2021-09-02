@@ -22,7 +22,12 @@ final class CommentRepliesViewControllerTests: TestCase {
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+          .configuredWith(
+            comment: .template,
+            project: .template,
+            inputAreaBecomeFirstResponder: true,
+            replyId: nil
+          )
 
         let (parent, _) = traitControllers(
           device: device,
@@ -47,7 +52,12 @@ final class CommentRepliesViewControllerTests: TestCase {
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+          .configuredWith(
+            comment: .template,
+            project: .template,
+            inputAreaBecomeFirstResponder: true,
+            replyId: nil
+          )
 
         let (parent, _) = traitControllers(
           device: device,
@@ -71,7 +81,12 @@ final class CommentRepliesViewControllerTests: TestCase {
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+          .configuredWith(
+            comment: .template,
+            project: .template,
+            inputAreaBecomeFirstResponder: true,
+            replyId: nil
+          )
 
         let (parent, _) = traitControllers(
           device: device,
@@ -96,7 +111,12 @@ final class CommentRepliesViewControllerTests: TestCase {
       language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+          .configuredWith(
+            comment: .template,
+            project: .template,
+            inputAreaBecomeFirstResponder: true,
+            replyId: nil
+          )
 
         let (parent, _) = traitControllers(
           device: device,
@@ -120,7 +140,12 @@ final class CommentRepliesViewControllerTests: TestCase {
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+          .configuredWith(
+            comment: .template,
+            project: .template,
+            inputAreaBecomeFirstResponder: true,
+            replyId: nil
+          )
 
         let (parent, _) = traitControllers(
           device: device,
@@ -149,7 +174,12 @@ final class CommentRepliesViewControllerTests: TestCase {
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentRepliesViewController
-          .configuredWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+          .configuredWith(
+            comment: .template,
+            project: .template,
+            inputAreaBecomeFirstResponder: true,
+            replyId: nil
+          )
 
         let (parent, _) = traitControllers(
           device: device,

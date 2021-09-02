@@ -11,8 +11,10 @@ public protocol CommentRepliesViewModelInputs {
      - parameter comment: The `Comment` we are viewing the replies.
      - parameter project: The `Project` the comment replies are for.
      - parameter inputAreaBecomeFirstResponder: A Bool that determines if the composer should become first responder.
+     - parameter replyId: A `String?` that determines which cell to scroll to, if visible on the first page.
    **/
-  func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool)
+  func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool,
+                     replyId: String?)
 
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
@@ -22,6 +24,9 @@ public protocol CommentRepliesViewModelInputs {
 
   /// Call in `didSelectRow` when either a `ViewMoreRepliesCell` or `CommentViewMoreRepliesFailedCell` is tapped.
   func paginateOrErrorCellWasTapped()
+
+  /// Call after the data source is loaded and the tableView reloads.
+  func dataSourceLoaded()
 
   /// Call when there is a failure in requesting the first page of the data and the `CommentViewMoreRepliesFailedCell` is tapped.
   func retryFirstPage()
@@ -48,6 +53,9 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits when a comment has been posted reset the composer.
   var resetCommentComposer: Signal<(), Never> { get }
+
+  /// Emits when a replyId is supplied to the view controller configuration and we want to scroll to a specific index.
+  var scrollToReply: Signal<String, Never> { get }
 
   /// Emits when a pagination error has occurred.
   var showPaginationErrorState: Signal<(), Never> { get }
@@ -212,6 +220,10 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .map(unpack)
 
     self.showPaginationErrorState = error.ignoreValues()
+
+    self.scrollToReply = self.replyIdProperty.signal
+      .skipNil()
+      .takeWhen(self.dataSourceLoadedProperty.signal)
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
@@ -225,8 +237,15 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   }
 
   fileprivate let commentProjectProperty = MutableProperty<(Comment, Project, Bool)?>(nil)
-  public func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool) {
+  fileprivate let replyIdProperty = MutableProperty<String?>(nil)
+  public func configureWith(
+    comment: Comment,
+    project: Project,
+    inputAreaBecomeFirstResponder: Bool,
+    replyId: String?
+  ) {
     self.commentProjectProperty.value = (comment, project, inputAreaBecomeFirstResponder)
+    self.replyIdProperty.value = replyId
   }
 
   fileprivate let paginateOrErrorCellWasTappedProperty = MutableProperty(())
@@ -237,6 +256,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   fileprivate let retryFirstPageProperty = MutableProperty(())
   public func retryFirstPage() {
     self.retryFirstPageProperty.value = ()
+  }
+
+  fileprivate let dataSourceLoadedProperty = MutableProperty(())
+  public func dataSourceLoaded() {
+    self.dataSourceLoadedProperty.value = ()
   }
 
   fileprivate let viewDidAppearProperty = MutableProperty(())
@@ -254,6 +278,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   public var loadRepliesAndProjectIntoDataSource: Signal<(([Comment], Int), Project), Never>
   public let loadFailableReplyIntoDataSource: Signal<(Comment, String, Project), Never>
   public let resetCommentComposer: Signal<(), Never>
+  public let scrollToReply: Signal<String, Never>
   public let showPaginationErrorState: Signal<(), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }

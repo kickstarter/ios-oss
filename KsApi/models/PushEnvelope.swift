@@ -16,6 +16,7 @@ public struct PushEnvelope {
     public let id: Int
     public let projectId: Int?
     public let projectPhoto: String?
+    public let replyId: String?
     public let updateId: Int?
     public let userPhoto: String?
   }
@@ -86,6 +87,7 @@ extension PushEnvelope.Activity: Decodable {
     case id
     case projectId = "project_id"
     case projectPhoto = "project_photo"
+    case replyId = "reply"
     case updateId = "update_id"
     case userPhoto = "user_photo"
   }

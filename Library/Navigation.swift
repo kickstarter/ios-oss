@@ -43,7 +43,7 @@ public enum Navigation: Equatable {
     case checkout(Int, Navigation.Project.Checkout)
     case root
     case comments
-    case commentThread(String?)
+    case commentThread(String?, String?)
     case creatorBio
     case faqs
     case friends
@@ -70,7 +70,7 @@ public enum Navigation: Equatable {
     public enum Update: Equatable {
       case root
       case comments
-      case commentThread(String?)
+      case commentThread(String?, String?)
     }
   }
 
@@ -90,8 +90,8 @@ public func == (lhs: Navigation.Project.Update, rhs: Navigation.Project.Update) 
     return true
   case (.comments, .comments):
     return true
-  case let (.commentThread(commentId), .commentThread(otherCommentId)):
-    return commentId == otherCommentId
+  case let (.commentThread(commentId, replyId), .commentThread(otherCommentId, otherReplyId)):
+    return commentId == otherCommentId && replyId == otherReplyId
   default:
     return false
   }
@@ -320,7 +320,7 @@ private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
       return .project(projectParam, .comments, refTag: refTag)
     }
 
-    return .project(projectParam, .commentThread(commentId), refTag: refTag)
+    return .project(projectParam, .commentThread(commentId, params.reply()), refTag: refTag)
   }
 
   return nil
@@ -475,7 +475,7 @@ private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
 
     return .project(
       projectParam,
-      .update(updateParam, .commentThread(commentId)),
+      .update(updateParam, .commentThread(commentId, params.reply())),
       refTag: refTag
     )
   }
@@ -610,6 +610,7 @@ extension RouteParamsDecoded {
     case ref
     case token
     case racing
+    case reply
     case updateParam = "update_param"
     case surveyParam = "survey_param"
     case userParam = "user_param"
@@ -629,6 +630,11 @@ extension RouteParamsDecoded {
   public func refTag() -> RefTag? {
     let key = CodingKeys.ref.rawValue
     return self[key].flatMap { RefTag.init(code: $0) }
+  }
+
+  public func reply() -> String? {
+    let key = CodingKeys.reply.rawValue
+    return self[key].flatMap { String($0) }
   }
 
   public func token() -> String? {
