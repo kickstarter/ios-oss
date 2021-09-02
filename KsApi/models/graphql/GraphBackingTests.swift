@@ -22,7 +22,18 @@ final class GraphBackingTests: XCTestCase {
               "id": "QmFja2luZy0xMTMzMTC5ODE=",
               "uid": "565656",
               "name": "Backer McGee",
-              "imageUrl": "http://www.kickstarter.com/avatar.jpg"
+              "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+              "storedCards": [
+                "storedCards": [
+                  [
+                    "expirationDate": "2023-01-01",
+                    "id": "6",
+                    "lastFour": "4242",
+                    "type": "VISA"
+                  ]
+                ],
+                "totalCount": 1
+              ]
             ],
             "backerCompleted": false,
             "cancelable": true,
@@ -63,6 +74,17 @@ final class GraphBackingTests: XCTestCase {
                 "imageUrl": "http://www.kickstarter.com/avatar.jpg",
                 "id": "VXNlci0xMjA3OTk3NjQ5",
                 "name": "Creator McBaggins",
+                "storedCards": [
+                  "storedCards": [
+                    [
+                      "expirationDate": "2023-01-01",
+                      "id": "6",
+                      "lastFour": "4242",
+                      "type": "VISA"
+                    ]
+                  ],
+                  "totalCount": 1
+                ],
                 "uid": "32434234"
               ],
               "currency": "USD",

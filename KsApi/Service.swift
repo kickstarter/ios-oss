@@ -23,6 +23,7 @@ public struct Service: ServiceType {
   public let buildVersion: String
   public let deviceIdentifier: String
   public let perimeterXClient: PerimeterXClientType
+  public let apolloClient: ApolloClientType?
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -32,6 +33,7 @@ public struct Service: ServiceType {
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
+    apolloClient: ApolloClientType? = nil,
     perimeterXClient: PerimeterXClientType = PerimeterXClient()
   ) {
     self.appId = appId
@@ -42,6 +44,8 @@ public struct Service: ServiceType {
     self.buildVersion = buildVersion
     self.deviceIdentifier = deviceIdentifier
     self.perimeterXClient = perimeterXClient
+    /// Dummy client, only required to satisfy `ApolloClientType` protocol, not used.
+    self.apolloClient = apolloClient
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
@@ -87,23 +91,41 @@ public struct Service: ServiceType {
   }
 
   public func addNewCreditCard(input: CreatePaymentSourceInput)
-    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
-    return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
+    -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
+      .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
   public func cancelBacking(input: CancelBackingInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: CancelBackingMutation(input: input))
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CancelBackingMutation(input: GraphAPI.CancelBackingInput(id: input.backingId)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func createBacking(input: CreateBackingInput) ->
@@ -113,24 +135,40 @@ public struct Service: ServiceType {
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
-  public func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+  public func createPassword(input: CreatePasswordInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
-  public func clearUserUnseenActivity(input: EmptyInput)
-    -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
-    return applyMutation(mutation: ClearUserUnseenActivityMutation(input: input))
+  public func clearUserUnseenActivity(input _: EmptyInput)
+    -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .ClearUserUnseenActivityMutation(input: GraphAPI.ClearUserUnseenActivityInput()))
+      .flatMap(ClearUserUnseenActivityEnvelope.producer(from:))
   }
 
   public func deletePaymentMethod(input: PaymentSourceDeleteInput)
-    -> SignalProducer<DeletePaymentMethodEnvelope, GraphError> {
-    return applyMutation(mutation: PaymentSourceDeleteMutation(input: input))
+    -> SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input)))
+      .flatMap(DeletePaymentMethodEnvelope.producer(from:))
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UpdateUserProfileMutation(input: input))
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserProfileMutation(input: GraphAPI.UpdateUserProfileInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
@@ -170,6 +208,7 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
+  // FIXME: Should be able to convert this to Apollo.
   public func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return request(.backing(projectId: project.id, backerId: user.id))
@@ -178,23 +217,36 @@ public struct Service: ServiceType {
   public func fetchProjectComments(
     slug: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchProjectCommentsQuery(slug: slug, cursor: cursor, limit: limit))
+      .fetch(query: GraphAPI.FetchProjectCommentsQuery(
+        slug: slug,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
   public func fetchUpdateComments(
     id: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(postId: id, cursor: cursor, limit: limit))
+      .fetch(query: GraphAPI.FetchUpdateCommentsQuery(
+        postId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      ))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
+  // FIXME: Should be able to convert this to Apollo.
   public func fetchCommentReplies(query: NonEmptySet<Query>)
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
     return fetch(query: query)
@@ -239,39 +291,27 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
-  public func fetchGraphCreditCards(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphUser(withStoredCards: Bool)
+    -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserQuery(withStoredCards: withStoredCards))
+      .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
 
-  public func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUser>, GraphError> {
-    return fetch(query: query)
+  public func fetchErroredUserBackings(status: BackingState)
+    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
+    guard let status = GraphAPI.BackingState.from(status) else
+    { return SignalProducer(error: .couldNotParseJSON) }
+
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserBackingsQuery(status: status, withStoredCards: false))
+      .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
-  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(BackingsEnvelope.envelopeProducer(from:))
-  }
-
-  public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
-    return fetch(query: query)
-  }
-
-  public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
-  }
-
-  public func fetchManagePledgeViewBacking(id: Int)
+  public func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)"))
+      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)", withStoredCards: withStoredCards))
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
@@ -334,13 +374,6 @@ public struct Service: ServiceType {
     return request(.projectStats(projectId: projectId))
   }
 
-  public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<Project, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(Project.projectProducer(from:))
-  }
-
   public func fetchRewardAddOnsSelectionViewRewards(
     slug: String,
     shippingEnabled: Bool,
@@ -349,7 +382,8 @@ public struct Service: ServiceType {
     let query = GraphAPI.FetchAddOnsQuery(
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
-      locationId: locationId
+      locationId: locationId,
+      withStoredCards: false
     )
 
     return GraphQL.shared.client
@@ -481,14 +515,21 @@ public struct Service: ServiceType {
     return request(.sendMessage(body: body, messageSubject: subject))
   }
 
-  public func sendVerificationEmail(input: EmptyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
+  public func sendVerificationEmail(input _: EmptyInput) ->
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput()))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
   }
 
   public func signInWithApple(input: SignInWithAppleInput)
-    -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
-    return applyMutation(mutation: SignInWithAppleMutation(input: input))
+    -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.SignInWithAppleMutation(input: GraphAPI.SignInWithAppleInput.from(input)))
+      .flatMap(SignInWithAppleEnvelope.producer(from:))
   }
 
   public func signup(
@@ -538,8 +579,10 @@ public struct Service: ServiceType {
   }
 
   public func unwatchProject(input: WatchProjectInput) ->
-    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
-    return applyMutation(mutation: UnwatchProjectMutation(input: input))
+    SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.UnwatchProjectMutation(input: GraphAPI.UnwatchProjectInput.from(input)))
+      .flatMap(WatchProjectResponseEnvelope.producer(from:))
   }
 
   public func verifyEmail(withToken token: String)
@@ -548,7 +591,9 @@ public struct Service: ServiceType {
   }
 
   public func watchProject(input: WatchProjectInput) ->
-    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
-    return applyMutation(mutation: WatchProjectMutation(input: input))
+    SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.WatchProjectMutation(input: GraphAPI.WatchProjectInput.from(input)))
+      .flatMap(WatchProjectResponseEnvelope.producer(from:))
   }
 }

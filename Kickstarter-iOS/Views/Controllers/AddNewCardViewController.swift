@@ -8,7 +8,7 @@ import UIKit
 internal protocol AddNewCardViewControllerDelegate: AnyObject {
   func addNewCardViewController(
     _ viewController: AddNewCardViewController,
-    didAdd newCard: GraphUserCreditCard.CreditCard,
+    didAdd newCard: UserCreditCards.CreditCard,
     withMessage message: String
   )
   func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController)

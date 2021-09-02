@@ -6,7 +6,7 @@ import UIKit
 
 public protocol CreditCardCellViewModelInputs {
   /// Call to configure cell with card value.
-  func configureWith(creditCard: GraphUserCreditCard.CreditCard)
+  func configureWith(creditCard: UserCreditCards.CreditCard)
 }
 
 public protocol CreditCardCellViewModelOutputs {
@@ -48,8 +48,8 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
   }
 
-  fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
-  public func configureWith(creditCard: GraphUserCreditCard.CreditCard) {
+  fileprivate let cardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
+  public func configureWith(creditCard: UserCreditCards.CreditCard) {
     self.cardProperty.value = creditCard
   }
 
@@ -62,6 +62,6 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
   public var outputs: CreditCardCellViewModelOutputs { return self }
 }
 
-private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
+private func cardImageForCard(_ card: UserCreditCards.CreditCard) -> UIImage? {
   return image(named: card.imageName)
 }

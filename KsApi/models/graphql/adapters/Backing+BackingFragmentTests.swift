@@ -5,7 +5,8 @@ import XCTest
 final class Backing_BackingFragmentTests: XCTestCase {
   func test() {
     do {
-      let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary())
+      let variables = ["withStoredCards": true]
+      let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let backing = Backing.backing(from: fragment)
@@ -35,11 +36,12 @@ final class Backing_BackingFragmentTests: XCTestCase {
 
   func test_noReward() {
     do {
+      let variables = ["withStoredCards": true]
       var dict = backingDictionary()
       dict["addOns"] = NSNull()
       dict["reward"] = NSNull()
 
-      let fragment = try GraphAPI.BackingFragment(jsonObject: dict)
+      let fragment = try GraphAPI.BackingFragment(jsonObject: dict, variables: variables)
       XCTAssertNotNil(fragment)
 
       let backing = Backing.backing(from: fragment)
@@ -354,10 +356,29 @@ private func backingDictionary() -> [String: Any] {
     },
     "backer": {
       "__typename": "User",
+      "chosenCurrency": "USD",
+      "email": "foo@bar.com",
+      "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
       "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1476734758&auto=format&frame=1&q=92&s=81a3c902ee2131666a590702b71ba5c2",
+      "isAppleConnected": false,
       "isCreator": false,
+      "isDeliverable": true,
+      "isEmailVerified": true,
       "name": "Justin Swart",
+      "storedCards": {
+        "__typename": "UserCreditCardTypeConnection",
+        "nodes": [
+          {
+          "__typename": "CreditCard",
+            "expirationDate": "2023-01-01",
+            "id": "6",
+            "lastFour": "4242",
+            "type": "VISA"
+          }
+        ],
+        "totalCount": 1
+      },
       "uid": "1108924640"
     },
     "backerCompleted": false,
@@ -394,6 +415,13 @@ private func backingDictionary() -> [String: Any] {
         "displayConvertAmount": false
       },
       "backersCount": 135,
+      "backing": {
+        "__typename": "Backing",
+        "backer": {
+          "__typename": "User",
+          "uid": "618005886"
+        }
+      },
       "category": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktNDc=",
@@ -404,6 +432,14 @@ private func backingDictionary() -> [String: Any] {
           "name": "Publishing"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "US",
@@ -411,16 +447,39 @@ private func backingDictionary() -> [String: Any] {
       },
       "creator": {
         "__typename": "User",
+        "chosenCurrency": "USD",
+        "email": "foo@bar.com",
+        "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
         "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1617736562&auto=format&frame=1&q=92&s=085218a7258d22c455492bed76f5433a",
+        "isAppleConnected": false,
         "isCreator": null,
+        "isDeliverable": true,
+        "isEmailVerified": true,
         "name": "Hugh Alan Samples",
+        "storedCards": {
+          "__typename": "UserCreditCardTypeConnection",
+          "nodes": [
+            {
+            "__typename": "CreditCard",
+              "expirationDate": "2023-01-01",
+              "id": "6",
+              "lastFour": "4242",
+              "type": "VISA"
+            }
+          ],
+          "totalCount": 1
+        },
         "uid": "631811387"
       },
       "currency": "USD",
       "deadlineAt": 1620478771,
       "description": "Dark Fantasy Novel & Tarot Cards",
       "finalCollectionDate": null,
+      "friends": {
+        "__typename": "ProjectBackerFriendsConnection",
+        "nodes": []
+      },
       "fxRate": 1.23244501,
       "goal": {
         "__typename": "Money",
@@ -434,6 +493,7 @@ private func backingDictionary() -> [String: Any] {
         "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
       },
       "isProjectWeLove": true,
+      "isWatched": false,
       "launchedAt": 1617886771,
       "location": {
         "__typename": "Location",
@@ -498,7 +558,12 @@ private func backingDictionary() -> [String: Any] {
       "name": "Soft Cover Book (Signed)",
       "project": {
         "__typename": "Project",
-        "id": "UHJvamVjdC0xNTk2NTk0NDYz"
+        "id": "UHJvamVjdC0xNTk2NTk0NDYz",
+        "friends": {
+          "__typename": "ProjectBackerFriendsConnection",
+          "nodes": []
+        },
+        "isWatched": false
       },
       "remainingQuantity": null,
       "shippingPreference": "unrestricted",

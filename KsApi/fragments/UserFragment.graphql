@@ -1,7 +1,16 @@
 fragment UserFragment on User {
+  chosenCurrency
+  email
+  hasPassword
   id
   imageUrl: imageUrl(blur: false, width: 1024)
+  isAppleConnected
   isCreator
+  isDeliverable
+  isEmailVerified
   name
   uid
+  storedCards @include(if: $withStoredCards) {
+    ...UserStoredCardsFragment
+  }
 }

@@ -139,7 +139,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
   func addNewCardViewController(
     _: AddNewCardViewController,
-    didAdd newCard: GraphUserCreditCard.CreditCard,
+    didAdd newCard: UserCreditCards.CreditCard,
     withMessage _: String
   ) {
     self.dismiss(animated: true) {

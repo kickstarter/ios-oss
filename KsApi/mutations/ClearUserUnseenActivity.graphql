@@ -1,0 +1,6 @@
+mutation clearUserUnseenActivity($input: ClearUserUnseenActivityInput!) {
+  clearUserUnseenActivity(input: $input) {
+    clientMutationId
+    activityIndicatorCount
+  }
+}

@@ -2,8 +2,7 @@ import Apollo
 import Foundation
 import ReactiveSwift
 
-// TODO: would be good to get some dependency injection and test coverage for these functions.
-extension ApolloClient {
+extension ApolloClient: ApolloClientType {
   /**
    Performs a GraphQL fetch request with a given query.
 
@@ -14,6 +13,7 @@ extension ApolloClient {
   public func fetch<Query: GraphQLQuery>(query: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
     SignalProducer { observer, _ in
       self.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
+
         switch result {
         case let .success(response):
           if let error = response.errors?.first?.errorDescription {
@@ -22,10 +22,12 @@ extension ApolloClient {
           guard let data = response.data else {
             return observer.send(error: .couldNotParseJSON)
           }
+
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):
-          observer.send(error: .couldNotDecodeJSON(error))
+          print("🔴 [KsApi] ApolloClient query failure - error : \((error as NSError).description)")
+          observer.send(error: .couldNotParseJSON)
         }
       }
     }
@@ -54,7 +56,8 @@ extension ApolloClient {
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):
-          observer.send(error: .couldNotDecodeJSON(error))
+          print("🔴 [KsApi] ApolloClient mutation failure - error : \((error as NSError).description)")
+          observer.send(error: .couldNotParseJSON)
         }
       }
     }

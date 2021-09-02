@@ -20,6 +20,7 @@ public protocol ServiceType {
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
   var perimeterXClient: PerimeterXClientType { get }
+  var apolloClient: ApolloClientType? { get }
 
   init(
     appId: String,
@@ -29,6 +30,7 @@ public protocol ServiceType {
     currency: String,
     buildVersion: String,
     deviceIdentifier: String,
+    apolloClient: ApolloClientType?,
     perimeterXClient: PerimeterXClientType
   )
 
@@ -47,33 +49,38 @@ public protocol ServiceType {
 
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Changes the email on a user account
   func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Changes the password on a user account
   func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Changes the currency code on a user profile
   func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
-    -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
+    -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope>
 
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
+  /// Creates the password on a user account
   func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Adds a new credit card to users' payment methods
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
-    SignalProducer<CreatePaymentSourceEnvelope, GraphError>
+    SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope>
 
   /// Deletes a payment method
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
-    SignalProducer<DeletePaymentMethodEnvelope, GraphError>
+    SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope>
 
   /// Removes an image from a project update draft.
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
@@ -97,14 +104,16 @@ public protocol ServiceType {
   func fetchProjectComments(
     slug: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comments for an update with an id, cursor and limit.
+  /// Fetch comments for an update with an id, cursor, limit and comments' users' stored cards.
   func fetchUpdateComments(
     id: String,
     cursor: String?,
-    limit: Int?
+    limit: Int?,
+    withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comment replies for a comment with a query.
@@ -135,28 +144,16 @@ public protocol ServiceType {
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
 
-  /// Fetch User's stored cards.
-  func fetchGraphCreditCards(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError>
+  /// Fetches various fields of a given User using graphQL.
+  func fetchGraphUser(withStoredCards: Bool)
+    -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
 
-  /// Fetch a User's account fields
-  func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUser>, GraphError>
+  /// Fetch errored User's backings with a specific status.
+  func fetchErroredUserBackings(status: BackingState)
+    -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
 
-  /// Fetch User's backings with a specific status.
-  func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<BackingsEnvelope, ErrorEnvelope>
-
-  /// Fetch User's email fields object using graphQL.
-  func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
-
-  /// Fetch `Backing` data for ManagePledgeViewController with a query.
-  func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
-
-  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID.
-  func fetchManagePledgeViewBacking(id: Int)
+  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID and the backers' stored cards.
+  func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.
@@ -202,10 +199,6 @@ public protocol ServiceType {
 
   /// Fetches the stats for a particular project.
   func fetchProjectStats(projectId: Int) -> SignalProducer<ProjectStatsEnvelope, ErrorEnvelope>
-
-  /// Fetch the add-on rewards for the add-on selection view with a given query.
-  func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetch the add-on rewards for the add-on selection view with a `Project` slug and optional `Location` ID.
   func fetchRewardAddOnsSelectionViewRewards(slug: String, shippingEnabled: Bool, locationId: String?)
@@ -293,11 +286,11 @@ public protocol ServiceType {
 
   /// Sends a verification email (after updating the email from account settings).
   func sendVerificationEmail(input: EmptyInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)
-    -> SignalProducer<SignInWithAppleEnvelope, GraphError>
+    -> SignalProducer<SignInWithAppleEnvelope, ErrorEnvelope>
 
   /// Signup with email.
   func signup(
@@ -326,15 +319,17 @@ public protocol ServiceType {
   func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
 
+  /// Unwatches a project.
   func unwatchProject(input: WatchProjectInput) ->
-    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
+    SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope>
 
   /// Verifies an email address with a given access token.
   func verifyEmail(withToken token: String)
     -> SignalProducer<EmailVerificationResponseEnvelope, ErrorEnvelope>
 
+  /// Watches (also known as favoriting) a project.
   func watchProject(input: WatchProjectInput) ->
-    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
+    SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope>
 }
 
 extension ServiceType {

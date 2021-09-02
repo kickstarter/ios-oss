@@ -20,7 +20,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       pledgeTotal: 105,
       selectedQuantities: [reward.id: 1],
       shippingRule: ShippingRule.template,
-      paymentSourceId: GraphUserCreditCard.amex.id,
+      paymentSourceId: UserCreditCards.amex.id,
       applePayParams: applePayParams
     )
 
@@ -50,7 +50,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       pledgeTotal: 105,
       selectedQuantities: [reward.id: 1],
       shippingRule: ShippingRule.template,
-      paymentSourceId: GraphUserCreditCard.amex.id,
+      paymentSourceId: UserCreditCards.amex.id,
       applePayParams: applePayParams
     )
 

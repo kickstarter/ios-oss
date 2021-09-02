@@ -1,0 +1,5 @@
+query FetchUser($withStoredCards: Boolean!) {
+  me {
+    ...UserFragment
+  }
+}

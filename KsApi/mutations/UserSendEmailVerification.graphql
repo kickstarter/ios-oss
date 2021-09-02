@@ -1,0 +1,5 @@
+mutation userSendEmailVerification($input: UserSendEmailVerificationInput!) {
+  userSendEmailVerification(input: $input) {
+    clientMutationId
+  }
+}

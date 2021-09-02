@@ -1,0 +1,9 @@
+mutation DeletePaymentSource($input: PaymentSourceDeleteInput!) {
+  paymentSourceDelete(input: $input) {
+    user {
+      storedCards {
+        ...UserStoredCardsFragment
+      }
+    }
+  }
+}

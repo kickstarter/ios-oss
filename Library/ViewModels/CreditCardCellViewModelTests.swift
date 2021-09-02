@@ -23,42 +23,42 @@ internal final class CreditCardCellViewModelTests: TestCase {
   }
 
   func testCardInfoForSupportedCards() {
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.amex)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.amex)
 
     self.cardImage.assertLastValue(UIImage(named: "icon--amex"))
     self.cardNumberAccessibilityLabel.assertLastValue("Amex, Card ending in 8882")
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 8882")
     self.expirationDateText.assertLastValue("Expires 01/2024")
 
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.discover)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.discover)
 
     self.cardImage.assertLastValue(UIImage(named: "icon--discover"))
     self.cardNumberAccessibilityLabel.assertLastValue("Discover, Card ending in 4242")
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 4242")
     self.expirationDateText.assertLastValue("Expires 03/2022")
 
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.jcb)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.jcb)
 
     self.cardImage.assertLastValue(UIImage(named: "icon--jcb"))
     self.cardNumberAccessibilityLabel.assertLastValue("Jcb, Card ending in 2222")
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 2222")
     self.expirationDateText.assertLastValue("Expires 01/2022")
 
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.masterCard)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.masterCard)
 
     self.cardImage.assertLastValue(UIImage(named: "icon--mastercard"))
     self.cardNumberAccessibilityLabel.assertLastValue("Mastercard, Card ending in 0000")
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 0000")
     self.expirationDateText.assertLastValue("Expires 10/2018")
 
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.visa)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.visa)
 
     self.cardImage.assertLastValue(UIImage(named: "icon--visa"))
     self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1111")
     self.expirationDateText.assertLastValue("Expires 09/2019")
 
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.diners)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.diners)
 
     self.cardImage.assertLastValue(UIImage(named: "icon--diners"))
     self.cardNumberAccessibilityLabel.assertLastValue("Diners, Card ending in 1212")
@@ -67,7 +67,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
   }
 
   func testSelectedCard() {
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.generic)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.generic)
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1882")
@@ -75,7 +75,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
   }
 
   func testCardInfoForUnsupportedCards() {
-    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.generic)
+    self.vm.inputs.configureWith(creditCard: UserCreditCards.generic)
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1882")
@@ -83,7 +83,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
   }
 
   func testCardInfoForUnknownCardType() {
-    let unknownCard = GraphUserCreditCard.generic |> \.type .~ nil
+    let unknownCard = UserCreditCards.generic |> \.type .~ nil
 
     self.vm.inputs.configureWith(creditCard: unknownCard)
 

@@ -1,4 +1,5 @@
 @testable import KsApi
+import Prelude
 import XCTest
 
 final class Project_ProjectFragmentTests: XCTestCase {
@@ -13,18 +14,43 @@ final class Project_ProjectFragmentTests: XCTestCase {
         .compactMap { try? GraphAPI.RewardFragment(jsonObject: $0) }
         .compactMap { Reward.reward(from: $0) } ?? []
 
-      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary())
+      let backing = Backing.template |>
+        Backing.lens.backerId .~ 618_005_886
+
+      let variables = ["withStoredCards": true]
+      let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let project = Project.project(
         from: fragment,
         rewards: rewards,
-        addOns: addOns
+        addOns: addOns,
+        backing: backing
       )
 
-      XCTAssertNotNil(project)
-      XCTAssertEqual(project?.addOns?.count, 2)
-      XCTAssertEqual(project?.rewards.count, 2)
+      guard let project = project else {
+        XCTFail("project should not be nil")
+
+        return
+      }
+
+      XCTAssertEqual(project.addOns?.count, 2)
+      XCTAssertEqual(project.rewards.count, 2)
+      XCTAssertEqual(project.memberData.permissions.count, 6)
+
+      guard let _ = project.personalization.backing,
+        let isUserBackingProject = project.personalization.isBacking,
+        let isProjectWatched = project.personalization.isStarred,
+        let friends = project.personalization.friends
+      else {
+        XCTFail("project should contain all properties of personalization")
+
+        return
+      }
+
+      XCTAssertTrue(isUserBackingProject)
+      XCTAssertTrue(isProjectWatched)
+      XCTAssertEqual(friends.count, 2)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -51,6 +77,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "name": "Publishing"
         }
       },
+      "collaboratorPermissions": [
+        "edit_project",
+        "edit_faq",
+        "post",
+        "comment",
+        "view_pledges",
+        "fulfillment"
+      ],
       "country": {
         "__typename": "Country",
         "code": "US",
@@ -58,10 +92,29 @@ final class Project_ProjectFragmentTests: XCTestCase {
       },
       "creator": {
         "__typename": "User",
+        "chosenCurrency": "USD",
+        "email": "foo@bar.com",
+        "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
         "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1617736562&auto=format&frame=1&q=92&s=085218a7258d22c455492bed76f5433a",
+        "isAppleConnected": false,
         "isCreator": null,
+        "isDeliverable": true,
+        "isEmailVerified": true,
         "name": "Hugh Alan Samples",
+        "storedCards": {
+          "__typename": "UserCreditCardTypeConnection",
+          "nodes": [
+            {
+            "__typename": "CreditCard",
+              "expirationDate": "2023-01-01",
+              "id": "6",
+              "lastFour": "4242",
+              "type": "VISA"
+            }
+          ],
+          "totalCount": 1
+        },
         "uid": "631811387"
       },
       "currency": "USD",
@@ -69,6 +122,49 @@ final class Project_ProjectFragmentTests: XCTestCase {
       "description": "Dark Fantasy Novel & Tarot Cards",
       "finalCollectionDate": null,
       "fxRate": 1.25195501,
+      "friends": {
+        "__typename": "ProjectBackerFriendsConnection",
+        "nodes": [
+          {
+            "__typename": "User",
+            "chosenCurrency": null,
+            "email": "blob@me.com",
+            "hasPassword": null,
+            "id": "Q2F0ZWdvcnktNDc=",
+            "imageUrl": "http://www.kickstarter.com/image.jpg",
+            "isAppleConnected": null,
+            "isDeliverable": null,
+            "isEmailVerified": null,
+            "isCreator": false,
+            "name": "Billy Bob",
+            "uid": "23",
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            }
+          },
+          {
+            "__typename": "User",
+            "chosenCurrency": null,
+            "email": "blob@me.com",
+            "hasPassword": null,
+            "id": "D2F0ZWdvcnktNDc=",
+            "imageUrl": "http://www.kickstarter.com/image2.jpg",
+            "isAppleConnected": null,
+            "isDeliverable": null,
+            "isEmailVerified": null,
+            "isCreator": false,
+            "name": "Billy Bob's Nephew",
+            "uid": "24",
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            }
+          }
+        ]
+      },
       "goal": {
         "__typename": "Money",
         "amount": "3000.0",
@@ -81,6 +177,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
       },
       "isProjectWeLove": true,
+      "isWatched": true,
       "launchedAt": 1617886771,
       "location": {
         "__typename": "Location",

@@ -44,6 +44,9 @@ test_job: &test_job
         name: Bootstrap
         command: make bootstrap
     - run:
+        name: Download GraphQL Schema
+        command: bin/apollo-schema-download.sh
+    - run:
         name: Pre-load simulator
         command: *preload_simulator
     - run:

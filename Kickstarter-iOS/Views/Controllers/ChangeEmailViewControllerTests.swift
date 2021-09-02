@@ -18,8 +18,12 @@ final class ChangeEmailViewControllerTests: TestCase {
   }
 
   func testChangeEmail() {
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ true
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(currentUser: User.template, language: language) {
+      withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -31,8 +35,9 @@ final class ChangeEmailViewControllerTests: TestCase {
   }
 
   func testChangeEmailScreen_unverifiedEmail() {
-    let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false
-    let service = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
@@ -48,11 +53,13 @@ final class ChangeEmailViewControllerTests: TestCase {
   func testChangeEmailScreen_unverifiedEmail_isCreator() {
     let creator = User.template
       |> \.stats.createdProjectsCount .~ 3
-    let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields),
+        apiService: service,
         currentUser: creator,
         language: language
       ) {
@@ -67,8 +74,11 @@ final class ChangeEmailViewControllerTests: TestCase {
   }
 
   func testChangeEmailScreen_undeliverableEmail() {
-    let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false |> \.isDeliverable .~ false
-    let service = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
+    let userTemplate = GraphUser.template
+      |> \.isEmailVerified .~ false
+      |> \.isDeliverable .~ false
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
