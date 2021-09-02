@@ -20,6 +20,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
   private let loadRepliesAndProjectIntoDataSourceReplies = TestObserver<[Comment], Never>()
   private let loadRepliesAndProjectIntoDataSourceTotalCount = TestObserver<Int, Never>()
   private let resetCommentComposer = TestObserver<(), Never>()
+  private let scrollToReply = TestObserver<String, Never>()
   private let showPaginationErrorState = TestObserver<(), Never>()
 
   override func setUp() {
@@ -53,6 +54,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       .map { _, totalCount in totalCount }
       .observe(self.loadRepliesAndProjectIntoDataSourceTotalCount.observer)
     self.vm.outputs.resetCommentComposer.observe(self.resetCommentComposer.observer)
+    self.vm.outputs.scrollToReply.observe(self.scrollToReply.observer)
     self.vm.outputs.showPaginationErrorState.observe(self.showPaginationErrorState.observer)
   }
 
@@ -65,7 +67,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: rootComment,
         project: .template,
-        inputAreaBecomeFirstResponder: false
+        inputAreaBecomeFirstResponder: false,
+        replyId: nil
       )
 
       self.loadCommentIntoDataSourceComment.assertDidNotEmitValue()
@@ -83,7 +86,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
     withEnvironment(currentUser: nil) {
       self.vm.inputs
-        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
+        .configureWith(
+          comment: .template,
+          project: .template,
+          inputAreaBecomeFirstResponder: false,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear()
 
@@ -106,7 +114,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
       self.vm.inputs
-        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
+        .configureWith(
+          comment: .template,
+          project: .template,
+          inputAreaBecomeFirstResponder: false,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear()
 
@@ -130,7 +143,13 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
 
       self.configureCommentComposerViewURL
@@ -152,7 +171,13 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
 
       self.configureCommentComposerViewURL
@@ -174,7 +199,13 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear()
 
@@ -200,7 +231,13 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: false,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear()
 
@@ -240,7 +277,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: .template,
         project: project,
-        inputAreaBecomeFirstResponder: false
+        inputAreaBecomeFirstResponder: false,
+        replyId: nil
       )
 
       self.vm.inputs.viewDidLoad()
@@ -292,7 +330,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: .template,
         project: project,
-        inputAreaBecomeFirstResponder: false
+        inputAreaBecomeFirstResponder: false,
+        replyId: nil
       )
 
       self.vm.inputs.viewDidLoad()
@@ -339,6 +378,66 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  func testOutput_ScrollToReply_Emits() {
+    let envelope = CommentRepliesEnvelope.singleReplyTemplate
+    let mockService = MockService(fetchCommentRepliesEnvelopeResult: .success(envelope))
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.scrollToReply.assertDidNotEmitValue()
+
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: true,
+          replyId: envelope.replies[0].id
+        )
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+      self.vm.inputs.dataSourceLoaded()
+
+      self.scheduler.advance()
+
+      self.scrollToReply.assertValue(envelope.replies[0].id)
+    }
+  }
+
+  func testOutput_ScrollToReply_DoesNotEmit() {
+    let envelope = CommentRepliesEnvelope.singleReplyTemplate
+    let mockService = MockService(fetchCommentRepliesEnvelopeResult: .success(envelope))
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.scrollToReply.assertDidNotEmitValue()
+
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadRepliesAndProjectIntoDataSourceReplies.assertValues([envelope.replies])
+      self.vm.inputs.dataSourceLoaded()
+
+      self.scheduler.advance()
+
+      self.scrollToReply.assertDidNotEmitValue()
+    }
+  }
+
   func testOutput_SubmitText_FromCommentComposer_ResetsCommentComposerTextInput() {
     let project = Project.template
       |> \.personalization.isBacking .~ false
@@ -347,7 +446,13 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.resetCommentComposer.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: project,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
 
       self.resetCommentComposer.assertDidNotEmitValue()
@@ -375,7 +480,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: .replyRootCommentTemplate,
         project: project,
-        inputAreaBecomeFirstResponder: true
+        inputAreaBecomeFirstResponder: true,
+        replyId: nil
       )
       self.vm.inputs.viewDidLoad()
 
@@ -415,7 +521,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService1, currentUser: .template) {
       self.vm.inputs
-        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+        .configureWith(
+          comment: .template,
+          project: .template,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance(by: .seconds(1))
@@ -514,7 +625,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService1, currentUser: .template) {
       self.vm.inputs
-        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+        .configureWith(
+          comment: .template,
+          project: .template,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance(by: .seconds(1))
@@ -593,7 +709,12 @@ internal final class CommentRepliesViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService1, currentUser: .template) {
       self.vm.inputs
-        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: true)
+        .configureWith(
+          comment: .template,
+          project: .template,
+          inputAreaBecomeFirstResponder: true,
+          replyId: nil
+        )
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()

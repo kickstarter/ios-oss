@@ -565,10 +565,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let projectCommentThreadLink = projectLink
       .observeForUI()
       .switchMap { project, subpage, vcs, _ -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(commentId) = subpage,
+        guard case let .commentThread(commentId, replyId) = subpage,
           let commentId = commentId else {
           return .empty
         }
+
         return AppEnvironment.current.apiService
           .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
           .demoteErrors()
@@ -579,7 +580,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
               CommentRepliesViewController.configuredWith(
                 comment: envelope.comment,
                 project: project,
-                inputAreaBecomeFirstResponder: false
+                inputAreaBecomeFirstResponder: false,
+                replyId: replyId
               )
             ]
           }
@@ -652,7 +654,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let updateCommentThreadLink = updateLink
       .observeForUI()
       .switchMap { project, update, subpage, vcs -> SignalProducer<[UIViewController], Never> in
-        guard case let .commentThread(commentId) = subpage,
+        guard case let .commentThread(commentId, replyId) = subpage,
           let commentId = commentId else {
           return .empty
         }
@@ -666,7 +668,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
               CommentRepliesViewController.configuredWith(
                 comment: envelope.comment,
                 project: project,
-                inputAreaBecomeFirstResponder: false
+                inputAreaBecomeFirstResponder: false,
+                replyId: replyId
               )
             ]
           }
@@ -1039,7 +1042,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       if let commentId = activity.commentId {
         return .project(
           .id(projectId),
-          .update(updateId, .commentThread(commentId)),
+          .update(updateId, .commentThread(commentId, activity.replyId)),
           refTag: .push
         )
       }
@@ -1049,7 +1052,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       guard let projectId = activity.projectId else { return nil }
 
       if let commentId = activity.commentId {
-        return .project(.id(projectId), .commentThread(commentId), refTag: .push)
+        return .project(.id(projectId), .commentThread(commentId, activity.replyId), refTag: .push)
       }
       return .project(.id(projectId), .comments, refTag: .push)
 

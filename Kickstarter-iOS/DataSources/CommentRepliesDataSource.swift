@@ -228,6 +228,28 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   }
 
   /**
+   Returns an `IndexPath?` if the given replyId exists in the dataSource
+
+   - parameter for: The replyId of a `Comment`.
+
+   - returns: The `IndexPath?`with the matching replyId.
+
+   */
+  public func index(for replyId: String) -> IndexPath? {
+    let commentIndex = self.items(in: Section.replies.rawValue).firstIndex { value in
+      let foundAsCommentCell = (value as? (value: (Comment, Project), reusableId: String))?.value.0
+        .id == replyId
+      return foundAsCommentCell
+    }
+
+    if let commentIndex = commentIndex {
+      return IndexPath(row: commentIndex, section: Section.replies.rawValue)
+    }
+
+    return nil
+  }
+
+  /**
    Returns `true` when  the `replies`section of the data source is empty.
 
    - parameter in: `UITableView` object that we need the number of sections from.

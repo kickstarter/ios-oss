@@ -31,6 +31,7 @@ final class PushEnvelopeTests: XCTestCase {
       "activity": [
         "category": "comment-post",
         "comment": "Q29ij3oij234",
+        "reply": "Qn123!@",
         "id": 1,
         "project_id": 2
       ]
@@ -39,6 +40,7 @@ final class PushEnvelopeTests: XCTestCase {
     XCTAssertNotNil(decodedEnvelope.activity)
     XCTAssertEqual(.commentPost, decodedEnvelope.activity?.category)
     XCTAssertEqual("Q29ij3oij234", decodedEnvelope.activity?.commentId)
+    XCTAssertEqual("Qn123!@", decodedEnvelope.activity?.replyId)
     XCTAssertEqual(1, decodedEnvelope.activity?.id)
     XCTAssertEqual(2, decodedEnvelope.activity?.projectId)
   }

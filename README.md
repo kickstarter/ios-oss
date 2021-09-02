@@ -1,7 +1,7 @@
 <a href="https://www.kickstarter.com"><img src=".github/ksr-wordmark.svg" width="36%" alt="Kickstarter for iOS"></a>
 
 [![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-oss)
-[![codecov](https://codecov.io/gh/kickstarter/ios-oss/branch/master/graph/badge.svg)](https://codecov.io/gh/kickstarter/ios-oss)
+[![codecov](https://codecov.io/gh/kickstarter/ios-oss/branch/main/graph/badge.svg)](https://codecov.io/gh/kickstarter/ios-oss)
 
 Welcome to Kickstarter’s open source iOS app! Come on in, take your shoes off,
 stay a while—explore how Kickstarter’s native squad has built and continues to
@@ -23,7 +23,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 If you’re just looking for a quick glance at a few things we’re particularly
 proud of, look no further:
 
-* The [`Screenshots`](https://github.com/kickstarter/ios-oss/tree/master/Screenshots/_64)
+* The [`Screenshots`](https://github.com/kickstarter/ios-oss/tree/main/Screenshots/_64)
 directory holds nearly 500 screenshots of various screens in every language,
 device and edge-case state that we like to make sure stays true. For example,
 a backer viewing a project in French
@@ -33,8 +33,8 @@ a backer viewing a project in French
 
 * [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo) as
 a lightweight way to isolate side effects and embrace a functional core. We
-write [these](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
-as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)
+write [these](https://github.com/kickstarter/ios-oss/tree/main/Library/ViewModels)
+as a pure mapping of input signals to output signals, and [test](https://github.com/kickstarter/ios-oss/tree/main/Library/ViewModels)
 them heavily, including tests for localization, accessibility and event
 tracking.
 
