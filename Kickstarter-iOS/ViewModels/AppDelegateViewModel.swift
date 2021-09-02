@@ -445,7 +445,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
       .switchMap { param, subpage, refTag in
-        AppEnvironment.current.apiService.fetchProject(param: param)
+        AppEnvironment.current.apiService.fetchProject(projectId: param.id ?? -1)
           .demoteErrors()
           .observeForUI()
           .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in

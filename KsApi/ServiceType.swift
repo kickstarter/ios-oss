@@ -172,7 +172,7 @@ public protocol ServiceType {
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope>
 
   /// Fetch the newest data for a particular project from its id.
-  func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope>
+  func fetchProject(projectId: Int) -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>

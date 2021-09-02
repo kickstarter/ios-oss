@@ -275,9 +275,10 @@ private func layoutConstraintConstant(
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<Project, ErrorEnvelope> {
-  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+  guard let projectId = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id).id else {
+    return .empty }
 
-  let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
+  let projectProducer = AppEnvironment.current.apiService.fetchProject(projectId: projectId)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   if let project = projectOrParam.left, shouldPrefix {

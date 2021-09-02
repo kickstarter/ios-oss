@@ -1,0 +1,5 @@
+query FetchProject($projectId: Int!, $withStoredCards: Boolean!) {
+  project(pid: $projectId) {
+    ...ProjectFragment
+  }
+}

@@ -124,7 +124,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         if projectParam == .id(project.id) || projectParam == .slug(project.slug) {
           producer = SignalProducer(value: project)
         } else {
-          producer = AppEnvironment.current.apiService.fetchProject(param: projectParam)
+          producer = AppEnvironment.current.apiService.fetchProject(projectId: projectParam.id ?? -1)
             .demoteErrors()
         }
 

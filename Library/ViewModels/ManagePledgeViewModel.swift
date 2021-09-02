@@ -93,7 +93,7 @@ public final class ManagePledgeViewModel:
       // Only fetch the project if it hasn't yet succeeded, to avoid this call occurring with each refresh.
       .filter { [projectLoaded] _ in projectLoaded.value == false }
       .switchMap { param in
-        AppEnvironment.current.apiService.fetchProject(param: param)
+        AppEnvironment.current.apiService.fetchProject(projectId: param.id ?? -1)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }

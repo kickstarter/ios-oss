@@ -91,7 +91,7 @@ public final class CommentsViewModel: CommentsViewModelType,
         projectOrUpdate.ifLeft(
           SignalProducer.init(value:),
           ifRight: {
-            AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
+            AppEnvironment.current.apiService.fetchProject(projectId: $0.projectId).demoteErrors()
           }
         )
       }
