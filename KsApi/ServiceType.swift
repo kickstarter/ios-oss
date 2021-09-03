@@ -171,8 +171,8 @@ public protocol ServiceType {
   func fetchMessageThreads(paginationUrl: String)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope>
 
-  /// Fetch the newest data for a particular project from its id.
-  func fetchProject(projectId: Int) -> SignalProducer<Project, ErrorEnvelope>
+  /// Fetch the newest data for a particular project from its id or slug.
+  func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>

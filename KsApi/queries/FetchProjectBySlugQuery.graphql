@@ -1,0 +1,5 @@
+query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
+  project(slug: $slug) {
+    ...ProjectFragment
+  }
+}

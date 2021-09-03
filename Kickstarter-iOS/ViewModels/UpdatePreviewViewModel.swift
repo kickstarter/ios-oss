@@ -70,7 +70,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
 
     let projectEvent = draft
       .switchMap {
-        AppEnvironment.current.apiService.fetchProject(projectId: $0.update.projectId)
+        AppEnvironment.current.apiService.fetchProject(param: .id($0.update.projectId))
           .materialize()
       }
     let project = projectEvent

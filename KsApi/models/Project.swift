@@ -437,18 +437,4 @@ extension Project: GraphIDBridging {
   }
 }
 
-// MARK: - GraphQL Adapters
-
-extension Project {
-  static func projectProducer(
-    from envelope: RewardAddOnSelectionViewEnvelope
-  ) -> SignalProducer<Project, ErrorEnvelope> {
-    guard let project = Project.project(from: envelope.project) else {
-      return SignalProducer(error: .couldNotParseJSON)
-    }
-
-    return SignalProducer(value: project)
-  }
-}
-
 extension Project.Video: Decodable {}

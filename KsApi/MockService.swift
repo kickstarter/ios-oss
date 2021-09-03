@@ -929,7 +929,7 @@
       return SignalProducer(value: self.fetchProjectNotificationsResponse)
     }
 
-    internal func fetchProject(projectId: Int) -> SignalProducer<Project, ErrorEnvelope> {
+    internal func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
       if let error = self.fetchProjectError {
         return SignalProducer(error: error)
       }
@@ -938,12 +938,14 @@
       }
 
       let projectWithId = Project.template
-        |> Project.lens.id %~ { _ in projectId }
+        |> Project.lens.id %~ { param.id ?? $0 }
 
-//      let projectWithSlugAndId = projectWithId
-//        |> Project.lens.slug %~ { param.slug ?? $0 }
-
-      return SignalProducer(value: projectWithId)
+      let projectWithSlugAndId = projectWithId
+        |> Project.lens.slug %~ { param.slug ?? $0 }
+      
+      return SignalProducer(
+        value: projectWithSlugAndId
+      )
     }
 
     internal func fetchProject(

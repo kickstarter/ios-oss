@@ -335,12 +335,23 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
-  public func fetchProject(projectId: Int) -> SignalProducer<Project, ErrorEnvelope> {
-    let query = GraphAPI.FetchProjectQuery(projectId: projectId, withStoredCards: false)
-
-    return GraphQL.shared.client
-      .fetch(query: query)
-      .flatMap(Project.projectProducer(from:))
+  public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
+    switch (param.id, param.slug) {
+    case let (.some(projectId), _):
+      let query = GraphAPI.FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
+      
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectProducer(from:))
+    case let (_, .some(projectSlug)):
+      let query = GraphAPI.FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
+      
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectProducer(from:))
+    default:
+      return .empty
+    }
   }
 
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
