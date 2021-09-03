@@ -11,7 +11,7 @@ extension Project {
 
     return SignalProducer(value: project)
   }
-  
+
   static func projectProducer(
     from data: GraphAPI.FetchProjectBySlugQuery.Data
   ) -> SignalProducer<Project, ErrorEnvelope> {
@@ -39,13 +39,13 @@ extension Project {
 
     guard
       let fragment = data.project?.fragments.projectFragment,
-      //let project = Project.project(from: fragment, addOns: addOns)
+      // let project = Project.project(from: fragment, addOns: addOns)
       let project = Project.project(from: fragment)
     else { return nil }
 
     return project
   }
-  
+
   static func project(from data: GraphAPI.FetchProjectBySlugQuery.Data) -> Project? {
 //    let addOns = data.project?.addOns?.nodes?
 //      .compactMap { node -> (GraphAPI.RewardFragment, [ShippingRule]?)? in
@@ -63,7 +63,7 @@ extension Project {
 
     guard
       let fragment = data.project?.fragments.projectFragment,
-      //let project = Project.project(from: fragment, addOns: addOns)
+      // let project = Project.project(from: fragment, addOns: addOns)
       let project = Project.project(from: fragment)
     else { return nil }
 

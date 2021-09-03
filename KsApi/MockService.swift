@@ -942,7 +942,7 @@
 
       let projectWithSlugAndId = projectWithId
         |> Project.lens.slug %~ { param.slug ?? $0 }
-      
+
       return SignalProducer(
         value: projectWithSlugAndId
       )
