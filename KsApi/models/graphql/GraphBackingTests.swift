@@ -144,9 +144,6 @@ final class GraphBackingTests: XCTestCase {
       XCTAssertEqual(674_816_336, project.pid)
       XCTAssertEqual("A summer dance festival", project.name)
       XCTAssertEqual("tequila/a-summer-dance-festival", project.slug)
-
-      XCTAssertNotNil(Backing.backing(from: backing))
-      XCTAssertNotNil(Project.project(from: project))
     } catch {
       XCTFail("Failed to decode GraphBackingEnvelope \(error)")
     }

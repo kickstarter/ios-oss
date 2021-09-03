@@ -54,8 +54,6 @@ final class Project_ProjectFragmentTests: XCTestCase {
     } catch {
       XCTFail(error.localizedDescription)
     }
-
-    XCTAssertNotNil(Project.project(from: .template))
   }
 
   private func projectDictionary() -> [String: Any] {
