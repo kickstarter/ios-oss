@@ -1,5 +1,15 @@
 query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
   project(pid: $projectId) {
     ...ProjectFragment
+    rewards {
+      nodes {
+        ...RewardFragment
+      }
+    }
+    addOns {
+      nodes {
+        ...RewardFragment
+      }
+    }
   }
 }
