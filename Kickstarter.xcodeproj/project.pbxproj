@@ -1114,7 +1114,6 @@
 		A7F441E71D005A9400FE6FC5 /* ThanksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */; };
 		A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */; };
 		A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */; };
-		A7FA38A41D9068940041FC9C /* PledgeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */; };
 		A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */; };
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
@@ -2809,7 +2808,6 @@
 		A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateProtocol.swift; sourceTree = "<group>"; };
 		A7F761741C85FA40005405ED /* ActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewController.swift; sourceTree = "<group>"; };
 		A7F761761C85FACB005405ED /* LoginToutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoginToutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeTitleCell.swift; sourceTree = "<group>"; };
 		A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleAvatarImageView.swift; sourceTree = "<group>"; };
 		D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectMutation.swift; sourceTree = "<group>"; };
 		D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProjectInput.swift; sourceTree = "<group>"; };
@@ -3944,7 +3942,6 @@
 				8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */,
 				D6534D3722E784B500E9D279 /* PledgePaymentMethodCell.swift */,
 				8A864ACC24429A5B0026BF13 /* PledgePaymentMethodLoadingCell.swift */,
-				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
 				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
 				9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */,
@@ -6393,7 +6390,6 @@
 				379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */,
 				3742036F22DD45A2007AA86E /* PillCell.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
-				A7FA38A41D9068940041FC9C /* PledgeTitleCell.swift in Sources */,
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
