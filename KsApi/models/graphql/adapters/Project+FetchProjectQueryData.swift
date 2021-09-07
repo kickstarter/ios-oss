@@ -1,5 +1,6 @@
 import Foundation
 import ReactiveSwift
+import Apollo
 
 extension Project {
   static func projectProducer(
@@ -23,48 +24,58 @@ extension Project {
   }
 
   static func project(from data: GraphAPI.FetchProjectByIdQuery.Data) -> Project? {
-//    let addOns = data.project?.addOns?.nodes?
-//      .compactMap { node -> (GraphAPI.RewardFragment, [ShippingRule]?)? in
-//        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
-//
-//        let expandedShippingRules = node?.shippingRulesExpanded?.nodes?
-//          .compactMap { node in node?.fragments.shippingRuleFragment }
-//          .compactMap(ShippingRule.shippingRule(from:))
-//
-//        return (rewardFragment, expandedShippingRules)
-//      }
-//      .compactMap { fragment, expandedShippingRules in
-//        Reward.reward(from: fragment, expandedShippingRules: expandedShippingRules)
-//      }
+    let addOns = data.project?.addOns?.nodes?
+      .compactMap { node -> GraphAPI.RewardFragment? in
+        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
+
+        return rewardFragment
+      }
+      .compactMap { fragment in
+        Reward.reward(from: fragment)
+      }
+    
+    let rewards = data.project?.rewards?.nodes?
+      .compactMap { node -> GraphAPI.RewardFragment? in
+        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
+
+        return rewardFragment
+      }
+      .compactMap { fragment in
+        Reward.reward(from: fragment)
+      } ?? []
 
     guard
       let fragment = data.project?.fragments.projectFragment,
-      // let project = Project.project(from: fragment, addOns: addOns)
-      let project = Project.project(from: fragment)
+      let project = Project.project(from: fragment, rewards: rewards, addOns: addOns)
     else { return nil }
 
     return project
   }
 
   static func project(from data: GraphAPI.FetchProjectBySlugQuery.Data) -> Project? {
-//    let addOns = data.project?.addOns?.nodes?
-//      .compactMap { node -> (GraphAPI.RewardFragment, [ShippingRule]?)? in
-//        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
-//
-//        let expandedShippingRules = node?.shippingRulesExpanded?.nodes?
-//          .compactMap { node in node?.fragments.shippingRuleFragment }
-//          .compactMap(ShippingRule.shippingRule(from:))
-//
-//        return (rewardFragment, expandedShippingRules)
-//      }
-//      .compactMap { fragment, expandedShippingRules in
-//        Reward.reward(from: fragment, expandedShippingRules: expandedShippingRules)
-//      }
+    let addOns = data.project?.addOns?.nodes?
+      .compactMap { node -> GraphAPI.RewardFragment? in
+        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
+
+        return rewardFragment
+      }
+      .compactMap { fragment in
+        Reward.reward(from: fragment)
+      }
+    
+    let rewards = data.project?.rewards?.nodes?
+      .compactMap { node -> GraphAPI.RewardFragment? in
+        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
+
+        return rewardFragment
+      }
+      .compactMap { fragment in
+        Reward.reward(from: fragment)
+      } ?? []
 
     guard
       let fragment = data.project?.fragments.projectFragment,
-      // let project = Project.project(from: fragment, addOns: addOns)
-      let project = Project.project(from: fragment)
+      let project = Project.project(from: fragment, rewards: rewards, addOns: addOns)
     else { return nil }
 
     return project
