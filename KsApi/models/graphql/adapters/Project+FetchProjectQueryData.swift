@@ -1,6 +1,6 @@
+import Apollo
 import Foundation
 import ReactiveSwift
-import Apollo
 
 extension Project {
   static func projectProducer(
@@ -33,7 +33,7 @@ extension Project {
       .compactMap { fragment in
         Reward.reward(from: fragment)
       }
-    
+
     let rewards = data.project?.rewards?.nodes?
       .compactMap { node -> GraphAPI.RewardFragment? in
         guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
@@ -62,7 +62,7 @@ extension Project {
       .compactMap { fragment in
         Reward.reward(from: fragment)
       }
-    
+
     let rewards = data.project?.rewards?.nodes?
       .compactMap { node -> GraphAPI.RewardFragment? in
         guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
