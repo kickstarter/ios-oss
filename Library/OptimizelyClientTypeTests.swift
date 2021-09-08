@@ -4,6 +4,20 @@ import Prelude
 import XCTest
 
 final class OptimizelyClientTypeTests: TestCase {
+  func testAllExperiments() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
+          .variant1.rawValue,
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    XCTAssert(mockOptimizelyClient.allExperiments().count == 4)
+  }
+
   func testAllFeatures() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [

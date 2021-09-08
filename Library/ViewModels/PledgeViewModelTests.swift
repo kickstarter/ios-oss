@@ -55,7 +55,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationAdditionalPledgeAmount = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationShippingTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
-
+  private let goToRiskMessagingModal = TestObserver<Void, Never>()
   private let goToThanksCheckoutData = TestObserver<KSRAnalytics.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
   private let goToThanksReward = TestObserver<Reward, Never>()
@@ -150,6 +150,8 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.goToApplePayPaymentAuthorizationShippingTotal.observer)
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
       .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
+
+    self.vm.outputs.goToRiskMessagingModal.observe(self.goToRiskMessagingModal.observer)
 
     self.vm.outputs.goToThanks.map(first).observe(self.goToThanksProject.observer)
     self.vm.outputs.goToThanks.map(second).observe(self.goToThanksReward.observer)
@@ -1315,6 +1317,82 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertValues([20])
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([25])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+  }
+
+  func testOutputGoToRiskMessagingModal_OptimizelyClientControl_SubmitButtonTapped() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 20
+      |> Reward.lens.shipping.enabled .~ true
+    let shippingRule = ShippingRule.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToRiskMessagingModal.assertDidNotEmitValue()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.submitButtonTapped()
+
+      self.scheduler.advance()
+
+      self.goToRiskMessagingModal.assertDidNotEmitValue()
+    }
+  }
+
+  func testOutputGoToRiskMessagingModal_OptimizelyClientVariant1() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 20
+      |> Reward.lens.shipping.enabled .~ true
+    let shippingRule = ShippingRule.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToRiskMessagingModal.assertDidNotEmitValue()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.submitButtonTapped()
+
+      self.scheduler.advance()
+
+      self.goToRiskMessagingModal.assertDidEmitValue()
+    }
   }
 
   func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax() {

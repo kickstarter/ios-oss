@@ -77,6 +77,7 @@ public protocol PledgeViewModelOutputs {
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var expandableRewardsHeaderViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
+  var goToRiskMessagingModal: Signal<Void, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
@@ -445,6 +446,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       applePayParams.wrapInOptional()
     )
 
+    // MARK: - Risk Messaging Modal
+
+    // This will emit when the pledge button is tapped AND the Optimizely experiment returned is the control
+    let submitButtonTapped = self.submitButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled)
+
+    self.goToRiskMessagingModal = self.submitButtonTappedSignal
+      .filter { _ in !isNativeRiskMessagingControlEnabled() }
+
     // MARK: - Create Backing
 
     let createBackingData = Signal.combineLatest(
@@ -460,7 +469,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { $0 as CreateBackingData }
 
     let createButtonTapped = Signal.combineLatest(
-      self.submitButtonTappedSignal,
+      submitButtonTapped,
       context
     )
     .filter { _, context in context.isCreating }
@@ -518,7 +527,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .filter(isTrue)
 
     let updateButtonTapped = Signal.combineLatest(
-      self.submitButtonTappedSignal,
+      submitButtonTapped,
       context
     )
     .filter { _, context in context.isUpdating }
@@ -618,13 +627,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.viewDidLoadProperty.signal.mapConst(false)
         .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
-      self.submitButtonTappedSignal.signal.mapConst(false),
+      submitButtonTapped.mapConst(false),
       createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
     )
     .skipRepeats()
 
     let isCreateOrUpdateBacking = Signal.merge(
-      self.submitButtonTappedSignal.mapConst(true),
+      submitButtonTapped.mapConst(true),
       Signal.merge(willUpdateApplePayBacking, willCreateApplePayBacking).mapConst(false)
     )
 
@@ -1027,6 +1036,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let expandableRewardsHeaderViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
+  public let goToRiskMessagingModal: Signal<Void, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
