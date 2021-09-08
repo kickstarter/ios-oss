@@ -334,7 +334,7 @@ internal final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testIsNativeRiskMessagingControlEnabled_Variant1() {
+  func testIsNativeRiskMessagingControlDisabled_Variant1() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
