@@ -15,7 +15,7 @@ final class OptimizelyClientTypeTests: TestCase {
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
-    XCTAssert(mockOptimizelyClient.allExperiments().count == 4)
+    XCTAssert(mockOptimizelyClient.experiments.count == 4)
   }
 
   func testAllFeatures() {
