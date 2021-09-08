@@ -485,7 +485,10 @@ internal final class CommentsViewModelTests: TestCase {
       |> \.updateID .~ "1"
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsEnvelopeResult: .success(envelope))) {
+    withEnvironment(apiService: MockService(
+      fetchUpdateCommentsEnvelopeResult: .success(envelope),
+      fetchProjectResult: .success(.template)
+    )) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -541,7 +544,10 @@ internal final class CommentsViewModelTests: TestCase {
     let envelope = CommentsEnvelope.singleCommentTemplate
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsEnvelopeResult: .success(envelope))) {
+    withEnvironment(apiService: MockService(
+      fetchUpdateCommentsEnvelopeResult: .success(envelope),
+      fetchProjectResult: .success(.template)
+    )) {
       self.vm.inputs.configureWith(
         project: nil,
         update: update

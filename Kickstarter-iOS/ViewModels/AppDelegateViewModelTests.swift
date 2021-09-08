@@ -560,7 +560,10 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testPresentViewController() {
-    let apiService = MockService(fetchProjectResponse: .template, fetchUpdateResponse: .template)
+    let apiService = MockService(
+      fetchProjectResult: .success(.template),
+      fetchUpdateResponse: .template
+    )
     withEnvironment(apiService: apiService) {
       let rootUrl = "https://www.kickstarter.com/"
 
@@ -637,7 +640,7 @@ final class AppDelegateViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.displayPrelaunch .~ true
 
-    let apiService = MockService(fetchProjectResponse: project)
+    let apiService = MockService(fetchProjectResult: .success(project))
     withEnvironment(apiService: apiService) {
       let rootUrl = "https://www.kickstarter.com/"
 
@@ -665,7 +668,7 @@ final class AppDelegateViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.displayPrelaunch .~ false
 
-    let apiService = MockService(fetchProjectResponse: project)
+    let apiService = MockService(fetchProjectResult: .success(project))
     withEnvironment(apiService: apiService) {
       let rootUrl = "https://www.kickstarter.com/"
 
@@ -693,7 +696,7 @@ final class AppDelegateViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.displayPrelaunch .~ nil
 
-    let apiService = MockService(fetchProjectResponse: project)
+    let apiService = MockService(fetchProjectResult: .success(project))
     withEnvironment(apiService: apiService) {
       let rootUrl = "https://www.kickstarter.com/"
 
@@ -724,7 +727,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
 
@@ -746,7 +749,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D&reply=deadbeef"
 
@@ -768,7 +771,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D"
 
@@ -790,7 +793,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
-        .successfulRepliesTemplate), fetchProjectResponse: .template)) {
+        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/posts/3254626/comments?comment=Q29tbWVudC0zMzY0OTg0MQ%3D%3D&reply=deadbeef"
 
@@ -1275,16 +1278,18 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenPushNotification_WhileInBackground() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    self.presentViewController.assertValueCount(0)
+      self.presentViewController.assertValueCount(0)
 
-    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData)
+      self.vm.inputs.didReceive(remoteNotification: friendBackingPushData)
 
-    self.presentViewController.assertValueCount(1)
+      self.presentViewController.assertValueCount(1)
+    }
   }
 
   func testOpenNotification_NewBacking_ForCreator() {
@@ -1309,9 +1314,11 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_ProjectUpdate() {
-    self.vm.inputs.didReceive(remoteNotification: updatePushData)
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      self.vm.inputs.didReceive(remoteNotification: updatePushData)
 
-    self.presentViewController.assertValueCount(1)
+      self.presentViewController.assertValueCount(1)
+    }
   }
 
   func testOpenNotification_ProjectUpdate_BadData() {
@@ -1339,9 +1346,11 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_UpdateComment() {
-    self.vm.inputs.didReceive(remoteNotification: updateCommentPushData)
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      self.vm.inputs.didReceive(remoteNotification: updateCommentPushData)
 
-    self.presentViewController.assertValueCount(1)
+      self.presentViewController.assertValueCount(1)
+    }
   }
 
   func testOpenNotification_UpdateComment_BadData() {
@@ -1354,43 +1363,51 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_ProjectComment() {
-    self.vm.inputs.didReceive(remoteNotification: projectCommentPushData)
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      self.vm.inputs.didReceive(remoteNotification: projectCommentPushData)
 
-    self.presentViewController.assertValueCount(1)
+      self.presentViewController.assertValueCount(1)
+    }
   }
 
   func testOpenNotification_ProjectComment_WithBadData() {
-    var badPushData = updatePushData
-    badPushData["activity"]?["project_id"] = nil
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      var badPushData = updatePushData
+      badPushData["activity"]?["project_id"] = nil
 
-    self.vm.inputs.didReceive(remoteNotification: badPushData)
+      self.vm.inputs.didReceive(remoteNotification: badPushData)
 
-    self.presentViewController.assertValueCount(0)
+      self.presentViewController.assertValueCount(0)
+    }
   }
 
   func testOpenNotification_GenericProject() {
-    self.vm.inputs.didReceive(remoteNotification: genericProjectPushData)
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      self.vm.inputs.didReceive(remoteNotification: genericProjectPushData)
 
-    self.presentViewController.assertValueCount(1)
+      self.presentViewController.assertValueCount(1)
+    }
   }
 
   func testOpenNotification_ProjectStateChanges() {
-    let states: [Activity.Category] = [.failure, .launch, .success, .cancellation, .suspension]
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      let states: [Activity.Category] = [.failure, .launch, .success, .cancellation, .suspension]
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    states.enumerated().forEach { idx, state in
-      var pushData = genericActivityPushData
-      pushData["activity"]?["category"] = state.rawValue
-
-      self.vm.inputs.didReceive(remoteNotification: pushData)
-
-      self.presentViewController.assertValueCount(
-        idx + 1, "Presents controller for \(state.rawValue) state change."
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
       )
+
+      states.enumerated().forEach { idx, state in
+        var pushData = genericActivityPushData
+        pushData["activity"]?["category"] = state.rawValue
+
+        self.vm.inputs.didReceive(remoteNotification: pushData)
+
+        self.presentViewController.assertValueCount(
+          idx + 1, "Presents controller for \(state.rawValue) state change."
+        )
+      }
     }
   }
 
@@ -1418,19 +1435,21 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOpenNotification_PostLike() {
-    let pushData: [String: Any] = [
-      "aps": [
-        "alert": "Blob liked your update: Important message..."
-      ],
-      "post": [
-        "id": 1,
-        "project_id": 2
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      let pushData: [String: Any] = [
+        "aps": [
+          "alert": "Blob liked your update: Important message..."
+        ],
+        "post": [
+          "id": 1,
+          "project_id": 2
+        ]
       ]
-    ]
 
-    self.vm.inputs.didReceive(remoteNotification: pushData)
+      self.vm.inputs.didReceive(remoteNotification: pushData)
 
-    self.presentViewController.assertValues([2])
+      self.presentViewController.assertValues([2])
+    }
   }
 
   func testOpenNotification_UnrecognizedActivityType() {
@@ -1886,38 +1905,40 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testEmailDeepLinking() {
-    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
 
-    // The application launches.
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+      // The application launches.
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    self.findRedirectUrl.assertValues([])
-    self.presentViewController.assertValues([])
-    self.goToMobileSafari.assertValues([])
+      self.findRedirectUrl.assertValues([])
+      self.presentViewController.assertValues([])
+      self.goToMobileSafari.assertValues([])
 
-    // We deep-link to an email url.
-    self.vm.inputs.applicationDidEnterBackground()
-    self.vm.inputs.applicationWillEnterForeground()
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: emailUrl,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+      // We deep-link to an email url.
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: emailUrl,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
-    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
-    self.presentViewController.assertValues([], "No view controller is presented yet.")
-    self.goToMobileSafari.assertValues([])
+      self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+      self.presentViewController.assertValues([], "No view controller is presented yet.")
+      self.goToMobileSafari.assertValues([])
 
-    // We find the redirect to be a project url.
-    self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+      // We find the redirect to be a project url.
+      self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
 
-    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
-    self.presentViewController.assertValueCount(1, "Present the project view controller.")
-    self.goToMobileSafari.assertValues([])
+      self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+      self.presentViewController.assertValueCount(1, "Present the project view controller.")
+      self.goToMobileSafari.assertValues([])
+    }
   }
 
   func testEmailDeepLinking_WhenOnboardingFlowIsActive() {
@@ -1959,36 +1980,38 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testEmailDeepLinking_ContinuedUserActivity() {
-    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
-    let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-    userActivity.webpageURL = emailUrl
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
+      let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+      let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+      userActivity.webpageURL = emailUrl
 
-    // The application launches.
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+      // The application launches.
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    self.findRedirectUrl.assertValues([])
-    self.presentViewController.assertValues([])
-    self.goToMobileSafari.assertValues([])
+      self.findRedirectUrl.assertValues([])
+      self.presentViewController.assertValues([])
+      self.goToMobileSafari.assertValues([])
 
-    // We deep-link to an email url.
-    self.vm.inputs.applicationDidEnterBackground()
-    self.vm.inputs.applicationWillEnterForeground()
-    let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
-    XCTAssertTrue(result)
+      // We deep-link to an email url.
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+      let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+      XCTAssertTrue(result)
 
-    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
-    self.presentViewController.assertValues([], "No view controller is presented yet.")
-    self.goToMobileSafari.assertValues([])
+      self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+      self.presentViewController.assertValues([], "No view controller is presented yet.")
+      self.goToMobileSafari.assertValues([])
 
-    // We find the redirect to be a project url.
-    self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+      // We find the redirect to be a project url.
+      self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
 
-    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
-    self.presentViewController.assertValueCount(1, "Present the project view controller.")
-    self.goToMobileSafari.assertValues([])
+      self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+      self.presentViewController.assertValueCount(1, "Present the project view controller.")
+      self.goToMobileSafari.assertValues([])
+    }
   }
 
   func testEmailDeepLinking_UnrecognizedUrl() {
@@ -2064,6 +2087,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOtherEmailDeepLink() {
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
     let emailUrl = URL(string: "https://email.kickstarter.com/mpss/a/b/c/d/e/f/g")!
 
     // The application launches.
@@ -2096,6 +2120,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
     self.presentViewController.assertValueCount(1, "Present the project view controller.")
     self.goToMobileSafari.assertValues([])
+    }
   }
 
   func testProjectSurveyDeepLink() {
@@ -2121,7 +2146,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testErroredPledgeDeepLink_LoggedIn() {
     let project = Project.template
       |> \.personalization.backing .~ .template
-    let service = MockService(fetchProjectResponse: project)
+    let service = MockService(fetchProjectResult: .success(project))
 
     withEnvironment(apiService: service, currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -2149,7 +2174,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testErroredPledgeDeepLink_LoggedOut() {
-    withEnvironment(currentUser: nil) {
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template)), currentUser: nil) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
@@ -2177,7 +2202,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testErroredPledgePushDeepLink_LoggedIn() {
     let project = Project.template
       |> \.personalization.backing .~ .template
-    let service = MockService(fetchProjectResponse: project)
+    let service = MockService(fetchProjectResult: .success(project))
 
     withEnvironment(apiService: service, currentUser: .template) {
       self.goToLoginWithIntent.assertDidNotEmitValue()
@@ -2200,7 +2225,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testErroredPledgePushDeepLink_LoggedOut() {
-    withEnvironment(currentUser: nil) {
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template)), currentUser: nil) {
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertDidNotEmitValue()
 

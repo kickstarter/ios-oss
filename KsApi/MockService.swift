@@ -86,9 +86,7 @@
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
-    fileprivate let fetchProjectResponse: Project?
-    fileprivate let fetchProjectError: ErrorEnvelope?
-
+    fileprivate let fetchProjectEnvelopeResult: Result<Project, ErrorEnvelope>?
     fileprivate let fetchProjectsResponse: [Project]?
     fileprivate let fetchProjectsError: ErrorEnvelope?
 
@@ -185,8 +183,7 @@
         buildVersion: buildVersion,
         deviceIdentifier: deviceIdentifier,
         apolloClient: apolloClient,
-        perimeterXClient: perimeterXClient,
-        fetchProjectResponse: nil
+        perimeterXClient: perimeterXClient
       )
     }
 
@@ -245,8 +242,7 @@
       fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
-      fetchProjectResponse: Project? = nil,
-      fetchProjectError: ErrorEnvelope? = nil,
+      fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
       fetchProjectActivitiesResponse: [Activity]? = nil,
       fetchProjectActivitiesError: ErrorEnvelope? = nil,
       fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
@@ -403,9 +399,6 @@
 
       self.fetchProjectActivitiesError = fetchProjectActivitiesError
 
-      self.fetchProjectResponse = fetchProjectResponse
-      self.fetchProjectError = fetchProjectError
-
       self.fetchProjectNotificationsResponse = fetchProjectNotificationsResponse ?? [
         .template |> ProjectNotification.lens.id .~ 1,
         .template |> ProjectNotification.lens.id .~ 2,
@@ -415,6 +408,8 @@
       self.fetchProjectsResponse = fetchProjectsResponse ?? []
 
       self.fetchProjectsError = fetchProjectsError
+
+      self.fetchProjectEnvelopeResult = fetchProjectResult
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
       self.fetchProjectStatsError = fetchProjectStatsError
@@ -930,22 +925,26 @@
     }
 
     internal func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-      if let error = self.fetchProjectError {
-        return SignalProducer(error: error)
-      }
-      if let project = self.fetchProjectResponse {
-        return SignalProducer(value: project)
+      guard let client = self.apolloClient else {
+        return .empty
       }
 
-      let projectWithId = Project.template
-        |> Project.lens.id %~ { param.id ?? $0 }
+      switch (param.id, param.slug) {
+      case let (.some(paramId), _):
+        let fetchProjectCommentsQuery = GraphAPI
+          .FetchProjectByIdQuery(projectId: paramId, withStoredCards: false)
 
-      let projectWithSlugAndId = projectWithId
-        |> Project.lens.slug %~ { param.slug ?? $0 }
+        return client
+          .fetchWithResult(query: fetchProjectCommentsQuery, result: self.fetchProjectEnvelopeResult)
+      case let (_, .some(paramSlug)):
+        let fetchProjectCommentsQuery = GraphAPI
+          .FetchProjectBySlugQuery(slug: paramSlug, withStoredCards: false)
 
-      return SignalProducer(
-        value: projectWithSlugAndId
-      )
+        return client
+          .fetchWithResult(query: fetchProjectCommentsQuery, result: self.fetchProjectEnvelopeResult)
+      default:
+        return .empty
+      }
     }
 
     internal func fetchProject(
@@ -962,10 +961,15 @@
     }
 
     internal func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-      if let project = self.fetchProjectResponse {
-        return SignalProducer(value: project)
+      guard let client = self.apolloClient else {
+        return .empty
       }
-      return SignalProducer(value: project)
+
+      let fetchProjectCommentsQuery = GraphAPI
+        .FetchProjectByIdQuery(projectId: project.id, withStoredCards: false)
+
+      return client
+        .fetchWithResult(query: fetchProjectCommentsQuery, result: self.fetchProjectEnvelopeResult)
     }
 
     internal func fetchProjectActivities(forProject _: Project) ->
@@ -1430,7 +1434,7 @@
             fetchManagePledgeViewBackingResult: $1.fetchManagePledgeViewBackingResult,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
-            fetchProjectResponse: $1.fetchProjectResponse,
+            fetchProjectResult: $1.fetchProjectEnvelopeResult,
             fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
             fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
             fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
