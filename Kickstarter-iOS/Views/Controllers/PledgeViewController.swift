@@ -203,7 +203,7 @@ final class PledgeViewController: UIViewController,
       self.inputsSectionViews,
       self.summarySectionViews,
       self.paymentMethodsSectionViews,
-      self.confirmationSectionViews
+      isNativeRiskMessagingControlEnabled() ? self.confirmationSectionViews : []
     ]
     .flatMap { $0 }
     .compact()
@@ -360,7 +360,14 @@ final class PledgeViewController: UIViewController,
     self.viewModel.outputs.goToApplePayPaymentAuthorization
       .observeForControllerAction()
       .observeValues { [weak self] paymentAuthorizationData in
-        self?.goToPaymentAuthorization(paymentAuthorizationData)
+        isNativeRiskMessagingControlEnabled() ? self?.goToPaymentAuthorization(paymentAuthorizationData) :
+          self?.goToRiskMessagingModal()
+      }
+
+    self.viewModel.outputs.goToRiskMessagingModal
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToRiskMessagingModal()
       }
 
     self.viewModel.outputs.goToThanks
@@ -469,6 +476,13 @@ final class PledgeViewController: UIViewController,
     paymentAuthorizationViewController.delegate = self
 
     self.present(paymentAuthorizationViewController, animated: true)
+  }
+
+  private func goToRiskMessagingModal() {
+    let viewController = UIViewController()
+    viewController.view.backgroundColor = .red
+    self.present(viewController, animated: true)
+    // TODO: Implement this after designs are introduced
   }
 
   private func goToThanks(data: ThanksPageData) {
