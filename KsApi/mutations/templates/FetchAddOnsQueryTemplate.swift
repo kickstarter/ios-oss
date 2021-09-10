@@ -458,14 +458,7 @@ public enum FetchAddsOnsQueryTemplate {
               "name": "Art"
             }
           },
-          "collaboratorPermissions": [
-            "edit_project",
-            "edit_faq",
-            "post",
-            "comment",
-            "view_pledges",
-            "fulfillment"
-          ],
+          "canComment": false,
           "commentsCount": 5,
           "country": {
             "__typename": "Country",
@@ -573,14 +566,6 @@ public enum FetchAddsOnsQueryTemplate {
     projectResultMap["deadlineAt"] = "1622195758"
     projectResultMap["launchedAt"] = "1619603758"
     projectResultMap["stateChangedAt"] = "1619603760"
-    projectResultMap["collaboratorPermissions"] = [
-      KsApi.GraphAPI.CollaboratorPermission.editProject,
-      KsApi.GraphAPI.CollaboratorPermission.editFaq,
-      KsApi.GraphAPI.CollaboratorPermission.post,
-      KsApi.GraphAPI.CollaboratorPermission.comment,
-      KsApi.GraphAPI.CollaboratorPermission.viewPledges,
-      KsApi.GraphAPI.CollaboratorPermission.fulfillment
-    ]
     projectResultMap["availableCardTypes"] = [
       KsApi.GraphAPI.CreditCardTypes.visa,
       KsApi.GraphAPI.CreditCardTypes.amex,

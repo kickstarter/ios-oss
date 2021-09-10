@@ -134,12 +134,10 @@ private func finalCollectionDateTimeInterval(
  Returns a minimal `Project.MemberData` from a `ProjectFragment`
  */
 private func projectMemberData(from projectFragment: GraphAPI.ProjectFragment) -> Project.MemberData? {
-  let collaboratorPermissions = projectFragment.collaboratorPermissions.compactMap { permission in
-    Project.MemberData.Permission(rawValue: permission.rawValue.lowercased())
-  }
+  let collaboratorPermissions = Project.MemberData(permissions: projectFragment.canComment ? [.comment] : [])
 
-  // TODO: - Once we are receiving the other three properties of MemberData back from a Project on Graph, extend this functionality.
-  return Project.MemberData(permissions: collaboratorPermissions)
+  // TODO: Also used by `DashboardActionCellViewModel` and `MessagesViewModel` - but they are not using the GQL `fetchProject(param:)` call yet.
+  return collaboratorPermissions
 }
 
 /**

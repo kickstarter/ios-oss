@@ -2540,67 +2540,6 @@ public enum GraphAPI {
     }
   }
 
-  /// A permission for a collaborator on a project
-  public enum CollaboratorPermission: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-    public typealias RawValue = String
-    case editProject
-    case editFaq
-    case post
-    case comment
-    case viewPledges
-    case fulfillment
-    /// Auto generated constant for unknown enum values
-    case __unknown(RawValue)
-
-    public init?(rawValue: RawValue) {
-      switch rawValue {
-        case "edit_project": self = .editProject
-        case "edit_faq": self = .editFaq
-        case "post": self = .post
-        case "comment": self = .comment
-        case "view_pledges": self = .viewPledges
-        case "fulfillment": self = .fulfillment
-        default: self = .__unknown(rawValue)
-      }
-    }
-
-    public var rawValue: RawValue {
-      switch self {
-        case .editProject: return "edit_project"
-        case .editFaq: return "edit_faq"
-        case .post: return "post"
-        case .comment: return "comment"
-        case .viewPledges: return "view_pledges"
-        case .fulfillment: return "fulfillment"
-        case .__unknown(let value): return value
-      }
-    }
-
-    public static func == (lhs: CollaboratorPermission, rhs: CollaboratorPermission) -> Bool {
-      switch (lhs, rhs) {
-        case (.editProject, .editProject): return true
-        case (.editFaq, .editFaq): return true
-        case (.post, .post): return true
-        case (.comment, .comment): return true
-        case (.viewPledges, .viewPledges): return true
-        case (.fulfillment, .fulfillment): return true
-        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-        default: return false
-      }
-    }
-
-    public static var allCases: [CollaboratorPermission] {
-      return [
-        .editProject,
-        .editFaq,
-        .post,
-        .comment,
-        .viewPledges,
-        .fulfillment,
-      ]
-    }
-  }
-
   /// Various project states.
   public enum ProjectState: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
@@ -8968,7 +8907,7 @@ public enum GraphAPI {
           __typename
           ...CategoryFragment
         }
-        collaboratorPermissions
+        canComment
         commentsCount(withReplies: true)
         country {
           __typename
@@ -9055,7 +8994,7 @@ public enum GraphAPI {
         GraphQLField("availableCardTypes", type: .nonNull(.list(.nonNull(.scalar(CreditCardTypes.self))))),
         GraphQLField("backersCount", type: .nonNull(.scalar(Int.self))),
         GraphQLField("category", type: .object(Category.selections)),
-        GraphQLField("collaboratorPermissions", type: .nonNull(.list(.nonNull(.scalar(CollaboratorPermission.self))))),
+        GraphQLField("canComment", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("commentsCount", arguments: ["withReplies": true], type: .nonNull(.scalar(Int.self))),
         GraphQLField("country", type: .nonNull(.object(Country.selections))),
         GraphQLField("creator", type: .object(Creator.selections)),
@@ -9094,8 +9033,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(actions: Action, availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, collaboratorPermissions: [CollaboratorPermission], commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, finalCollectionDate: String? = nil, fxRate: Double, friends: Friend? = nil, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, launchedAt: String? = nil, location: Location? = nil, name: String, pid: Int, pledged: Pledged, posts: Post? = nil, prelaunchActivated: Bool, slug: String, state: ProjectState, stateChangedAt: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "actions": actions.resultMap, "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "collaboratorPermissions": collaboratorPermissions, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "friends": friends.flatMap { (value: Friend) -> ResultMap in value.resultMap }, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "pledged": pledged.resultMap, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }])
+    public init(actions: Action, availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, finalCollectionDate: String? = nil, fxRate: Double, friends: Friend? = nil, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, launchedAt: String? = nil, location: Location? = nil, name: String, pid: Int, pledged: Pledged, posts: Post? = nil, prelaunchActivated: Bool, slug: String, state: ProjectState, stateChangedAt: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "actions": actions.resultMap, "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "friends": friends.flatMap { (value: Friend) -> ResultMap in value.resultMap }, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "pid": pid, "pledged": pledged.resultMap, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -9147,13 +9086,13 @@ public enum GraphAPI {
       }
     }
 
-    /// Permissions that can be assigned to a collaborator on a project
-    public var collaboratorPermissions: [CollaboratorPermission] {
+    /// True if the current user can comment
+    public var canComment: Bool {
       get {
-        return resultMap["collaboratorPermissions"]! as! [CollaboratorPermission]
+        return resultMap["canComment"]! as! Bool
       }
       set {
-        resultMap.updateValue(newValue, forKey: "collaboratorPermissions")
+        resultMap.updateValue(newValue, forKey: "canComment")
       }
     }
 

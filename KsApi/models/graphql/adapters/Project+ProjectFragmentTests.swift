@@ -29,7 +29,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertEqual(project.category.name, "Comic Books")
       XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xMDA3NTM5MDAy"))
       XCTAssertEqual(project.category.name, "Comic Books")
-      XCTAssertEqual(project.memberData.permissions.count, 6)
+      XCTAssertEqual(project.memberData.permissions.last, .comment)
       XCTAssertEqual(project.dates.deadline, 1_630_591_053)
       XCTAssertEqual(project.id, 1_841_936_784)
       XCTAssertEqual(project.location.country, "US")
@@ -90,14 +90,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
              "name":"Comics"
           }
        },
-       "collaboratorPermissions":[
-          "edit_project",
-          "edit_faq",
-          "post",
-          "comment",
-          "view_pledges",
-          "fulfillment"
-       ],
+       "canComment": true,
        "commentsCount":0,
        "country":{
           "__typename":"Country",

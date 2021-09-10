@@ -1269,14 +1269,7 @@ public enum FetchProjectQueryTemplate {
                 "name":"Photography"
              }
           },
-          "collaboratorPermissions":[
-             "edit_project",
-             "edit_faq",
-             "post",
-             "comment",
-             "view_pledges",
-             "fulfillment"
-          ],
+          "canComment": true,
           "commentsCount":0,
           "country":{
              "__typename":"Country",
@@ -1390,14 +1383,6 @@ public enum FetchProjectQueryTemplate {
     projectResultMap["deadlineAt"] = "1628622000"
     projectResultMap["launchedAt"] = "1625118948"
     projectResultMap["stateChangedAt"] = "1625118950"
-    projectResultMap["collaboratorPermissions"] = [
-      KsApi.GraphAPI.CollaboratorPermission.editProject,
-      KsApi.GraphAPI.CollaboratorPermission.editFaq,
-      KsApi.GraphAPI.CollaboratorPermission.post,
-      KsApi.GraphAPI.CollaboratorPermission.comment,
-      KsApi.GraphAPI.CollaboratorPermission.viewPledges,
-      KsApi.GraphAPI.CollaboratorPermission.fulfillment
-    ]
     projectResultMap["availableCardTypes"] = [
       KsApi.GraphAPI.CreditCardTypes.visa,
       KsApi.GraphAPI.CreditCardTypes.amex,

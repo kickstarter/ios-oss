@@ -171,7 +171,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project member data
     XCTAssertEqual(
       project.memberData.permissions,
-      [.editProject, .editFaq, .post, .comment, .viewPledges, .fulfillment]
+      [.comment]
     )
     // TODO: Related to creator login (ie. DashboardViewController), map these values to GQL Query data if they are available.
     XCTAssertNil(project.memberData.lastUpdatePublishedAt)
