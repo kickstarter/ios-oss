@@ -8,7 +8,8 @@ extension Project {
     from projectFragment: GraphAPI.ProjectFragment,
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
-    backing: Backing? = nil
+    backing: Backing? = nil,
+    currentUserChosenCurrency: String?
   ) -> Project? {
     guard
       let country = Country.country(from: projectFragment.country.fragments.countryFragment),
@@ -25,20 +26,35 @@ extension Project {
     else { return nil }
 
     let urls = Project.UrlsEnvelope(
-      web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: nil)
+      web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: projectFragment.url + "/posts")
     )
 
     let friends = projectFragment.friends?.nodes?
       .compactMap { $0?.fragments.userFragment }
       .compactMap { User.user(from: $0) } ?? []
 
+    let availableCardTypes = projectFragment.availableCardTypes.compactMap { $0.rawValue }
+
+    let displayPrelaunch = !projectFragment.isLaunched
+
+    let discoverTags: [String] = projectFragment.tags
+      .compactMap { tag -> String? in
+        if let tagName = tag?.name {
+          return tagName
+        }
+
+        return nil
+      }
+
     return Project(
+      availableCardTypes: availableCardTypes,
       blurb: projectFragment.description,
       category: category,
       country: country,
       creator: creator,
       memberData: memberData,
       dates: dates,
+      displayPrelaunch: displayPrelaunch,
       id: projectFragment.pid,
       location: location,
       name: projectFragment.name,
@@ -48,12 +64,15 @@ extension Project {
         friends: friends
       ),
       photo: photo,
+      prelaunchActivated: projectFragment.prelaunchActivated,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
       slug: projectFragment.slug,
       staffPick: projectFragment.isProjectWeLove,
       state: state,
-      stats: projectStats(from: projectFragment),
-      urls: urls
+      stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
+      tags: discoverTags,
+      urls: urls,
+      video: projectVideo(from: projectFragment)
     )
   }
 }
@@ -85,9 +104,17 @@ private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Pro
     let stateChangedAt = TimeInterval(projectFragment.stateChangedAt)
   else { return nil }
 
+  let startOfToday = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
+
+  var featuredAtDate: TimeInterval?
+
+  if let projectOfTheDay = projectFragment.isProjectOfTheDay {
+    featuredAtDate = projectOfTheDay ? startOfToday : nil
+  }
+
   return Project.Dates(
     deadline: deadline,
-    featuredAt: nil,
+    featuredAt: featuredAtDate,
     finalCollectionDate: finalCollectionDateTimeInterval(from: projectFragment.finalCollectionDate),
     launchedAt: launchedAt,
     stateChangedAt: stateChangedAt
@@ -136,17 +163,49 @@ private func projectState(from projectState: GraphAPI.ProjectState) -> Project.S
 /**
  Returns a minimal `Project.Stats` from a `ProjectFragment`
  */
-private func projectStats(from projectFragment: GraphAPI.ProjectFragment) -> Project.Stats {
+private func projectStats(from projectFragment: GraphAPI.ProjectFragment,
+                          currentUserChosenCurrency: String?) -> Project.Stats {
+  let pledgedRawData = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
+  let pledgedRawValue = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
+  let pledgedValue = pledgedRawData != nil ? Int(pledgedRawValue) : 0
+  let fxRateValue = Float(projectFragment.fxRate)
+  let convertedPledgedAmountValue = pledgedRawData != nil ? pledgedRawValue * fxRateValue : nil
+  let staticUSDRateValue = Float(projectFragment.usdExchangeRate ?? 0)
+  var usdExchangeRate: Float?
+
+  if let usdExchangeRateRawValue = projectFragment.usdExchangeRate {
+    usdExchangeRate = Float(usdExchangeRateRawValue)
+  }
+
   return Project.Stats(
     backersCount: projectFragment.backersCount,
-    commentsCount: nil,
-    convertedPledgedAmount: nil,
+    commentsCount: projectFragment.commentsCount,
+    convertedPledgedAmount: convertedPledgedAmountValue,
     currency: projectFragment.currency.rawValue,
-    currentCurrency: nil,
-    currentCurrencyRate: nil,
-    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
-    pledged: projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
-    staticUsdRate: projectFragment.usdExchangeRate.flatMap(Float.init) ?? 0,
-    updatesCount: nil
+    currentCurrency: currentUserChosenCurrency,
+    currentCurrencyRate: fxRateValue,
+    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
+    pledged: pledgedValue,
+    staticUsdRate: staticUSDRateValue,
+    updatesCount: projectFragment.posts?.totalCount,
+    usdExchangeRate: usdExchangeRate
+  )
+}
+
+/**
+ Returns a video `Project.video` from `ProjectFragment`
+ */
+
+private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Project.Video? {
+  guard let video = projectFragment.video,
+    let videoId = decompose(id: video.id),
+    let high = video.videoSources?.high?.src else {
+    return nil
+  }
+
+  return Project.Video(
+    id: videoId,
+    high: high,
+    hls: video.videoSources?.hls?.src
   )
 }

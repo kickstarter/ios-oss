@@ -2,11 +2,13 @@ fragment ProjectFragment on Project {
   actions {
     displayConvertAmount
   }
+  availableCardTypes
   backersCount
   category {
     ...CategoryFragment
   }
   collaboratorPermissions
+  commentsCount(withReplies: true)
   country {
     ...CountryFragment
   }
@@ -31,7 +33,9 @@ fragment ProjectFragment on Project {
     url(width: 1024)
   }
   isProjectWeLove
+  isProjectOfTheDay
   isWatched
+  isLaunched
   launchedAt
   location {
     ...LocationFragment
@@ -41,9 +45,27 @@ fragment ProjectFragment on Project {
   pledged {
     ...MoneyFragment
   }
+  posts {
+    totalCount
+  }
+  prelaunchActivated
   slug
   state
   stateChangedAt
+  tags(scope: DISCOVER) {
+    name
+  }
   url
   usdExchangeRate
+  video {
+    id
+    videoSources {
+      high {
+        src
+      }
+      hls {
+        src
+      }
+    }
+  }
 }

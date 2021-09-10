@@ -44,9 +44,21 @@ extension Project {
         Reward.reward(from: fragment)
       } ?? []
 
+    var backing: Backing?
+
+    if let backingFragment = data.project?.backing?.fragments.backingFragment {
+      backing = Backing.backing(from: backingFragment)
+    }
+
     guard
       let fragment = data.project?.fragments.projectFragment,
-      let project = Project.project(from: fragment, rewards: rewards, addOns: addOns)
+      let project = Project.project(
+        from: fragment,
+        rewards: rewards,
+        addOns: addOns,
+        backing: backing,
+        currentUserChosenCurrency: data.me?.chosenCurrency
+      )
     else { return nil }
 
     return project
@@ -73,9 +85,21 @@ extension Project {
         Reward.reward(from: fragment)
       } ?? []
 
+    var backing: Backing?
+
+    if let backingFragment = data.project?.backing?.fragments.backingFragment {
+      backing = Backing.backing(from: backingFragment)
+    }
+
     guard
       let fragment = data.project?.fragments.projectFragment,
-      let project = Project.project(from: fragment, rewards: rewards, addOns: addOns)
+      let project = Project.project(
+        from: fragment,
+        rewards: rewards,
+        addOns: addOns,
+        backing: backing,
+        currentUserChosenCurrency: data.me?.chosenCurrency
+      )
     else { return nil }
 
     return project

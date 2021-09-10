@@ -21,7 +21,7 @@ extension ProjectAndBackingEnvelope {
       let backingFragment = data.backing?.fragments.backingFragment,
       let projectFragment = data.backing?.fragments.backingFragment.project?.fragments.projectFragment,
       let backing = Backing.backing(from: backingFragment, addOns: addOns),
-      let project = Project.project(from: projectFragment, backing: backing)
+      let project = Project.project(from: projectFragment, backing: backing, currentUserChosenCurrency: nil)
     else {
       return SignalProducer(error: .couldNotParseJSON)
     }

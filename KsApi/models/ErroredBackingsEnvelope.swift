@@ -19,7 +19,7 @@ extension ErroredBackingsEnvelope {
       guard let backingFragment = backing?.fragments.backingFragment,
         let backing = Backing.backing(from: backingFragment),
         let projectFragment = backingFragment.project?.fragments.projectFragment,
-        let project = Project.project(from: projectFragment)
+        let project = Project.project(from: projectFragment, currentUserChosenCurrency: nil)
       else { return nil }
 
       return ProjectAndBackingEnvelope(project: project, backing: backing)

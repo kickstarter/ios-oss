@@ -21,38 +21,49 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project
     XCTAssertEqual(project.name, "The Quiet")
     XCTAssertEqual(project.id, 904_702_116)
-    XCTAssertNil(project.availableCardTypes)
+    XCTAssertEqual(project.availableCardTypes, ["VISA", "AMEX", "MASTERCARD"])
     XCTAssertEqual(
       project.blurb,
       "A photographic book about the daily life and work on board of a Russian research vessel during the MOSAiC expedition in the Arctic."
     )
-    XCTAssertNil(project.displayPrelaunch)
-    XCTAssertNil(project.prelaunchActivated)
+    XCTAssertFalse(project.displayPrelaunch!)
+    XCTAssertTrue(project.prelaunchActivated!)
     XCTAssertEqual(project.slug, "theaschneider/thequiet")
     XCTAssertTrue(project.staffPick)
     XCTAssertEqual(project.state, .live)
-    XCTAssertNil(project.video)
-    XCTAssertNil(project.tags)
+    XCTAssertEqual(
+      project.video?.high,
+      "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+    )
+    XCTAssertEqual(
+      project.video?.hls,
+      "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+    )
+    XCTAssertEqual(project.video?.id, decompose(id: "VmlkZW8tMTExNjQ0OA=="))
+    XCTAssertTrue(project.tags!.isEmpty)
 
     /// Project URLS
     XCTAssertEqual(
       project.urls.web.project,
       "https://staging.kickstarter.com/projects/theaschneider/thequiet"
     )
-    XCTAssertNil(project.urls.web.updates)
+    XCTAssertEqual(
+      project.urls.web.updates,
+      "https://staging.kickstarter.com/projects/theaschneider/thequiet/posts"
+    )
 
-    /// Project Stats
-    XCTAssertEqual(project.stats.backersCount, 147)
+    /// Project Statshttps://staging.kickstarter.com/projects/theaschneider/thequiet/posts
+    XCTAssertEqual(project.stats.backersCount, 148)
     XCTAssertEqual(project.stats.currency, "EUR")
-    // TODO: Should be corrected XCTAssertEqual(project.stats.goal, 2000.0)
-    // TODO: Should be corrected XCTAssertEqual(project.stats.pledged, 7826.6)
-    // TODO: Should be corrected XCTAssertEqual(project.stats.staticUsdRate, 1.18420975)
-    // TODO: Should be corrected XCTAssertEqual(project.stats.usdExchangeRate, 1.49694415)
-    XCTAssertNil(project.stats.updatesCount)
-    XCTAssertNil(project.stats.commentsCount)
-    XCTAssertNil(project.stats.convertedPledgedAmount)
-    XCTAssertNil(project.stats.currentCurrency)
-    XCTAssertNil(project.stats.currentCurrencyRate)
+    XCTAssertEqual(project.stats.goal, 2_000)
+    XCTAssertEqual(project.stats.pledged, 7_827)
+    XCTAssertEqual(project.stats.staticUsdRate, 1.18302594)
+    XCTAssertEqual(project.stats.usdExchangeRate, 1.18302594)
+    XCTAssertEqual(project.stats.updatesCount, 5)
+    XCTAssertEqual(project.stats.commentsCount, 0)
+    XCTAssertEqual(project.stats.convertedPledgedAmount, 11_706.016586616)
+    XCTAssertEqual(project.stats.currentCurrency, "CAD")
+    XCTAssertEqual(project.stats.currentCurrencyRate, 1.49547966)
 
     /// Project Location
     XCTAssertEqual(project.location.country, "DE")
@@ -88,7 +99,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     /// Project Category
     XCTAssertEqual(project.category.name, "Photobooks")
     XCTAssertEqual(project.category.id, decompose(id: "Q2F0ZWdvcnktMjgw"))
-    XCTAssertNil(project.category.analyticsName)
+    XCTAssertEqual(project.category.analyticsName, "Photobooks")
     XCTAssertEqual(project.category.parentId, decompose(id: "Q2F0ZWdvcnktMTU="))
     XCTAssertEqual(project.category.parentName, "Photography")
 
@@ -158,11 +169,12 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertNil(project.creator.unseenActivityCount)
 
     /// Project member data
-    XCTAssertNil(project.memberData.lastUpdatePublishedAt)
     XCTAssertEqual(
       project.memberData.permissions,
       [.editProject, .editFaq, .post, .comment, .viewPledges, .fulfillment]
     )
+    // TODO: Related to creator login (ie. DashboardViewController), map these values to GQL Query data if they are available.
+    XCTAssertNil(project.memberData.lastUpdatePublishedAt)
     XCTAssertNil(project.memberData.unreadMessagesCount)
     XCTAssertNil(project.memberData.unseenActivityCount)
 
@@ -184,7 +196,10 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
 
     XCTAssertEqual(lastAddOn.backersCount, 6)
     XCTAssertEqual(lastAddOn.convertedMinimum, 36.0)
-    XCTAssertEqual(lastAddOn.description, "First edition of the book.")
+    XCTAssertEqual(
+      lastAddOn.description,
+      "First edition of the book The Quiet / Erstausgabe des Buchs The Quiet."
+    )
     XCTAssertNil(lastAddOn.endsAt)
     XCTAssertFalse(lastAddOn.hasAddOns)
     let date: String? = "2021-11-01"
@@ -218,7 +233,10 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
 
     XCTAssertEqual(lastReward.backersCount, 1)
     XCTAssertEqual(lastReward.convertedMinimum, 599.0)
-    XCTAssertEqual(lastReward.description, "Signed first edition of the book.")
+    XCTAssertEqual(
+      lastReward.description,
+      "Signed first edition of the book The Quiet with a personal inscription and one of 10 limited edition gallery prints (numbered and signed) on Aluminium Dibond of a photo of your choice from the book (Format: 30x45cm) / Signierte Erstausgabe des Buchs The Quiet mit einer persönlichen WIdmung und einem von 10 limitierten Alu-Dibond Galleryprint (nummeriert und signiert) eines Fotos deiner Wahl aus dem Buch im Format 30 cm x 45 cm."
+    )
     XCTAssertNil(lastReward.endsAt)
     XCTAssertFalse(lastReward.hasAddOns)
     let date2: String? = "2021-11-01"
@@ -240,8 +258,8 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(lastReward.shippingRules?[1].location.localizedName, "Switzerland")
     XCTAssertEqual(lastReward.shippingRules?[1].location.name, "Switzerland")
     XCTAssertEqual(lastReward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
-    // TODO: Investigate in ticket above  XCTAssertFalse(lastReward.shipping.enabled)
-    // TODO: Investigate in ticket above XCTAssertEqual(lastReward.shipping.preference!, .none)
+    XCTAssertFalse(lastReward.shipping.enabled)
+    XCTAssertEqual(lastReward.shipping.preference!, .none)
     XCTAssertNil(lastReward.shippingRulesExpanded)
     XCTAssertNil(lastReward.shipping.location)
     XCTAssertNil(lastReward.shipping.summary)
