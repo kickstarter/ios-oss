@@ -434,6 +434,11 @@ public enum FetchAddsOnsQueryTemplate {
             "__typename": "ProjectActions",
             "displayConvertAmount": false
           },
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX"
+          ],
           "backersCount": 46,
           "backing": {
             "__typename": "Backing",
@@ -446,6 +451,7 @@ public enum FetchAddsOnsQueryTemplate {
             "__typename": "Category",
             "id": "Q2F0ZWdvcnktMjI=",
             "name": "Illustration",
+            "analyticsName": "Comic Books",
             "parentCategory": {
               "__typename": "Category",
               "id": "Q2F0ZWdvcnktMQ==",
@@ -460,6 +466,7 @@ public enum FetchAddsOnsQueryTemplate {
             "view_pledges",
             "fulfillment"
           ],
+          "commentsCount": 5,
           "country": {
             "__typename": "Country",
             "code": "AU",
@@ -513,6 +520,8 @@ public enum FetchAddsOnsQueryTemplate {
             "url": "https://ksr-qa-ugc.imgix.net/assets/033/395/412/618ee8bdcfcfd731cc0404270a79d98c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1620193138&auto=format&frame=1&q=92&s=518067d52053dd4f523b5ced0bb1487d"
           },
           "isProjectWeLove": true,
+          "isProjectOfTheDay": false,
+          "isLaunched": true,
           "isWatched": false,
           "launchedAt": 1619603758,
           "location": {
@@ -531,9 +540,16 @@ public enum FetchAddsOnsQueryTemplate {
             "currency": "AUD",
             "symbol": "$"
           },
+          "prelaunchActivated": true,
           "slug": "peppermintfox/peppermint-fox-press-notebooks-and-stationery",
           "state": "LIVE",
           "stateChangedAt": 1619603760,
+          "tags": [
+            {
+              "__typename": "Tag",
+              "name": "LGBTQIA+"
+            }
+          ],
           "url": "https://staging.kickstarter.com/projects/peppermintfox/peppermint-fox-press-notebooks-and-stationery",
           "usdExchangeRate": 0.74641181
         }
@@ -564,6 +580,11 @@ public enum FetchAddsOnsQueryTemplate {
       KsApi.GraphAPI.CollaboratorPermission.comment,
       KsApi.GraphAPI.CollaboratorPermission.viewPledges,
       KsApi.GraphAPI.CollaboratorPermission.fulfillment
+    ]
+    projectResultMap["availableCardTypes"] = [
+      KsApi.GraphAPI.CreditCardTypes.visa,
+      KsApi.GraphAPI.CreditCardTypes.amex,
+      KsApi.GraphAPI.CreditCardTypes.mastercard
     ]
     projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
     projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.aud

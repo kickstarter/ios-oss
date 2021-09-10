@@ -83,6 +83,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "__typename":"Category",
           "id":"Q2F0ZWdvcnktMjUw",
           "name":"Comic Books",
+          "analyticsName": "Comic Books",
           "parentCategory":{
              "__typename":"Category",
              "id":"Q2F0ZWdvcnktMw==",

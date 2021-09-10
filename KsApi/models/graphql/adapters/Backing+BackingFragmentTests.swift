@@ -414,6 +414,11 @@ private func backingDictionary() -> [String: Any] {
         "__typename": "ProjectActions",
         "displayConvertAmount": false
       },
+      "availableCardTypes": [
+          "VISA",
+          "MASTERCARD",
+          "AMEX"
+      ],
       "backersCount": 135,
       "backing": {
         "__typename": "Backing",
@@ -426,6 +431,7 @@ private func backingDictionary() -> [String: Any] {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktNDc=",
         "name": "Fiction",
+        "analyticsName": "Comic Books",
         "parentCategory": {
           "__typename": "Category",
           "id": "Q2F0ZWdvcnktMTg=",
@@ -440,6 +446,7 @@ private func backingDictionary() -> [String: Any] {
         "view_pledges",
         "fulfillment"
       ],
+      "commentsCount": 0,
       "country": {
         "__typename": "Country",
         "code": "US",
@@ -493,8 +500,10 @@ private func backingDictionary() -> [String: Any] {
         "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
       },
       "isProjectWeLove": true,
+      "isProjectOfTheDay": false,
       "isWatched": false,
       "launchedAt": 1617886771,
+      "isLaunched": true,
       "location": {
         "__typename": "Location",
         "country": "US",
@@ -511,11 +520,37 @@ private func backingDictionary() -> [String: Any] {
         "currency": "USD",
         "symbol": "$"
       },
+      "posts": {
+        "__typename": "PostConnection",
+        "totalCount": 3
+      },
+      "prelaunchActivated": true,
       "slug": "parliament-of-rooks/wee-william-witchling",
       "state": "LIVE",
       "stateChangedAt": 1617886773,
+      "tags": [
+        {
+          "__typename": "Tag",
+          "name": "LGBTQIA+"
+        }
+      ],
       "url": "https://staging.kickstarter.com/projects/parliament-of-rooks/wee-william-witchling",
-      "usdExchangeRate": 1
+      "usdExchangeRate": 1,
+      "video": {
+        "__typename": "Video",
+        "id": "VmlkZW8tMTExNjQ0OA==",
+        "videoSources": {
+          "__typename": "VideoSources",
+          "high": {
+            "__typename": "VideoSourceInfo",
+            "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+          },
+          "hls": {
+            "__typename": "VideoSourceInfo",
+            "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+          }
+        }
+      }
     },
     "reward": {
       "__typename": "Reward",
