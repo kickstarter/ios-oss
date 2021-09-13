@@ -478,6 +478,13 @@ public enum FetchAddsOnsQueryTemplate {
             "isEmailVerified": true,
             "isFollowing": true,
             "name": "Peppermint Fox",
+            "location": {
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Las Vegas, NV",
+              "id": "TG9jYXRpb24tMjQzNjcwNA==",
+              "name": "Las Vegas"
+            },
             "storedCards": {
               "__typename": "UserCreditCardTypeConnection",
               "nodes": [

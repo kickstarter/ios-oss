@@ -130,6 +130,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "isFollowing": true,
           "name":"Band of Bards Comics",
           "uid":"1007539002",
+          "location": {
+            "__typename": "Location",
+            "country": "US",
+            "countryName": "United States",
+            "displayableName": "Las Vegas, NV",
+            "id": "TG9jYXRpb24tMjQzNjcwNA==",
+            "name": "Las Vegas"
+          },
           "storedCards":{
              "__typename":"UserCreditCardTypeConnection",
              "nodes":[

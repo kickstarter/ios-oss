@@ -386,6 +386,14 @@ private func backingDictionary() -> [String: Any] {
       "isKsrAdmin": false,
       "isFollowing": true,
       "name": "Justin Swart",
+      "location": {
+        "__typename": "Location",
+        "country": "US",
+        "countryName": "United States",
+        "displayableName": "Las Vegas, NV",
+        "id": "TG9jYXRpb24tMjQzNjcwNA==",
+        "name": "Las Vegas"
+      },
       "storedCards": {
         "__typename": "UserCreditCardTypeConnection",
         "nodes": [
@@ -497,6 +505,14 @@ private func backingDictionary() -> [String: Any] {
         "isKsrAdmin": false,
         "isFollowing": true,
         "name": "Hugh Alan Samples",
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Las Vegas, NV",
+          "id": "TG9jYXRpb24tMjQzNjcwNA==",
+          "name": "Las Vegas"
+        },
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
           "nodes": [

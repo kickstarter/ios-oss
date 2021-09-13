@@ -21,7 +21,7 @@ extension User {
       isAdmin: self.isAdmin(userFragment: userFragment),
       isEmailVerified: self.isEmailVerified(userFragment: userFragment),
       isFriend: userFragment.isFollowing,
-      location: nil,
+      location: self.location(userFragment: userFragment),
       name: userFragment.name,
       needsFreshFacebookToken: nil,
       newsletters: NewsletterSubscriptions(),
@@ -81,5 +81,13 @@ extension User {
     }
 
     return isEmailVerified
+  }
+
+  private static func location(userFragment: GraphAPI.UserFragment) -> Location? {
+    guard let locationFragment = userFragment.location?.fragments.locationFragment else {
+      return nil
+    }
+
+    return Location.location(from: locationFragment)
   }
 }

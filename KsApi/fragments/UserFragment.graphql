@@ -16,6 +16,9 @@ fragment UserFragment on User {
   isFacebookConnected
   isKsrAdmin
   isFollowing
+  location {
+    ...LocationFragment
+  }
   name
   uid
   storedCards @include(if: $withStoredCards) {

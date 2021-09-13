@@ -48,6 +48,14 @@ public enum CommentFragmentTemplate {
         "isKsrAdmin": false,
         "isFollowing": true,
         "hasPassword": false,
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Las Vegas, NV",
+          "id": "TG9jYXRpb24tMjQzNjcwNA==",
+          "name": "Las Vegas"
+        },
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
           "nodes": [

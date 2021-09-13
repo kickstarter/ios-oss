@@ -1305,6 +1305,13 @@ public enum FetchProjectQueryTemplate {
              "isKsrAdmin": true,
              "name":"Thea Schneider",
              "uid":"1532357997",
+             "location": {
+               "country": "US",
+               "countryName": "United States",
+               "displayableName": "Las Vegas, NV",
+               "id": "TG9jYXRpb24tMjQzNjcwNA==",
+               "name": "Las Vegas"
+             },
              "storedCards":{
                 "__typename":"UserCreditCardTypeConnection",
                 "nodes":[],

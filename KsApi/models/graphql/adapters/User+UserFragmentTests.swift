@@ -18,6 +18,9 @@ final class User_UserFragmentTests: XCTestCase {
     XCTAssertTrue(user!.facebookConnected!)
     XCTAssertTrue(user!.isFriend!)
     XCTAssertFalse(user!.isAdmin!)
-    XCTAssertFalse(user!.isAdmin!)
+    XCTAssertEqual(user!.location?.country, "US")
+    XCTAssertEqual(user!.location?.displayableName, "Las Vegas, NV")
+    XCTAssertEqual(user!.location?.name, "Las Vegas")
+    XCTAssertEqual(user!.location?.id, decompose(id: "TG9jYXRpb24tMjQzNjcwNA=="))
   }
 }

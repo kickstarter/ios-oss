@@ -3,8 +3,6 @@ import Apollo
 import XCTest
 
 final class Project_FetchProjectQueryDataTests: XCTestCase {
-  // TODO: Look into the `AssertNil` cases in this ticket: https://kickstarter.atlassian.net/browse/NTV-161 those are missing properties we are not correctly mapping from GQl to the V1 model or not part of the existing `ProjectQuery`
-
   /// `FetchProjectQueryBySlug` returns identical data.
   func testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(from: FetchProjectQueryTemplate.valid.data)
@@ -125,9 +123,13 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertFalse(project.creator.facebookConnected!)
     XCTAssertTrue(project.creator.isFriend!)
     XCTAssertTrue(project.creator.isAdmin!)
+    XCTAssertEqual(project.creator.location?.country, "US")
+    XCTAssertEqual(project.creator.location?.displayableName, "Las Vegas, NV")
+    XCTAssertEqual(project.creator.location?.id, decompose(id: "TG9jYXRpb24tMjQzNjcwNA=="))
+    XCTAssertEqual(project.creator.location?.name, "Las Vegas")
+    XCTAssertEqual(project.creator.location?.localizedName, "Las Vegas")
 
     // TODO: Missing user properties being returned by current v1 model (ie need to be filled in for GQL)
-    XCTAssertNil(project.creator.location)
     XCTAssertNil(project.creator.needsFreshFacebookToken)
     XCTAssertNil(project.creator.newsletters.arts)
     XCTAssertNil(project.creator.newsletters.games)

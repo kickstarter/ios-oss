@@ -4340,9 +4340,9 @@ public enum GraphAPI {
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       return document
@@ -4932,9 +4932,9 @@ public enum GraphAPI {
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + BackingFragment.fragmentDefinition)
@@ -5399,9 +5399,9 @@ public enum GraphAPI {
       document.append("\n" + CategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + BackingFragment.fragmentDefinition)
@@ -5859,6 +5859,7 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + CommentFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
@@ -6211,6 +6212,7 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + CommentFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
@@ -6582,6 +6584,7 @@ public enum GraphAPI {
     public var queryDocument: String {
       var document: String = operationDefinition
       document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       return document
     }
@@ -10932,6 +10935,10 @@ public enum GraphAPI {
         isFacebookConnected
         isKsrAdmin
         isFollowing
+        location {
+          __typename
+          ...LocationFragment
+        }
         name
         uid
         storedCards @include(if: $withStoredCards) {
@@ -10959,6 +10966,7 @@ public enum GraphAPI {
         GraphQLField("isFacebookConnected", type: .scalar(Bool.self)),
         GraphQLField("isKsrAdmin", type: .scalar(Bool.self)),
         GraphQLField("isFollowing", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("location", type: .object(Location.selections)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("uid", type: .nonNull(.scalar(String.self))),
         GraphQLBooleanCondition(variableName: "withStoredCards", inverted: false, selections: [
@@ -10973,8 +10981,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, name: String, uid: String, storedCards: StoredCard? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
+    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, location: Location? = nil, name: String, uid: String, storedCards: StoredCard? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -11115,6 +11123,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Where the user is based.
+    public var location: Location? {
+      get {
+        return (resultMap["location"] as? ResultMap).flatMap { Location(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "location")
+      }
+    }
+
     /// The user's provided name.
     public var name: String {
       get {
@@ -11220,6 +11238,62 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue, forKey: "errorReason")
+          }
+        }
+      }
+    }
+
+    public struct Location: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Location"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(LocationFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(country: String, countryName: String? = nil, displayableName: String, id: GraphQLID, name: String) {
+        self.init(unsafeResultMap: ["__typename": "Location", "country": country, "countryName": countryName, "displayableName": displayableName, "id": id, "name": name])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var locationFragment: LocationFragment {
+          get {
+            return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
           }
         }
       }
