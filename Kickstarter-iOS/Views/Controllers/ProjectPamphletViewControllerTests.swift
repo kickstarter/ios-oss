@@ -54,7 +54,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: backedProject
+      fetchProjectResult: .success(backedProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -87,7 +87,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: backedProject
+      fetchProjectResult: .success(backedProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -122,7 +122,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
 
     let mockService = MockService(
-      fetchProjectResponse: backedProject
+      fetchProjectResult: .success(backedProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -157,7 +157,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
 
     let mockService = MockService(
-      fetchProjectResponse: backedProject
+      fetchProjectResult: .success(backedProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -189,7 +189,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: backedProject
+      fetchProjectResult: .success(backedProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -220,7 +220,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
 
     let mockService = MockService(
-      fetchProjectResponse: liveProject
+      fetchProjectResult: .success(liveProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -250,7 +250,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: backedProject
+      fetchProjectResult: .success(backedProject)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -278,7 +278,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let config = Config.template
 
     let mockService = MockService(
-      fetchProjectError: .couldNotParseJSON
+      fetchProjectResult: .failure(.couldNotParseJSON)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in

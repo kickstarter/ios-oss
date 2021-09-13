@@ -1,0 +1,21 @@
+query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
+  me {
+    chosenCurrency
+  }
+  project(slug: $slug) {
+    ...ProjectFragment
+    addOns {
+      nodes {
+        ...RewardFragment
+      }
+    }
+    backing {
+      ...BackingFragment
+    }
+    rewards {
+      nodes {
+        ...RewardFragment
+      }
+    }
+  }
+}

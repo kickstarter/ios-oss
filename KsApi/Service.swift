@@ -336,7 +336,22 @@ public struct Service: ServiceType {
   }
 
   public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-    return request(.project(param))
+    switch (param.id, param.slug) {
+    case let (.some(projectId), _):
+      let query = GraphAPI.FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
+
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectProducer(from:))
+    case let (_, .some(projectSlug)):
+      let query = GraphAPI.FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
+
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectProducer(from:))
+    default:
+      return .empty
+    }
   }
 
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
@@ -398,11 +413,6 @@ public struct Service: ServiceType {
 
   public func fetchSurveyResponse(surveyResponseId id: Int) -> SignalProducer<SurveyResponse, ErrorEnvelope> {
     return request(.surveyResponse(surveyResponseId: id))
-  }
-
-  public func fetchUserProjectsBacked(paginationUrl url: String)
-    -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestPaginationDecodable(url)
   }
 
   public func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {

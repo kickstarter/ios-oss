@@ -37,7 +37,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -66,7 +66,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     Language.allLanguages.forEach { language in
@@ -111,7 +111,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       }
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -144,7 +144,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       }
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     Language.allLanguages.forEach { language in
@@ -182,7 +182,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -219,7 +219,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       }
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -240,7 +240,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.creator .~ user
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -269,7 +269,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.creator .~ user
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -298,7 +298,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .failed
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     Language.allLanguages.forEach { language in
@@ -320,7 +320,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let project = self.cosmicSurgery!
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
@@ -344,7 +344,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {

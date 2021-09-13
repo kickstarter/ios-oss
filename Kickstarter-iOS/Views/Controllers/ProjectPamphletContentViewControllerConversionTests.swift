@@ -35,7 +35,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
 
   func test_UKProject_USUser_USLocation() {
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "US") {
@@ -51,7 +51,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
 
   func test_UKProject_USUser_NonUSLocation() {
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "AU") {
@@ -72,7 +72,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "US") {
@@ -93,7 +93,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
@@ -125,7 +125,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.personalization.backing .~ backing
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
@@ -152,7 +152,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.convertedPledgedAmount .~ 49_500
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "SE") {
@@ -174,7 +174,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "US") {
@@ -196,7 +196,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "CA") {
@@ -218,7 +218,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
     let mockService = MockService(
-      fetchProjectResponse: self.cosmicSurgery
+      fetchProjectResult: .success(self.cosmicSurgery)
     )
 
     withEnvironment(apiService: mockService, countryCode: "XX") {

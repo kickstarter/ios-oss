@@ -87,14 +87,7 @@ public enum FetchUserBackingsQueryTemplate {
                     "name": "Theater"
                   ]
                 ],
-                "collaboratorPermissions": [
-                  "edit_project",
-                  "edit_faq",
-                  "post",
-                  "comment",
-                  "view_pledges",
-                  "fulfillment"
-                ],
+                "canComment": false,
                 "country": [
                   "__typename": "Country",
                   "code": "US",

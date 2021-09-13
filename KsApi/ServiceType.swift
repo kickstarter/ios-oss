@@ -171,7 +171,7 @@ public protocol ServiceType {
   func fetchMessageThreads(paginationUrl: String)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope>
 
-  /// Fetch the newest data for a particular project from its id.
+  /// Fetch the newest data for a particular project from its id or slug.
   func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetch a single project with the specified discovery params.
@@ -220,9 +220,6 @@ public protocol ServiceType {
 
   /// Fetches a project update draft.
   func fetchUpdateDraft(forProject project: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope>
-
-  /// Fetches more user backed projects.
-  func fetchUserProjectsBacked(paginationUrl url: String) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope>
 
   /// Fetch the newest data for a particular user.
   func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope>
