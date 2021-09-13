@@ -10929,6 +10929,8 @@ public enum GraphAPI {
         isCreator
         isDeliverable
         isEmailVerified
+        isFacebookConnected
+        isKsrAdmin
         name
         uid
         storedCards @include(if: $withStoredCards) {
@@ -10953,6 +10955,8 @@ public enum GraphAPI {
         GraphQLField("isCreator", type: .scalar(Bool.self)),
         GraphQLField("isDeliverable", type: .scalar(Bool.self)),
         GraphQLField("isEmailVerified", type: .scalar(Bool.self)),
+        GraphQLField("isFacebookConnected", type: .scalar(Bool.self)),
+        GraphQLField("isKsrAdmin", type: .scalar(Bool.self)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("uid", type: .nonNull(.scalar(String.self))),
         GraphQLBooleanCondition(variableName: "withStoredCards", inverted: false, selections: [
@@ -10967,8 +10971,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, name: String, uid: String, storedCards: StoredCard? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
+    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, name: String, uid: String, storedCards: StoredCard? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -11076,6 +11080,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "isEmailVerified")
+      }
+    }
+
+    /// Whether or not the user is connected to Facebook.
+    public var isFacebookConnected: Bool? {
+      get {
+        return resultMap["isFacebookConnected"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isFacebookConnected")
+      }
+    }
+
+    /// Whether or not you are a KSR admin.
+    public var isKsrAdmin: Bool? {
+      get {
+        return resultMap["isKsrAdmin"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isKsrAdmin")
       }
     }
 

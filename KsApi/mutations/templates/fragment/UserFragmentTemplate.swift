@@ -38,6 +38,8 @@ public enum UserFragmentTemplate {
        "isAppleConnected":true,
        "isEmailVerified":false,
        "isDeliverable":true,
+       "isFacebookConnected": true,
+       "isKsrAdmin": false,
        "hasPassword":false,
        "storedCards":{
           "__typename":"UserCreditCardTypeConnection",

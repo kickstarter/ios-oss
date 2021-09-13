@@ -21,6 +21,24 @@ extension User {
         return increment ? accum + 1 : accum
       }
     }
+    
+    var isFacebookConnected: Bool?
+    
+    if let facebookConnected = userFragment.isFacebookConnected {
+      isFacebookConnected = facebookConnected
+    }
+    
+    var isAdmin: Bool?
+    
+    if let ksrAdmin = userFragment.isKsrAdmin {
+      isAdmin = ksrAdmin
+    }
+    
+    var isEmailVerified: Bool?
+    
+    if let emailVerified = userFragment.isEmailVerified {
+      isEmailVerified = emailVerified
+    }
 
     return User(
       avatar: Avatar(
@@ -29,10 +47,10 @@ extension User {
         small: userFragment.imageUrl
       ),
       erroredBackingsCount: erroredBackingsCount == 0 ? nil : erroredBackingsCount,
-      facebookConnected: nil,
+      facebookConnected: isFacebookConnected,
       id: id,
-      isAdmin: nil,
-      isEmailVerified: nil,
+      isAdmin: isAdmin,
+      isEmailVerified: isEmailVerified,
       isFriend: nil,
       location: nil,
       name: userFragment.name,

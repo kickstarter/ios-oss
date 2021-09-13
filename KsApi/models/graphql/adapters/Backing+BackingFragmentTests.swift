@@ -382,6 +382,8 @@ private func backingDictionary() -> [String: Any] {
       "isCreator": false,
       "isDeliverable": true,
       "isEmailVerified": true,
+      "isFacebookConnected": true,
+      "isKsrAdmin": false,
       "name": "Justin Swart",
       "storedCards": {
         "__typename": "UserCreditCardTypeConnection",
@@ -490,6 +492,8 @@ private func backingDictionary() -> [String: Any] {
         "isCreator": null,
         "isDeliverable": true,
         "isEmailVerified": true,
+        "isFacebookConnected": true,
+        "isKsrAdmin": false,
         "name": "Hugh Alan Samples",
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
