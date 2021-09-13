@@ -121,6 +121,7 @@
 		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
 		06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */; };
 		06C38CBB26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */; };
+		06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */; };
 		06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F1269398CB00017845 /* UserFragment.graphql */; };
 		06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556DF269394B600017845 /* RewardFragment.graphql */; };
 		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
@@ -1853,6 +1854,7 @@
 		06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserProfile.graphql; sourceTree = "<group>"; };
 		06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
+		06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFragmentTemplate.swift; sourceTree = "<group>"; };
 		06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserStoredCardsFragment.graphql; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
@@ -3411,12 +3413,37 @@
 		066C0ADF26CB114A0048F4D8 /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				06D00FAC26EFA98500E11E38 /* query */,
+				06D00FAD26EFA98F00E11E38 /* fragment */,
+				06D00FAE26EFA99900E11E38 /* mutation */,
+			);
+			path = templates;
+			sourceTree = "<group>";
+		};
+		06D00FAC26EFA98500E11E38 /* query */ = {
+			isa = PBXGroup;
+			children = (
 				0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */,
 				06032A8926CEAD2F0013AAB9 /* FetchProjectCommentsQueryTemplate.swift */,
 				06032A8F26CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift */,
 				06032A9326CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift */,
 				06032A9526CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift */,
+			);
+			path = query;
+			sourceTree = "<group>";
+		};
+		06D00FAD26EFA98F00E11E38 /* fragment */ = {
+			isa = PBXGroup;
+			children = (
 				06032A8D26CEB3E50013AAB9 /* CommentFragmentTemplate.swift */,
+				06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */,
+			);
+			path = fragment;
+			sourceTree = "<group>";
+		};
+		06D00FAE26EFA99900E11E38 /* mutation */ = {
+			isa = PBXGroup;
+			children = (
 				066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */,
 				066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */,
 				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
@@ -3425,7 +3452,7 @@
 				066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */,
 				066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */,
 			);
-			path = templates;
+			path = mutation;
 			sourceTree = "<group>";
 		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
@@ -7097,6 +7124,7 @@
 				06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
 				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
 				06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */,
+				06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */,
 				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,

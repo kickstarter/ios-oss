@@ -7,13 +7,28 @@ extension User {
   static func user(from userFragment: GraphAPI.UserFragment) -> User? {
     guard let id = decompose(id: userFragment.id) else { return nil }
 
+    var erroredBackingsCount = 0
+    
+    if let erroredBackings = userFragment.backings?.nodes {
+      erroredBackingsCount = erroredBackings.reduce(0, { accum, backing in
+        
+        var increment = false
+        
+        if backing?.errorReason != nil {
+          increment = true
+        }
+        
+        return increment ? accum + 1 : accum
+      })
+    }
+    
     return User(
       avatar: Avatar(
         large: userFragment.imageUrl,
         medium: userFragment.imageUrl,
         small: userFragment.imageUrl
       ),
-      erroredBackingsCount: nil,
+      erroredBackingsCount: erroredBackingsCount,
       facebookConnected: nil,
       id: id,
       isAdmin: nil,

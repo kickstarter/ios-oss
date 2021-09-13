@@ -1,4 +1,9 @@
 fragment UserFragment on User {
+  backings {
+    nodes {
+      errorReason
+    }
+  }
   chosenCurrency
   email
   hasPassword

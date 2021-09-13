@@ -10913,6 +10913,13 @@ public enum GraphAPI {
       """
       fragment UserFragment on User {
         __typename
+        backings {
+          __typename
+          nodes {
+            __typename
+            errorReason
+          }
+        }
         chosenCurrency
         email
         hasPassword
@@ -10936,6 +10943,7 @@ public enum GraphAPI {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("backings", type: .object(Backing.selections)),
         GraphQLField("chosenCurrency", type: .scalar(String.self)),
         GraphQLField("email", type: .scalar(String.self)),
         GraphQLField("hasPassword", type: .scalar(Bool.self)),
@@ -10959,8 +10967,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, name: String, uid: String, storedCards: StoredCard? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
+    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, name: String, uid: String, storedCards: StoredCard? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -10969,6 +10977,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// A user's backings.
+    public var backings: Backing? {
+      get {
+        return (resultMap["backings"] as? ResultMap).flatMap { Backing(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "backings")
       }
     }
 
@@ -11088,6 +11106,86 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "storedCards")
+      }
+    }
+
+    public struct Backing: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["UserBackingsConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("nodes", type: .list(.object(Node.selections))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(nodes: [Node?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "UserBackingsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// A list of nodes.
+      public var nodes: [Node?]? {
+        get {
+          return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+        }
+        set {
+          resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+        }
+      }
+
+      public struct Node: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Backing"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("errorReason", type: .scalar(String.self)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(errorReason: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Backing", "errorReason": errorReason])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// The reason for an errored backing
+        public var errorReason: String? {
+          get {
+            return resultMap["errorReason"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "errorReason")
+          }
+        }
       }
     }
 
