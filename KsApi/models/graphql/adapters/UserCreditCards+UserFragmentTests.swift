@@ -31,6 +31,7 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
         isCreator: false,
         isDeliverable: true,
         isEmailVerified: true,
+        isFollowing: false,
         name: "Hari Singh",
         uid: "12345",
         storedCards: storedCardsFragment
@@ -63,6 +64,7 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
         isCreator: false,
         isDeliverable: true,
         isEmailVerified: true,
+        isFollowing: true,
         name: "Hari Singh",
         uid: "12345",
         storedCards: storedCardsFragment

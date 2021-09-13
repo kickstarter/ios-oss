@@ -127,6 +127,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "isEmailVerified":true,
           "isFacebookConnected": true,
           "isKsrAdmin": false,
+          "isFollowing": true,
           "name":"Band of Bards Comics",
           "uid":"1007539002",
           "storedCards":{

@@ -476,6 +476,7 @@ public enum FetchAddsOnsQueryTemplate {
             "isCreator": null,
             "isDeliverable": true,
             "isEmailVerified": true,
+            "isFollowing": true,
             "name": "Peppermint Fox",
             "storedCards": {
               "__typename": "UserCreditCardTypeConnection",

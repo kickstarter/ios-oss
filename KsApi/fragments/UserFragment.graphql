@@ -15,6 +15,7 @@ fragment UserFragment on User {
   isEmailVerified
   isFacebookConnected
   isKsrAdmin
+  isFollowing
   name
   uid
   storedCards @include(if: $withStoredCards) {

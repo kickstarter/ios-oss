@@ -16,6 +16,8 @@ final class User_UserFragmentTests: XCTestCase {
     XCTAssertEqual(user?.name, "Billy Bob")
     XCTAssertEqual(user?.erroredBackingsCount, 1)
     XCTAssertTrue(user!.facebookConnected!)
+    XCTAssertTrue(user!.isFriend!)
+    XCTAssertFalse(user!.isAdmin!)
     XCTAssertFalse(user!.isAdmin!)
   }
 }

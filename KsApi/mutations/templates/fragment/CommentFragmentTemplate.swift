@@ -46,6 +46,7 @@ public enum CommentFragmentTemplate {
         "isDeliverable": true,
         "isFacebookConnected": true,
         "isKsrAdmin": false,
+        "isFollowing": true,
         "hasPassword": false,
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",

@@ -1278,6 +1278,19 @@ public enum FetchProjectQueryTemplate {
           },
           "creator":{
              "__typename":"User",
+             "backings":{
+                "nodes":[
+                   {
+                      "errorReason":null
+                   },
+                   {
+                      "errorReason":"Something went wrong"
+                   },
+                   {
+                      "errorReason":null
+                   }
+                ]
+             },
              "chosenCurrency":null,
              "email":"theaschneider@gmx.net.ksr",
              "hasPassword":null,
@@ -1287,6 +1300,9 @@ public enum FetchProjectQueryTemplate {
              "isCreator":true,
              "isDeliverable":null,
              "isEmailVerified":true,
+             "isFacebookConnected": false,
+             "isFollowing": true,
+             "isKsrAdmin": true,
              "name":"Thea Schneider",
              "uid":"1532357997",
              "storedCards":{
