@@ -23,6 +23,23 @@ public enum CommentFragmentTemplate {
       "author": {
         "__typename": "User",
         "chosenCurrency": "USD",
+        "backings":{
+          "__typename": "UserBackingsConnection",
+          "nodes":[
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":"Something went wrong"
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              }
+          ]
+        },
         "email": "mubarak@kickstarter.com",
         "isAppleConnected": true,
         "isEmailVerified": false,

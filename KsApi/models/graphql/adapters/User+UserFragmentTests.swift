@@ -4,9 +4,8 @@ import XCTest
 
 final class User_UserFragmentTests: XCTestCase {
   func testUserCreation_FromFragment_Success() {
-
     let userFragment = GraphAPI.UserFragment(unsafeResultMap: UserFragmentTemplate.valid.data)
-    
+
     let user = User.user(from: userFragment)
 
     XCTAssertEqual(user?.id, 47)

@@ -357,6 +357,23 @@ private func backingDictionary() -> [String: Any] {
     "backer": {
       "__typename": "User",
       "chosenCurrency": "USD",
+      "backings":{
+        "__typename": "UserBackingsConnection",
+        "nodes":[
+            {
+              "__typename": "Backing",
+              "errorReason":null
+            },
+            {
+              "__typename": "Backing",
+              "errorReason":"Something went wrong"
+            },
+            {
+              "__typename": "Backing",
+              "errorReason":null
+            }
+        ]
+      },
       "email": "foo@bar.com",
       "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
@@ -448,6 +465,23 @@ private func backingDictionary() -> [String: Any] {
       "creator": {
         "__typename": "User",
         "chosenCurrency": "USD",
+        "backings":{
+          "__typename": "UserBackingsConnection",
+          "nodes":[
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":"Something went wrong"
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              }
+          ]
+        },
         "email": "foo@bar.com",
         "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",

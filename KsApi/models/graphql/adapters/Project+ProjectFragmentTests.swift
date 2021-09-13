@@ -100,6 +100,23 @@ final class Project_ProjectFragmentTests: XCTestCase {
        "creator":{
           "__typename":"User",
           "chosenCurrency":null,
+          "backings":{
+            "__typename": "UserBackingsConnection",
+            "nodes":[
+                {
+                  "__typename": "Backing",
+                  "errorReason":null
+                },
+                {
+                  "__typename": "Backing",
+                  "errorReason":"Something went wrong"
+                },
+                {
+                  "__typename": "Backing",
+                  "errorReason":null
+                }
+            ]
+          },
           "email":"tim_stolinski@yahoo.com.ksr",
           "hasPassword":null,
           "id":"VXNlci0xMDA3NTM5MDAy",
