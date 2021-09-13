@@ -7,6 +7,9 @@ final class RiskMessagingViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var bannerImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var bannerImageStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var bannerLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var cartIconImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var confirmButton: UIButton = { UIButton(frame: .zero) }()
   private lazy var footnoteLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var headingLabel: UILabel = { UILabel(frame: .zero) }()
@@ -24,6 +27,13 @@ final class RiskMessagingViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = ([self.cartIconImageView, self.bannerLabel], self.bannerImageStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.bannerImageStackView, self.bannerImageView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = (
       [self.bannerImageView, self.headingLabel, self.subtitleLabel, self.confirmButton, self.footnoteLabel],
       self.rootStackView
@@ -38,6 +48,15 @@ final class RiskMessagingViewController: UIViewController {
 
     _ = self.bannerImageView
       |> bannerImageViewStyle
+
+    _ = self.bannerImageStackView
+      |> bannerImageStackViewStyle
+
+    _ = self.bannerLabel
+      |> bannerLabelStyle
+
+    _ = self.cartIconImageView
+      |> cartIconImageViewStyle
 
     _ = self.confirmButton
       |> confirmButtonStyle
@@ -63,7 +82,8 @@ final class RiskMessagingViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.confirmButton.heightAnchor
         .constraint(equalToConstant: Styles.minTouchSize.height)
-        |> \.priority .~ .defaultHigh
+        |> \.priority .~ .defaultHigh,
+      self.cartIconImageView.widthAnchor.constraint(lessThanOrEqualToConstant: Styles.grid(4))
     ])
   }
 
@@ -93,8 +113,35 @@ private func attributedTextForFootnoteLabel() -> NSAttributedString {
 private let bannerImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> UIImageView.lens.contentMode .~ .scaleAspectFit
-    |> UIImageView.lens.image .~ image(named: "risk-messaging")
-    |> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
+    |> UIImageView.lens.image .~ image(named: "risk-messaging-banner")
+}
+
+private let bannerImageStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.distribution .~ .fill
+    |> \.alignment .~ .fill
+    |> \.spacing .~ Styles.grid(1)
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(10))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+// TODO: Internationalize text
+private let bannerLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_footnote().bolded
+    |> \.textColor .~ .ksr_white
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+    |> \.text .~ "Rewards aren't guaranteed."
+    |> \.textAlignment .~ .left
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+private let cartIconImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> UIImageView.lens.contentMode .~ .scaleAspectFit
+    |> UIImageView.lens.image .~ image(named: "risk-messaging-cart")
 }
 
 // TODO: Internationalize text
