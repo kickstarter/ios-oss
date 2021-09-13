@@ -22,6 +22,7 @@ fragment UserFragment on User {
   name
   needsFreshFacebookToken
   uid
+  showPublicProfile
   storedCards @include(if: $withStoredCards) {
     ...UserStoredCardsFragment
   }

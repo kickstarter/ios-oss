@@ -129,6 +129,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.creator.location?.name, "Las Vegas")
     XCTAssertEqual(project.creator.location?.localizedName, "Las Vegas")
     XCTAssertTrue(project.creator.needsFreshFacebookToken!)
+    XCTAssertTrue(project.creator.showPublicProfile!)
 
     // TODO: Missing user properties being returned by current v1 model (ie need to be filled in for GQL)
     XCTAssertNil(project.creator.newsletters.arts)
@@ -159,7 +160,6 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertNil(project.creator.notifications.mobileUpdates)
     XCTAssertNil(project.creator.notifications.postLikes)
     XCTAssertNil(project.creator.notifications.updates)
-    XCTAssertNil(project.creator.showPublicProfile)
     XCTAssertNil(project.creator.social)
     XCTAssertNil(project.creator.stats.backedProjectsCount)
     XCTAssertNil(project.creator.stats.createdProjectsCount)

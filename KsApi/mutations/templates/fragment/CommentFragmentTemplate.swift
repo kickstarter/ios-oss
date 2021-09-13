@@ -49,6 +49,7 @@ public enum CommentFragmentTemplate {
         "isFollowing": true,
         "hasPassword": false,
         "needsFreshFacebookToken": true,
+        "showPublicProfile": true,
         "location": {
           "__typename": "Location",
           "country": "US",

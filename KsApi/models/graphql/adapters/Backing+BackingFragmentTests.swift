@@ -387,6 +387,7 @@ private func backingDictionary() -> [String: Any] {
       "isFollowing": true,
       "name": "Justin Swart",
       "needsFreshFacebookToken": true,
+      "showPublicProfile": true,
       "location": {
         "__typename": "Location",
         "country": "US",
@@ -507,6 +508,7 @@ private func backingDictionary() -> [String: Any] {
         "isFollowing": true,
         "name": "Hugh Alan Samples",
         "needsFreshFacebookToken": true,
+        "showPublicProfile": true,
         "location": {
           "__typename": "Location",
           "country": "US",

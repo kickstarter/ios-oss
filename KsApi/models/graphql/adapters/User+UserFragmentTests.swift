@@ -23,5 +23,6 @@ final class User_UserFragmentTests: XCTestCase {
     XCTAssertEqual(user!.location?.name, "Las Vegas")
     XCTAssertEqual(user!.location?.id, decompose(id: "TG9jYXRpb24tMjQzNjcwNA=="))
     XCTAssertTrue(user!.needsFreshFacebookToken!)
+    XCTAssertTrue(user!.showPublicProfile!)
   }
 }

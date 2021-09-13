@@ -50,6 +50,7 @@ public enum UserFragmentTemplate {
          "name": "Las Vegas"
        },
        "needsFreshFacebookToken": true,
+       "showPublicProfile": true,
        "storedCards":{
           "__typename":"UserCreditCardTypeConnection",
           "nodes":[

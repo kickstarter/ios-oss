@@ -27,7 +27,7 @@ extension User {
       newsletters: NewsletterSubscriptions(),
       notifications: Notifications(),
       optedOutOfRecommendations: nil,
-      showPublicProfile: nil,
+      showPublicProfile: userFragment.showPublicProfile,
       social: nil,
       stats: Stats(),
       unseenActivityCount: nil
