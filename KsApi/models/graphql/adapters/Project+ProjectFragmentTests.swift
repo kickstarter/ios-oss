@@ -129,6 +129,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "isKsrAdmin": false,
           "isFollowing": true,
           "name":"Band of Bards Comics",
+          "needsFreshFacebookToken": false,
           "uid":"1007539002",
           "location": {
             "__typename": "Location",

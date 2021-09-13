@@ -48,6 +48,7 @@ public enum CommentFragmentTemplate {
         "isKsrAdmin": false,
         "isFollowing": true,
         "hasPassword": false,
+        "needsFreshFacebookToken": true,
         "location": {
           "__typename": "Location",
           "country": "US",

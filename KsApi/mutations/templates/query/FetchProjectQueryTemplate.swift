@@ -1304,6 +1304,7 @@ public enum FetchProjectQueryTemplate {
              "isFollowing": true,
              "isKsrAdmin": true,
              "name":"Thea Schneider",
+             "needsFreshFacebookToken": true,
              "uid":"1532357997",
              "location": {
                "country": "US",

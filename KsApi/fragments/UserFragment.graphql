@@ -20,6 +20,7 @@ fragment UserFragment on User {
     ...LocationFragment
   }
   name
+  needsFreshFacebookToken
   uid
   storedCards @include(if: $withStoredCards) {
     ...UserStoredCardsFragment

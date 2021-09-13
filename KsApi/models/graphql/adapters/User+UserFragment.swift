@@ -23,7 +23,7 @@ extension User {
       isFriend: userFragment.isFollowing,
       location: self.location(userFragment: userFragment),
       name: userFragment.name,
-      needsFreshFacebookToken: nil,
+      needsFreshFacebookToken: userFragment.needsFreshFacebookToken,
       newsletters: NewsletterSubscriptions(),
       notifications: Notifications(),
       optedOutOfRecommendations: nil,

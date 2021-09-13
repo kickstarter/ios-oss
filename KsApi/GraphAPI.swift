@@ -10940,6 +10940,7 @@ public enum GraphAPI {
           ...LocationFragment
         }
         name
+        needsFreshFacebookToken
         uid
         storedCards @include(if: $withStoredCards) {
           __typename
@@ -10968,6 +10969,7 @@ public enum GraphAPI {
         GraphQLField("isFollowing", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("location", type: .object(Location.selections)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        GraphQLField("needsFreshFacebookToken", type: .scalar(Bool.self)),
         GraphQLField("uid", type: .nonNull(.scalar(String.self))),
         GraphQLBooleanCondition(variableName: "withStoredCards", inverted: false, selections: [
           GraphQLField("storedCards", type: .object(StoredCard.selections)),
@@ -10981,8 +10983,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, location: Location? = nil, name: String, uid: String, storedCards: StoredCard? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
+    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, location: Location? = nil, name: String, needsFreshFacebookToken: Bool? = nil, uid: String, storedCards: StoredCard? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "uid": uid, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -11140,6 +11142,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "name")
+      }
+    }
+
+    /// Does the user to refresh their facebook token?
+    public var needsFreshFacebookToken: Bool? {
+      get {
+        return resultMap["needsFreshFacebookToken"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "needsFreshFacebookToken")
       }
     }
 
