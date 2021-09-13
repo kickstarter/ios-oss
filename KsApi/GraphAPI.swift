@@ -9066,6 +9066,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Available card types.
+    public var availableCardTypes: [CreditCardTypes] {
+      get {
+        return resultMap["availableCardTypes"]! as! [CreditCardTypes]
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "availableCardTypes")
+      }
+    }
+
     /// Total backers for the project
     public var backersCount: Int {
       get {
@@ -9891,6 +9901,262 @@ public enum GraphAPI {
           }
           set {
             resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct Post: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PostConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "PostConnection", "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+    }
+
+    public struct Tag: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Tag"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(name: String) {
+        self.init(unsafeResultMap: ["__typename": "Tag", "name": name])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Tag name.
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+    }
+
+    public struct Video: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Video"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("videoSources", type: .object(VideoSource.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, videoSources: VideoSource? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Video", "id": id, "videoSources": videoSources.flatMap { (value: VideoSource) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// A video's sources (hls, high, base)
+      public var videoSources: VideoSource? {
+        get {
+          return (resultMap["videoSources"] as? ResultMap).flatMap { VideoSource(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "videoSources")
+        }
+      }
+
+      public struct VideoSource: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["VideoSources"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("high", type: .object(High.selections)),
+            GraphQLField("hls", type: .object(Hl.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(high: High? = nil, hls: Hl? = nil) {
+          self.init(unsafeResultMap: ["__typename": "VideoSources", "high": high.flatMap { (value: High) -> ResultMap in value.resultMap }, "hls": hls.flatMap { (value: Hl) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var high: High? {
+          get {
+            return (resultMap["high"] as? ResultMap).flatMap { High(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "high")
+          }
+        }
+
+        public var hls: Hl? {
+          get {
+            return (resultMap["hls"] as? ResultMap).flatMap { Hl(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "hls")
+          }
+        }
+
+        public struct High: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["VideoSourceInfo"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("src", type: .scalar(String.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(src: String? = nil) {
+            self.init(unsafeResultMap: ["__typename": "VideoSourceInfo", "src": src])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var src: String? {
+            get {
+              return resultMap["src"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "src")
+            }
+          }
+        }
+
+        public struct Hl: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["VideoSourceInfo"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("src", type: .scalar(String.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(src: String? = nil) {
+            self.init(unsafeResultMap: ["__typename": "VideoSourceInfo", "src": src])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var src: String? {
+            get {
+              return resultMap["src"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "src")
+            }
           }
         }
       }
