@@ -52,6 +52,7 @@ final class SheetOverlayViewController: UIViewController {
       |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
   }
 
+  /// Enables tap to dismiss
   override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
     if touches.first?.view == self.view {
       self.dismiss(animated: true, completion: nil)

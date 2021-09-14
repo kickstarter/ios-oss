@@ -76,6 +76,11 @@ final class RiskMessagingViewController: UIViewController {
 
     _ = self.view
       |> \.backgroundColor .~ .ksr_white
+
+    // Prevents large amount of spacing on form sheet presented for iPads
+    self.headingLabel.setContentHuggingPriority(.required, for: .vertical)
+    self.subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
+    self.footnoteLabel.setContentHuggingPriority(.required, for: .vertical)
   }
 
   private func setupConstraints() {
@@ -112,7 +117,7 @@ private func attributedTextForFootnoteLabel() -> NSAttributedString {
 
 private let bannerImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> UIImageView.lens.contentMode .~ .scaleAspectFit
+    |> UIImageView.lens.contentMode .~ .scaleAspectFill
     |> UIImageView.lens.image .~ image(named: "risk-messaging-banner")
 }
 
