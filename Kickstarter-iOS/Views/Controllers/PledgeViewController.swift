@@ -7,6 +7,7 @@ import UIKit
 private enum Layout {
   enum Style {
     static let cornerRadius: CGFloat = Styles.grid(2)
+    static let modalHeightMultiplier: CGFloat = 0.65
   }
 
   enum Margin {
@@ -479,10 +480,9 @@ final class PledgeViewController: UIViewController,
   }
 
   private func goToRiskMessagingModal() {
-    let viewController = UIViewController()
-    viewController.view.backgroundColor = .red
-    self.present(viewController, animated: true)
-    // TODO: Implement this after designs are introduced
+    let viewController = RiskMessagingViewController()
+    let offset = self.view.bounds.height * Layout.Style.modalHeightMultiplier
+    self.presentViewControllerWithSheetOverlay(viewController, offset: offset)
   }
 
   private func goToThanks(data: ThanksPageData) {

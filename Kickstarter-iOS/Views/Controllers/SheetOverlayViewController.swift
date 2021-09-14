@@ -2,6 +2,10 @@ import Library
 import Prelude
 import UIKit
 
+private enum SheetOverlayViewControllerStyles {
+  static let topAnchorMargin: CGFloat = 65
+}
+
 /**
  SheetOverlayViewController is intended to be used as a container for another view controller
  that renders as a "sheet" or "card" that partially covers the content beneath it.
@@ -48,6 +52,13 @@ final class SheetOverlayViewController: UIViewController {
       |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
   }
 
+  /// Enables tap to dismiss
+  override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
+    if touches.first?.view == self.view {
+      self.dismiss(animated: true, completion: nil)
+    }
+  }
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
@@ -80,11 +91,16 @@ final class SheetOverlayViewController: UIViewController {
     NSLayoutConstraint.activate([
       childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
       childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      childView.widthAnchor.constraint(equalToConstant: portraitWidth)
+      childView.widthAnchor.constraint(equalToConstant: portraitWidth),
+      childView.topAnchor
+        .constraint(
+          greaterThanOrEqualTo: self.view.topAnchor,
+          constant: SheetOverlayViewControllerStyles.topAnchorMargin
+        )
     ])
 
     self.topAnchorConstraint = childView.topAnchor.constraint(
-      equalTo: self.view.topAnchor,
+      lessThanOrEqualTo: self.view.topAnchor,
       constant: offset
     ) |> \.isActive .~ true
   }
