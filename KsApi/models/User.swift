@@ -54,34 +54,34 @@ public struct User {
   }
 
   public struct Notifications {
-    public var backings: Bool?
-    public var commentReplies: Bool?
-    public var comments: Bool?
-    public var creatorDigest: Bool?
-    public var creatorTips: Bool?
-    public var follower: Bool?
-    public var friendActivity: Bool?
-    public var messages: Bool?
-    public var mobileBackings: Bool?
-    public var mobileComments: Bool?
-    public var mobileFollower: Bool?
-    public var mobileFriendActivity: Bool?
-    public var mobileMarketingUpdate: Bool?
-    public var mobileMessages: Bool?
-    public var mobilePostLikes: Bool?
-    public var mobileUpdates: Bool?
-    public var postLikes: Bool?
-    public var updates: Bool?
+    public var backings: Bool? // backings
+    public var commentReplies: Bool? // comment_replies
+    public var comments: Bool? // comments
+    public var creatorDigest: Bool? // creator_digest
+    public var creatorTips: Bool? // creator_edu
+    public var follower: Bool? // follower
+    public var friendActivity: Bool? // friend_activity
+    public var messages: Bool? // messages
+    public var mobileBackings: Bool? // mobile backings
+    public var mobileComments: Bool? // mobile comments
+    public var mobileFollower: Bool? // mobile follower
+    public var mobileFriendActivity: Bool? // mobile friend activity
+    public var mobileMarketingUpdate: Bool? // mobile marketing update
+    public var mobileMessages: Bool? // mobile messages
+    public var mobilePostLikes: Bool? // missing
+    public var mobileUpdates: Bool? // mobile updates
+    public var postLikes: Bool? // unmapped
+    public var updates: Bool? // updates
   }
 
   public struct Stats {
-    public var backedProjectsCount: Int?
-    public var createdProjectsCount: Int?
+    public var backedProjectsCount: Int? //
+    public var createdProjectsCount: Int? //
     public var draftProjectsCount: Int?
-    public var memberProjectsCount: Int?
-    public var starredProjectsCount: Int?
-    public var unansweredSurveysCount: Int?
-    public var unreadMessagesCount: Int?
+    public var memberProjectsCount: Int? //
+    public var starredProjectsCount: Int? //
+    public var unansweredSurveysCount: Int? //
+    public var unreadMessagesCount: Int? // not exact
   }
 
   public var isCreator: Bool {

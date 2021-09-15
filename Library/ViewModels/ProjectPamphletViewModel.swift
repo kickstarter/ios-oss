@@ -280,11 +280,21 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
+  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+
+  let projectWithFriendsProducer = SignalProducer.combineLatest(projectProducer, projectFriendsProducer)
+    .switchMap { project, users -> SignalProducer<Project, ErrorEnvelope> in
+      let projectUpdatedWithFriends = project |> \.personalization.friends .~ users
+      
+      return SignalProducer(value: projectUpdatedWithFriends)
+    }
+
   if let project = projectOrParam.left, shouldPrefix {
     return projectProducer.prefix(value: project)
   }
 
-  return projectProducer
+  return projectWithFriendsProducer
 }
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {

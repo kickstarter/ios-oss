@@ -354,6 +354,25 @@ public struct Service: ServiceType {
     }
   }
 
+  public func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope> {
+    switch (param.id, param.slug) {
+    case let (.some(projectId), _):
+      let query = GraphAPI.FetchProjectFriendsByIdQuery(projectId: projectId, withStoredCards: false)
+
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectFriendsProducer(from:))
+    case let (_, .some(projectSlug)):
+      let query = GraphAPI.FetchProjectFriendsBySlugQuery(slug: projectSlug, withStoredCards: false)
+
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectFriendsProducer(from:))
+    default:
+      return .empty
+    }
+  }
+
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
     return request(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
   }

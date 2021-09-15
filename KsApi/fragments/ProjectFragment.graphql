@@ -20,11 +20,6 @@ fragment ProjectFragment on Project {
   description
   finalCollectionDate
   fxRate
-  friends {
-    nodes {
-      ...UserFragment
-    }
-  }
   goal {
     ...MoneyFragment
   }

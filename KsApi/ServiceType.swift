@@ -174,6 +174,9 @@ public protocol ServiceType {
   /// Fetch the newest data for a particular project from its id or slug.
   func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope>
 
+  /// Fetch a project's friendly backers from its id or slug.
+  func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>
+
   /// Fetch a single project with the specified discovery params.
   func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope>
 

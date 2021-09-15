@@ -29,10 +29,6 @@ extension Project {
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: projectFragment.url + "/posts")
     )
 
-    let friends = projectFragment.friends?.nodes?
-      .compactMap { $0?.fragments.userFragment }
-      .compactMap { User.user(from: $0) } ?? []
-
     let availableCardTypes = projectFragment.availableCardTypes.compactMap { $0.rawValue }
 
     let displayPrelaunch = !projectFragment.isLaunched
@@ -45,6 +41,10 @@ extension Project {
 
         return nil
       }
+    /**
+     NOTE: Project friends fetched by
+     `fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>`
+     */
 
     return Project(
       availableCardTypes: availableCardTypes,
@@ -61,7 +61,7 @@ extension Project {
       personalization: projectPersonalization(
         isStarred: projectFragment.isWatched,
         backing: backing,
-        friends: friends
+        friends: []
       ),
       photo: photo,
       prelaunchActivated: projectFragment.prelaunchActivated,

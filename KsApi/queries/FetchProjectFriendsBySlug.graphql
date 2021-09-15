@@ -1,0 +1,9 @@
+query FetchProjectFriendsBySlug($slug: String!, $withStoredCards: Boolean!) {
+  project(slug: $slug) {
+    friends {
+      nodes {
+        ...UserFragment
+      }
+    }
+  }
+}
