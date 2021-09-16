@@ -42,7 +42,7 @@ extension ApolloClientType {
     mutation _: Mutation,
     result: Result<Data, ErrorEnvelope>?
   ) -> SignalProducer<Data, ErrorEnvelope> {
-    return producer(for: result)
+    producer(for: result)
   }
 
   public func data<Data: Decodable>(from producer: SignalProducer<Data, ErrorEnvelope>) -> Data? {

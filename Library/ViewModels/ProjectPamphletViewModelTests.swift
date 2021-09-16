@@ -80,8 +80,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
     let friends = [User.template]
     let refTag = RefTag.category
-    withEnvironment(apiService: MockService(fetchProjectResult: .success(project),
-                                            fetchProjectFriendsResult: .success(friends))) {
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -109,12 +111,14 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
     }
   }
-  
+
   func testConfigureChildViewControllersWithProject_FailedProjectFriends_ConfiguredWithProject() {
     let project = Project.template
     let refTag = RefTag.category
-    withEnvironment(apiService: MockService(fetchProjectResult: .success(project),
-                                            fetchProjectFriendsResult: .failure(.couldNotParseJSON))) {
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchProjectFriendsResult: .failure(.couldNotParseJSON)
+    )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -131,24 +135,26 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
 
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
       self.scheduler.advance()
 
-      self.configureChildViewControllersWithProject.assertValues([project, project])
-      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
     }
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
     let project = .template |> Project.lens.id .~ 42
     let friends = [User.template]
-    
-    withEnvironment(apiService: MockService(fetchProjectResult: .success(project),
-                                            fetchProjectFriendsResult: .success(friends))) {
+
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
       self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
@@ -175,6 +181,49 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureChildViewControllersWithProject.assertValues([project, project, project])
       self.configureChildViewControllersWithRefTag.assertValues([nil, nil, nil])
+    }
+  }
+
+  func testConfiguredProject_WithFriends_Succcessfully() {
+    let project = Project.template
+    let friends = [User.template, User.brando]
+    let refTag = RefTag.category
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      let projectWithFriends = project |> \.personalization.friends .~ friends
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        self.configureChildViewControllersWithProject.values.last!.personalization.friends,
+        friends
+      )
+      self.configureChildViewControllersWithProject.assertValues([projectWithFriends, projectWithFriends])
+    }
+  }
+
+  func testConfiguredProject_WithFriends_Unsucccessfully() {
+    let project = Project.template
+    let refTag = RefTag.category
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchProjectFriendsResult: .failure(.couldNotParseJSON)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertTrue(self.configureChildViewControllersWithProject.values.last!.personalization.friends!
+        .isEmpty)
+      self.configureChildViewControllersWithProject.assertValues([project, project])
     }
   }
 
@@ -376,7 +425,10 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testTracksRefTag_WithBadData() {
     let project = Project.template
 
-    withEnvironment(apiService: MockService(fetchProjectResult: .success(project))) {
+    withEnvironment(apiService: MockService(
+      fetchProjectResult: .success(project),
+      fetchProjectFriendsResult: .success([.template])
+    )) {
       self.vm.inputs.configureWith(
         projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
       )
@@ -618,8 +670,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ Backing.template
       |> Project.lens.personalization.isBacking .~ true
 
-    let mockService = MockService(fetchProjectResult: .success(projectFull),
-                                  fetchProjectFriendsResult: .success(friends))
+    let mockService = MockService(
+      fetchProjectResult: .success(projectFull),
+      fetchProjectFriendsResult: .success(friends)
+    )
 
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -645,8 +699,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResult: .success(backedProject),
-                              fetchProjectFriendsResult: .success(friends)),
+      apiService: MockService(
+        fetchProjectResult: .success(backedProject),
+        fetchProjectFriendsResult: .success(friends)
+      ),
       config: config,
       mainBundle: releaseBundle
     ) {
@@ -700,8 +756,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.amount .~ 15.0)
       |> Project.lens.personalization.isBacking .~ true
 
-    let mockService = MockService(fetchProjectResult: .success(projectFull),
-                                  fetchProjectFriendsResult: .success(friends))
+    let mockService = MockService(
+      fetchProjectResult: .success(projectFull),
+      fetchProjectFriendsResult: .success(friends)
+    )
 
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -726,8 +784,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResult: .success(updatedProject),
-                              fetchProjectFriendsResult: .success(friends)),
+      apiService: MockService(
+        fetchProjectResult: .success(updatedProject),
+        fetchProjectFriendsResult: .success(friends)
+      ),
       config: config,
       mainBundle: releaseBundle
     ) {
@@ -780,8 +840,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     let projectFull2 = Project.template
       |> \.id .~ 3
 
-    let mockService = MockService(fetchProjectResult: .success(projectFull),
-                                  fetchProjectFriendsResult: .success(friends))
+    let mockService = MockService(
+      fetchProjectResult: .success(projectFull),
+      fetchProjectFriendsResult: .success(friends)
+    )
 
     withEnvironment(apiService: mockService, config: config) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -806,8 +868,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResult: .success(projectFull2),
-                              fetchProjectFriendsResult: .success(friends)),
+      apiService: MockService(
+        fetchProjectResult: .success(projectFull2),
+        fetchProjectFriendsResult: .success(friends)
+      ),
       config: config
     ) {
       self.vm.inputs.pledgeRetryButtonTapped()

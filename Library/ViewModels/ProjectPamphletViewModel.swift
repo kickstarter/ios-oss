@@ -95,7 +95,21 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           .materialize()
       }
 
+    let projectFriends = MutableProperty([User]())
+
+    projectFriends <~ self.configDataProperty.signal.skipNil()
+      .switchMap { projectParamAndRefTag -> SignalProducer<[User], Never> in
+        let (projectOrParam, _) = projectParamAndRefTag
+        return fetchProjectFriends(projectOrParam: projectOrParam).demoteErrors()
+      }
+
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
+      .map { project, refTag -> (Project, RefTag?) in
+        let updatedProjectWithFriends = project |> Project.lens.personalization.friends .~ projectFriends
+          .value
+
+        return (updatedProjectWithFriends, refTag)
+      }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -273,6 +287,16 @@ private func layoutConstraintConstant(
   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 
+private func fetchProjectFriends(projectOrParam: Either<Project, Param>)
+  -> SignalProducer<[User], ErrorEnvelope> {
+  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+
+  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+
+  return projectFriendsProducer
+}
+
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
@@ -280,21 +304,11 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
-  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param)
-    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-
-  let projectWithFriendsProducer = SignalProducer.combineLatest(projectProducer, projectFriendsProducer)
-    .switchMap { project, users -> SignalProducer<Project, ErrorEnvelope> in
-      let projectUpdatedWithFriends = project |> \.personalization.friends .~ users
-      
-      return SignalProducer(value: projectUpdatedWithFriends)
-    }
-
   if let project = projectOrParam.left, shouldPrefix {
     return projectProducer.prefix(value: project)
   }
 
-  return projectWithFriendsProducer
+  return projectProducer
 }
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
