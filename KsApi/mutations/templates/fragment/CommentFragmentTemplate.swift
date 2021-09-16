@@ -40,6 +40,24 @@ public enum CommentFragmentTemplate {
               }
           ]
         },
+        "backingsCount": 3,
+        "createdProjects": {
+          "__typename": "UserCreatedProjectsConnection",
+          "totalCount": 16
+        },
+        "membershipProjects":{
+           "__typename":"MembershipProjectsConnection",
+           "totalCount":10
+        },
+        "savedProjects":{
+           "__typename":"UserSavedProjectsConnection",
+           "totalCount":11
+        },
+        "surveyResponses": {
+           "__typename":"SurveyResponsesConnection",
+           "totalCount": 2
+        },
+        "optedOutOfRecommendations":true,
         "email": "mubarak@kickstarter.com",
         "isAppleConnected": true,
         "isEmailVerified": false,
@@ -47,8 +65,13 @@ public enum CommentFragmentTemplate {
         "isFacebookConnected": true,
         "isKsrAdmin": false,
         "isFollowing": true,
+        "isSocializing": false,
         "hasPassword": false,
         "needsFreshFacebookToken": true,
+        "newsletterSubscriptions": null,
+        "notifications": null,
+        "hasUnreadMessages": true,
+        "hasUnseenActivity": true,
         "showPublicProfile": true,
         "location": {
           "__typename": "Location",

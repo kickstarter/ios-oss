@@ -28,6 +28,7 @@ public enum FetchProjectFriendsQueryTemplate {
                    "__typename":"User",
                    "chosenCurrency":"USD",
                    "email":"foo@bar.com",
+                   "backingsCount": 0,
                    "hasPassword":true,
                    "id":"VXNlci0xNzA1MzA0MDA2",
                    "imageUrl":"https://ksr-qa-ugc.imgix.net/assets/033/090/101/8667751e512228a62d426c77f6eb8a0b_original.jpg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1618227451&auto=format&frame=1&q=92&s=36de925b6797139e096d7b6219f743d0",
@@ -74,6 +75,7 @@ public enum FetchProjectFriendsQueryTemplate {
                          }
                       ]
                    },
+                   "backingsCount": 3,
                    "chosenCurrency":null,
                    "email":"theaschneider@gmx.net.ksr",
                    "hasPassword":null,
@@ -112,7 +114,7 @@ public enum FetchProjectFriendsQueryTemplate {
     """
 
     let data = Data(json.utf8)
-    var resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+    let resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
 
     return resultMap
   }

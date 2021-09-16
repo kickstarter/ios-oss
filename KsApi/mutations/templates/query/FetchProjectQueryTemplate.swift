@@ -1291,6 +1291,7 @@ public enum FetchProjectQueryTemplate {
                    }
                 ]
              },
+             "backingsCount": 3,
              "chosenCurrency":null,
              "email":"theaschneider@gmx.net.ksr",
              "hasPassword":null,
@@ -1314,11 +1315,101 @@ public enum FetchProjectQueryTemplate {
                "id": "TG9jYXRpb24tMjQzNjcwNA==",
                "name": "Las Vegas"
              },
+             "newsletterSubscriptions": {
+                "artsCultureNewsletter": true,
+                "filmNewsletter": false,
+                "musicNewsletter": false,
+                "inventNewsletter": false,
+                "publishingNewsletter": false,
+                "promoNewsletter": false,
+                "weeklyNewsletter": false,
+                "happeningNewsletter": false,
+                "gamesNewsletter": false,
+                "alumniNewsletter": true
+             },
+             "isSocializing": true,
+             "notifications": [
+              {
+                "topic": "messages",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "backings",
+                "email": false,
+                "mobile": true
+              },
+              {
+                "topic": "creator_digest",
+                "email": true,
+                "mobile": false
+              },
+              {
+                "topic": "updates",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "follower",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "friend_activity",
+                "email": true,
+                "mobile": false
+              },
+              {
+                "topic": "friend_signup",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "comments",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "comment_replies",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "creator_edu",
+                "email": true,
+                "mobile": true
+              },
+              {
+                "topic": "marketing_update",
+                "email": true,
+                "mobile": false
+              },
+              {
+                "topic": "project_launch",
+                "email": true,
+                "mobile": true
+              }
+             ],
+             "createdProjects": {
+               "totalCount": 16
+             },
+             "membershipProjects": {
+               "totalCount": 10
+             },
+             "savedProjects": {
+               "totalCount": 11
+             },
              "storedCards":{
                 "__typename":"UserCreditCardTypeConnection",
                 "nodes":[],
                 "totalCount":0
-             }
+             },
+              "surveyResponses": {
+                "__typename": "SurveyResponsesConnection",
+                "totalCount": 2
+              },
+              "hasUnreadMessages": false,
+              "hasUnseenActivity": true
           },
           "currency":"EUR",
           "deadlineAt":1628622000,
@@ -1398,11 +1489,13 @@ public enum FetchProjectQueryTemplate {
      */
 
     guard var projectResultMap = resultMap["project"] as? [String: Any],
-      let countryResultMap = projectResultMap["country"] as? [String: Any] else {
+      let countryResultMap = projectResultMap["country"] as? [String: Any],
+      let creatorResultMap = projectResultMap["creator"] as? [String: Any] else {
       return resultMap
     }
 
     var updatedCountryResultMap = countryResultMap
+    var updatedCreatorResultMap = creatorResultMap
     updatedCountryResultMap["code"] = KsApi.GraphAPI.CountryCode.de
     projectResultMap["country"] = updatedCountryResultMap
     projectResultMap["deadlineAt"] = "1628622000"
@@ -1415,6 +1508,71 @@ public enum FetchProjectQueryTemplate {
     ]
     projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
     projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.eur
+
+    updatedCreatorResultMap["notifications"] = [
+      [
+        "topic": GraphAPI.UserNotificationTopic.messages,
+        "email": true,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.backings,
+        "email": false,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.creatorDigest,
+        "email": true,
+        "mobile": false
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.updates,
+        "email": true,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.follower,
+        "email": true,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.friendActivity,
+        "email": true,
+        "mobile": false
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.friendSignup,
+        "email": true,
+        "mobile": false
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.comments,
+        "email": true,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.commentReplies,
+        "email": true,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.creatorEdu,
+        "email": true,
+        "mobile": true
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.marketingUpdate,
+        "email": true,
+        "mobile": false
+      ],
+      [
+        "topic": GraphAPI.UserNotificationTopic.projectLaunch,
+        "email": true,
+        "mobile": true
+      ]
+    ]
+
+    projectResultMap["creator"] = updatedCreatorResultMap
 
     resultMap["project"] = projectResultMap
 

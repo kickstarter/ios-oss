@@ -2665,6 +2665,112 @@ public enum GraphAPI {
     }
   }
 
+  /// User notification topics
+  public enum UserNotificationTopic: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    case messages
+    case backings
+    case creatorDigest
+    case updates
+    case follower
+    case friendActivity
+    case friendSignup
+    case comments
+    case commentReplies
+    case postLikes
+    case campusDigest
+    case campusPosts
+    case creatorEdu
+    case marketingUpdate
+    case projectLaunch
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "messages": self = .messages
+        case "backings": self = .backings
+        case "creator_digest": self = .creatorDigest
+        case "updates": self = .updates
+        case "follower": self = .follower
+        case "friend_activity": self = .friendActivity
+        case "friend_signup": self = .friendSignup
+        case "comments": self = .comments
+        case "comment_replies": self = .commentReplies
+        case "post_likes": self = .postLikes
+        case "campus_digest": self = .campusDigest
+        case "campus_posts": self = .campusPosts
+        case "creator_edu": self = .creatorEdu
+        case "marketing_update": self = .marketingUpdate
+        case "project_launch": self = .projectLaunch
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .messages: return "messages"
+        case .backings: return "backings"
+        case .creatorDigest: return "creator_digest"
+        case .updates: return "updates"
+        case .follower: return "follower"
+        case .friendActivity: return "friend_activity"
+        case .friendSignup: return "friend_signup"
+        case .comments: return "comments"
+        case .commentReplies: return "comment_replies"
+        case .postLikes: return "post_likes"
+        case .campusDigest: return "campus_digest"
+        case .campusPosts: return "campus_posts"
+        case .creatorEdu: return "creator_edu"
+        case .marketingUpdate: return "marketing_update"
+        case .projectLaunch: return "project_launch"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: UserNotificationTopic, rhs: UserNotificationTopic) -> Bool {
+      switch (lhs, rhs) {
+        case (.messages, .messages): return true
+        case (.backings, .backings): return true
+        case (.creatorDigest, .creatorDigest): return true
+        case (.updates, .updates): return true
+        case (.follower, .follower): return true
+        case (.friendActivity, .friendActivity): return true
+        case (.friendSignup, .friendSignup): return true
+        case (.comments, .comments): return true
+        case (.commentReplies, .commentReplies): return true
+        case (.postLikes, .postLikes): return true
+        case (.campusDigest, .campusDigest): return true
+        case (.campusPosts, .campusPosts): return true
+        case (.creatorEdu, .creatorEdu): return true
+        case (.marketingUpdate, .marketingUpdate): return true
+        case (.projectLaunch, .projectLaunch): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [UserNotificationTopic] {
+      return [
+        .messages,
+        .backings,
+        .creatorDigest,
+        .updates,
+        .follower,
+        .friendActivity,
+        .friendSignup,
+        .comments,
+        .commentReplies,
+        .postLikes,
+        .campusDigest,
+        .campusPosts,
+        .creatorEdu,
+        .marketingUpdate,
+        .projectLaunch,
+      ]
+    }
+  }
+
   public final class CancelBackingMutation: GraphQLMutation {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -11219,9 +11325,16 @@ public enum GraphAPI {
             errorReason
           }
         }
+        backingsCount
         chosenCurrency
+        createdProjects {
+          __typename
+          totalCount
+        }
         email
         hasPassword
+        hasUnreadMessages
+        hasUnseenActivity
         id
         imageUrl: imageUrl(blur: false, width: 1024)
         isAppleConnected
@@ -11231,18 +11344,51 @@ public enum GraphAPI {
         isFacebookConnected
         isKsrAdmin
         isFollowing
+        isSocializing
         location {
           __typename
           ...LocationFragment
         }
+        membershipProjects {
+          __typename
+          totalCount
+        }
         name
         needsFreshFacebookToken
-        uid
+        newsletterSubscriptions {
+          __typename
+          artsCultureNewsletter
+          filmNewsletter
+          musicNewsletter
+          inventNewsletter
+          gamesNewsletter
+          publishingNewsletter
+          promoNewsletter
+          weeklyNewsletter
+          happeningNewsletter
+          alumniNewsletter
+        }
+        notifications {
+          __typename
+          email
+          mobile
+          topic
+        }
+        optedOutOfRecommendations
         showPublicProfile
+        savedProjects {
+          __typename
+          totalCount
+        }
         storedCards @include(if: $withStoredCards) {
           __typename
           ...UserStoredCardsFragment
         }
+        surveyResponses(answered: false) {
+          __typename
+          totalCount
+        }
+        uid
       }
       """
 
@@ -11252,9 +11398,13 @@ public enum GraphAPI {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("backings", type: .object(Backing.selections)),
+        GraphQLField("backingsCount", type: .nonNull(.scalar(Int.self))),
         GraphQLField("chosenCurrency", type: .scalar(String.self)),
+        GraphQLField("createdProjects", type: .object(CreatedProject.selections)),
         GraphQLField("email", type: .scalar(String.self)),
         GraphQLField("hasPassword", type: .scalar(Bool.self)),
+        GraphQLField("hasUnreadMessages", type: .scalar(Bool.self)),
+        GraphQLField("hasUnseenActivity", type: .scalar(Bool.self)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("imageUrl", alias: "imageUrl", arguments: ["blur": false, "width": 1024], type: .nonNull(.scalar(String.self))),
         GraphQLField("isAppleConnected", type: .scalar(Bool.self)),
@@ -11264,14 +11414,21 @@ public enum GraphAPI {
         GraphQLField("isFacebookConnected", type: .scalar(Bool.self)),
         GraphQLField("isKsrAdmin", type: .scalar(Bool.self)),
         GraphQLField("isFollowing", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("isSocializing", type: .scalar(Bool.self)),
         GraphQLField("location", type: .object(Location.selections)),
+        GraphQLField("membershipProjects", type: .object(MembershipProject.selections)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("needsFreshFacebookToken", type: .scalar(Bool.self)),
-        GraphQLField("uid", type: .nonNull(.scalar(String.self))),
+        GraphQLField("newsletterSubscriptions", type: .object(NewsletterSubscription.selections)),
+        GraphQLField("notifications", type: .list(.nonNull(.object(Notification.selections)))),
+        GraphQLField("optedOutOfRecommendations", type: .scalar(Bool.self)),
         GraphQLField("showPublicProfile", type: .scalar(Bool.self)),
+        GraphQLField("savedProjects", type: .object(SavedProject.selections)),
         GraphQLBooleanCondition(variableName: "withStoredCards", inverted: false, selections: [
           GraphQLField("storedCards", type: .object(StoredCard.selections)),
         ]),
+        GraphQLField("surveyResponses", arguments: ["answered": false], type: .object(SurveyResponse.selections)),
+        GraphQLField("uid", type: .nonNull(.scalar(String.self))),
       ]
     }
 
@@ -11281,8 +11438,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backings: Backing? = nil, chosenCurrency: String? = nil, email: String? = nil, hasPassword: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, location: Location? = nil, name: String, needsFreshFacebookToken: Bool? = nil, uid: String, showPublicProfile: Bool? = nil, storedCards: StoredCard? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "chosenCurrency": chosenCurrency, "email": email, "hasPassword": hasPassword, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "uid": uid, "showPublicProfile": showPublicProfile, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }])
+    public init(backings: Backing? = nil, backingsCount: Int, chosenCurrency: String? = nil, createdProjects: CreatedProject? = nil, email: String? = nil, hasPassword: Bool? = nil, hasUnreadMessages: Bool? = nil, hasUnseenActivity: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, isSocializing: Bool? = nil, location: Location? = nil, membershipProjects: MembershipProject? = nil, name: String, needsFreshFacebookToken: Bool? = nil, newsletterSubscriptions: NewsletterSubscription? = nil, notifications: [Notification]? = nil, optedOutOfRecommendations: Bool? = nil, showPublicProfile: Bool? = nil, savedProjects: SavedProject? = nil, storedCards: StoredCard? = nil, surveyResponses: SurveyResponse? = nil, uid: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backingsCount": backingsCount, "chosenCurrency": chosenCurrency, "createdProjects": createdProjects.flatMap { (value: CreatedProject) -> ResultMap in value.resultMap }, "email": email, "hasPassword": hasPassword, "hasUnreadMessages": hasUnreadMessages, "hasUnseenActivity": hasUnseenActivity, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "isSocializing": isSocializing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "membershipProjects": membershipProjects.flatMap { (value: MembershipProject) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "newsletterSubscriptions": newsletterSubscriptions.flatMap { (value: NewsletterSubscription) -> ResultMap in value.resultMap }, "notifications": notifications.flatMap { (value: [Notification]) -> [ResultMap] in value.map { (value: Notification) -> ResultMap in value.resultMap } }, "optedOutOfRecommendations": optedOutOfRecommendations, "showPublicProfile": showPublicProfile, "savedProjects": savedProjects.flatMap { (value: SavedProject) -> ResultMap in value.resultMap }, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }, "surveyResponses": surveyResponses.flatMap { (value: SurveyResponse) -> ResultMap in value.resultMap }, "uid": uid])
     }
 
     public var __typename: String {
@@ -11304,6 +11461,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Number of backings for this user.
+    public var backingsCount: Int {
+      get {
+        return resultMap["backingsCount"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "backingsCount")
+      }
+    }
+
     /// The user's chosen currency
     public var chosenCurrency: String? {
       get {
@@ -11311,6 +11478,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "chosenCurrency")
+      }
+    }
+
+    /// Projects a user has created.
+    public var createdProjects: CreatedProject? {
+      get {
+        return (resultMap["createdProjects"] as? ResultMap).flatMap { CreatedProject(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "createdProjects")
       }
     }
 
@@ -11331,6 +11508,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "hasPassword")
+      }
+    }
+
+    /// Whether or not a user has unread messages.
+    public var hasUnreadMessages: Bool? {
+      get {
+        return resultMap["hasUnreadMessages"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "hasUnreadMessages")
+      }
+    }
+
+    /// Whether or not a user has unseen activity.
+    public var hasUnseenActivity: Bool? {
+      get {
+        return resultMap["hasUnseenActivity"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "hasUnseenActivity")
       }
     }
 
@@ -11423,6 +11620,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Whether or not the user is either Facebook connected or has follows/followings.
+    public var isSocializing: Bool? {
+      get {
+        return resultMap["isSocializing"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isSocializing")
+      }
+    }
+
     /// Where the user is based.
     public var location: Location? {
       get {
@@ -11430,6 +11637,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "location")
+      }
+    }
+
+    /// Projects the user has collaborated on.
+    public var membershipProjects: MembershipProject? {
+      get {
+        return (resultMap["membershipProjects"] as? ResultMap).flatMap { MembershipProject(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "membershipProjects")
       }
     }
 
@@ -11453,13 +11670,33 @@ public enum GraphAPI {
       }
     }
 
-    /// A user's uid
-    public var uid: String {
+    /// Which newsleters are the users subscribed to
+    public var newsletterSubscriptions: NewsletterSubscription? {
       get {
-        return resultMap["uid"]! as! String
+        return (resultMap["newsletterSubscriptions"] as? ResultMap).flatMap { NewsletterSubscription(unsafeResultMap: $0) }
       }
       set {
-        resultMap.updateValue(newValue, forKey: "uid")
+        resultMap.updateValue(newValue?.resultMap, forKey: "newsletterSubscriptions")
+      }
+    }
+
+    /// All of a user's notifications
+    public var notifications: [Notification]? {
+      get {
+        return (resultMap["notifications"] as? [ResultMap]).flatMap { (value: [ResultMap]) -> [Notification] in value.map { (value: ResultMap) -> Notification in Notification(unsafeResultMap: value) } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [Notification]) -> [ResultMap] in value.map { (value: Notification) -> ResultMap in value.resultMap } }, forKey: "notifications")
+      }
+    }
+
+    /// Is the user opted out from receiving recommendations
+    public var optedOutOfRecommendations: Bool? {
+      get {
+        return resultMap["optedOutOfRecommendations"] as? Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "optedOutOfRecommendations")
       }
     }
 
@@ -11473,6 +11710,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Projects a user has saved.
+    public var savedProjects: SavedProject? {
+      get {
+        return (resultMap["savedProjects"] as? ResultMap).flatMap { SavedProject(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "savedProjects")
+      }
+    }
+
     /// Stored Cards
     public var storedCards: StoredCard? {
       get {
@@ -11480,6 +11727,26 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "storedCards")
+      }
+    }
+
+    /// This user's survey responses
+    public var surveyResponses: SurveyResponse? {
+      get {
+        return (resultMap["surveyResponses"] as? ResultMap).flatMap { SurveyResponse(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "surveyResponses")
+      }
+    }
+
+    /// A user's uid
+    public var uid: String {
+      get {
+        return resultMap["uid"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "uid")
       }
     }
 
@@ -11563,6 +11830,45 @@ public enum GraphAPI {
       }
     }
 
+    public struct CreatedProject: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["UserCreatedProjectsConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "UserCreatedProjectsConnection", "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+    }
+
     public struct Location: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["Location"]
 
@@ -11619,6 +11925,285 @@ public enum GraphAPI {
       }
     }
 
+    public struct MembershipProject: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["MembershipProjectsConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "MembershipProjectsConnection", "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+    }
+
+    public struct NewsletterSubscription: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["NewsletterSubscriptions"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("artsCultureNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("filmNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("musicNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("inventNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("gamesNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("publishingNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("promoNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("weeklyNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("happeningNewsletter", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("alumniNewsletter", type: .nonNull(.scalar(Bool.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(artsCultureNewsletter: Bool, filmNewsletter: Bool, musicNewsletter: Bool, inventNewsletter: Bool, gamesNewsletter: Bool, publishingNewsletter: Bool, promoNewsletter: Bool, weeklyNewsletter: Bool, happeningNewsletter: Bool, alumniNewsletter: Bool) {
+        self.init(unsafeResultMap: ["__typename": "NewsletterSubscriptions", "artsCultureNewsletter": artsCultureNewsletter, "filmNewsletter": filmNewsletter, "musicNewsletter": musicNewsletter, "inventNewsletter": inventNewsletter, "gamesNewsletter": gamesNewsletter, "publishingNewsletter": publishingNewsletter, "promoNewsletter": promoNewsletter, "weeklyNewsletter": weeklyNewsletter, "happeningNewsletter": happeningNewsletter, "alumniNewsletter": alumniNewsletter])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// The subscription to the ArtsCultureNewsletter newsletter
+      public var artsCultureNewsletter: Bool {
+        get {
+          return resultMap["artsCultureNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "artsCultureNewsletter")
+        }
+      }
+
+      /// The subscription to the FilmNewsletter newsletter
+      public var filmNewsletter: Bool {
+        get {
+          return resultMap["filmNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "filmNewsletter")
+        }
+      }
+
+      /// The subscription to the MusicNewsletter newsletter
+      public var musicNewsletter: Bool {
+        get {
+          return resultMap["musicNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "musicNewsletter")
+        }
+      }
+
+      /// The subscription to the InventNewsletter newsletter
+      public var inventNewsletter: Bool {
+        get {
+          return resultMap["inventNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "inventNewsletter")
+        }
+      }
+
+      /// The subscription to the GamesNewsletter newsletter
+      public var gamesNewsletter: Bool {
+        get {
+          return resultMap["gamesNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "gamesNewsletter")
+        }
+      }
+
+      /// The subscription to the PublishingNewsletter newsletter
+      public var publishingNewsletter: Bool {
+        get {
+          return resultMap["publishingNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "publishingNewsletter")
+        }
+      }
+
+      /// The subscription to the PromoNewsletter newsletter
+      public var promoNewsletter: Bool {
+        get {
+          return resultMap["promoNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "promoNewsletter")
+        }
+      }
+
+      /// The subscription to the WeeklyNewsletter newsletter
+      public var weeklyNewsletter: Bool {
+        get {
+          return resultMap["weeklyNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "weeklyNewsletter")
+        }
+      }
+
+      /// The subscription to the HappeningNewsletter newsletter
+      public var happeningNewsletter: Bool {
+        get {
+          return resultMap["happeningNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "happeningNewsletter")
+        }
+      }
+
+      /// The subscription to the AlumniNewsletter newsletter
+      public var alumniNewsletter: Bool {
+        get {
+          return resultMap["alumniNewsletter"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "alumniNewsletter")
+        }
+      }
+    }
+
+    public struct Notification: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Notification"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("email", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("mobile", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("topic", type: .nonNull(.scalar(UserNotificationTopic.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(email: Bool, mobile: Bool, topic: UserNotificationTopic) {
+        self.init(unsafeResultMap: ["__typename": "Notification", "email": email, "mobile": mobile, "topic": topic])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Are email notifications enabled for this topic
+      public var email: Bool {
+        get {
+          return resultMap["email"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "email")
+        }
+      }
+
+      /// Are mobile notifications enabled for this topic
+      public var mobile: Bool {
+        get {
+          return resultMap["mobile"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "mobile")
+        }
+      }
+
+      /// The topic of the notification
+      public var topic: UserNotificationTopic {
+        get {
+          return resultMap["topic"]! as! UserNotificationTopic
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "topic")
+        }
+      }
+    }
+
+    public struct SavedProject: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["UserSavedProjectsConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "UserSavedProjectsConnection", "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+    }
+
     public struct StoredCard: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["UserCreditCardTypeConnection"]
 
@@ -11667,6 +12252,45 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+
+    public struct SurveyResponse: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["SurveyResponsesConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "SurveyResponsesConnection", "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
         }
       }
     }

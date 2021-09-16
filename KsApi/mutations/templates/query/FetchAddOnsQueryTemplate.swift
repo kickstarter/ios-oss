@@ -468,6 +468,7 @@ public enum FetchAddsOnsQueryTemplate {
           "creator": {
             "__typename": "User",
             "chosenCurrency": "USD",
+            "backingsCount": 2,
             "email": "foo@bar.com",
             "hasPassword": true,
             "id": "VXNlci0xNzA1MzA0MDA2",
@@ -504,10 +505,6 @@ public enum FetchAddsOnsQueryTemplate {
           "deadlineAt": 1622195758,
           "description": "Notebooks, paper tape and sticker sets from the Peppermint Fox Press, inspired by vintage books. For poets, planners, and storytellers.",
           "finalCollectionDate": null,
-          "friends": {
-            "__typename": "ProjectBackerFriendsConnection",
-            "nodes": []
-          },
           "fxRate": 0.93110152,
           "goal": {
             "__typename": "Money",

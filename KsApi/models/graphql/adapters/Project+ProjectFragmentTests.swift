@@ -83,14 +83,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "__typename":"Category",
           "id":"Q2F0ZWdvcnktMjUw",
           "name":"Comic Books",
-          "analyticsName": "Comic Books",
+          "analyticsName":"Comic Books",
           "parentCategory":{
              "__typename":"Category",
              "id":"Q2F0ZWdvcnktMw==",
              "name":"Comics"
           }
        },
-       "canComment": true,
+       "canComment":true,
        "commentsCount":0,
        "country":{
           "__typename":"Country",
@@ -101,22 +101,126 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "__typename":"User",
           "chosenCurrency":null,
           "backings":{
-            "__typename": "UserBackingsConnection",
-            "nodes":[
+             "__typename":"UserBackingsConnection",
+             "nodes":[
                 {
-                  "__typename": "Backing",
-                  "errorReason":null
+                   "__typename":"Backing",
+                   "errorReason":null
                 },
                 {
-                  "__typename": "Backing",
-                  "errorReason":"Something went wrong"
+                   "__typename":"Backing",
+                   "errorReason":"Something went wrong"
                 },
                 {
-                  "__typename": "Backing",
-                  "errorReason":null
+                   "__typename":"Backing",
+                   "errorReason":null
                 }
-            ]
+             ]
           },
+          "newsletterSubscriptions":{
+             "__typename":"NewsletterSubscriptions",
+             "artsCultureNewsletter":true,
+             "filmNewsletter":false,
+             "musicNewsletter":false,
+             "inventNewsletter":false,
+             "publishingNewsletter":false,
+             "promoNewsletter":false,
+             "weeklyNewsletter":false,
+             "happeningNewsletter":false,
+             "gamesNewsletter":false,
+             "alumniNewsletter":true
+          },
+          "optedOutOfRecommendations":true,
+          "notifications":[
+             {
+                "__typename":"Notification",
+                "topic":"messages",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"backings",
+                "email":false,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"creator_digest",
+                "email":true,
+                "mobile":false
+             },
+             {
+                "__typename":"Notification",
+                "topic":"updates",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"follower",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"friend_activity",
+                "email":true,
+                "mobile":false
+             },
+             {
+                "__typename":"Notification",
+                "topic":"friend_signup",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"comments",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"comment_replies",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"creator_edu",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"marketing_update",
+                "email":true,
+                "mobile":false
+             },
+             {
+                "__typename":"Notification",
+                "topic":"project_launch",
+                "email":true,
+                "mobile":true
+             }
+          ],
+          "createdProjects":{
+             "__typename":"UserCreatedProjectsConnection",
+             "totalCount":16
+          },
+          "membershipProjects":{
+             "__typename":"MembershipProjectsConnection",
+             "totalCount":10
+          },
+          "savedProjects":{
+             "__typename":"UserSavedProjectsConnection",
+             "totalCount":11
+          },
+          "backingsCount":3,
+          "hasUnreadMessages":false,
+          "isSocializing":true,
+          "hasUnseenActivity":true,
           "email":"tim_stolinski@yahoo.com.ksr",
           "hasPassword":null,
           "id":"VXNlci0xMDA3NTM5MDAy",
@@ -125,20 +229,24 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "isCreator":true,
           "isDeliverable":null,
           "isEmailVerified":true,
-          "isFacebookConnected": true,
-          "isKsrAdmin": false,
-          "isFollowing": true,
+          "isFacebookConnected":true,
+          "isKsrAdmin":false,
+          "isFollowing":true,
           "name":"Band of Bards Comics",
-          "needsFreshFacebookToken": false,
-          "showPublicProfile": true,
+          "needsFreshFacebookToken":false,
+          "showPublicProfile":true,
           "uid":"1007539002",
-          "location": {
-            "__typename": "Location",
-            "country": "US",
-            "countryName": "United States",
-            "displayableName": "Las Vegas, NV",
-            "id": "TG9jYXRpb24tMjQzNjcwNA==",
-            "name": "Las Vegas"
+          "location":{
+             "__typename":"Location",
+             "country":"US",
+             "countryName":"United States",
+             "displayableName":"Las Vegas, NV",
+             "id":"TG9jYXRpb24tMjQzNjcwNA==",
+             "name":"Las Vegas"
+          },
+          "surveyResponses": {
+             "__typename":"SurveyResponsesConnection",
+             "totalCount": 2
           },
           "storedCards":{
              "__typename":"UserCreditCardTypeConnection",

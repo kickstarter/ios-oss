@@ -4,9 +4,15 @@ fragment UserFragment on User {
       errorReason
     }
   }
+  backingsCount
   chosenCurrency
+  createdProjects {
+    totalCount
+  }
   email
   hasPassword
+  hasUnreadMessages
+  hasUnseenActivity
   id
   imageUrl: imageUrl(blur: false, width: 1024)
   isAppleConnected
@@ -16,14 +22,42 @@ fragment UserFragment on User {
   isFacebookConnected
   isKsrAdmin
   isFollowing
+  isSocializing
   location {
     ...LocationFragment
   }
+  membershipProjects {
+    totalCount
+  }
   name
   needsFreshFacebookToken
-  uid
+  newsletterSubscriptions {
+    artsCultureNewsletter
+    filmNewsletter
+    musicNewsletter
+    inventNewsletter
+    gamesNewsletter
+    publishingNewsletter
+    promoNewsletter
+    weeklyNewsletter
+    happeningNewsletter
+    alumniNewsletter
+  }
+  notifications {
+    email
+    mobile
+    topic
+  }
+  optedOutOfRecommendations
   showPublicProfile
+  savedProjects {
+    totalCount
+  }
   storedCards @include(if: $withStoredCards) {
     ...UserStoredCardsFragment
   }
+  surveyResponses(answered: false) {
+    totalCount
+  }
+  uid
 }

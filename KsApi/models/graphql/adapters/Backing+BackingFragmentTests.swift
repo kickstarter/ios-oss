@@ -374,7 +374,27 @@ private func backingDictionary() -> [String: Any] {
             }
         ]
       },
+      "backingsCount": 3,
       "email": "foo@bar.com",
+      "createdProjects": {
+        "__typename": "UserCreatedProjectsConnection",
+        "totalCount": 16
+      },
+      "membershipProjects": {
+        "__typename": "MembershipProjectsConnection",
+        "totalCount": 10
+      },
+      "savedProjects": {
+        "__typename": "UserSavedProjectsConnection",
+        "totalCount": 11
+      },
+      "hasUnreadMessages": false,
+      "hasUnseenActivity": true,
+      "surveyResponses": {
+        "__typename": "SurveyResponsesConnection",
+         "totalCount": 2
+      },
+      "optedOutOfRecommendations": true,
       "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
       "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1476734758&auto=format&frame=1&q=92&s=81a3c902ee2131666a590702b71ba5c2",
@@ -386,6 +406,9 @@ private func backingDictionary() -> [String: Any] {
       "isKsrAdmin": false,
       "isFollowing": true,
       "name": "Justin Swart",
+      "isSocializing": true,
+      "newsletterSubscriptions": null,
+      "notifications": null,
       "needsFreshFacebookToken": true,
       "showPublicProfile": true,
       "location": {
@@ -454,7 +477,10 @@ private func backingDictionary() -> [String: Any] {
         "__typename": "Backing",
         "backer": {
           "__typename": "User",
-          "uid": "618005886"
+          "uid": "618005886",
+          "isSocializing": true,
+          "newsletterSubcriptions": null,
+          "notifications": null
         }
       },
       "category": {
@@ -495,6 +521,7 @@ private func backingDictionary() -> [String: Any] {
               }
           ]
         },
+        "backingsCount": 23,
         "email": "foo@bar.com",
         "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
@@ -507,6 +534,9 @@ private func backingDictionary() -> [String: Any] {
         "isKsrAdmin": false,
         "isFollowing": true,
         "name": "Hugh Alan Samples",
+        "newsletterSubscriptions": null,
+        "notifications": null,
+        "isSocializing": true,
         "needsFreshFacebookToken": true,
         "showPublicProfile": true,
         "location": {
@@ -517,6 +547,25 @@ private func backingDictionary() -> [String: Any] {
           "id": "TG9jYXRpb24tMjQzNjcwNA==",
           "name": "Las Vegas"
         },
+        "createdProjects": {
+          "__typename": "UserCreatedProjectsConnection",
+          "totalCount": 16
+        },
+        "membershipProjects": {
+          "__typename": "MembershipProjectsConnection",
+          "totalCount": 10
+        },
+        "savedProjects": {
+          "__typename": "UserSavedProjectsConnection",
+          "totalCount": 11
+        },
+        "hasUnreadMessages": false,
+        "hasUnseenActivity": true,
+        "surveyResponses": {
+          "__typename": "SurveyResponsesConnection",
+          "totalCount": 2
+        },
+        "optedOutOfRecommendations": true,
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
           "nodes": [
