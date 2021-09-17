@@ -301,14 +301,34 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
-  let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
+  let projectAndBackingIdProducer = AppEnvironment.current.apiService.fetchProject(projectParam: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
+  let projectAndBackingProducer = projectAndBackingIdProducer
+    .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
+      guard let backingId = projectPamphletData.backingId else {
+        return SignalProducer(value: projectPamphletData.project)
+      }
+
+      let projectWithBacking = AppEnvironment.current.apiService
+        .fetchBacking(id: backingId, withStoredCards: false)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .switchMap { projectAndBacking -> SignalProducer<Project, ErrorEnvelope> in
+          let updatedProject = projectPamphletData.project
+            |> Project.lens.personalization.backing .~ projectAndBacking.backing
+            |> Project.lens.personalization.isBacking .~ true
+
+          return SignalProducer(value: updatedProject)
+        }
+
+      return projectWithBacking
+    }
+
   if let project = projectOrParam.left, shouldPrefix {
-    return projectProducer.prefix(value: project)
+    return projectAndBackingProducer.prefix(value: project)
   }
 
-  return projectProducer
+  return projectAndBackingProducer
 }
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {

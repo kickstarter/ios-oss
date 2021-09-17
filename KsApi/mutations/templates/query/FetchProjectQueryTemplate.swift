@@ -232,7 +232,9 @@ public enum FetchProjectQueryTemplate {
                 }
              ]
           },
-          "backing":null,
+          "backing": {
+            "id": "QmFja2luZy0xNDgwMTQwMzQ="
+          },
           "rewards":{
              "nodes":[
                 {

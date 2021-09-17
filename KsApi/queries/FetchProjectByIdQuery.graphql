@@ -10,7 +10,7 @@ query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
       }
     }
     backing {
-      ...BackingFragment
+      id
     }
     rewards {
       nodes {

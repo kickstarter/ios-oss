@@ -26,9 +26,6 @@ fragment UserFragment on User {
   location {
     ...LocationFragment
   }
-  membershipProjects {
-    totalCount
-  }
   name
   needsFreshFacebookToken
   newsletterSubscriptions {

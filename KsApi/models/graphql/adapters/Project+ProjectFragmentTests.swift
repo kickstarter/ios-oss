@@ -34,7 +34,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertEqual(project.id, 1_841_936_784)
       XCTAssertEqual(project.location.country, "US")
       XCTAssertEqual(project.name, "FINAL GAMBLE Issue #1")
-      XCTAssertEqual(project.slug, "bandofbards/final-gamble-issue-1")
+      XCTAssertEqual(project.slug, "final-gamble-issue-1")
       XCTAssertEqual(
         project.photo.full,
         "https://ksr-qa-ugc.imgix.net/assets/034/416/156/330099be1dd12ed741db4e29d9986840_original.png?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1628078003&auto=format&frame=1&q=92&s=2f006a2e8f17f1a83c21385ac010574c"

@@ -46,6 +46,15 @@ extension Project {
      `fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>`
      */
 
+    /**
+     NOTE: `Project.generatedSlug`currently returns an internal server error for user that isn't logged in. Seeing as we need the project object even if the user isn't logged in, we can still use `Project.slug` and parse the string below to get the same result until the `Project.generatedSlug` is fixed.
+     */
+
+    let generatedSlug = projectFragment.slug
+      .components(separatedBy: "/")
+      .filter { $0 != "" }
+      .last
+
     return Project(
       availableCardTypes: availableCardTypes,
       blurb: projectFragment.description,
@@ -66,7 +75,7 @@ extension Project {
       photo: photo,
       prelaunchActivated: projectFragment.prelaunchActivated,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
-      slug: projectFragment.slug,
+      slug: generatedSlug ?? projectFragment.slug,
       staffPick: projectFragment.isProjectWeLove,
       state: state,
       stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),

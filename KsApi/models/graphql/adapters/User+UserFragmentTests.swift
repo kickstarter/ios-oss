@@ -29,7 +29,7 @@ final class User_UserFragmentTests: XCTestCase {
     XCTAssertEqual(user!.stats.backedProjectsCount!, 1)
     XCTAssertEqual(user!.stats.createdProjectsCount!, 16)
     XCTAssertNil(user!.stats.draftProjectsCount)
-    XCTAssertEqual(user!.stats.memberProjectsCount!, 10)
+    XCTAssertNil(user!.stats.memberProjectsCount)
     XCTAssertEqual(user!.stats.starredProjectsCount!, 11)
     XCTAssertEqual(user!.stats.unansweredSurveysCount!, 2)
     XCTAssertEqual(user!.stats.unreadMessagesCount!, 0)

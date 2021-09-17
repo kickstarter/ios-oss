@@ -152,8 +152,8 @@ public protocol ServiceType {
   func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
 
-  /// Fetch `Backing` data for ManagePledgeViewController with a `Backing` ID and the backers' stored cards.
-  func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
+  /// Fetch `Backing` data with a `Backing` ID and the backers' stored cards.
+  func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.
@@ -171,8 +171,12 @@ public protocol ServiceType {
   func fetchMessageThreads(paginationUrl: String)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope>
 
-  /// Fetch the newest data for a particular project from its id or slug.
+  /// Fetch the newest data for a particular project from its id or slug. (v1)
   func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope>
+
+  /// Fetch the newest data for a particular project from its id or slug, including an optional backing id if current user is backing project
+  /// (currently only used on `ProjectPamphetViewModel` because it's a GQL query)
+  func fetchProject(projectParam: Param) -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope>
 
   /// Fetch a project's friendly backers from its id or slug.
   func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>

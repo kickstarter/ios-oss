@@ -1,4 +1,5 @@
 import Apollo
+import ReactiveSwift
 @testable import KsApi
 import XCTest
 
@@ -6,13 +7,26 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
   /// `FetchProjectQueryBySlug` returns identical data.
   func testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(from: FetchProjectQueryTemplate.valid.data)
-    guard let projectById = MockGraphQLClient.shared.client.data(from: producer) else {
+    
+    let projectProducer = producer
+      .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
+        SignalProducer(value: projectPamphletData.project)
+      }
+    
+    let backingIdProducer = producer
+      .switchMap { projectPamphletData -> SignalProducer<Int?, ErrorEnvelope> in
+        SignalProducer(value: projectPamphletData.backingId)
+      }
+    
+    guard let projectDataById = MockGraphQLClient.shared.client.data(from: projectProducer),
+          let backingId = MockGraphQLClient.shared.client.data(from: backingIdProducer) else {
       XCTFail()
 
       return
     }
 
-    self.testProjectProperties_Success(project: projectById)
+    self.testProjectProperties_Success(project: projectDataById)
+    XCTAssertEqual(backingId, decompose(id: "QmFja2luZy0xNDgwMTQwMzQ="))
   }
 
   private func testProjectProperties_Success(project: Project) {
@@ -26,7 +40,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     )
     XCTAssertFalse(project.displayPrelaunch!)
     XCTAssertTrue(project.prelaunchActivated!)
-    XCTAssertEqual(project.slug, "theaschneider/thequiet")
+    XCTAssertEqual(project.slug, "thequiet")
     XCTAssertTrue(project.staffPick)
     XCTAssertEqual(project.state, .live)
     XCTAssertEqual(
@@ -162,7 +176,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertTrue(project.creator.social!)
     XCTAssertEqual(project.creator.stats.createdProjectsCount, 16)
     XCTAssertNil(project.creator.stats.draftProjectsCount)
-    XCTAssertEqual(project.creator.stats.memberProjectsCount, 10)
+    XCTAssertNil(project.creator.stats.memberProjectsCount)
     XCTAssertEqual(project.creator.stats.starredProjectsCount, 11)
     XCTAssertEqual(project.creator.stats.unansweredSurveysCount, 2)
     XCTAssertEqual(project.creator.stats.backedProjectsCount, 3)

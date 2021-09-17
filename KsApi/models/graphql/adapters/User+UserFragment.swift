@@ -155,7 +155,18 @@ extension User {
     let createdProjectsCount = userFragment.createdProjects?.totalCount
     let draftProjectsCount: Int? = nil /// Unavailable on GQL at this time.
     let starredProjectsCount = userFragment.savedProjects?.totalCount
-    let memberProjectsCount = userFragment.membershipProjects?.totalCount
+    /** FIXME:
+     Adding this to the `UserFragment` causes an issue with the query because user has to be logged in. However we use the `UserFragment` on loading a project page, so we need that query `FetchProjectQueryById` and `FetchProjectQueryBySlug` to not error, because the user needs the data regardless of their session state.
+
+     This fragment can be added back into `UserFragment` once we come up with a new GQL model for our Project Page:
+     ```
+     membershipProjects {
+       totalCount
+     }
+     ```
+     */
+    let memberProjectsCount: Int? =
+      nil // TODO: Once above FIXME is resolved use `userFragment.membershipProjects?.totalCount` here.
     let hasUnreadMessages = userFragment.hasUnreadMessages ?? false
     let unreadMessagesCount: Int = hasUnreadMessages ? 1 : 0
     let unansweredSurveysCount = userFragment.surveyResponses?.totalCount

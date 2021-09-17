@@ -5017,7 +5017,7 @@ public enum GraphAPI {
           }
           backing {
             __typename
-            ...BackingFragment
+            id
           }
           rewards {
             __typename
@@ -5043,8 +5043,6 @@ public enum GraphAPI {
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
-      document.append("\n" + BackingFragment.fragmentDefinition)
-      document.append("\n" + CreditCardFragment.fragmentDefinition)
       return document
     }
 
@@ -5322,7 +5320,7 @@ public enum GraphAPI {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLFragmentSpread(BackingFragment.self),
+              GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
             ]
           }
 
@@ -5330,6 +5328,10 @@ public enum GraphAPI {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID) {
+            self.init(unsafeResultMap: ["__typename": "Backing", "id": id])
           }
 
           public var __typename: String {
@@ -5341,29 +5343,12 @@ public enum GraphAPI {
             }
           }
 
-          public var fragments: Fragments {
+          public var id: GraphQLID {
             get {
-              return Fragments(unsafeResultMap: resultMap)
+              return resultMap["id"]! as! GraphQLID
             }
             set {
-              resultMap += newValue.resultMap
-            }
-          }
-
-          public struct Fragments {
-            public private(set) var resultMap: ResultMap
-
-            public init(unsafeResultMap: ResultMap) {
-              self.resultMap = unsafeResultMap
-            }
-
-            public var backingFragment: BackingFragment {
-              get {
-                return BackingFragment(unsafeResultMap: resultMap)
-              }
-              set {
-                resultMap += newValue.resultMap
-              }
+              resultMap.updateValue(newValue, forKey: "id")
             }
           }
         }
@@ -5484,7 +5469,7 @@ public enum GraphAPI {
           }
           backing {
             __typename
-            ...BackingFragment
+            id
           }
           rewards {
             __typename
@@ -5510,8 +5495,6 @@ public enum GraphAPI {
       document.append("\n" + MoneyFragment.fragmentDefinition)
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + ShippingRuleFragment.fragmentDefinition)
-      document.append("\n" + BackingFragment.fragmentDefinition)
-      document.append("\n" + CreditCardFragment.fragmentDefinition)
       return document
     }
 
@@ -5789,7 +5772,7 @@ public enum GraphAPI {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLFragmentSpread(BackingFragment.self),
+              GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
             ]
           }
 
@@ -5797,6 +5780,10 @@ public enum GraphAPI {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID) {
+            self.init(unsafeResultMap: ["__typename": "Backing", "id": id])
           }
 
           public var __typename: String {
@@ -5808,29 +5795,12 @@ public enum GraphAPI {
             }
           }
 
-          public var fragments: Fragments {
+          public var id: GraphQLID {
             get {
-              return Fragments(unsafeResultMap: resultMap)
+              return resultMap["id"]! as! GraphQLID
             }
             set {
-              resultMap += newValue.resultMap
-            }
-          }
-
-          public struct Fragments {
-            public private(set) var resultMap: ResultMap
-
-            public init(unsafeResultMap: ResultMap) {
-              self.resultMap = unsafeResultMap
-            }
-
-            public var backingFragment: BackingFragment {
-              get {
-                return BackingFragment(unsafeResultMap: resultMap)
-              }
-              set {
-                resultMap += newValue.resultMap
-              }
+              resultMap.updateValue(newValue, forKey: "id")
             }
           }
         }
@@ -11349,10 +11319,6 @@ public enum GraphAPI {
           __typename
           ...LocationFragment
         }
-        membershipProjects {
-          __typename
-          totalCount
-        }
         name
         needsFreshFacebookToken
         newsletterSubscriptions {
@@ -11416,7 +11382,6 @@ public enum GraphAPI {
         GraphQLField("isFollowing", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("isSocializing", type: .scalar(Bool.self)),
         GraphQLField("location", type: .object(Location.selections)),
-        GraphQLField("membershipProjects", type: .object(MembershipProject.selections)),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
         GraphQLField("needsFreshFacebookToken", type: .scalar(Bool.self)),
         GraphQLField("newsletterSubscriptions", type: .object(NewsletterSubscription.selections)),
@@ -11438,8 +11403,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(backings: Backing? = nil, backingsCount: Int, chosenCurrency: String? = nil, createdProjects: CreatedProject? = nil, email: String? = nil, hasPassword: Bool? = nil, hasUnreadMessages: Bool? = nil, hasUnseenActivity: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, isSocializing: Bool? = nil, location: Location? = nil, membershipProjects: MembershipProject? = nil, name: String, needsFreshFacebookToken: Bool? = nil, newsletterSubscriptions: NewsletterSubscription? = nil, notifications: [Notification]? = nil, optedOutOfRecommendations: Bool? = nil, showPublicProfile: Bool? = nil, savedProjects: SavedProject? = nil, storedCards: StoredCard? = nil, surveyResponses: SurveyResponse? = nil, uid: String) {
-      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backingsCount": backingsCount, "chosenCurrency": chosenCurrency, "createdProjects": createdProjects.flatMap { (value: CreatedProject) -> ResultMap in value.resultMap }, "email": email, "hasPassword": hasPassword, "hasUnreadMessages": hasUnreadMessages, "hasUnseenActivity": hasUnseenActivity, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "isSocializing": isSocializing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "membershipProjects": membershipProjects.flatMap { (value: MembershipProject) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "newsletterSubscriptions": newsletterSubscriptions.flatMap { (value: NewsletterSubscription) -> ResultMap in value.resultMap }, "notifications": notifications.flatMap { (value: [Notification]) -> [ResultMap] in value.map { (value: Notification) -> ResultMap in value.resultMap } }, "optedOutOfRecommendations": optedOutOfRecommendations, "showPublicProfile": showPublicProfile, "savedProjects": savedProjects.flatMap { (value: SavedProject) -> ResultMap in value.resultMap }, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }, "surveyResponses": surveyResponses.flatMap { (value: SurveyResponse) -> ResultMap in value.resultMap }, "uid": uid])
+    public init(backings: Backing? = nil, backingsCount: Int, chosenCurrency: String? = nil, createdProjects: CreatedProject? = nil, email: String? = nil, hasPassword: Bool? = nil, hasUnreadMessages: Bool? = nil, hasUnseenActivity: Bool? = nil, id: GraphQLID, imageUrl: String, isAppleConnected: Bool? = nil, isCreator: Bool? = nil, isDeliverable: Bool? = nil, isEmailVerified: Bool? = nil, isFacebookConnected: Bool? = nil, isKsrAdmin: Bool? = nil, isFollowing: Bool, isSocializing: Bool? = nil, location: Location? = nil, name: String, needsFreshFacebookToken: Bool? = nil, newsletterSubscriptions: NewsletterSubscription? = nil, notifications: [Notification]? = nil, optedOutOfRecommendations: Bool? = nil, showPublicProfile: Bool? = nil, savedProjects: SavedProject? = nil, storedCards: StoredCard? = nil, surveyResponses: SurveyResponse? = nil, uid: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "backings": backings.flatMap { (value: Backing) -> ResultMap in value.resultMap }, "backingsCount": backingsCount, "chosenCurrency": chosenCurrency, "createdProjects": createdProjects.flatMap { (value: CreatedProject) -> ResultMap in value.resultMap }, "email": email, "hasPassword": hasPassword, "hasUnreadMessages": hasUnreadMessages, "hasUnseenActivity": hasUnseenActivity, "id": id, "imageUrl": imageUrl, "isAppleConnected": isAppleConnected, "isCreator": isCreator, "isDeliverable": isDeliverable, "isEmailVerified": isEmailVerified, "isFacebookConnected": isFacebookConnected, "isKsrAdmin": isKsrAdmin, "isFollowing": isFollowing, "isSocializing": isSocializing, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "name": name, "needsFreshFacebookToken": needsFreshFacebookToken, "newsletterSubscriptions": newsletterSubscriptions.flatMap { (value: NewsletterSubscription) -> ResultMap in value.resultMap }, "notifications": notifications.flatMap { (value: [Notification]) -> [ResultMap] in value.map { (value: Notification) -> ResultMap in value.resultMap } }, "optedOutOfRecommendations": optedOutOfRecommendations, "showPublicProfile": showPublicProfile, "savedProjects": savedProjects.flatMap { (value: SavedProject) -> ResultMap in value.resultMap }, "storedCards": storedCards.flatMap { (value: StoredCard) -> ResultMap in value.resultMap }, "surveyResponses": surveyResponses.flatMap { (value: SurveyResponse) -> ResultMap in value.resultMap }, "uid": uid])
     }
 
     public var __typename: String {
@@ -11637,16 +11602,6 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue?.resultMap, forKey: "location")
-      }
-    }
-
-    /// Projects the user has collaborated on.
-    public var membershipProjects: MembershipProject? {
-      get {
-        return (resultMap["membershipProjects"] as? ResultMap).flatMap { MembershipProject(unsafeResultMap: $0) }
-      }
-      set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "membershipProjects")
       }
     }
 
@@ -11921,45 +11876,6 @@ public enum GraphAPI {
           set {
             resultMap += newValue.resultMap
           }
-        }
-      }
-    }
-
-    public struct MembershipProject: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["MembershipProjectsConnection"]
-
-      public static var selections: [GraphQLSelection] {
-        return [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
-        ]
-      }
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public init(totalCount: Int) {
-        self.init(unsafeResultMap: ["__typename": "MembershipProjectsConnection", "totalCount": totalCount])
-      }
-
-      public var __typename: String {
-        get {
-          return resultMap["__typename"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var totalCount: Int {
-        get {
-          return resultMap["totalCount"]! as! Int
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "totalCount")
         }
       }
     }
