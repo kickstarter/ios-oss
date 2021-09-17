@@ -1,25 +1,25 @@
 import Apollo
-import ReactiveSwift
 @testable import KsApi
+import ReactiveSwift
 import XCTest
 
 final class Project_FetchProjectQueryDataTests: XCTestCase {
   /// `FetchProjectQueryBySlug` returns identical data.
   func testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(from: FetchProjectQueryTemplate.valid.data)
-    
+
     let projectProducer = producer
       .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
         SignalProducer(value: projectPamphletData.project)
       }
-    
+
     let backingIdProducer = producer
       .switchMap { projectPamphletData -> SignalProducer<Int?, ErrorEnvelope> in
         SignalProducer(value: projectPamphletData.backingId)
       }
-    
+
     guard let projectDataById = MockGraphQLClient.shared.client.data(from: projectProducer),
-          let backingId = MockGraphQLClient.shared.client.data(from: backingIdProducer) else {
+      let backingId = MockGraphQLClient.shared.client.data(from: backingIdProducer) else {
       XCTFail()
 
       return

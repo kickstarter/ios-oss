@@ -936,11 +936,11 @@
       guard let result = self.fetchProjectEnvelopeResult else {
         return .empty
       }
-      
+
       switch result {
-      case .success(let project):
+      case let .success(project):
         return SignalProducer(value: project)
-      case .failure(let error):
+      case let .failure(error):
         return SignalProducer(error: error)
       }
     }
