@@ -2677,9 +2677,6 @@ public enum GraphAPI {
     case friendSignup
     case comments
     case commentReplies
-    case postLikes
-    case campusDigest
-    case campusPosts
     case creatorEdu
     case marketingUpdate
     case projectLaunch
@@ -2697,9 +2694,6 @@ public enum GraphAPI {
         case "friend_signup": self = .friendSignup
         case "comments": self = .comments
         case "comment_replies": self = .commentReplies
-        case "post_likes": self = .postLikes
-        case "campus_digest": self = .campusDigest
-        case "campus_posts": self = .campusPosts
         case "creator_edu": self = .creatorEdu
         case "marketing_update": self = .marketingUpdate
         case "project_launch": self = .projectLaunch
@@ -2718,9 +2712,6 @@ public enum GraphAPI {
         case .friendSignup: return "friend_signup"
         case .comments: return "comments"
         case .commentReplies: return "comment_replies"
-        case .postLikes: return "post_likes"
-        case .campusDigest: return "campus_digest"
-        case .campusPosts: return "campus_posts"
         case .creatorEdu: return "creator_edu"
         case .marketingUpdate: return "marketing_update"
         case .projectLaunch: return "project_launch"
@@ -2739,9 +2730,6 @@ public enum GraphAPI {
         case (.friendSignup, .friendSignup): return true
         case (.comments, .comments): return true
         case (.commentReplies, .commentReplies): return true
-        case (.postLikes, .postLikes): return true
-        case (.campusDigest, .campusDigest): return true
-        case (.campusPosts, .campusPosts): return true
         case (.creatorEdu, .creatorEdu): return true
         case (.marketingUpdate, .marketingUpdate): return true
         case (.projectLaunch, .projectLaunch): return true
@@ -2761,9 +2749,6 @@ public enum GraphAPI {
         .friendSignup,
         .comments,
         .commentReplies,
-        .postLikes,
-        .campusDigest,
-        .campusPosts,
         .creatorEdu,
         .marketingUpdate,
         .projectLaunch,

@@ -170,7 +170,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertFalse(project.creator.notifications.mobileMarketingUpdate!)
     XCTAssertTrue(project.creator.notifications.mobileMessages!)
     XCTAssertNil(project.creator.notifications.mobilePostLikes)
-    XCTAssertTrue(project.creator.notifications.mobileUpdates!)
+    XCTAssertNil(project.creator.notifications.mobileUpdates)
     XCTAssertNil(project.creator.notifications.postLikes)
     XCTAssertTrue(project.creator.notifications.updates!)
     XCTAssertTrue(project.creator.social!)
