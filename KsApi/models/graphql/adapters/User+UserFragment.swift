@@ -114,9 +114,9 @@ extension User {
         messagesNotification = emailEnabled
         mobileMessagesNotification = mobileEnabled
       /** FIXME: No longer supported by GQL Schema.
-      case let (.postLikes, mobileEnabled, emailEnabled):
-        postLikesNotification = emailEnabled
-        mobilePostLikesNotification = mobileEnabled
+       case let (.postLikes, mobileEnabled, emailEnabled):
+         postLikesNotification = emailEnabled
+         mobilePostLikesNotification = mobileEnabled
        */
       case let (.updates, mobileEnabled, emailEnabled):
         updatesNotification = emailEnabled
