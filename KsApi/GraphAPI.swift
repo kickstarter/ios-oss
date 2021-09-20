@@ -9460,6 +9460,7 @@ public enum GraphAPI {
         environmentalCommitments {
           __typename
           commitmentCategory
+          description
           id
         }
         faqs {
@@ -9468,6 +9469,8 @@ public enum GraphAPI {
             __typename
             question
             answer
+            id
+            createdAt
           }
         }
         finalCollectionDate
@@ -10171,6 +10174,7 @@ public enum GraphAPI {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("commitmentCategory", type: .nonNull(.scalar(EnvironmentalCommitmentCategory.self))),
+          GraphQLField("description", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         ]
       }
@@ -10181,8 +10185,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(commitmentCategory: EnvironmentalCommitmentCategory, id: GraphQLID) {
-        self.init(unsafeResultMap: ["__typename": "EnvironmentalCommitment", "commitmentCategory": commitmentCategory, "id": id])
+      public init(commitmentCategory: EnvironmentalCommitmentCategory, description: String, id: GraphQLID) {
+        self.init(unsafeResultMap: ["__typename": "EnvironmentalCommitment", "commitmentCategory": commitmentCategory, "description": description, "id": id])
       }
 
       public var __typename: String {
@@ -10201,6 +10205,16 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "commitmentCategory")
+        }
+      }
+
+      /// An environmental commitment description
+      public var description: String {
+        get {
+          return resultMap["description"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "description")
         }
       }
 
@@ -10261,6 +10275,8 @@ public enum GraphAPI {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("question", type: .nonNull(.scalar(String.self))),
             GraphQLField("answer", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+            GraphQLField("createdAt", type: .scalar(String.self)),
           ]
         }
 
@@ -10270,8 +10286,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(question: String, answer: String) {
-          self.init(unsafeResultMap: ["__typename": "ProjectFaq", "question": question, "answer": answer])
+        public init(question: String, answer: String, id: GraphQLID, createdAt: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "ProjectFaq", "question": question, "answer": answer, "id": id, "createdAt": createdAt])
         }
 
         public var __typename: String {
@@ -10300,6 +10316,25 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue, forKey: "answer")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        /// When faq was posted
+        public var createdAt: String? {
+          get {
+            return resultMap["createdAt"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "createdAt")
           }
         }
       }

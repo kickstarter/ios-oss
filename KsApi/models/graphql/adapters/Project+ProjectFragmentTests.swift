@@ -28,7 +28,6 @@ final class Project_ProjectFragmentTests: XCTestCase {
       )
       XCTAssertEqual(project.category.name, "Comic Books")
       XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xMDA3NTM5MDAy"))
-      XCTAssertEqual(project.category.name, "Comic Books")
       XCTAssertEqual(project.memberData.permissions.last, .comment)
       XCTAssertEqual(project.dates.deadline, 1_630_591_053)
       XCTAssertEqual(project.id, 1_841_936_784)
@@ -56,6 +55,29 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertFalse(project.displayPrelaunch!)
       XCTAssertNil(project.personalization.backing)
       XCTAssertNil(project.rewardData.addOns)
+      XCTAssertNotNil(project.graphQLProject?.story)
+      XCTAssertNotNil(project.graphQLProject?.risks)
+      XCTAssertEqual(project.graphQLProject?.environmentalCommitments.count, 1)
+      XCTAssertEqual(project.graphQLProject?.environmentalCommitments.last?.category, .longLastingDesign)
+      XCTAssertEqual(
+        project.graphQLProject?.environmentalCommitments.last?.description,
+        "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards."
+      )
+      XCTAssertEqual(
+        project.graphQLProject?.environmentalCommitments.last?.id,
+        decompose(id: "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2")
+      )
+      XCTAssertEqual(project.graphQLProject?.faqs.count, 1)
+      XCTAssertEqual(
+        project.graphQLProject?.faqs.last!.question,
+        "Are you planning any expansions for Dustbiters?"
+      )
+      XCTAssertEqual(
+        project.graphQLProject?.faqs.last!.answer,
+        "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that."
+      )
+      XCTAssertEqual(project.graphQLProject?.faqs.last!.id, decompose(id: "UHJvamVjdEZhcS0zNzA4MDM="))
+      XCTAssertEqual(project.graphQLProject?.faqs.last!.createdAt!, TimeInterval(1_628_103_400))
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -313,6 +335,28 @@ final class Project_ProjectFragmentTests: XCTestCase {
              "name":"LGBTQIA+"
           }
        ],
+       "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
+       "environmentalCommitments": [
+         {
+           "__typename": "EnvironmentalCommitment",
+           "commitmentCategory": "longLastingDesign",
+           "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+           "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+         }
+       ],
+       "faqs": {
+         "__typename": "ProjectFaqConnection",
+         "nodes": [
+           {
+             "__typename": "ProjectFaq",
+             "question": "Are you planning any expansions for Dustbiters?",
+             "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+             "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+             "createdAt": 1628103400
+           }
+         ]
+       },
+       "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you.",
        "url":"https://staging.kickstarter.com/projects/bandofbards/final-gamble-issue-1",
        "usdExchangeRate":1,
        "video":{
@@ -334,6 +378,16 @@ final class Project_ProjectFragmentTests: XCTestCase {
     """
 
     let data = Data(json.utf8)
-    return (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+    var resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+
+    resultMap["environmentalCommitments"] =
+      [[
+        "__typename": "EnvironmentalCommitment",
+        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+        "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+        "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+      ]]
+
+    return resultMap
   }
 }

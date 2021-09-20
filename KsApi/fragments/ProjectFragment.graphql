@@ -20,12 +20,15 @@ fragment ProjectFragment on Project {
   description
   environmentalCommitments {
     commitmentCategory
+    description
     id
   }
   faqs {
     nodes {
       question
       answer
+      id
+      createdAt
     }
   }
   finalCollectionDate

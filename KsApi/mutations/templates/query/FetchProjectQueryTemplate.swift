@@ -56,7 +56,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":100,
                    "name":"POSTCARD / POSTKARTE",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
@@ -124,7 +131,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":100,
                    "name":"STICKER / AUFKLEBER",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
@@ -192,7 +206,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":10,
                    "name":"FIRST EDITION / ERSTAUSGABE",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
@@ -262,7 +283,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"PERSONAL THANK YOU + SURPRISE GIF",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"none",
@@ -301,7 +329,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"SET OF 5 POSTCARDS",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":44,
                    "shippingPreference":"unrestricted",
@@ -384,7 +419,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"SPECIAL OFFER FOR PUPILS",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
@@ -452,7 +494,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"FIRST EDITON BOOK / ERSTAUSGABE",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
@@ -535,7 +584,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + PUPIL SUPPORT",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
@@ -603,7 +659,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"2 SIGNED BOOKS / 2 SIGNIERTE BÜCHER",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
@@ -675,7 +738,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Eisbären)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":1,
                    "shippingPreference":"unrestricted",
@@ -747,7 +817,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Aurora Borealis)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
@@ -819,7 +896,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Schnee)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":7,
                    "shippingPreference":"unrestricted",
@@ -891,7 +975,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Spalte im Eis)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":6,
                    "shippingPreference":"unrestricted",
@@ -963,7 +1054,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Meereis)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":4,
                    "shippingPreference":"unrestricted",
@@ -1035,7 +1133,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Arktisches Licht)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":7,
                    "shippingPreference":"unrestricted",
@@ -1107,7 +1212,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Das erste Eis)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":9,
                    "shippingPreference":"unrestricted",
@@ -1179,7 +1291,14 @@ public enum FetchProjectQueryTemplate {
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + GALLERY PRINT (30x45cm)",
                    "project":{
-                      "id":"UHJvamVjdC05MDQ3MDIxMTY="
+                      "id":"UHJvamVjdC05MDQ3MDIxMTY=",
+                      "story": "",
+                      "risks": "",
+                      "environmentalCommitments": [],
+                      "faqs": {
+                        "__typename": "ProjectFaqConnection",
+                        "nodes": []
+                     }
                    },
                    "remainingQuantity":9,
                    "shippingPreference":"restricted",
@@ -1479,7 +1598,29 @@ public enum FetchProjectQueryTemplate {
                 "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
               }
             }
-          }
+          },
+          "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
+          "environmentalCommitments": [
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "longLastingDesign",
+              "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+            }
+          ],
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": [
+              {
+                "__typename": "ProjectFaq",
+                "question": "Are you planning any expansions for Dustbiters?",
+                "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+                "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+                "createdAt": 1628103400
+              }
+            ]
+          },
+          "risks": "Risks"
        }
     }
     """
@@ -1574,6 +1715,13 @@ public enum FetchProjectQueryTemplate {
       ]
     ]
 
+    let updatedEnvironmentalCommitments =
+    [["__typename": "EnvironmentalCommitment",
+      "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+      "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+      "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"]]
+
+    projectResultMap["environmentalCommitments"] = updatedEnvironmentalCommitments
     projectResultMap["creator"] = updatedCreatorResultMap
 
     resultMap["project"] = projectResultMap
