@@ -43,18 +43,23 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let config = Config.template
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
-    let backing = Backing.template
-      |> Backing.lens.reward .~ reward
-    let backedProject = Project.cosmicSurgery
+    let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .live
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
     let mockService = MockService(
-      fetchProjectResult: .success(backedProject)
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -63,7 +68,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
+          projectOrParam: .left(project), refTag: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -78,16 +83,20 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
   func testLoggedIn_Backer_NonLiveProject() {
     let config = Config.template
-    let backedProject = Project.cosmicSurgery
+    let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ .template
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: .template)
+
     let mockService = MockService(
-      fetchProjectResult: .success(backedProject)
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -96,7 +105,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
+          projectOrParam: .left(project), refTag: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -114,15 +123,19 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let currentUser = User.template
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
-    let backedProject = Project.cosmicSurgery
+    let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .live
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
     let mockService = MockService(
-      fetchProjectResult: .success(backedProject)
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -131,7 +144,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config, currentUser: currentUser, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
+          projectOrParam: .left(project), refTag: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -149,15 +162,19 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let currentUser = User.template
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
-    let backedProject = Project.cosmicSurgery
+    let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .successful
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
     let mockService = MockService(
-      fetchProjectResult: .success(backedProject)
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -166,7 +183,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config, currentUser: currentUser, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
+          projectOrParam: .left(project), refTag: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -181,15 +198,18 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
   func testLoggedIn_NonBacker_NonLiveProject() {
     let config = Config.template
-    let backedProject = Project.cosmicSurgery
+    let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
     let mockService = MockService(
-      fetchProjectResult: .success(backedProject)
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -198,7 +218,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
+          projectOrParam: .left(project), refTag: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -219,8 +239,11 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let liveProject = self.project
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
 
+    let projectPamphletData = Project.ProjectPamphletData(project: liveProject, backingId: nil)
+
     let mockService = MockService(
-      fetchProjectResult: .success(liveProject)
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -242,15 +265,18 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
   func testLoggedOut_NonBacker_NonLiveProject() {
     let config = Config.template
-    let backedProject = Project.cosmicSurgery
+    let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
     let mockService = MockService(
-      fetchProjectResult: .success(backedProject)
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -259,7 +285,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config, currentUser: nil, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
+          projectOrParam: .left(project), refTag: nil
         )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -278,7 +304,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let config = Config.template
 
     let mockService = MockService(
-      fetchProjectResult: .failure(.couldNotParseJSON)
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .failure(.couldNotParseJSON)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in

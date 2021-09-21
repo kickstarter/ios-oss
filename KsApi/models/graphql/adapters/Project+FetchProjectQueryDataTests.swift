@@ -1,20 +1,32 @@
 import Apollo
 @testable import KsApi
+import ReactiveSwift
 import XCTest
 
 final class Project_FetchProjectQueryDataTests: XCTestCase {
-  // TODO: Look into the `AssertNil` cases in this ticket: https://kickstarter.atlassian.net/browse/NTV-161 those are missing properties we are not correctly mapping from GQl to the V1 model or not part of the existing `ProjectQuery`
-
   /// `FetchProjectQueryBySlug` returns identical data.
   func testFetchProjectQueryData_Success() {
     let producer = Project.projectProducer(from: FetchProjectQueryTemplate.valid.data)
-    guard let projectById = MockGraphQLClient.shared.client.data(from: producer) else {
+
+    let projectProducer = producer
+      .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
+        SignalProducer(value: projectPamphletData.project)
+      }
+
+    let backingIdProducer = producer
+      .switchMap { projectPamphletData -> SignalProducer<Int?, ErrorEnvelope> in
+        SignalProducer(value: projectPamphletData.backingId)
+      }
+
+    guard let projectDataById = MockGraphQLClient.shared.client.data(from: projectProducer),
+      let backingId = MockGraphQLClient.shared.client.data(from: backingIdProducer) else {
       XCTFail()
 
       return
     }
 
-    self.testProjectProperties_Success(project: projectById)
+    self.testProjectProperties_Success(project: projectDataById)
+    XCTAssertEqual(backingId, decompose(id: "QmFja2luZy0xNDgwMTQwMzQ="))
   }
 
   private func testProjectProperties_Success(project: Project) {
@@ -28,7 +40,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     )
     XCTAssertFalse(project.displayPrelaunch!)
     XCTAssertTrue(project.prelaunchActivated!)
-    XCTAssertEqual(project.slug, "theaschneider/thequiet")
+    XCTAssertEqual(project.slug, "thequiet")
     XCTAssertTrue(project.staffPick)
     XCTAssertEqual(project.state, .live)
     XCTAssertEqual(
@@ -119,55 +131,57 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       project.creator.avatar.small,
       "https://ksr-qa-ugc.imgix.net/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1623351187&auto=format&frame=1&q=92&s=d0d5f5993e64056e5ddf7e42b56e50cd"
     )
+    XCTAssertEqual(project.creator.erroredBackingsCount, 1)
     XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xNTMyMzU3OTk3"))
-    XCTAssertNil(project.creator.isEmailVerified)
+    XCTAssertTrue(project.creator.isEmailVerified!)
+    XCTAssertFalse(project.creator.facebookConnected!)
+    XCTAssertTrue(project.creator.isFriend!)
+    XCTAssertTrue(project.creator.isAdmin!)
+    XCTAssertEqual(project.creator.location?.country, "US")
+    XCTAssertEqual(project.creator.location?.displayableName, "Las Vegas, NV")
+    XCTAssertEqual(project.creator.location?.id, decompose(id: "TG9jYXRpb24tMjQzNjcwNA=="))
+    XCTAssertEqual(project.creator.location?.name, "Las Vegas")
+    XCTAssertEqual(project.creator.location?.localizedName, "Las Vegas")
+    XCTAssertTrue(project.creator.needsFreshFacebookToken!)
+    XCTAssertTrue(project.creator.showPublicProfile!)
 
-    // TODO: Missing user properties being returned by current v1 model (ie need to be filled in for GQL)
-    XCTAssertNil(project.creator.erroredBackingsCount)
-    XCTAssertNil(project.creator.facebookConnected)
-    XCTAssertNil(project.creator.isAdmin)
-    XCTAssertNil(project.creator.isFriend)
-    XCTAssertNil(project.creator.location)
-    XCTAssertNil(project.creator.needsFreshFacebookToken)
-    XCTAssertNil(project.creator.newsletters.arts)
-    XCTAssertNil(project.creator.newsletters.games)
-    XCTAssertNil(project.creator.newsletters.happening)
-    XCTAssertNil(project.creator.newsletters.invent)
-    XCTAssertNil(project.creator.newsletters.promo)
-    XCTAssertNil(project.creator.newsletters.weekly)
-    XCTAssertNil(project.creator.newsletters.films)
-    XCTAssertNil(project.creator.newsletters.publishing)
-    XCTAssertNil(project.creator.newsletters.alumni)
-    XCTAssertNil(project.creator.newsletters.music)
-    XCTAssertNil(project.creator.notifications.backings)
-    XCTAssertNil(project.creator.notifications.commentReplies)
-    XCTAssertNil(project.creator.notifications.comments)
-    XCTAssertNil(project.creator.notifications.creatorDigest)
-    XCTAssertNil(project.creator.notifications.creatorTips)
-    XCTAssertNil(project.creator.notifications.follower)
-    XCTAssertNil(project.creator.notifications.friendActivity)
-    XCTAssertNil(project.creator.notifications.messages)
-    XCTAssertNil(project.creator.notifications.mobileBackings)
-    XCTAssertNil(project.creator.notifications.mobileComments)
-    XCTAssertNil(project.creator.notifications.mobileFollower)
-    XCTAssertNil(project.creator.notifications.mobileFriendActivity)
-    XCTAssertNil(project.creator.notifications.mobileMarketingUpdate)
-    XCTAssertNil(project.creator.notifications.mobileMessages)
+    XCTAssertTrue(project.creator.newsletters.arts!)
+    XCTAssertFalse(project.creator.newsletters.films!)
+    XCTAssertFalse(project.creator.newsletters.games!)
+    XCTAssertFalse(project.creator.newsletters.happening!)
+    XCTAssertFalse(project.creator.newsletters.invent!)
+    XCTAssertFalse(project.creator.newsletters.promo!)
+    XCTAssertFalse(project.creator.newsletters.weekly!)
+    XCTAssertFalse(project.creator.newsletters.publishing!)
+    XCTAssertTrue(project.creator.newsletters.alumni!)
+    XCTAssertFalse(project.creator.newsletters.music!)
+    XCTAssertFalse(project.creator.notifications.backings!)
+    XCTAssertTrue(project.creator.notifications.commentReplies!)
+    XCTAssertTrue(project.creator.notifications.comments!)
+    XCTAssertTrue(project.creator.notifications.creatorDigest!)
+    XCTAssertTrue(project.creator.notifications.creatorTips!)
+    XCTAssertTrue(project.creator.notifications.follower!)
+    XCTAssertTrue(project.creator.notifications.friendActivity!)
+    XCTAssertTrue(project.creator.notifications.messages!)
+    XCTAssertTrue(project.creator.notifications.mobileBackings!)
+    XCTAssertTrue(project.creator.notifications.mobileComments!)
+    XCTAssertTrue(project.creator.notifications.mobileFollower!)
+    XCTAssertFalse(project.creator.notifications.mobileFriendActivity!)
+    XCTAssertFalse(project.creator.notifications.mobileMarketingUpdate!)
+    XCTAssertTrue(project.creator.notifications.mobileMessages!)
     XCTAssertNil(project.creator.notifications.mobilePostLikes)
     XCTAssertNil(project.creator.notifications.mobileUpdates)
     XCTAssertNil(project.creator.notifications.postLikes)
-    XCTAssertNil(project.creator.notifications.updates)
-    XCTAssertNil(project.creator.showPublicProfile)
-    XCTAssertNil(project.creator.social)
-    XCTAssertNil(project.creator.stats.backedProjectsCount)
-    XCTAssertNil(project.creator.stats.createdProjectsCount)
+    XCTAssertTrue(project.creator.notifications.updates!)
+    XCTAssertTrue(project.creator.social!)
+    XCTAssertEqual(project.creator.stats.createdProjectsCount, 16)
     XCTAssertNil(project.creator.stats.draftProjectsCount)
     XCTAssertNil(project.creator.stats.memberProjectsCount)
-    XCTAssertNil(project.creator.stats.starredProjectsCount)
-    XCTAssertNil(project.creator.stats.unansweredSurveysCount)
-    XCTAssertNil(project.creator.stats.unreadMessagesCount)
-    XCTAssertNil(project.creator.unseenActivityCount)
-
+    XCTAssertEqual(project.creator.stats.starredProjectsCount, 11)
+    XCTAssertEqual(project.creator.stats.unansweredSurveysCount, 2)
+    XCTAssertEqual(project.creator.stats.backedProjectsCount, 3)
+    XCTAssertEqual(project.creator.stats.unreadMessagesCount, 0)
+    XCTAssertEqual(project.creator.unseenActivityCount, 1)
     /// Project member data
     XCTAssertEqual(
       project.memberData.permissions,

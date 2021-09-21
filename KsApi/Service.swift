@@ -308,7 +308,7 @@ public struct Service: ServiceType {
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
-  public func fetchManagePledgeViewBacking(id: Int, withStoredCards: Bool)
+  public func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)", withStoredCards: withStoredCards))
@@ -335,8 +335,15 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
-  public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-    switch (param.id, param.slug) {
+  /**
+    Use case:
+   - `ProjectPamphletViewModel`
+
+   This is the only use case at the moment as it effects the `ProjectPamphletViewController` directly.
+   */
+  public func fetchProject(projectParam: Param)
+    -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
+    switch (projectParam.id, projectParam.slug) {
     case let (.some(projectId), _):
       let query = GraphAPI.FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
 
@@ -349,6 +356,39 @@ public struct Service: ServiceType {
       return GraphQL.shared.client
         .fetch(query: query)
         .flatMap(Project.projectProducer(from:))
+    default:
+      return .empty
+    }
+  }
+
+  /**
+    Use cases:
+   - `ManagePledgeViewModel`
+   - `CommentsViewModel`
+   - `UpdateViewModel`
+   - `UpdatePreviewViewModel`
+   - `AppDelegateViewModel`
+
+   Eventually this v1 network request can be replaced with `fetchProject(projectParam:)` if we refactor the use cases above in the future.
+   */
+  public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
+    return request(.project(param))
+  }
+
+  public func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope> {
+    switch (param.id, param.slug) {
+    case let (.some(projectId), _):
+      let query = GraphAPI.FetchProjectFriendsByIdQuery(projectId: projectId, withStoredCards: false)
+
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectFriendsProducer(from:))
+    case let (_, .some(projectSlug)):
+      let query = GraphAPI.FetchProjectFriendsBySlugQuery(slug: projectSlug, withStoredCards: false)
+
+      return GraphQL.shared.client
+        .fetch(query: query)
+        .flatMap(Project.projectFriendsProducer(from:))
     default:
       return .empty
     }

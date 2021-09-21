@@ -108,6 +108,8 @@
 		06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */; };
 		06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
 		06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
+		06BD057626F15CFB00C44E36 /* FetchProjectFriendsById.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
+		06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057726F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql */; };
 		06BD75B926C42B9B00A12D4E /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */; };
 		06BD75BA26C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */; };
 		06BD75BC26C42BA100A12D4E /* OptimizelyFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */; };
@@ -121,6 +123,10 @@
 		06C1256226A89408003BE6B9 /* Comment+CommentFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C1256126A89408003BE6B9 /* Comment+CommentFragmentTests.swift */; };
 		06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */; };
 		06C38CBB26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */; };
+		06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */; };
+		06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */; };
+		06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */; };
+		06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */; };
 		06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F1269398CB00017845 /* UserFragment.graphql */; };
 		06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556DF269394B600017845 /* RewardFragment.graphql */; };
 		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
@@ -1839,6 +1845,8 @@
 		06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectQueryData.swift"; sourceTree = "<group>"; };
 		06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCreditCards+UserFragmentTests.swift"; sourceTree = "<group>"; };
 		06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTemplates.swift"; sourceTree = "<group>"; };
+		06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectFriendsById.graphql; sourceTree = "<group>"; };
+		06BD057726F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectFriendsBySlug.graphql; sourceTree = "<group>"; };
 		06BD75B626C42B9B00A12D4E /* OptimizelyFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		06BD75B726C42B9B00A12D4E /* OptimizelyFeature+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+Helpers.swift"; sourceTree = "<group>"; };
 		06BD75B826C42B9B00A12D4E /* OptimizelyFeature+HelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+HelpersTests.swift"; sourceTree = "<group>"; };
@@ -1853,6 +1861,10 @@
 		06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UpdateUserProfile.graphql; sourceTree = "<group>"; };
 		06C38CBA26A9D7CC00591CED /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInput.swift"; sourceTree = "<group>"; };
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
+		06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFragmentTemplate.swift; sourceTree = "<group>"; };
+		06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectFriendsQueryData.swift"; sourceTree = "<group>"; };
+		06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectFriendsQueryDataTests.swift"; sourceTree = "<group>"; };
+		06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectFriendsQueryTemplate.swift; sourceTree = "<group>"; };
 		06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserStoredCardsFragment.graphql; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
@@ -3411,12 +3423,38 @@
 		066C0ADF26CB114A0048F4D8 /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				06D00FAC26EFA98500E11E38 /* query */,
+				06D00FAD26EFA98F00E11E38 /* fragment */,
+				06D00FAE26EFA99900E11E38 /* mutation */,
+			);
+			path = templates;
+			sourceTree = "<group>";
+		};
+		06D00FAC26EFA98500E11E38 /* query */ = {
+			isa = PBXGroup;
+			children = (
 				0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */,
+				06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */,
 				06032A8926CEAD2F0013AAB9 /* FetchProjectCommentsQueryTemplate.swift */,
 				06032A8F26CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift */,
 				06032A9326CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift */,
 				06032A9526CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift */,
+			);
+			path = query;
+			sourceTree = "<group>";
+		};
+		06D00FAD26EFA98F00E11E38 /* fragment */ = {
+			isa = PBXGroup;
+			children = (
 				06032A8D26CEB3E50013AAB9 /* CommentFragmentTemplate.swift */,
+				06D00FAA26EFA95300E11E38 /* UserFragmentTemplate.swift */,
+			);
+			path = fragment;
+			sourceTree = "<group>";
+		};
+		06D00FAE26EFA99900E11E38 /* mutation */ = {
+			isa = PBXGroup;
+			children = (
 				066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */,
 				066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */,
 				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
@@ -3425,7 +3463,7 @@
 				066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */,
 				066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */,
 			);
-			path = templates;
+			path = mutation;
 			sourceTree = "<group>";
 		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
@@ -3489,6 +3527,8 @@
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
 				06B3605B26E12288006CB9E4 /* FetchProjectByIdQuery.graphql */,
 				06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */,
+				06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */,
+				06BD057726F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql */,
 				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
@@ -3706,6 +3746,8 @@
 				8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */,
 				06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */,
 				0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */,
+				06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */,
+				06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */,
 				8AC3E03826977C0200168BF8 /* Project+ProjectFragment.swift */,
 				8AC3E05026979F8600168BF8 /* Project+ProjectFragmentTests.swift */,
 				8A49396424B54F9B00C3C3CE /* Reward+GraphReward.swift */,
@@ -5604,6 +5646,7 @@
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */,
 				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
+				06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */,
 				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,
 				06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */,
 				8AC3E0F5269F48A400168BF8 /* UpdateBacking.graphql in Resources */,
@@ -6784,6 +6827,7 @@
 				8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */,
 				D01588D91EEB2ED7006E7684 /* User.AvatarLenses.swift in Sources */,
 				8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */,
+				06BD057626F15CFB00C44E36 /* FetchProjectFriendsById.graphql in Sources */,
 				D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */,
 				D01588371EEB2ED7006E7684 /* EncodableType.swift in Sources */,
 				065E6BAA26B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift in Sources */,
@@ -6950,6 +6994,7 @@
 				D0158A201EEB30A2006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift in Sources */,
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
 				06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */,
+				06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */,
 				8A49396124B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift in Sources */,
 				D015890B1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift in Sources */,
 				D015889B1EEB2ED7006E7684 /* ItemLenses.swift in Sources */,
@@ -7085,6 +7130,7 @@
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
 				8A15574326951A4B00017845 /* Backing+BackingFragmentTests.swift in Sources */,
 				0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */,
+				06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */,
 				8AC3E0592697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
 				8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */,
@@ -7097,6 +7143,7 @@
 				06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
 				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
 				06FFCE4B26A71D0500D315EF /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInputTests.swift in Sources */,
+				06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */,
 				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
@@ -7150,6 +7197,7 @@
 				062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */,
 				8AC3E0662697AC0400168BF8 /* User+UserFragmentTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
+				06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */,
 				8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */,
 				0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */,
 				06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */,

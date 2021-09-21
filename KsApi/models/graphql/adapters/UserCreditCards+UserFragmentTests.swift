@@ -21,8 +21,15 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
     do {
       let storedCardsFragment = try GraphAPI.UserFragment
         .StoredCard(jsonObject: sampleCardDict, variables: variables)
+      let locationFragment = GraphAPI.UserFragment.Location(
+        country: "US",
+        countryName: "United States",
+        displayableName: "Las Vegas, NV",
+        id: "TG9jYXRpb24tMjQzNjcwNA==",
+        name: "Las Vegas"
+      )
       let userFragment = GraphAPI.UserFragment(
-        chosenCurrency: "USD",
+        backingsCount: 3, chosenCurrency: "USD",
         email: "foo@bar.com",
         hasPassword: true,
         id: "id",
@@ -31,9 +38,11 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
         isCreator: false,
         isDeliverable: true,
         isEmailVerified: true,
+        isFollowing: false,
+        location: locationFragment,
         name: "Hari Singh",
-        uid: "12345",
-        storedCards: storedCardsFragment
+        storedCards: storedCardsFragment,
+        uid: "12345"
       )
 
       XCTAssertTrue(UserCreditCards.userCreditCards(from: userFragment).storedCards.count == 1)
@@ -54,6 +63,7 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
       let storedCardsFragment = try GraphAPI.UserFragment
         .StoredCard(jsonObject: sampleCardDict, variables: variables)
       let userFragment = GraphAPI.UserFragment(
+        backingsCount: 3,
         chosenCurrency: "USD",
         email: "foo@bar.com",
         hasPassword: true,
@@ -63,9 +73,10 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
         isCreator: false,
         isDeliverable: true,
         isEmailVerified: true,
+        isFollowing: true,
         name: "Hari Singh",
-        uid: "12345",
-        storedCards: storedCardsFragment
+        storedCards: storedCardsFragment,
+        uid: "12345"
       )
 
       XCTAssertTrue(UserCreditCards.userCreditCards(from: userFragment).storedCards.count == 0)

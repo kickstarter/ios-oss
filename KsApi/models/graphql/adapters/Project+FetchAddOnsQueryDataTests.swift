@@ -13,7 +13,7 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
 
     XCTAssertEqual(envelope.name, "Peppermint Fox Press: Notebooks & Stationery")
     XCTAssertEqual(envelope.id, 1_606_532_881)
-    XCTAssertEqual(envelope.slug, "peppermintfox/peppermint-fox-press-notebooks-and-stationery")
+    XCTAssertEqual(envelope.slug, "peppermint-fox-press-notebooks-and-stationery")
     XCTAssertEqual(envelope.state, .live)
     XCTAssertEqual(envelope.location.name, "Launceston")
 

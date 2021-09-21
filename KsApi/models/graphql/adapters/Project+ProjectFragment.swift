@@ -29,10 +29,6 @@ extension Project {
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: projectFragment.url + "/posts")
     )
 
-    let friends = projectFragment.friends?.nodes?
-      .compactMap { $0?.fragments.userFragment }
-      .compactMap { User.user(from: $0) } ?? []
-
     let availableCardTypes = projectFragment.availableCardTypes.compactMap { $0.rawValue }
 
     let displayPrelaunch = !projectFragment.isLaunched
@@ -45,6 +41,19 @@ extension Project {
 
         return nil
       }
+    /**
+     NOTE: Project friends fetched by
+     `fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>`
+     */
+
+    /**
+     NOTE: `Project.generatedSlug`currently returns an internal server error for user that isn't logged in. Seeing as we need the project object even if the user isn't logged in, we can still use `Project.slug` and parse the string below to get the same result until the `Project.generatedSlug` is fixed.
+     */
+
+    let generatedSlug = projectFragment.slug
+      .components(separatedBy: "/")
+      .filter { $0 != "" }
+      .last
 
     return Project(
       availableCardTypes: availableCardTypes,
@@ -61,12 +70,12 @@ extension Project {
       personalization: projectPersonalization(
         isStarred: projectFragment.isWatched,
         backing: backing,
-        friends: friends
+        friends: []
       ),
       photo: photo,
       prelaunchActivated: projectFragment.prelaunchActivated,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
-      slug: projectFragment.slug,
+      slug: generatedSlug ?? projectFragment.slug,
       staffPick: projectFragment.isProjectWeLove,
       state: state,
       stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
