@@ -231,7 +231,6 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(lastAddOn.shippingRules?.count, 2)
     XCTAssertEqual(lastAddOn.shipping.enabled, false)
     XCTAssertEqual(lastAddOn.shipping.preference!, .none)
-    // TODO: Test shipping rules as part of rewards attached to project a little more in the future.
     XCTAssertNil(lastAddOn.shippingRulesExpanded)
     XCTAssertNil(lastAddOn.shipping.location)
     XCTAssertNil(lastAddOn.shipping.summary)

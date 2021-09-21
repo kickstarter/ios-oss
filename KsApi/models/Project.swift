@@ -8,7 +8,7 @@ public struct Project {
   public var category: Category
   public var country: Country
   public var creator: User
-  public var graphQLProject: GraphQLProject? // FIXME: Eventually this model will replace all the properties of `Project`.
+  public var graphQLProject: GraphQLProject?
   public var memberData: MemberData
   public var dates: Dates
   public var displayPrelaunch: Bool?
@@ -293,7 +293,6 @@ extension Project: Decodable {
     self.tags = try values.decodeIfPresent([String].self, forKey: .tags)
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
-    // FIXME: This is an extended property for now, but will grow to replace this model when all in-app functionality is validated for GQL.
     self.graphQLProject = nil
   }
 }
