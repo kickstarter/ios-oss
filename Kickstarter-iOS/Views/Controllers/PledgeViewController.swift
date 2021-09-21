@@ -361,14 +361,13 @@ final class PledgeViewController: UIViewController,
     self.viewModel.outputs.goToApplePayPaymentAuthorization
       .observeForControllerAction()
       .observeValues { [weak self] paymentAuthorizationData in
-        isNativeRiskMessagingControlEnabled() ? self?.goToPaymentAuthorization(paymentAuthorizationData) :
-          self?.goToRiskMessagingModal()
+        self?.goToPaymentAuthorization(paymentAuthorizationData)
       }
 
     self.viewModel.outputs.goToRiskMessagingModal
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToRiskMessagingModal()
+      .observeValues { [weak self] isApplePay in
+        self?.goToRiskMessagingModal(isApplePay: isApplePay)
       }
 
     self.viewModel.outputs.goToThanks
@@ -479,8 +478,9 @@ final class PledgeViewController: UIViewController,
     self.present(paymentAuthorizationViewController, animated: true)
   }
 
-  private func goToRiskMessagingModal() {
-    let viewController = RiskMessagingViewController()
+  private func goToRiskMessagingModal(isApplePay: Bool) {
+    self.viewModel.inputs.configureRiskMessagingModal(isApplePay: isApplePay)
+    let viewController = RiskMessagingViewController(viewModel: self.viewModel)
     let offset = self.view.bounds.height * Layout.Style.modalHeightMultiplier
     self.presentViewControllerWithSheetOverlay(viewController, offset: offset)
   }

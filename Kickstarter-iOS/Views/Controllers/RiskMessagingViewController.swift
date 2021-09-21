@@ -16,7 +16,16 @@ final class RiskMessagingViewController: UIViewController {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel: PledgeViewModelType = PledgeViewModel()
+  private var viewModel: PledgeViewModelType
+
+  init(viewModel: PledgeViewModelType) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   // MARK: - Lifecycle
 
@@ -41,6 +50,13 @@ final class RiskMessagingViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.setupConstraints()
+
+    self.confirmButton
+      .addTarget(
+        self,
+        action: #selector(self.riskMessagingPledgeConfirmationButtonTapped),
+        for: .touchUpInside
+      )
   }
 
   override func bindStyles() {
@@ -96,6 +112,29 @@ final class RiskMessagingViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.dismissRiskMessagingModalForApplePay
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true) { [weak self] in
+          self?.viewModel.inputs.riskMessagingModalDismissedForApplePay()
+        }
+      }
+
+    self.viewModel.outputs.dismissRiskMessagingModalForStandardPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true) { [weak self] in
+          self?.viewModel.inputs.riskMessagingModalDismissedForStandardPledge()
+        }
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc
+  private func riskMessagingPledgeConfirmationButtonTapped() {
+    self.viewModel.inputs.riskMessagingPledgeConfirmationButtonTapped()
   }
 }
 
