@@ -87,7 +87,7 @@
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
     /**
-     FIXME: Eventually combine `fetchProjectEnvelopeResult` and `fetchProjectPamphletEnvelopeResult` once all calls returning `Project` are using GQL.
+     FIXME: Eventually combine `fetchProjectEnvelopeResult` and `fetchProjectPamphletEnvelopeResult` once all calls returning `Project` are using GQL. https://kickstarter.atlassian.net/browse/NTV-219
      */
     fileprivate let fetchProjectEnvelopeResult: Result<Project, ErrorEnvelope>?
     fileprivate let fetchProjectPamphletEnvelopeResult: Result<Project.ProjectPamphletData, ErrorEnvelope>?

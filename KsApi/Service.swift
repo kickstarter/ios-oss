@@ -308,9 +308,6 @@ public struct Service: ServiceType {
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
-  /**
-   FIXME: Reconsider the naming here as it returns both the `Project` and the `Backing` object.
-   */
   public func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
