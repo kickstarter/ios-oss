@@ -54,9 +54,6 @@ extension Project {
         Reward.reward(from: fragment)
       } ?? []
 
-    /**
-     TODO: Ideally attaching backing here from a project query would simplify the query. However its' too complex, so we need to revisit this as we re-create the existing v1 model to a new GQL project model.
-     */
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
@@ -98,9 +95,6 @@ extension Project {
         Reward.reward(from: fragment)
       } ?? []
 
-    /**
-     TODO: Ideally attaching backing here from a project query would simplify the query. However its' too complex, so we need to revisit this as we re-create the existing v1 model to a new GQL project model.
-     */
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
