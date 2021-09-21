@@ -279,9 +279,12 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertNil(lastReward.shipping.location)
     XCTAssertNil(lastReward.shipping.summary)
     XCTAssertNil(lastReward.shipping.type)
-    
+
     /// Extended properties only available on GraphQL
-    XCTAssertEqual(project.graphQLProject?.story, "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.")
+    XCTAssertEqual(
+      project.graphQLProject?.story,
+      "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string."
+    )
     XCTAssertEqual(project.graphQLProject?.risks, "Risks")
     XCTAssertEqual(project.graphQLProject?.environmentalCommitments.count, 1)
     XCTAssertEqual(project.graphQLProject?.environmentalCommitments.last?.category, .longLastingDesign)

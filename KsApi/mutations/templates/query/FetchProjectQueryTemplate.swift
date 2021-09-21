@@ -1716,11 +1716,26 @@ public enum FetchProjectQueryTemplate {
     ]
 
     let updatedEnvironmentalCommitments =
-    [["__typename": "EnvironmentalCommitment",
-      "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
-      "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
-      "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"]]
+      [[
+        "__typename": "EnvironmentalCommitment",
+        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+        "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+        "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+      ]]
 
+    let updatedFaqs =
+      [
+        "__typename": "ProjectFaqConnection",
+        "nodes": [[
+          "__typename": "ProjectFaq",
+          "question": "Are you planning any expansions for Dustbiters?",
+          "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+          "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+          "createdAt": "1628103400"
+        ]]
+      ] as [String: Any]
+
+    projectResultMap["faqs"] = updatedFaqs
     projectResultMap["environmentalCommitments"] = updatedEnvironmentalCommitments
     projectResultMap["creator"] = updatedCreatorResultMap
 
