@@ -70,7 +70,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
         project.extendedProjectProperties?.environmentalCommitments.last?.id,
         decompose(id: "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2")
       )
-      XCTAssertEqual(project.graphQLProject?.faqs.count, 1)
+      XCTAssertEqual(project.extendedProjectProperties?.faqs.count, 1)
       XCTAssertEqual(
         project.extendedProjectProperties?.faqs.last!.question,
         "Are you planning any expansions for Dustbiters?"
