@@ -55,7 +55,7 @@ extension Project {
       .filter { $0 != "" }
       .last
 
-    let graphQLProject = extendedProject(from: projectFragment)
+    let extendedProjectProperties = extendedProject(from: projectFragment)
 
     return Project(
       availableCardTypes: availableCardTypes,
@@ -63,7 +63,7 @@ extension Project {
       category: category,
       country: country,
       creator: creator,
-      graphQLProject: graphQLProject,
+      extendedProjectProperties: extendedProjectProperties,
       memberData: memberData,
       dates: dates,
       displayPrelaunch: displayPrelaunch,
@@ -221,31 +221,31 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
 }
 
 /**
- Returns a `GraphQLProject` object from `ProjectFragment`
+ Returns a `ExtendedProjectProperties` object from `ProjectFragment`
  */
-private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> GraphQLProject {
+private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
   let story = projectFragment.story
   let risks = projectFragment.risks
-  let environmentalCommitments = graphQLProjectEnvironmentalCommitments(from: projectFragment)
-  let faqs = graphQLProjectFAQs(from: projectFragment)
+  let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
+  let faqs = extendedProjectFAQs(from: projectFragment)
 
-  let graphQLProject = GraphQLProject(
+  let extendedProjectProperties = ExtendedProjectProperties(
     story: story,
     risks: risks,
     environmentalCommitments: environmentalCommitments,
     faqs: faqs
   )
 
-  return graphQLProject
+  return extendedProjectProperties
 }
 
 /**
  Returns a `GraphQLProject.ProjectFAQ` from `ProjectFragment`
  */
 
-private func graphQLProjectFAQs(from projectFragment: GraphAPI
-  .ProjectFragment) -> [GraphQLProject.ProjectFAQ] {
-  var faqs = [GraphQLProject.ProjectFAQ]()
+private func extendedProjectFAQs(from projectFragment: GraphAPI
+  .ProjectFragment) -> [ExtendedProjectProperties.ProjectFAQ] {
+  var faqs = [ExtendedProjectProperties.ProjectFAQ]()
 
   if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
     for faq in allFaqs {
@@ -262,7 +262,7 @@ private func graphQLProjectFAQs(from projectFragment: GraphAPI
         createdAtDate = TimeInterval(existingDate)
       }
 
-      let faq = GraphQLProject
+      let faq = ExtendedProjectProperties
         .ProjectFAQ(answer: faqAnswer, question: faqQuestion, id: decomposedId, createdAt: createdAtDate)
 
       faqs.append(faq)
@@ -276,9 +276,9 @@ private func graphQLProjectFAQs(from projectFragment: GraphAPI
  Returns a `GraphQLProject.EnvironmentalCommitment` from `ProjectFragment`
  */
 
-private func graphQLProjectEnvironmentalCommitments(from projectFragment: GraphAPI
-  .ProjectFragment) -> [GraphQLProject.EnvironmentalCommitment] {
-  var environmentalCommitments = [GraphQLProject.EnvironmentalCommitment]()
+private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
+  .ProjectFragment) -> [ExtendedProjectProperties.EnvironmentalCommitment] {
+  var environmentalCommitments = [ExtendedProjectProperties.EnvironmentalCommitment]()
 
   if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
@@ -288,7 +288,7 @@ private func graphQLProjectEnvironmentalCommitments(from projectFragment: GraphA
         continue
       }
 
-      var commitmentCategory: GraphQLProject.CommitmentCategory
+      var commitmentCategory: ExtendedProjectProperties.CommitmentCategory
 
       switch commitment?.commitmentCategory {
       case .longLastingDesign:
@@ -305,7 +305,7 @@ private func graphQLProjectEnvironmentalCommitments(from projectFragment: GraphA
         commitmentCategory = .somethingElse
       }
 
-      let environmentalCommitment = GraphQLProject
+      let environmentalCommitment = ExtendedProjectProperties
         .EnvironmentalCommitment(description: description, category: commitmentCategory, id: decomposedId)
 
       environmentalCommitments.append(environmentalCommitment)

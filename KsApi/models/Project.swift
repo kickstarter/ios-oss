@@ -8,7 +8,7 @@ public struct Project {
   public var category: Category
   public var country: Country
   public var creator: User
-  public var graphQLProject: GraphQLProject?
+  public var extendedProjectProperties: ExtendedProjectProperties?
   public var memberData: MemberData
   public var dates: Dates
   public var displayPrelaunch: Bool?
@@ -279,6 +279,7 @@ extension Project: Decodable {
     self.memberData = try Project.MemberData(from: decoder)
     self.dates = try Project.Dates(from: decoder)
     self.displayPrelaunch = try values.decodeIfPresent(Bool.self, forKey: .displayPrelaunch)
+    self.extendedProjectProperties = nil
     self.id = try values.decode(Int.self, forKey: .id)
     self.location = (try? values.decodeIfPresent(Location.self, forKey: .location)) ?? Location.none
     self.name = try values.decode(String.self, forKey: .name)
@@ -293,7 +294,6 @@ extension Project: Decodable {
     self.tags = try values.decodeIfPresent([String].self, forKey: .tags)
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
-    self.graphQLProject = nil
   }
 }
 
