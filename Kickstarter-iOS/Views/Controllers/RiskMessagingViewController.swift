@@ -131,14 +131,13 @@ private let bannerImageStackViewStyle: StackViewStyle = { stackView in
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
-// TODO: Internationalize text
 private let bannerLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.textColor .~ .ksr_white
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text .~ "Rewards aren't guaranteed."
+    |> \.text .~ Strings.Rewards_arent_guaranteed()
     |> \.textAlignment .~ .left
     |> \.adjustsFontForContentSizeCategory .~ true
 }
@@ -149,14 +148,13 @@ private let cartIconImageViewStyle: ImageViewStyle = { imageView in
     |> UIImageView.lens.image .~ image(named: "risk-messaging-cart")
 }
 
-// TODO: Internationalize text
 private let confirmButtonStyle: ButtonStyle = { button in
   button
     |> baseButtonStyle
     |> blackButtonStyle
     |> UIButton.lens.titleLabel.lineBreakMode .~ .byWordWrapping
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_callout().bolded
-    |> UIButton.lens.title(for: .normal) %~ { _ in "I understand" }
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.I_understand() }
     |> UIButton.lens.contentHorizontalAlignment .~ .center
 }
 
@@ -170,14 +168,13 @@ private let footnoteLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
-// TODO: Internationalize text
 private let headingLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_caption1()
     |> \.textColor .~ .ksr_support_500
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text .~ "Backing means supporting a creative project, regardless of the outcome."
+    |> \.text .~ Strings.Backing_means_supporting()
     |> \.textAlignment .~ .left
     |> \.adjustsFontForContentSizeCategory .~ true
 }
@@ -192,15 +189,13 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
-// TODO: Internationalize text
 private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.textColor .~ .ksr_support_500
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text .~
-    "By pledging, you acknowledge that rewards or reimbursements aren’t guaranteed by either Kickstarter or the creator."
+    |> \.text .~ Strings.By_pledging_you_acknowledge()
     |> \.textAlignment .~ .left
     |> \.adjustsFontForContentSizeCategory .~ true
 }
