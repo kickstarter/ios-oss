@@ -58,7 +58,10 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNotNil(project.extendedProjectProperties?.story)
       XCTAssertNotNil(project.extendedProjectProperties?.risks)
       XCTAssertEqual(project.extendedProjectProperties?.environmentalCommitments.count, 1)
-      XCTAssertEqual(project.extendedProjectProperties?.environmentalCommitments.last?.category, .longLastingDesign)
+      XCTAssertEqual(
+        project.extendedProjectProperties?.environmentalCommitments.last?.category,
+        .longLastingDesign
+      )
       XCTAssertEqual(
         project.extendedProjectProperties?.environmentalCommitments.last?.description,
         "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards."
@@ -76,7 +79,10 @@ final class Project_ProjectFragmentTests: XCTestCase {
         project.extendedProjectProperties?.faqs.last!.answer,
         "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that."
       )
-      XCTAssertEqual(project.extendedProjectProperties?.faqs.last!.id, decompose(id: "UHJvamVjdEZhcS0zNzA4MDM="))
+      XCTAssertEqual(
+        project.extendedProjectProperties?.faqs.last!.id,
+        decompose(id: "UHJvamVjdEZhcS0zNzA4MDM=")
+      )
       XCTAssertEqual(project.extendedProjectProperties?.faqs.last!.createdAt!, TimeInterval(1_628_103_400))
     } catch {
       XCTFail(error.localizedDescription)
