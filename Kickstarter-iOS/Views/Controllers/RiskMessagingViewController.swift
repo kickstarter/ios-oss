@@ -61,6 +61,12 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
         action: #selector(self.riskMessagingPledgeConfirmationButtonTapped),
         for: .touchUpInside
       )
+
+    let footnoteLabelTapGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.footnoteLabelTapped)
+    )
+    self.footnoteLabel.addGestureRecognizer(footnoteLabelTapGesture)
   }
 
   override func bindStyles() {
@@ -84,6 +90,7 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
     _ = self.footnoteLabel
       |> footnoteLabelStyle
       |> \.attributedText .~ attributedTextForFootnoteLabel()
+      |> \.isUserInteractionEnabled .~ true
 
     _ = self.headingLabel
       |> headingLabelStyle
@@ -133,6 +140,12 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
         }
       }
 
+    self.viewModel.outputs.presentHelpOnRiskMessagingModal
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
+      }
+
     // MARK: Errors
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -147,6 +160,11 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
   @objc
   private func riskMessagingPledgeConfirmationButtonTapped() {
     self.viewModel.inputs.riskMessagingPledgeConfirmationButtonTapped()
+  }
+
+  @objc
+  private func footnoteLabelTapped() {
+    self.viewModel.inputs.riskMessagingFootnoteLabelTapped()
   }
 }
 

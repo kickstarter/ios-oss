@@ -47,7 +47,6 @@ public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configure(with data: PledgeViewData)
   func configureRiskMessagingModal(isApplePay: Bool)
-  func riskMessagingPledgeConfirmationButtonTapped()
   func creditCardSelected(with paymentSourceId: String)
   func goToLoginSignupTapped()
   func paymentAuthorizationDidAuthorizePayment(
@@ -56,8 +55,10 @@ public protocol PledgeViewModelInputs {
   func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
+  func riskMessagingFootnoteLabelTapped()
   func riskMessagingModalDismissedForApplePay()
   func riskMessagingModalDismissedForStandardPledge()
+  func riskMessagingPledgeConfirmationButtonTapped()
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
@@ -92,6 +93,7 @@ public protocol PledgeViewModelOutputs {
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
+  var presentHelpOnRiskMessagingModal: Signal<Void, Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
   var projectTitle: Signal<String, Never> { get }
   var projectTitleLabelHidden: Signal<Bool, Never> { get }
@@ -842,6 +844,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
+    self.presentHelpOnRiskMessagingModal = self.riskMessagingFootnoteLabelTappedProperty.signal
+
     let willRetryPaymentMethod = Signal.combineLatest(
       context,
       project,
@@ -1005,11 +1009,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.isRiskMessagingModalForApplePay.value = isApplePay
   }
 
-  private let confirmButtonTappedProperty = MutableProperty(())
-  public func riskMessagingPledgeConfirmationButtonTapped() {
-    self.confirmButtonTappedProperty.value = ()
-  }
-
   private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
   public func creditCardSelected(with paymentSourceId: String) {
     self.creditCardSelectedObserver.send(value: paymentSourceId)
@@ -1050,6 +1049,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
   }
 
+  private let riskMessagingFootnoteLabelTappedProperty = MutableProperty(())
+  public func riskMessagingFootnoteLabelTapped() {
+    self.riskMessagingFootnoteLabelTappedProperty.value = ()
+  }
+
   private let riskMessagingModalDismissedForApplePayProperty = MutableProperty(())
   public func riskMessagingModalDismissedForApplePay() {
     self.riskMessagingModalDismissedForApplePayProperty.value = ()
@@ -1058,6 +1062,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let riskMessagingModalDismissedForStandardPledgeProperty = MutableProperty(())
   public func riskMessagingModalDismissedForStandardPledge() {
     self.riskMessagingModalDismissedForStandardPledgeProperty.value = ()
+  }
+
+  private let confirmButtonTappedProperty = MutableProperty(())
+  public func riskMessagingPledgeConfirmationButtonTapped() {
+    self.confirmButtonTappedProperty.value = ()
   }
 
   private let (scaFlowCompletedWithResultSignal, scaFlowCompletedWithResultObserver)
@@ -1128,6 +1137,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
+  public let presentHelpOnRiskMessagingModal: Signal<Void, Never>
   public let processingViewIsHidden: Signal<Bool, Never>
   public let projectTitle: Signal<String, Never>
   public let projectTitleLabelHidden: Signal<Bool, Never>
