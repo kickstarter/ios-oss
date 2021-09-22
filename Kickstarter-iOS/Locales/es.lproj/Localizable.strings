@@ -60,6 +60,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.zero" = "%{backers_count}\npatrocinadores";
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Patrocinadores se han registrado para ayudar a los creadores de Kickstarter a hacer realidad sus ideas.";
+"Backing_means_supporting" = "Patrocinar un proyecto significa apoyar una idea creativa, independientemente del resultado.";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
 "Big_Kickstarter_news_and_events_near_you" = "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Importantes novedades de Kickstarter, además de proyectos y eventos ocasionales elegidos especialmente para ti.";
@@ -69,6 +70,7 @@
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Si creas una cuenta, aceptas los <a href=\"%{terms_of_use_link}\">Términos de uso</a> y la <a href=\"%{privacy_policy_link}\">Política de privacidad</a> de Kickstarter.";
+"By_pledging_you_acknowledge" = "Al hacer la contribución, reconoces que las recompensas o los reembolsos no están garantizados por Kickstarter o el creador.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al contribuir, aceptas las <a href=\"%{terms_of_use_link}\">Condiciones de uso</a>, <a href=\"%{privacy_policy_link}\">Política de privacidad</a> y <a href=\"%{cookie_policy_link}\">Política de cookies</a> de Kickstarter.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al registrarte, aceptas nuestros Términos de uso, Política de privacidad y Política de cookies. Nuestras políticas explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso.";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "Si te registras, deberás iniciar sesión en Kickstarter con tu cuenta de Facebook. Si prefieres no usar Facebook, vuelve a abrir la aplicación y elige otra opción.";
@@ -276,6 +278,7 @@
 "Hide_password" = "Ocultar contraseña";
 "Home" = "Inicio";
 "How_backers_found_your_project" = "Cómo encontraron tu proyecto los patrocinadores";
+"I_understand" = "Entiendo";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el monto de %{total} el %{project_deadline}.";
@@ -496,6 +499,7 @@
 "Reward_received" = "Recompensa recibida";
 "Reward_selected" = "Recompensa seleccionada";
 "Reward_surveys" = "Cuestionarios sobre recompensas";
+"Rewards_arent_guaranteed" = "Las recompensas no están garantizadas.";
 "Rewards_count_rewards.few" = "%{rewards_count} recompensas";
 "Rewards_count_rewards.many" = "%{rewards_count} recompensas";
 "Rewards_count_rewards.one" = "%{rewards_count} recompensa";

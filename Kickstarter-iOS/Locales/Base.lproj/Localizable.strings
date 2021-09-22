@@ -60,6 +60,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nbackers";
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Backers have signed up to help Kickstarter creators bring their ideas to life.";
+"Backing_means_supporting" = "Backing means supporting a creative project, regardless of the outcome.";
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
 "Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Big Kickstarter news, plus occasional projects and events chosen just for you.";
@@ -69,6 +70,7 @@
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "By creating an account, you agree to Kickstarter’s <a href=\"%{terms_of_use_link}\">Terms of Use</a> and <a href=\"%{privacy_policy_link}\">Privacy Policy</a>.";
+"By_pledging_you_acknowledge" = "By pledging, you acknowledge that rewards or reimbursements aren’t guaranteed by either Kickstarter or the creator.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option.";
@@ -276,6 +278,7 @@
 "Hide_password" = "Hide password";
 "Home" = "Home";
 "How_backers_found_your_project" = "How backers found your project";
+"I_understand" = "I understand";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "If the project reaches its funding goal, you will be charged on %{project_deadline}.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}.";
@@ -496,6 +499,7 @@
 "Reward_received" = "Reward received";
 "Reward_selected" = "Reward selected";
 "Reward_surveys" = "Reward surveys";
+"Rewards_arent_guaranteed" = "Rewards aren't guaranteed.";
 "Rewards_count_rewards.few" = "%{rewards_count} rewards";
 "Rewards_count_rewards.many" = "%{rewards_count} rewards";
 "Rewards_count_rewards.one" = "%{rewards_count} reward";
