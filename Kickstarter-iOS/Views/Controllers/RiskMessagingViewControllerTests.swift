@@ -18,7 +18,7 @@ final class RiskMessagingViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RiskMessagingViewController()
+        let vc = RiskMessagingViewController(viewModel: PledgeViewModel())
         _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
@@ -30,7 +30,7 @@ final class RiskMessagingViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RiskMessagingViewController()
+        let vc = RiskMessagingViewController(viewModel: PledgeViewModel())
         _ = traitControllers(device: device, orientation: .landscape, child: vc)
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")

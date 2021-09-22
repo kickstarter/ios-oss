@@ -55,7 +55,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationAdditionalPledgeAmount = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationShippingTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
-  private let goToRiskMessagingModal = TestObserver<Void, Never>()
+  private let goToRiskMessagingModal = TestObserver<Bool, Never>()
   private let goToThanksCheckoutData = TestObserver<KSRAnalytics.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
   private let goToThanksReward = TestObserver<Reward, Never>()
@@ -1357,7 +1357,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testOutputGoToRiskMessagingModal_OptimizelyClientVariant1() {
+  func testOutputGoToRiskMessagingModal_OptimizelyClientVariant1_StandardPledge() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
       .~ [
@@ -1391,7 +1391,45 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.goToRiskMessagingModal.assertDidEmitValue()
+      self.goToRiskMessagingModal.assertValue(false)
+    }
+  }
+
+  func testOutputGoToRiskMessagingModal_OptimizelyClientVariant1_ApplePay() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 20
+      |> Reward.lens.shipping.enabled .~ true
+    let shippingRule = ShippingRule.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToRiskMessagingModal.assertDidNotEmitValue()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.applePayButtonTapped()
+
+      self.scheduler.advance()
+
+      self.goToRiskMessagingModal.assertValue(true)
     }
   }
 
