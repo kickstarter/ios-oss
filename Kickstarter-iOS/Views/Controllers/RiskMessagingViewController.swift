@@ -3,7 +3,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-final class RiskMessagingViewController: UIViewController {
+final class RiskMessagingViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   private lazy var bannerImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -15,6 +15,8 @@ final class RiskMessagingViewController: UIViewController {
   private lazy var headingLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private var viewModel: PledgeViewModelType
 
@@ -48,6 +50,8 @@ final class RiskMessagingViewController: UIViewController {
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.setupConstraints()
 
@@ -127,6 +131,14 @@ final class RiskMessagingViewController: UIViewController {
         self?.dismiss(animated: true) { [weak self] in
           self?.viewModel.inputs.riskMessagingModalDismissedForStandardPledge()
         }
+      }
+
+    // MARK: Errors
+
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
   }
 
