@@ -549,7 +549,29 @@ public enum FetchAddsOnsQueryTemplate {
             }
           ],
           "url": "https://staging.kickstarter.com/projects/peppermintfox/peppermint-fox-press-notebooks-and-stationery",
-          "usdExchangeRate": 0.74641181
+          "usdExchangeRate": 0.74641181,
+          "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
+          "environmentalCommitments": [
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "longLastingDesign",
+              "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+            }
+          ],
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": [
+              {
+                "__typename": "ProjectFaq",
+                "question": "Are you planning any expansions for Dustbiters?",
+                "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+                "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+                "createdAt": 1628103400
+              }
+            ]
+          },
+          "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you."
         }
     }
     """
@@ -578,6 +600,13 @@ public enum FetchAddsOnsQueryTemplate {
     ]
     projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
     projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.aud
+
+    projectResultMap["environmentalCommitments"] =
+      [
+        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+        "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+        "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+      ]
 
     resultMap["project"] = projectResultMap
 

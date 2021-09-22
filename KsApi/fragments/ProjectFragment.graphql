@@ -18,6 +18,19 @@ fragment ProjectFragment on Project {
   currency
   deadlineAt
   description
+  environmentalCommitments {
+    commitmentCategory
+    description
+    id
+  }
+  faqs {
+    nodes {
+      question
+      answer
+      id
+      createdAt
+    }
+  }
   finalCollectionDate
   fxRate
   goal {
@@ -44,9 +57,11 @@ fragment ProjectFragment on Project {
     totalCount
   }
   prelaunchActivated
+  risks
   slug
   state
   stateChangedAt
+  story
   tags(scope: DISCOVER) {
     name
   }

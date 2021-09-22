@@ -55,12 +55,15 @@ extension Project {
       .filter { $0 != "" }
       .last
 
+    let extendedProjectProperties = extendedProject(from: projectFragment)
+
     return Project(
       availableCardTypes: availableCardTypes,
       blurb: projectFragment.description,
       category: category,
       country: country,
       creator: creator,
+      extendedProjectProperties: extendedProjectProperties,
       memberData: memberData,
       dates: dates,
       displayPrelaunch: displayPrelaunch,
@@ -215,4 +218,99 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
     high: high,
     hls: video.videoSources?.hls?.src
   )
+}
+
+/**
+ Returns a `ExtendedProjectProperties` object from `ProjectFragment`
+ */
+private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
+  let story = projectFragment.story
+  let risks = projectFragment.risks
+  let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
+  let faqs = extendedProjectFAQs(from: projectFragment)
+
+  let extendedProjectProperties = ExtendedProjectProperties(
+    environmentalCommitments: environmentalCommitments,
+    faqs: faqs,
+    risks: risks,
+    story: story
+  )
+
+  return extendedProjectProperties
+}
+
+/**
+ Returns a `GraphQLProject.ProjectFAQ` from `ProjectFragment`
+ */
+
+private func extendedProjectFAQs(from projectFragment: GraphAPI
+  .ProjectFragment) -> [ExtendedProjectProperties.ProjectFAQ] {
+  var faqs = [ExtendedProjectProperties.ProjectFAQ]()
+
+  if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
+    for faq in allFaqs {
+      guard let id = faq?.id,
+        let decomposedId = decompose(id: id),
+        let faqQuestion = faq?.question,
+        let faqAnswer = faq?.answer else {
+        continue
+      }
+
+      var createdAtDate: TimeInterval?
+
+      if let existingDate = faq?.createdAt {
+        createdAtDate = TimeInterval(existingDate)
+      }
+
+      let faq = ExtendedProjectProperties
+        .ProjectFAQ(answer: faqAnswer, question: faqQuestion, id: decomposedId, createdAt: createdAtDate)
+
+      faqs.append(faq)
+    }
+  }
+
+  return faqs
+}
+
+/**
+ Returns a `GraphQLProject.EnvironmentalCommitment` from `ProjectFragment`
+ */
+
+private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
+  .ProjectFragment) -> [ExtendedProjectProperties.EnvironmentalCommitment] {
+  var environmentalCommitments = [ExtendedProjectProperties.EnvironmentalCommitment]()
+
+  if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
+    for commitment in allEnvironmentalCommitments {
+      guard let id = commitment?.id,
+        let decomposedId = decompose(id: id),
+        let description = commitment?.description else {
+        continue
+      }
+
+      var commitmentCategory: ExtendedProjectProperties.CommitmentCategory
+
+      switch commitment?.commitmentCategory {
+      case .longLastingDesign:
+        commitmentCategory = .longLastingDesign
+      case .sustainableMaterials:
+        commitmentCategory = .sustainableMaterials
+      case .environmentallyFriendlyFactories:
+        commitmentCategory = .environmentallyFriendlyFactories
+      case .sustainableDistribution:
+        commitmentCategory = .sustainableDistribution
+      case .reusabilityAndRecyclability:
+        commitmentCategory = .reusabilityAndRecyclability
+      default:
+        commitmentCategory = .somethingElse
+      }
+
+      let environmentalCommitment = ExtendedProjectProperties
+        .EnvironmentalCommitment(description: description, category: commitmentCategory, id: decomposedId)
+
+      environmentalCommitments.append(environmentalCommitment)
+    }
+  }
+
+  return environmentalCommitments
 }
