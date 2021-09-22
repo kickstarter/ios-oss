@@ -47,6 +47,8 @@ final class PledgeViewModelTests: TestCase {
   private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
 
   private let descriptionSectionSeparatorHidden = TestObserver<Bool, Never>()
+  private let dismissRiskMessagingModalForApplePay = TestObserver<Void, Never>()
+  private let dismissRiskMessagingModalForStandardPledge = TestObserver<Void, Never>()
   private let expandableRewardsHeaderViewHidden = TestObserver<Bool, Never>()
 
   private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
@@ -65,6 +67,7 @@ final class PledgeViewModelTests: TestCase {
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountSummaryViewHidden = TestObserver<Bool, Never>()
+  private let presentHelpOnRiskMessagingModal = TestObserver<Void, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
   private let projectTitle = TestObserver<String, Never>()
@@ -136,6 +139,10 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.projectTitle.observe(self.projectTitle.observer)
     self.vm.outputs.projectTitleLabelHidden.observe(self.projectTitleLabelHidden.observer)
     self.vm.outputs.descriptionSectionSeparatorHidden.observe(self.descriptionSectionSeparatorHidden.observer)
+    self.vm.outputs.dismissRiskMessagingModalForApplePay
+      .observe(self.dismissRiskMessagingModalForApplePay.observer)
+    self.vm.outputs.dismissRiskMessagingModalForStandardPledge
+      .observe(self.dismissRiskMessagingModalForStandardPledge.observer)
     self.vm.outputs.expandableRewardsHeaderViewHidden.observe(self.expandableRewardsHeaderViewHidden.observer)
 
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
@@ -163,6 +170,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
     self.vm.outputs.pledgeAmountSummaryViewHidden.observe(self.pledgeAmountSummaryViewHidden.observer)
+    self.vm.outputs.presentHelpOnRiskMessagingModal.observe(self.presentHelpOnRiskMessagingModal.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
 
@@ -679,6 +687,84 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 12])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
+    }
+  }
+
+  func testApplePay_GoToThanks_NativeRiskMessagingVariant() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    let pledgeAmountData = (amount: 5.0, min: 1.0, max: 10_000.0, isValid: true)
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.vm.inputs.configureRiskMessagingModal(isApplePay: true)
+
+      self.vm.inputs.riskMessagingPledgeConfirmationButtonTapped()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      let pledgeAmountData = (amount: 10.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToThanksProject.assertDidNotEmitValue()
+
+      self.processingViewIsHidden.assertValues([false])
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.processingViewIsHidden.assertValues([false])
+      self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.vm.inputs.riskMessagingModalDismissedForApplePay()
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
+
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 
@@ -2171,6 +2257,71 @@ final class PledgeViewModelTests: TestCase {
         ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
+    }
+  }
+
+  func testCreateBacking_Success_NativeRiskMessagingVariant() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+    let pledgeAmountData = (amount: 5.0, min: 1.0, max: 10_000.0, isValid: true)
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.vm.inputs.configureRiskMessagingModal(isApplePay: false)
+
+      self.vm.inputs.riskMessagingPledgeConfirmationButtonTapped()
+
+      self.processingViewIsHidden.assertValues([false])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.vm.inputs.riskMessagingModalDismissedForStandardPledge()
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.dismissRiskMessagingModalForStandardPledge.assertDidEmitValue()
+
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
     }
   }
 
@@ -5177,6 +5328,41 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.pledgeAmountSummaryViewHidden.assertValues([false])
+  }
+
+  func testPresentHelpOnRiskMessagingModal() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let pledgeAmountData = (amount: 5.0, min: 1.0, max: 10_000.0, isValid: true)
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.vm.inputs.configureRiskMessagingModal(isApplePay: true)
+
+      self.vm.inputs.riskMessagingFootnoteLabelTapped()
+
+      self.presentHelpOnRiskMessagingModal.assertDidEmitValue()
+    }
   }
 
   // MARK: - Tracking
