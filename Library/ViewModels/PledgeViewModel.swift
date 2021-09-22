@@ -394,6 +394,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takeWhen(self.confirmButtonTappedProperty.signal)
       .filter(isTrue)
       .ignoreValues()
+    
+    let confirmButtonTappedAndIsNotApplePay = self.isRiskMessagingModalForApplePay.signal
+      .skipNil()
+      .takeWhen(self.confirmButtonTappedProperty.signal)
+      .filter(isFalse)
+      .ignoreValues()
 
     // Consolidated signal that will run regardless of the experiment to ensure we're running the same code path
     let mergedApplePaySignal = Signal.merge(
@@ -410,6 +416,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .filter(isFalse)
 
     self.dismissRiskMessagingModalForApplePay = confirmButtonTappedAndIsApplePay
+    self.dismissRiskMessagingModalForStandardPledge = confirmButtonTappedAndIsNotApplePay
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(goToApplePayPaymentAuthorization)
@@ -779,29 +786,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .skipNil()
 
     // Handles the presentation of Thanks after the risk messaging and Apple pay auth controller is dismissed
-    let createBackingCompleteAndIsApplePay = createBackingCompletionEvents
-      .combineLatest(with: self.isRiskMessagingModalForApplePay.signal
-        .skipNil()
-        .takeWhen(self.confirmButtonTappedProperty.signal)
-        .filter(isTrue))
-      .filter { _, isApplePay in
-        isApplePay && !isNativeRiskMessagingControlEnabled()
-      }
-      .ignoreValues()
 
-    let goToThanksTrigger = Signal.merge(
-      createBackingCompletionEvents.filter(isNativeRiskMessagingControlEnabled), // Control
-      self.riskMessagingModalDismissedForStandardPledgeProperty.signal, // Variant support for Pledge
-      createBackingCompleteAndIsApplePay // Variant support for Apple Pay
+    let goToThanksAfterDismissingOtherViews = Signal.merge(
+      createBackingCompletionEvents,
+      self.riskMessagingModalDismissedForStandardPledgeProperty.signal,
+      self.riskMessagingModalDismissedForApplePayProperty.signal
     )
 
     self.goToThanks = thanksPageData
-      .takeWhen(goToThanksTrigger)
-
-    self.dismissRiskMessagingModalForStandardPledge =
-      thanksPageData
-        .takeWhen(createBackingCompletionEvents)
-        .ignoreValues()
+      .takeWhen(goToThanksAfterDismissingOtherViews)
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
