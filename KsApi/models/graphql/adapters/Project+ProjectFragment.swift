@@ -230,10 +230,10 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
   let faqs = extendedProjectFAQs(from: projectFragment)
 
   let extendedProjectProperties = ExtendedProjectProperties(
-    story: story,
-    risks: risks,
     environmentalCommitments: environmentalCommitments,
-    faqs: faqs
+    faqs: faqs,
+    risks: risks,
+    story: story
   )
 
   return extendedProjectProperties
