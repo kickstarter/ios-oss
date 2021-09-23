@@ -11,7 +11,7 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
   private lazy var bannerLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var cartIconImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var confirmButton: UIButton = { UIButton(frame: .zero) }()
-  private lazy var footnoteLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var footNoteLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var headingLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -46,7 +46,7 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
       |> ksr_constrainViewToEdgesInParent()
 
     _ = (
-      [self.bannerImageView, self.headingLabel, self.subtitleLabel, self.confirmButton, self.footnoteLabel],
+      [self.bannerImageView, self.headingLabel, self.subtitleLabel, self.confirmButton, self.footNoteLabel],
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
@@ -62,11 +62,11 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
         for: .touchUpInside
       )
 
-    let footnoteLabelTapGesture = UITapGestureRecognizer(
+    let footNoteLabelTapGesture = UITapGestureRecognizer(
       target: self,
-      action: #selector(self.footnoteLabelTapped)
+      action: #selector(self.footNoteLabelTapped)
     )
-    self.footnoteLabel.addGestureRecognizer(footnoteLabelTapGesture)
+    self.footNoteLabel.addGestureRecognizer(footNoteLabelTapGesture)
   }
 
   override func bindStyles() {
@@ -87,9 +87,9 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
     _ = self.confirmButton
       |> confirmButtonStyle
 
-    _ = self.footnoteLabel
-      |> footnoteLabelStyle
-      |> \.attributedText .~ attributedTextForFootnoteLabel()
+    _ = self.footNoteLabel
+      |> footNoteLabelStyle
+      |> \.attributedText .~ attributedTextForFootNoteLabel()
       |> \.isUserInteractionEnabled .~ true
 
     _ = self.headingLabel
@@ -107,7 +107,7 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
     // Prevents large amount of spacing on form sheet presented for iPads
     self.headingLabel.setContentHuggingPriority(.required, for: .vertical)
     self.subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
-    self.footnoteLabel.setContentHuggingPriority(.required, for: .vertical)
+    self.footNoteLabel.setContentHuggingPriority(.required, for: .vertical)
   }
 
   private func setupConstraints() {
@@ -163,14 +163,14 @@ final class RiskMessagingViewController: UIViewController, MessageBannerViewCont
   }
 
   @objc
-  private func footnoteLabelTapped() {
+  private func footNoteLabelTapped() {
     self.viewModel.inputs.riskMessagingFootnoteLabelTapped()
   }
 }
 
 // MARK: - Helpers
 
-private func attributedTextForFootnoteLabel() -> NSAttributedString {
+private func attributedTextForFootNoteLabel() -> NSAttributedString {
   let attributes: String.Attributes = [
     .font: UIFont.ksr_footnote(),
     .underlineStyle: NSUnderlineStyle.single.rawValue
@@ -227,7 +227,7 @@ private let confirmButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.contentHorizontalAlignment .~ .center
 }
 
-private let footnoteLabelStyle: LabelStyle = { label in
+private let footNoteLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ .ksr_support_700
