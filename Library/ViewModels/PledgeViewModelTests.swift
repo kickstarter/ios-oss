@@ -728,11 +728,24 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
       self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.processingViewIsHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureRiskMessagingModal(isApplePay: true)
 
       self.vm.inputs.riskMessagingPledgeConfirmationButtonTapped()
+
+      self.vm.inputs.riskMessagingModalDismissedForApplePay()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -757,8 +770,6 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
-
-      self.vm.inputs.riskMessagingModalDismissedForApplePay()
 
       self.processingViewIsHidden.assertValues([false, true])
       self.goToThanksProject.assertValues([project])
@@ -2310,8 +2321,6 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
-
-      self.vm.inputs.riskMessagingModalDismissedForStandardPledge()
 
       self.processingViewIsHidden.assertValues([false, true])
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
