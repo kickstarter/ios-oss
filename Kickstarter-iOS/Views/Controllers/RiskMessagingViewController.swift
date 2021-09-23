@@ -3,6 +3,13 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+protocol RiskMessagingViewControllerDelegate: AnyObject {
+  func riskMessagingViewControllerDismissed(
+    _ viewController: RiskMessagingViewController,
+    isApplePay: Bool
+  )
+}
+
 final class RiskMessagingViewController: UIViewController {
   // MARK: - Properties
 
@@ -16,7 +23,12 @@ final class RiskMessagingViewController: UIViewController {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel: PledgeViewModelType = PledgeViewModel()
+  internal weak var delegate: RiskMessagingViewControllerDelegate?
+  private let viewModel: RiskMessagingViewModelType = RiskMessagingViewModel()
+
+  func configure(isApplePay: Bool) {
+    self.viewModel.inputs.configure(isApplePay: isApplePay)
+  }
 
   // MARK: - Lifecycle
 
@@ -41,6 +53,12 @@ final class RiskMessagingViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.setupConstraints()
+
+    self.confirmButton.addTarget(self, action: #selector(self.confirmButtonTapped), for: .touchUpInside)
+  }
+
+  @objc private func confirmButtonTapped() {
+    self.viewModel.inputs.confirmButtonTapped()
   }
 
   override func bindStyles() {
@@ -96,6 +114,15 @@ final class RiskMessagingViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.dismissAndNotifyDelegate
+      .observeForControllerAction()
+      .observeValues { [weak self] isApplePay in
+        self?.dismiss(animated: true) { [weak self] in
+          guard let self = self else { return }
+          self.delegate?.riskMessagingViewControllerDismissed(self, isApplePay: isApplePay)
+        }
+      }
   }
 }
 
