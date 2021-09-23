@@ -55,10 +55,22 @@ final class RiskMessagingViewController: UIViewController {
     self.setupConstraints()
 
     self.confirmButton.addTarget(self, action: #selector(self.confirmButtonTapped), for: .touchUpInside)
+
+    let footnoteLabelTapGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.footnoteLabelTapped)
+    )
+    self.footnoteLabel.addGestureRecognizer(footnoteLabelTapGesture)
   }
+
+  // MARK: - Actions
 
   @objc private func confirmButtonTapped() {
     self.viewModel.inputs.confirmButtonTapped()
+  }
+
+  @objc private func footnoteLabelTapped() {
+    self.viewModel.inputs.footnoteLabelTapped()
   }
 
   override func bindStyles() {
@@ -122,6 +134,12 @@ final class RiskMessagingViewController: UIViewController {
           guard let self = self else { return }
           self.delegate?.riskMessagingViewControllerDismissed(self, isApplePay: isApplePay)
         }
+      }
+
+    self.viewModel.outputs.presentHelpWebViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
       }
   }
 }
@@ -187,6 +205,7 @@ private let confirmButtonStyle: ButtonStyle = { button in
 
 private let footnoteLabelStyle: LabelStyle = { label in
   label
+    |> \.isUserInteractionEnabled .~ true
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ .ksr_support_700
     |> \.lineBreakMode .~ .byWordWrapping
