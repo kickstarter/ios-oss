@@ -1,6 +1,7 @@
 fragment CategoryFragment on Category {
   id
   name
+  analyticsName
   parentCategory {
     id
     name

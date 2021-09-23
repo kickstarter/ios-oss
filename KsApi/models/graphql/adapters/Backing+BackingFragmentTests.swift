@@ -357,7 +357,44 @@ private func backingDictionary() -> [String: Any] {
     "backer": {
       "__typename": "User",
       "chosenCurrency": "USD",
+      "backings":{
+        "__typename": "UserBackingsConnection",
+        "nodes":[
+            {
+              "__typename": "Backing",
+              "errorReason":null
+            },
+            {
+              "__typename": "Backing",
+              "errorReason":"Something went wrong"
+            },
+            {
+              "__typename": "Backing",
+              "errorReason":null
+            }
+        ]
+      },
+      "backingsCount": 3,
       "email": "foo@bar.com",
+      "createdProjects": {
+        "__typename": "UserCreatedProjectsConnection",
+        "totalCount": 16
+      },
+      "membershipProjects": {
+        "__typename": "MembershipProjectsConnection",
+        "totalCount": 10
+      },
+      "savedProjects": {
+        "__typename": "UserSavedProjectsConnection",
+        "totalCount": 11
+      },
+      "hasUnreadMessages": false,
+      "hasUnseenActivity": true,
+      "surveyResponses": {
+        "__typename": "SurveyResponsesConnection",
+         "totalCount": 2
+      },
+      "optedOutOfRecommendations": true,
       "hasPassword": true,
       "id": "VXNlci0xMTA4OTI0NjQw",
       "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/014/148/024/902b3aee57c0325f82d93af888194c5e_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1476734758&auto=format&frame=1&q=92&s=81a3c902ee2131666a590702b71ba5c2",
@@ -365,7 +402,23 @@ private func backingDictionary() -> [String: Any] {
       "isCreator": false,
       "isDeliverable": true,
       "isEmailVerified": true,
+      "isFacebookConnected": true,
+      "isKsrAdmin": false,
+      "isFollowing": true,
       "name": "Justin Swart",
+      "isSocializing": true,
+      "newsletterSubscriptions": null,
+      "notifications": null,
+      "needsFreshFacebookToken": true,
+      "showPublicProfile": true,
+      "location": {
+        "__typename": "Location",
+        "country": "US",
+        "countryName": "United States",
+        "displayableName": "Las Vegas, NV",
+        "id": "TG9jYXRpb24tMjQzNjcwNA==",
+        "name": "Las Vegas"
+      },
       "storedCards": {
         "__typename": "UserCreditCardTypeConnection",
         "nodes": [
@@ -414,32 +467,57 @@ private func backingDictionary() -> [String: Any] {
         "__typename": "ProjectActions",
         "displayConvertAmount": false
       },
+      "availableCardTypes": [
+          "VISA",
+          "MASTERCARD",
+          "AMEX"
+      ],
       "backersCount": 135,
       "backing": {
         "__typename": "Backing",
         "backer": {
           "__typename": "User",
-          "uid": "618005886"
+          "uid": "618005886",
+          "isSocializing": true,
+          "newsletterSubcriptions": null,
+          "notifications": null
         }
       },
       "category": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktNDc=",
         "name": "Fiction",
+        "analyticsName": "Comic Books",
         "parentCategory": {
           "__typename": "Category",
           "id": "Q2F0ZWdvcnktMTg=",
           "name": "Publishing"
         }
       },
-      "collaboratorPermissions": [
-        "edit_project",
-        "edit_faq",
-        "post",
-        "comment",
-        "view_pledges",
-        "fulfillment"
+      "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
+      "environmentalCommitments": [
+        {
+          "__typename": "EnvironmentalCommitment",
+          "commitmentCategory": "longLastingDesign",
+          "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+          "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+        }
       ],
+      "faqs": {
+        "__typename": "ProjectFaqConnection",
+        "nodes": [
+          {
+            "__typename": "ProjectFaq",
+            "question": "Are you planning any expansions for Dustbiters?",
+            "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+            "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+            "createdAt": 1628103400
+          }
+        ]
+      },
+      "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you.",
+      "canComment": false,
+      "commentsCount": 0,
       "country": {
         "__typename": "Country",
         "code": "US",
@@ -448,6 +526,24 @@ private func backingDictionary() -> [String: Any] {
       "creator": {
         "__typename": "User",
         "chosenCurrency": "USD",
+        "backings":{
+          "__typename": "UserBackingsConnection",
+          "nodes":[
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":"Something went wrong"
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              }
+          ]
+        },
+        "backingsCount": 23,
         "email": "foo@bar.com",
         "hasPassword": true,
         "id": "VXNlci02MzE4MTEzODc=",
@@ -456,7 +552,42 @@ private func backingDictionary() -> [String: Any] {
         "isCreator": null,
         "isDeliverable": true,
         "isEmailVerified": true,
+        "isFacebookConnected": true,
+        "isKsrAdmin": false,
+        "isFollowing": true,
         "name": "Hugh Alan Samples",
+        "newsletterSubscriptions": null,
+        "notifications": null,
+        "isSocializing": true,
+        "needsFreshFacebookToken": true,
+        "showPublicProfile": true,
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Las Vegas, NV",
+          "id": "TG9jYXRpb24tMjQzNjcwNA==",
+          "name": "Las Vegas"
+        },
+        "createdProjects": {
+          "__typename": "UserCreatedProjectsConnection",
+          "totalCount": 16
+        },
+        "membershipProjects": {
+          "__typename": "MembershipProjectsConnection",
+          "totalCount": 10
+        },
+        "savedProjects": {
+          "__typename": "UserSavedProjectsConnection",
+          "totalCount": 11
+        },
+        "hasUnreadMessages": false,
+        "hasUnseenActivity": true,
+        "surveyResponses": {
+          "__typename": "SurveyResponsesConnection",
+          "totalCount": 2
+        },
+        "optedOutOfRecommendations": true,
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
           "nodes": [
@@ -493,8 +624,10 @@ private func backingDictionary() -> [String: Any] {
         "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
       },
       "isProjectWeLove": true,
+      "isProjectOfTheDay": false,
       "isWatched": false,
       "launchedAt": 1617886771,
+      "isLaunched": true,
       "location": {
         "__typename": "Location",
         "country": "US",
@@ -511,11 +644,37 @@ private func backingDictionary() -> [String: Any] {
         "currency": "USD",
         "symbol": "$"
       },
+      "posts": {
+        "__typename": "PostConnection",
+        "totalCount": 3
+      },
+      "prelaunchActivated": true,
       "slug": "parliament-of-rooks/wee-william-witchling",
       "state": "LIVE",
       "stateChangedAt": 1617886773,
+      "tags": [
+        {
+          "__typename": "Tag",
+          "name": "LGBTQIA+"
+        }
+      ],
       "url": "https://staging.kickstarter.com/projects/parliament-of-rooks/wee-william-witchling",
-      "usdExchangeRate": 1
+      "usdExchangeRate": 1,
+      "video": {
+        "__typename": "Video",
+        "id": "VmlkZW8tMTExNjQ0OA==",
+        "videoSources": {
+          "__typename": "VideoSources",
+          "high": {
+            "__typename": "VideoSourceInfo",
+            "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-h264_high.mp4"
+          },
+          "hls": {
+            "__typename": "VideoSourceInfo",
+            "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
+          }
+        }
+      }
     },
     "reward": {
       "__typename": "Reward",
@@ -619,5 +778,16 @@ private func backingDictionary() -> [String: Any] {
   """
 
   let data = Data(json.utf8)
-  return (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+
+  var resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+
+  resultMap["environmentalCommitments"] =
+    [[
+      "__typename": "EnvironmentalCommitment",
+      "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+      "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+      "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+    ]]
+
+  return resultMap
 }

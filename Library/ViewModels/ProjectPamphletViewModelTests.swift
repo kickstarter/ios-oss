@@ -76,65 +76,199 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.outputs.topLayoutConstraintConstant.observe(self.topLayoutConstraintConstant.observer)
   }
 
-  func testConfigureChildViewControllersWithProject_ConfiguredWithProject() {
+  func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithProject() {
     let project = Project.template
+    let friends = [User.template]
     let refTag = RefTag.category
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear(animated: false)
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
-    self.configureChildViewControllersWithProject.assertValues([project])
-    self.configureChildViewControllersWithRefTag.assertValues([refTag])
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
 
-    self.scheduler.advance()
+      self.configureChildViewControllersWithProject.assertValues([project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag])
 
-    self.configureChildViewControllersWithProject.assertValues([project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+      self.scheduler.advance()
 
-    self.vm.inputs.didBackProject()
+      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
 
-    self.scheduler.advance()
+      self.vm.inputs.didBackProject()
 
-    self.configureChildViewControllersWithProject.assertValues([project, project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
+      self.scheduler.advance()
 
-    self.vm.inputs.managePledgeViewControllerFinished(with: nil)
+      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
 
-    self.scheduler.advance()
+      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
-    self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
+    }
   }
 
-  func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
+  func testConfigureChildViewControllersWithProject_FailedProjectFriendsNoBacking_ConfiguredWithProject() {
+    let project = Project.template
+    let refTag = RefTag.category
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .failure(.couldNotParseJSON)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.configureChildViewControllersWithProject.assertValues([project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag])
+
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
+
+      self.vm.inputs.didBackProject()
+
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
+
+      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
+
+      self.scheduler.advance()
+
+      self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
+    }
+  }
+
+  func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithParam() {
     let project = .template |> Project.lens.id .~ 42
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+    let friends = [User.template]
 
-    self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-    self.vm.inputs.viewDidAppear(animated: false)
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
-    self.configureChildViewControllersWithProject.assertValues([])
-    self.configureChildViewControllersWithRefTag.assertValues([])
+      self.configureChildViewControllersWithProject.assertValues([])
+      self.configureChildViewControllersWithRefTag.assertValues([])
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.configureChildViewControllersWithProject.assertValues([project])
-    self.configureChildViewControllersWithRefTag.assertValues([nil])
+      self.configureChildViewControllersWithProject.assertValues([project])
+      self.configureChildViewControllersWithRefTag.assertValues([nil])
 
-    self.vm.inputs.didBackProject()
+      self.vm.inputs.didBackProject()
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.configureChildViewControllersWithProject.assertValues([project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
+      self.configureChildViewControllersWithProject.assertValues([project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
 
-    self.vm.inputs.managePledgeViewControllerFinished(with: nil)
+      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.configureChildViewControllersWithProject.assertValues([project, project, project])
-    self.configureChildViewControllersWithRefTag.assertValues([nil, nil, nil])
+      self.configureChildViewControllersWithProject.assertValues([project, project, project])
+      self.configureChildViewControllersWithRefTag.assertValues([nil, nil, nil])
+    }
+  }
+
+  func testConfiguredProject_WithFriendsNoBacking_Succcessfully() {
+    let project = Project.template
+    let friends = [User.template, User.brando]
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+    let refTag = RefTag.category
+
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      let projectWithFriends = project |> \.personalization.friends .~ friends
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        self.configureChildViewControllersWithProject.values.last!.personalization.friends,
+        friends
+      )
+      self.configureChildViewControllersWithProject.assertValues([projectWithFriends, projectWithFriends])
+    }
+  }
+
+  func testConfiguredProject_WithNoFriendsNoBacking_Unsucccessfully() {
+    let project = Project.template
+    let refTag = RefTag.category
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .failure(.couldNotParseJSON)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertTrue(self.configureChildViewControllersWithProject.values.last!.personalization.friends!
+        .isEmpty)
+      self.configureChildViewControllersWithProject.assertValues([project, project])
+    }
+  }
+
+  func testConfiguredProject_WithFriendsWithBacking_Succcessfully() {
+    let project = Project.template
+    let refTag = RefTag.category
+    let friends = [User.template, User.brando]
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      let projectWithBacking = project |> \.personalization.backing .~ .template
+        |> \.personalization.isBacking .~ true
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        self.configureChildViewControllersWithProject.values.last!.personalization.backing,
+        .template
+      )
+      XCTAssertTrue(
+        self.configureChildViewControllersWithProject.values.last!.personalization.isBacking!)
+      self.configureChildViewControllersWithProject.assertValues([projectWithBacking, projectWithBacking])
+    }
   }
 
   func testNavigationBar() {
@@ -166,70 +300,73 @@ final class ProjectPamphletViewModelTests: TestCase {
   // Tests that ref tags and referral credit cookies are tracked and saved like we expect.
   func testTracksRefTag() {
     let project = Project.template
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-    self.vm.inputs.viewDidAppear(animated: false)
+    withEnvironment(apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData))) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.segmentTrackingClient.events, "A project page event is tracked."
-    )
+      XCTAssertEqual(
+        ["Page Viewed"],
+        self.segmentTrackingClient.events, "A project page event is tracked."
+      )
 
-    XCTAssertEqual(
-      [RefTag.category.stringTag],
-      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the event."
-    )
-    XCTAssertEqual(
-      1, self.cookieStorage.cookies?.count,
-      "A single cookie is set"
-    )
-    XCTAssertEqual(
-      "ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
-      "A referral cookie is set for the project."
-    )
-    XCTAssertEqual(
-      "category?",
-      (self.cookieStorage.cookies?.last?.value.prefix(9)).map(String.init),
-      "A referral cookie is set for the category ref tag."
-    )
+      XCTAssertEqual(
+        [RefTag.category.stringTag],
+        self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+        "The ref tag is tracked in the event."
+      )
+      XCTAssertEqual(
+        1, self.cookieStorage.cookies?.count,
+        "A single cookie is set"
+      )
+      XCTAssertEqual(
+        "ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
+        "A referral cookie is set for the project."
+      )
+      XCTAssertEqual(
+        "category?",
+        (self.cookieStorage.cookies?.last?.value.prefix(9)).map(String.init),
+        "A referral cookie is set for the category ref tag."
+      )
 
-    // Start up another view model with the same project
-    let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
-    newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
-    newVm.inputs.viewDidLoad()
-    newVm.inputs.viewWillAppear(animated: true)
-    newVm.inputs.viewDidAppear(animated: true)
+      // Start up another view model with the same project
+      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewWillAppear(animated: true)
+      newVm.inputs.viewDidAppear(animated: true)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    XCTAssertEqual(
-      [
-        "Page Viewed", "Page Viewed"
-      ],
-      self.segmentTrackingClient.events, "A project page event is tracked."
-    )
+      XCTAssertEqual(
+        [
+          "Page Viewed", "Page Viewed"
+        ],
+        self.segmentTrackingClient.events, "A project page event is tracked."
+      )
 
-    XCTAssertEqual(
-      [
-        RefTag.category.stringTag,
-        RefTag.recommended.stringTag
-      ],
-      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in an event."
-    )
-    XCTAssertEqual(
-      1, self.cookieStorage.cookies?.count,
-      "A single cookie has been set."
-    )
+      XCTAssertEqual(
+        [
+          RefTag.category.stringTag,
+          RefTag.recommended.stringTag
+        ],
+        self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+        "The new ref tag is tracked in an event."
+      )
+      XCTAssertEqual(
+        1, self.cookieStorage.cookies?.count,
+        "A single cookie has been set."
+      )
+    }
   }
 
   func testProjectPageViewed_Tracking_OnError() {
-    let service = MockService(fetchProjectError: .couldNotParseJSON)
+    let service = MockService(fetchProjectPamphletResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: service) {
       self.configureInitialState(.init(left: .template))
@@ -245,25 +382,33 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testProjectPageViewed_OnViewDidAppear() {
-    XCTAssertEqual([], self.segmentTrackingClient.events)
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    self.configureInitialState(.init(left: .template))
+    withEnvironment(apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData))) {
+      XCTAssertEqual([], self.segmentTrackingClient.events)
 
-    self.scheduler.advance()
+      self.configureInitialState(.init(left: .template))
 
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+      self.scheduler.advance()
 
-    XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
-    XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
-    XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
+      XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
+      XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
+    }
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
     let project = Project.template
     let scheduler1 = TestScheduler(startDate: MockDate().date)
     let scheduler2 = TestScheduler(startDate: scheduler1.currentDate.addingTimeInterval(1))
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    withEnvironment(scheduler: scheduler1) {
+    withEnvironment(
+      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      scheduler: scheduler1
+    ) {
       let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
@@ -275,7 +420,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(1, self.cookieStorage.cookies?.count, "A single cookie has been set.")
     }
 
-    withEnvironment(scheduler: scheduler2) {
+    withEnvironment(
+      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      scheduler: scheduler2
+    ) {
       let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
@@ -330,68 +478,74 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   func testTracksRefTag_WithBadData() {
     let project = Project.template
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    self.vm.inputs.configureWith(
-      projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
-    )
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-    self.vm.inputs.viewDidAppear(animated: false)
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .success([.template])
+    )) {
+      self.vm.inputs.configureWith(
+        projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.segmentTrackingClient.events, "A project page event is tracked."
-    )
+      XCTAssertEqual(
+        ["Page Viewed"],
+        self.segmentTrackingClient.events, "A project page event is tracked."
+      )
 
-    XCTAssertEqual(
-      [RefTag.category.stringTag],
-      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the event."
-    )
-    XCTAssertEqual(
-      1, self.cookieStorage.cookies?.count,
-      "A single cookie is set"
-    )
-    XCTAssertEqual(
-      "ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
-      "A referral cookie is set for the project."
-    )
-    XCTAssertEqual(
-      "category?",
-      (self.cookieStorage.cookies?.last?.value.prefix(9)).map(String.init),
-      "A referral cookie is set for the category ref tag."
-    )
+      XCTAssertEqual(
+        [RefTag.category.stringTag],
+        self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+        "The ref tag is tracked in the event."
+      )
+      XCTAssertEqual(
+        1, self.cookieStorage.cookies?.count,
+        "A single cookie is set"
+      )
+      XCTAssertEqual(
+        "ref_\(project.id)", self.cookieStorage.cookies?.last?.name,
+        "A referral cookie is set for the project."
+      )
+      XCTAssertEqual(
+        "category?",
+        (self.cookieStorage.cookies?.last?.value.prefix(9)).map(String.init),
+        "A referral cookie is set for the category ref tag."
+      )
 
-    // Start up another view model with the same project
-    let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
-    newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
-    newVm.inputs.viewDidLoad()
-    newVm.inputs.viewWillAppear(animated: true)
-    newVm.inputs.viewDidAppear(animated: true)
+      // Start up another view model with the same project
+      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.viewDidLoad()
+      newVm.inputs.viewWillAppear(animated: true)
+      newVm.inputs.viewDidAppear(animated: true)
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    XCTAssertEqual(
-      [
-        "Page Viewed", "Page Viewed"
-      ],
-      self.segmentTrackingClient.events, "A project page event is tracked."
-    )
+      XCTAssertEqual(
+        [
+          "Page Viewed", "Page Viewed"
+        ],
+        self.segmentTrackingClient.events, "A project page event is tracked."
+      )
 
-    XCTAssertEqual(
-      [
-        RefTag.category.stringTag,
-        RefTag.recommended.stringTag
-      ],
-      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in an event."
-    )
-    XCTAssertEqual(
-      1, self.cookieStorage.cookies?.count,
-      "A single cookie has been set."
-    )
+      XCTAssertEqual(
+        [
+          RefTag.category.stringTag,
+          RefTag.recommended.stringTag
+        ],
+        self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+        "The new ref tag is tracked in an event."
+      )
+      XCTAssertEqual(
+        1, self.cookieStorage.cookies?.count,
+        "A single cookie has been set."
+      )
+    }
   }
 
   func testTrackingDoesNotOccurOnLoad() {
@@ -498,7 +652,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> \.id .~ 2
       |> Project.lens.personalization.isBacking .~ true
 
-    let mockService = MockService(fetchProjectResponse: projectFull)
+    let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(fetchProjectPamphletResult: .success(projectPamphletData))
 
     withEnvironment(
       apiService: mockService,
@@ -530,7 +686,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testConfigurePledgeCTAView_FetchProjectFailure() {
     let config = Config.template
     let project = Project.template
-    let mockService = MockService(fetchProjectError: .couldNotParseJSON)
+    let mockService = MockService(fetchProjectPamphletResult: .failure(.couldNotParseJSON))
 
     withEnvironment(
       apiService: mockService,
@@ -563,14 +719,17 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testConfigurePledgeCTAView_ReloadsUponBackProject() {
     let config = Config.template
     let project = Project.template
+    let friends = [User.template]
     let projectFull = Project.template
       |> Project.lens.rewardData.rewards .~ [Reward.noReward, Reward.template]
 
-    let backedProject = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
-      |> Project.lens.personalization.isBacking .~ true
-
-    let mockService = MockService(fetchProjectResponse: projectFull)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
+    let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: 1)
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )
 
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -596,7 +755,11 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: backedProject),
+      apiService: MockService(
+        fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectFriendsResult: .success(friends)
+      ),
       config: config,
       mainBundle: releaseBundle
     ) {
@@ -611,13 +774,16 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      let projectWithBacking = project |> \.personalization.backing .~ .template
+        |> \.personalization.isBacking .~ true
+
       self.configurePledgeCTAViewProject.assertValues([
         project,
         project,
         projectFull,
         projectFull,
         projectFull,
-        backedProject
+        projectWithBacking
       ])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
       self.configurePledgeCTAViewRefTag.assertValues([
@@ -642,14 +808,29 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testConfigurePledgeCTAView_ReloadsUponUpdatePledge() {
     let config = Config.template
     let project = Project.template
+    let friends = [User.template]
+    let backingFull = Backing.template |> Backing.lens.amount .~ 10.0
+    let updatedBacking = Backing.template |> Backing.lens.amount .~ 15.0
     let projectFull = Project.template
-      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.amount .~ 10.0)
+      |> Project.lens.personalization.backing .~ backingFull
       |> Project.lens.personalization.isBacking .~ true
     let updatedProject = Project.template
-      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.amount .~ 15.0)
+      |> Project.lens.personalization.backing .~ updatedBacking
       |> Project.lens.personalization.isBacking .~ true
 
-    let mockService = MockService(fetchProjectResponse: projectFull)
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: backingFull)
+    let projectUpdatedAndEnvelope = ProjectAndBackingEnvelope(
+      project: updatedProject,
+      backing: updatedBacking
+    )
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: 1)
+    let projectUpdatedPamphletData = Project.ProjectPamphletData(project: updatedProject, backingId: 1)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )
 
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -674,7 +855,11 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: updatedProject),
+      apiService: MockService(
+        fetchManagePledgeViewBackingResult: .success(projectUpdatedAndEnvelope),
+        fetchProjectPamphletResult: .success(projectUpdatedPamphletData),
+        fetchProjectFriendsResult: .success(friends)
+      ),
       config: config,
       mainBundle: releaseBundle
     ) {
@@ -720,13 +905,23 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testConfigurePledgeCTAView_ReloadsUponRetryButtonTappedEvent() {
     let config = Config.template
     let project = Project.template
+    let friends = [User.template]
     let projectFull = Project.template
       |> \.id .~ 2
       |> Project.lens.personalization.isBacking .~ true
     let projectFull2 = Project.template
       |> \.id .~ 3
 
-    let mockService = MockService(fetchProjectResponse: projectFull)
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFull2AndEnvelope = ProjectAndBackingEnvelope(project: projectFull2, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+    let projectFull2PamphletData = Project.ProjectPamphletData(project: projectFull2, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends)
+    )
 
     withEnvironment(apiService: mockService, config: config) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -751,7 +946,11 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: projectFull2),
+      apiService: MockService(
+        fetchManagePledgeViewBackingResult: .success(projectFull2AndEnvelope),
+        fetchProjectPamphletResult: .success(projectFull2PamphletData),
+        fetchProjectFriendsResult: .success(friends)
+      ),
       config: config
     ) {
       self.vm.inputs.pledgeRetryButtonTapped()
@@ -811,7 +1010,13 @@ final class ProjectPamphletViewModelTests: TestCase {
       segmentClient: segmentClient
     )
 
-    withEnvironment(currentUser: User.template, ksrAnalytics: ksrAnalytics) {
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(
+      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      currentUser: User.template,
+      ksrAnalytics: ksrAnalytics
+    ) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -841,7 +1046,13 @@ final class ProjectPamphletViewModelTests: TestCase {
       segmentClient: segmentClient
     )
 
-    withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(
+      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      currentUser: nil,
+      ksrAnalytics: ksrAnalytics
+    ) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)

@@ -2,7 +2,7 @@ import Foundation
 
 /**
  FIXME: Previously `DeprecatedComment`, simply renamed because this model is reliant on `/v1/projects/\(project.id)/activities`
- There is no graph support for this endpoint at time of writing. O
+ There is no graph support for this endpoint at time of writing.
  Our existing `Comment` model relies on Graph to be created.
  When we have graph support for these endpoints we should do a direct replacement of `ActivityComment` and `ActivityCommentAuthor` with `Comment` and `Comment.Author`
   - `GET /v1/projects/\(project.id)/activities`

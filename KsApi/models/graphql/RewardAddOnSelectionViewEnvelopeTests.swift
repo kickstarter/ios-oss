@@ -214,10 +214,6 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
         Reward.reward(from: graphReward, projectId: value.project.pid),
         "A Reward can be created from this GraphReward"
       )
-      XCTAssertNotNil(
-        Project.project(from: value.project),
-        "A Project can be created from this GraphProject"
-      )
     } catch {
       XCTFail((error as NSError).description)
     }

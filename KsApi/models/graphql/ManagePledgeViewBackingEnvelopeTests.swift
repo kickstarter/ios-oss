@@ -338,15 +338,6 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.backer?.imageUrl, "http://www.kickstarter.com/avatar.jpg")
       XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
 
-      XCTAssertNotNil(
-        Backing.backing(from: value.backing),
-        "A Backing can be created from this GraphBacking"
-      )
-      XCTAssertNotNil(
-        Project.project(from: value.project),
-        "A Project can be created from this GraphProject"
-      )
-
       guard let reward = value.backing.reward else {
         XCTFail("Should have a reward")
         return

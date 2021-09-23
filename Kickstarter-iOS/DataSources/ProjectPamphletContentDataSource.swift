@@ -78,8 +78,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletSubpageCell, value as ProjectPamphletSubpage):
       cell.configureWith(value: value)
-    case let (cell as PledgeTitleCell, value as Project):
-      cell.configureWith(value: value)
     default:
       fatalError("Unrecognized (\(type(of: cell)), \(type(of: value))) combo.")
     }

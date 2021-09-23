@@ -47,7 +47,6 @@ internal enum Route {
   case unansweredSurveyResponses
   case unfollowFriend(userId: Int)
   case update(updateId: Int, projectParam: Param)
-  case updateComments(Update)
   case updateProjectNotification(notification: ProjectNotification)
   case updateUpdateDraft(UpdateDraft, title: String, body: String, isPublic: Bool)
   case updateUserSelf(User)
@@ -234,9 +233,6 @@ internal enum Route {
 
       case let .update(id, projectParam):
         return (.GET, "v1/projects/\(projectParam.escapedUrlComponent)/updates/\(id)", [:], nil)
-
-      case let .updateComments(u):
-        return (.GET, "/v1/projects/\(u.projectId)/updates/\(u.id)/comments", [:], nil)
 
       case let .updateUpdateDraft(d, title, body, isPublic):
         let params: [String: Any] = ["title": title, "body": body, "public": isPublic]

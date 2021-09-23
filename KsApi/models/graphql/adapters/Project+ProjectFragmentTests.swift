@@ -5,27 +5,13 @@ import XCTest
 final class Project_ProjectFragmentTests: XCTestCase {
   func test() {
     do {
-      let dict = self.projectDictionary()
-
-      let addOns = (dict["addOns"] as? [String: [[String: Any]]])?["nodes"]?
-        .compactMap { try? GraphAPI.RewardFragment(jsonObject: $0) }
-        .compactMap { Reward.reward(from: $0) }
-      let rewards = (dict["rewards"] as? [String: [[String: Any]]])?["nodes"]?
-        .compactMap { try? GraphAPI.RewardFragment(jsonObject: $0) }
-        .compactMap { Reward.reward(from: $0) } ?? []
-
-      let backing = Backing.template |>
-        Backing.lens.backerId .~ 618_005_886
-
       let variables = ["withStoredCards": true]
       let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let project = Project.project(
         from: fragment,
-        rewards: rewards,
-        addOns: addOns,
-        backing: backing
+        currentUserChosenCurrency: nil
       )
 
       guard let project = project else {
@@ -34,460 +20,395 @@ final class Project_ProjectFragmentTests: XCTestCase {
         return
       }
 
-      XCTAssertEqual(project.addOns?.count, 2)
-      XCTAssertEqual(project.rewards.count, 2)
-      XCTAssertEqual(project.memberData.permissions.count, 6)
-
-      guard let _ = project.personalization.backing,
-        let isUserBackingProject = project.personalization.isBacking,
-        let isProjectWatched = project.personalization.isStarred,
-        let friends = project.personalization.friends
-      else {
-        XCTFail("project should contain all properties of personalization")
-
-        return
-      }
-
-      XCTAssertTrue(isUserBackingProject)
-      XCTAssertTrue(isProjectWatched)
-      XCTAssertEqual(friends.count, 2)
+      XCTAssertEqual(project.country, .us)
+      XCTAssertEqual(project.availableCardTypes?.count, 7)
+      XCTAssertEqual(
+        project.blurb,
+        "In this unforgiving Hell, people are forced to fight to the death in an elite gamble for their souls."
+      )
+      XCTAssertEqual(project.category.name, "Comic Books")
+      XCTAssertEqual(project.creator.id, decompose(id: "VXNlci0xMDA3NTM5MDAy"))
+      XCTAssertEqual(project.memberData.permissions.last, .comment)
+      XCTAssertEqual(project.dates.deadline, 1_630_591_053)
+      XCTAssertEqual(project.id, 1_841_936_784)
+      XCTAssertEqual(project.location.country, "US")
+      XCTAssertEqual(project.name, "FINAL GAMBLE Issue #1")
+      XCTAssertEqual(project.slug, "final-gamble-issue-1")
+      XCTAssertEqual(
+        project.photo.full,
+        "https://ksr-qa-ugc.imgix.net/assets/034/416/156/330099be1dd12ed741db4e29d9986840_original.png?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1628078003&auto=format&frame=1&q=92&s=2f006a2e8f17f1a83c21385ac010574c"
+      )
+      XCTAssertEqual(project.state, .live)
+      XCTAssertEqual(project.stats.convertedPledgedAmount!, 4_509.09467367)
+      XCTAssertEqual(project.tags!.first!, "LGBTQIA+")
+      XCTAssertEqual(
+        project.urls.web.updates!,
+        "https://staging.kickstarter.com/projects/bandofbards/final-gamble-issue-1/posts"
+      )
+      XCTAssertEqual(
+        project.video?.high,
+        "https://v.kickstarter.com/1631473358_b73a85bd690a6353b9e29af6ef78496e2d20858c/projects/4196183/video-1116448-h264_high.mp4"
+      )
+      XCTAssertTrue(project.rewardData.rewards.isEmpty)
+      XCTAssertTrue(project.staffPick)
+      XCTAssertTrue(project.prelaunchActivated!)
+      XCTAssertFalse(project.displayPrelaunch!)
+      XCTAssertNil(project.personalization.backing)
+      XCTAssertNil(project.rewardData.addOns)
+      XCTAssertNotNil(project.extendedProjectProperties?.story)
+      XCTAssertNotNil(project.extendedProjectProperties?.risks)
+      XCTAssertEqual(project.extendedProjectProperties?.environmentalCommitments.count, 1)
+      XCTAssertEqual(
+        project.extendedProjectProperties?.environmentalCommitments.last?.category,
+        .longLastingDesign
+      )
+      XCTAssertEqual(
+        project.extendedProjectProperties?.environmentalCommitments.last?.description,
+        "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards."
+      )
+      XCTAssertEqual(
+        project.extendedProjectProperties?.environmentalCommitments.last?.id,
+        decompose(id: "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2")
+      )
+      XCTAssertEqual(project.extendedProjectProperties?.faqs.count, 1)
+      XCTAssertEqual(
+        project.extendedProjectProperties?.faqs.last!.question,
+        "Are you planning any expansions for Dustbiters?"
+      )
+      XCTAssertEqual(
+        project.extendedProjectProperties?.faqs.last!.answer,
+        "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that."
+      )
+      XCTAssertEqual(
+        project.extendedProjectProperties?.faqs.last!.id,
+        decompose(id: "UHJvamVjdEZhcS0zNzA4MDM=")
+      )
+      XCTAssertEqual(project.extendedProjectProperties?.faqs.last!.createdAt!, TimeInterval(1_628_103_400))
     } catch {
       XCTFail(error.localizedDescription)
     }
-
-    XCTAssertNotNil(Project.project(from: .template))
   }
 
   private func projectDictionary() -> [String: Any] {
     let json = """
     {
-      "__typename": "Project",
-      "actions": {
-        "__typename": "ProjectActions",
-        "displayConvertAmount": false
-      },
-      "backersCount": 136,
-      "category": {
-        "__typename": "Category",
-        "id": "Q2F0ZWdvcnktNDc=",
-        "name": "Fiction",
-        "parentCategory": {
-          "__typename": "Category",
-          "id": "Q2F0ZWdvcnktMTg=",
-          "name": "Publishing"
-        }
-      },
-      "collaboratorPermissions": [
-        "edit_project",
-        "edit_faq",
-        "post",
-        "comment",
-        "view_pledges",
-        "fulfillment"
-      ],
-      "country": {
-        "__typename": "Country",
-        "code": "US",
-        "name": "the United States"
-      },
-      "creator": {
-        "__typename": "User",
-        "chosenCurrency": "USD",
-        "email": "foo@bar.com",
-        "hasPassword": true,
-        "id": "VXNlci02MzE4MTEzODc=",
-        "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/026/582/411/0064c9eba577b99cbb09d9bb197e215a_original.jpeg?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1617736562&auto=format&frame=1&q=92&s=085218a7258d22c455492bed76f5433a",
-        "isAppleConnected": false,
-        "isCreator": null,
-        "isDeliverable": true,
-        "isEmailVerified": true,
-        "name": "Hugh Alan Samples",
-        "storedCards": {
-          "__typename": "UserCreditCardTypeConnection",
-          "nodes": [
-            {
-            "__typename": "CreditCard",
-              "expirationDate": "2023-01-01",
-              "id": "6",
-              "lastFour": "4242",
-              "type": "VISA"
-            }
+       "__typename":"Project",
+       "actions":{
+          "__typename":"ProjectActions",
+          "displayConvertAmount":false
+       },
+       "availableCardTypes":[
+          "VISA",
+          "MASTERCARD",
+          "AMEX",
+          "DISCOVER",
+          "JCB",
+          "DINERS",
+          "UNION_PAY"
+       ],
+       "backersCount":78,
+       "category":{
+          "__typename":"Category",
+          "id":"Q2F0ZWdvcnktMjUw",
+          "name":"Comic Books",
+          "analyticsName":"Comic Books",
+          "parentCategory":{
+             "__typename":"Category",
+             "id":"Q2F0ZWdvcnktMw==",
+             "name":"Comics"
+          }
+       },
+       "canComment":true,
+       "commentsCount":0,
+       "country":{
+          "__typename":"Country",
+          "code":"US",
+          "name":"the United States"
+       },
+       "creator":{
+          "__typename":"User",
+          "chosenCurrency":null,
+          "backings":{
+             "__typename":"UserBackingsConnection",
+             "nodes":[
+                {
+                   "__typename":"Backing",
+                   "errorReason":null
+                },
+                {
+                   "__typename":"Backing",
+                   "errorReason":"Something went wrong"
+                },
+                {
+                   "__typename":"Backing",
+                   "errorReason":null
+                }
+             ]
+          },
+          "newsletterSubscriptions":{
+             "__typename":"NewsletterSubscriptions",
+             "artsCultureNewsletter":true,
+             "filmNewsletter":false,
+             "musicNewsletter":false,
+             "inventNewsletter":false,
+             "publishingNewsletter":false,
+             "promoNewsletter":false,
+             "weeklyNewsletter":false,
+             "happeningNewsletter":false,
+             "gamesNewsletter":false,
+             "alumniNewsletter":true
+          },
+          "optedOutOfRecommendations":true,
+          "notifications":[
+             {
+                "__typename":"Notification",
+                "topic":"messages",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"backings",
+                "email":false,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"creator_digest",
+                "email":true,
+                "mobile":false
+             },
+             {
+                "__typename":"Notification",
+                "topic":"updates",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"follower",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"friend_activity",
+                "email":true,
+                "mobile":false
+             },
+             {
+                "__typename":"Notification",
+                "topic":"friend_signup",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"comments",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"comment_replies",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"creator_edu",
+                "email":true,
+                "mobile":true
+             },
+             {
+                "__typename":"Notification",
+                "topic":"marketing_update",
+                "email":true,
+                "mobile":false
+             },
+             {
+                "__typename":"Notification",
+                "topic":"project_launch",
+                "email":true,
+                "mobile":true
+             }
           ],
-          "totalCount": 1
-        },
-        "uid": "631811387"
-      },
-      "currency": "USD",
-      "deadlineAt": 1620478771,
-      "description": "Dark Fantasy Novel & Tarot Cards",
-      "finalCollectionDate": null,
-      "fxRate": 1.25195501,
-      "friends": {
-        "__typename": "ProjectBackerFriendsConnection",
-        "nodes": [
-          {
-            "__typename": "User",
-            "chosenCurrency": null,
-            "email": "blob@me.com",
-            "hasPassword": null,
-            "id": "Q2F0ZWdvcnktNDc=",
-            "imageUrl": "http://www.kickstarter.com/image.jpg",
-            "isAppleConnected": null,
-            "isDeliverable": null,
-            "isEmailVerified": null,
-            "isCreator": false,
-            "name": "Billy Bob",
-            "uid": "23",
-            "storedCards": {
-              "__typename": "UserCreditCardTypeConnection",
-              "nodes": [],
-              "totalCount": 0
-            }
+          "createdProjects":{
+             "__typename":"UserCreatedProjectsConnection",
+             "totalCount":16
           },
-          {
-            "__typename": "User",
-            "chosenCurrency": null,
-            "email": "blob@me.com",
-            "hasPassword": null,
-            "id": "D2F0ZWdvcnktNDc=",
-            "imageUrl": "http://www.kickstarter.com/image2.jpg",
-            "isAppleConnected": null,
-            "isDeliverable": null,
-            "isEmailVerified": null,
-            "isCreator": false,
-            "name": "Billy Bob's Nephew",
-            "uid": "24",
-            "storedCards": {
-              "__typename": "UserCreditCardTypeConnection",
-              "nodes": [],
-              "totalCount": 0
-            }
-          }
-        ]
-      },
-      "goal": {
-        "__typename": "Money",
-        "amount": "3000.0",
-        "currency": "USD",
-        "symbol": "$"
-      },
-      "image": {
-        "__typename": "Photo",
-        "id": "UGhvdG8tMzI0NTYxMDE=",
-        "url": "https://ksr-qa-ugc.imgix.net/assets/032/456/101/d32b5e2097301e5ccf4aa1e4f0be9086_original.tiff?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1613880671&auto=format&frame=1&q=92&s=617def65783295f2dabdff1b39005eca"
-      },
-      "isProjectWeLove": true,
-      "isWatched": true,
-      "launchedAt": 1617886771,
-      "location": {
-        "__typename": "Location",
-        "country": "US",
-        "countryName": "United States",
-        "displayableName": "Henderson, KY",
-        "id": "TG9jYXRpb24tMjQxOTk0NA==",
-        "name": "Henderson"
-      },
-      "name": "WEE WILLIAM WITCHLING",
-      "pid": 1596594463,
-      "pledged": {
-        "__typename": "Money",
-        "amount": "9893.0",
-        "currency": "USD",
-        "symbol": "$"
-      },
-      "addOns": {
-        "nodes": [
-          {
-            "__typename": "Reward",
-            "amount": {
-              "__typename": "Money",
-              "amount": "10.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "backersCount": 26,
-            "convertedAmount": {
-              "__typename": "Money",
-              "amount": "13.0",
-              "currency": "CAD",
-              "symbol": "$"
-            },
-            "description": "A 160 page coloring book and tarot journal with all 78 cards available for your enjoyment!",
-            "displayName": "Wee William Journal & Coloring Book ($10)",
-            "endsAt": null,
-            "estimatedDeliveryOn": "2021-12-01",
-            "id": "UmV3YXJkLTgyNDgxOTM=",
-            "isMaxPledge": false,
-            "items": {
-              "__typename": "RewardItemsConnection",
-              "nodes": []
-            },
-            "limit": null,
-            "limitPerBacker": 10,
-            "name": "Wee William Journal & Coloring Book",
-            "project": {
-            "__typename": "Project",
-              "id": "UHJvamVjdC0xNTk2NTk0NDYz"
-            },
-            "remainingQuantity": null,
-            "shippingPreference": "unrestricted",
-            "shippingRules": [
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM4",
-                "location": {
-                  "__typename": "Location",
-                  "country": "ZZ",
-                  "countryName": null,
-                  "displayableName": "Earth",
-                  "id": "TG9jYXRpb24tMQ==",
-                  "name": "Rest of World"
-                }
-              },
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTExNDY2NTM5",
-                "location": {
-                  "__typename": "Location",
-                  "country": "US",
-                  "countryName": "United States",
-                  "displayableName": "United States",
-                  "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                  "name": "United States"
-                }
-              }
-            ],
-            "startsAt": null
+          "membershipProjects":{
+             "__typename":"MembershipProjectsConnection",
+             "totalCount":10
           },
-          {
-            "__typename": "Reward",
-            "amount": {
-              "__typename": "Money",
-              "amount": "25.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "backersCount": 21,
-            "convertedAmount": {
-              "__typename": "Money",
-              "amount": "32.0",
-              "currency": "CAD",
-              "symbol": "$"
-            },
-            "description": "Add the soft bound edition to an existing reward tier!",
-            "displayName": "Soft-cover signed Book ($25)",
-            "endsAt": null,
-            "estimatedDeliveryOn": "2021-12-01",
-            "id": "UmV3YXJkLTgyMjcyOTM=",
-            "isMaxPledge": false,
-            "items": {
-              "__typename": "RewardItemsConnection",
-              "nodes": []
-            },
-            "limit": null,
-            "limitPerBacker": 10,
-            "name": "Soft-cover signed Book",
-            "project": {
-            "__typename": "Project",
-              "id": "UHJvamVjdC0xNTk2NTk0NDYz"
-            },
-            "remainingQuantity": null,
-            "shippingPreference": "unrestricted",
-            "shippingRules": [
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTExNDEzMzgz",
-                "location": {
-                  "__typename": "Location",
-                  "country": "ZZ",
-                  "countryName": null,
-                  "displayableName": "Earth",
-                  "id": "TG9jYXRpb24tMQ==",
-                  "name": "Rest of World"
-                }
-              },
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTExNDA2OTkz",
-                "location": {
-                  "__typename": "Location",
-                  "country": "US",
-                  "countryName": "United States",
-                  "displayableName": "United States",
-                  "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                  "name": "United States"
-                }
-              }
-            ],
-            "startsAt": null
-          }
-        ]
-      },
-      "rewards": {
-        "nodes": [
-          {
-            "__typename": "Reward",
-            "amount": {
-              "__typename": "Money",
-              "amount": "10.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "backersCount": 7,
-            "convertedAmount": {
-              "__typename": "Money",
-              "amount": "13.0",
-              "currency": "CAD",
-              "symbol": "$"
-            },
-            "description": "",
-            "displayName": "Digital Copy ($10)",
-            "endsAt": null,
-            "estimatedDeliveryOn": "2021-12-01",
-            "id": "UmV3YXJkLTgxNzM4OTk=",
-            "isMaxPledge": false,
-            "items": {
-              "__typename": "RewardItemsConnection",
-              "nodes": [
-                {
-                  "__typename": "RewardItem",
-                  "id": "UmV3YXJkSXRlbS0xMTcwNzk2",
-                  "name": "Wee William Witchling (PDF) Digital Copy"
-                }
-              ]
-            },
-            "limit": null,
-            "limitPerBacker": 1,
-            "name": "Digital Copy",
-            "project": {
-            "__typename": "Project",
-              "id": "UHJvamVjdC0xNTk2NTk0NDYz"
-            },
-            "remainingQuantity": null,
-            "shippingPreference": "none",
-            "shippingRules": [],
-            "startsAt": null
+          "savedProjects":{
+             "__typename":"UserSavedProjectsConnection",
+             "totalCount":11
           },
-          {
-            "__typename": "Reward",
-            "amount": {
-              "__typename": "Money",
-              "amount": "25.0",
-              "currency": "USD",
-              "symbol": "$"
-            },
-            "backersCount": 13,
-            "convertedAmount": {
-              "__typename": "Money",
-              "amount": "32.0",
-              "currency": "CAD",
-              "symbol": "$"
-            },
-            "description": "",
-            "displayName": "Soft Cover Book (Signed) ($25)",
-            "endsAt": null,
-            "estimatedDeliveryOn": "2021-12-01",
-            "id": "UmV3YXJkLTgxNzM5MDE=",
-            "isMaxPledge": false,
-            "items": {
-              "__typename": "RewardItemsConnection",
-              "nodes": [
-                {
-                  "__typename": "RewardItem",
-                  "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
-                  "name": "Soft-Cover Book (Signed)"
-                },
-                {
-                  "__typename": "RewardItem",
-                  "id": "UmV3YXJkSXRlbS0xMTcwODEz",
-                  "name": "Custom Bookmark"
-                }
-              ]
-            },
-            "limit": null,
-            "limitPerBacker": 1,
-            "name": "Soft Cover Book (Signed)",
-            "project": {
-            "__typename": "Project",
-              "id": "UHJvamVjdC0xNTk2NTk0NDYz"
-            },
-            "remainingQuantity": null,
-            "shippingPreference": "unrestricted",
-            "shippingRules": [
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTExNDEzMzc5",
-                "location": {
-                  "__typename": "Location",
-                  "country": "ZZ",
-                  "countryName": null,
-                  "displayableName": "Earth",
-                  "id": "TG9jYXRpb24tMQ==",
-                  "name": "Rest of World"
-                }
-              },
-              {
-                "__typename": "ShippingRule",
-                "cost": {
-                  "__typename": "Money",
-                  "amount": "0.0",
-                  "currency": "USD",
-                  "symbol": "$"
-                },
-                "id": "U2hpcHBpbmdSdWxlLTExMjc4NzUy",
-                "location": {
-                  "__typename": "Location",
-                  "country": "US",
-                  "countryName": "United States",
-                  "displayableName": "United States",
-                  "id": "TG9jYXRpb24tMjM0MjQ5Nzc=",
-                  "name": "United States"
-                }
-              }
-            ],
-            "startsAt": null
+          "backingsCount":3,
+          "hasUnreadMessages":false,
+          "isSocializing":true,
+          "hasUnseenActivity":true,
+          "email":"tim_stolinski@yahoo.com.ksr",
+          "hasPassword":null,
+          "id":"VXNlci0xMDA3NTM5MDAy",
+          "imageUrl":"https://ksr-qa-ugc.imgix.net/assets/033/589/257/1202c14c958cc40645e67f7792a8b10a_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1621524013&auto=format&frame=1&q=92&s=9466c13d19f3870da6565cea4170f752",
+          "isAppleConnected":null,
+          "isCreator":true,
+          "isDeliverable":null,
+          "isEmailVerified":true,
+          "isFacebookConnected":true,
+          "isKsrAdmin":false,
+          "isFollowing":true,
+          "name":"Band of Bards Comics",
+          "needsFreshFacebookToken":false,
+          "showPublicProfile":true,
+          "uid":"1007539002",
+          "location":{
+             "__typename":"Location",
+             "country":"US",
+             "countryName":"United States",
+             "displayableName":"Las Vegas, NV",
+             "id":"TG9jYXRpb24tMjQzNjcwNA==",
+             "name":"Las Vegas"
+          },
+          "surveyResponses": {
+             "__typename":"SurveyResponsesConnection",
+             "totalCount": 2
+          },
+          "storedCards":{
+             "__typename":"UserCreditCardTypeConnection",
+             "nodes":[
+                
+             ],
+             "totalCount":0
           }
-        ]
-      },
-      "slug": "parliament-of-rooks/wee-william-witchling",
-      "state": "LIVE",
-      "stateChangedAt": 1617886773,
-      "url": "https://staging.kickstarter.com/projects/parliament-of-rooks/wee-william-witchling",
-      "usdExchangeRate": 1
+       },
+       "currency":"USD",
+       "deadlineAt":1630591053,
+       "description":"In this unforgiving Hell, people are forced to fight to the death in an elite gamble for their souls.",
+       "finalCollectionDate":null,
+       "fxRate":1.26411401,
+       "friends":{
+          "__typename":"ProjectBackerFriendsConnection",
+          "nodes":[
+             
+          ]
+       },
+       "goal":{
+          "__typename":"Money",
+          "amount":"6000.0",
+          "currency":"USD",
+          "symbol":"$"
+       },
+       "image":{
+          "__typename":"Photo",
+          "id":"UGhvdG8tMzQ0MTYxNTY=",
+          "url":"https://ksr-qa-ugc.imgix.net/assets/034/416/156/330099be1dd12ed741db4e29d9986840_original.png?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1628078003&auto=format&frame=1&q=92&s=2f006a2e8f17f1a83c21385ac010574c"
+       },
+       "isProjectWeLove":true,
+       "isProjectOfTheDay":false,
+       "isWatched":false,
+       "isLaunched":true,
+       "launchedAt":1627999053,
+       "location":{
+          "__typename":"Location",
+          "country":"US",
+          "countryName":"United States",
+          "displayableName":"Buffalo, NY",
+          "id":"TG9jYXRpb24tMjM3MTQ2NA==",
+          "name":"Buffalo"
+       },
+       "name":"FINAL GAMBLE Issue #1",
+       "pid":1841936784,
+       "pledged":{
+          "__typename":"Money",
+          "amount":"3567.0",
+          "currency":"USD",
+          "symbol":"$"
+       },
+       "posts":{
+          "__typename":"PostConnection",
+          "totalCount":3
+       },
+       "prelaunchActivated":true,
+       "slug":"bandofbards/final-gamble-issue-1",
+       "state":"LIVE",
+       "stateChangedAt":1627999055,
+       "tags":[
+          {
+             "__typename":"Tag",
+             "name":"LGBTQIA+"
+          }
+       ],
+       "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
+       "environmentalCommitments": [
+         {
+           "__typename": "EnvironmentalCommitment",
+           "commitmentCategory": "longLastingDesign",
+           "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+           "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+         }
+       ],
+       "faqs": {
+         "__typename": "ProjectFaqConnection",
+         "nodes": [
+           {
+             "__typename": "ProjectFaq",
+             "question": "Are you planning any expansions for Dustbiters?",
+             "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+             "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+             "createdAt": 1628103400
+           }
+         ]
+       },
+       "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you.",
+       "url":"https://staging.kickstarter.com/projects/bandofbards/final-gamble-issue-1",
+       "usdExchangeRate":1,
+       "video":{
+          "__typename":"Video",
+          "id":"VmlkZW8tMTExNjQ0OA==",
+          "videoSources":{
+             "__typename":"VideoSources",
+             "high":{
+                "__typename":"VideoSourceInfo",
+                "src":"https://v.kickstarter.com/1631473358_b73a85bd690a6353b9e29af6ef78496e2d20858c/projects/4196183/video-1116448-h264_high.mp4"
+             },
+             "hls":{
+                "__typename":"VideoSourceInfo",
+                "src":"https://v.kickstarter.com/1631473358_b73a85bd690a6353b9e29af6ef78496e2d20858c/projects/4196183/video-1116448-hls_playlist.m3u8"
+             }
+          }
+       }
     }
     """
 
     let data = Data(json.utf8)
-    return (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+    var resultMap = (try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]) ?? [:]
+
+    let updatedEnvironmentalCommitments =
+      [[
+        "__typename": "EnvironmentalCommitment",
+        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign.rawValue,
+        "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+        "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+      ]]
+
+    let updatedFaqs =
+      [
+        "__typename": "ProjectFaqConnection",
+        "nodes": [[
+          "__typename": "ProjectFaq",
+          "question": "Are you planning any expansions for Dustbiters?",
+          "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+          "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+          "createdAt": "1628103400"
+        ]]
+      ] as [String: Any]
+
+    resultMap["faqs"] = updatedFaqs
+    resultMap["environmentalCommitments"] = updatedEnvironmentalCommitments
+
+    return resultMap
   }
 }

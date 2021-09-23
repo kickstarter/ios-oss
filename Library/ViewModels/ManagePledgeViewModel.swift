@@ -124,7 +124,7 @@ public final class ManagePledgeViewModel:
       .skipNil()
       .switchMap { backingId in
         AppEnvironment.current.apiService
-          .fetchManagePledgeViewBacking(id: backingId, withStoredCards: false)
+          .fetchBacking(id: backingId, withStoredCards: false)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }

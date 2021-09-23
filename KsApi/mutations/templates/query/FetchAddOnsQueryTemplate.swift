@@ -434,6 +434,11 @@ public enum FetchAddsOnsQueryTemplate {
             "__typename": "ProjectActions",
             "displayConvertAmount": false
           },
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX"
+          ],
           "backersCount": 46,
           "backing": {
             "__typename": "Backing",
@@ -446,20 +451,15 @@ public enum FetchAddsOnsQueryTemplate {
             "__typename": "Category",
             "id": "Q2F0ZWdvcnktMjI=",
             "name": "Illustration",
+            "analyticsName": "Comic Books",
             "parentCategory": {
               "__typename": "Category",
               "id": "Q2F0ZWdvcnktMQ==",
               "name": "Art"
             }
           },
-          "collaboratorPermissions": [
-            "edit_project",
-            "edit_faq",
-            "post",
-            "comment",
-            "view_pledges",
-            "fulfillment"
-          ],
+          "canComment": false,
+          "commentsCount": 5,
           "country": {
             "__typename": "Country",
             "code": "AU",
@@ -468,6 +468,7 @@ public enum FetchAddsOnsQueryTemplate {
           "creator": {
             "__typename": "User",
             "chosenCurrency": "USD",
+            "backingsCount": 2,
             "email": "foo@bar.com",
             "hasPassword": true,
             "id": "VXNlci0xNzA1MzA0MDA2",
@@ -476,7 +477,15 @@ public enum FetchAddsOnsQueryTemplate {
             "isCreator": null,
             "isDeliverable": true,
             "isEmailVerified": true,
+            "isFollowing": true,
             "name": "Peppermint Fox",
+            "location": {
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Las Vegas, NV",
+              "id": "TG9jYXRpb24tMjQzNjcwNA==",
+              "name": "Las Vegas"
+            },
             "storedCards": {
               "__typename": "UserCreditCardTypeConnection",
               "nodes": [
@@ -496,10 +505,6 @@ public enum FetchAddsOnsQueryTemplate {
           "deadlineAt": 1622195758,
           "description": "Notebooks, paper tape and sticker sets from the Peppermint Fox Press, inspired by vintage books. For poets, planners, and storytellers.",
           "finalCollectionDate": null,
-          "friends": {
-            "__typename": "ProjectBackerFriendsConnection",
-            "nodes": []
-          },
           "fxRate": 0.93110152,
           "goal": {
             "__typename": "Money",
@@ -513,6 +518,8 @@ public enum FetchAddsOnsQueryTemplate {
             "url": "https://ksr-qa-ugc.imgix.net/assets/033/395/412/618ee8bdcfcfd731cc0404270a79d98c_original.jpg?ixlib=rb-4.0.2&crop=faces&w=1024&h=576&fit=crop&v=1620193138&auto=format&frame=1&q=92&s=518067d52053dd4f523b5ced0bb1487d"
           },
           "isProjectWeLove": true,
+          "isProjectOfTheDay": false,
+          "isLaunched": true,
           "isWatched": false,
           "launchedAt": 1619603758,
           "location": {
@@ -531,11 +538,40 @@ public enum FetchAddsOnsQueryTemplate {
             "currency": "AUD",
             "symbol": "$"
           },
+          "prelaunchActivated": true,
           "slug": "peppermintfox/peppermint-fox-press-notebooks-and-stationery",
           "state": "LIVE",
           "stateChangedAt": 1619603760,
+          "tags": [
+            {
+              "__typename": "Tag",
+              "name": "LGBTQIA+"
+            }
+          ],
           "url": "https://staging.kickstarter.com/projects/peppermintfox/peppermint-fox-press-notebooks-and-stationery",
-          "usdExchangeRate": 0.74641181
+          "usdExchangeRate": 0.74641181,
+          "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
+          "environmentalCommitments": [
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "longLastingDesign",
+              "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+            }
+          ],
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": [
+              {
+                "__typename": "ProjectFaq",
+                "question": "Are you planning any expansions for Dustbiters?",
+                "answer": "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that.",
+                "id": "UHJvamVjdEZhcS0zNzA4MDM=",
+                "createdAt": 1628103400
+              }
+            ]
+          },
+          "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you."
         }
     }
     """
@@ -557,16 +593,20 @@ public enum FetchAddsOnsQueryTemplate {
     projectResultMap["deadlineAt"] = "1622195758"
     projectResultMap["launchedAt"] = "1619603758"
     projectResultMap["stateChangedAt"] = "1619603760"
-    projectResultMap["collaboratorPermissions"] = [
-      KsApi.GraphAPI.CollaboratorPermission.editProject,
-      KsApi.GraphAPI.CollaboratorPermission.editFaq,
-      KsApi.GraphAPI.CollaboratorPermission.post,
-      KsApi.GraphAPI.CollaboratorPermission.comment,
-      KsApi.GraphAPI.CollaboratorPermission.viewPledges,
-      KsApi.GraphAPI.CollaboratorPermission.fulfillment
+    projectResultMap["availableCardTypes"] = [
+      KsApi.GraphAPI.CreditCardTypes.visa,
+      KsApi.GraphAPI.CreditCardTypes.amex,
+      KsApi.GraphAPI.CreditCardTypes.mastercard
     ]
     projectResultMap["state"] = KsApi.GraphAPI.ProjectState.live
     projectResultMap["currency"] = KsApi.GraphAPI.CurrencyCode.aud
+
+    projectResultMap["environmentalCommitments"] =
+      [
+        "commitmentCategory": GraphAPI.EnvironmentalCommitmentCategory.longLastingDesign,
+        "description": "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards.",
+        "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
+      ]
 
     resultMap["project"] = projectResultMap
 

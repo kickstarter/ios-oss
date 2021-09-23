@@ -1,0 +1,9 @@
+query FetchProjectFriendsById($projectId: Int!, $withStoredCards: Boolean!) {
+  project(pid: $projectId) {
+    friends {
+      nodes {
+        ...UserFragment
+      }
+    }
+  }
+}
