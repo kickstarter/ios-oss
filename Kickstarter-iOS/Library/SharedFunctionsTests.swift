@@ -330,7 +330,7 @@ internal final class SharedFunctionsTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertTrue(nativeRiskMessagingEnabled())
+      XCTAssertTrue(isNativeRiskMessagingControlEnabled())
     }
   }
 
@@ -342,7 +342,7 @@ internal final class SharedFunctionsTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertFalse(nativeRiskMessagingEnabled())
+      XCTAssertFalse(isNativeRiskMessagingControlEnabled())
     }
   }
 

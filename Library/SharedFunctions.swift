@@ -257,7 +257,7 @@ public func discoveryPageBackgroundColor() -> UIColor {
   }
 }
 
-public func nativeRiskMessagingEnabled() -> Bool {
+public func isNativeRiskMessagingControlEnabled() -> Bool {
   guard let variant = AppEnvironment.current.optimizelyClient?
     .variant(for: .nativeRiskMessaging)
   else { return true }

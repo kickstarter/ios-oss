@@ -361,7 +361,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // If the Optimizely risk messaging experiment is set to the control AND the Pay With Apple button is tapped
     // Or if the Optimizely risk messaging experiment is set to the variant and it is dismissed, this emits
     let applePayButtonTappedOrRiskMessagingModalDismissed = Signal.merge(
-      self.applePayButtonTappedSignal.filter(nativeRiskMessagingEnabled),
+      self.applePayButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled),
       self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isTrue).ignoreValues()
     )
 
@@ -459,7 +459,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // If the Optimizely risk messaging experiment is set to the control AND the Pledge button is tapped
     // Or if the Optimizely risk messaging experiment is set to the variant and it is dismissed, this emits
     let submitButtonTappedOrRiskMessagingModalDismissed = Signal.merge(
-      self.submitButtonTappedSignal.filter(nativeRiskMessagingEnabled),
+      self.submitButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled),
       self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isFalse).ignoreValues()
     )
 
@@ -468,7 +468,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.submitButtonTappedSignal.mapConst(false),
       self.applePayButtonTappedSignal.mapConst(true)
     )
-    .filter { _ in !nativeRiskMessagingEnabled() }
+    .filter { _ in !isNativeRiskMessagingControlEnabled() }
 
     // MARK: - Create Backing
 

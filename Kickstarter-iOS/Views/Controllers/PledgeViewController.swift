@@ -204,7 +204,7 @@ final class PledgeViewController: UIViewController,
       self.inputsSectionViews,
       self.summarySectionViews,
       self.paymentMethodsSectionViews,
-      nativeRiskMessagingEnabled() ? self.confirmationSectionViews : []
+      isNativeRiskMessagingControlEnabled() ? self.confirmationSectionViews : []
     ]
     .flatMap { $0 }
     .compact()
