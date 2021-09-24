@@ -27,7 +27,7 @@ extension Reward {
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
     let rewardHasNoAddons = rewardFragment.allowedAddons.nodes?.isEmpty ?? true
-    
+
     return Reward(
       backersCount: rewardFragment.backersCount,
       convertedMinimum: rewardFragment.convertedAmount.fragments.moneyFragment.amount
