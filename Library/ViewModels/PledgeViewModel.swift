@@ -54,6 +54,7 @@ public protocol PledgeViewModelInputs {
   func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeDisclaimerViewDidTapLearnMore()
+  func riskMessagingViewControllerDismissed(isApplePay: Bool)
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
@@ -77,7 +78,7 @@ public protocol PledgeViewModelOutputs {
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var expandableRewardsHeaderViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
-  var goToRiskMessagingModal: Signal<Void, Never> { get }
+  var goToRiskMessagingModal: Signal<Bool, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
@@ -357,6 +358,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // MARK: - Apple Pay
 
+    // If the Optimizely risk messaging experiment is set to the control AND the Pay With Apple button is tapped
+    // Or if the Optimizely risk messaging experiment is set to the variant and it is dismissed, this emits
+    let applePayButtonTappedOrRiskMessagingModalDismissed = Signal.merge(
+      self.applePayButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled),
+      self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isTrue).ignoreValues()
+    )
+
     let paymentAuthorizationData = Signal.combineLatest(
       project,
       baseReward,
@@ -378,11 +386,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let goToApplePayPaymentAuthorization = pledgeAmountIsValid
-      .takeWhen(self.applePayButtonTappedSignal)
+      .takeWhen(applePayButtonTappedOrRiskMessagingModalDismissed)
       .filter(isTrue)
 
     let showApplePayAlert = pledgeAmountIsValid
-      .takeWhen(self.applePayButtonTappedSignal)
+      .takeWhen(applePayButtonTappedOrRiskMessagingModalDismissed)
       .filter(isFalse)
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
@@ -448,11 +456,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // MARK: - Risk Messaging Modal
 
-    // This will emit when the pledge button is tapped AND the Optimizely experiment returned is the control
-    let submitButtonTapped = self.submitButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled)
+    // If the Optimizely risk messaging experiment is set to the control AND the Pledge button is tapped
+    // Or if the Optimizely risk messaging experiment is set to the variant and it is dismissed, this emits
+    let submitButtonTappedOrRiskMessagingModalDismissed = Signal.merge(
+      self.submitButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled),
+      self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isFalse).ignoreValues()
+    )
 
-    self.goToRiskMessagingModal = self.submitButtonTappedSignal
-      .filter { _ in !isNativeRiskMessagingControlEnabled() }
+    // The mapConst Bool value here represents whether this is Pay With Apple (true) or Pledge (false)
+    self.goToRiskMessagingModal = Signal.merge(
+      self.submitButtonTappedSignal.mapConst(false),
+      self.applePayButtonTappedSignal.mapConst(true)
+    )
+    .filter { _ in !isNativeRiskMessagingControlEnabled() }
 
     // MARK: - Create Backing
 
@@ -469,7 +485,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { $0 as CreateBackingData }
 
     let createButtonTapped = Signal.combineLatest(
-      submitButtonTapped,
+      submitButtonTappedOrRiskMessagingModalDismissed,
       context
     )
     .filter { _, context in context.isCreating }
@@ -527,7 +543,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .filter(isTrue)
 
     let updateButtonTapped = Signal.combineLatest(
-      submitButtonTapped,
+      submitButtonTappedOrRiskMessagingModalDismissed,
       context
     )
     .filter { _, context in context.isUpdating }
@@ -627,13 +643,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.viewDidLoadProperty.signal.mapConst(false)
         .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
-      submitButtonTapped.mapConst(false),
+      submitButtonTappedOrRiskMessagingModalDismissed.mapConst(false),
       createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
     )
     .skipRepeats()
 
     let isCreateOrUpdateBacking = Signal.merge(
-      submitButtonTapped.mapConst(true),
+      submitButtonTappedOrRiskMessagingModalDismissed.mapConst(true),
       Signal.merge(willUpdateApplePayBacking, willCreateApplePayBacking).mapConst(false)
     )
 
@@ -979,6 +995,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
   }
 
+  private let riskMessagingViewControllerDismissedProperty = MutableProperty<Bool?>(nil)
+  public func riskMessagingViewControllerDismissed(isApplePay: Bool) {
+    self.riskMessagingViewControllerDismissedProperty.value = isApplePay
+  }
+
   private let (scaFlowCompletedWithResultSignal, scaFlowCompletedWithResultObserver)
     = Signal<(StripePaymentHandlerActionStatusType, Error?), Never>.pipe()
   public func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?) {
@@ -1036,7 +1057,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let expandableRewardsHeaderViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
-  public let goToRiskMessagingModal: Signal<Void, Never>
+  public let goToRiskMessagingModal: Signal<Bool, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
