@@ -27,6 +27,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward?.limit, nil)
       XCTAssertEqual(v1Reward?.limitPerBacker, 1)
       XCTAssertEqual(v1Reward?.minimum, 25.0)
+      XCTAssertTrue(v1Reward!.hasAddOns)
       XCTAssertEqual(v1Reward?.remaining, nil)
       XCTAssertEqual(v1Reward?.rewardsItems[0].item.id, 1_170_799)
       XCTAssertEqual(v1Reward?.rewardsItems[0].item.name, "Soft-Cover Book (Signed)")
@@ -51,6 +52,18 @@ private func rewardDictionary() -> [String: Any] {
   let json = """
   {
     "__typename": "Reward",
+    "allowedAddons": {
+      "__typename": "RewardConnection",
+      "nodes": [{
+          "__typename": "Reward",
+          "id": "UmV3YXJkLTgzODEyNDk="
+        },
+        {
+          "__typename": "Reward",
+          "id": "UmV3YXJkLTgzODEyNTE="
+        }
+      ]
+    },
     "amount": {
       "__typename": "Money",
       "amount": "25.0",
@@ -72,8 +85,7 @@ private func rewardDictionary() -> [String: Any] {
     "isMaxPledge": false,
     "items": {
       "__typename": "RewardItemsConnection",
-      "nodes": [
-        {
+      "nodes": [{
           "__typename": "RewardItem",
           "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
           "name": "Soft-Cover Book (Signed)"
@@ -94,8 +106,7 @@ private func rewardDictionary() -> [String: Any] {
     },
     "remainingQuantity": null,
     "shippingPreference": "unrestricted",
-    "shippingRules": [
-      {
+    "shippingRules": [{
         "__typename": "ShippingRule",
         "cost": {
           "__typename": "Money",

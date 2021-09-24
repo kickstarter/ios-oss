@@ -253,6 +253,8 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     )
     XCTAssertNil(lastReward.endsAt)
     XCTAssertFalse(lastReward.hasAddOns)
+    XCTAssertTrue(project.rewards.first!.hasAddOns)
+    
     let date2: String? = "2021-11-01"
     let formattedDate2 = date2.flatMap(DateFormatter.isoDateFormatter.date(from:))
     let timeInterval2 = formattedDate2?.timeIntervalSince1970

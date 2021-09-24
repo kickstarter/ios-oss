@@ -25,6 +25,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing?.projectCountry, "US")
       XCTAssertEqual(backing?.projectId, 1_596_594_463)
       XCTAssertNotNil(backing?.reward)
+      XCTAssertTrue(backing!.reward!.hasAddOns)
       XCTAssertEqual(backing?.rewardId, decompose(id: "UmV3YXJkLTgxNzM5MDE="))
       XCTAssertEqual(backing?.sequence, 148)
       XCTAssertEqual(backing?.shippingAmount, 10.0)
@@ -67,6 +68,10 @@ private func backingDictionary() -> [String: Any] {
             "amount": "30.0",
             "currency": "USD",
             "symbol": "$"
+          },
+          "allowedAddons": {
+             "__typename": "RewardConnection",
+             "nodes": []
           },
           "backersCount": 2,
           "convertedAmount": {
@@ -144,6 +149,10 @@ private func backingDictionary() -> [String: Any] {
             "currency": "USD",
             "symbol": "$"
           },
+          "allowedAddons": {
+            "__typename": "RewardConnection",
+            "nodes": []
+          },
           "backersCount": 23,
           "convertedAmount": {
             "__typename": "Money",
@@ -214,6 +223,10 @@ private func backingDictionary() -> [String: Any] {
             "currency": "USD",
             "symbol": "$"
           },
+          "allowedAddons": {
+            "__typename": "RewardConnection",
+            "nodes": []
+          },
           "backersCount": 23,
           "convertedAmount": {
             "__typename": "Money",
@@ -283,6 +296,10 @@ private func backingDictionary() -> [String: Any] {
             "amount": "10.0",
             "currency": "USD",
             "symbol": "$"
+          },
+          "allowedAddons": {
+            "__typename": "RewardConnection",
+            "nodes": []
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -683,6 +700,22 @@ private func backingDictionary() -> [String: Any] {
         "amount": "25.0",
         "currency": "USD",
         "symbol": "$"
+      },
+      "allowedAddons": {
+        "__typename": "RewardConnection",
+        "nodes": [{
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNDk="
+          },
+          {
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNTE="
+          },
+          {
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNTE="
+          }
+        ]
       },
       "backersCount": 13,
       "convertedAmount": {
