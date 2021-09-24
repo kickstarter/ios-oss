@@ -253,7 +253,14 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     )
     XCTAssertNil(lastReward.endsAt)
     XCTAssertFalse(lastReward.hasAddOns)
-    XCTAssertTrue(project.rewards.first!.hasAddOns)
+
+    guard let firstReward = project.rewards.first else {
+      XCTFail("project should have at least one reward.")
+
+      return
+    }
+
+    XCTAssertTrue(firstReward.hasAddOns)
 
     let date2: String? = "2021-11-01"
     let formattedDate2 = date2.flatMap(DateFormatter.isoDateFormatter.date(from:))
