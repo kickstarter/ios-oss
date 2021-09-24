@@ -1075,6 +1075,42 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("rewards", segmentClientProperties?["context_page"] as? String)
   }
 
+  func testTrackPledgeConfirmButtonClicked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    ksrAnalytics.trackPledgeConfirmButtonClicked(
+      project: .template,
+      reward: reward,
+      typeContext: .creditCard,
+      checkoutData: .template,
+      refTag: nil
+    )
+
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    self.assertProjectProperties(segmentClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeConfirm.trackingString,
+      segmentClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.creditCard.trackingString,
+      segmentClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      segmentClientProps?["context_page"] as? String
+    )
+  }
+
   func testTrackPledgeSubmitButtonClicked_Pledge() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
@@ -1732,6 +1768,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testCTAContextTrackingStrings() {
     XCTAssertEqual(KSRAnalytics.CTAContext.addOnsContinue.trackingString, "add_ons_continue")
+    XCTAssertEqual(KSRAnalytics.CTAContext.pledgeConfirm.trackingString, "pledge_confirm")
     XCTAssertEqual(KSRAnalytics.CTAContext.pledgeInitiate.trackingString, "pledge_initiate")
     XCTAssertEqual(KSRAnalytics.CTAContext.pledgeSubmit.trackingString, "pledge_submit")
     XCTAssertEqual(KSRAnalytics.CTAContext.project.trackingString, "project")
