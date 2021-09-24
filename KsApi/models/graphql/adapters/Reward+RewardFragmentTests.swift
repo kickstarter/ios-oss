@@ -12,35 +12,39 @@ final class Reward_RewardFragmentTests: XCTestCase {
       dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
       dateFormatter.dateFormat = "yyyy-MM-dd"
 
-      let v1Reward = Reward.reward(
+      guard let v1Reward = Reward.reward(
         from: fragment,
         dateFormatter: dateFormatter
-      )
+      ) else {
+        XCTFail("reward should be created from fragment")
 
-      XCTAssertNotNil(v1Reward)
-      XCTAssertEqual(v1Reward?.backersCount, 13)
-      XCTAssertEqual(v1Reward?.convertedMinimum, 31.0)
-      XCTAssertEqual(v1Reward?.description, "Description")
-      XCTAssertEqual(v1Reward?.endsAt, nil)
-      XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_638_316_800.0)
-      XCTAssertEqual(v1Reward?.id, 8_173_901)
-      XCTAssertEqual(v1Reward?.limit, nil)
-      XCTAssertEqual(v1Reward?.limitPerBacker, 1)
-      XCTAssertEqual(v1Reward?.minimum, 25.0)
-      XCTAssertEqual(v1Reward?.remaining, nil)
-      XCTAssertEqual(v1Reward?.rewardsItems[0].item.id, 1_170_799)
-      XCTAssertEqual(v1Reward?.rewardsItems[0].item.name, "Soft-Cover Book (Signed)")
-      XCTAssertEqual(v1Reward?.rewardsItems[1].item.id, 1_170_813)
-      XCTAssertEqual(v1Reward?.rewardsItems[1].item.name, "Custom Bookmark")
+        return
+      }
 
-      XCTAssertEqual(v1Reward?.shipping.enabled, true)
-      XCTAssertEqual(v1Reward?.shipping.preference, .unrestricted)
-      XCTAssertEqual(v1Reward?.shippingRules?.count, 2)
-      XCTAssertEqual(v1Reward?.startsAt, nil)
-      XCTAssertEqual(v1Reward?.title, "Soft Cover Book (Signed)")
+      XCTAssertEqual(v1Reward.backersCount, 13)
+      XCTAssertEqual(v1Reward.convertedMinimum, 31.0)
+      XCTAssertEqual(v1Reward.description, "Description")
+      XCTAssertEqual(v1Reward.endsAt, nil)
+      XCTAssertEqual(v1Reward.estimatedDeliveryOn, 1_638_316_800.0)
+      XCTAssertEqual(v1Reward.id, 8_173_901)
+      XCTAssertEqual(v1Reward.limit, nil)
+      XCTAssertEqual(v1Reward.limitPerBacker, 1)
+      XCTAssertEqual(v1Reward.minimum, 25.0)
+      XCTAssertTrue(v1Reward.hasAddOns)
+      XCTAssertEqual(v1Reward.remaining, nil)
+      XCTAssertEqual(v1Reward.rewardsItems[0].item.id, 1_170_799)
+      XCTAssertEqual(v1Reward.rewardsItems[0].item.name, "Soft-Cover Book (Signed)")
+      XCTAssertEqual(v1Reward.rewardsItems[1].item.id, 1_170_813)
+      XCTAssertEqual(v1Reward.rewardsItems[1].item.name, "Custom Bookmark")
 
-      XCTAssertEqual(v1Reward?.isLimitedQuantity, false)
-      XCTAssertEqual(v1Reward?.isLimitedTime, false)
+      XCTAssertEqual(v1Reward.shipping.enabled, true)
+      XCTAssertEqual(v1Reward.shipping.preference, .unrestricted)
+      XCTAssertEqual(v1Reward.shippingRules?.count, 2)
+      XCTAssertEqual(v1Reward.startsAt, nil)
+      XCTAssertEqual(v1Reward.title, "Soft Cover Book (Signed)")
+
+      XCTAssertEqual(v1Reward.isLimitedQuantity, false)
+      XCTAssertEqual(v1Reward.isLimitedTime, false)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -51,6 +55,18 @@ private func rewardDictionary() -> [String: Any] {
   let json = """
   {
     "__typename": "Reward",
+    "allowedAddons": {
+      "__typename": "RewardConnection",
+      "nodes": [{
+          "__typename": "Reward",
+          "id": "UmV3YXJkLTgzODEyNDk="
+        },
+        {
+          "__typename": "Reward",
+          "id": "UmV3YXJkLTgzODEyNTE="
+        }
+      ]
+    },
     "amount": {
       "__typename": "Money",
       "amount": "25.0",
@@ -72,8 +88,7 @@ private func rewardDictionary() -> [String: Any] {
     "isMaxPledge": false,
     "items": {
       "__typename": "RewardItemsConnection",
-      "nodes": [
-        {
+      "nodes": [{
           "__typename": "RewardItem",
           "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
           "name": "Soft-Cover Book (Signed)"
@@ -94,8 +109,7 @@ private func rewardDictionary() -> [String: Any] {
     },
     "remainingQuantity": null,
     "shippingPreference": "unrestricted",
-    "shippingRules": [
-      {
+    "shippingRules": [{
         "__typename": "ShippingRule",
         "cost": {
           "__typename": "Money",

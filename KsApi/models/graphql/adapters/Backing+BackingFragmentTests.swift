@@ -9,26 +9,39 @@ final class Backing_BackingFragmentTests: XCTestCase {
       let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
-      let backing = Backing.backing(from: fragment)
+      guard let backing = Backing.backing(from: fragment) else {
+        XCTFail("Backing should created from fragment")
+
+        return
+      }
+
       XCTAssertNotNil(backing)
-      XCTAssertEqual(backing?.amount, 90.0)
-      XCTAssertNotNil(backing?.backer)
-      XCTAssertNotNil(backing?.backerId)
-      XCTAssertEqual(backing?.backerCompleted, false)
-      XCTAssertEqual(backing?.bonusAmount, 5.0)
-      XCTAssertEqual(backing?.cancelable, true)
-      XCTAssertEqual(backing?.id, decompose(id: "QmFja2luZy0xNDQ5NTI3MTc="))
-      XCTAssertEqual(backing?.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
-      XCTAssertEqual(backing?.locationName, "Canada")
-      XCTAssertEqual(backing?.paymentSource?.type, .visa)
-      XCTAssertEqual(backing?.pledgedAt, 1_625_613_342.0)
-      XCTAssertEqual(backing?.projectCountry, "US")
-      XCTAssertEqual(backing?.projectId, 1_596_594_463)
-      XCTAssertNotNil(backing?.reward)
-      XCTAssertEqual(backing?.rewardId, decompose(id: "UmV3YXJkLTgxNzM5MDE="))
-      XCTAssertEqual(backing?.sequence, 148)
-      XCTAssertEqual(backing?.shippingAmount, 10.0)
-      XCTAssertEqual(backing?.status, .pledged)
+      XCTAssertEqual(backing.amount, 90.0)
+      XCTAssertNotNil(backing.backer)
+      XCTAssertNotNil(backing.backerId)
+      XCTAssertEqual(backing.backerCompleted, false)
+      XCTAssertEqual(backing.bonusAmount, 5.0)
+      XCTAssertEqual(backing.cancelable, true)
+      XCTAssertEqual(backing.id, decompose(id: "QmFja2luZy0xNDQ5NTI3MTc="))
+      XCTAssertEqual(backing.locationId, decompose(id: "TG9jYXRpb24tMjM0MjQ3NzU="))
+      XCTAssertEqual(backing.locationName, "Canada")
+      XCTAssertEqual(backing.paymentSource?.type, .visa)
+      XCTAssertEqual(backing.pledgedAt, 1_625_613_342.0)
+      XCTAssertEqual(backing.projectCountry, "US")
+      XCTAssertEqual(backing.projectId, 1_596_594_463)
+      XCTAssertNotNil(backing.reward)
+      XCTAssertEqual(backing.rewardId, decompose(id: "UmV3YXJkLTgxNzM5MDE="))
+      XCTAssertEqual(backing.sequence, 148)
+      XCTAssertEqual(backing.shippingAmount, 10.0)
+      XCTAssertEqual(backing.status, .pledged)
+
+      guard let reward = backing.reward else {
+        XCTFail("reward should exist")
+
+        return
+      }
+
+      XCTAssertTrue(reward.hasAddOns)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -67,6 +80,10 @@ private func backingDictionary() -> [String: Any] {
             "amount": "30.0",
             "currency": "USD",
             "symbol": "$"
+          },
+          "allowedAddons": {
+             "__typename": "RewardConnection",
+             "nodes": []
           },
           "backersCount": 2,
           "convertedAmount": {
@@ -144,6 +161,10 @@ private func backingDictionary() -> [String: Any] {
             "currency": "USD",
             "symbol": "$"
           },
+          "allowedAddons": {
+            "__typename": "RewardConnection",
+            "nodes": []
+          },
           "backersCount": 23,
           "convertedAmount": {
             "__typename": "Money",
@@ -214,6 +235,10 @@ private func backingDictionary() -> [String: Any] {
             "currency": "USD",
             "symbol": "$"
           },
+          "allowedAddons": {
+            "__typename": "RewardConnection",
+            "nodes": []
+          },
           "backersCount": 23,
           "convertedAmount": {
             "__typename": "Money",
@@ -283,6 +308,10 @@ private func backingDictionary() -> [String: Any] {
             "amount": "10.0",
             "currency": "USD",
             "symbol": "$"
+          },
+          "allowedAddons": {
+            "__typename": "RewardConnection",
+            "nodes": []
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -683,6 +712,22 @@ private func backingDictionary() -> [String: Any] {
         "amount": "25.0",
         "currency": "USD",
         "symbol": "$"
+      },
+      "allowedAddons": {
+        "__typename": "RewardConnection",
+        "nodes": [{
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNDk="
+          },
+          {
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNTE="
+          },
+          {
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNTE="
+          }
+        ]
       },
       "backersCount": 13,
       "convertedAmount": {

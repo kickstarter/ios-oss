@@ -32,6 +32,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":68,
                    "convertedAmount":{
                       "amount":"3.0",
@@ -107,6 +111,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":17,
                    "convertedAmount":{
                       "amount":"8.0",
@@ -181,6 +189,10 @@ public enum FetchProjectQueryTemplate {
                       "amount":"24.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
                    },
                    "backersCount":6,
                    "convertedAmount":{
@@ -264,6 +276,16 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": [{
+                         "id": "UmV3YXJkLTgzODEyNDk="
+                       },
+                       {
+                         "id": "UmV3YXJkLTgzODEyNTE="
+                       }
+                     ]
+                   },
                    "backersCount":3,
                    "convertedAmount":{
                       "amount":"8.0",
@@ -304,6 +326,13 @@ public enum FetchProjectQueryTemplate {
                       "amount":"10.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": [{
+                         "id": "UmV3YXJkLTgzODEyNDk="
+                       }
+                     ]
                    },
                    "backersCount":6,
                    "convertedAmount":{
@@ -395,6 +424,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":10,
                    "convertedAmount":{
                       "amount":"24.0",
@@ -469,6 +502,19 @@ public enum FetchProjectQueryTemplate {
                       "amount":"24.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": [{
+                         "id": "UmV3YXJkLTgzODEyNDk="
+                       },
+                       {
+                         "id": "UmV3YXJkLTgzODEyNTE="
+                       },
+                       {
+                         "id": "UmV3YXJkLTgzODEyNTE="
+                       }
+                     ]
                    },
                    "backersCount":56,
                    "convertedAmount":{
@@ -560,6 +606,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":10,
                    "convertedAmount":{
                       "amount":"48.0",
@@ -635,6 +685,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":21,
                    "convertedAmount":{
                       "amount":"66.0",
@@ -709,6 +763,10 @@ public enum FetchProjectQueryTemplate {
                       "amount":"50.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
                    },
                    "backersCount":9,
                    "convertedAmount":{
@@ -789,6 +847,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":10,
                    "convertedAmount":{
                       "amount":"75.0",
@@ -867,6 +929,10 @@ public enum FetchProjectQueryTemplate {
                       "amount":"50.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
                    },
                    "backersCount":3,
                    "convertedAmount":{
@@ -947,6 +1013,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":4,
                    "convertedAmount":{
                       "amount":"150.0",
@@ -1025,6 +1095,10 @@ public enum FetchProjectQueryTemplate {
                       "amount":"100.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
                    },
                    "backersCount":6,
                    "convertedAmount":{
@@ -1105,6 +1179,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":3,
                    "convertedAmount":{
                       "amount":"374.0",
@@ -1184,6 +1262,10 @@ public enum FetchProjectQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
+                   },
                    "backersCount":1,
                    "convertedAmount":{
                       "amount":"374.0",
@@ -1262,6 +1344,10 @@ public enum FetchProjectQueryTemplate {
                       "amount":"400.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "allowedAddons": {
+                     "__typename": "RewardConnection",
+                     "nodes": []
                    },
                    "backersCount":1,
                    "convertedAmount":{
