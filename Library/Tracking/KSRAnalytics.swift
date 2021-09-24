@@ -147,6 +147,7 @@ public final class KSRAnalytics {
     case logInInitiate
     case logInOrSignUp
     case logInSubmit
+    case pledgeConfirm
     case pledgeInitiate
     case pledgeSubmit
     case project
@@ -166,6 +167,7 @@ public final class KSRAnalytics {
       case .discoverSort: return "discover_sort"
       case .forgotPassword: return "forgot_password"
       case .pledgeInitiate: return "pledge_initiate"
+      case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
       case .project: return "project"
       case .logInInitiate: return "log_in_initiate"
@@ -919,6 +921,40 @@ public final class KSRAnalytics {
       // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(
         ctaContext: .pledgeSubmit,
+        page: .checkout,
+        typeContext: typeContext
+      ))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
+  /* Call when the Confirm button on the Risk Messaging modal is clicked
+
+   parameters:
+   - project: the project being pledged to
+   - reward: the chosen reward
+   - typeContext: The context of the pledge submit button for a project.
+   - checkoutData: all the checkout data associated with the pledge
+   - refTag: the associated RefTag for the pledge
+
+   */
+
+  public func trackPledgeConfirmButtonClicked(
+    project: Project,
+    reward: Reward,
+    typeContext: TypeContext,
+    checkoutData: CheckoutPropertiesData,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .pledgeConfirm,
         page: .checkout,
         typeContext: typeContext
       ))

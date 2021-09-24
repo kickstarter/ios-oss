@@ -888,8 +888,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       allRewardsShippingTotal
     )
 
+    // Pledge pledge_submit event
     pledgeSubmitEventsSignal
-      .takeWhen(createButtonTapped)
+      .takeWhen(self.submitButtonTappedSignal)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
         let checkoutData = checkoutProperties(
           from: data.project,
@@ -915,8 +916,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
+    // Pay With Apple pledge_submit event
     pledgeSubmitEventsSignal
-      .takeWhen(goToApplePayPaymentAuthorization)
+      .takeWhen(self.applePayButtonTappedSignal)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
         let checkoutData = checkoutProperties(
           from: data.project,
@@ -937,6 +939,34 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           project: project,
           reward: reward,
           typeContext: .applePay,
+          checkoutData: checkoutData,
+          refTag: refTag
+        )
+      }
+
+    // Risk Messaging Modal pledge_confirm event
+    pledgeSubmitEventsSignal
+      .takeWhen(self.riskMessagingViewControllerDismissedProperty.signal)
+      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
+        let checkoutData = checkoutProperties(
+          from: data.project,
+          baseReward: baseReward,
+          addOnRewards: data.rewards,
+          selectedQuantities: data.selectedQuantities,
+          additionalPledgeAmount: additionalPledgeAmount,
+          pledgeTotal: data.pledgeTotal,
+          shippingTotal: allRewardsShippingTotal,
+          checkoutId: nil,
+          isApplePay: false
+        )
+
+        return (data.project, baseReward, data.refTag, checkoutData)
+      }
+      .observeValues { project, reward, refTag, checkoutData in
+        AppEnvironment.current.ksrAnalytics.trackPledgeConfirmButtonClicked(
+          project: project,
+          reward: reward,
+          typeContext: .creditCard,
           checkoutData: checkoutData,
           refTag: refTag
         )

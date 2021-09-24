@@ -1728,7 +1728,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -1826,7 +1826,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -1916,7 +1916,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2018,7 +2018,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2062,7 +2062,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2118,7 +2118,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2348,7 +2348,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -5424,7 +5424,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
@@ -5465,7 +5465,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Page Viewed"],
+      ["Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
   }
@@ -5507,7 +5507,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Page Viewed"],
+      ["Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
   }
@@ -5682,6 +5682,90 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
+  func testTrackingEvents_PledgeConfirmButtonClicked() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .discovery,
+      context: .pledge
+    )
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (
+        amount: 40.0,
+        min: 10.0,
+        max: 100.0,
+        isValid: true
+      ))
+      self.vm.inputs.shippingRuleSelected(.template)
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.vm.inputs.submitButtonTapped()
+
+      XCTAssertEqual(
+        ["Page Viewed", "CTA Clicked"],
+        self.segmentTrackingClient.events
+      )
+
+      self.vm.inputs.riskMessagingViewControllerDismissed(isApplePay: false)
+
+      XCTAssertEqual(
+        ["Page Viewed", "CTA Clicked", "CTA Clicked"],
+        self.segmentTrackingClient.events
+      )
+
+      let segmentClientProps = self.segmentTrackingClient.properties.last
+
+      // Checkout properties
+
+      XCTAssertEqual("credit_card", segmentClientProps?["checkout_payment_type"] as? String)
+      XCTAssertEqual("1", segmentClientProps?["checkout_reward_id"] as? String)
+      XCTAssertEqual(55.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
+      XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
+      XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
+      XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+      XCTAssertEqual(
+        "2017-10-01T22:35:15Z",
+        segmentClientProps?["checkout_reward_estimated_delivery_on"] as? String
+      )
+      XCTAssertEqual("My Reward", segmentClientProps?["checkout_reward_title"] as? String)
+
+      // Project properties
+      XCTAssertEqual("1", segmentClientProps?["project_pid"] as? String)
+
+      XCTAssertEqual("discovery", segmentClientProps?["session_ref_tag"] as? String)
+
+      // Context properties
+
+      XCTAssertEqual(
+        KSRAnalytics.CTAContext.pledgeConfirm.trackingString,
+        segmentClientProps?["context_cta"] as? String
+      )
+
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        segmentClientProps?["context_type"] as? String
+      )
+    }
+  }
+
   func testTrackingEvents_UpdatePledgeButtonSubmit_ContextIsFixPayment() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -5714,7 +5798,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.submitButtonTapped()
 
       XCTAssertEqual(
-        [],
+        ["CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
