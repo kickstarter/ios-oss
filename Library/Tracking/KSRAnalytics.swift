@@ -952,7 +952,6 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-      // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(
         ctaContext: .pledgeConfirm,
         page: .checkout,
