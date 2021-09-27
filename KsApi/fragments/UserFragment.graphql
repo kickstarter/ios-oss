@@ -1,16 +1,60 @@
 fragment UserFragment on User {
+  backings {
+    nodes {
+      errorReason
+    }
+  }
+  backingsCount
   chosenCurrency
+  createdProjects {
+    totalCount
+  }
   email
   hasPassword
+  hasUnreadMessages
+  hasUnseenActivity
   id
   imageUrl: imageUrl(blur: false, width: 1024)
   isAppleConnected
   isCreator
   isDeliverable
   isEmailVerified
+  isFacebookConnected
+  isKsrAdmin
+  isFollowing
+  isSocializing
+  location {
+    ...LocationFragment
+  }
   name
-  uid
+  needsFreshFacebookToken
+  newsletterSubscriptions {
+    artsCultureNewsletter
+    filmNewsletter
+    musicNewsletter
+    inventNewsletter
+    gamesNewsletter
+    publishingNewsletter
+    promoNewsletter
+    weeklyNewsletter
+    happeningNewsletter
+    alumniNewsletter
+  }
+  notifications {
+    email
+    mobile
+    topic
+  }
+  optedOutOfRecommendations
+  showPublicProfile
+  savedProjects {
+    totalCount
+  }
   storedCards @include(if: $withStoredCards) {
     ...UserStoredCardsFragment
   }
+  surveyResponses(answered: false) {
+    totalCount
+  }
+  uid
 }

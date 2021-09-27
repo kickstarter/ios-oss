@@ -7,6 +7,7 @@ final class Category_CategoryFragmentTests: XCTestCase {
     let categoryFragment = GraphAPI.CategoryFragment(
       id: "Q2F0ZWdvcnktNDc=",
       name: "My Category",
+      analyticsName: "Photobooks",
       parentCategory: .init(
         id: "Q2F0ZWdvcnktMTg=",
         name: "My Parent Category"
@@ -17,6 +18,7 @@ final class Category_CategoryFragmentTests: XCTestCase {
 
     XCTAssertEqual(category?.id, 47)
     XCTAssertEqual(category?.name, "My Category")
+    XCTAssertEqual(category?.analyticsName, "Photobooks")
     XCTAssertEqual(category?.parentId, 18)
     XCTAssertEqual(category?.parentName, "My Parent Category")
   }

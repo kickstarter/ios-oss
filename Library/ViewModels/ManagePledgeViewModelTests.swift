@@ -81,7 +81,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: .template
+      fetchProjectResult: .success(.template)
     )
 
     withEnvironment(apiService: mockService) {
@@ -107,7 +107,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: finishedProject
+      fetchProjectResult: .success(finishedProject)
     )
 
     withEnvironment(apiService: mockService) {
@@ -129,7 +129,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -168,7 +168,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     let pledgeViewSummaryData = ManagePledgeSummaryViewData(
@@ -217,7 +217,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -243,7 +243,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     let expectedData = ManageViewPledgeRewardReceivedViewData(
@@ -270,7 +270,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -303,7 +303,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -326,7 +326,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -352,7 +352,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -380,7 +380,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -407,7 +407,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -434,7 +434,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: .template
+      fetchProjectResult: .success(.template)
     )
 
     withEnvironment(apiService: mockService) {
@@ -471,7 +471,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -503,7 +503,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -526,7 +526,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testGoToRewards() {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: .template
+      fetchProjectResult: .success(.template)
     )
 
     withEnvironment(apiService: mockService) {
@@ -559,7 +559,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -617,7 +617,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -661,7 +661,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -690,7 +690,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -708,7 +708,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_CancellingPledge() {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: .template
+      fetchProjectResult: .success(.template)
     )
 
     withEnvironment(apiService: mockService) {
@@ -729,7 +729,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_UpdatingPledge() {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: .template
+      fetchProjectResult: .success(.template)
     )
 
     withEnvironment(apiService: mockService) {
@@ -823,7 +823,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService1 = MockService(
       fetchManagePledgeViewBackingResult: .success(initialBackingEnvelope),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     let expectedRewardReceivedData = ManageViewPledgeRewardReceivedViewData(
@@ -858,7 +858,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService2 = MockService(
       fetchManagePledgeViewBackingResult: .success(updatedBackingEnvelope),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService2) {
@@ -900,7 +900,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -919,7 +919,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   func testRefreshing_ProjectErrorThenSuccess() {
     let mockService = MockService(
-      fetchProjectError: .couldNotParseJSON
+      fetchProjectResult: .failure(.couldNotParseJSON)
     )
 
     withEnvironment(apiService: mockService) {
@@ -962,7 +962,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       let successMockService = MockService(
         fetchManagePledgeViewBackingResult: .success(env),
-        fetchProjectResponse: project
+        fetchProjectResult: .success(project)
       )
 
       withEnvironment(apiService: successMockService) {
@@ -1009,7 +1009,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .failure(.couldNotParseJSON),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -1059,7 +1059,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       let successMockService = MockService(
         fetchManagePledgeViewBackingResult: .success(env),
-        fetchProjectResponse: .template
+        fetchProjectResult: .success(project)
       )
 
       withEnvironment(apiService: successMockService) {
@@ -1109,7 +1109,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -1222,7 +1222,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       let failureMockService = MockService(
         fetchManagePledgeViewBackingResult: .failure(.couldNotParseJSON),
-        fetchProjectResponse: project
+        fetchProjectResult: .success(project)
       )
 
       withEnvironment(apiService: failureMockService) {
@@ -1285,7 +1285,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -1360,7 +1360,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService) {
@@ -1394,7 +1394,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1419,7 +1419,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1444,7 +1444,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1483,7 +1483,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1509,7 +1509,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1534,7 +1534,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -1559,7 +1559,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user) {

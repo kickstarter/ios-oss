@@ -6,6 +6,11 @@ fragment RewardFragment on Reward {
   convertedAmount {
     ...MoneyFragment
   }
+  allowedAddons {
+    nodes {
+      id
+    }
+  }
   description
   displayName
   endsAt

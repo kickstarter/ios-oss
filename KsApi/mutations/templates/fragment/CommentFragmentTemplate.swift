@@ -23,11 +23,64 @@ public enum CommentFragmentTemplate {
       "author": {
         "__typename": "User",
         "chosenCurrency": "USD",
+        "backings":{
+          "__typename": "UserBackingsConnection",
+          "nodes":[
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":"Something went wrong"
+              },
+              {
+                "__typename": "Backing",
+                "errorReason":null
+              }
+          ]
+        },
+        "backingsCount": 3,
+        "createdProjects": {
+          "__typename": "UserCreatedProjectsConnection",
+          "totalCount": 16
+        },
+        "membershipProjects":{
+           "__typename":"MembershipProjectsConnection",
+           "totalCount":10
+        },
+        "savedProjects":{
+           "__typename":"UserSavedProjectsConnection",
+           "totalCount":11
+        },
+        "surveyResponses": {
+           "__typename":"SurveyResponsesConnection",
+           "totalCount": 2
+        },
+        "optedOutOfRecommendations":true,
         "email": "mubarak@kickstarter.com",
         "isAppleConnected": true,
         "isEmailVerified": false,
         "isDeliverable": true,
+        "isFacebookConnected": true,
+        "isKsrAdmin": false,
+        "isFollowing": true,
+        "isSocializing": false,
         "hasPassword": false,
+        "needsFreshFacebookToken": true,
+        "newsletterSubscriptions": null,
+        "notifications": null,
+        "hasUnreadMessages": true,
+        "hasUnseenActivity": true,
+        "showPublicProfile": true,
+        "location": {
+          "__typename": "Location",
+          "country": "US",
+          "countryName": "United States",
+          "displayableName": "Las Vegas, NV",
+          "id": "TG9jYXRpb24tMjQzNjcwNA==",
+          "name": "Las Vegas"
+        },
         "storedCards": {
           "__typename": "UserCreditCardTypeConnection",
           "nodes": [

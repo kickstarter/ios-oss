@@ -2,11 +2,13 @@ fragment ProjectFragment on Project {
   actions {
     displayConvertAmount
   }
+  availableCardTypes
   backersCount
   category {
     ...CategoryFragment
   }
-  collaboratorPermissions
+  canComment
+  commentsCount(withReplies: true)
   country {
     ...CountryFragment
   }
@@ -16,13 +18,21 @@ fragment ProjectFragment on Project {
   currency
   deadlineAt
   description
-  finalCollectionDate
-  fxRate
-  friends {
+  environmentalCommitments {
+    commitmentCategory
+    description
+    id
+  }
+  faqs {
     nodes {
-      ...UserFragment
+      question
+      answer
+      id
+      createdAt
     }
   }
+  finalCollectionDate
+  fxRate
   goal {
     ...MoneyFragment
   }
@@ -31,7 +41,9 @@ fragment ProjectFragment on Project {
     url(width: 1024)
   }
   isProjectWeLove
+  isProjectOfTheDay
   isWatched
+  isLaunched
   launchedAt
   location {
     ...LocationFragment
@@ -41,9 +53,29 @@ fragment ProjectFragment on Project {
   pledged {
     ...MoneyFragment
   }
+  posts {
+    totalCount
+  }
+  prelaunchActivated
+  risks
   slug
   state
   stateChangedAt
+  story
+  tags(scope: DISCOVER) {
+    name
+  }
   url
   usdExchangeRate
+  video {
+    id
+    videoSources {
+      high {
+        src
+      }
+      hls {
+        src
+      }
+    }
+  }
 }

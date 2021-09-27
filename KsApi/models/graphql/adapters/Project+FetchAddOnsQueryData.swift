@@ -29,7 +29,7 @@ extension Project {
 
     guard
       let fragment = data.project?.fragments.projectFragment,
-      let project = Project.project(from: fragment, addOns: addOns)
+      let project = Project.project(from: fragment, addOns: addOns, currentUserChosenCurrency: nil)
     else { return nil }
 
     return project

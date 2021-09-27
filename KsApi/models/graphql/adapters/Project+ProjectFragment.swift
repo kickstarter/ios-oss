@@ -8,7 +8,8 @@ extension Project {
     from projectFragment: GraphAPI.ProjectFragment,
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
-    backing: Backing? = nil
+    backing: Backing? = nil,
+    currentUserChosenCurrency: String?
   ) -> Project? {
     guard
       let country = Country.country(from: projectFragment.country.fragments.countryFragment),
@@ -25,35 +26,65 @@ extension Project {
     else { return nil }
 
     let urls = Project.UrlsEnvelope(
-      web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: nil)
+      web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: projectFragment.url + "/posts")
     )
 
-    let friends = projectFragment.friends?.nodes?
-      .compactMap { $0?.fragments.userFragment }
-      .compactMap { User.user(from: $0) } ?? []
+    let availableCardTypes = projectFragment.availableCardTypes.compactMap { $0.rawValue }
+
+    let displayPrelaunch = !projectFragment.isLaunched
+
+    let discoverTags: [String] = projectFragment.tags
+      .compactMap { tag -> String? in
+        if let tagName = tag?.name {
+          return tagName
+        }
+
+        return nil
+      }
+    /**
+     NOTE: Project friends fetched by
+     `fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>`
+     */
+
+    /**
+     NOTE: `Project.generatedSlug`currently returns an internal server error for user that isn't logged in. Seeing as we need the project object even if the user isn't logged in, we can still use `Project.slug` and parse the string below to get the same result until the `Project.generatedSlug` is fixed.
+     */
+
+    let generatedSlug = projectFragment.slug
+      .components(separatedBy: "/")
+      .filter { $0 != "" }
+      .last
+
+    let extendedProjectProperties = extendedProject(from: projectFragment)
 
     return Project(
+      availableCardTypes: availableCardTypes,
       blurb: projectFragment.description,
       category: category,
       country: country,
       creator: creator,
+      extendedProjectProperties: extendedProjectProperties,
       memberData: memberData,
       dates: dates,
+      displayPrelaunch: displayPrelaunch,
       id: projectFragment.pid,
       location: location,
       name: projectFragment.name,
       personalization: projectPersonalization(
         isStarred: projectFragment.isWatched,
         backing: backing,
-        friends: friends
+        friends: []
       ),
       photo: photo,
+      prelaunchActivated: projectFragment.prelaunchActivated,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
-      slug: projectFragment.slug,
+      slug: generatedSlug ?? projectFragment.slug,
       staffPick: projectFragment.isProjectWeLove,
       state: state,
-      stats: projectStats(from: projectFragment),
-      urls: urls
+      stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
+      tags: discoverTags,
+      urls: urls,
+      video: projectVideo(from: projectFragment)
     )
   }
 }
@@ -85,9 +116,17 @@ private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Pro
     let stateChangedAt = TimeInterval(projectFragment.stateChangedAt)
   else { return nil }
 
+  let startOfToday = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
+
+  var featuredAtDate: TimeInterval?
+
+  if let projectOfTheDay = projectFragment.isProjectOfTheDay {
+    featuredAtDate = projectOfTheDay ? startOfToday : nil
+  }
+
   return Project.Dates(
     deadline: deadline,
-    featuredAt: nil,
+    featuredAt: featuredAtDate,
     finalCollectionDate: finalCollectionDateTimeInterval(from: projectFragment.finalCollectionDate),
     launchedAt: launchedAt,
     stateChangedAt: stateChangedAt
@@ -107,12 +146,10 @@ private func finalCollectionDateTimeInterval(
  Returns a minimal `Project.MemberData` from a `ProjectFragment`
  */
 private func projectMemberData(from projectFragment: GraphAPI.ProjectFragment) -> Project.MemberData? {
-  let collaboratorPermissions = projectFragment.collaboratorPermissions.compactMap { permission in
-    Project.MemberData.Permission(rawValue: permission.rawValue.lowercased())
-  }
+  let collaboratorPermissions = Project.MemberData(permissions: projectFragment.canComment ? [.comment] : [])
 
-  // TODO: - Once we are receiving the other three properties of MemberData back from a Project on Graph, extend this functionality.
-  return Project.MemberData(permissions: collaboratorPermissions)
+  // TODO: Also used by `DashboardActionCellViewModel` and `MessagesViewModel` - but they are not using the GQL `fetchProject(param:)` call yet.
+  return collaboratorPermissions
 }
 
 /**
@@ -136,17 +173,144 @@ private func projectState(from projectState: GraphAPI.ProjectState) -> Project.S
 /**
  Returns a minimal `Project.Stats` from a `ProjectFragment`
  */
-private func projectStats(from projectFragment: GraphAPI.ProjectFragment) -> Project.Stats {
+private func projectStats(from projectFragment: GraphAPI.ProjectFragment,
+                          currentUserChosenCurrency: String?) -> Project.Stats {
+  let pledgedRawData = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init)
+  let pledgedRawValue = projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Float.init) ?? 0
+  let pledgedValue = pledgedRawData != nil ? Int(pledgedRawValue) : 0
+  let fxRateValue = Float(projectFragment.fxRate)
+  let convertedPledgedAmountValue = pledgedRawData != nil ? pledgedRawValue * fxRateValue : nil
+  let staticUSDRateValue = Float(projectFragment.usdExchangeRate ?? 0)
+  var usdExchangeRate: Float?
+
+  if let usdExchangeRateRawValue = projectFragment.usdExchangeRate {
+    usdExchangeRate = Float(usdExchangeRateRawValue)
+  }
+
   return Project.Stats(
     backersCount: projectFragment.backersCount,
-    commentsCount: nil,
-    convertedPledgedAmount: nil,
+    commentsCount: projectFragment.commentsCount,
+    convertedPledgedAmount: convertedPledgedAmountValue,
     currency: projectFragment.currency.rawValue,
-    currentCurrency: nil,
-    currentCurrencyRate: nil,
-    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
-    pledged: projectFragment.pledged.fragments.moneyFragment.amount.flatMap(Int.init) ?? 0,
-    staticUsdRate: projectFragment.usdExchangeRate.flatMap(Float.init) ?? 0,
-    updatesCount: nil
+    currentCurrency: currentUserChosenCurrency,
+    currentCurrencyRate: fxRateValue,
+    goal: projectFragment.goal?.fragments.moneyFragment.amount.flatMap(Float.init).flatMap(Int.init) ?? 0,
+    pledged: pledgedValue,
+    staticUsdRate: staticUSDRateValue,
+    updatesCount: projectFragment.posts?.totalCount,
+    usdExchangeRate: usdExchangeRate
   )
+}
+
+/**
+ Returns a video `Project.video` from `ProjectFragment`
+ */
+
+private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Project.Video? {
+  guard let video = projectFragment.video,
+    let videoId = decompose(id: video.id),
+    let high = video.videoSources?.high?.src else {
+    return nil
+  }
+
+  return Project.Video(
+    id: videoId,
+    high: high,
+    hls: video.videoSources?.hls?.src
+  )
+}
+
+/**
+ Returns a `ExtendedProjectProperties` object from `ProjectFragment`
+ */
+private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
+  let story = projectFragment.story
+  let risks = projectFragment.risks
+  let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
+  let faqs = extendedProjectFAQs(from: projectFragment)
+
+  let extendedProjectProperties = ExtendedProjectProperties(
+    environmentalCommitments: environmentalCommitments,
+    faqs: faqs,
+    risks: risks,
+    story: story
+  )
+
+  return extendedProjectProperties
+}
+
+/**
+ Returns a `GraphQLProject.ProjectFAQ` from `ProjectFragment`
+ */
+
+private func extendedProjectFAQs(from projectFragment: GraphAPI
+  .ProjectFragment) -> [ExtendedProjectProperties.ProjectFAQ] {
+  var faqs = [ExtendedProjectProperties.ProjectFAQ]()
+
+  if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
+    for faq in allFaqs {
+      guard let id = faq?.id,
+        let decomposedId = decompose(id: id),
+        let faqQuestion = faq?.question,
+        let faqAnswer = faq?.answer else {
+        continue
+      }
+
+      var createdAtDate: TimeInterval?
+
+      if let existingDate = faq?.createdAt {
+        createdAtDate = TimeInterval(existingDate)
+      }
+
+      let faq = ExtendedProjectProperties
+        .ProjectFAQ(answer: faqAnswer, question: faqQuestion, id: decomposedId, createdAt: createdAtDate)
+
+      faqs.append(faq)
+    }
+  }
+
+  return faqs
+}
+
+/**
+ Returns a `GraphQLProject.EnvironmentalCommitment` from `ProjectFragment`
+ */
+
+private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
+  .ProjectFragment) -> [ExtendedProjectProperties.EnvironmentalCommitment] {
+  var environmentalCommitments = [ExtendedProjectProperties.EnvironmentalCommitment]()
+
+  if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
+    for commitment in allEnvironmentalCommitments {
+      guard let id = commitment?.id,
+        let decomposedId = decompose(id: id),
+        let description = commitment?.description else {
+        continue
+      }
+
+      var commitmentCategory: ExtendedProjectProperties.CommitmentCategory
+
+      switch commitment?.commitmentCategory {
+      case .longLastingDesign:
+        commitmentCategory = .longLastingDesign
+      case .sustainableMaterials:
+        commitmentCategory = .sustainableMaterials
+      case .environmentallyFriendlyFactories:
+        commitmentCategory = .environmentallyFriendlyFactories
+      case .sustainableDistribution:
+        commitmentCategory = .sustainableDistribution
+      case .reusabilityAndRecyclability:
+        commitmentCategory = .reusabilityAndRecyclability
+      default:
+        commitmentCategory = .somethingElse
+      }
+
+      let environmentalCommitment = ExtendedProjectProperties
+        .EnvironmentalCommitment(description: description, category: commitmentCategory, id: decomposedId)
+
+      environmentalCommitments.append(environmentalCommitment)
+    }
+  }
+
+  return environmentalCommitments
 }

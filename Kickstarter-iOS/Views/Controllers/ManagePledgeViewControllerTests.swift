@@ -45,7 +45,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -98,7 +98,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -150,7 +150,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -206,7 +206,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -258,7 +258,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
+      fetchProjectResult: .success(project)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in

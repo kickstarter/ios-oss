@@ -26,6 +26,12 @@ extension Reward {
     let estimatedDeliveryOn = rewardFragment.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
+    var rewardHasAddons = false
+
+    if let addOnsAvailable = rewardFragment.allowedAddons.nodes {
+      rewardHasAddons = !addOnsAvailable.isEmpty
+    }
+
     return Reward(
       backersCount: rewardFragment.backersCount,
       convertedMinimum: rewardFragment.convertedAmount.fragments.moneyFragment.amount
@@ -33,7 +39,7 @@ extension Reward {
       description: rewardFragment.description,
       endsAt: rewardFragment.endsAt.flatMap(TimeInterval.init),
       estimatedDeliveryOn: estimatedDeliveryOn,
-      hasAddOns: false, // This value is only sent via the v1 API to indicate that a base reward has add-ons
+      hasAddOns: rewardHasAddons,
       id: rewardId,
       limit: rewardFragment.limit,
       limitPerBacker: rewardFragment.limitPerBacker,

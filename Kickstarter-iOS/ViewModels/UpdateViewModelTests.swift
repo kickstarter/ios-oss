@@ -103,7 +103,7 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(anotherProject))) {
       let request = URLRequest(url: anotherProjectUrl)
       let navigationAction = WKNavigationActionData(
         navigationType: .linkActivated,
@@ -202,7 +202,7 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: self.project, update: self.update)
     self.vm.inputs.viewDidLoad()
 
-    withEnvironment(apiService: MockService(fetchProjectResponse: prelaunchProject)) {
+    withEnvironment(apiService: MockService(fetchProjectResult: .success(prelaunchProject))) {
       guard let google = URL(string: "https://www.google.com") else {
         XCTFail("Should have a URL")
         return

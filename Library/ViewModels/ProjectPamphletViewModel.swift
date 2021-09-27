@@ -95,7 +95,21 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           .materialize()
       }
 
+    let projectFriends = MutableProperty([User]())
+
+    projectFriends <~ self.configDataProperty.signal.skipNil()
+      .switchMap { projectParamAndRefTag -> SignalProducer<[User], Never> in
+        let (projectOrParam, _) = projectParamAndRefTag
+        return fetchProjectFriends(projectOrParam: projectOrParam).demoteErrors()
+      }
+
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
+      .map { project, refTag -> (Project, RefTag?) in
+        let updatedProjectWithFriends = project |> Project.lens.personalization.friends .~ projectFriends
+          .value
+
+        return (updatedProjectWithFriends, refTag)
+      }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -273,18 +287,48 @@ private func layoutConstraintConstant(
   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 
+private func fetchProjectFriends(projectOrParam: Either<Project, Param>)
+  -> SignalProducer<[User], ErrorEnvelope> {
+  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+
+  let projectFriendsProducer = AppEnvironment.current.apiService.fetchProjectFriends(param: param)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+
+  return projectFriendsProducer
+}
+
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
-  let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
+  let projectAndBackingIdProducer = AppEnvironment.current.apiService.fetchProject(projectParam: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
+  let projectAndBackingProducer = projectAndBackingIdProducer
+    .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
+      guard let backingId = projectPamphletData.backingId else {
+        return SignalProducer(value: projectPamphletData.project)
+      }
+
+      let projectWithBacking = AppEnvironment.current.apiService
+        .fetchBacking(id: backingId, withStoredCards: false)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .switchMap { projectAndBacking -> SignalProducer<Project, ErrorEnvelope> in
+          let updatedProject = projectPamphletData.project
+            |> Project.lens.personalization.backing .~ projectAndBacking.backing
+            |> Project.lens.personalization.isBacking .~ true
+
+          return SignalProducer(value: updatedProject)
+        }
+
+      return projectWithBacking
+    }
+
   if let project = projectOrParam.left, shouldPrefix {
-    return projectProducer.prefix(value: project)
+    return projectAndBackingProducer.prefix(value: project)
   }
 
-  return projectProducer
+  return projectAndBackingProducer
 }
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {

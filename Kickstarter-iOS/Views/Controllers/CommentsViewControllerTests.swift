@@ -254,7 +254,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testCommentsViewControllerCreation_Success() {
     let mockOptimizelyClient = MockOptimizelyClient()
-    let mockService = MockService(fetchProjectResponse: .template)
+    let mockService = MockService(fetchProjectResult: .success(.template))
 
     withEnvironment(
       apiService: mockService, optimizelyClient: mockOptimizelyClient

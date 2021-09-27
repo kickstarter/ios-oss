@@ -68,7 +68,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       |> UpdateDraft.lens.update.id .~ 1
       |> UpdateDraft.lens.update.projectId .~ project.id
 
-    let api = MockService(fetchProjectResponse: project, fetchUpdateResponse: draft.update)
+    let api = MockService(fetchProjectResult: .success(project), fetchUpdateResponse: draft.update)
     withEnvironment(apiService: api) {
       self.vm.inputs.configureWith(draft: draft)
       self.vm.inputs.viewDidLoad()
@@ -105,7 +105,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       |> UpdateDraft.lens.update.id .~ 1
       |> UpdateDraft.lens.update.projectId .~ project.id
 
-    let api = MockService(fetchProjectResponse: project, fetchUpdateResponse: draft.update)
+    let api = MockService(fetchProjectResult: .success(project), fetchUpdateResponse: draft.update)
     withEnvironment(apiService: api) {
       self.vm.inputs.configureWith(draft: draft)
       self.vm.inputs.viewDidLoad()
@@ -136,7 +136,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       |> UpdateDraft.lens.update.id .~ 1
       |> UpdateDraft.lens.update.projectId .~ project.id
 
-    let api = MockService(publishUpdateError: .couldNotParseJSON, fetchProjectResponse: project)
+    let api = MockService(publishUpdateError: .couldNotParseJSON, fetchProjectResult: .success(project))
     withEnvironment(apiService: api) {
       self.vm.inputs.configureWith(draft: draft)
       self.vm.inputs.viewDidLoad()
