@@ -10,10 +10,11 @@ public protocol CommentRepliesViewModelInputs {
 
      - parameter comment: The `Comment` we are viewing the replies.
      - parameter project: The `Project` the comment replies are for.
+     - parameter update: The `Update?` the comment replies are for.
      - parameter inputAreaBecomeFirstResponder: A Bool that determines if the composer should become first responder.
      - parameter replyId: A `String?` that determines which cell to scroll to, if visible on the first page.
    **/
-  func configureWith(comment: Comment, project: Project, inputAreaBecomeFirstResponder: Bool,
+  func configureWith(comment: Comment, project: Project, update: Update?, inputAreaBecomeFirstResponder: Bool,
                      replyId: String?)
 
   /// Call when the User is posting a comment or reply.
@@ -157,9 +158,13 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
-    let commentableId = project.flatMap { project in
-      SignalProducer.init(value: project.graphID)
-    }
+    let commentableId = self.updateProperty.signal.combineLatest(with: project)
+      .map { update, project -> String in
+        guard let update = update else {
+          return project.graphID
+        }
+        return encodeToBase64("FreeformPost-\(update.id)")
+      }
 
     let parentId = rootComment.flatMap { comment in
       SignalProducer.init(value: comment.id)
@@ -237,14 +242,17 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   }
 
   fileprivate let commentProjectProperty = MutableProperty<(Comment, Project, Bool)?>(nil)
+  fileprivate let updateProperty = MutableProperty<Update?>(nil)
   fileprivate let replyIdProperty = MutableProperty<String?>(nil)
   public func configureWith(
     comment: Comment,
     project: Project,
+    update: Update?,
     inputAreaBecomeFirstResponder: Bool,
     replyId: String?
   ) {
     self.commentProjectProperty.value = (comment, project, inputAreaBecomeFirstResponder)
+    self.updateProperty.value = update
     self.replyIdProperty.value = replyId
   }
 

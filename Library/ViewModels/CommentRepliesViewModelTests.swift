@@ -67,6 +67,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: rootComment,
         project: .template,
+        update: nil,
         inputAreaBecomeFirstResponder: false,
         replyId: nil
       )
@@ -89,6 +90,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: .template,
+          update: .template,
           inputAreaBecomeFirstResponder: false,
           replyId: nil
         )
@@ -117,6 +119,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: .template,
+          update: nil,
           inputAreaBecomeFirstResponder: false,
           replyId: nil
         )
@@ -147,6 +150,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -175,6 +179,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -203,6 +208,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -235,6 +241,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: false,
           replyId: nil
         )
@@ -277,6 +284,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: .template,
         project: project,
+        update: nil,
         inputAreaBecomeFirstResponder: false,
         replyId: nil
       )
@@ -330,6 +338,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: .template,
         project: project,
+        update: nil,
         inputAreaBecomeFirstResponder: false,
         replyId: nil
       )
@@ -392,6 +401,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: envelope.replies[0].id
         )
@@ -422,6 +432,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -450,6 +461,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: project,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -480,6 +492,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.vm.inputs.configureWith(
         comment: .replyRootCommentTemplate,
         project: project,
+        update: nil,
         inputAreaBecomeFirstResponder: true,
         replyId: nil
       )
@@ -524,6 +537,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: .template,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -628,6 +642,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: .template,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )
@@ -712,6 +727,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: .template,
+          update: nil,
           inputAreaBecomeFirstResponder: true,
           replyId: nil
         )

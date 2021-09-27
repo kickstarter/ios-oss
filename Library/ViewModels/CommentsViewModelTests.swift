@@ -17,6 +17,7 @@ internal final class CommentsViewModelTests: TestCase {
   private let configureFooterViewWithState = TestObserver<CommentTableViewFooterViewState, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
   private let goToCommentRepliesProject = TestObserver<Project, Never>()
+  private let goToCommentRepliesUpdate = TestObserver<Update?, Never>()
   private let goToCommentRepliesShowKeyboard = TestObserver<Bool, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceShouldShowErrorState = TestObserver<Bool, Never>()
@@ -35,11 +36,13 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.configureFooterViewWithState.observe(self.configureFooterViewWithState.observer)
-    self.vm.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder.map(first)
+    self.vm.outputs.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder.map { $0.0 }
       .observe(self.goToCommentRepliesComment.observer)
-    self.vm.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder.map(second)
+    self.vm.outputs.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder.map { $0.1 }
       .observe(self.goToCommentRepliesProject.observer)
-    self.vm.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder.map(third)
+    self.vm.outputs.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder.map { $0.2 }
+      .observe(self.goToCommentRepliesUpdate.observer)
+    self.vm.outputs.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder.map { $0.3 }
       .observe(self.goToCommentRepliesShowKeyboard.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
@@ -174,6 +177,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testGoToCommentReplies_ReplyComment_HasShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     let project = Project.template
@@ -187,18 +191,21 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.commentCellDidTapReply(comment: comment)
 
     self.goToCommentRepliesComment.assertValues([comment])
     self.goToCommentRepliesProject.assertValues([project])
+    self.goToCommentRepliesUpdate.assertValues([nil])
     self.goToCommentRepliesShowKeyboard.assertValues([true])
   }
 
   func testGoToCommentReplies_CommentHasReplies_GoToEmits_HasNotShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     let project = Project.template
@@ -206,17 +213,19 @@ internal final class CommentsViewModelTests: TestCase {
       |> \.replyCount .~ 1
       |> \.status .~ .success
 
-    self.vm.inputs.configureWith(project: project, update: nil)
+    self.vm.inputs.configureWith(project: project, update: .template)
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.commentCellDidTapViewReplies(comment)
 
     self.goToCommentRepliesComment.assertValues([comment])
     self.goToCommentRepliesProject.assertValues([project])
+    self.goToCommentRepliesUpdate.assertValues([.template])
     self.goToCommentRepliesShowKeyboard.assertValues([false])
     self.goToCommentRepliesComment
       .assertValues([comment])
@@ -225,6 +234,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit_HasNotShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     let project = Project.template
@@ -237,18 +247,21 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsErrored_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     let project = Project.template
@@ -261,18 +274,21 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
   }
 
   func testGoToCommentReplies_CommentHasNoReplies_GoToDoesNotEmit_HasNotShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     let project = Project.template
@@ -284,12 +300,14 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
+    self.goToCommentRepliesUpdate.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
   }
 
