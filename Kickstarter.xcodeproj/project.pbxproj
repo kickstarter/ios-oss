@@ -248,8 +248,11 @@
 		37FDAFAC2273BA4700662CC8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAF702273B7FF00662CC8 /* UIStackView.swift */; };
 		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
+		470B771A26FCDC8900EBD5CA /* RiskMessagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */; };
+		470B771C26FD022900EBD5CA /* RiskMessagingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */; };
 		4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */; };
 		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
+		473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */; };
 		4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */; };
 		4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C14425B1021D0098E89E /* FirebaseABTesting.framework */; };
 		4748C15625B105DF0098E89E /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C15525B105DE0098E89E /* Protobuf.framework */; };
@@ -271,6 +274,7 @@
 		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
 		47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplates.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
+		4771DF9926EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */; };
 		47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */; };
 		47733001268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */; };
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
@@ -1973,8 +1977,11 @@
 		37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tests.swift"; sourceTree = "<group>"; };
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModel.swift; sourceTree = "<group>"; };
+		470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModelTests.swift; sourceTree = "<group>"; };
 		4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRepliesCell.swift; sourceTree = "<group>"; };
 		473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTests.swift"; sourceTree = "<group>"; };
+		473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewController.swift; sourceTree = "<group>"; };
 		4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
 		4748C14425B1021D0098E89E /* FirebaseABTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseABTesting.framework; path = Carthage/Build/iOS/FirebaseABTesting.framework; sourceTree = "<group>"; };
 		4748C15525B105DE0098E89E /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
@@ -1996,6 +2003,7 @@
 		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
 		47613FC52652CD11006F09FF /* CommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
+		4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewControllerTests.swift; sourceTree = "<group>"; };
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
 		47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewControllerTests.swift; sourceTree = "<group>"; };
 		47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
@@ -4141,6 +4149,8 @@
 				77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */,
 				77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */,
 				7717805922F9ED130064A32F /* RewardsCollectionViewFooter.swift */,
+				473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */,
+				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
 				A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
@@ -4855,6 +4865,8 @@
 				77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */,
 				77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */,
 				77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */,
+				470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */,
+				470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */,
 				06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */,
 				06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
@@ -6095,6 +6107,7 @@
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
+				470B771A26FCDC8900EBD5CA /* RiskMessagingViewModel.swift in Sources */,
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
 				8A32FE0624D233F000F79C72 /* EmptyStateViewModel.swift in Sources */,
@@ -6240,6 +6253,7 @@
 				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
 				06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
 				D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,
+				470B771C26FD022900EBD5CA /* RiskMessagingViewModelTests.swift in Sources */,
 				37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */,
 				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
 				A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */,
@@ -6603,6 +6617,7 @@
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
 				9D14FF921D133351005F4ABB /* ProjectActivitySuccessCell.swift in Sources */,
+				473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */,
 				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
@@ -6675,6 +6690,7 @@
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */,
+				4771DF9926EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift in Sources */,
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,

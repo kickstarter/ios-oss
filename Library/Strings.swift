@@ -1005,6 +1005,23 @@ contributeurs"
     )
   }
   /**
+   "Backing means supporting a creative project, regardless of the outcome."
+
+   - **en**: "Backing means supporting a creative project, regardless of the outcome."
+   - **de**: "Die Unterstützung eines Projekts bedeutet, eine kreative Idee zu unterstützen, unabhängig vom Ergebnis."
+   - **es**: "Patrocinar un proyecto significa apoyar una idea creativa, independientemente del resultado."
+   - **fr**: "S'engager, c'est soutenir le créateur d'un projet créatif, quel que soit le résultat."
+   - **ja**: "「バックすること」とは、クリエイティブなプロジェクトを、その結果に関係なく支援することを意味します。"
+  */
+  public static func Backing_means_supporting() -> String {
+    return localizedString(
+      key: "Backing_means_supporting",
+      defaultValue: "Backing means supporting a creative project, regardless of the outcome.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Become a backer to leave a comment."
 
    - **en**: "Become a backer to leave a comment."
@@ -1155,6 +1172,23 @@ contributeurs"
       defaultValue: "By creating an account, you agree to Kickstarter’s <a href=\"%{terms_of_use_link}\">Terms of Use</a> and <a href=\"%{privacy_policy_link}\">Privacy Policy</a>.",
       count: nil,
       substitutions: ["terms_of_use_link": terms_of_use_link, "privacy_policy_link": privacy_policy_link]
+    )
+  }
+  /**
+   "By pledging, you acknowledge that rewards or reimbursements aren’t guaranteed by either Kickstarter or the creator."
+
+   - **en**: "By pledging, you acknowledge that rewards or reimbursements aren’t guaranteed by either Kickstarter or the creator."
+   - **de**: "Durch deinen Finanzierungsbeitrag erkennst du an, dass weder der Projektgründer noch Kickstarter Belohnungen oder Rückerstattungen garantieren."
+   - **es**: "Al hacer la contribución, reconoces que las recompensas o los reembolsos no están garantizados por Kickstarter o el creador."
+   - **fr**: "En vous engageant, vous reconnaissez que ni Kickstarter ni le créateur ne garantit une récompense ou un remboursement."
+   - **ja**: "プレッジすると、リワードや払い戻しが Kickstarter またはクリエイターによって保証されていないことを理解したものとみなされます。"
+  */
+  public static func By_pledging_you_acknowledge() -> String {
+    return localizedString(
+      key: "By_pledging_you_acknowledge",
+      defaultValue: "By pledging, you acknowledge that rewards or reimbursements aren’t guaranteed by either Kickstarter or the creator.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -4548,6 +4582,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "How_backers_found_your_project",
       defaultValue: "How backers found your project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "I understand"
+
+   - **en**: "I understand"
+   - **de**: "Verstanden"
+   - **es**: "Entiendo"
+   - **fr**: "Je comprends"
+   - **ja**: "理解しました"
+  */
+  public static func I_understand() -> String {
+    return localizedString(
+      key: "I_understand",
+      defaultValue: "I understand",
       count: nil,
       substitutions: [:]
     )
@@ -8161,6 +8212,23 @@ daring ideas."
     return localizedString(
       key: "Reward_surveys",
       defaultValue: "Reward surveys",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Rewards aren't guaranteed."
+
+   - **en**: "Rewards aren't guaranteed."
+   - **de**: "Es gibt keine Garantie für die Erfüllung der Belohnungen."
+   - **es**: "Las recompensas no están garantizadas."
+   - **fr**: "Les récompenses ne font pas l'objet d'une garantie de livraison."
+   - **ja**: "リワードは保証されていません。"
+  */
+  public static func Rewards_arent_guaranteed() -> String {
+    return localizedString(
+      key: "Rewards_arent_guaranteed",
+      defaultValue: "Rewards aren't guaranteed.",
       count: nil,
       substitutions: [:]
     )
