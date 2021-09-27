@@ -946,8 +946,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Risk Messaging Modal pledge_confirm event
     pledgeSubmitEventsSignal
+      .combineLatest(with: self.riskMessagingViewControllerDismissedProperty.signal.skipNil())
       .takeWhen(self.riskMessagingViewControllerDismissedProperty.signal)
-      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
+      .map { pledgeSubmitEvent, isApplePay in
+        let (data, baseReward, additionalPledgeAmount, allRewardsShippingTotal) = pledgeSubmitEvent
         let checkoutData = checkoutProperties(
           from: data.project,
           baseReward: baseReward,
@@ -957,16 +959,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           pledgeTotal: data.pledgeTotal,
           shippingTotal: allRewardsShippingTotal,
           checkoutId: nil,
-          isApplePay: false
+          isApplePay: isApplePay
         )
 
-        return (data.project, baseReward, data.refTag, checkoutData)
+        return (data.project, baseReward, data.refTag, checkoutData, isApplePay)
       }
-      .observeValues { project, reward, refTag, checkoutData in
+      .observeValues { project, reward, refTag, checkoutData, isApplePay in
         AppEnvironment.current.ksrAnalytics.trackPledgeConfirmButtonClicked(
           project: project,
           reward: reward,
-          typeContext: .creditCard,
+          typeContext: isApplePay ? .applePay : .creditCard,
           checkoutData: checkoutData,
           refTag: refTag
         )
