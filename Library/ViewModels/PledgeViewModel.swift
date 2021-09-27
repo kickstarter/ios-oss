@@ -946,8 +946,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Risk Messaging Modal pledge_confirm event
     pledgeSubmitEventsSignal
-      .combineLatest(with: self.riskMessagingViewControllerDismissedProperty.signal.skipNil())
-      .takeWhen(self.riskMessagingViewControllerDismissedProperty.signal)
+      .takePairWhen(self.riskMessagingViewControllerDismissedProperty.signal.skipNil())
       .map { pledgeSubmitEvent, isApplePay in
         let (data, baseReward, additionalPledgeAmount, allRewardsShippingTotal) = pledgeSubmitEvent
         let checkoutData = checkoutProperties(
