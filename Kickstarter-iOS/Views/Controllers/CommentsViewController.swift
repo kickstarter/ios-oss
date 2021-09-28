@@ -62,7 +62,6 @@ internal final class CommentsViewController: UITableViewController {
 
     self.commentComposer.delegate = self
 
-    self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
