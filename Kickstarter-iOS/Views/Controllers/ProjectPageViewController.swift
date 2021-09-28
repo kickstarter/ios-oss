@@ -6,7 +6,12 @@ import UIKit
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
+  private enum NavigationButtonSizes: CGFloat {
+    case spacing = 15.0
+  }
+
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
+  private let shareViewModel: ShareViewModelType = ShareViewModel()
   /**
    FIXME: This `contentController` can be renamed `contentViewController` and has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
    Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
@@ -15,32 +20,50 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   public var messageBannerViewController: MessageBannerViewController?
 
-  private let navigationShareButton: UIBarButtonItem = {
+  private lazy var navigationShareButton: UIBarButtonItem = {
     let contentView = UIButton()
       |> shareButtonStyle
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: -15)
+      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: -NavigationButtonSizes.spacing.rawValue)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-    return UIBarButtonItem(customView: contentView)
+    contentView.addTarget(
+      self,
+      action: #selector(ProjectPageViewController.shareButtonTapped),
+      for: .touchUpInside
+    )
+
+    let barButtonItem = UIBarButtonItem(customView: contentView)
+
+    return barButtonItem
   }()
 
-  private let navigationCloseButton: UIBarButtonItem = {
-    let contentView = UIButton()
+  private lazy var navigationCloseButton: UIBarButtonItem = {
+    let contentView = UIButton(type: .custom)
       |> UIButton.lens.title(for: .normal) .~ nil
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.tintColor .~ .ksr_support_700
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
-    return UIBarButtonItem(customView: contentView)
+    contentView.addTarget(
+      self,
+      action: #selector(ProjectPageViewController.closeButtonTapped),
+      for: .touchUpInside
+    )
+
+    let barButtonItem = UIBarButtonItem(customView: contentView)
+
+    return barButtonItem
   }()
 
-  private let navigationSaveButton: UIBarButtonItem = {
+  private lazy var navigationSaveButton: UIBarButtonItem = {
     let contentView = UIButton()
       |> saveButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
 
-    return UIBarButtonItem(customView: contentView)
+    let barButtonItem = UIBarButtonItem(customView: contentView)
+
+    return barButtonItem
   }()
 
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
@@ -54,6 +77,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let vc = ProjectPageViewController.instantiate()
 
     vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
+
     return vc
   }
 
@@ -95,15 +119,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func configurePledgeCTAContainerView() {
-    // Configure subviews
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
     self.pledgeCTAContainerView.retryButton.addTarget(
-      self, action: #selector(ProjectPamphletViewController.pledgeRetryButtonTapped), for: .touchUpInside
+      self, action: #selector(ProjectPageViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
 
-    // Configure constraints
     let pledgeCTAContainerViewConstraints = [
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
@@ -125,6 +147,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func bindViewModel() {
     super.bindViewModel()
 
+    // MARK: Project Page
+
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
       .observeValues { [weak self] params in
@@ -141,8 +165,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
-      .observeValues { [weak self] project, refTag in
-        self?.contentController?.configureWith(value: (project, refTag))
+      .observeValues { [weak self] project, _ in
+        /** FIXME: How we do this might change in https://kickstarter.atlassian.net/browse/NTV-195
+         self?.contentController?.configureWith(value: (project, refTag))
+         */
+        self?.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
       }
 
     self.viewModel.outputs.configurePledgeCTAView
@@ -164,7 +191,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
+
+    // MARK: Sharing
+
+    self.shareViewModel.outputs.showShareSheet
+      .observeForControllerAction()
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
+
+  // MARK: Orientation Change Resizing
 
   public override func willTransition(
     to newCollection: UITraitCollection,
@@ -208,10 +243,28 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.contentController?.additionalSafeAreaInsets = UIEdgeInsets(bottom: ctaViewSize.height)
   }
 
+  private func showShareSheet(_ controller: UIActivityViewController) {
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      controller.modalPresentationStyle = .popover
+      let popover = controller.popoverPresentationController
+      popover?.sourceView = self.navigationShareButton.customView
+    }
+
+    self.present(controller, animated: true, completion: nil)
+  }
+
   // MARK: - Selectors
 
-  @objc func pledgeRetryButtonTapped() {
+  @objc private func pledgeRetryButtonTapped() {
     self.viewModel.inputs.pledgeRetryButtonTapped()
+  }
+
+  @objc private func shareButtonTapped() {
+    self.shareViewModel.inputs.shareButtonTapped()
+  }
+
+  @objc private func closeButtonTapped() {
+    self.dismiss(animated: true, completion: nil)
   }
 }
 
