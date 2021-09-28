@@ -90,7 +90,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .configureWith(
           comment: .template,
           project: .template,
-          update: .template,
+          update: nil,
           inputAreaBecomeFirstResponder: false,
           replyId: nil
         )

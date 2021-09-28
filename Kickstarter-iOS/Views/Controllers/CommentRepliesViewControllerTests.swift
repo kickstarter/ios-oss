@@ -25,7 +25,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
-            update: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )

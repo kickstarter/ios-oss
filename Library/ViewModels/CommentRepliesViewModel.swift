@@ -158,6 +158,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
+    // If the Update is non-nil we send the FreeformPost format, otherwise we send the Project graphID
     let commentableId = self.updateProperty.signal.combineLatest(with: project)
       .map { update, project -> String in
         guard let update = update else {

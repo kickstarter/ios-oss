@@ -49,13 +49,11 @@ public protocol CommentsViewModelOutputs {
   /// Configures the footer view with the current state.
   var configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never> { get }
 
-  /// Emits the selected `Comment`, `Project` and a `Bool` to determine if keyboard should show when user to navigate to replies.
+  /// Emits the selected `Comment`, `Project`, `Update?` and a `Bool` to determine if keyboard should show when user to navigate to replies.
   var goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder: Signal<
     (Comment, Project, Update?, Bool),
     Never
-  > {
-    get
-  }
+  > { get }
 
   /// Emits a list of `Comments`, the `Project` to load into the data source and whether an error state should be displayed.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never> { get }
