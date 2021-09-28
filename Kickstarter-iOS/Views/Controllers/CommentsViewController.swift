@@ -135,12 +135,13 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToRepliesWithCommentProjectAndBecomeFirstResponder
+    self.viewModel.outputs.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder
       .observeForControllerAction()
-      .observeValues { [weak self] comment, project, becomeFirstResponder in
+      .observeValues { [weak self] comment, project, update, becomeFirstResponder in
         let vc = CommentRepliesViewController.configuredWith(
           comment: comment,
           project: project,
+          update: update,
           inputAreaBecomeFirstResponder: becomeFirstResponder,
           replyId: nil
         )

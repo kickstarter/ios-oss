@@ -49,8 +49,11 @@ public protocol CommentsViewModelOutputs {
   /// Configures the footer view with the current state.
   var configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never> { get }
 
-  /// Emits the selected `Comment`, `Project` and a `Bool` to determine if keyboard should show when user to navigate to replies.
-  var goToRepliesWithCommentProjectAndBecomeFirstResponder: Signal<(Comment, Project, Bool), Never> { get }
+  /// Emits the selected `Comment`, `Project`, `Update?` and a `Bool` to determine if keyboard should show when user to navigate to replies.
+  var goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder: Signal<
+    (Comment, Project, Update?, Bool),
+    Never
+  > { get }
 
   /// Emits a list of `Comments`, the `Project` to load into the data source and whether an error state should be displayed.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never> { get }
@@ -235,19 +238,24 @@ public final class CommentsViewModel: CommentsViewModelType,
       .skipNil()
       .filter { comment in comment.replyCount > 0 }
 
+    let update = self.projectAndUpdateProperty.signal
+      .skipNil()
+      .map(second)
+
     let commentsWithRepliesAndProject = Signal.combineLatest(
-      viewCommentReplies, initialProject
+      viewCommentReplies, initialProject, update
     )
 
     let replyCommentWithProject = Signal.combineLatest(
       self.commentCellDidTapReplyProperty.signal.skipNil(),
-      initialProject
+      initialProject,
+      update
     )
 
-    self.goToRepliesWithCommentProjectAndBecomeFirstResponder =
+    self.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder =
       Signal.merge(
-        commentsWithRepliesAndProject.map { ($0, $1, false) },
-        replyCommentWithProject.map { ($0, $1, true) }
+        commentsWithRepliesAndProject.map { ($0, $1, $2, false) },
+        replyCommentWithProject.map { ($0, $1, $2, true) }
       )
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
@@ -402,7 +410,10 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let cellSeparatorHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
-  public let goToRepliesWithCommentProjectAndBecomeFirstResponder: Signal<(Comment, Project, Bool), Never>
+  public let goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder: Signal<
+    (Comment, Project, Update?, Bool),
+    Never
+  >
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>

@@ -580,6 +580,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
               CommentRepliesViewController.configuredWith(
                 comment: envelope.comment,
                 project: project,
+                update: nil,
                 inputAreaBecomeFirstResponder: false,
                 replyId: replyId
               )
@@ -668,6 +669,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
               CommentRepliesViewController.configuredWith(
                 comment: envelope.comment,
                 project: project,
+                update: update,
                 inputAreaBecomeFirstResponder: false,
                 replyId: replyId
               )
