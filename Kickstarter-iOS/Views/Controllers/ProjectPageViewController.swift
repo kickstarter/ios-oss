@@ -12,11 +12,17 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
   private let shareViewModel: ShareViewModelType = ShareViewModel()
+  private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
   /**
    FIXME: This `contentController` can be renamed `contentViewController` and has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
    Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
    */
   private var contentController: ProjectPamphletContentViewController?
+
+  // MARK: User session state properties
+
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
 
   public var messageBannerViewController: MessageBannerViewController?
 
@@ -61,6 +67,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> saveButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
 
+    contentView
+      .addTarget(self, action: #selector(ProjectPageViewController.saveButtonTapped(_:)), for: .touchUpInside)
+    contentView
+      .addTarget(self, action: #selector(ProjectPageViewController.saveButtonPressed), for: .touchDown)
+
     let barButtonItem = UIBarButtonItem(customView: contentView)
 
     return barButtonItem
@@ -104,7 +115,20 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         object: nil
       )
 
+    self.sessionStartedObserver = NotificationCenter
+      .default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.watchProjectViewModel.inputs.userSessionStarted()
+      }
+
+    self.sessionEndedObserver = NotificationCenter
+      .default
+      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.watchProjectViewModel.inputs.userSessionEnded()
+      }
+
     self.viewModel.inputs.viewDidLoad()
+    self.watchProjectViewModel.inputs.viewDidLoad()
   }
 
   public override func viewDidLayoutSubviews() {
@@ -135,6 +159,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
+  // MARK: Deinitialize
+
+  deinit {
+    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
+
   // MARK: - Styles
 
   public override func bindStyles() {
@@ -147,8 +178,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func bindViewModel() {
     super.bindViewModel()
 
-    // MARK: Project Page
+    self.bindProjectPageViewModel()
+    self.bindSharingViewModel()
+    self.bindWatchViewModel()
+  }
 
+  // MARK: Orientation Change
+
+  public override func willTransition(
+    to newCollection: UITraitCollection,
+    with _: UIViewControllerTransitionCoordinator
+  ) {
+    self.viewModel.inputs.willTransition(toNewCollection: newCollection)
+  }
+
+  // MARK: - Private Helpers
+
+  private func bindProjectPageViewModel() {
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
       .observeValues { [weak self] params in
@@ -170,6 +216,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
          self?.contentController?.configureWith(value: (project, refTag))
          */
         self?.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
+        self?.watchProjectViewModel.inputs
+          .configure(with: (project, KSRAnalytics.PageContext.projectPage, nil))
       }
 
     self.viewModel.outputs.configurePledgeCTAView
@@ -191,27 +239,78 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
+  }
 
-    // MARK: Sharing
-
+  private func bindSharingViewModel() {
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
       .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
 
-  // MARK: Orientation Change Resizing
+  private func bindWatchViewModel() {
+    let button = self.navigationSaveButton.customView as? UIButton
+    button?.rac.accessibilityValue = self.watchProjectViewModel.outputs.saveButtonAccessibilityValue
+    button?.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
 
-  public override func willTransition(
-    to newCollection: UITraitCollection,
-    with _: UIViewControllerTransitionCoordinator
-  ) {
-    self.viewModel.inputs.willTransition(toNewCollection: newCollection)
+    self.watchProjectViewModel.outputs.generateImpactFeedback
+      .observeForUI()
+      .observeValues { generateImpactFeedback() }
+
+    self.watchProjectViewModel.outputs.generateNotificationSuccessFeedback
+      .observeForUI()
+      .observeValues { generateNotificationSuccessFeedback() }
+
+    self.watchProjectViewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { generateSelectionFeedback() }
+
+    self.watchProjectViewModel.outputs.showProjectSavedAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.showProjectStarredPrompt()
+      }
+
+    self.watchProjectViewModel.outputs.goToLoginTout
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToLoginTout()
+      }
+
+    self.watchProjectViewModel.outputs.postNotificationWithProject
+      .observeForUI()
+      .observeValues { project in
+        NotificationCenter.default.post(
+          name: Notification.Name.ksr_projectSaved,
+          object: nil,
+          userInfo: ["project": project]
+        )
+      }
   }
 
-  // MARK: - Private Helpers
+  fileprivate func showProjectStarredPrompt() {
+    let alert = UIAlertController(
+      title: Strings.Project_saved(),
+      message: Strings.Well_remind_you_forty_eight_hours_before_this_project_ends(),
+      preferredStyle: .alert
+    )
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
 
-  @objc private func didBackProject() {
-    self.viewModel.inputs.didBackProject()
+    self.present(alert, animated: true, completion: nil)
+  }
+
+  fileprivate func goToLoginTout() {
+    let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
+    let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+    let nav = UINavigationController(rootViewController: vc)
+      |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
@@ -255,6 +354,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   // MARK: - Selectors
 
+  @objc private func didBackProject() {
+    self.viewModel.inputs.didBackProject()
+  }
+
   @objc private func pledgeRetryButtonTapped() {
     self.viewModel.inputs.pledgeRetryButtonTapped()
   }
@@ -265,6 +368,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true, completion: nil)
+  }
+
+  @objc private func saveButtonTapped(_ button: UIButton) {
+    self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
+  }
+
+  @objc private func saveButtonPressed() {
+    self.watchProjectViewModel.inputs.saveButtonTouched()
   }
 }
 
