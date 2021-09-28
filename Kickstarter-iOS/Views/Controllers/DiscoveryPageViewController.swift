@@ -370,15 +370,23 @@ internal final class DiscoveryPageViewController: UITableViewController {
        initialPlaylist: initialPlaylist,
        navigatorDelegate: self
      )
+
+     if UIDevice.current.userInterfaceIdiom == .pad {
+        vc.modalPresentationStyle = .fullScreen
+     }
+
+     self.present(vc, animated: true, completion: nil)
      */
+
     let projectParam = Either<Project, Param>(left: project)
-    let vc = ProjectPageViewController.configuredWith(projectOrParam: projectParam, refTag: refTag)
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: projectParam,
+      refTag: refTag
+    )
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      vc.modalPresentationStyle = .fullScreen
-    }
-
-    self.present(vc, animated: true, completion: nil)
+    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goTo(project: Project, update: Update) {

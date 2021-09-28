@@ -4,9 +4,44 @@ import Prelude
 import UIKit
 
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
-  fileprivate let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
+  // MARK: Properties
+
+  private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
+  /**
+   FIXME: This `contentController` can be renamed `contentViewController` and has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
+   Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
+   */
+  private var contentController: ProjectPamphletContentViewController?
+
   public var messageBannerViewController: MessageBannerViewController?
-  fileprivate var contentController: ProjectPamphletContentViewController?
+
+  private let navigationShareButton: UIBarButtonItem = {
+    let contentView = UIButton()
+      |> shareButtonStyle
+      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: -15)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+
+    return UIBarButtonItem(customView: contentView)
+  }()
+
+  private let navigationCloseButton: UIBarButtonItem = {
+    let contentView = UIButton()
+      |> UIButton.lens.title(for: .normal) .~ nil
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
+      |> UIButton.lens.tintColor .~ .ksr_support_700
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
+
+    return UIBarButtonItem(customView: contentView)
+  }()
+
+  private let navigationSaveButton: UIBarButtonItem = {
+    let contentView = UIButton()
+      |> saveButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
+
+    return UIBarButtonItem(customView: contentView)
+  }()
 
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -27,14 +62,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.configurePledgeCTAContainerView()
 
-    /** FIXME: Add in later
+    /** FIXME:  - https://kickstarter.atlassian.net/browse/NTV-195
      self.contentController = self.children
        .compactMap { $0 as? ProjectPamphletContentViewController }.first
      self.contentController.delegate = self
      */
     self.pledgeCTAContainerView.delegate = self
-
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.navigationItem.leftBarButtonItem = self.navigationCloseButton
+    self.navigationItem.rightBarButtonItems = [self.navigationSaveButton, self.navigationShareButton]
 
     NotificationCenter.default
       .addObserver(
@@ -191,13 +227,13 @@ extension ProjectPageViewController: PledgeCTAContainerViewDelegate {
 
 extension ProjectPageViewController: VideoViewControllerDelegate {
   public func videoViewControllerDidFinish(_: VideoViewController) {
-    /** FIXME: Currently unused
+    /** FIXME: Currently unused - fix in https://kickstarter.atlassian.net/browse/NTV-196
      self.navBarController.projectVideoDidFinish()
      */
   }
 
   public func videoViewControllerDidStart(_: VideoViewController) {
-    /** FIXME: Currently unused
+    /** FIXME: Currently unused fix in https://kickstarter.atlassian.net/browse/NTV-196
      self.navBarController.projectVideoDidStart()
      */
   }
