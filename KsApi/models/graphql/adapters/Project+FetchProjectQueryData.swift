@@ -55,27 +55,8 @@ extension Project {
         Reward.reward(from: fragment)
       } ?? []
 
-    /** FIXME: This is unfortunately a consequence of the no-reward reward being returned on v1 but not in GQL. Eventually we'll want to talk with backend about the possibility of returning a no-reward reward as part of the project query, just as they did with v1. The benefit of that is no reward reward doesn't have to be maintained locally. We want to show the rewards that the backend returns without modification to the raw data.
-     */
-
-    var projectMinimumPledgeAmount = 1.0
-    var currentUsersCurrencyFXRate = 1.0
-
-    if let fxRateValue = data.project?.fragments.projectFragment.fxRate {
-      currentUsersCurrencyFXRate = Double(fxRateValue)
-    }
-
-    if let projectMinPledgeSingleTierRawValue = data.project?.fragments.projectFragment.minPledge {
-      projectMinimumPledgeAmount = Double(projectMinPledgeSingleTierRawValue)
-    }
-
-    let convertedMinimumAmount = currentUsersCurrencyFXRate * projectMinimumPledgeAmount
-
-    let emptyReward = Reward.noReward
-      |> Reward.lens.minimum .~ projectMinimumPledgeAmount
-      |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
-
-    let updatedRewardsWithNoReward = [emptyReward] + rewards
+    let emptyRewards = [noRewardReward(from: data.project?.fragments.projectFragment)]
+    let updatedRewardsWithNoReward = emptyRewards + rewards
 
     var projectBackingId: Int?
 
@@ -118,27 +99,8 @@ extension Project {
         Reward.reward(from: fragment)
       } ?? []
 
-    /** FIXME: This is unfortunately a consequence of the no-reward reward being returned on v1 but not in GQL. Eventually we'll want to talk with backend about the possibility of returning a no-reward reward as part of the project query, just as they did with v1. The benefit of that is no reward reward doesn't have to be maintained locally. We want to show the rewards that the backend returns without modification to the raw data.
-     */
-
-    var projectMinimumPledgeAmount = 1.0
-    var currentUsersCurrencyFXRate = 1.0
-
-    if let fxRateValue = data.project?.fragments.projectFragment.fxRate {
-      currentUsersCurrencyFXRate = Double(fxRateValue)
-    }
-
-    if let projectMinPledgeSingleTierRawValue = data.project?.fragments.projectFragment.minPledge {
-      projectMinimumPledgeAmount = Double(projectMinPledgeSingleTierRawValue)
-    }
-
-    let convertedMinimumAmount = currentUsersCurrencyFXRate * projectMinimumPledgeAmount
-
-    let emptyReward = Reward.noReward
-      |> Reward.lens.minimum .~ projectMinimumPledgeAmount
-      |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
-
-    let updatedRewardsWithNoReward = [emptyReward] + rewards
+    let emptyRewards = [noRewardReward(from: data.project?.fragments.projectFragment)]
+    let updatedRewardsWithNoReward = emptyRewards + rewards
 
     var projectBackingId: Int?
 
@@ -158,5 +120,29 @@ extension Project {
     else { return (nil, nil) }
 
     return (project, projectBackingId)
+  }
+
+  /** FIXME: This is unfortunately a consequence of the no-reward reward being returned on v1 but not in GQL. Eventually we'll want to talk with backend about the possibility of returning a no-reward reward as part of the project query, just as they did with v1. The benefit of that is no reward reward doesn't have to be maintained locally. We want to show the rewards that the backend returns without modification to the raw data.
+   */
+
+  private static func noRewardReward(from fragment: GraphAPI.ProjectFragment?) -> Reward {
+    var projectMinimumPledgeAmount = 1.0
+    var currentUsersCurrencyFXRate = 1.0
+
+    if let fxRateValue = fragment?.fxRate {
+      currentUsersCurrencyFXRate = Double(fxRateValue)
+    }
+
+    if let projectMinPledgeSingleTierRawValue = fragment?.minPledge {
+      projectMinimumPledgeAmount = Double(projectMinPledgeSingleTierRawValue)
+    }
+
+    let convertedMinimumAmount = currentUsersCurrencyFXRate * projectMinimumPledgeAmount
+
+    let emptyReward = Reward.noReward
+      |> Reward.lens.minimum .~ projectMinimumPledgeAmount
+      |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
+
+    return emptyReward
   }
 }
