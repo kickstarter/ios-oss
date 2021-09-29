@@ -237,7 +237,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertNil(lastAddOn.shipping.type)
 
     /// Project rewards data -- rewards
-    XCTAssertEqual(project.rewards.count, 14)
+    XCTAssertEqual(project.rewards.count, 15)
 
     guard let lastReward = project.rewards.last else {
       XCTFail()
@@ -260,7 +260,17 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       return
     }
 
-    XCTAssertTrue(firstReward.hasAddOns)
+    XCTAssertTrue(firstReward.isNoReward)
+
+    guard project.rewards.count > 1 else {
+      XCTFail("project should have at least two rewards.")
+
+      return
+    }
+
+    let secondReward = project.rewards[1]
+
+    XCTAssertTrue(secondReward.hasAddOns)
 
     let date2: String? = "2021-11-01"
     let formattedDate2 = date2.flatMap(DateFormatter.isoDateFormatter.date(from:))

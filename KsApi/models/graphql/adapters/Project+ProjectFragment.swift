@@ -229,7 +229,7 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
   let faqs = extendedProjectFAQs(from: projectFragment)
   let minimumSingleTierPledgeAmount = projectFragment.minPledge
-  
+
   let extendedProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: environmentalCommitments,
     faqs: faqs,
