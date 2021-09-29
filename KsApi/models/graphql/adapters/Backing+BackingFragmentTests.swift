@@ -665,6 +665,7 @@ private func backingDictionary() -> [String: Any] {
         "id": "TG9jYXRpb24tMjQxOTk0NA==",
         "name": "Henderson"
       },
+      "minPledge": 1,
       "name": "WEE WILLIAM WITCHLING",
       "pid": 1596594463,
       "pledged": {

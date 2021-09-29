@@ -1651,6 +1651,7 @@ public enum FetchProjectQueryTemplate {
              "id":"TG9jYXRpb24tNjc2NzU2",
              "name":"München"
           },
+          "minPledge": 1,
           "name":"The Quiet",
           "pid":904702116,
           "pledged":{
