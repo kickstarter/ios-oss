@@ -56,7 +56,7 @@ extension Project {
       } ?? []
 
     let emptyRewards = [noRewardReward(from: data.project?.fragments.projectFragment)]
-    let updatedRewardsWithNoReward = emptyRewards + rewards
+    let allRewards = emptyRewards + rewards
 
     var projectBackingId: Int?
 
@@ -68,7 +68,7 @@ extension Project {
       let fragment = data.project?.fragments.projectFragment,
       let project = Project.project(
         from: fragment,
-        rewards: updatedRewardsWithNoReward,
+        rewards: allRewards,
         addOns: addOns,
         backing: nil,
         currentUserChosenCurrency: data.me?.chosenCurrency
@@ -100,7 +100,7 @@ extension Project {
       } ?? []
 
     let emptyRewards = [noRewardReward(from: data.project?.fragments.projectFragment)]
-    let updatedRewardsWithNoReward = emptyRewards + rewards
+    let allRewards = emptyRewards + rewards
 
     var projectBackingId: Int?
 
@@ -112,7 +112,7 @@ extension Project {
       let fragment = data.project?.fragments.projectFragment,
       let project = Project.project(
         from: fragment,
-        rewards: updatedRewardsWithNoReward,
+        rewards: allRewards,
         addOns: addOns,
         backing: nil,
         currentUserChosenCurrency: data.me?.chosenCurrency
@@ -126,21 +126,13 @@ extension Project {
    */
 
   private static func noRewardReward(from fragment: GraphAPI.ProjectFragment?) -> Reward {
-    var projectMinimumPledgeAmount = 1.0
-    var currentUsersCurrencyFXRate = 1.0
+    let projectMinimumPledgeAmount: Int = fragment?.minPledge ?? 1
+    let currentUsersCurrencyFXRate: Double = fragment?.fxRate ?? 1.0
 
-    if let fxRateValue = fragment?.fxRate {
-      currentUsersCurrencyFXRate = Double(fxRateValue)
-    }
-
-    if let projectMinPledgeSingleTierRawValue = fragment?.minPledge {
-      projectMinimumPledgeAmount = Double(projectMinPledgeSingleTierRawValue)
-    }
-
-    let convertedMinimumAmount = currentUsersCurrencyFXRate * projectMinimumPledgeAmount
+    let convertedMinimumAmount = currentUsersCurrencyFXRate * Double(projectMinimumPledgeAmount)
 
     let emptyReward = Reward.noReward
-      |> Reward.lens.minimum .~ projectMinimumPledgeAmount
+      |> Reward.lens.minimum .~ Double(projectMinimumPledgeAmount)
       |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
 
     return emptyReward
