@@ -2602,6 +2602,110 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testUpdateBacking_Success_OptimizelyClientVariant1() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: false
+          )
+        )
+      )
+    )
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: mockOptimizelyClient) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .discovery,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.popToRootViewController.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.processingViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.popToRootViewController.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.processingViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.shippingRuleSelected(.template)
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.popToRootViewController.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.processingViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.goToRiskMessagingModal.assertDidNotEmitValue()
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.popToRootViewController.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
+      self.processingViewIsHidden.assertValues([false])
+
+      self.scheduler.run()
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.popToRootViewController.assertValueCount(1)
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    }
+  }
+
   func testUpdateBacking_Failure() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
