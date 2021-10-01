@@ -456,19 +456,33 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // MARK: - Risk Messaging Modal
 
+    // If a pledge is being updated and the variant is returning from the experiment, this emits (self.riskMessagingViewControllerDismissedProperty never does)
+    let submitButtonTappedAndIsUpdating = self.submitButtonTappedSignal
+      .combineLatest(with: context)
+      .filter { _, context in
+        context.isUpdating && !isNativeRiskMessagingControlEnabled()
+      }
+      .ignoreValues()
+
     // If the Optimizely risk messaging experiment is set to the control AND the Pledge button is tapped
     // Or if the Optimizely risk messaging experiment is set to the variant and it is dismissed, this emits
     let submitButtonTappedOrRiskMessagingModalDismissed = Signal.merge(
       self.submitButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled),
-      self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isFalse).ignoreValues()
+      self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isFalse).ignoreValues(),
+      submitButtonTappedAndIsUpdating
     )
 
     // The mapConst Bool value here represents whether this is Pay With Apple (true) or Pledge (false)
+    // We only want to present risk messaging when a backing is created, NOT updated
     self.goToRiskMessagingModal = Signal.merge(
       self.submitButtonTappedSignal.mapConst(false),
       self.applePayButtonTappedSignal.mapConst(true)
     )
-    .filter { _ in !isNativeRiskMessagingControlEnabled() }
+    .combineLatest(with: context)
+    .filter { _, context in
+      context.isCreating && !isNativeRiskMessagingControlEnabled()
+    }
+    .map(first)
 
     // MARK: - Create Backing
 
