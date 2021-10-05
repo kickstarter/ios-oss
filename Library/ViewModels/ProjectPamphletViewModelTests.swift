@@ -85,7 +85,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
@@ -123,7 +124,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .failure(.couldNotParseJSON)
+      fetchProjectFriendsResult: .failure(.couldNotParseJSON),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
@@ -161,7 +163,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
       self.vm.inputs.viewDidLoad()
@@ -201,7 +204,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
@@ -227,7 +231,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .failure(.couldNotParseJSON)
+      fetchProjectFriendsResult: .failure(.couldNotParseJSON),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
@@ -250,7 +255,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
       self.vm.inputs.viewDidLoad()
@@ -302,7 +308,13 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    withEnvironment(apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData))) {
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([
+        Reward.noReward,
+        Reward.template
+      ])
+    )) {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
@@ -384,7 +396,10 @@ final class ProjectPamphletViewModelTests: TestCase {
   func testProjectPageViewed_OnViewDidAppear() {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
-    withEnvironment(apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData))) {
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )) {
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.configureInitialState(.init(left: .template))
@@ -406,7 +421,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
     withEnvironment(
-      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      apiService: MockService(
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectRewardsResult: .success([.template])
+      ),
       scheduler: scheduler1
     ) {
       let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
@@ -421,7 +439,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      apiService: MockService(
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectRewardsResult: .success([.template])
+      ),
       scheduler: scheduler2
     ) {
       let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
@@ -482,7 +503,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success([.template])
+      fetchProjectFriendsResult: .success([.template]),
+      fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(
         projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
@@ -654,13 +676,16 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
 
-    let mockService = MockService(fetchProjectPamphletResult: .success(projectPamphletData))
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
 
     withEnvironment(
       apiService: mockService,
       apiDelayInterval: .seconds(1),
       config: .template,
-      mainBundle: releaseBundle
+      mainBundle: self.releaseBundle
     ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
@@ -721,17 +746,18 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
     let friends = [User.template]
     let projectFull = Project.template
-      |> Project.lens.rewardData.rewards .~ [Reward.noReward, Reward.template]
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: Backing.template)
     let projectPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: 1)
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
       fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
     )
 
-    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
+    withEnvironment(apiService: mockService, config: config, mainBundle: self.releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
@@ -758,10 +784,11 @@ final class ProjectPamphletViewModelTests: TestCase {
       apiService: MockService(
         fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
         fetchProjectPamphletResult: .success(projectPamphletData),
-        fetchProjectFriendsResult: .success(friends)
+        fetchProjectFriendsResult: .success(friends),
+        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
       ),
       config: config,
-      mainBundle: releaseBundle
+      mainBundle: self.releaseBundle
     ) {
       self.vm.inputs.didBackProject()
 
@@ -829,10 +856,11 @@ final class ProjectPamphletViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
     )
 
-    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
+    withEnvironment(apiService: mockService, config: config, mainBundle: self.releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
@@ -858,10 +886,11 @@ final class ProjectPamphletViewModelTests: TestCase {
       apiService: MockService(
         fetchManagePledgeViewBackingResult: .success(projectUpdatedAndEnvelope),
         fetchProjectPamphletResult: .success(projectUpdatedPamphletData),
-        fetchProjectFriendsResult: .success(friends)
+        fetchProjectFriendsResult: .success(friends),
+        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
       ),
       config: config,
-      mainBundle: releaseBundle
+      mainBundle: self.releaseBundle
     ) {
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
@@ -920,7 +949,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
       fetchProjectPamphletResult: .success(projectFullPamphletData),
-      fetchProjectFriendsResult: .success(friends)
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
     )
 
     withEnvironment(apiService: mockService, config: config) {
@@ -949,7 +979,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       apiService: MockService(
         fetchManagePledgeViewBackingResult: .success(projectFull2AndEnvelope),
         fetchProjectPamphletResult: .success(projectFull2PamphletData),
-        fetchProjectFriendsResult: .success(friends)
+        fetchProjectFriendsResult: .success(friends),
+        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
       ),
       config: config
     ) {
@@ -1013,7 +1044,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
     withEnvironment(
-      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      apiService: MockService(
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+      ),
       currentUser: User.template,
       ksrAnalytics: ksrAnalytics
     ) {
@@ -1049,7 +1083,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
     withEnvironment(
-      apiService: MockService(fetchProjectPamphletResult: .success(projectPamphletData)),
+      apiService: MockService(
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+      ),
       currentUser: nil,
       ksrAnalytics: ksrAnalytics
     ) {

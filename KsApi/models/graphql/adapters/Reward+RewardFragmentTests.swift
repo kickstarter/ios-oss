@@ -5,7 +5,8 @@ import XCTest
 final class Reward_RewardFragmentTests: XCTestCase {
   func test() {
     do {
-      let fragment = try GraphAPI.RewardFragment(jsonObject: rewardDictionary())
+      let variables = ["includeShippingRules": true]
+      let fragment = try GraphAPI.RewardFragment(jsonObject: rewardDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
       let dateFormatter = DateFormatter()

@@ -237,22 +237,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertNil(lastAddOn.shipping.type)
 
     /// Project rewards data -- rewards
-    XCTAssertEqual(project.rewards.count, 15)
-
-    guard let lastReward = project.rewards.last else {
-      XCTFail()
-
-      return
-    }
-
-    XCTAssertEqual(lastReward.backersCount, 1)
-    XCTAssertEqual(lastReward.convertedMinimum, 599.0)
-    XCTAssertEqual(
-      lastReward.description,
-      "Signed first edition of the book The Quiet with a personal inscription and one of 10 limited edition gallery prints (numbered and signed) on Aluminium Dibond of a photo of your choice from the book (Format: 30x45cm) / Signierte Erstausgabe des Buchs The Quiet mit einer persönlichen WIdmung und einem von 10 limitierten Alu-Dibond Galleryprint (nummeriert und signiert) eines Fotos deiner Wahl aus dem Buch im Format 30 cm x 45 cm."
-    )
-    XCTAssertNil(lastReward.endsAt)
-    XCTAssertFalse(lastReward.hasAddOns)
+    XCTAssertEqual(project.rewards.count, 1)
 
     guard let firstReward = project.rewards.first else {
       XCTFail("project should have at least one reward.")
@@ -261,42 +246,6 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     }
 
     XCTAssertTrue(firstReward.isNoReward)
-
-    guard project.rewards.count > 1 else {
-      XCTFail("project should have at least two rewards.")
-
-      return
-    }
-
-    let secondReward = project.rewards[1]
-
-    XCTAssertTrue(secondReward.hasAddOns)
-
-    let date2: String? = "2021-11-01"
-    let formattedDate2 = date2.flatMap(DateFormatter.isoDateFormatter.date(from:))
-    let timeInterval2 = formattedDate2?.timeIntervalSince1970
-    XCTAssertEqual(lastReward.estimatedDeliveryOn, timeInterval2)
-
-    XCTAssertEqual(lastReward.id, decompose(id: "UmV3YXJkLTgzNDExODA="))
-    XCTAssertEqual(lastReward.limit, 10)
-    XCTAssertEqual(lastReward.limitPerBacker, 1)
-    XCTAssertEqual(lastReward.minimum, 400.0)
-    XCTAssertEqual(lastReward.remaining, 9)
-    XCTAssertNil(lastReward.startsAt)
-    XCTAssertEqual(lastReward.title, "SIGNED BOOK + GALLERY PRINT (30x45cm)")
-    XCTAssertEqual(lastReward.shippingRules?.count, 4)
-    XCTAssertEqual(lastReward.shippingRules?[1].cost, 15.0)
-    XCTAssertEqual(lastReward.shippingRules?[1].location.country, "CH")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.displayableName, "Switzerland")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.localizedName, "Switzerland")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.name, "Switzerland")
-    XCTAssertEqual(lastReward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
-    XCTAssertFalse(lastReward.shipping.enabled)
-    XCTAssertEqual(lastReward.shipping.preference!, .none)
-    XCTAssertNil(lastReward.shippingRulesExpanded)
-    XCTAssertNil(lastReward.shipping.location)
-    XCTAssertNil(lastReward.shipping.summary)
-    XCTAssertNil(lastReward.shipping.type)
 
     /// Extended properties only available on GraphQL
     XCTAssertEqual(

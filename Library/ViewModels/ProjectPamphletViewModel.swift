@@ -344,23 +344,6 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     }
 }
 
-// Stopped here.
-
-// private func noRewardReward(from project: Project) -> Reward {
-//  let emptyRewards = [noRewardReward(from: data.project?.)]
-//  let allRewards = emptyRewards + projectRewards
-//  let projectMinimumPledgeAmount = project.minPledge
-//  let currentUsersCurrencyFXRate = project.fxRate
-//
-//  let convertedMinimumAmount = currentUsersCurrencyFXRate * Double(projectMinimumPledgeAmount)
-//
-//  let emptyReward = Reward.noReward
-//    |> Reward.lens.minimum .~ Double(projectMinimumPledgeAmount)
-//    |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
-//
-//  return emptyReward
-// }
-
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
   return type.isAny(of: .viewBacking, .manage, .fix)
 }
