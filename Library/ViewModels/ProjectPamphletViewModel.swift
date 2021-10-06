@@ -337,8 +337,14 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
 
+      var allRewards = projectRewards
+
+      if let noRewardReward = project.rewardData.rewards.first {
+        allRewards.insert(noRewardReward, at: 0)
+      }
+
       let projectWithBackingAndRewards = project
-        |> Project.lens.rewardData.rewards .~ projectRewards
+        |> Project.lens.rewardData.rewards .~ allRewards
 
       return SignalProducer(value: projectWithBackingAndRewards)
     }
