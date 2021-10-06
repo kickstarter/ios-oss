@@ -15,6 +15,7 @@ public struct ExtendedProjectProperties: Decodable {
   public var faqs: [ProjectFAQ]
   public var risks: String
   public var story: String
+  public var minimumPledgeAmount: Int
 
   public struct ProjectFAQ: Decodable {
     public var answer: String

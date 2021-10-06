@@ -60,6 +60,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nバッカー";
 "Backers_count_separator_backers.zero" = "%{backers_count} バッカー";
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "ものバッカーが Kickstarter クリエイター達のアイデア実現を支援すべく Kickstarter にサインアップしています。";
+"Backing_means_supporting" = "「バックすること」とは、クリエイティブなプロジェクトを、その結果に関係なく支援することを意味します。";
 "Become_a_backer_to_leave_a_comment" = "コメントを残すためにバッカーになる。";
 "Big_Kickstarter_news_and_events_near_you" = "Kickstarter に関するビッグニュースやお近くのイベントについて、年に数回お届け。";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Kickstarter のニュースに加え、あなたにピッタリのおすすめプロジェクトやイベントを随時お送りします.";
@@ -69,6 +70,7 @@
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "アカウントを作成することで、Kickstarter の <a href=\"%{terms_of_use_link}\">利用規約</a> と<a href=\"%{privacy_policy_link}\">プライバシーポリシー</a>に同意したことになります。";
+"By_pledging_you_acknowledge" = "プレッジすると、リワードや払い戻しが Kickstarter またはクリエイターによって保証されていないことを理解したものとみなされます。";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "プレッジをすることにより、Kickstarter の <a href=\"%{terms_of_use_link}\">利用規約</a>、<a href=\"%{privacy_policy_link}\">プライバシーポリシー</a>、<a href=\"%{cookie_policy_link}\">Cookie ポリシー</a>に同意したとみなされます。";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "サインアップすることで、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意するものとみなされます。当社のポリシーでは、Kickstarter のサービスとサイトを配信、改善、促進するために、同社がお客様のデータをどのように使用しているか、そしてそのようなデータ使用を管理するためのお客様の権利について説明しています。";
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "サインアップすることで、Kickstarter に Facebook アカウントを使ってログインすることになります。Facebook を使用したくない場合は、このアプリを再起動して別のオプションをお選びください。";
@@ -276,6 +278,7 @@
 "Hide_password" = "パスワードを非表示にする";
 "Home" = "ホーム";
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
+"I_understand" = "理解しました";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に %{total} の請求が行われます。";
@@ -496,6 +499,7 @@
 "Reward_received" = "リワードを受け取りました";
 "Reward_selected" = "選択中のリワード";
 "Reward_surveys" = "リワードのサーベイ";
+"Rewards_arent_guaranteed" = "リワードは保証されていません。";
 "Rewards_count_rewards.few" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards.many" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards.one" = "%{rewards_count} 種類のリワード";

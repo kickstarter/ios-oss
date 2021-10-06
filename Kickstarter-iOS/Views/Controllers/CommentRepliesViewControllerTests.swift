@@ -25,6 +25,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )
@@ -55,6 +56,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )
@@ -84,6 +86,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )
@@ -114,6 +117,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )
@@ -143,6 +147,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )
@@ -177,6 +182,7 @@ final class CommentRepliesViewControllerTests: TestCase {
           .configuredWith(
             comment: .template,
             project: .template,
+            update: nil,
             inputAreaBecomeFirstResponder: true,
             replyId: nil
           )

@@ -50,6 +50,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .live
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
 
     let backing = Backing.template
       |> Backing.lens.reward .~ reward
@@ -59,7 +60,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([reward])
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -90,13 +92,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: .template)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -129,13 +133,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -168,13 +174,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.state .~ .successful
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
     let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewardData.rewards)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -204,12 +212,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -238,12 +248,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     let liveProject = self.project
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectPamphletData = Project.ProjectPamphletData(project: liveProject, backingId: nil)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(self.project.rewards)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -271,12 +283,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
 
     let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectPamphletResult: .success(projectPamphletData)
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in

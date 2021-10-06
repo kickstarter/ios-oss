@@ -27,6 +27,7 @@ final class CommentRepliesViewController: UITableViewController {
   internal static func configuredWith(
     comment: Comment,
     project: Project,
+    update: Update?,
     inputAreaBecomeFirstResponder: Bool,
     replyId: String?
   ) -> CommentRepliesViewController {
@@ -34,6 +35,7 @@ final class CommentRepliesViewController: UITableViewController {
     vc.viewModel.inputs.configureWith(
       comment: comment,
       project: project,
+      update: update,
       inputAreaBecomeFirstResponder: inputAreaBecomeFirstResponder,
       replyId: replyId
     )
