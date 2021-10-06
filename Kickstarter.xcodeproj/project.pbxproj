@@ -82,6 +82,10 @@
 		062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */; };
 		062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */; };
 		062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */; };
+		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
+		064AEF13270CFB53006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */; };
+		06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */; };
+		06566375270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */; };
 		065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */; };
 		065E6BAA26B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA926B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift */; };
 		065E6BAC26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BAB26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift */; };
@@ -1827,6 +1831,10 @@
 		062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
 		062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
+		064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
+		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
+		06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectRewardsByIdQuery.graphql; sourceTree = "<group>"; };
+		06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryData.swift"; sourceTree = "<group>"; };
 		065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UpdateBackingEnvelope+UpdateBackingMutation.Data.swift"; sourceTree = "<group>"; };
 		065E6BA926B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift"; sourceTree = "<group>"; };
 		065E6BAB26B1F5A0007F67CA /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
@@ -3444,6 +3452,7 @@
 			isa = PBXGroup;
 			children = (
 				0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */,
+				064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */,
 				06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */,
 				06032A8926CEAD2F0013AAB9 /* FetchProjectCommentsQueryTemplate.swift */,
 				06032A8F26CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift */,
@@ -3534,6 +3543,7 @@
 			isa = PBXGroup;
 			children = (
 				8AC3E0882698CC1900168BF8 /* FetchAddOnsQuery.graphql */,
+				06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */,
 				8A1556FE26939F4B00017845 /* FetchBackingQuery.graphql */,
 				06B3605B26E12288006CB9E4 /* FetchProjectByIdQuery.graphql */,
 				06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */,
@@ -3758,8 +3768,10 @@
 				0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */,
 				06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */,
 				06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */,
+				06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */,
 				8AC3E03826977C0200168BF8 /* Project+ProjectFragment.swift */,
 				8AC3E05026979F8600168BF8 /* Project+ProjectFragmentTests.swift */,
+				064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */,
 				8A49396424B54F9B00C3C3CE /* Reward+GraphReward.swift */,
 				8A49396624B68FA500C3C3CE /* Reward+GraphRewardTests.swift */,
 				8AC3E00626961E6400168BF8 /* Reward+RewardFragment.swift */,
@@ -5656,6 +5668,7 @@
 			files = (
 				06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */,
 				06B3605C26E12288006CB9E4 /* FetchProjectByIdQuery.graphql in Resources */,
+				06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */,
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
@@ -7061,6 +7074,7 @@
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				8A49396924B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
+				06566375270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift in Sources */,
 				8A0B1E2724DA0DC3009E90C0 /* GraphLocation.swift in Sources */,
 				8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */,
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
@@ -7175,6 +7189,7 @@
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
+				064AEF13270CFB53006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
 				8AC3E0DA269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.DataTests.swift in Sources */,
 				D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */,
 				8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */,
@@ -7210,6 +7225,7 @@
 				47A662F726AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
 				069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */,
+				064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
 				8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */,
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,

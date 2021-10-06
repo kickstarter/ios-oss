@@ -178,6 +178,9 @@ public protocol ServiceType {
   /// (currently only used on `ProjectPamphetViewModel` because it's a GQL query)
   func fetchProject(projectParam: Param) -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope>
 
+  /// Fetch the project's rewards only, without shipping rules
+  func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope>
+
   /// Fetch a project's friendly backers from its id or slug.
   func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope>
 
