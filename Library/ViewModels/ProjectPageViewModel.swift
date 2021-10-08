@@ -21,16 +21,25 @@ public protocol ProjectPageViewModelInputs {
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
 
+  /// Call when the `ProjectNavigationSelectorViewDelegate` delegate method is called
+  func projectNavigationSelectorViewDidSelect(index: Int)
+
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
 }
 
 public protocol ProjectPageViewModelOutputs {
+  /// Emits the initial `NavigationSection` to configure the page view controller.
+  var configurePagesDataSource: Signal<NavigationSection, Never> { get }
+
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
   var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
+
+  /// Emits Void to configure ProjectNavigationSelectorView
+  var configureProjectNavigationSelectorView: Signal<Void, Never> { get }
 
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
@@ -40,6 +49,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Emits a `NavigationSection` of the index the page view controller will navigate to
+  var navigatePageViewController: Signal<NavigationSection, Never> { get }
 
   /// Emits when the navigation stack should be popped to the root view controller.
   var popToRootViewController: Signal<(), Never> { get }
@@ -53,6 +65,10 @@ public protocol ProjectPageViewModelType {
 public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageViewModelInputs,
   ProjectPageViewModelOutputs {
   public init() {
+    // The first tab we render by default is overview
+    self.configurePagesDataSource = self.viewDidLoadProperty.signal
+      .map { .overview }
+
     let isLoading = MutableProperty(false)
 
     self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
@@ -140,6 +156,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     )
     .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
+    self.configureProjectNavigationSelectorView = self.viewDidLoadProperty.signal
+
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
 
@@ -177,6 +195,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+
+    // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
+    self.navigatePageViewController = self.projectNavigationSelectorViewDidSelectProperty.signal
+      .skipNil()
+      .map { index in NavigationSection(rawValue: index) }
+      .skipNil()
+      .skip(first: 1)
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -204,6 +229,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.pledgeRetryButtonTappedProperty.value = ()
   }
 
+  private let projectNavigationSelectorViewDidSelectProperty = MutableProperty<Int?>(nil)
+  public func projectNavigationSelectorViewDidSelect(index: Int) {
+    self.projectNavigationSelectorViewDidSelectProperty.value = index
+  }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -214,11 +244,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewDidAppearAnimated.value = animated
   }
 
+  public let configurePagesDataSource: Signal<NavigationSection, Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
+  public let configureProjectNavigationSelectorView: Signal<Void, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let navigatePageViewController: Signal<NavigationSection, Never>
   public let popToRootViewController: Signal<(), Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }

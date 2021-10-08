@@ -3,6 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+public enum ProjectPageViewControllerStyles {
+  public enum Layout {
+    public static let projectNavigationSelectorHeight: CGFloat = 60
+  }
+}
+
 protocol ProjectPageViewControllerDelegate: AnyObject {
   func dismissPage(animated: Bool, completion: (() -> Void)?)
   func goToLogin()
@@ -15,6 +21,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
+  private var pagesDataSource: ProjectPamphletPagesDataSource?
+
   /**
    FIXME: This `contentViewController` has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
    Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
@@ -25,8 +33,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private let pageViewController: UIPageViewController = {
+    UIPageViewController(
+      transitionStyle: .scroll,
+      navigationOrientation: .horizontal,
+      options: nil
+    )
+  }()
+
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let projectNavigationSelectorView: ProjectNavigationSelectorView = {
+    ProjectNavigationSelectorView(frame: .zero) |>
+      \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
@@ -49,12 +70,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.setupNavigationView()
     self.configurePledgeCTAContainerView()
+    self.configureProjectNavigationSelectorView()
+    self.configurePageViewController()
 
-    /** FIXME:  - https://kickstarter.atlassian.net/browse/NTV-195
+    /** FIXME:
      self.contentViewController = self.children
        .compactMap { $0 as? ProjectPamphletContentViewController }.first
      self.contentViewController.delegate = self
      */
+    self.projectNavigationSelectorView.delegate = self
     self.pledgeCTAContainerView.delegate = self
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
@@ -103,6 +127,43 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     ]
 
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
+  }
+
+  private func configurePageViewController() {
+    self.pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+    _ = (self.pageViewController.view, self.view)
+      |> ksr_addSubviewToParent()
+
+    NSLayoutConstraint.activate([
+      self.pageViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pageViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pageViewController.view.topAnchor
+        .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      self.pageViewController.view.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor)
+    ])
+
+    self.pageViewController.ksr_setViewControllers(
+      [.init()],
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
+  }
+
+  private func configureProjectNavigationSelectorView() {
+    _ = (self.projectNavigationSelectorView, self.view)
+      |> ksr_addSubviewToParent()
+
+    let constraints = [
+      self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.projectNavigationSelectorView.heightAnchor
+        .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout.projectNavigationSelectorHeight)
+    ]
+
+    NSLayoutConstraint.activate(constraints)
   }
 
   // MARK: - Styles
@@ -160,10 +221,22 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.navigationDelegate?.configureWatchProject(with: watchProjectValue)
       }
 
+    self.viewModel.outputs.configurePagesDataSource
+      .observeForControllerAction()
+      .observeValues { [weak self] navSection in
+        self?.configurePagesDataSource(navSection: navSection)
+      }
+
     self.viewModel.outputs.configurePledgeCTAView
       .observeForUI()
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
+      }
+
+    self.viewModel.outputs.configureProjectNavigationSelectorView
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.projectNavigationSelectorView.configure()
       }
 
     self.viewModel.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
@@ -174,11 +247,39 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         })
       }
 
+    self.viewModel.outputs.navigatePageViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] section in
+        guard let self = self, let controller = self.pagesDataSource?.controllerFor(section: section) else {
+          fatalError("Controller not found for section \(section)")
+        }
+        self.pageViewController.ksr_setViewControllers(
+          [controller],
+          direction: .forward,
+          animated: false,
+          completion: nil
+        )
+      }
+
     self.viewModel.outputs.popToRootViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
+  }
+
+  private func configurePagesDataSource(navSection: NavigationSection) {
+    self.pagesDataSource = ProjectPamphletPagesDataSource(delegate: self)
+    self.pageViewController.dataSource = self.pagesDataSource
+
+    guard let dataSource = self.pagesDataSource else { return }
+
+    self.pageViewController.ksr_setViewControllers(
+      [dataSource.controllerFor(section: navSection)].compact(),
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
   }
 
   private func showProjectStarredPrompt() {
@@ -305,5 +406,13 @@ extension ProjectPageViewController: ProjectPageViewControllerDelegate {
     }
 
     self.present(controller, animated: true, completion: nil)
+  }
+}
+
+// MARK: - ProjectNavigationSelectorViewDelegate
+
+extension ProjectPageViewController: ProjectNavigationSelectorViewDelegate {
+  func projectNavigationSelectorViewDidSelect(_: ProjectNavigationSelectorView, index: Int) {
+    self.viewModel.inputs.projectNavigationSelectorViewDidSelect(index: index)
   }
 }
