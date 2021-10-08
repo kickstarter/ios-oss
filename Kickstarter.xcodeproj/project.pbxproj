@@ -294,6 +294,11 @@
 		47A662F726AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F626AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift */; };
 		47A662F926AF7745001CE7B1 /* WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F826AF7745001CE7B1 /* WatchProjectInputTests.swift */; };
 		47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662FA26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift */; };
+		47A9CD6A270CC6E80082342F /* ProjectNavigationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9CD69270CC6E80082342F /* ProjectNavigationSelectorView.swift */; };
+		47A9CD6C270CFAAF0082342F /* ProjectNavigationSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9CD6B270CFAAF0082342F /* ProjectNavigationSelectorViewModel.swift */; };
+		47A9CD6E270FA13A0082342F /* ProjectPamphletPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9CD6D270FA13A0082342F /* ProjectPamphletPagesDataSource.swift */; };
+		47A9CD74270FB6F90082342F /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9CD73270FB6F90082342F /* ProjectPageViewControllerTests.swift */; };
+		47A9CD76270FC7070082342F /* ProjectNavigationSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9CD75270FC7070082342F /* ProjectNavigationSelectorViewModelTests.swift */; };
 		47AC212F264AD2590090AEDF /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC212E264AD2590090AEDF /* CommentsViewController.swift */; };
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
@@ -2024,6 +2029,11 @@
 		47A662F626AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.WatchProjectInput+WatchProjectInputTests.swift"; sourceTree = "<group>"; };
 		47A662F826AF7745001CE7B1 /* WatchProjectInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectInputTests.swift; sourceTree = "<group>"; };
 		47A662FA26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift"; sourceTree = "<group>"; };
+		47A9CD69270CC6E80082342F /* ProjectNavigationSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorView.swift; sourceTree = "<group>"; };
+		47A9CD6B270CFAAF0082342F /* ProjectNavigationSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModel.swift; sourceTree = "<group>"; };
+		47A9CD6D270FA13A0082342F /* ProjectPamphletPagesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletPagesDataSource.swift; sourceTree = "<group>"; };
+		47A9CD73270FB6F90082342F /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
+		47A9CD75270FC7070082342F /* ProjectNavigationSelectorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModelTests.swift; sourceTree = "<group>"; };
 		47AC212E264AD2590090AEDF /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3916,6 +3926,7 @@
 				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
+				47A9CD69270CC6E80082342F /* ProjectNavigationSelectorView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */,
 				8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */,
@@ -4136,6 +4147,7 @@
 				597073981D06346700B00444 /* ProjectNotificationsViewController.swift */,
 				77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */,
 				06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */,
+				47A9CD73270FB6F90082342F /* ProjectPageViewControllerTests.swift */,
 				A7C93FB81D4415E700C2DF9B /* ProjectPamphletContentViewController.swift */,
 				77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */,
 				A7ED20391E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift */,
@@ -4553,6 +4565,7 @@
 				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
 				A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */,
 				A7ED20101E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift */,
+				47A9CD6D270FA13A0082342F /* ProjectPamphletPagesDataSource.swift */,
 				8A45169224B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift */,
 				8A49395B24B538D400C3C3CE /* RewardAddOnSelectionDataSourceTests.swift */,
 				77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */,
@@ -4830,6 +4843,8 @@
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
 				A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */,
 				A7ED1F991E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift */,
+				47A9CD6B270CFAAF0082342F /* ProjectNavigationSelectorViewModel.swift */,
+				47A9CD75270FC7070082342F /* ProjectNavigationSelectorViewModelTests.swift */,
 				A73EF6D11DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift */,
 				A7ED1F9A1E831C5C00BFFA01 /* ProjectNavigatorViewModelTests.swift */,
 				597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */,
@@ -5917,6 +5932,7 @@
 				D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */,
 				8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */,
 				A73EF6D21DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift in Sources */,
+				47A9CD6C270CFAAF0082342F /* ProjectNavigationSelectorViewModel.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				7748438022D8DA3800508C9B /* Instantiable.swift in Sources */,
@@ -6289,6 +6305,7 @@
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
+				47A9CD76270FC7070082342F /* ProjectNavigationSelectorViewModelTests.swift in Sources */,
 				771F388A2422C961009036A0 /* PersonalizationCellViewModelTests.swift in Sources */,
 				94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */,
 				D660078A2410310400AC1EDB /* CategorySelectionHeaderViewModelTests.swift in Sources */,
@@ -6459,6 +6476,7 @@
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				37CA16B123304DCA006044F9 /* ToggleViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
+				47A9CD6E270FA13A0082342F /* ProjectPamphletPagesDataSource.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */,
@@ -6633,6 +6651,7 @@
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
 				8A49396B24B7735100C3C3CE /* RewardAddOnCardView.swift in Sources */,
+				47A9CD6A270CC6E80082342F /* ProjectNavigationSelectorView.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				D6050F52240463AC00E029D2 /* LandingPageStatsView.swift in Sources */,
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
@@ -6718,6 +6737,7 @@
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
 				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
 				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
+				47A9CD74270FB6F90082342F /* ProjectPageViewControllerTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
