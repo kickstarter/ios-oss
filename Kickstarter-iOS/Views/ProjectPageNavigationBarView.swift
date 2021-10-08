@@ -49,12 +49,12 @@ final class ProjectPageNavigationBarView: UIView {
 
     return buttonView
   }()
-  
+
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  
+
   private lazy var spacer: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -71,7 +71,6 @@ final class ProjectPageNavigationBarView: UIView {
     self.setupConstraints()
     self.setupNotifications()
     self.bindViewModel()
-    self.watchProjectViewModel.inputs.viewDidLoad()
   }
 
   required init?(coder _: NSCoder) {
@@ -108,7 +107,8 @@ final class ProjectPageNavigationBarView: UIView {
   }
 
   private func bindWatchViewModel() {
-    self.navigationSaveButton.rac.accessibilityValue = self.watchProjectViewModel.outputs.saveButtonAccessibilityValue
+    self.navigationSaveButton.rac.accessibilityValue = self.watchProjectViewModel.outputs
+      .saveButtonAccessibilityValue
     self.navigationSaveButton.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
 
     self.watchProjectViewModel.outputs.generateImpactFeedback
@@ -147,13 +147,15 @@ final class ProjectPageNavigationBarView: UIView {
   }
 
   // MARK: Helpers
+
   private func setupConstraints() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-      
+
     _ = (
-      [ self.navigationCloseButton,
+      [
+        self.navigationCloseButton,
         self.spacer,
         self.navigationShareButton,
         self.navigationSaveButton
@@ -247,7 +249,7 @@ extension ProjectPageNavigationBarView: ProjectPageNavigationBarViewDelegate {
   func viewDidLoad() {
     self.watchProjectViewModel.inputs.viewDidLoad()
   }
-  
+
   func configureSharing(with context: ShareContext) {
     self.shareViewModel.inputs.configureWith(shareContext: context, shareContextView: nil)
   }

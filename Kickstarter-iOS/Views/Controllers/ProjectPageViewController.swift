@@ -20,11 +20,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
    Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
    */
   private var contentViewController: ProjectPamphletContentViewController?
-  
+
   private var navigationBarView: ProjectPageNavigationBarView = {
     ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  
+
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -79,14 +79,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     guard let defaultNavigationBarView = self.navigationController?.navigationBar else {
       return
     }
-    
+
     _ = (self.navigationBarView, defaultNavigationBarView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-    
-    
-    navigationBarView.delegate = self
-    self.navigationDelegate = navigationBarView
+
+    self.navigationBarView.delegate = self
+    self.navigationDelegate = self.navigationBarView
   }
 
   private func configurePledgeCTAContainerView() {
