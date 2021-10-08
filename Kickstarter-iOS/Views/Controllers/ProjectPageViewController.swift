@@ -120,15 +120,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.bindProjectPageViewModel()
   }
 
-  // MARK: Orientation Change
-
-  public override func willTransition(
-    to newCollection: UITraitCollection,
-    with _: UIViewControllerTransitionCoordinator
-  ) {
-    self.viewModel.inputs.willTransition(toNewCollection: newCollection)
-  }
-
   // MARK: - Private Helpers
 
   private func setupNotifications() {

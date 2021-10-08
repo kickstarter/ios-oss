@@ -23,9 +23,6 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
-
-  /// Call when the view will transition to a new trait collection.
-  func willTransition(toNewCollection collection: UITraitCollection)
 }
 
 public protocol ProjectPageViewModelOutputs {
@@ -215,12 +212,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let viewDidAppearAnimated = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimated.value = animated
-  }
-
-  fileprivate let willTransitionToCollectionProperty =
-    MutableProperty<UITraitCollection?>(nil)
-  public func willTransition(toNewCollection collection: UITraitCollection) {
-    self.willTransitionToCollectionProperty.value = collection
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
