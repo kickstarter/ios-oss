@@ -3,12 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum CTAContainerView {
-    static let minHeight: CGFloat = 130
-  }
-}
-
 public protocol ProjectPamphletViewControllerDelegate: AnyObject {
   func projectPamphlet(
     _ controller: ProjectPamphletViewController,

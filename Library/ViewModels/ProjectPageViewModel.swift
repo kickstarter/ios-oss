@@ -254,21 +254,21 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   let projectAndBackingProducer = projectAndBackingIdProducer
     .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
       guard let backingId = projectPamphletData.backingId else {
-        return SignalProducer(value: projectPamphletData.project)
+        return fetchProjectRewards(project: projectPamphletData.project)
       }
 
-      let projectWithBacking = AppEnvironment.current.apiService
+      let projectWithBackingAndRewards = AppEnvironment.current.apiService
         .fetchBacking(id: backingId, withStoredCards: false)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .switchMap { projectAndBacking -> SignalProducer<Project, ErrorEnvelope> in
-          let updatedProject = projectPamphletData.project
-            |> Project.lens.personalization.backing .~ projectAndBacking.backing
+        .switchMap { projectWithBacking -> SignalProducer<Project, ErrorEnvelope> in
+          let updatedProjectWithBacking = projectWithBacking.project
+            |> Project.lens.personalization.backing .~ projectWithBacking.backing
             |> Project.lens.personalization.isBacking .~ true
 
-          return SignalProducer(value: updatedProject)
+          return fetchProjectRewards(project: updatedProjectWithBacking)
         }
 
-      return projectWithBacking
+      return projectWithBackingAndRewards
     }
 
   if let project = projectOrParam.left, shouldPrefix {
@@ -276,6 +276,25 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   }
 
   return projectAndBackingProducer
+}
+
+private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+  return AppEnvironment.current.apiService
+    .fetchProjectRewards(projectId: project.id)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
+
+      var allRewards = projectRewards
+
+      if let noRewardReward = project.rewardData.rewards.first {
+        allRewards.insert(noRewardReward, at: 0)
+      }
+
+      let projectWithBackingAndRewards = project
+        |> Project.lens.rewardData.rewards .~ allRewards
+
+      return SignalProducer(value: projectWithBackingAndRewards)
+    }
 }
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
