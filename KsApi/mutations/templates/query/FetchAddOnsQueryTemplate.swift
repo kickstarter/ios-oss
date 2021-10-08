@@ -538,6 +538,7 @@ public enum FetchAddsOnsQueryTemplate {
             "id": "TG9jYXRpb24tMTEwMzM2OA==",
             "name": "Launceston"
           },
+          "minPledge": 1,
           "name": "Peppermint Fox Press: Notebooks & Stationery",
           "pid": 1606532881,
           "pledged": {

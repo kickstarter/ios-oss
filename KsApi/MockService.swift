@@ -92,6 +92,7 @@
     fileprivate let fetchProjectEnvelopeResult: Result<Project, ErrorEnvelope>?
     fileprivate let fetchProjectPamphletEnvelopeResult: Result<Project.ProjectPamphletData, ErrorEnvelope>?
     fileprivate let fetchProjectFriendsEnvelopeResult: Result<[User], ErrorEnvelope>?
+    fileprivate let fetchProjectRewardsEnvelopeResult: Result<[Reward], ErrorEnvelope>?
     fileprivate let fetchProjectsResponse: [Project]?
     fileprivate let fetchProjectsError: ErrorEnvelope?
 
@@ -250,6 +251,7 @@
       fetchProjectResult: Result<Project, ErrorEnvelope>? = nil,
       fetchProjectPamphletResult: Result<Project.ProjectPamphletData, ErrorEnvelope>? = nil,
       fetchProjectFriendsResult: Result<[User], ErrorEnvelope>? = nil,
+      fetchProjectRewardsResult: Result<[Reward], ErrorEnvelope>? = nil,
       fetchProjectActivitiesResponse: [Activity]? = nil,
       fetchProjectActivitiesError: ErrorEnvelope? = nil,
       fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
@@ -419,6 +421,7 @@
       self.fetchProjectEnvelopeResult = fetchProjectResult
       self.fetchProjectPamphletEnvelopeResult = fetchProjectPamphletResult
       self.fetchProjectFriendsEnvelopeResult = fetchProjectFriendsResult
+      self.fetchProjectRewardsEnvelopeResult = fetchProjectRewardsResult
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
       self.fetchProjectStatsError = fetchProjectStatsError
@@ -846,7 +849,8 @@
         projectSlug: slug,
         shippingEnabled: shippingEnabled,
         locationId: locationId,
-        withStoredCards: false
+        withStoredCards: false,
+        includeShippingRules: true
       )
 
       return client
@@ -954,7 +958,7 @@
       switch (projectParam.id, projectParam.slug) {
       case let (.some(paramId), _):
         let fetchProjectQuery = GraphAPI
-          .FetchProjectByIdQuery(projectId: paramId, withStoredCards: false)
+          .FetchProjectByIdQuery(projectId: paramId, withStoredCards: false, includeShippingRules: false)
 
         let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -985,7 +989,7 @@
         return producer
       case let (_, .some(paramSlug)):
         let fetchProjectQuery = GraphAPI
-          .FetchProjectBySlugQuery(slug: paramSlug, withStoredCards: false)
+          .FetchProjectBySlugQuery(slug: paramSlug, withStoredCards: false, includeShippingRules: false)
 
         let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -1056,6 +1060,21 @@
       }
     }
 
+    internal func fetchProjectRewards(projectId: Int) -> SignalProducer<[Reward], ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchProjectRewardsQuery = GraphAPI
+        .FetchProjectRewardsByIdQuery(projectId: projectId, includeShippingRules: false)
+
+      return client
+        .fetchWithResult(
+          query: fetchProjectRewardsQuery,
+          result: self.fetchProjectRewardsEnvelopeResult
+        )
+    }
+
     internal func fetchProject(
       _ params: DiscoveryParams
     ) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
@@ -1075,7 +1094,7 @@
       }
 
       let fetchProjectCommentsQuery = GraphAPI
-        .FetchProjectByIdQuery(projectId: project.id, withStoredCards: false)
+        .FetchProjectByIdQuery(projectId: project.id, withStoredCards: false, includeShippingRules: false)
 
       let projectOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -1556,6 +1575,7 @@
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
             fetchProjectResult: $1.fetchProjectEnvelopeResult,
             fetchProjectFriendsResult: $1.fetchProjectFriendsEnvelopeResult,
+            fetchProjectRewardsResult: $1.fetchProjectRewardsEnvelopeResult,
             fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
             fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
             fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,

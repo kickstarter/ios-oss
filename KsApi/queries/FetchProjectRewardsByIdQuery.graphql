@@ -1,0 +1,9 @@
+query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!) {
+  project(pid: $projectId) {
+    rewards {
+      nodes {
+        ...RewardFragment
+      }
+    }
+  }
+}

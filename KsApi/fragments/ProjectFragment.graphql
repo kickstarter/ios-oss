@@ -48,6 +48,7 @@ fragment ProjectFragment on Project {
   location {
     ...LocationFragment
   }
+  minPledge
   name
   pid
   pledged {

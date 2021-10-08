@@ -304,14 +304,16 @@ public struct Service: ServiceType {
     { return SignalProducer(error: .couldNotParseJSON) }
 
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchUserBackingsQuery(status: status, withStoredCards: false))
+      .fetch(query: GraphAPI
+        .FetchUserBackingsQuery(status: status, withStoredCards: false, includeShippingRules: true))
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
   public func fetchBacking(id: Int, withStoredCards: Bool)
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchBackingQuery(id: "\(id)", withStoredCards: withStoredCards))
+      .fetch(query: GraphAPI
+        .FetchBackingQuery(id: "\(id)", withStoredCards: withStoredCards, includeShippingRules: true))
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
@@ -345,13 +347,15 @@ public struct Service: ServiceType {
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
     switch (projectParam.id, projectParam.slug) {
     case let (.some(projectId), _):
-      let query = GraphAPI.FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
+      let query = GraphAPI
+        .FetchProjectByIdQuery(projectId: projectId, withStoredCards: false, includeShippingRules: false)
 
       return GraphQL.shared.client
         .fetch(query: query)
         .flatMap(Project.projectProducer(from:))
     case let (_, .some(projectSlug)):
-      let query = GraphAPI.FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
+      let query = GraphAPI
+        .FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false, includeShippingRules: false)
 
       return GraphQL.shared.client
         .fetch(query: query)
@@ -373,6 +377,15 @@ public struct Service: ServiceType {
    */
   public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
     return request(.project(param))
+  }
+
+  public func fetchProjectRewards(projectId: Int)
+    -> SignalProducer<[Reward], ErrorEnvelope> {
+    let query = GraphAPI.FetchProjectRewardsByIdQuery(projectId: projectId, includeShippingRules: false)
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap(Project.projectRewardsProducer(from:))
   }
 
   public func fetchProjectFriends(param: Param) -> SignalProducer<[User], ErrorEnvelope> {
@@ -438,7 +451,8 @@ public struct Service: ServiceType {
       projectSlug: slug,
       shippingEnabled: shippingEnabled,
       locationId: locationId,
-      withStoredCards: false
+      withStoredCards: false,
+      includeShippingRules: true
     )
 
     return GraphQL.shared.client

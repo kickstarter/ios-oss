@@ -108,8 +108,18 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
 private func shippingRulesData(
   from rewardFragment: GraphAPI.RewardFragment
 ) -> [ShippingRule]? {
-  return rewardFragment.shippingRules.compactMap { shippingRule -> ShippingRule? in
-    guard let fragment = shippingRule?.fragments.shippingRuleFragment else { return nil }
-    return ShippingRule.shippingRule(from: fragment)
+  guard let existingShippingRules: [GraphAPI.RewardFragment.ShippingRule?] = rewardFragment.shippingRules
+  else {
+    return nil
   }
+
+  let shippingRules = existingShippingRules
+    .compactMap { shippingRule -> ShippingRule? in
+      guard let fragment = shippingRule?.fragments.shippingRuleFragment else { return nil }
+
+      return ShippingRule.shippingRule(from: fragment)
+    }
+    .flatMap { $0 }
+
+  return shippingRules
 }

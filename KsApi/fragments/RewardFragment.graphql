@@ -31,7 +31,7 @@ fragment RewardFragment on Reward {
   }
   remainingQuantity
   shippingPreference
-  shippingRules {
+  shippingRules @include(if: $includeShippingRules) {
     ...ShippingRuleFragment
   }
   startsAt

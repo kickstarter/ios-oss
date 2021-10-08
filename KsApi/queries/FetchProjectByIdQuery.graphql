@@ -1,4 +1,4 @@
-query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
+query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
   me {
     chosenCurrency
   }
@@ -11,11 +11,6 @@ query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
     }
     backing {
       id
-    }
-    rewards {
-      nodes {
-        ...RewardFragment
-      }
     }
   }
 }
