@@ -107,6 +107,7 @@
 		06813BA426E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
+		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06B0FDB327023EB700147E3E /* ProjectPamphletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */; };
@@ -1857,6 +1858,7 @@
 		06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectBySlugQuery.graphql; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
+		06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarViewTests.swift; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
 		06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewController.swift; sourceTree = "<group>"; };
 		06B0FDAC27021D4500147E3E /* ProjectPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModel.swift; sourceTree = "<group>"; };
@@ -3933,6 +3935,7 @@
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */,
+				06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */,
 				8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */,
@@ -6757,6 +6760,7 @@
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
 				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,
 				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,
+				06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
 				A7ED20541E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
