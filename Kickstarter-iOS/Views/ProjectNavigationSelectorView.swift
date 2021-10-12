@@ -211,17 +211,19 @@ final class ProjectNavigationSelectorView: UIView {
         self.scrollView.layoutIfNeeded()
 
         // Moves the button to the approximate center of the scrollView
-        switch NavigationSection(rawValue: index) {
-        case .campaign:
-          self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-        case .overview:
-          self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-        case .environmentalCommitments:
-          self.scrollView.contentOffset = CGPoint(x: button.frame.minX / 2, y: 0)
-        case .faq:
-          self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-        default:
-          break
+        if UIDevice.current.orientation == .portrait {
+          switch NavigationSection(rawValue: index) {
+          case .campaign:
+            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
+          case .overview:
+            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+          case .environmentalCommitments:
+            self.scrollView.contentOffset = CGPoint(x: button.frame.minX / 2, y: 0)
+          case .faq:
+            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
+          default:
+            break
+          }
         }
       }
     )
