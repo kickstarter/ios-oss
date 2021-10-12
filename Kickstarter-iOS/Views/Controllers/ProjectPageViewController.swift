@@ -14,11 +14,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   // MARK: Properties
 
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
-
-  /**
-   FIXME: This `contentViewController` has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
-   Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
-   */
   private var contentViewController: ProjectPamphletContentViewController?
 
   private var navigationBarView: ProjectPageNavigationBarView = {
@@ -150,9 +145,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, _ in
-        /** FIXME: How we do this might change in https://kickstarter.atlassian.net/browse/NTV-195
-         self?.contentViewController?.configureWith(value: (project, refTag))
-         */
         self?.navigationDelegate?.configureSharing(with: .project(project))
 
         let watchProjectValue = WatchProjectValue(project, KSRAnalytics.PageContext.projectPage, nil)
