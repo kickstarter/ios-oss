@@ -12,6 +12,7 @@ final class ProjectPageViewModelTests: TestCase {
   )
   fileprivate var vm: ProjectPageViewModelType!
 
+  private let configurePagesDataSource = TestObserver<NavigationSection, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewContext = TestObserver<PledgeCTAContainerViewContext, Never>()
@@ -19,17 +20,21 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
+  private let configureProjectNavigationSelectorView = TestObserver<Void, Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
+  private let navigatePageViewController = TestObserver<NavigationSection, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm = ProjectPageViewModel()
+
+    self.vm.outputs.configurePagesDataSource.observe(self.configurePagesDataSource.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
@@ -49,6 +54,9 @@ final class ProjectPageViewModelTests: TestCase {
       .map(second)
       .observe(self.configurePledgeCTAViewRefTag.observer)
 
+    self.vm.outputs.configureProjectNavigationSelectorView
+      .observe(self.configureProjectNavigationSelectorView.observer)
+
     self.vm.outputs.configurePledgeCTAView
       .map(first)
       .map(\.right)
@@ -63,6 +71,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
+    self.vm.outputs.navigatePageViewController.observe(self.navigatePageViewController.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
   }
 
@@ -182,6 +191,26 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureChildViewControllersWithProject.assertValues([project, project, project])
       self.configureChildViewControllersWithRefTag.assertValues([nil, nil, nil])
     }
+  }
+
+  func testConfigurePagesDataSource() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+
+    self.configurePagesDataSource.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePagesDataSource.assertValues([.overview])
+  }
+
+  func testConfigureProjectNavigationSelectorView() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+
+    self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.configureProjectNavigationSelectorView.assertDidEmitValue()
   }
 
   func testConfiguredProject_WithFriendsNoBacking_Succcessfully() {
@@ -374,6 +403,30 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
       XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
     }
+  }
+
+  func testNavigatePageViewController() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+
+    self.navigatePageViewController.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.navigatePageViewController.assertDidNotEmitValue()
+
+    // Gets called when initially rendering and defaulting to the first
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: 0)
+
+    self.navigatePageViewController.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: 3)
+
+    self.navigatePageViewController.assertValues([NavigationSection.environmentalCommitments])
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: 0)
+
+    self.navigatePageViewController
+      .assertValues([NavigationSection.environmentalCommitments, NavigationSection.overview])
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
