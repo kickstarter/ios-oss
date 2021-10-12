@@ -210,8 +210,11 @@ final class ProjectNavigationSelectorView: UIView {
         self.selectedButtonBorderViewWidthConstraint?.constant = widthConstant
         self.scrollView.layoutIfNeeded()
 
-        // Moves the button to the approximate center of the scrollView
-        if UIDevice.current.orientation == .portrait {
+        // Moves the button to the approximate center of the scrollView if the device is not an iPad and in portrait orientation
+        let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad
+        let isPortrait = UIDevice.current.orientation == .portrait
+
+        if isPortrait, isNotIpad {
           switch NavigationSection(rawValue: index) {
           case .campaign:
             self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
