@@ -52,7 +52,7 @@ public protocol ProjectNavigationSelectorViewModelType {
 public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelectorViewModelType,
   ProjectNavigationSelectorViewModelInputs, ProjectNavigationSelectorViewModelOutputs {
   public init() {
-    self.animateButtonBottomBorderViewConstraints = self.buttonTappedProperty.signal.skipNil()
+    self.animateButtonBottomBorderViewConstraints = self.buttonTappedProperty.signal
 
     self.configureSelectedButtonBottomBorderView = self.configureNavigationSelectorProperty.signal
 
@@ -61,7 +61,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     // Called when a button is tapped or when the view is configured and we default to the first index
     let setFirstIndexOnConfigurationOrButtonTapped = Signal.merge(
       self.configureNavigationSelectorProperty.signal.mapConst(0),
-      self.buttonTappedProperty.signal.skipNil()
+      self.buttonTappedProperty.signal
     )
 
     self.notifyDelegateProjectNavigationSelectorDidSelect = setFirstIndexOnConfigurationOrButtonTapped
@@ -69,7 +69,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     self.updateNavigationSelectorUI = setFirstIndexOnConfigurationOrButtonTapped
   }
 
-  fileprivate let buttonTappedProperty = MutableProperty<Int?>(nil)
+  fileprivate let buttonTappedProperty = MutableProperty<Int>(0)
   public func buttonTapped(index: Int) {
     self.buttonTappedProperty.value = index
   }
