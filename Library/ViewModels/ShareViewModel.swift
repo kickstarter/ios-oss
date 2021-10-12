@@ -21,13 +21,6 @@ public struct ShareActivityCompletionData {
   }
 }
 
-/// These share types provide us access to knowing when the user successfully shares through that method,
-/// or when the user cancels.
-private let firstPartyShareTypes: [UIActivity.ActivityType] = [
-  .postToFacebook, .postToTwitter, .postToWeibo, .message, .mail, .copyToPasteboard, .addToReadingList,
-  .postToTencentWeibo, .airDrop, SafariActivityType
-]
-
 public protocol ShareViewModelInputs {
   /// Call with the context that this sharing is taking place in.
   func configureWith(shareContext: ShareContext, shareContextView: UIView?)

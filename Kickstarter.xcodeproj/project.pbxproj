@@ -106,8 +106,14 @@
 		067A445026F9135D00A65F46 /* ExtendedProjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */; };
 		06813BA426E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
+		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
+		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
+		06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
+		06B0FDB327023EB700147E3E /* ProjectPamphletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */; };
+		06B0FDB92702579800147E3E /* ProjectPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */; };
+		06B0FDBA2702579A00147E3E /* ProjectPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B0FDAC27021D4500147E3E /* ProjectPageViewModel.swift */; };
 		06B3605C26E12288006CB9E4 /* FetchProjectByIdQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06B3605B26E12288006CB9E4 /* FetchProjectByIdQuery.graphql */; };
 		06B3605F26E15A5E006CB9E4 /* Project+FetchProjectQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */; };
 		06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */; };
@@ -146,6 +152,7 @@
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
+		06E3296B270E39B300216306 /* ProjectPageNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */; };
 		06F7BE1826B31A020094BF37 /* UserCreditCards+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0432126A609C30011728E /* UserCreditCards+UserFragment.swift */; };
 		06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */; };
 		06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */; };
@@ -818,7 +825,6 @@
 		A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD41CFFAB9400653B2F /* LoginIntent.swift */; };
 		A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD51CFFAB9400653B2F /* Notifications.swift */; };
 		A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709697D1D143D1300DB39D3 /* AlertError.swift */; };
-		A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */; };
 		A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */; };
 		A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */; };
 		A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71003E11CDD077200B4F4D7 /* MessageCell.swift */; };
@@ -1015,7 +1021,6 @@
 		A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F601E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift */; };
 		A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */; };
 		A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */; };
-		A7ED1FC31E831C5C00BFFA01 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F671E831C5C00BFFA01 /* ProfileViewModelTests.swift */; };
 		A7ED1FC41E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F681E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift */; };
 		A7ED1FC61E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */; };
 		A7ED1FC71E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6B1E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift */; };
@@ -1125,7 +1130,6 @@
 		A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4419E1D005A9400FE6FC5 /* MessagesViewModel.swift */; };
 		A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4419F1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift */; };
 		A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441A01D005A9400FE6FC5 /* MessageThreadsViewModel.swift */; };
-		A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */; };
 		A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */; };
 		A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */; };
 		A7F441E71D005A9400FE6FC5 /* ThanksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */; };
@@ -1854,7 +1858,12 @@
 		067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedProjectProperties.swift; sourceTree = "<group>"; };
 		06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectBySlugQuery.graphql; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
+		06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
+		06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarViewTests.swift; sourceTree = "<group>"; };
+		06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModelTests.swift; sourceTree = "<group>"; };
 		06B02B90266569D300903A83 /* EmptyCommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCommentsCell.swift; sourceTree = "<group>"; };
+		06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewController.swift; sourceTree = "<group>"; };
+		06B0FDAC27021D4500147E3E /* ProjectPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModel.swift; sourceTree = "<group>"; };
 		06B3605B26E12288006CB9E4 /* FetchProjectByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectByIdQuery.graphql; sourceTree = "<group>"; };
 		06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectQueryData.swift"; sourceTree = "<group>"; };
 		06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCreditCards+UserFragmentTests.swift"; sourceTree = "<group>"; };
@@ -1883,6 +1892,7 @@
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
 		06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModelTests.swift; sourceTree = "<group>"; };
+		06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarView.swift; sourceTree = "<group>"; };
 		06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
 		06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloClientType.swift; sourceTree = "<group>"; };
@@ -2726,7 +2736,6 @@
 		A7ED1F601E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F671E831C5C00BFFA01 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F681E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitySuccessCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F6B1E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardFundingCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2834,7 +2843,6 @@
 		A7F4419E1D005A9400FE6FC5 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		A7F4419F1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadCellViewModel.swift; sourceTree = "<group>"; };
 		A7F441A01D005A9400FE6FC5 /* MessageThreadsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadsViewModel.swift; sourceTree = "<group>"; };
-		A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksViewModel.swift; sourceTree = "<group>"; };
@@ -3928,6 +3936,8 @@
 				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
+				06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */,
+				06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */,
 				8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */,
@@ -4147,6 +4157,8 @@
 				A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */,
 				597073981D06346700B00444 /* ProjectNotificationsViewController.swift */,
 				77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */,
+				06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */,
+				06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */,
 				A7C93FB81D4415E700C2DF9B /* ProjectPamphletContentViewController.swift */,
 				77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */,
 				A7ED20391E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift */,
@@ -4821,8 +4833,6 @@
 				D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */,
 				37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */,
 				37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */,
-				A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */,
-				A7ED1F671E831C5C00BFFA01 /* ProfileViewModelTests.swift */,
 				9D9F580F1D131B4000CE81DE /* ProjectActivitiesViewModel.swift */,
 				A7ED1F7D1E831C5C00BFFA01 /* ProjectActivitiesViewModelTests.swift */,
 				9DEE3B241D1D81950020C2BE /* ProjectActivityBackingCellViewModel.swift */,
@@ -4849,6 +4859,8 @@
 				A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */,
 				597073511D05FE6B00B00444 /* ProjectNotificationsViewModel.swift */,
 				A7ED1F9D1E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift */,
+				06B0FDAC27021D4500147E3E /* ProjectPageViewModel.swift */,
+				06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */,
 				A796A88E1D48DE79009B6EF6 /* ProjectPamphletContentViewModel.swift */,
 				A7ED1F9E1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift */,
 				D66850A0236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift */,
@@ -5947,6 +5959,7 @@
 				8A8099F422E2142C00373E66 /* RewardCardContainerViewModel.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				77A64E5A24647C55003BF98E /* DiscoveryProjectCardViewModel.swift in Sources */,
+				06B0FDBA2702579A00147E3E /* ProjectPageViewModel.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */,
 				94114D83265451FF0063E8F6 /* CommentCellViewModel.swift in Sources */,
@@ -6005,7 +6018,6 @@
 				597073B41D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
 				37DEC1E72257C9F30051EF9B /* PledgeViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
-				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				8A45168D24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift in Sources */,
@@ -6308,6 +6320,7 @@
 				A7ED1FD01E831C5C00BFFA01 /* DashboardActionCellViewModelTests.swift in Sources */,
 				A7ED1FE21E831C5C00BFFA01 /* DiscoveryViewModelTests.swift in Sources */,
 				A7ED1FF81E831C5C00BFFA01 /* VideoViewModelTests.swift in Sources */,
+				06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */,
 				A7ED1FCD1E831C5C00BFFA01 /* ProjectActivityUpdateCellViewModelTests.swift in Sources */,
 				A7A6261B1E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift in Sources */,
 				8A213CF7239EB22900BBB4C7 /* MockTrackingClient.swift in Sources */,
@@ -6371,7 +6384,6 @@
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
 				A7ED1FCA1E831C5C00BFFA01 /* DashboardProjectsDrawerViewModelTests.swift in Sources */,
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
-				A7ED1FC31E831C5C00BFFA01 /* ProfileViewModelTests.swift in Sources */,
 				D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
 				370C8B6823590CC200DE75DD /* LoadingButtonViewModelTests.swift in Sources */,
@@ -6440,10 +6452,10 @@
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,
 				3742036D22DD41BA007AA86E /* PillLayout.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
+				06E3296B270E39B300216306 /* ProjectPageNavigationBarView.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
-				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
 				014D63011E721D500033D2BD /* BackerDashboardProjectCell.swift in Sources */,
 				8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */,
@@ -6505,6 +6517,7 @@
 				8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */,
 				8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */,
 				D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */,
+				06B0FDB327023EB700147E3E /* ProjectPamphletViewController.swift in Sources */,
 				D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */,
 				01940B2B1D46814E0074FCE3 /* HelpWebViewModel.swift in Sources */,
 				D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */,
@@ -6634,6 +6647,7 @@
 				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
+				06B0FDB92702579800147E3E /* ProjectPageViewController.swift in Sources */,
 				8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */,
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
@@ -6726,6 +6740,7 @@
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */,
 				8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */,
+				06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
@@ -6749,6 +6764,7 @@
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
 				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,
 				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,
+				06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
 				A7ED20541E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
