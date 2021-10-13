@@ -362,28 +362,31 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
-    /** FIXME: This is the only entry point to the new project page, as we build it out and get it fully functional we'll need to refactor entry points in `ProjectNavigatorPagesDataSource` and `ProjectNavigatorViewController` (basically search for places where `ProjectPamphletViewController` is used in the app.)
-     let vc = ProjectNavigatorViewController.configuredWith(
-       project: project,
-       refTag: refTag,
-       initialPlaylist: initialPlaylist,
-       navigatorDelegate: self
-     )
+  fileprivate func goTo(project: Project, initialPlaylist: [Project], refTag: RefTag) {
+    guard featureNavigationSelectorProjectPageIsEnabled() else {
+      let vc = ProjectNavigatorViewController.configuredWith(
+        project: project,
+        refTag: refTag,
+        initialPlaylist: initialPlaylist,
+        navigatorDelegate: self
+      )
 
-     if UIDevice.current.userInterfaceIdiom == .pad {
+      if UIDevice.current.userInterfaceIdiom == .pad {
         vc.modalPresentationStyle = .fullScreen
-     }
+      }
 
-     self.present(vc, animated: true, completion: nil)
-     */
+      self.present(vc, animated: true, completion: nil)
+
+      return
+    }
 
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
       refTag: refTag
     )
-    let nav = UINavigationController(rootViewController: vc)
+
+    let nav = NavigationController(rootViewController: vc)
     nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
 
     self.present(nav, animated: true, completion: nil)
