@@ -26,11 +26,7 @@ extension Reward {
     let estimatedDeliveryOn = rewardFragment.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
-    var rewardHasAddons = false
-
-    if let addOnsAvailable = rewardFragment.allowedAddons.nodes {
-      rewardHasAddons = !addOnsAvailable.isEmpty
-    }
+    let rewardHasAddons = rewardFragment.allowedAddons.pageInfo.startCursor != nil
 
     return Reward(
       backersCount: rewardFragment.backersCount,
