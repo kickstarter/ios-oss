@@ -89,10 +89,7 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
              "__typename": "RewardConnection",
-             "pageInfo": {
-               "__typename": "PageInfo",
-               "startCursor": null
-             }
+             "nodes": []
           },
           "backersCount": 2,
           "convertedAmount": {
@@ -172,10 +169,7 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-             "pageInfo": {
-               "__typename": "PageInfo",
-               "startCursor": null
-             }
+            "nodes": []
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -249,10 +243,7 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "pageInfo": {
-              "__typename": "PageInfo",
-              "startCursor": null
-            }
+            "nodes": []
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -326,10 +317,7 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "pageInfo": {
-              "__typename": "PageInfo",
-              "startCursor": null
-            }
+            "nodes": []
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -734,10 +722,19 @@ private func backingDictionary() -> [String: Any] {
       },
       "allowedAddons": {
         "__typename": "RewardConnection",
-        "pageInfo": {
-          "__typename": "PageInfo",
-          "startCursor": "WzIsODMzNzczN10="
-        }
+        "nodes": [{
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNDk="
+          },
+          {
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNTE="
+          },
+          {
+            "__typename": "Reward",
+            "id": "UmV3YXJkLTgzODEyNTE="
+          }
+        ]
       },
       "backersCount": 13,
       "convertedAmount": {

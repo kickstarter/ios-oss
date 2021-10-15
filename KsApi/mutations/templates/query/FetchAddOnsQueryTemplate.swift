@@ -28,10 +28,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "__typename": "Reward",
                 "allowedAddons": {
                   "__typename": "RewardConnection",
-                  "pageInfo": {
-                    "__typename": "PageInfo",
-                    "startCursor": null
-                  }
+                  "nodes": []
                 },
                 "shippingRulesExpanded": {
                   "__typename": "RewardShippingRulesConnection",
@@ -138,10 +135,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "__typename": "Reward",
                 "allowedAddons": {
                   "__typename": "RewardConnection",
-                  "pageInfo": {
-                    "__typename": "PageInfo",
-                    "startCursor": null
-                  }
+                  "nodes": []
                 },
                 "shippingRulesExpanded": {
                   "__typename": "RewardShippingRulesConnection",

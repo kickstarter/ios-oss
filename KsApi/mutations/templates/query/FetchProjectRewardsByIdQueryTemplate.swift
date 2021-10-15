@@ -31,10 +31,13 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": "WzIsODMzNzczN10="
-                     }
+                     "nodes": [{
+                         "id": "UmV3YXJkLTgzODEyNDk="
+                       },
+                       {
+                         "id": "UmV3YXJkLTgzODEyNTE="
+                       }
+                     ]
                    },
                    "backersCount":3,
                    "convertedAmount":{
@@ -79,10 +82,10 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": "WzIsODMzNzczN10="
-                     }
+                     "nodes": [{
+                         "id": "UmV3YXJkLTgzODEyNDk="
+                       }
+                     ]
                    },
                    "backersCount":6,
                    "convertedAmount":{
@@ -176,10 +179,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":10,
                    "convertedAmount":{
@@ -258,10 +258,16 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": "WzIsODMzNzczN10="
-                     }
+                     "nodes": [{
+                         "id": "UmV3YXJkLTgzODEyNDk="
+                       },
+                       {
+                         "id": "UmV3YXJkLTgzODEyNTE="
+                       },
+                       {
+                         "id": "UmV3YXJkLTgzODEyNTE="
+                       }
+                     ]
                    },
                    "backersCount":56,
                    "convertedAmount":{
@@ -355,10 +361,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":10,
                    "convertedAmount":{
@@ -437,10 +440,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":21,
                    "convertedAmount":{
@@ -519,10 +519,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":9,
                    "convertedAmount":{
@@ -605,10 +602,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":10,
                    "convertedAmount":{
@@ -691,10 +685,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":3,
                    "convertedAmount":{
@@ -777,10 +768,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":4,
                    "convertedAmount":{
@@ -863,10 +851,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":6,
                    "convertedAmount":{
@@ -949,10 +934,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":3,
                    "convertedAmount":{
@@ -1035,10 +1017,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":1,
                    "convertedAmount":{
@@ -1121,10 +1100,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "pageInfo": {
-                       "__typename": "PageInfo",
-                       "startCursor": null
-                     }
+                     "nodes": []
                    },
                    "backersCount":1,
                    "convertedAmount":{
