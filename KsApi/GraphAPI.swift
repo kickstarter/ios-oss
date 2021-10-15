@@ -5056,7 +5056,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
+      query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
         me {
           __typename
           chosenCurrency
@@ -5064,13 +5064,6 @@ public enum GraphAPI {
         project(pid: $projectId) {
           __typename
           ...ProjectFragment
-          addOns {
-            __typename
-            nodes {
-              __typename
-              ...RewardFragment
-            }
-          }
           backing {
             __typename
             id
@@ -5090,23 +5083,19 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + RewardFragment.fragmentDefinition)
-      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       return document
     }
 
     public var projectId: Int
     public var withStoredCards: Bool
-    public var includeShippingRules: Bool
 
-    public init(projectId: Int, withStoredCards: Bool, includeShippingRules: Bool) {
+    public init(projectId: Int, withStoredCards: Bool) {
       self.projectId = projectId
       self.withStoredCards = withStoredCards
-      self.includeShippingRules = includeShippingRules
     }
 
     public var variables: GraphQLMap? {
-      return ["projectId": projectId, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
+      return ["projectId": projectId, "withStoredCards": withStoredCards]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -5196,7 +5185,6 @@ public enum GraphAPI {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLFragmentSpread(ProjectFragment.self),
-            GraphQLField("addOns", type: .object(AddOn.selections)),
             GraphQLField("backing", type: .object(Backing.selections)),
           ]
         }
@@ -5213,16 +5201,6 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        /// Backing Add-ons
-        public var addOns: AddOn? {
-          get {
-            return (resultMap["addOns"] as? ResultMap).flatMap { AddOn(unsafeResultMap: $0) }
-          }
-          set {
-            resultMap.updateValue(newValue?.resultMap, forKey: "addOns")
           }
         }
 
@@ -5258,98 +5236,6 @@ public enum GraphAPI {
             }
             set {
               resultMap += newValue.resultMap
-            }
-          }
-        }
-
-        public struct AddOn: GraphQLSelectionSet {
-          public static let possibleTypes: [String] = ["ProjectRewardConnection"]
-
-          public static var selections: [GraphQLSelection] {
-            return [
-              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("nodes", type: .list(.object(Node.selections))),
-            ]
-          }
-
-          public private(set) var resultMap: ResultMap
-
-          public init(unsafeResultMap: ResultMap) {
-            self.resultMap = unsafeResultMap
-          }
-
-          public init(nodes: [Node?]? = nil) {
-            self.init(unsafeResultMap: ["__typename": "ProjectRewardConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
-          }
-
-          public var __typename: String {
-            get {
-              return resultMap["__typename"]! as! String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          /// A list of nodes.
-          public var nodes: [Node?]? {
-            get {
-              return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
-            }
-            set {
-              resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
-            }
-          }
-
-          public struct Node: GraphQLSelectionSet {
-            public static let possibleTypes: [String] = ["Reward"]
-
-            public static var selections: [GraphQLSelection] {
-              return [
-                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                GraphQLFragmentSpread(RewardFragment.self),
-              ]
-            }
-
-            public private(set) var resultMap: ResultMap
-
-            public init(unsafeResultMap: ResultMap) {
-              self.resultMap = unsafeResultMap
-            }
-
-            public var __typename: String {
-              get {
-                return resultMap["__typename"]! as! String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "__typename")
-              }
-            }
-
-            public var fragments: Fragments {
-              get {
-                return Fragments(unsafeResultMap: resultMap)
-              }
-              set {
-                resultMap += newValue.resultMap
-              }
-            }
-
-            public struct Fragments {
-              public private(set) var resultMap: ResultMap
-
-              public init(unsafeResultMap: ResultMap) {
-                self.resultMap = unsafeResultMap
-              }
-
-              public var rewardFragment: RewardFragment {
-                get {
-                  return RewardFragment(unsafeResultMap: resultMap)
-                }
-                set {
-                  resultMap += newValue.resultMap
-                }
-              }
             }
           }
         }
@@ -5400,7 +5286,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
+      query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
         me {
           __typename
           chosenCurrency
@@ -5408,13 +5294,6 @@ public enum GraphAPI {
         project(slug: $slug) {
           __typename
           ...ProjectFragment
-          addOns {
-            __typename
-            nodes {
-              __typename
-              ...RewardFragment
-            }
-          }
           backing {
             __typename
             id
@@ -5434,23 +5313,19 @@ public enum GraphAPI {
       document.append("\n" + LocationFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + RewardFragment.fragmentDefinition)
-      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       return document
     }
 
     public var slug: String
     public var withStoredCards: Bool
-    public var includeShippingRules: Bool
 
-    public init(slug: String, withStoredCards: Bool, includeShippingRules: Bool) {
+    public init(slug: String, withStoredCards: Bool) {
       self.slug = slug
       self.withStoredCards = withStoredCards
-      self.includeShippingRules = includeShippingRules
     }
 
     public var variables: GraphQLMap? {
-      return ["slug": slug, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
+      return ["slug": slug, "withStoredCards": withStoredCards]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -5540,7 +5415,6 @@ public enum GraphAPI {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLFragmentSpread(ProjectFragment.self),
-            GraphQLField("addOns", type: .object(AddOn.selections)),
             GraphQLField("backing", type: .object(Backing.selections)),
           ]
         }
@@ -5557,16 +5431,6 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        /// Backing Add-ons
-        public var addOns: AddOn? {
-          get {
-            return (resultMap["addOns"] as? ResultMap).flatMap { AddOn(unsafeResultMap: $0) }
-          }
-          set {
-            resultMap.updateValue(newValue?.resultMap, forKey: "addOns")
           }
         }
 
@@ -5602,98 +5466,6 @@ public enum GraphAPI {
             }
             set {
               resultMap += newValue.resultMap
-            }
-          }
-        }
-
-        public struct AddOn: GraphQLSelectionSet {
-          public static let possibleTypes: [String] = ["ProjectRewardConnection"]
-
-          public static var selections: [GraphQLSelection] {
-            return [
-              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("nodes", type: .list(.object(Node.selections))),
-            ]
-          }
-
-          public private(set) var resultMap: ResultMap
-
-          public init(unsafeResultMap: ResultMap) {
-            self.resultMap = unsafeResultMap
-          }
-
-          public init(nodes: [Node?]? = nil) {
-            self.init(unsafeResultMap: ["__typename": "ProjectRewardConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
-          }
-
-          public var __typename: String {
-            get {
-              return resultMap["__typename"]! as! String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          /// A list of nodes.
-          public var nodes: [Node?]? {
-            get {
-              return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
-            }
-            set {
-              resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
-            }
-          }
-
-          public struct Node: GraphQLSelectionSet {
-            public static let possibleTypes: [String] = ["Reward"]
-
-            public static var selections: [GraphQLSelection] {
-              return [
-                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                GraphQLFragmentSpread(RewardFragment.self),
-              ]
-            }
-
-            public private(set) var resultMap: ResultMap
-
-            public init(unsafeResultMap: ResultMap) {
-              self.resultMap = unsafeResultMap
-            }
-
-            public var __typename: String {
-              get {
-                return resultMap["__typename"]! as! String
-              }
-              set {
-                resultMap.updateValue(newValue, forKey: "__typename")
-              }
-            }
-
-            public var fragments: Fragments {
-              get {
-                return Fragments(unsafeResultMap: resultMap)
-              }
-              set {
-                resultMap += newValue.resultMap
-              }
-            }
-
-            public struct Fragments {
-              public private(set) var resultMap: ResultMap
-
-              public init(unsafeResultMap: ResultMap) {
-                self.resultMap = unsafeResultMap
-              }
-
-              public var rewardFragment: RewardFragment {
-                get {
-                  return RewardFragment(unsafeResultMap: resultMap)
-                }
-                set {
-                  resultMap += newValue.resultMap
-                }
-              }
             }
           }
         }

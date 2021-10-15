@@ -348,14 +348,14 @@ public struct Service: ServiceType {
     switch (projectParam.id, projectParam.slug) {
     case let (.some(projectId), _):
       let query = GraphAPI
-        .FetchProjectByIdQuery(projectId: projectId, withStoredCards: false, includeShippingRules: false)
+        .FetchProjectByIdQuery(projectId: projectId, withStoredCards: false)
 
       return GraphQL.shared.client
         .fetch(query: query)
         .flatMap(Project.projectProducer(from:))
     case let (_, .some(projectSlug)):
       let query = GraphAPI
-        .FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false, includeShippingRules: false)
+        .FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
 
       return GraphQL.shared.client
         .fetch(query: query)

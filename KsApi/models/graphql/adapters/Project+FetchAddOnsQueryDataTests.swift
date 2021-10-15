@@ -35,6 +35,18 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertEqual(addOn.limitPerBacker, 10)
     XCTAssertEqual(addOn.title, "Paper Sticker Sheet")
     XCTAssertEqual(addOn.shippingRules?.count, 2)
+    XCTAssertNil(addOn.endsAt)
+    XCTAssertFalse(addOn.hasAddOns)
+    XCTAssertEqual(addOn.id, decompose(id: "UmV3YXJkLTgxOTAzMjA="))
+    XCTAssertEqual(addOn.minimum, 4.0)
+    XCTAssertEqual(addOn.shipping.enabled, false)
+    XCTAssertEqual(addOn.shipping.preference!, .none)
+    XCTAssertNil(addOn.limit)
+    XCTAssertNil(addOn.remaining)
+    XCTAssertNil(addOn.startsAt)
+    XCTAssertNil(addOn.shipping.location)
+    XCTAssertNil(addOn.shipping.summary)
+    XCTAssertNil(addOn.shipping.type)
 
     guard let hasAnExpandedShippingRule = envelope.addOns?.first?.shippingRulesExpanded?.first else {
       XCTFail()

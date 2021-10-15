@@ -200,41 +200,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.dates.stateChangedAt, TimeInterval(1_625_118_950))
 
     /// Project rewards data -- add ons
-    XCTAssertEqual(project.addOns?.count, 3)
-
-    guard let lastAddOn = project.addOns?.last else {
-      XCTFail()
-
-      return
-    }
-
-    XCTAssertEqual(lastAddOn.backersCount, 6)
-    XCTAssertEqual(lastAddOn.convertedMinimum, 36.0)
-    XCTAssertEqual(
-      lastAddOn.description,
-      "First edition of the book The Quiet / Erstausgabe des Buchs The Quiet."
-    )
-    XCTAssertNil(lastAddOn.endsAt)
-    XCTAssertFalse(lastAddOn.hasAddOns)
-    let date: String? = "2021-11-01"
-    let formattedDate = date.flatMap(DateFormatter.isoDateFormatter.date(from:))
-    let timeInterval = formattedDate?.timeIntervalSince1970
-    XCTAssertEqual(lastAddOn.estimatedDeliveryOn, timeInterval)
-
-    XCTAssertEqual(lastAddOn.id, decompose(id: "UmV3YXJkLTgzNjE3Njc="))
-    XCTAssertNil(lastAddOn.limit)
-    XCTAssertEqual(lastAddOn.limitPerBacker, 10)
-    XCTAssertEqual(lastAddOn.minimum, 24.0)
-    XCTAssertNil(lastAddOn.remaining)
-    XCTAssertNil(lastAddOn.startsAt)
-    XCTAssertEqual(lastAddOn.title, "FIRST EDITION / ERSTAUSGABE")
-    XCTAssertEqual(lastAddOn.shippingRules?.count, 2)
-    XCTAssertEqual(lastAddOn.shipping.enabled, false)
-    XCTAssertEqual(lastAddOn.shipping.preference!, .none)
-    XCTAssertNil(lastAddOn.shippingRulesExpanded)
-    XCTAssertNil(lastAddOn.shipping.location)
-    XCTAssertNil(lastAddOn.shipping.summary)
-    XCTAssertNil(lastAddOn.shipping.type)
+    XCTAssertNil(project.addOns)
 
     /// Project rewards data -- rewards
     XCTAssertEqual(project.rewards.count, 1)
