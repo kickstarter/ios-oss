@@ -7,8 +7,8 @@ fragment RewardFragment on Reward {
     ...MoneyFragment
   }
   allowedAddons {
-    nodes {
-      id
+    pageInfo {
+      startCursor
     }
   }
   description

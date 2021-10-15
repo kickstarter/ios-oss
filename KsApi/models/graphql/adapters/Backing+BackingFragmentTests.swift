@@ -89,7 +89,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
              "__typename": "RewardConnection",
-             "nodes": []
+             "pageInfo": {
+               "__typename": "PageInfo",
+               "startCursor": null
+             }
           },
           "backersCount": 2,
           "convertedAmount": {
@@ -169,7 +172,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "nodes": []
+             "pageInfo": {
+               "__typename": "PageInfo",
+               "startCursor": null
+             }
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -243,7 +249,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "nodes": []
+            "pageInfo": {
+              "__typename": "PageInfo",
+              "startCursor": null
+            }
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -317,7 +326,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "nodes": []
+            "pageInfo": {
+              "__typename": "PageInfo",
+              "startCursor": null
+            }
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -722,19 +734,10 @@ private func backingDictionary() -> [String: Any] {
       },
       "allowedAddons": {
         "__typename": "RewardConnection",
-        "nodes": [{
-            "__typename": "Reward",
-            "id": "UmV3YXJkLTgzODEyNDk="
-          },
-          {
-            "__typename": "Reward",
-            "id": "UmV3YXJkLTgzODEyNTE="
-          },
-          {
-            "__typename": "Reward",
-            "id": "UmV3YXJkLTgzODEyNTE="
-          }
-        ]
+        "pageInfo": {
+          "__typename": "PageInfo",
+          "startCursor": "WzIsODMzNzczN10="
+        }
       },
       "backersCount": 13,
       "convertedAmount": {

@@ -58,15 +58,10 @@ private func rewardDictionary() -> [String: Any] {
     "__typename": "Reward",
     "allowedAddons": {
       "__typename": "RewardConnection",
-      "nodes": [{
-          "__typename": "Reward",
-          "id": "UmV3YXJkLTgzODEyNDk="
-        },
-        {
-          "__typename": "Reward",
-          "id": "UmV3YXJkLTgzODEyNTE="
-        }
-      ]
+      "pageInfo": {
+        "__typename": "PageInfo",
+        "startCursor": "WzIsODMzNzczN10="
+      }
     },
     "amount": {
       "__typename": "Money",
