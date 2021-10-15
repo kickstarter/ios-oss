@@ -34,7 +34,10 @@ public enum FetchProjectQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "nodes": []
+                     "pageInfo": {
+                       "__typename": "PageInfo",
+                       "startCursor": null
+                     }
                    },
                    "backersCount":68,
                    "convertedAmount":{
@@ -113,7 +116,10 @@ public enum FetchProjectQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "nodes": []
+                     "pageInfo": {
+                       "__typename": "PageInfo",
+                       "startCursor": null
+                     }
                    },
                    "backersCount":17,
                    "convertedAmount":{
@@ -192,7 +198,10 @@ public enum FetchProjectQueryTemplate {
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
-                     "nodes": []
+                     "pageInfo": {
+                       "__typename": "PageInfo",
+                       "startCursor": null
+                     }
                    },
                    "backersCount":6,
                    "convertedAmount":{
