@@ -10838,9 +10838,9 @@ public enum GraphAPI {
         }
         allowedAddons {
           __typename
-          pageInfo {
+          nodes {
             __typename
-            startCursor
+            id
           }
         }
         description
@@ -11231,7 +11231,7 @@ public enum GraphAPI {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+          GraphQLField("nodes", type: .list(.object(Node.selections))),
         ]
       }
 
@@ -11241,8 +11241,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(pageInfo: PageInfo) {
-        self.init(unsafeResultMap: ["__typename": "RewardConnection", "pageInfo": pageInfo.resultMap])
+      public init(nodes: [Node?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "RewardConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
       }
 
       public var __typename: String {
@@ -11254,23 +11254,23 @@ public enum GraphAPI {
         }
       }
 
-      /// Information to aid in pagination.
-      public var pageInfo: PageInfo {
+      /// A list of nodes.
+      public var nodes: [Node?]? {
         get {
-          return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+          return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
         }
         set {
-          resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+          resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
         }
       }
 
-      public struct PageInfo: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["PageInfo"]
+      public struct Node: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Reward"]
 
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("startCursor", type: .scalar(String.self)),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           ]
         }
 
@@ -11280,8 +11280,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(startCursor: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "PageInfo", "startCursor": startCursor])
+        public init(id: GraphQLID) {
+          self.init(unsafeResultMap: ["__typename": "Reward", "id": id])
         }
 
         public var __typename: String {
@@ -11293,13 +11293,12 @@ public enum GraphAPI {
           }
         }
 
-        /// When paginating backwards, the cursor to continue.
-        public var startCursor: String? {
+        public var id: GraphQLID {
           get {
-            return resultMap["startCursor"] as? String
+            return resultMap["id"]! as! GraphQLID
           }
           set {
-            resultMap.updateValue(newValue, forKey: "startCursor")
+            resultMap.updateValue(newValue, forKey: "id")
           }
         }
       }
