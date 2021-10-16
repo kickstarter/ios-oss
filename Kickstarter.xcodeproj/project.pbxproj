@@ -300,6 +300,12 @@
 		478E31C526C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */; };
 		478E31C726C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */; };
 		478E31C926C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C826C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift */; };
+		4791BDDC27162C3B00DFE5D5 /* ProjectFAQsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */; };
+		4791BDDE27162E1700DFE5D5 /* ProjectFAQsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */; };
+		4791BDE0271749F500DFE5D5 /* ProjectFAQsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */; };
+		4791BDE227174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */; };
+		4791BDE42717604C00DFE5D5 /* ProjectFAQsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */; };
+		4791BDE6271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */; };
 		47A662F126AF1FCC001CE7B1 /* WatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47A662F026AF1FCC001CE7B1 /* WatchProject.graphql */; };
 		47A662F326AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F226AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift */; };
 		47A662F526AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A662F426AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift */; };
@@ -2041,6 +2047,12 @@
 		478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift"; sourceTree = "<group>"; };
 		478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UnwatchProjectInput+WatchProjectInput.swift"; sourceTree = "<group>"; };
 		478E31C826C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift"; sourceTree = "<group>"; };
+		4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewController.swift; sourceTree = "<group>"; };
+		4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewModel.swift; sourceTree = "<group>"; };
+		4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsDataSource.swift; sourceTree = "<group>"; };
+		4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsEmptyStateCell.swift; sourceTree = "<group>"; };
+		4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCell.swift; sourceTree = "<group>"; };
+		4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModel.swift; sourceTree = "<group>"; };
 		47A0432126A609C30011728E /* UserCreditCards+UserFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCreditCards+UserFragment.swift"; sourceTree = "<group>"; };
 		47A662F026AF1FCC001CE7B1 /* WatchProject.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = WatchProject.graphql; sourceTree = "<group>"; };
 		47A662F226AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.WatchProjectInput+WatchProjectInput.swift"; sourceTree = "<group>"; };
@@ -4040,6 +4052,8 @@
 				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
 				9D9F57D11D131AF200CE81DE /* ProjectActivityUpdateCell.swift */,
 				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
+				4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */,
+				4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */,
 				597073B01D07281800B00444 /* ProjectNotificationCell.swift */,
 				D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */,
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
@@ -4161,6 +4175,7 @@
 				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
+				4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */,
 				A78838A81D8A32060081E94D /* ProjectNavBarViewController.swift */,
 				A7ED20361E8323E900BFFA01 /* ProjectNavBarViewControllerTests.swift */,
 				A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */,
@@ -4581,11 +4596,12 @@
 				8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */,
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
+				4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
-				477239722710F87D00D26CDA /* ProjectPamphletPagesDataSource.swift */,
 				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
 				A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */,
 				A7ED20101E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift */,
+				477239722710F87D00D26CDA /* ProjectPamphletPagesDataSource.swift */,
 				8A45169224B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift */,
 				8A49395B24B538D400C3C3CE /* RewardAddOnSelectionDataSourceTests.swift */,
 				77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */,
@@ -4861,6 +4877,8 @@
 				A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */,
 				A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */,
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
+				4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */,
+				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */,
 				A7ED1F991E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift */,
 				477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */,
@@ -5966,6 +5984,7 @@
 				203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */,
 				8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */,
 				A76126AD1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
+				4791BDE6271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift in Sources */,
 				94BA16E426698C8B0034CC3F /* CommentTableViewFooterViewModel.swift in Sources */,
 				59B0E0061D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */,
 				77D19FF5240813240058FC8E /* NavigationController.swift in Sources */,
@@ -6181,6 +6200,7 @@
 				018422C01D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift in Sources */,
 				D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */,
 				8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */,
+				4791BDDE27162E1700DFE5D5 /* ProjectFAQsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6426,6 +6446,7 @@
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
 				D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */,
+				4791BDE42717604C00DFE5D5 /* ProjectFAQsCell.swift in Sources */,
 				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */,
 				018422C51D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift in Sources */,
@@ -6435,6 +6456,7 @@
 				A74FFE691CE3FFE200C7BCB9 /* SearchMessagesViewController.swift in Sources */,
 				598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */,
 				477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */,
+				4791BDE227174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift in Sources */,
 				0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */,
 				A7CC14421D00E74F00035C52 /* FindFriendsStatsCell.swift in Sources */,
 				77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */,
@@ -6580,6 +6602,7 @@
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
 				774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */,
+				4791BDE0271749F500DFE5D5 /* ProjectFAQsDataSource.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
 				A7561A3D1D3146290028DEA1 /* ProjectNavigatorViewController.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
@@ -6646,6 +6669,7 @@
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */,
 				8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */,
+				4791BDDC27162C3B00DFE5D5 /* ProjectFAQsViewController.swift in Sources */,
 				D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */,
 				77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */,
 				8A13D15F249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift in Sources */,

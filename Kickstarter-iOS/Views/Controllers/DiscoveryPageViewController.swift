@@ -363,7 +363,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   fileprivate func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
-    /** FIXME: This is the only entry point to the new project page, as we build it out and get it fully functional we'll need to refactor entry points in `ProjectNavigatorPagesDataSource` and `ProjectNavigatorViewController` (basically search for places where `ProjectPamphletViewController` is used in the app.)
+    /** FIXME: This is an entry point to the new project page, as we build it out and get it fully functional we'll need to refactor entry points in `ProjectNavigatorPagesDataSource` and `ProjectNavigatorViewController` (basically search for places where `ProjectPamphletViewController` is used in the app.)
      let vc = ProjectNavigatorViewController.configuredWith(
        project: project,
        refTag: refTag,

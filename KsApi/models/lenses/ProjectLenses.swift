@@ -1,5 +1,20 @@
 import Prelude
 
+extension ExtendedProjectProperties {
+  public enum lens {
+    public static let faqs = Lens<ExtendedProjectProperties, [ProjectFAQ]>(
+      view: { $0.faqs },
+      set: { ExtendedProjectProperties(
+        environmentalCommitments: $1.environmentalCommitments,
+        faqs: $0,
+        risks: $1.risks,
+        story: $1.story,
+        minimumPledgeAmount: $1.minimumPledgeAmount
+      ) }
+    )
+  }
+}
+
 extension Project {
   public enum lens {
     public static let availableCardTypes = Lens<Project, [String]?>(
@@ -97,6 +112,20 @@ extension Project {
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
         country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $0, id: $1.id,
+        location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
+        video: $1.video
+      ) }
+    )
+
+    public static let extendedProjectProperties = Lens<Project, ExtendedProjectProperties?>(
+      view: { $0.extendedProjectProperties },
+      set: { Project(
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country,
+        creator: $1.creator, extendedProjectProperties: $0, memberData: $1.memberData, dates: $1.dates,
+        displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
@@ -318,6 +347,16 @@ extension Lens where Whole == Project, Part == User {
     return Project.lens.creator .. User.lens.name
   }
 }
+
+// extension Lens where Whole == Project, Part == ExtendedProjectProperties {
+//  public var rewards: Lens<Project, [Reward]> {
+//    return Project.lens.rewardData .. Project.RewardData.lens.rewards
+//  }
+
+//  public var faqs: Lens<ExtendedProjectProperties, [ExtendedProjectProperties.ProjectFAQ]> {
+//    return ExtendedProjectProperties.lens
+//  }
+// }
 
 extension Lens where Whole == Project, Part == Location {
   public var name: Lens<Project, String> {

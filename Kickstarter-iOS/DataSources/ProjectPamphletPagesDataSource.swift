@@ -5,7 +5,7 @@ import UIKit
 internal final class ProjectPamphletPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
-  internal init(delegate _: UIViewController) {
+  internal init(delegate _: UIViewController, project: Project) {
     self.viewControllers = NavigationSection.allCases.map { navSection in
       switch navSection {
       case .overview:
@@ -17,8 +17,7 @@ internal final class ProjectPamphletPagesDataSource: NSObject, UIPageViewControl
         viewController.view.backgroundColor = .orange
         return viewController
       case .faq:
-        let viewController = UIViewController()
-        viewController.view.backgroundColor = .yellow
+        let viewController = ProjectFAQsViewController.configuredWith(project: project)
         return viewController
       case .environmentalCommitments:
         let viewController = UIViewController()
