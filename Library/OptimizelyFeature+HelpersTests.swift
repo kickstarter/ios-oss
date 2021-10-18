@@ -20,4 +20,22 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureCommentFlaggingIsEnabled())
     }
   }
+
+  func testNavigationSelectorProjectPageEnabled_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertTrue(featureNavigationSelectorProjectPageIsEnabled())
+    }
+  }
+
+  func testNavigationSelectorProjectPageEnabled_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featureNavigationSelectorProjectPageIsEnabled())
+    }
+  }
 }
