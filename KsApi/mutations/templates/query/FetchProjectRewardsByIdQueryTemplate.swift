@@ -48,8 +48,9 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-09-01",
                    "id":"UmV3YXJkLTgzMzQzNTk=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[]
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": []
                    },
                    "limit":null,
                    "limitPerBacker":1,
@@ -96,13 +97,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzc3MTI=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYzMTA5",
-                            "name":"POSTCARD / POSTKARTE"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYzMTA5",
+                           "name": "POSTCARD / POSTKARTE"
                          }
-                      ]
+                       }
+                     ]
                    },
                    "limit":50,
                    "limitPerBacker":1,
@@ -193,13 +200,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQzOTY=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name":"BOOK The Quiet"
                          }
-                      ]
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -275,13 +288,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzA3MDQ=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name":"BOOK The Quiet"
                          }
-                      ]
+                       }
+                     ]
                    },
                    "limit":null,
                    "limitPerBacker":1,
@@ -372,13 +391,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQzNjU=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name":"BOOK The Quiet"
                          }
-                      ]
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -454,13 +479,19 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDMwNDM=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name":"BOOK The Quiet"
                          }
-                      ]
+                       }
+                     ]
                    },
                    "limit":null,
                    "limitPerBacker":1,
@@ -536,17 +567,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNDk=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ2",
-                            "name":"SPECIAL EDITION PRINT (20cmx30cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ2",
+                           "name": "SPECIAL EDITION PRINT (20cmx30cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -622,17 +664,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNTg=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ2",
-                            "name":"SPECIAL EDITION PRINT (20cmx30cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ2",
+                           "name": "SPECIAL EDITION PRINT (20cmx30cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -708,17 +761,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODg=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ2",
-                            "name":"SPECIAL EDITION PRINT (20cmx30cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ2",
+                           "name": "SPECIAL EDITION PRINT (20cmx30cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -794,17 +858,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNDI=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjY1MjY2",
-                            "name":"SPECIAL EDITION PRINT (30cmx45cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjY1MjY2",
+                           "name": "SPECIAL EDITION PRINT (30cmx45cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -880,17 +955,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNTY=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjY1MjY2",
-                            "name":"SPECIAL EDITION PRINT (30cmx45cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjY1MjY2",
+                           "name": "SPECIAL EDITION PRINT (30cmx45cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -966,17 +1052,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODM=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjY1ODIz",
-                            "name":"SPECIAL EDITION PRINT (50cmx75cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjY1ODIz",
+                           "name": "SPECIAL EDITION PRINT (50cmx75cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -1052,17 +1149,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODU=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjY1ODIz",
-                            "name":"SPECIAL EDITION PRINT (50cmx75cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjY1ODIz",
+                           "name": "SPECIAL EDITION PRINT (50cmx75cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,
@@ -1138,17 +1246,28 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODA=",
                    "isMaxPledge":false,
-                   "items":{
-                      "nodes":[
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjYxMTQ1",
-                            "name":"BOOK The Quiet"
-                         },
-                         {
-                            "id":"UmV3YXJkSXRlbS0xMjY0ODAz",
-                            "name":"GALLERY PRINT (30x45cm)"
+                   "items": {
+                     "__typename": "RewardItemsConnection",
+                     "edges": [
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjYxMTQ1",
+                           "name": "BOOK The Quiet"
                          }
-                      ]
+                       },
+                       {
+                         "__typename": "RewardItemEdge",
+                         "quantity": 1,
+                         "node": {
+                           "__typename": "RewardItem",
+                           "id": "UmV3YXJkSXRlbS0xMjY0ODAz",
+                           "name": "GALLERY PRINT (30x45cm)"
+                         }
+                       }
+                     ]
                    },
                    "limit":10,
                    "limitPerBacker":1,

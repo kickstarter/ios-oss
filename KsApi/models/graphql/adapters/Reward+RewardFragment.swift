@@ -55,9 +55,10 @@ private func rewardItemsData(
   from rewardFragment: GraphAPI.RewardFragment,
   with projectId: Int
 ) -> [RewardsItem] {
-  return rewardFragment.items?.nodes?.compactMap { item -> RewardsItem? in
+  return rewardFragment.items?.edges?.compactMap { edge -> RewardsItem? in
     guard
-      let item = item,
+      let quantity = edge?.quantity,
+      let item = edge?.node,
       let id = decompose(id: item.id),
       let rewardId = decompose(id: rewardFragment.id),
       let name = item.name
@@ -71,7 +72,7 @@ private func rewardItemsData(
         name: name,
         projectId: projectId
       ),
-      quantity: 0, // not needed
+      quantity: quantity,
       rewardId: rewardId
     )
   } ?? []

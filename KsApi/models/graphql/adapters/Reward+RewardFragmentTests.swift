@@ -35,8 +35,10 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.remaining, nil)
       XCTAssertEqual(v1Reward.rewardsItems[0].item.id, 1_170_799)
       XCTAssertEqual(v1Reward.rewardsItems[0].item.name, "Soft-Cover Book (Signed)")
+      XCTAssertEqual(v1Reward.rewardsItems[0].quantity, 2)
       XCTAssertEqual(v1Reward.rewardsItems[1].item.id, 1_170_813)
       XCTAssertEqual(v1Reward.rewardsItems[1].item.name, "Custom Bookmark")
+      XCTAssertEqual(v1Reward.rewardsItems[1].quantity, 1)
 
       XCTAssertEqual(v1Reward.shipping.enabled, true)
       XCTAssertEqual(v1Reward.shipping.preference, .unrestricted)
@@ -84,15 +86,24 @@ private func rewardDictionary() -> [String: Any] {
     "isMaxPledge": false,
     "items": {
       "__typename": "RewardItemsConnection",
-      "nodes": [{
-          "__typename": "RewardItem",
-          "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
-          "name": "Soft-Cover Book (Signed)"
+      "edges": [
+        {
+          "__typename": "RewardItemEdge",
+          "quantity": 2,
+          "node": {
+            "__typename": "RewardItem",
+            "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
+            "name": "Soft-Cover Book (Signed)"
+          }
         },
         {
-          "__typename": "RewardItem",
-          "id": "UmV3YXJkSXRlbS0xMTcwODEz",
-          "name": "Custom Bookmark"
+          "__typename": "RewardItemEdge",
+          "quantity": 1,
+          "node": {
+            "__typename": "RewardItem",
+            "id": "UmV3YXJkSXRlbS0xMTcwODEz",
+            "name": "Custom Bookmark"
+          }
         }
       ]
     },

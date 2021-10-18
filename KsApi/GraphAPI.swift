@@ -10623,10 +10623,14 @@ public enum GraphAPI {
         isMaxPledge
         items {
           __typename
-          nodes {
+          edges {
             __typename
-            id
-            name
+            quantity
+            node {
+              __typename
+              id
+              name
+            }
           }
         }
         limit
@@ -11083,7 +11087,7 @@ public enum GraphAPI {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("nodes", type: .list(.object(Node.selections))),
+          GraphQLField("edges", type: .list(.object(Edge.selections))),
         ]
       }
 
@@ -11093,8 +11097,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(nodes: [Node?]? = nil) {
-        self.init(unsafeResultMap: ["__typename": "RewardItemsConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }])
+      public init(edges: [Edge?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "RewardItemsConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
       }
 
       public var __typename: String {
@@ -11106,24 +11110,24 @@ public enum GraphAPI {
         }
       }
 
-      /// A list of nodes.
-      public var nodes: [Node?]? {
+      /// A list of edges.
+      public var edges: [Edge?]? {
         get {
-          return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+          return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
         }
         set {
-          resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+          resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
         }
       }
 
-      public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["RewardItem"]
+      public struct Edge: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["RewardItemEdge"]
 
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-            GraphQLField("name", type: .scalar(String.self)),
+            GraphQLField("quantity", type: .nonNull(.scalar(Int.self))),
+            GraphQLField("node", type: .object(Node.selections)),
           ]
         }
 
@@ -11133,8 +11137,8 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, name: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "RewardItem", "id": id, "name": name])
+        public init(quantity: Int, node: Node? = nil) {
+          self.init(unsafeResultMap: ["__typename": "RewardItemEdge", "quantity": quantity, "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -11146,22 +11150,73 @@ public enum GraphAPI {
           }
         }
 
-        public var id: GraphQLID {
+        /// The quantity of an item associated with a reward
+        public var quantity: Int {
           get {
-            return resultMap["id"]! as! GraphQLID
+            return resultMap["quantity"]! as! Int
           }
           set {
-            resultMap.updateValue(newValue, forKey: "id")
+            resultMap.updateValue(newValue, forKey: "quantity")
           }
         }
 
-        /// An item name.
-        public var name: String? {
+        /// The item at the end of the edge.
+        public var node: Node? {
           get {
-            return resultMap["name"] as? String
+            return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
           }
           set {
-            resultMap.updateValue(newValue, forKey: "name")
+            resultMap.updateValue(newValue?.resultMap, forKey: "node")
+          }
+        }
+
+        public struct Node: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["RewardItem"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+              GraphQLField("name", type: .scalar(String.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID, name: String? = nil) {
+            self.init(unsafeResultMap: ["__typename": "RewardItem", "id": id, "name": name])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var id: GraphQLID {
+            get {
+              return resultMap["id"]! as! GraphQLID
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "id")
+            }
+          }
+
+          /// An item name.
+          public var name: String? {
+            get {
+              return resultMap["name"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "name")
+            }
           }
         }
       }

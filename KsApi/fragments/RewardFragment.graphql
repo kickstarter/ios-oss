@@ -18,9 +18,12 @@ fragment RewardFragment on Reward {
   id
   isMaxPledge
   items {
-    nodes {
-      id
-      name
+    edges {
+      quantity
+      node {
+        id
+        name
+      }
     }
   }
   limit
