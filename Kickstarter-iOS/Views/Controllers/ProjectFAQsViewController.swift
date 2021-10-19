@@ -121,15 +121,16 @@ internal final class ProjectFAQsViewController: UIViewController {
 
     self.viewModel.outputs.loadFAQs
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.dataSource.load(project: project)
+      .observeValues { [weak self] project, isExpandedStates in
+        self?.dataSource.load(project: project, isExpandedStates: isExpandedStates)
         self?.tableView.reloadData()
       }
-    
-    self.viewModel.outputs.notifyDelegateDidSelectRow
+
+    self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] indexPath in
-        print("*** notifyDelegateDidSelectRow")
+      .observeValues { [weak self] project, isExpandedStates in
+        self?.dataSource.load(project: project, isExpandedStates: isExpandedStates)
+        self?.tableView.reloadData()
       }
   }
 }
@@ -156,6 +157,7 @@ private let tableViewStyle: TableViewStyle = { view in
 
 extension ProjectFAQsViewController: UITableViewDelegate {
   func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.viewModel.inputs.didSelectRowAt(indexPath: indexPath)
+    let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
+    self.viewModel.inputs.didSelectRowAt(row: indexPath.row, values: values)
   }
 }

@@ -49,6 +49,21 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var updatedLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var updatedLabelContainerView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var updatedLabelStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -72,6 +87,14 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
     self.answerLabel.rac.text = self.viewModel.outputs.answerLabelText
     self.answerStackView.rac.hidden = self.viewModel.outputs.answerStackViewIsHidden
     self.questionLabel.rac.text = self.viewModel.outputs.questionLabelText
+    self.updatedLabel.rac.text = self.viewModel.outputs.updatedLabelText
+
+    self.viewModel.outputs.toggleChevron
+      .observeForUI()
+      .observeValues { [weak self] isExpanded in
+        guard let self = self else { return }
+        _ = self.chevronImageView |> isExpanded ? chevronUpImageViewStyle : chevronDownImageViewStyle
+      }
   }
 
   override func bindStyles() {
@@ -83,8 +106,8 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
     _ = self.answerLabel
       |> answerLabelStyle
 
-    _ = self.chevronImageView
-      |> chevronImageViewStyle
+    _ = self.answerStackView
+      |> answerStackViewStyle
 
     _ = self.imageViewStackView
       |> imageViewStackViewStyle
@@ -97,12 +120,21 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.updatedLabel
+      |> updatedLabelStyle
+
+    _ = self.updatedLabelContainerView
+      |> updatedLabelContainerViewStyle
+
+    _ = self.updatedLabelStackView
+      |> updatedLabelStackViewStyle
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: ProjectFAQ) {
-    self.viewModel.inputs.configureWith(faq: value)
+  func configureWith(value: (ProjectFAQ, Bool)) {
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   private func configureViews() {
@@ -110,7 +142,7 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.answerLabel], self.answerStackView)
+    _ = ([self.answerLabel, self.updatedLabelStackView], self.answerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([UIView(), self.chevronImageView, UIView()], self.imageViewStackView)
@@ -120,6 +152,13 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.questionStackView, self.answerStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.updatedLabel, self.updatedLabelContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.updatedLabelContainerView, UIView()], self.updatedLabelStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -144,16 +183,33 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
 
 private let answerLabelStyle: LabelStyle = { label in
   label
+    |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_body()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ .ksr_support_700
 }
 
-private let chevronImageViewStyle: ImageViewStyle = { imageView in
+private let answerStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(2)
+}
+
+private let chevronDownImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.backgroundColor .~ .ksr_support_100
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_chevron_down")
+    |> \.layer.cornerRadius .~ Styles.grid(1)
+}
+
+private let chevronUpImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.backgroundColor .~ .ksr_support_100
+    |> \.contentMode .~ .scaleAspectFit
+    |> \.image .~ image(named: "icon_chevron_up")
     |> \.layer.cornerRadius .~ Styles.grid(1)
 }
 
@@ -185,6 +241,27 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
     |> \.layoutMargins .~ .init(all: Styles.grid(1))
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(2)
+}
+
+private let updatedLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption2().bolded
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ .ksr_support_500
+}
+
+private let updatedLabelContainerViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .ksr_support_100
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+}
+
+private let updatedLabelStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ Styles.grid(2)

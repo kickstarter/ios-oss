@@ -8,7 +8,7 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
     case faqs
   }
 
-  func load(project: Project) {
+  func load(project: Project, isExpandedStates: [Bool]) {
     // Clear all sections
     self.clearValues()
 
@@ -21,25 +21,30 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
       return
     }
 
+    let values = faqs.enumerated().map { idx, faq in
+      (faq, isExpandedStates[idx])
+    }
+
     self.set(
-      values: faqs,
+      values: values,
       cellClass: ProjectFAQsCell.self,
       inSection: Section.faqs.rawValue
     )
   }
 
-//  internal func indexPath(forProjectRow row: Int) -> IndexPath {
-//    return IndexPath(item: row, section: Section.faqs.rawValue)
-//  }
-
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as ProjectFAQsEmptyStateCell, _):
       cell.configureWith(value: ())
-    case let (cell as ProjectFAQsCell, value as ProjectFAQ):
+    case let (cell as ProjectFAQsCell, value as (ProjectFAQ, Bool)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
+  }
+
+  func isExpandedValuesForFAQsSection() -> [Bool]? {
+    guard let values = self[section: Section.faqs.rawValue] as? [(ProjectFAQ, Bool)] else { return nil }
+    return values.map { _, isExpanded in isExpanded }
   }
 }

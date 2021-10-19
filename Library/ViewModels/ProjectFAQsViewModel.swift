@@ -6,19 +6,19 @@ public protocol ProjectFAQsViewModelInputs {
   /// Call with the `Project` given to the view.
   func configureWith(project: Project)
 
-  /// Call with the `IndexPath` of the cell selected
-  func didSelectRowAt(indexPath: IndexPath)
+  /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
+  func didSelectRowAt(row: Int, values: [Bool])
 
   /// Call when the view loads.
   func viewDidLoad()
 }
 
 public protocol ProjectFAQsViewModelOutputs {
-  /// Emits the `Project` so the data source can use the faqs and render cells
-  var loadFAQs: Signal<Project, Never> { get }
-  
-  /// Emits the `IndexPath` of the cell that was selected
-  var notifyDelegateDidSelectRow: Signal<IndexPath, Never> { get }
+  /// Emits a tuple of `Project, [Bool]` so the data source can use the faqs and isExpanded states to render cells
+  var loadFAQs: Signal<(Project, [Bool]), Never> { get }
+
+  /// Emits a tuple of `Project, [Bool]` after a cell is selected and the data source needs to be updated
+  var updateDataSource: Signal<(Project, [Bool]), Never> { get }
 }
 
 public protocol ProjectFAQsViewModelType {
@@ -34,9 +34,22 @@ public final class ProjectFAQsViewModel: ProjectFAQsViewModelType,
       .combineLatest(with: self.viewDidLoadProperty.signal)
       .map(first)
 
-    self.loadFAQs = project
-    
-    self.notifyDelegateDidSelectRow = self.didSelectRowAtProperty.signal.skipNil()
+    let initialIsExpandedArray = project
+      .map(\.extendedProjectProperties?.faqs.count)
+      .skipNil()
+      .map { count in Array(repeating: false, count: count) }
+
+    self.loadFAQs = Signal.combineLatest(project, initialIsExpandedArray)
+
+    self.updateDataSource = project
+      .combineLatest(with: self.didSelectRowAtProperty.signal.skipNil())
+      .map { project, indexAndDataSourceValues -> (Project, [Bool]) in
+        let (index, isExpandedValues) = indexAndDataSourceValues
+        var updatedValues = isExpandedValues
+        updatedValues[index] = !updatedValues[index]
+
+        return (project, updatedValues)
+      }
   }
 
   fileprivate let configureDataProperty = MutableProperty<Project?>(nil)
@@ -44,9 +57,9 @@ public final class ProjectFAQsViewModel: ProjectFAQsViewModelType,
     self.configureDataProperty.value = project
   }
 
-  fileprivate let didSelectRowAtProperty = MutableProperty<IndexPath?>(nil)
-  public func didSelectRowAt(indexPath: IndexPath) {
-    self.didSelectRowAtProperty.value = indexPath
+  fileprivate let didSelectRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
+  public func didSelectRowAt(row: Int, values: [Bool]) {
+    self.didSelectRowAtProperty.value = (row, values)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -54,8 +67,8 @@ public final class ProjectFAQsViewModel: ProjectFAQsViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadFAQs: Signal<Project, Never>
-  public let notifyDelegateDidSelectRow: Signal<IndexPath, Never>
+  public let loadFAQs: Signal<(Project, [Bool]), Never>
+  public let updateDataSource: Signal<(Project, [Bool]), Never>
 
   public var inputs: ProjectFAQsViewModelInputs { return self }
   public var outputs: ProjectFAQsViewModelOutputs { return self }
