@@ -7,3 +7,5 @@ coverage:
     patch:
       default:
         informational: true
+ignore: 
+  - "KsApi/mutations/templates"
