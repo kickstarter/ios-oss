@@ -89,7 +89,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
              "__typename": "RewardConnection",
-             "nodes": []
+             "pageInfo": {
+               "__typename": "PageInfo",
+               "startCursor": null
+             }
           },
           "backersCount": 2,
           "convertedAmount": {
@@ -106,11 +109,15 @@ private func backingDictionary() -> [String: Any] {
           "isMaxPledge": false,
           "items": {
             "__typename": "RewardItemsConnection",
-            "nodes": [
+            "edges": [
               {
-                "__typename": "RewardItem",
-                "id": "UmV3YXJkSXRlbS0xMTcwODA4",
-                "name": "Art Book (8.5x11)"
+                "__typename": "RewardItemEdge",
+                "quantity": 1,
+                "node": {
+                  "__typename": "RewardItem",
+                  "id": "UmV3YXJkSXRlbS0xMTcwODA4",
+                  "name":"Art Book (8.5x11)"
+                }
               }
             ]
           },
@@ -169,7 +176,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "nodes": []
+             "pageInfo": {
+               "__typename": "PageInfo",
+               "startCursor": null
+             }
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -186,7 +196,7 @@ private func backingDictionary() -> [String: Any] {
           "isMaxPledge": false,
           "items": {
             "__typename": "RewardItemsConnection",
-            "nodes": []
+            "edges": []
           },
           "limit": null,
           "limitPerBacker": 10,
@@ -243,7 +253,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "nodes": []
+            "pageInfo": {
+              "__typename": "PageInfo",
+              "startCursor": null
+            }
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -260,7 +273,7 @@ private func backingDictionary() -> [String: Any] {
           "isMaxPledge": false,
           "items": {
             "__typename": "RewardItemsConnection",
-            "nodes": []
+            "edges": []
           },
           "limit": null,
           "limitPerBacker": 10,
@@ -317,7 +330,10 @@ private func backingDictionary() -> [String: Any] {
           },
           "allowedAddons": {
             "__typename": "RewardConnection",
-            "nodes": []
+            "pageInfo": {
+              "__typename": "PageInfo",
+              "startCursor": null
+            }
           },
           "backersCount": 23,
           "convertedAmount": {
@@ -334,7 +350,7 @@ private func backingDictionary() -> [String: Any] {
           "isMaxPledge": false,
           "items": {
             "__typename": "RewardItemsConnection",
-            "nodes": []
+            "edges": []
           },
           "limit": null,
           "limitPerBacker": 10,
@@ -722,19 +738,10 @@ private func backingDictionary() -> [String: Any] {
       },
       "allowedAddons": {
         "__typename": "RewardConnection",
-        "nodes": [{
-            "__typename": "Reward",
-            "id": "UmV3YXJkLTgzODEyNDk="
-          },
-          {
-            "__typename": "Reward",
-            "id": "UmV3YXJkLTgzODEyNTE="
-          },
-          {
-            "__typename": "Reward",
-            "id": "UmV3YXJkLTgzODEyNTE="
-          }
-        ]
+        "pageInfo": {
+          "__typename": "PageInfo",
+          "startCursor": "WzIsODMzNzczN10="
+        }
       },
       "backersCount": 13,
       "convertedAmount": {
@@ -751,16 +758,24 @@ private func backingDictionary() -> [String: Any] {
       "isMaxPledge": false,
       "items": {
         "__typename": "RewardItemsConnection",
-        "nodes": [
+        "edges": [
           {
-            "__typename": "RewardItem",
-            "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
-            "name": "Soft-Cover Book (Signed)"
+            "__typename": "RewardItemEdge",
+            "quantity": 1,
+            "node": {
+              "__typename": "RewardItem",
+              "id": "UmV3YXJkSXRlbS0xMTcwNzk5",
+              "name": "Soft-Cover Book (Signed)"
+            }
           },
           {
-            "__typename": "RewardItem",
-            "id": "UmV3YXJkSXRlbS0xMTcwODEz",
-            "name": "Custom Bookmark"
+            "__typename": "RewardItemEdge",
+            "quantity": 1,
+            "node": {
+              "__typename": "RewardItem",
+              "id": "UmV3YXJkSXRlbS0xMjY0ODAz",
+              "name": "GALLERY PRINT (30x45cm)"
+            }
           }
         ]
       },

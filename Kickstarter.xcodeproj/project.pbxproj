@@ -627,14 +627,11 @@
 		8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */; };
 		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
 		8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */; };
-		8A4E9537244F9CEA00A578CF /* ManagePledgeViewBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E9536244F9CEA00A578CF /* ManagePledgeViewBackingEnvelope.swift */; };
 		8A4E95392450FBB500A578CF /* CreditCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E95382450FBB500A578CF /* CreditCardType.swift */; };
 		8A4E953B2450FE1500A578CF /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E953A2450FE1500A578CF /* Money.swift */; };
-		8A4E953D2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E953C2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift */; };
 		8A4E954524525AC900A578CF /* CreditCardType+ImageName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */; };
 		8A4E954724525DE400A578CF /* ProjectState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954624525DE400A578CF /* ProjectState.swift */; };
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
-		8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */; };
 		8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555868264C4AE400C2C30D /* GraphComment.swift */; };
 		8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555873264C4C8300C2C30D /* CommentsQueries.swift */; };
 		8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */; };
@@ -2358,14 +2355,11 @@
 		8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
 		8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AttributedTests.swift"; sourceTree = "<group>"; };
-		8A4E9536244F9CEA00A578CF /* ManagePledgeViewBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelope.swift; sourceTree = "<group>"; };
 		8A4E95382450FBB500A578CF /* CreditCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardType.swift; sourceTree = "<group>"; };
 		8A4E953A2450FE1500A578CF /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
-		8A4E953C2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTests.swift; sourceTree = "<group>"; };
 		8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreditCardType+ImageName.swift"; sourceTree = "<group>"; };
 		8A4E954624525DE400A578CF /* ProjectState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectState.swift; sourceTree = "<group>"; };
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
-		8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		8A555868264C4AE400C2C30D /* GraphComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphComment.swift; sourceTree = "<group>"; };
 		8A555873264C4C8300C2C30D /* CommentsQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueries.swift; sourceTree = "<group>"; };
 		8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueriesTests.swift; sourceTree = "<group>"; };
@@ -3620,7 +3614,6 @@
 				8A0B1E2924DA12E4009E90C0 /* GraphRewardTemplates.swift */,
 				D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */,
 				D770DDE7217D729300B5319A /* GraphUserTemplates.swift */,
-				8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */,
 				8A49396824B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift */,
 			);
 			path = graphql;
@@ -3693,8 +3686,6 @@
 				D63BBD30217F7212007E01F0 /* UserCreditCards.swift */,
 				77DB53292215D0AA0078991C /* UserCreditCardsTests.swift */,
 				77FA1AF22445FB810035D659 /* GraphUserTests.swift */,
-				8A4E9536244F9CEA00A578CF /* ManagePledgeViewBackingEnvelope.swift */,
-				8A4E953C2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift */,
 				8A49396024B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift */,
 				8A49396224B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift */,
 				8AE3F72F24DA29DE002B03C3 /* adapters */,
@@ -7092,7 +7083,6 @@
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */,
-				8A4E9537244F9CEA00A578CF /* ManagePledgeViewBackingEnvelope.swift in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				8AA407C624DB36E8008C5FB0 /* Project.Country+GraphCountry.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
@@ -7157,7 +7147,6 @@
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
-				8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				8A4E953B2450FE1500A578CF /* Money.swift in Sources */,
 				8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */,
@@ -7286,7 +7275,6 @@
 				8A49396724B68FA500C3C3CE /* Reward+GraphRewardTests.swift in Sources */,
 				066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */,
 				06032A9426CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift in Sources */,
-				8A4E953D2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift in Sources */,
 				06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */,
 				066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */,
 				8AC3E0A42698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift in Sources */,

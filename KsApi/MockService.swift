@@ -958,7 +958,7 @@
       switch (projectParam.id, projectParam.slug) {
       case let (.some(paramId), _):
         let fetchProjectQuery = GraphAPI
-          .FetchProjectByIdQuery(projectId: paramId, withStoredCards: false, includeShippingRules: false)
+          .FetchProjectByIdQuery(projectId: paramId, withStoredCards: false)
 
         let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -989,7 +989,7 @@
         return producer
       case let (_, .some(paramSlug)):
         let fetchProjectQuery = GraphAPI
-          .FetchProjectBySlugQuery(slug: paramSlug, withStoredCards: false, includeShippingRules: false)
+          .FetchProjectBySlugQuery(slug: paramSlug, withStoredCards: false)
 
         let projectOrErrorOnlyResult: Result<Project, ErrorEnvelope>
 
@@ -1094,7 +1094,7 @@
       }
 
       let fetchProjectCommentsQuery = GraphAPI
-        .FetchProjectByIdQuery(projectId: project.id, withStoredCards: false, includeShippingRules: false)
+        .FetchProjectByIdQuery(projectId: project.id, withStoredCards: false)
 
       let projectOnlyResult: Result<Project, ErrorEnvelope>
 

@@ -3,6 +3,14 @@ import Prelude
 import XCTest
 
 final class Reward_GraphRewardTests: XCTestCase {
+  var dateFormatter: DateFormatter {
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+
+    return dateFormatter
+  }
+
   func test() {
     let shippingReward = GraphReward.template
       |> \.shippingPreference .~ .restricted
@@ -14,14 +22,10 @@ final class Reward_GraphRewardTests: XCTestCase {
       return
     }
 
-    let dateFormatter = DateFormatter()
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-
     let v1Reward = Reward.reward(
       from: reward,
       projectId: Project.template.id,
-      dateFormatter: dateFormatter
+      dateFormatter: self.dateFormatter
     )
 
     XCTAssertNotNil(v1Reward)
@@ -61,14 +65,10 @@ final class Reward_GraphRewardTests: XCTestCase {
       return
     }
 
-    let dateFormatter = DateFormatter()
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-
     let v1Reward = Reward.reward(
       from: reward,
       projectId: Project.template.id,
-      dateFormatter: dateFormatter
+      dateFormatter: self.dateFormatter
     )
 
     XCTAssertNotNil(v1Reward)
@@ -93,6 +93,285 @@ final class Reward_GraphRewardTests: XCTestCase {
 
     XCTAssertEqual(v1Reward?.isLimitedQuantity, false)
     XCTAssertEqual(v1Reward?.isLimitedTime, false)
+  }
+
+  func test_shippingPreference_None() {
+    let shippingReward = GraphReward.template
+      |> \.shippingPreference .~ .noShipping
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNotNil(v1Reward)
+    XCTAssertEqual(v1Reward?.shipping.preference, Reward.Shipping.Preference.none)
+  }
+
+  func test_shippingPreference_Unrestricted() {
+    let shippingReward = GraphReward.template
+      |> \.shippingPreference .~ .unrestricted
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNotNil(v1Reward)
+    XCTAssertEqual(v1Reward?.shipping.preference, .unrestricted)
+  }
+
+  func test_shippingPreference_Restricted() {
+    let shippingReward = GraphReward.template
+      |> \.shippingPreference .~ .restricted
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNotNil(v1Reward)
+    XCTAssertEqual(v1Reward?.shipping.preference, .restricted)
+  }
+
+  func test_shippingPreference_Nil() {
+    let shippingReward = GraphReward.template
+      |> \.shippingPreference .~ nil
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNotNil(v1Reward)
+    XCTAssertEqual(v1Reward?.shipping.preference, Reward.Shipping.Preference.none)
+  }
+
+  func test_rewardNoValidId_Fails() {
+    let shippingReward = GraphReward.template
+      |> \.id .~ ""
+      |> \.shippingPreference .~ .restricted
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNil(v1Reward)
+  }
+
+  func test_rewardItems_IsEmpty() {
+    let shippingReward = GraphReward.template
+      |> \.shippingPreference .~ .restricted
+      |> \.items .~ GraphReward.Items(nodes: [])
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    guard let rewardItems = v1Reward?.rewardsItems else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    XCTAssertTrue(rewardItems.isEmpty)
+  }
+
+  func test_rewardItemsWithInvalidIds_IsEmpty() {
+    let shippingReward = GraphReward.template
+      |> \.shippingPreference .~ .restricted
+      |> \.items .~ GraphReward.Items(nodes: [
+        .init(id: "", name: "Item 1"),
+        .init(id: "", name: "Item 2")
+      ])
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    guard let rewardItems = v1Reward?.rewardsItems else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    XCTAssertTrue(rewardItems.isEmpty)
+  }
+
+  func test_rewardShippingRulesNone_IsEmpty() {
+    let shippingReward = GraphReward.template
+      |> \.shippingRules .~ []
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    guard let rewardShippingRules = v1Reward?.shippingRules else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    XCTAssertTrue(rewardShippingRules.isEmpty)
+  }
+
+  func test_rewardShippingRulesWithInvalidLocationId_IsEmpty() {
+    let shippingRule = GraphReward.ShippingRule.template
+      |> \.location.id .~ ""
+    let shippingReward = GraphReward.template
+      |> \.shippingRules .~ [shippingRule]
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    guard let rewardShippingRules = v1Reward?.shippingRules else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    XCTAssertTrue(rewardShippingRules.isEmpty)
+  }
+
+  func test_rewardShippingRulesNil_IsEmpty() {
+    let shippingReward = GraphReward.template
+      |> \.shippingRules .~ nil
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNil(v1Reward?.shippingRules)
+  }
+
+  func test_rewardShippingRulesExpandedWithInvalidLocationId_IsEmpty() {
+    let shippingRule = GraphReward.ShippingRule.template
+      |> \.location.id .~ ""
+    let shippingReward = GraphReward.template
+      |> \.shippingRulesExpanded .~ GraphReward.ShippingRuleExpanded.init(nodes: [shippingRule])
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    guard let rewardShippingRulesExpanded = v1Reward?.shippingRulesExpanded else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    XCTAssertTrue(rewardShippingRulesExpanded.isEmpty)
+  }
+
+  func test_rewardShippingRulesExpandedNil_IsEmpty() {
+    let shippingReward = GraphReward.template
+      |> \.shippingRulesExpanded .~ nil
+    let backing = GraphBacking.template
+      |> \.reward .~ shippingReward
+
+    guard let reward = backing.reward else {
+      XCTFail("Should have a reward")
+      return
+    }
+
+    let v1Reward = Reward.reward(
+      from: reward,
+      projectId: Project.template.id,
+      dateFormatter: self.dateFormatter
+    )
+
+    XCTAssertNil(v1Reward?.shippingRulesExpanded)
   }
 
   func testTemplate() {
