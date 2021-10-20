@@ -514,10 +514,6 @@ private func backingDictionary() -> [String: Any] {
     "pledgedOn": 1625613342,
     "project": {
       "__typename": "Project",
-      "actions": {
-        "__typename": "ProjectActions",
-        "displayConvertAmount": false
-      },
       "availableCardTypes": [
           "VISA",
           "MASTERCARD",

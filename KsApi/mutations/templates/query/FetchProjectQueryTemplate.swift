@@ -28,10 +28,6 @@ public enum FetchProjectQueryTemplate {
             "id": "QmFja2luZy0xNDgwMTQwMzQ="
           },
           "__typename":"Project",
-          "actions":{
-             "__typename":"ProjectActions",
-             "displayConvertAmount":false
-          },
           "availableCardTypes":[
              "VISA",
              "MASTERCARD",

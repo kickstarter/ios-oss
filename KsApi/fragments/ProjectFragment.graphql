@@ -1,7 +1,4 @@
 fragment ProjectFragment on Project {
-  actions {
-    displayConvertAmount
-  }
   availableCardTypes
   backersCount
   category {
