@@ -31,6 +31,9 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+
     // TODO: - Internationalize strings
     _ = self.titleTextLabel
       |> \.font .~ UIFont.ksr_body()

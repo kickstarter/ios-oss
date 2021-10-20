@@ -12,7 +12,8 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
     // Clear all sections
     self.clearValues()
 
-    guard let faqs = project.extendedProjectProperties?.faqs else {
+    guard let faqs = project.extendedProjectProperties?.faqs,
+      !faqs.isEmpty else {
       self.set(
         values: [()],
         cellClass: ProjectFAQsEmptyStateCell.self,

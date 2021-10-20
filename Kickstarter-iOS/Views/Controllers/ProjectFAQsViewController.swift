@@ -153,6 +153,7 @@ private let tableViewStyle: TableViewStyle = { view in
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.showsVerticalScrollIndicator .~ false
+    |> \.tableFooterView .~ UIView(frame: .zero)
 }
 
 extension ProjectFAQsViewController: UITableViewDelegate {
