@@ -3,19 +3,19 @@ import Prelude
 import ReactiveSwift
 
 public protocol ProjectFAQsCellViewModelInputs {
-  /// Call to configure with a tuple of `ProjectFAQ, Bool`
+  /// Call to configure with a tuple of `ProjectFAQ, Bool`. The `Bool` represents whether the cell is expanded.
   func configureWith(value: (ProjectFAQ, Bool))
 }
 
 public protocol ProjectFAQsCellViewModelOutputs {
-  /// Emits a `Bool` to determine if the chevron image view should point up or down
-  var configureChevronImageView: Signal<Bool, Never> { get }
-
   /// Emits a `String` of the answer from the FAQ object
   var answerLabelText: Signal<String, Never> { get }
 
   /// Emits a `Bool` for determining whether the stackview containing the answer is hidden
   var answerStackViewIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits a `Bool` to determine if the chevron image view should point up or down
+  var configureChevronImageView: Signal<Bool, Never> { get }
 
   /// Emits a `String` of the question from the FAQ object
   var questionLabelText: Signal<String, Never> { get }
@@ -57,9 +57,9 @@ public final class ProjectFAQsCellViewModel:
     self.configureWithProperty.value = value
   }
 
-  public let configureChevronImageView: Signal<Bool, Never>
   public let answerLabelText: Signal<String, Never>
   public let answerStackViewIsHidden: Signal<Bool, Never>
+  public let configureChevronImageView: Signal<Bool, Never>
   public let questionLabelText: Signal<String, Never>
   public let updatedLabelText: Signal<String, Never>
 

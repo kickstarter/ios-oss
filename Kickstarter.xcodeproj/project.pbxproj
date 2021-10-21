@@ -328,6 +328,10 @@
 		47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */; };
 		47F4CA5F267A7B1800356DBF /* OptimizelyFeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */; };
 		47F4CA63267A7B2300356DBF /* OptimizelyFeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */; };
+		47F8526D2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */; };
+		47F8526F2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */; };
+		47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */; };
+		47F8527327220C4E0050DB39 /* ProjectFAQsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */; };
 		47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F95ECF2672C587001365B2 /* ViewRepliesView.swift */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
@@ -2073,6 +2077,10 @@
 		47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift"; sourceTree = "<group>"; };
 		47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
 		47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
+		47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsDataSourceTests.swift; sourceTree = "<group>"; };
+		47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewControllerTests.swift; sourceTree = "<group>"; };
+		47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModelTests.swift; sourceTree = "<group>"; };
+		47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewModelTests.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
 		59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackView.swift; sourceTree = "<group>"; };
@@ -4167,6 +4175,7 @@
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
 				4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */,
+				47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */,
 				A78838A81D8A32060081E94D /* ProjectNavBarViewController.swift */,
 				A7ED20361E8323E900BFFA01 /* ProjectNavBarViewControllerTests.swift */,
 				A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */,
@@ -4588,6 +4597,7 @@
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */,
+				47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
 				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
 				A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */,
@@ -4869,7 +4879,9 @@
 				A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */,
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
 				4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */,
+				47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
+				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
 				A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */,
 				A7ED1F991E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift */,
 				477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */,
@@ -6272,6 +6284,7 @@
 				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
 				A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */,
 				D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */,
+				47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */,
 				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
 				77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */,
 				77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */,
@@ -6309,6 +6322,7 @@
 				8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */,
 				3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */,
 				D79CF40521B0840E00ECB73A /* AddNewCardViewModelTests.swift in Sources */,
+				47F8527327220C4E0050DB39 /* ProjectFAQsViewModelTests.swift in Sources */,
 				D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
 				A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */,
 				D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */,
@@ -6777,6 +6791,7 @@
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
 				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
 				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
+				47F8526D2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
@@ -6808,6 +6823,7 @@
 				D03BBA5C21A8E880005604A7 /* MockPushRegistration.swift in Sources */,
 				771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */,
 				061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */,
+				47F8526F2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift in Sources */,
 				771E631023426F04005967E8 /* CancelPledgeViewControllerTests.swift in Sources */,
 				3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */,
 				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,

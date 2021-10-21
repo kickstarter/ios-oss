@@ -12,7 +12,8 @@ final class ProjectPageViewModelTests: TestCase {
   )
   fileprivate var vm: ProjectPageViewModelType!
 
-  private let configurePagesDataSource = TestObserver<NavigationSection, Never>()
+  private let configurePagesDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
+  private let configurePagesDataSourceProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewContext = TestObserver<PledgeCTAContainerViewContext, Never>()
@@ -35,7 +36,9 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm = ProjectPageViewModel()
 
     self.vm.outputs.configurePagesDataSource.map(first)
-      .observe(self.configurePagesDataSource.observer)
+      .observe(self.configurePagesDataSourceNavigationSection.observer)
+    self.vm.outputs.configurePagesDataSource.map(second)
+      .observe(self.configurePagesDataSourceProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
@@ -194,14 +197,24 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfigurePagesDataSource() {
+  func testConfigurePagesDataSourceNavigationSection() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
 
-    self.configurePagesDataSource.assertDidNotEmitValue()
+    self.configurePagesDataSourceNavigationSection.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.configurePagesDataSource.assertValues([.overview])
+    self.configurePagesDataSourceNavigationSection.assertValues([.overview])
+  }
+
+  func testConfigurePagesDataSourceProject() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+
+    self.configurePagesDataSourceProject.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePagesDataSourceProject.assertValues([.template])
   }
 
   func testConfigureProjectNavigationSelectorView() {

@@ -348,16 +348,6 @@ extension Lens where Whole == Project, Part == User {
   }
 }
 
-// extension Lens where Whole == Project, Part == ExtendedProjectProperties {
-//  public var rewards: Lens<Project, [Reward]> {
-//    return Project.lens.rewardData .. Project.RewardData.lens.rewards
-//  }
-
-//  public var faqs: Lens<ExtendedProjectProperties, [ExtendedProjectProperties.ProjectFAQ]> {
-//    return ExtendedProjectProperties.lens
-//  }
-// }
-
 extension Lens where Whole == Project, Part == Location {
   public var name: Lens<Project, String> {
     return Project.lens.location .. Location.lens.name
