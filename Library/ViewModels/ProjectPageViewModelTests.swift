@@ -34,7 +34,8 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.vm = ProjectPageViewModel()
 
-    self.vm.outputs.configurePagesDataSource.observe(self.configurePagesDataSource.observer)
+    self.vm.outputs.configurePagesDataSource.map(first)
+      .observe(self.configurePagesDataSource.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)

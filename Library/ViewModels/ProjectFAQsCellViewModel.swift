@@ -9,7 +9,7 @@ public protocol ProjectFAQsCellViewModelInputs {
 
 public protocol ProjectFAQsCellViewModelOutputs {
   /// Emits a `Bool` to determine if the chevron image view should point up or down
-  var animateChevronImageView: Signal<Bool, Never> { get }
+  var configureChevronImageView: Signal<Bool, Never> { get }
 
   /// Emits a `String` of the answer from the FAQ object
   var answerLabelText: Signal<String, Never> { get }
@@ -42,10 +42,8 @@ public final class ProjectFAQsCellViewModel:
 
     self.answerLabelText = faq.map(\.answer)
     self.answerStackViewIsHidden = isExpanded.negate()
+    self.configureChevronImageView = isExpanded
     self.questionLabelText = faq.map(\.question)
-
-    // skip first because it's always false when initializing
-    self.animateChevronImageView = isExpanded.skip(first: 1)
     self.updatedLabelText = faq
       .map(\.createdAt)
       .skipNil()
@@ -59,7 +57,7 @@ public final class ProjectFAQsCellViewModel:
     self.configureWithProperty.value = value
   }
 
-  public let animateChevronImageView: Signal<Bool, Never>
+  public let configureChevronImageView: Signal<Bool, Never>
   public let answerLabelText: Signal<String, Never>
   public let answerStackViewIsHidden: Signal<Bool, Never>
   public let questionLabelText: Signal<String, Never>

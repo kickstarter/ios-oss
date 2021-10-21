@@ -89,14 +89,13 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
     self.questionLabel.rac.text = self.viewModel.outputs.questionLabelText
     self.updatedLabel.rac.text = self.viewModel.outputs.updatedLabelText
 
-    self.viewModel.outputs.animateChevronImageView
+    self.viewModel.outputs.configureChevronImageView
       .observeForUI()
       .observeValues { [weak self] isExpanded in
         guard let self = self else { return }
-        UIView.animate(withDuration: 0.3) {
-          self.chevronImageView.transform = isExpanded ?
-            CGAffineTransform(rotationAngle: .pi) : CGAffineTransform.identity
-        }
+
+        _ = self.chevronImageView |> isExpanded ?
+          chevronUpImageViewStyle : chevronDownImageViewStyle
       }
   }
 
@@ -111,9 +110,6 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
 
     _ = self.answerStackView
       |> answerStackViewStyle
-
-    _ = self.chevronImageView
-      |> chevronDownImageViewStyle
 
     _ = self.imageViewStackView
       |> imageViewStackViewStyle
