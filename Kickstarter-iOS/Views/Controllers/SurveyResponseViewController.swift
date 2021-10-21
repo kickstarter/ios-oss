@@ -78,8 +78,22 @@ internal final class SurveyResponseViewController: WebViewController {
   }
 
   fileprivate func goToProject(param: Param, refTag: RefTag?) {
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .right(param), refTag: refTag)
-    let nav = UINavigationController(rootViewController: vc)
+    guard featureNavigationSelectorProjectPageIsEnabled() else {
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .right(param), refTag: refTag)
+      let nav = UINavigationController(rootViewController: vc)
+      self.present(nav, animated: true, completion: nil)
+
+      return
+    }
+
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: .right(param),
+      refTag: refTag
+    )
+
+    let nav = NavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
     self.present(nav, animated: true, completion: nil)
   }
 

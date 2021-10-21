@@ -28,7 +28,10 @@ public enum FetchAddsOnsQueryTemplate {
                 "__typename": "Reward",
                 "allowedAddons": {
                   "__typename": "RewardConnection",
-                  "nodes": []
+                  "pageInfo": {
+                    "__typename": "PageInfo",
+                    "startCursor": null
+                  }
                 },
                 "shippingRulesExpanded": {
                   "__typename": "RewardShippingRulesConnection",
@@ -74,11 +77,15 @@ public enum FetchAddsOnsQueryTemplate {
                 "isMaxPledge": false,
                 "items": {
                   "__typename": "RewardItemsConnection",
-                  "nodes": [
+                  "edges": [
                     {
-                      "__typename": "RewardItem",
-                      "id": "UmV3YXJkSXRlbS0xMTc5OTgz",
-                      "name": "Paper Sticker Sheet"
+                      "__typename": "RewardItemEdge",
+                      "quantity": 1,
+                      "node": {
+                        "__typename": "RewardItem",
+                        "id": "UmV3YXJkSXRlbS0xMTc5OTgz",
+                        "name":"Paper Sticker Sheet"
+                      }
                     }
                   ]
                 },
@@ -135,7 +142,10 @@ public enum FetchAddsOnsQueryTemplate {
                 "__typename": "Reward",
                 "allowedAddons": {
                   "__typename": "RewardConnection",
-                  "nodes": []
+                  "pageInfo": {
+                    "__typename": "PageInfo",
+                    "startCursor": null
+                  }
                 },
                 "shippingRulesExpanded": {
                   "__typename": "RewardShippingRulesConnection",
@@ -181,11 +191,15 @@ public enum FetchAddsOnsQueryTemplate {
                 "isMaxPledge": false,
                 "items": {
                   "__typename": "RewardItemsConnection",
-                  "nodes": [
+                  "edges": [
                     {
-                      "__typename": "RewardItem",
-                      "id": "UmV3YXJkSXRlbS0xMTc5OTgx",
-                      "name": "Paper Tape Boxed Set"
+                      "__typename": "RewardItemEdge",
+                      "quantity": 1,
+                      "node": {
+                        "__typename": "RewardItem",
+                        "id": "UmV3YXJkSXRlbS0xMTc5OTgx",
+                        "name":"Paper Tape Boxed Set"
+                      }
                     }
                   ]
                 },

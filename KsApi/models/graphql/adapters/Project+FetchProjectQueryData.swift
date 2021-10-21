@@ -35,16 +35,6 @@ extension Project {
   }
 
   static func project(from data: GraphAPI.FetchProjectByIdQuery.Data) -> (Project?, Int?) {
-    let addOns = data.project?.addOns?.nodes?
-      .compactMap { node -> GraphAPI.RewardFragment? in
-        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
-
-        return rewardFragment
-      }
-      .compactMap { fragment in
-        Reward.reward(from: fragment)
-      }
-
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
@@ -56,7 +46,7 @@ extension Project {
       let project = Project.project(
         from: fragment,
         rewards: [noRewardReward(from: fragment)],
-        addOns: addOns,
+        addOns: nil,
         backing: nil,
         currentUserChosenCurrency: data.me?.chosenCurrency
       )
@@ -66,16 +56,6 @@ extension Project {
   }
 
   static func project(from data: GraphAPI.FetchProjectBySlugQuery.Data) -> (Project?, Int?) {
-    let addOns = data.project?.addOns?.nodes?
-      .compactMap { node -> GraphAPI.RewardFragment? in
-        guard let rewardFragment = node?.fragments.rewardFragment else { return nil }
-
-        return rewardFragment
-      }
-      .compactMap { fragment in
-        Reward.reward(from: fragment)
-      }
-
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
@@ -87,7 +67,7 @@ extension Project {
       let project = Project.project(
         from: fragment,
         rewards: [noRewardReward(from: fragment)],
-        addOns: addOns,
+        addOns: nil,
         backing: nil,
         currentUserChosenCurrency: data.me?.chosenCurrency
       )

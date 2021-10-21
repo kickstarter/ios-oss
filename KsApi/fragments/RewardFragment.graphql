@@ -7,8 +7,8 @@ fragment RewardFragment on Reward {
     ...MoneyFragment
   }
   allowedAddons {
-    nodes {
-      id
+    pageInfo {
+      startCursor
     }
   }
   description
@@ -18,9 +18,12 @@ fragment RewardFragment on Reward {
   id
   isMaxPledge
   items {
-    nodes {
-      id
-      name
+    edges {
+      quantity
+      node {
+        id
+        name
+      }
     }
   }
   limit
