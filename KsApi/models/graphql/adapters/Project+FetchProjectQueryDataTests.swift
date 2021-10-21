@@ -214,9 +214,9 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertTrue(firstReward.isNoReward)
 
     /// Extended properties only available on GraphQL
+    /** FIXME: Add this back in once we add the `story` property on the `ProjectFragment` again. */
     XCTAssertEqual(
-      project.extendedProjectProperties?.story,
-      "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string."
+      project.extendedProjectProperties?.story, ""
     )
     XCTAssertEqual(project.extendedProjectProperties?.risks, "Risks")
     XCTAssertEqual(project.extendedProjectProperties?.environmentalCommitments.count, 1)

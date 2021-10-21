@@ -224,7 +224,9 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
  Returns a `ExtendedProjectProperties` object from `ProjectFragment`
  */
 private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
-  let story = projectFragment.story
+  /**
+   FIXME: `story` currently causes a full 0.5s slowdown of the project page load, so removing it avoids the pledge cta from taking too long to load. Will need to add this back in at some point for the Story tab to properly load its content (along with the HTML parser).
+   */
   let risks = projectFragment.risks
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
   let faqs = extendedProjectFAQs(from: projectFragment)
@@ -234,7 +236,7 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
     environmentalCommitments: environmentalCommitments,
     faqs: faqs,
     risks: risks,
-    story: story,
+    story: "",
     minimumPledgeAmount: minimumSingleTierPledgeAmount
   )
 
