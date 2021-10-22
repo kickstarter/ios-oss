@@ -29,8 +29,8 @@ public protocol ProjectPageViewModelInputs {
 }
 
 public protocol ProjectPageViewModelOutputs {
-  /// Emits the initial `NavigationSection` to configure the page view controller.
-  var configurePagesDataSource: Signal<NavigationSection, Never> { get }
+  /// Emits a tuple of a `NavigationSection` and `Project` to configure the page view controller.
+  var configurePagesDataSource: Signal<(NavigationSection, Project), Never> { get }
 
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
@@ -65,10 +65,6 @@ public protocol ProjectPageViewModelType {
 public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageViewModelInputs,
   ProjectPageViewModelOutputs {
   public init() {
-    // The first tab we render by default is overview
-    self.configurePagesDataSource = self.viewDidLoadProperty.signal
-      .map { .overview }
-
     let isLoading = MutableProperty(false)
 
     self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
@@ -103,14 +99,20 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
       .map { project, refTag -> (Project, RefTag?) in
-        let updatedProjectWithFriends = project |> Project.lens.personalization.friends .~ projectFriends
-          .value
+        let updatedProjectWithFriends = project
+          |> Project.lens.personalization.friends .~ projectFriends.value
+          |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
 
         return (updatedProjectWithFriends, refTag)
       }
 
     let project = freshProjectAndRefTag
       .map(first)
+
+    // The first tab we render by default is overview
+    self.configurePagesDataSource = project
+      .combineLatest(with: self.viewDidLoadProperty.signal)
+      .map { project, _ in (.overview, project) }
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -244,7 +246,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewDidAppearAnimated.value = animated
   }
 
-  public let configurePagesDataSource: Signal<NavigationSection, Never>
+  public let configurePagesDataSource: Signal<(NavigationSection, Project), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<Void, Never>
@@ -316,6 +318,7 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
 
       let projectWithBackingAndRewards = project
         |> Project.lens.rewardData.rewards .~ allRewards
+        |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
 
       return SignalProducer(value: projectWithBackingAndRewards)
     }

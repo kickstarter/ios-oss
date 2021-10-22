@@ -11,31 +11,31 @@ import Foundation
  */
 
 public struct ExtendedProjectProperties: Decodable {
-  public var environmentalCommitments: [EnvironmentalCommitment]
+  public var environmentalCommitments: [ProjectEnvironmentalCommitment]
   public var faqs: [ProjectFAQ]
   public var risks: String
   public var story: String
   public var minimumPledgeAmount: Int
+}
 
-  public struct ProjectFAQ: Decodable {
-    public var answer: String
-    public var question: String
-    public var id: Int
-    public var createdAt: TimeInterval?
-  }
+public struct ProjectFAQ: Decodable {
+  public var answer: String
+  public var question: String
+  public var id: Int
+  public var createdAt: TimeInterval?
+}
 
-  public struct EnvironmentalCommitment: Decodable {
-    public var description: String
-    public var category: CommitmentCategory
-    public var id: Int
-  }
+public struct ProjectEnvironmentalCommitment: Decodable {
+  public var description: String
+  public var category: ProjectCommitmentCategory
+  public var id: Int
+}
 
-  public enum CommitmentCategory: String, Decodable {
-    case longLastingDesign
-    case sustainableMaterials
-    case environmentallyFriendlyFactories
-    case sustainableDistribution
-    case reusabilityAndRecyclability
-    case somethingElse
-  }
+public enum ProjectCommitmentCategory: String, Decodable {
+  case longLastingDesign
+  case sustainableMaterials
+  case environmentallyFriendlyFactories
+  case sustainableDistribution
+  case reusabilityAndRecyclability
+  case somethingElse
 }

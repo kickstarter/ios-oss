@@ -2,10 +2,10 @@ import KsApi
 import Library
 import UIKit
 
-internal final class ProjectPamphletPagesDataSource: NSObject, UIPageViewControllerDataSource {
+internal final class ProjectPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
-  internal init(delegate _: UIViewController) {
+  internal init(delegate _: UIViewController, project: Project) {
     self.viewControllers = NavigationSection.allCases.map { navSection in
       switch navSection {
       case .overview:
@@ -17,8 +17,8 @@ internal final class ProjectPamphletPagesDataSource: NSObject, UIPageViewControl
         viewController.view.backgroundColor = .orange
         return viewController
       case .faq:
-        let viewController = UIViewController()
-        viewController.view.backgroundColor = .yellow
+        let faqs = project.extendedProjectProperties?.faqs
+        let viewController = ProjectFAQsViewController.configuredWith(projectFAQs: faqs ?? [])
         return viewController
       case .environmentalCommitments:
         let viewController = UIViewController()
