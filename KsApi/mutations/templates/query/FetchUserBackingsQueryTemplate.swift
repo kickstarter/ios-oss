@@ -72,10 +72,6 @@ public enum FetchUserBackingsQueryTemplate {
               "pledgedOn": 1_627_592_045,
               "project": [
                 "__typename": "Project",
-                "actions": [
-                  "__typename": "ProjectActions",
-                  "displayConvertAmount": false
-                ],
                 "backersCount": 4,
                 "category": [
                   "__typename": "Category",

@@ -101,10 +101,6 @@ final class Project_ProjectFragmentTests: XCTestCase {
     let json = """
     {
        "__typename":"Project",
-       "actions":{
-          "__typename":"ProjectActions",
-          "displayConvertAmount":false
-       },
        "availableCardTypes":[
           "VISA",
           "MASTERCARD",
