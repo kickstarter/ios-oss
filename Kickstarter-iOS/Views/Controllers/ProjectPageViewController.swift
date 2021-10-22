@@ -21,7 +21,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
-  private var pagesDataSource: ProjectPamphletPagesDataSource?
+  private var pagesDataSource: ProjectPagesDataSource?
 
   /**
    FIXME: This `contentViewController` has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
@@ -269,7 +269,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func configurePagesDataSource(navSection: NavigationSection, project: Project) {
-    self.pagesDataSource = ProjectPamphletPagesDataSource(delegate: self, project: project)
+    self.pagesDataSource = ProjectPagesDataSource(delegate: self, project: project)
     self.pageViewController.dataSource = self.pagesDataSource
 
     guard let dataSource = self.pagesDataSource else { return }

@@ -29,9 +29,9 @@ internal final class ProjectFAQsViewController: UIViewController {
 
   // MARK: - Accessors
 
-  internal static func configuredWith(project: Project) -> ProjectFAQsViewController {
+  internal static func configuredWith(projectFAQs: [ProjectFAQ]) -> ProjectFAQsViewController {
     let vc = ProjectFAQsViewController.instantiate()
-    vc.viewModel.inputs.configureWith(project: project)
+    vc.viewModel.inputs.configureWith(projectFAQs: projectFAQs)
 
     return vc
   }
@@ -121,15 +121,15 @@ internal final class ProjectFAQsViewController: UIViewController {
 
     self.viewModel.outputs.loadFAQs
       .observeForUI()
-      .observeValues { [weak self] project, isExpandedStates in
-        self?.dataSource.load(project: project, isExpandedStates: isExpandedStates)
+      .observeValues { [weak self] projectFAQs, isExpandedStates in
+        self?.dataSource.load(projectFAQs: projectFAQs, isExpandedStates: isExpandedStates)
         self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] project, isExpandedStates in
-        self?.dataSource.load(project: project, isExpandedStates: isExpandedStates)
+      .observeValues { [weak self] projectFAQs, isExpandedStates in
+        self?.dataSource.load(projectFAQs: projectFAQs, isExpandedStates: isExpandedStates)
         self?.tableView.reloadData()
       }
   }

@@ -9,17 +9,17 @@ import XCTest
 internal final class ProjectFAQsViewModelTests: TestCase {
   private let vm: ProjectFAQsViewModelType = ProjectFAQsViewModel()
 
-  private let loadFAQsProject = TestObserver<Project, Never>()
+  private let loadFAQsProjectFAQs = TestObserver<[ProjectFAQ], Never>()
   private let loadFAQsIsExpandedStates = TestObserver<[Bool], Never>()
-  private let updateDataSourceProject = TestObserver<Project, Never>()
+  private let updateDataSourceProjectFAQs = TestObserver<[ProjectFAQ], Never>()
   private let updateDataSourceIsExpandedStates = TestObserver<[Bool], Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.loadFAQs.map(first).observe(self.loadFAQsProject.observer)
+    self.vm.outputs.loadFAQs.map(first).observe(self.loadFAQsProjectFAQs.observer)
     self.vm.outputs.loadFAQs.map(second).observe(self.loadFAQsIsExpandedStates.observer)
-    self.vm.outputs.updateDataSource.map(first).observe(self.updateDataSourceProject.observer)
+    self.vm.outputs.updateDataSource.map(first).observe(self.updateDataSourceProjectFAQs.observer)
     self.vm.outputs.updateDataSource.map(second).observe(self.updateDataSourceIsExpandedStates.observer)
   }
 
@@ -30,22 +30,14 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
-    let project = Project.template
-      |> Project.lens.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: faqs,
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(projectFAQs: faqs)
 
-    self.loadFAQsProject.assertDidNotEmitValue()
+    self.loadFAQsProjectFAQs.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.loadFAQsProject.assertValues([project])
+    self.loadFAQsProjectFAQs.assertDidEmitValue()
   }
 
   func testOutput_loadFAQsIsExpandedStates() {
@@ -55,16 +47,8 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
-    let project = Project.template
-      |> Project.lens.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: faqs,
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(projectFAQs: faqs)
 
     self.loadFAQsIsExpandedStates.assertDidNotEmitValue()
 
@@ -80,26 +64,18 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
-    let project = Project.template
-      |> Project.lens.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: faqs,
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(projectFAQs: faqs)
 
-    self.updateDataSourceProject.assertDidNotEmitValue()
+    self.updateDataSourceProjectFAQs.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.updateDataSourceProject.assertDidNotEmitValue()
+    self.updateDataSourceProjectFAQs.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectRowAt(row: 0, values: [true, false, false, false])
 
-    self.updateDataSourceProject.assertValues([project])
+    self.loadFAQsProjectFAQs.assertDidEmitValue()
   }
 
   func testOutput_updateDataSourceIsExpandedStates() {
@@ -109,16 +85,8 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
-    let project = Project.template
-      |> Project.lens.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: faqs,
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(projectFAQs: faqs)
 
     self.updateDataSourceIsExpandedStates.assertDidNotEmitValue()
 

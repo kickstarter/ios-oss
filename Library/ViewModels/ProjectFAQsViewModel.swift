@@ -3,8 +3,8 @@ import Prelude
 import ReactiveSwift
 
 public protocol ProjectFAQsViewModelInputs {
-  /// Call with the `Project` given to the view.
-  func configureWith(project: Project)
+  /// Call with the `[ProjectFAQ]` given to the view.
+  func configureWith(projectFAQs: [ProjectFAQ])
 
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
   func didSelectRowAt(row: Int, values: [Bool])
@@ -14,11 +14,11 @@ public protocol ProjectFAQsViewModelInputs {
 }
 
 public protocol ProjectFAQsViewModelOutputs {
-  /// Emits a tuple of `Project, [Bool]` so the data source can use the faqs and isExpanded states to render cells
-  var loadFAQs: Signal<(Project, [Bool]), Never> { get }
+  /// Emits a tuple of `[ProjectFAQ], [Bool]` so the data source can use the faqs and isExpanded states to render cells
+  var loadFAQs: Signal<([ProjectFAQ], [Bool]), Never> { get }
 
-  /// Emits a tuple of `Project, [Bool]` after a cell is selected and the data source needs to be updated
-  var updateDataSource: Signal<(Project, [Bool]), Never> { get }
+  /// Emits a tuple of `[ProjectFAQ], [Bool]` after a cell is selected and the data source needs to be updated
+  var updateDataSource: Signal<([ProjectFAQ], [Bool]), Never> { get }
 }
 
 public protocol ProjectFAQsViewModelType {
@@ -29,32 +29,30 @@ public protocol ProjectFAQsViewModelType {
 public final class ProjectFAQsViewModel: ProjectFAQsViewModelType,
   ProjectFAQsViewModelInputs, ProjectFAQsViewModelOutputs {
   public init() {
-    let project = self.configureDataProperty.signal
+    let projectFAQs = self.configureDataProperty.signal
       .skipNil()
       .combineLatest(with: self.viewDidLoadProperty.signal)
       .map(first)
 
-    let initialIsExpandedArray = project
-      .map(\.extendedProjectProperties?.faqs.count)
-      .skipNil()
-      .map { count in Array(repeating: false, count: count) }
+    let initialIsExpandedArray = projectFAQs
+      .map { faqs in Array(repeating: false, count: faqs.count) }
 
-    self.loadFAQs = Signal.combineLatest(project, initialIsExpandedArray)
+    self.loadFAQs = Signal.combineLatest(projectFAQs, initialIsExpandedArray)
 
-    self.updateDataSource = project
+    self.updateDataSource = projectFAQs
       .combineLatest(with: self.didSelectRowAtProperty.signal.skipNil())
-      .map { project, indexAndDataSourceValues -> (Project, [Bool]) in
+      .map { projectFAQs, indexAndDataSourceValues in
         let (index, isExpandedValues) = indexAndDataSourceValues
         var updatedValues = isExpandedValues
         updatedValues[index] = !updatedValues[index]
 
-        return (project, updatedValues)
+        return (projectFAQs, updatedValues)
       }
   }
 
-  fileprivate let configureDataProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.configureDataProperty.value = project
+  fileprivate let configureDataProperty = MutableProperty<[ProjectFAQ]?>(nil)
+  public func configureWith(projectFAQs: [ProjectFAQ]) {
+    self.configureDataProperty.value = projectFAQs
   }
 
   fileprivate let didSelectRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
@@ -67,8 +65,8 @@ public final class ProjectFAQsViewModel: ProjectFAQsViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadFAQs: Signal<(Project, [Bool]), Never>
-  public let updateDataSource: Signal<(Project, [Bool]), Never>
+  public let loadFAQs: Signal<([ProjectFAQ], [Bool]), Never>
+  public let updateDataSource: Signal<([ProjectFAQ], [Bool]), Never>
 
   public var inputs: ProjectFAQsViewModelInputs { return self }
   public var outputs: ProjectFAQsViewModelOutputs { return self }

@@ -8,12 +8,11 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
     case faqs
   }
 
-  func load(project: Project, isExpandedStates: [Bool]) {
+  func load(projectFAQs: [ProjectFAQ], isExpandedStates: [Bool]) {
     // Clear all sections
     self.clearValues()
 
-    guard let faqs = project.extendedProjectProperties?.faqs,
-      !faqs.isEmpty else {
+    guard !projectFAQs.isEmpty else {
       self.set(
         values: [()],
         cellClass: ProjectFAQsEmptyStateCell.self,
@@ -22,7 +21,7 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
       return
     }
 
-    let values = faqs.enumerated().map { idx, faq in
+    let values = projectFAQs.enumerated().map { idx, faq in
       (faq, isExpandedStates[idx])
     }
 

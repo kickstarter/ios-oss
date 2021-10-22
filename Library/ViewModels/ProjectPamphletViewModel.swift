@@ -345,7 +345,6 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
 
       let projectWithBackingAndRewards = project
         |> Project.lens.rewardData.rewards .~ allRewards
-        |> Project.lens.extendedProjectProperties .~ project.extendedProjectProperties
 
       return SignalProducer(value: projectWithBackingAndRewards)
     }

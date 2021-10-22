@@ -11,7 +11,7 @@ import Foundation
  */
 
 public struct ExtendedProjectProperties: Decodable {
-  public var environmentalCommitments: [EnvironmentalCommitment]
+  public var environmentalCommitments: [ProjectEnvironmentalCommitment]
   public var faqs: [ProjectFAQ]
   public var risks: String
   public var story: String
@@ -25,13 +25,13 @@ public struct ProjectFAQ: Decodable {
   public var createdAt: TimeInterval?
 }
 
-public struct EnvironmentalCommitment: Decodable {
+public struct ProjectEnvironmentalCommitment: Decodable {
   public var description: String
-  public var category: CommitmentCategory
+  public var category: ProjectCommitmentCategory
   public var id: Int
 }
 
-public enum CommitmentCategory: String, Decodable {
+public enum ProjectCommitmentCategory: String, Decodable {
   case longLastingDesign
   case sustainableMaterials
   case environmentallyFriendlyFactories

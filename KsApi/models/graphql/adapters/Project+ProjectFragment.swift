@@ -283,8 +283,8 @@ private func extendedProjectFAQs(from projectFragment: GraphAPI
  */
 
 private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
-  .ProjectFragment) -> [EnvironmentalCommitment] {
-  var environmentalCommitments = [EnvironmentalCommitment]()
+  .ProjectFragment) -> [ProjectEnvironmentalCommitment] {
+  var environmentalCommitments = [ProjectEnvironmentalCommitment]()
 
   if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
@@ -294,7 +294,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         continue
       }
 
-      var commitmentCategory: CommitmentCategory
+      var commitmentCategory: ProjectCommitmentCategory
 
       switch commitment?.commitmentCategory {
       case .longLastingDesign:
@@ -311,7 +311,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         commitmentCategory = .somethingElse
       }
 
-      let environmentalCommitment = EnvironmentalCommitment(
+      let environmentalCommitment = ProjectEnvironmentalCommitment(
         description: description,
         category: commitmentCategory,
         id: decomposedId

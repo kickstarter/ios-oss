@@ -2,7 +2,7 @@ import KsApi
 import Library
 import UIKit
 
-internal final class ProjectPamphletPagesDataSource: NSObject, UIPageViewControllerDataSource {
+internal final class ProjectPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
   internal init(delegate _: UIViewController, project: Project) {
@@ -17,7 +17,8 @@ internal final class ProjectPamphletPagesDataSource: NSObject, UIPageViewControl
         viewController.view.backgroundColor = .orange
         return viewController
       case .faq:
-        let viewController = ProjectFAQsViewController.configuredWith(project: project)
+        let faqs = project.extendedProjectProperties?.faqs
+        let viewController = ProjectFAQsViewController.configuredWith(projectFAQs: faqs ?? [])
         return viewController
       case .environmentalCommitments:
         let viewController = UIViewController()
