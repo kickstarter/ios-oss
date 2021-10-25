@@ -1,7 +1,4 @@
 fragment ProjectFragment on Project {
-  actions {
-    displayConvertAmount
-  }
   availableCardTypes
   backersCount
   category {
@@ -62,7 +59,6 @@ fragment ProjectFragment on Project {
   slug
   state
   stateChangedAt
-  story
   tags(scope: DISCOVER) {
     name
   }

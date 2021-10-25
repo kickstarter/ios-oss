@@ -28,10 +28,6 @@ public enum FetchProjectQueryTemplate {
             "id": "QmFja2luZy0xNDgwMTQwMzQ="
           },
           "__typename":"Project",
-          "actions":{
-             "__typename":"ProjectActions",
-             "displayConvertAmount":false
-          },
           "availableCardTypes":[
              "VISA",
              "MASTERCARD",
@@ -259,7 +255,6 @@ public enum FetchProjectQueryTemplate {
               }
             }
           },
-          "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",
           "environmentalCommitments": [
             {
               "__typename": "EnvironmentalCommitment",

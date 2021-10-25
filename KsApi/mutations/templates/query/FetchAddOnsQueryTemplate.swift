@@ -452,10 +452,6 @@ public enum FetchAddsOnsQueryTemplate {
               }
             ]
           },
-          "actions": {
-            "__typename": "ProjectActions",
-            "displayConvertAmount": false
-          },
           "availableCardTypes": [
             "VISA",
             "MASTERCARD",
