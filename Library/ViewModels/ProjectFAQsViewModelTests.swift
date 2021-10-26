@@ -11,6 +11,7 @@ internal final class ProjectFAQsViewModelTests: TestCase {
 
   private let loadFAQsProjectFAQs = TestObserver<[ProjectFAQ], Never>()
   private let loadFAQsIsExpandedStates = TestObserver<[Bool], Never>()
+  private let presentMessageDialog = TestObserver<Project, Never>()
   private let updateDataSourceProjectFAQs = TestObserver<[ProjectFAQ], Never>()
   private let updateDataSourceIsExpandedStates = TestObserver<[Bool], Never>()
 
@@ -19,6 +20,7 @@ internal final class ProjectFAQsViewModelTests: TestCase {
 
     self.vm.outputs.loadFAQs.map(first).observe(self.loadFAQsProjectFAQs.observer)
     self.vm.outputs.loadFAQs.map(second).observe(self.loadFAQsIsExpandedStates.observer)
+    self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
     self.vm.outputs.updateDataSource.map(first).observe(self.updateDataSourceProjectFAQs.observer)
     self.vm.outputs.updateDataSource.map(second).observe(self.updateDataSourceIsExpandedStates.observer)
   }
@@ -30,8 +32,16 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
-    self.vm.inputs.configureWith(projectFAQs: faqs)
+    self.vm.inputs.configureWith(project: project)
 
     self.loadFAQsProjectFAQs.assertDidNotEmitValue()
 
@@ -47,14 +57,51 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
-    self.vm.inputs.configureWith(projectFAQs: faqs)
+    self.vm.inputs.configureWith(project: project)
 
     self.loadFAQsIsExpandedStates.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
     self.loadFAQsIsExpandedStates.assertValues([[false, false, false, false]])
+  }
+
+  func testOutput_PresentMessageDialog() {
+    let faqs = [
+      ProjectFAQ(answer: "Answer 1", question: "Question 1", id: 0, createdAt: nil),
+      ProjectFAQ(answer: "Answer 2", question: "Question 2", id: 1, createdAt: nil),
+      ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
+      ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
+    ]
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.presentMessageDialog.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.presentMessageDialog.assertDidNotEmitValue()
+
+    self.vm.inputs.askAQuestionCellTapped()
+
+    self.presentMessageDialog.assertValues([project])
   }
 
   func testOutput_updateDataSourceProject() {
@@ -64,8 +111,16 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
-    self.vm.inputs.configureWith(projectFAQs: faqs)
+    self.vm.inputs.configureWith(project: project)
 
     self.updateDataSourceProjectFAQs.assertDidNotEmitValue()
 
@@ -85,8 +140,16 @@ internal final class ProjectFAQsViewModelTests: TestCase {
       ProjectFAQ(answer: "Answer 3", question: "Question 3", id: 2, createdAt: nil),
       ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
     ]
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
-    self.vm.inputs.configureWith(projectFAQs: faqs)
+    self.vm.inputs.configureWith(project: project)
 
     self.updateDataSourceIsExpandedStates.assertDidNotEmitValue()
 

@@ -128,6 +128,7 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.loadingViewIsHidden.assertValues([true])
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(0)
     self.notifyPresenterDialogWantsDismissal.assertValueCount(0)
+    self.recipientName.assertValues(["The Project"])
 
     self.vm.inputs.postButtonPressed()
 
