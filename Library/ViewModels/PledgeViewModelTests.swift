@@ -3239,7 +3239,7 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
-  func testChangePaymentMethod_ApplePay_Success() {
+  func testChangePaymentMethod_OptimizelyClientVariant_ApplePay_Success() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -3252,6 +3252,13 @@ final class PledgeViewModelTests: TestCase {
         )
       )
     )
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     let mockService = MockService(
       updateBackingResult: .success(updateBackingEnvelope)
@@ -3271,7 +3278,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
     self.goToThanksProject.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.minimum .~ 10
@@ -3409,7 +3416,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_ApplePay_StripeTokenFailure() {
+  func testChangePaymentMethod_OptimizelyClientVariant_ApplePay_StripeTokenFailure() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -3422,6 +3429,13 @@ final class PledgeViewModelTests: TestCase {
         )
       )
     )
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     let mockService = MockService(
       updateBackingResult: .success(updateBackingEnvelope)
@@ -3441,7 +3455,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
     self.goToThanksProject.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
 
@@ -3558,7 +3572,14 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_ApplePay_Failure() {
+  func testChangePaymentMethod_OptimizelyClientVariant_ApplePay_Failure() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
     let mockService = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
     )
@@ -3576,7 +3597,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
     self.goToThanksProject.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
 
