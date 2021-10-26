@@ -359,6 +359,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // MARK: - Apple Pay
 
     let applePayButtonTappedAndIsChangingPaymentMethod = self.applePayButtonTappedSignal
+      .filter { _ in !isNativeRiskMessagingControlEnabled() }
       .combineLatest(with: context)
       .map(second)
       .filter { $0 == .changePaymentMethod }
