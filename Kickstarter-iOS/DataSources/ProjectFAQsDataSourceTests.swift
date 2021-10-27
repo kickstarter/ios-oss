@@ -9,7 +9,8 @@ internal final class ProjectFAQsDataSourceTests: XCTestCase {
   let tableView = UITableView()
 
   func testDataSource_LoggedIn() {
-    let section = ProjectFAQsDataSource.Section.faqs.rawValue
+    let askAQuestionSection = ProjectFAQsDataSource.Section.askAQuestion.rawValue
+    let faqsSection = ProjectFAQsDataSource.Section.faqs.rawValue
     let isExpandedStates = [false, false, false, false]
     let faqs = [
       ProjectFAQ(answer: "Answer 1", question: "Question 1", id: 0, createdAt: nil),
@@ -22,13 +23,18 @@ internal final class ProjectFAQsDataSourceTests: XCTestCase {
       self.dataSource.load(projectFAQs: faqs, isExpandedStates: isExpandedStates)
 
       XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
-      XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-      XCTAssertEqual("ProjectFAQsCell", self.dataSource.reusableId(item: 0, section: section))
+      XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: faqsSection))
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: askAQuestionSection))
+      XCTAssertEqual("ProjectFAQsCell", self.dataSource.reusableId(item: 0, section: faqsSection))
+      XCTAssertEqual(
+        "ProjectFAQsAskAQuestionCell",
+        self.dataSource.reusableId(item: 0, section: askAQuestionSection)
+      )
     }
   }
 
   func testDataSource_LoggedOut() {
-    let section = ProjectFAQsDataSource.Section.faqs.rawValue
+    let faqsSection = ProjectFAQsDataSource.Section.faqs.rawValue
     let isExpandedStates = [false, false, false, false]
     let faqs = [
       ProjectFAQ(answer: "Answer 1", question: "Question 1", id: 0, createdAt: nil),
@@ -40,20 +46,25 @@ internal final class ProjectFAQsDataSourceTests: XCTestCase {
     self.dataSource.load(projectFAQs: faqs, isExpandedStates: isExpandedStates)
 
     XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-    XCTAssertEqual("ProjectFAQsCell", self.dataSource.reusableId(item: 0, section: section))
+    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: faqsSection))
+    XCTAssertEqual("ProjectFAQsCell", self.dataSource.reusableId(item: 0, section: faqsSection))
   }
 
   func testEmptyState_LoggedIn() {
-    let section = ProjectFAQsDataSource.Section.empty.rawValue
+    let askAQuestionSection = ProjectFAQsDataSource.Section.askAQuestion.rawValue
+    let emptySection = ProjectFAQsDataSource.Section.empty.rawValue
     let isExpandedStates = [false, false, false, false]
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(projectFAQs: [], isExpandedStates: isExpandedStates)
 
       XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
-      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-      XCTAssertEqual("ProjectFAQsEmptyStateCell", self.dataSource.reusableId(item: 0, section: section))
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: emptySection))
+      XCTAssertEqual("ProjectFAQsEmptyStateCell", self.dataSource.reusableId(item: 0, section: emptySection))
+      XCTAssertEqual(
+        "ProjectFAQsAskAQuestionCell",
+        self.dataSource.reusableId(item: 0, section: askAQuestionSection)
+      )
     }
   }
 

@@ -12,9 +12,6 @@ public protocol ProjectFAQsViewModelInputs {
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
   func didSelectRowAt(row: Int, values: [Bool])
 
-  /// Call when the message dialog has told us that a message was successfully posted.
-  func messageSent(_ message: Message)
-
   /// Call when the view loads.
   func viewDidLoad()
 }
@@ -77,11 +74,6 @@ public final class ProjectFAQsViewModel: ProjectFAQsViewModelType,
   fileprivate let didSelectRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
   public func didSelectRowAt(row: Int, values: [Bool]) {
     self.didSelectRowAtProperty.value = (row, values)
-  }
-
-  private let messageSentProperty = MutableProperty<Message?>(nil)
-  public func messageSent(_ message: Message) {
-    self.messageSentProperty.value = message
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

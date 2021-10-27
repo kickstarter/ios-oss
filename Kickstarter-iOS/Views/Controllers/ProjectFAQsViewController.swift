@@ -201,7 +201,5 @@ extension ProjectFAQsViewController: MessageDialogViewControllerDelegate {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func messageDialog(_: MessageDialogViewController, postedMessage message: Message) {
-    self.viewModel.inputs.messageSent(message)
-  }
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }
