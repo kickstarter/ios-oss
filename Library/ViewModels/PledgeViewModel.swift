@@ -358,10 +358,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // MARK: - Apple Pay
 
+    let applePayButtonTappedAndIsChangingPaymentMethod = self.applePayButtonTappedSignal
+      .filter { _ in !isNativeRiskMessagingControlEnabled() }
+      .combineLatest(with: context)
+      .map(second)
+      .filter { $0 == .changePaymentMethod }
+      .ignoreValues()
+
     // If the Optimizely risk messaging experiment is set to the control AND the Pay With Apple button is tapped
+    // Or if the Optimizely risk messaging experiment is set to the variant, and we are changing the payment method to Pay With Apple
     // Or if the Optimizely risk messaging experiment is set to the variant and it is dismissed, this emits
     let applePayButtonTappedOrRiskMessagingModalDismissed = Signal.merge(
       self.applePayButtonTappedSignal.filter(isNativeRiskMessagingControlEnabled),
+      applePayButtonTappedAndIsChangingPaymentMethod,
       self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isTrue).ignoreValues()
     )
 
