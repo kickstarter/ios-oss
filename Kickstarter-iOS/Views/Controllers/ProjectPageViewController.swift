@@ -169,15 +169,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private func configurePageViewController() {
     self.pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
-    _ = (self.pageViewController.view, self.view)
-      |> ksr_addSubviewToParent()
+    _ = self.view
+      |> ksr_insertSubview(self.pageViewController.view, belowSubview: self.pledgeCTAContainerView)
 
     NSLayoutConstraint.activate([
       self.pageViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pageViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pageViewController.view.topAnchor
         .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
-      self.pageViewController.view.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor)
+      self.pageViewController.view.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.bottomAnchor)
     ])
 
     self.pageViewController.ksr_setViewControllers(

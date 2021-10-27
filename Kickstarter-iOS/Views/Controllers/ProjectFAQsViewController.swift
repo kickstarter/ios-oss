@@ -7,6 +7,7 @@ public enum ProjectFAQsViewControllerStyles {
   public enum Layout {
     public static let standardMargin = Styles.grid(3)
     public static let topMargin = Styles.grid(2)
+    public static let footerHeight = 100.0
   }
 }
 
@@ -27,7 +28,7 @@ internal final class ProjectFAQsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  // MARK: - Accessors
+  // MARK: - Public Accessors
 
   internal static func configuredWith(project: Project) -> ProjectFAQsViewController {
     let vc = ProjectFAQsViewController.instantiate()
@@ -35,6 +36,8 @@ internal final class ProjectFAQsViewController: UIViewController {
 
     return vc
   }
+
+  // MARK: Helpers
 
   private func configureSubviews() {
     _ = (self.headerLabel, self.view)
@@ -115,10 +118,17 @@ internal final class ProjectFAQsViewController: UIViewController {
     _ = self.headerLabel
       |> headerLabelStyle
 
+    // Arbitrary m
+    let noLineSeparatorSpacer = CGRect(
+      x: .zero,
+      y: .zero,
+      width: .zero,
+      height: ProjectFAQsViewControllerStyles.Layout.footerHeight
+    )
+
     _ = self.tableView
       |> tableViewStyle
-      |> \.tableFooterView .~
-      UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
+      |> \.tableFooterView .~ UIView(frame: noLineSeparatorSpacer)
   }
 
   // MARK: - View model
