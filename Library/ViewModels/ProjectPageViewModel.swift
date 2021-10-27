@@ -41,6 +41,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits Void to configure ProjectNavigationSelectorView
   var configureProjectNavigationSelectorView: Signal<Void, Never> { get }
 
+  /// Emits a project when the video player controller should be configured.
+  var configureVideoPlayerController: Signal<Project, Never> { get }
+
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
@@ -204,6 +207,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map { index in NavigationSection(rawValue: index) }
       .skipNil()
       .skip(first: 1)
+
+    self.configureVideoPlayerController = project
+      .take(first: 1)
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -250,6 +256,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<Void, Never>
+  public let configureVideoPlayerController: Signal<Project, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>

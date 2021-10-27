@@ -23,11 +23,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private var pagesDataSource: ProjectPagesDataSource?
 
-  /**
-   FIXME: This `contentViewController` has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
-   Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
-   */
   private var contentViewController: ProjectPamphletContentViewController?
+
+  private let videoPlayerContainerView: UIView = {
+    UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private var navigationBarView: ProjectPageNavigationBarView = {
     ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -69,6 +69,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     super.viewDidLoad()
 
     self.setupNavigationView()
+    self.configureVideoPlayerContainerViewConstraints()
     self.configurePledgeCTAContainerView()
     self.configureProjectNavigationSelectorView()
     self.configurePageViewController()
@@ -129,6 +130,42 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
+  private func configureVideoPlayerContainerViewConstraints() {
+    _ = (self.videoPlayerContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    let aspectRatio = CGFloat(9.0 / 16.0)
+
+    let videoPlayerViewConstraints = [
+      self.videoPlayerContainerView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.videoPlayerContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.videoPlayerContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.videoPlayerContainerView.widthAnchor.constraint(
+        equalTo: self.view.widthAnchor
+      ),
+      self.videoPlayerContainerView.heightAnchor.constraint(
+        equalTo: self.videoPlayerContainerView.widthAnchor,
+        multiplier: aspectRatio
+      )
+    ]
+
+    NSLayoutConstraint.activate(videoPlayerViewConstraints)
+  }
+
+  private func configureVideoPlayer(project: Project) {
+    let videoPlayerViewController = VideoViewController.configuredWith(project: project)
+    videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+    _ = (videoPlayerViewController.view, self.videoPlayerContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    self.addChild(videoPlayerViewController)
+    videoPlayerViewController.beginAppearanceTransition(true, animated: false)
+    videoPlayerViewController.didMove(toParent: self)
+    videoPlayerViewController.endAppearanceTransition()
+  }
+
   private func configurePageViewController() {
     self.pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -158,7 +195,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let constraints = [
       self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.projectNavigationSelectorView.topAnchor
+        .constraint(equalTo: self.videoPlayerContainerView.bottomAnchor),
       self.projectNavigationSelectorView.heightAnchor
         .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout.projectNavigationSelectorHeight)
     ]
@@ -211,9 +249,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, _ in
-        /** FIXME: How we do this might change in https://kickstarter.atlassian.net/browse/NTV-195
-         self?.contentViewController?.configureWith(value: (project, refTag))
-         */
         self?.navigationDelegate?.configureSharing(with: .project(project))
 
         let watchProjectValue = WatchProjectValue(project, KSRAnalytics.PageContext.projectPage, nil)
@@ -265,6 +300,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
+      }
+
+    self.viewModel.outputs.configureVideoPlayerController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.configureVideoPlayer(project: $0)
       }
   }
 
@@ -353,22 +394,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 extension ProjectPageViewController: PledgeCTAContainerViewDelegate {
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
     self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
-  }
-}
-
-// MARK: - VideoViewControllerDelegate
-
-extension ProjectPageViewController: VideoViewControllerDelegate {
-  public func videoViewControllerDidFinish(_: VideoViewController) {
-    /** FIXME: Currently unused - fix in https://kickstarter.atlassian.net/browse/NTV-196
-     self.navBarController.projectVideoDidFinish()
-     */
-  }
-
-  public func videoViewControllerDidStart(_: VideoViewController) {
-    /** FIXME: Currently unused fix in https://kickstarter.atlassian.net/browse/NTV-196
-     self.navBarController.projectVideoDidStart()
-     */
   }
 }
 
