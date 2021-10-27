@@ -6,11 +6,21 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case empty
     case faqs
+    case askAQuestion
   }
 
   func load(projectFAQs: [ProjectFAQ], isExpandedStates: [Bool]) {
     // Clear all sections
     self.clearValues()
+
+    // Only render this cell for logged in users
+    if AppEnvironment.current.currentUser != nil {
+      self.set(
+        values: [()],
+        cellClass: ProjectFAQsAskAQuestionCell.self,
+        inSection: Section.askAQuestion.rawValue
+      )
+    }
 
     guard !projectFAQs.isEmpty else {
       self.set(
@@ -18,6 +28,7 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
         cellClass: ProjectFAQsEmptyStateCell.self,
         inSection: Section.empty.rawValue
       )
+
       return
     }
 
@@ -38,6 +49,8 @@ internal final class ProjectFAQsDataSource: ValueCellDataSource {
       cell.configureWith(value: ())
     case let (cell as ProjectFAQsCell, value as (ProjectFAQ, Bool)):
       cell.configureWith(value: value)
+    case let (cell as ProjectFAQsAskAQuestionCell, _):
+      cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }

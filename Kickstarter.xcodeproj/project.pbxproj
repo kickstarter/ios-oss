@@ -278,6 +278,7 @@
 		4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */; };
 		4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */; };
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
+		47554A5B2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
 		4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */; };
 		4758485026B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */; };
@@ -2025,6 +2026,7 @@
 		4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTests.swift; sourceTree = "<group>"; };
 		4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
+		47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsAskAQuestionCell.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserBackings.graphql; sourceTree = "<group>"; };
 		4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingState.swift"; sourceTree = "<group>"; };
@@ -4051,6 +4053,7 @@
 				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
 				9D9F57D11D131AF200CE81DE /* ProjectActivityUpdateCell.swift */,
 				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
+				47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */,
 				4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */,
 				4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */,
 				597073B01D07281800B00444 /* ProjectNotificationCell.swift */,
@@ -6718,6 +6721,7 @@
 				A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
 				37DEC2222257CB470051EF9B /* PledgeViewController.swift in Sources */,
+				47554A5B2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift in Sources */,
 				770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */,
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,

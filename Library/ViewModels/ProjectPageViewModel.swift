@@ -290,6 +290,7 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
           let updatedProjectWithBacking = projectWithBacking.project
             |> Project.lens.personalization.backing .~ projectWithBacking.backing
             |> Project.lens.personalization.isBacking .~ true
+            |> Project.lens.extendedProjectProperties .~ projectWithBacking.project.extendedProjectProperties
 
           return fetchProjectRewards(project: updatedProjectWithBacking)
         }

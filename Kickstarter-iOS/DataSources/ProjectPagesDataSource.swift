@@ -17,8 +17,7 @@ internal final class ProjectPagesDataSource: NSObject, UIPageViewControllerDataS
         viewController.view.backgroundColor = .orange
         return viewController
       case .faq:
-        let faqs = project.extendedProjectProperties?.faqs
-        let viewController = ProjectFAQsViewController.configuredWith(projectFAQs: faqs ?? [])
+        let viewController = ProjectFAQsViewController.configuredWith(project: project)
         return viewController
       case .environmentalCommitments:
         let viewController = UIViewController()
