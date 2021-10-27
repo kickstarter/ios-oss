@@ -29,9 +29,9 @@ internal final class ProjectFAQsViewController: UIViewController {
 
   // MARK: - Accessors
 
-  internal static func configuredWith(projectFAQs: [ProjectFAQ]) -> ProjectFAQsViewController {
+  internal static func configuredWith(project: Project) -> ProjectFAQsViewController {
     let vc = ProjectFAQsViewController.instantiate()
-    vc.viewModel.inputs.configureWith(projectFAQs: projectFAQs)
+    vc.viewModel.inputs.configureWith(project: project)
 
     return vc
   }
@@ -83,6 +83,11 @@ internal final class ProjectFAQsViewController: UIViewController {
 
     self.tableView
       .register(
+        ProjectFAQsAskAQuestionCell.self,
+        forCellReuseIdentifier: ProjectFAQsAskAQuestionCell.defaultReusableId
+      )
+    self.tableView
+      .register(
         ProjectFAQsEmptyStateCell.self,
         forCellReuseIdentifier: ProjectFAQsEmptyStateCell.defaultReusableId
       )
@@ -112,6 +117,8 @@ internal final class ProjectFAQsViewController: UIViewController {
 
     _ = self.tableView
       |> tableViewStyle
+      |> \.tableFooterView .~
+      UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
   }
 
   // MARK: - View model
@@ -126,12 +133,32 @@ internal final class ProjectFAQsViewController: UIViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.presentMessageDialog
+      .observeForUI()
+      .observeValues { [weak self] project in
+        self?.presentMessageDialog(project: project)
+      }
+
     self.viewModel.outputs.updateDataSource
       .observeForUI()
       .observeValues { [weak self] projectFAQs, isExpandedStates in
         self?.dataSource.load(projectFAQs: projectFAQs, isExpandedStates: isExpandedStates)
         self?.tableView.reloadData()
       }
+  }
+
+  // MARK: - Helpers
+
+  fileprivate func presentMessageDialog(project: Project) {
+    let dialog = MessageDialogViewController
+      .configuredWith(messageSubject: .project(project), context: .projectPage)
+    dialog.modalPresentationStyle = .formSheet
+    dialog.delegate = self
+    self.present(
+      UINavigationController(rootViewController: dialog),
+      animated: true,
+      completion: nil
+    )
   }
 }
 
@@ -153,12 +180,26 @@ private let tableViewStyle: TableViewStyle = { view in
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.showsVerticalScrollIndicator .~ false
-    |> \.tableFooterView .~ UIView(frame: .zero)
 }
 
 extension ProjectFAQsViewController: UITableViewDelegate {
   func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
-    self.viewModel.inputs.didSelectRowAt(row: indexPath.row, values: values)
+    switch indexPath.section {
+    case ProjectFAQsDataSource.Section.askAQuestion.rawValue:
+      self.viewModel.inputs.askAQuestionCellTapped()
+    case ProjectFAQsDataSource.Section.faqs.rawValue:
+      let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
+      self.viewModel.inputs.didSelectRowAt(row: indexPath.row, values: values)
+    default:
+      return
+    }
   }
+}
+
+extension ProjectFAQsViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
+    dialog.dismiss(animated: true, completion: nil)
+  }
+
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }
