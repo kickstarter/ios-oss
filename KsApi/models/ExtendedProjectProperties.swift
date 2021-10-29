@@ -32,10 +32,10 @@ public struct ProjectEnvironmentalCommitment: Decodable {
 }
 
 public enum ProjectCommitmentCategory: String, Decodable {
-  case longLastingDesign
-  case sustainableMaterials
-  case environmentallyFriendlyFactories
-  case sustainableDistribution
-  case reusabilityAndRecyclability
+  case longLastingDesign = "Long-lasting design"
+  case sustainableMaterials = "Sustainable materials"
+  case environmentallyFriendlyFactories = "Environmentally friendly factories"
+  case sustainableDistribution = "Sustainable distribution"
+  case reusabilityAndRecyclability = "Reusability and Recyclability"
   case somethingElse
 }
