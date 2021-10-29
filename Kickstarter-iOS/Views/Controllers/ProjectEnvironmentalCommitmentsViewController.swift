@@ -96,6 +96,7 @@ internal final class ProjectEnvironmentalCommitmentsViewController: UIViewContro
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
 
     self.configureSubviews()
     self.setupConstraints()
@@ -128,6 +129,26 @@ internal final class ProjectEnvironmentalCommitmentsViewController: UIViewContro
         self?.dataSource.load(environmentalCommitments: environmentalCommitments)
         self?.tableView.reloadData()
       }
+
+    self.viewModel.outputs.showHelpWebViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        self?.presentHelpWebViewController(with: helpType)
+      }
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension ProjectEnvironmentalCommitmentsViewController: UITableViewDelegate {
+  func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
+    (cell as? ProjectEnvironmentalCommitmentFooterCell)?.delegate = self
+  }
+}
+
+extension ProjectEnvironmentalCommitmentsViewController: ProjectEnvironmentalCommitmentFooterCellDelegate {
+  func projectEnvironmentalCommitmentFooterCell(_: ProjectEnvironmentalCommitmentFooterCell, didTapURL: URL) {
+    self.viewModel.inputs.projectEnvironmentalCommitmentFooterCellDidTapURL(didTapURL)
   }
 }
 

@@ -5,11 +5,14 @@ import ReactiveSwift
 public protocol ProjectEnvironmentalCommitmentFooterCellViewModelInputs {
   /// Call to configure the cell.
   func configure()
+
+  /// Call when a URL in the UITextView is tapped.
+  func linkTapped(url: URL)
 }
 
 public protocol ProjectEnvironmentalCommitmentFooterCellViewModelOutputs {
-  /// Emits a `String` of the description from the `ProjectEnvironmentalCommitment` object
-  var descriptionText: Signal<String, Never> { get }
+  /// Emits an `URL` of the URL being tapped in the UITextView.
+  var notifyDelegateLinkTappedWithURL: Signal<URL, Never> { get }
 }
 
 public protocol ProjectEnvironmentalCommitmentFooterCellViewModelType {
@@ -22,9 +25,7 @@ public final class ProjectEnvironmentalCommitmentFooterCellViewModel:
   ProjectEnvironmentalCommitmentFooterCellViewModelInputs,
   ProjectEnvironmentalCommitmentFooterCellViewModelOutputs {
   public init() {
-    self.descriptionText = self.configureProperty.signal.map { _ in
-      "Visit our Environmental Resources Center to learn how Kickstarter encourages sustainable practices."
-    }
+    self.notifyDelegateLinkTappedWithURL = self.linkTappedProperty.signal.skipNil()
   }
 
   fileprivate let configureProperty = MutableProperty(())
@@ -32,7 +33,12 @@ public final class ProjectEnvironmentalCommitmentFooterCellViewModel:
     self.configureProperty.value = ()
   }
 
-  public let descriptionText: Signal<String, Never>
+  fileprivate let linkTappedProperty = MutableProperty<URL?>(nil)
+  public func linkTapped(url: URL) {
+    self.linkTappedProperty.value = url
+  }
+
+  public let notifyDelegateLinkTappedWithURL: Signal<URL, Never>
 
   public var inputs: ProjectEnvironmentalCommitmentFooterCellViewModelInputs { self }
   public var outputs: ProjectEnvironmentalCommitmentFooterCellViewModelOutputs { self }

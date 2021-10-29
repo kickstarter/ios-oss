@@ -3,14 +3,20 @@ import Library
 import Prelude
 import UIKit
 
+protocol ProjectEnvironmentalCommitmentFooterCellDelegate: AnyObject {
+  func projectEnvironmentalCommitmentFooterCell(_ cell: ProjectEnvironmentalCommitmentFooterCell,
+                                                didTapURL: URL)
+}
+
 final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  weak var delegate: ProjectEnvironmentalCommitmentFooterCellDelegate?
   private let viewModel = ProjectEnvironmentalCommitmentFooterCellViewModel()
 
-  private lazy var descriptionLabel: UILabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var descriptionTextView: UITextView = {
+    UITextView(frame: .zero)
+      |> \.delegate .~ self
   }()
 
   private lazy var rootStackView = {
@@ -37,7 +43,12 @@ final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionText
+    self.viewModel.outputs.notifyDelegateLinkTappedWithURL
+      .observeForUI()
+      .observeValues { [weak self] url in
+        guard let self = self else { return }
+        self.delegate?.projectEnvironmentalCommitmentFooterCell(self, didTapURL: url)
+      }
   }
 
   override func bindStyles() {
@@ -46,8 +57,9 @@ final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell
     _ = self
       |> baseTableViewCellStyle()
 
-    _ = self.descriptionLabel
-      |> descriptionLabelStyle
+    _ = self.descriptionTextView
+      |> tappableLinksViewStyle
+      |> \.attributedText .~ self.attributedTextEnvironmentalResources()
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -64,20 +76,74 @@ final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.descriptionLabel], self.rootStackView)
+    _ = ([self.descriptionTextView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  // TODO: Internationalize strings
+  private func attributedTextEnvironmentalResources() -> NSAttributedString {
+    let regularFontAttribute: String.Attributes = [
+      .font: UIFont.ksr_subhead(),
+      .foregroundColor: UIColor.ksr_support_700
+    ]
+    let coloredFontAttribute: String.Attributes = [
+      .font: UIFont.ksr_subhead(),
+      .foregroundColor: UIColor.ksr_create_700,
+      .underlineStyle: NSUnderlineStyle.single.rawValue
+    ]
+
+    let learnMoreString = NSMutableAttributedString(
+      string: "to learn how Kickstarter encourages sustainable practices.",
+      attributes: regularFontAttribute
+    )
+
+    guard let environmentLink = HelpType.environment
+      .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+      return learnMoreString
+    }
+
+    let environmentString = "<a href=\(environmentLink)>Visit our Environmental Resources Center</a>"
+
+    guard let environmentAttributedString = try? NSMutableAttributedString(
+      data: Data(environmentString.utf8),
+      options: [
+        .documentType: NSAttributedString.DocumentType.html,
+        .characterEncoding: String.Encoding.utf8.rawValue
+      ],
+      documentAttributes: nil
+    ) else { return learnMoreString }
+
+    let fullRange = (environmentAttributedString.string as NSString)
+      .range(of: environmentAttributedString.string)
+    environmentAttributedString.addAttributes(coloredFontAttribute, range: fullRange)
+
+    let combinedString = environmentAttributedString + NSAttributedString(string: " ") +
+      learnMoreString
+
+    return combinedString
+  }
+}
+
+// MARK: - UITextViewDelegate
+
+extension ProjectEnvironmentalCommitmentFooterCell: UITextViewDelegate {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+  ) -> Bool {
+    return false
+  }
+
+  func textView(
+    _: UITextView, shouldInteractWith url: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    self.viewModel.inputs.linkTapped(url: url)
+    return false
   }
 }
 
 // MARK: - Styles
-
-private let descriptionLabelStyle: LabelStyle = { label in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_body()
-    |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
-}
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
