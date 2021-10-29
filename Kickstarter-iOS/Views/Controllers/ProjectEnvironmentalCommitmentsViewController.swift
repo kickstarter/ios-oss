@@ -3,13 +3,6 @@ import KsApi
 import Library
 import Prelude
 
-public enum ProjectEnvironmentalCommitmentsViewControllerStyles {
-  public enum Layout {
-    public static let standardMargin = Styles.grid(3)
-    public static let topMargin = Styles.grid(2)
-  }
-}
-
 internal final class ProjectEnvironmentalCommitmentsViewController: UIViewController {
   // MARK: - Properties
 

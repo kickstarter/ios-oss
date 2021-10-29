@@ -264,6 +264,11 @@
 		4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */; };
 		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
 		473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */; };
+		4746FFEF272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */; };
+		4746FFF1272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */; };
+		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
+		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift */; };
+		4746FFF7272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */; };
 		4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */; };
 		4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C14425B1021D0098E89E /* FirebaseABTesting.framework */; };
 		4748C15625B105DF0098E89E /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C15525B105DE0098E89E /* Protobuf.framework */; };
@@ -2019,6 +2024,11 @@
 		4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRepliesCell.swift; sourceTree = "<group>"; };
 		473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTests.swift"; sourceTree = "<group>"; };
 		473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewController.swift; sourceTree = "<group>"; };
+		4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsDataSourceTests.swift; sourceTree = "<group>"; };
+		4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewControllerTests.swift; sourceTree = "<group>"; };
+		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
+		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift; sourceTree = "<group>"; };
+		4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewModelTests.swift; sourceTree = "<group>"; };
 		4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
 		4748C14425B1021D0098E89E /* FirebaseABTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseABTesting.framework; path = Carthage/Build/iOS/FirebaseABTesting.framework; sourceTree = "<group>"; };
 		4748C15525B105DE0098E89E /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
@@ -4194,6 +4204,7 @@
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
 				4751A66E272B2AB500F81DD5 /* ProjectEnvironmentalCommitmentsViewController.swift */,
+				4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */,
 				4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */,
 				47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */,
 				A78838A81D8A32060081E94D /* ProjectNavBarViewController.swift */,
@@ -4617,6 +4628,7 @@
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				4751A672272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift */,
+				4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */,
 				4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */,
 				47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
@@ -4900,8 +4912,11 @@
 				A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */,
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
 				4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */,
+				4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */,
 				4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentFooterCellViewModel.swift */,
+				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift */,
 				4751A670272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift */,
+				4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */,
 				4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */,
 				47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
@@ -6321,6 +6336,7 @@
 				77C9123123C637FD00F3D2C9 /* DoubleCurrencyTests.swift in Sources */,
 				A7ED1FEE1E831C5C00BFFA01 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,
 				A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
+				4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift in Sources */,
 				778AA7802410542900E67293 /* LandingViewModelTests.swift in Sources */,
 				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
 				8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */,
@@ -6376,6 +6392,7 @@
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
 				77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */,
+				4746FFF7272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift in Sources */,
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
@@ -6423,6 +6440,7 @@
 				A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */,
 				A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */,
 				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
+				4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */,
 				D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */,
 				A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
 				47733001268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift in Sources */,
@@ -6862,7 +6880,9 @@
 				776B1A15241945E000B03098 /* CategorySelectionViewControllerTests.swift in Sources */,
 				8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
+				4746FFF1272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
+				4746FFEF272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift in Sources */,
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */,
