@@ -267,7 +267,7 @@
 		4746FFEF272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */; };
 		4746FFF1272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */; };
 		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
-		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift */; };
+		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
 		4746FFF7272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */; };
 		4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */; };
 		4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C14425B1021D0098E89E /* FirebaseABTesting.framework */; };
@@ -282,8 +282,8 @@
 		4751A673272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A672272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift */; };
 		4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */; };
 		4751A677272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */; };
-		4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentFooterCell.swift */; };
-		4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentFooterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentFooterCellViewModel.swift */; };
+		4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */; };
+		4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */; };
 		4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */; };
 		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
 		4753C779264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */; };
@@ -2027,7 +2027,7 @@
 		4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsDataSourceTests.swift; sourceTree = "<group>"; };
 		4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewControllerTests.swift; sourceTree = "<group>"; };
 		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
-		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift; sourceTree = "<group>"; };
+		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewModelTests.swift; sourceTree = "<group>"; };
 		4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
 		4748C14425B1021D0098E89E /* FirebaseABTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseABTesting.framework; path = Carthage/Build/iOS/FirebaseABTesting.framework; sourceTree = "<group>"; };
@@ -2042,8 +2042,8 @@
 		4751A672272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsDataSource.swift; sourceTree = "<group>"; };
 		4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCell.swift; sourceTree = "<group>"; };
 		4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModel.swift; sourceTree = "<group>"; };
-		4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentFooterCell.swift; sourceTree = "<group>"; };
-		4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentFooterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentFooterCellViewModel.swift; sourceTree = "<group>"; };
+		4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCell.swift; sourceTree = "<group>"; };
+		4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift; sourceTree = "<group>"; };
 		4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.swift; sourceTree = "<group>"; };
 		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
 		4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelope.swift; sourceTree = "<group>"; };
@@ -4078,7 +4078,7 @@
 				9D9F57D11D131AF200CE81DE /* ProjectActivityUpdateCell.swift */,
 				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
 				4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */,
-				4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentFooterCell.swift */,
+				4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */,
 				47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */,
 				4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */,
 				4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */,
@@ -4913,8 +4913,8 @@
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
 				4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */,
 				4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */,
-				4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentFooterCellViewModel.swift */,
-				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift */,
+				4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */,
+				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */,
 				4751A670272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift */,
 				4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */,
 				4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */,
@@ -5948,7 +5948,7 @@
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
 				77C9122723C4F99400F3D2C9 /* Double+Currency.swift in Sources */,
-				4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentFooterCellViewModel.swift in Sources */,
+				4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift in Sources */,
 				809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				8A13D165249566FB007E2C0B /* PledgeExpandableHeaderRewardCellViewModel.swift in Sources */,
 				59392C1E1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift in Sources */,
@@ -6336,7 +6336,7 @@
 				77C9123123C637FD00F3D2C9 /* DoubleCurrencyTests.swift in Sources */,
 				A7ED1FEE1E831C5C00BFFA01 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,
 				A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
-				4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentFooterCellViewModelTests.swift in Sources */,
+				4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */,
 				778AA7802410542900E67293 /* LandingViewModelTests.swift in Sources */,
 				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
 				8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */,
@@ -6575,7 +6575,7 @@
 				477239732710F87D00D26CDA /* ProjectPagesDataSource.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
-				4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentFooterCell.swift in Sources */,
+				4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */,
 				D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */,

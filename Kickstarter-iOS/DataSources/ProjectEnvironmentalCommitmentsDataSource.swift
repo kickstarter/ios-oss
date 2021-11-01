@@ -5,7 +5,7 @@ import UIKit
 internal final class ProjectEnvironmentalCommitmentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case environmentalCommitments
-    case footer
+    case disclaimer
   }
 
   func load(environmentalCommitments: [ProjectEnvironmentalCommitment]) {
@@ -20,8 +20,8 @@ internal final class ProjectEnvironmentalCommitmentsDataSource: ValueCellDataSou
 
     self.set(
       values: [()],
-      cellClass: ProjectEnvironmentalCommitmentFooterCell.self,
-      inSection: Section.footer.rawValue
+      cellClass: ProjectEnvironmentalCommitmentDisclaimerCell.self,
+      inSection: Section.disclaimer.rawValue
     )
   }
 
@@ -29,7 +29,7 @@ internal final class ProjectEnvironmentalCommitmentsDataSource: ValueCellDataSou
     switch (cell, value) {
     case let (cell as ProjectEnvironmentalCommitmentCell, value as ProjectEnvironmentalCommitment):
       cell.configureWith(value: value)
-    case let (cell as ProjectEnvironmentalCommitmentFooterCell, _):
+    case let (cell as ProjectEnvironmentalCommitmentDisclaimerCell, _):
       cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

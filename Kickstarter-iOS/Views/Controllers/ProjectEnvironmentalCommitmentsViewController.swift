@@ -83,8 +83,8 @@ internal final class ProjectEnvironmentalCommitmentsViewController: UIViewContro
       )
     self.tableView
       .register(
-        ProjectEnvironmentalCommitmentFooterCell.self,
-        forCellReuseIdentifier: ProjectEnvironmentalCommitmentFooterCell.defaultReusableId
+        ProjectEnvironmentalCommitmentDisclaimerCell.self,
+        forCellReuseIdentifier: ProjectEnvironmentalCommitmentDisclaimerCell.defaultReusableId
       )
 
     _ = self.tableView
@@ -135,13 +135,16 @@ internal final class ProjectEnvironmentalCommitmentsViewController: UIViewContro
 
 extension ProjectEnvironmentalCommitmentsViewController: UITableViewDelegate {
   func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
-    (cell as? ProjectEnvironmentalCommitmentFooterCell)?.delegate = self
+    (cell as? ProjectEnvironmentalCommitmentDisclaimerCell)?.delegate = self
   }
 }
 
-extension ProjectEnvironmentalCommitmentsViewController: ProjectEnvironmentalCommitmentFooterCellDelegate {
-  func projectEnvironmentalCommitmentFooterCell(_: ProjectEnvironmentalCommitmentFooterCell, didTapURL: URL) {
-    self.viewModel.inputs.projectEnvironmentalCommitmentFooterCellDidTapURL(didTapURL)
+extension ProjectEnvironmentalCommitmentsViewController: ProjectEnvironmentalCommitmentDisclaimerCellDelegate {
+  func projectEnvironmentalCommitmentDisclaimerCell(
+    _: ProjectEnvironmentalCommitmentDisclaimerCell,
+    didTapURL: URL
+  ) {
+    self.viewModel.inputs.projectEnvironmentalCommitmentDisclaimerCellDidTapURL(didTapURL)
   }
 }
 

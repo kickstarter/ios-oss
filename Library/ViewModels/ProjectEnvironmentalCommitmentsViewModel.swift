@@ -7,7 +7,7 @@ public protocol ProjectEnvironmentalCommitmentsViewModelInputs {
   func configureWith(environmentalCommitments: [ProjectEnvironmentalCommitment])
 
   /// Call when the delegate method for the ProjectEnvironmentalCommitmentFooterCellDelegate is called.
-  func projectEnvironmentalCommitmentFooterCellDidTapURL(_ URL: URL)
+  func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -34,7 +34,7 @@ public final class ProjectEnvironmentalCommitmentsViewModel: ProjectEnvironmenta
       .combineLatest(with: self.viewDidLoadProperty.signal)
       .map(first)
 
-    self.showHelpWebViewController = self.projectEnvironmentalCommitmentFooterCellDidTapURLProperty.signal
+    self.showHelpWebViewController = self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.signal
       .skipNil()
       .map(HelpType.helpType)
       .skipNil()
@@ -45,9 +45,9 @@ public final class ProjectEnvironmentalCommitmentsViewModel: ProjectEnvironmenta
     self.configureDataProperty.value = environmentalCommitments
   }
 
-  fileprivate let projectEnvironmentalCommitmentFooterCellDidTapURLProperty = MutableProperty<URL?>(nil)
-  public func projectEnvironmentalCommitmentFooterCellDidTapURL(_ url: URL) {
-    self.projectEnvironmentalCommitmentFooterCellDidTapURLProperty.value = url
+  fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ url: URL) {
+    self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.value = url
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

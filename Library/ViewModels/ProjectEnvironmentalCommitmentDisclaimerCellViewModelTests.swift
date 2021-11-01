@@ -4,9 +4,9 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class ProjectEnvironmentalCommitmentFooterCellViewModelTests: TestCase {
-  fileprivate let vm: ProjectEnvironmentalCommitmentFooterCellViewModelType =
-    ProjectEnvironmentalCommitmentFooterCellViewModel()
+internal final class ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests: TestCase {
+  fileprivate let vm: ProjectEnvironmentalCommitmentDisclaimerCellViewModelType =
+    ProjectEnvironmentalCommitmentDisclaimerCellViewModel()
 
   fileprivate let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
 

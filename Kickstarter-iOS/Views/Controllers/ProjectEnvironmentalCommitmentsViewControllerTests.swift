@@ -5,6 +5,21 @@ import Prelude
 import XCTest
 
 final class ProjectEnvironmentalCommitmentsViewControllerTests: TestCase {
+  private let environmentalCommitments = [
+    ProjectEnvironmentalCommitment(
+      description: "foo bar",
+      category: .environmentallyFriendlyFactories,
+      id: 0
+    ),
+    ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
+    ProjectEnvironmentalCommitment(
+      description: "Lorem ipsum",
+      category: .reusabilityAndRecyclability,
+      id: 2
+    ),
+    ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
+  ]
+
   override func setUp() {
     super.setUp()
 
@@ -18,27 +33,12 @@ final class ProjectEnvironmentalCommitmentsViewControllerTests: TestCase {
   }
 
   func testViewController_PortraitOrientation() {
-    let environmentalCommitments = [
-      ProjectEnvironmentalCommitment(
-        description: "foo bar",
-        category: .environmentallyFriendlyFactories,
-        id: 0
-      ),
-      ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
-      ProjectEnvironmentalCommitment(
-        description: "Lorem ipsum",
-        category: .reusabilityAndRecyclability,
-        id: 2
-      ),
-      ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
-    ]
-
     let devices = [Device.phone4_7inch, Device.pad]
 
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = ProjectEnvironmentalCommitmentsViewController
-          .configuredWith(environmentalCommitments: environmentalCommitments)
+          .configuredWith(environmentalCommitments: self.environmentalCommitments)
 
         let (parent, _) = traitControllers(
           device: device,
@@ -59,27 +59,12 @@ final class ProjectEnvironmentalCommitmentsViewControllerTests: TestCase {
   }
 
   func testViewController_LandscapeOrientation() {
-    let environmentalCommitments = [
-      ProjectEnvironmentalCommitment(
-        description: "foo bar",
-        category: .environmentallyFriendlyFactories,
-        id: 0
-      ),
-      ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
-      ProjectEnvironmentalCommitment(
-        description: "Lorem ipsum",
-        category: .reusabilityAndRecyclability,
-        id: 2
-      ),
-      ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
-    ]
-
     let devices = [Device.phone4_7inch, Device.pad]
 
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = ProjectEnvironmentalCommitmentsViewController
-          .configuredWith(environmentalCommitments: environmentalCommitments)
+          .configuredWith(environmentalCommitments: self.environmentalCommitments)
 
         let (parent, _) = traitControllers(
           device: device,

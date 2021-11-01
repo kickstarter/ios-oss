@@ -68,7 +68,7 @@ internal final class ProjectEnvironmentalCommitmentsViewModelTests: TestCase {
 
     self.showHelpWebViewController.assertDidNotEmitValue()
 
-    self.vm.inputs.projectEnvironmentalCommitmentFooterCellDidTapURL(url)
+    self.vm.inputs.projectEnvironmentalCommitmentDisclaimerCellDidTapURL(url)
 
     self.showHelpWebViewController.assertValues([.environment])
   }
@@ -98,7 +98,7 @@ internal final class ProjectEnvironmentalCommitmentsViewModelTests: TestCase {
 
     self.showHelpWebViewController.assertDidNotEmitValue()
 
-    self.vm.inputs.projectEnvironmentalCommitmentFooterCellDidTapURL(url)
+    self.vm.inputs.projectEnvironmentalCommitmentDisclaimerCellDidTapURL(url)
 
     self.showHelpWebViewController.assertDidNotEmitValue()
   }

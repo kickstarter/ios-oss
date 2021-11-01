@@ -3,16 +3,16 @@ import Library
 import Prelude
 import UIKit
 
-protocol ProjectEnvironmentalCommitmentFooterCellDelegate: AnyObject {
-  func projectEnvironmentalCommitmentFooterCell(_ cell: ProjectEnvironmentalCommitmentFooterCell,
-                                                didTapURL: URL)
+protocol ProjectEnvironmentalCommitmentDisclaimerCellDelegate: AnyObject {
+  func projectEnvironmentalCommitmentDisclaimerCell(_ cell: ProjectEnvironmentalCommitmentDisclaimerCell,
+                                                    didTapURL: URL)
 }
 
-final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell {
+final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  weak var delegate: ProjectEnvironmentalCommitmentFooterCellDelegate?
-  private let viewModel = ProjectEnvironmentalCommitmentFooterCellViewModel()
+  weak var delegate: ProjectEnvironmentalCommitmentDisclaimerCellDelegate?
+  private let viewModel = ProjectEnvironmentalCommitmentDisclaimerCellViewModel()
 
   private lazy var descriptionTextView: UITextView = {
     UITextView(frame: .zero)
@@ -47,7 +47,7 @@ final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell
       .observeForUI()
       .observeValues { [weak self] url in
         guard let self = self else { return }
-        self.delegate?.projectEnvironmentalCommitmentFooterCell(self, didTapURL: url)
+        self.delegate?.projectEnvironmentalCommitmentDisclaimerCell(self, didTapURL: url)
       }
   }
 
@@ -80,7 +80,7 @@ final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // TODO: Internationalize strings
+  // TODO: Internationalize strings and
   private func attributedTextEnvironmentalResources() -> NSAttributedString {
     let regularFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
@@ -126,7 +126,7 @@ final class ProjectEnvironmentalCommitmentFooterCell: UITableViewCell, ValueCell
 
 // MARK: - UITextViewDelegate
 
-extension ProjectEnvironmentalCommitmentFooterCell: UITextViewDelegate {
+extension ProjectEnvironmentalCommitmentDisclaimerCell: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction
@@ -148,7 +148,7 @@ extension ProjectEnvironmentalCommitmentFooterCell: UITextViewDelegate {
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(1))
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3))
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ Styles.grid(3)

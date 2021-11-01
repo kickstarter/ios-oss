@@ -99,7 +99,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(1))
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3))
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ Styles.grid(3)

@@ -11,7 +11,7 @@ internal final class ProjectEnvironmentalCommitmentsDataSourceTests: XCTestCase 
   func testDataSource() {
     let environmentalCommitmentsSection = ProjectEnvironmentalCommitmentsDataSource.Section
       .environmentalCommitments.rawValue
-    let footerSection = ProjectEnvironmentalCommitmentsDataSource.Section.footer.rawValue
+    let disclaimerSection = ProjectEnvironmentalCommitmentsDataSource.Section.disclaimer.rawValue
     let environmentalCommitments = [
       ProjectEnvironmentalCommitment(
         description: "foo bar",
@@ -34,21 +34,21 @@ internal final class ProjectEnvironmentalCommitmentsDataSourceTests: XCTestCase 
       4,
       self.dataSource.tableView(self.tableView, numberOfRowsInSection: environmentalCommitmentsSection)
     )
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: footerSection))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: disclaimerSection))
     XCTAssertEqual(
       "ProjectEnvironmentalCommitmentCell",
       self.dataSource.reusableId(item: 0, section: environmentalCommitmentsSection)
     )
     XCTAssertEqual(
       "ProjectEnvironmentalCommitmentFooterCell",
-      self.dataSource.reusableId(item: 0, section: footerSection)
+      self.dataSource.reusableId(item: 0, section: disclaimerSection)
     )
   }
 
   func testDataSource_EmptyEnvironmentalCommitments() {
     let environmentalCommitmentsSection = ProjectEnvironmentalCommitmentsDataSource.Section
       .environmentalCommitments.rawValue
-    let footerSection = ProjectEnvironmentalCommitmentsDataSource.Section.footer.rawValue
+    let disclaimerSection = ProjectEnvironmentalCommitmentsDataSource.Section.disclaimer.rawValue
 
     self.dataSource.load(environmentalCommitments: [])
 
@@ -57,11 +57,11 @@ internal final class ProjectEnvironmentalCommitmentsDataSourceTests: XCTestCase 
       0,
       self.dataSource.tableView(self.tableView, numberOfRowsInSection: environmentalCommitmentsSection)
     )
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: footerSection))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: disclaimerSection))
     XCTAssertNil(self.dataSource.reusableId(item: 0, section: environmentalCommitmentsSection))
     XCTAssertEqual(
       "ProjectEnvironmentalCommitmentFooterCell",
-      self.dataSource.reusableId(item: 0, section: footerSection)
+      self.dataSource.reusableId(item: 0, section: disclaimerSection)
     )
   }
 }
