@@ -40,7 +40,7 @@ internal final class ProjectEnvironmentalCommitmentsDataSourceTests: XCTestCase 
       self.dataSource.reusableId(item: 0, section: environmentalCommitmentsSection)
     )
     XCTAssertEqual(
-      "ProjectEnvironmentalCommitmentFooterCell",
+      "ProjectEnvironmentalCommitmentDisclaimerCell",
       self.dataSource.reusableId(item: 0, section: disclaimerSection)
     )
   }
@@ -60,7 +60,7 @@ internal final class ProjectEnvironmentalCommitmentsDataSourceTests: XCTestCase 
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: disclaimerSection))
     XCTAssertNil(self.dataSource.reusableId(item: 0, section: environmentalCommitmentsSection))
     XCTAssertEqual(
-      "ProjectEnvironmentalCommitmentFooterCell",
+      "ProjectEnvironmentalCommitmentDisclaimerCell",
       self.dataSource.reusableId(item: 0, section: disclaimerSection)
     )
   }

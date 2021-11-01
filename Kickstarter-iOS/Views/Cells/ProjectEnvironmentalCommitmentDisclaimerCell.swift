@@ -80,7 +80,7 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // TODO: Internationalize strings and
+  // TODO: Internationalize strings and clean up method when translations are applied
   private func attributedTextEnvironmentalResources() -> NSAttributedString {
     let regularFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
