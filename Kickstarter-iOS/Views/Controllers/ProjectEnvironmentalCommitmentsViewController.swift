@@ -126,7 +126,7 @@ internal final class ProjectEnvironmentalCommitmentsViewController: UIViewContro
     self.viewModel.outputs.showHelpWebViewController
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
-        self?.presentHelpWebViewController(with: helpType)
+        self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
   }
 }
