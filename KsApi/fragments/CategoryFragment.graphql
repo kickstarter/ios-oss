@@ -3,5 +3,6 @@ fragment CategoryFragment on Category {
   analyticsName
   parentCategory {
     ...BaseCategoryFragment
+    analyticsName @include(if: $withParentCategoryAnalyticsName)
   }
 }

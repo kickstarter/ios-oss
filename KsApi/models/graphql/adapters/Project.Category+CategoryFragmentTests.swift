@@ -4,7 +4,12 @@ import XCTest
 
 final class Category_CategoryFragmentTests: XCTestCase {
   func test() {
-    guard let categoryFragment = try? GraphAPI.CategoryFragment(jsonObject: categoryDictionary()) else {
+    let variables = ["withParentCategoryAnalyticsName": true]
+
+    guard let categoryFragment = try? GraphAPI.CategoryFragment(
+      jsonObject: categoryDictionary(),
+      variables: variables
+    ) else {
       XCTFail("should create a category fragment")
 
       return
@@ -25,7 +30,8 @@ final class Category_CategoryFragmentTests: XCTestCase {
       "parentCategory": {
         "__typename": "Category",
         "id": "Q2F0ZWdvcnktMTg=",
-        "name": "My Parent Category"
+        "name": "My Parent Category",
+        "analyticsName": "Parent /Category"
       },
       "__typename": "Category",
       "id": "Q2F0ZWdvcnktNDc=",

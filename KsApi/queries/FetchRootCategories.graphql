@@ -1,6 +1,7 @@
-query FetchRootCategories {
+query FetchRootCategories($withParentCategoryAnalyticsName: Boolean = true) {
   rootCategories {
       ...BaseCategoryFragment
+      analyticsName
       subcategories {
         nodes {
           ...CategoryFragment

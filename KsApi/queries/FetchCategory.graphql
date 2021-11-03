@@ -1,4 +1,4 @@
-query FetchCategory($id: ID!) {
+query FetchCategory($id: ID!, $withParentCategoryAnalyticsName: Boolean = false) {
   node(id: $id) {
     ...CategoryFragment
   }

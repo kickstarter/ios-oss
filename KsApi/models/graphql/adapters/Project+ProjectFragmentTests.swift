@@ -5,7 +5,10 @@ import XCTest
 final class Project_ProjectFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables = ["withStoredCards": true]
+      let variables = [
+        "withStoredCards": true,
+        "withParentCategoryAnalyticsName": false
+      ]
       let fragment = try GraphAPI.ProjectFragment(jsonObject: self.projectDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
