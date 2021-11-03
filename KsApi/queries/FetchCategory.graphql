@@ -1,0 +1,5 @@
+query FetchCategory($id: ID!) {
+  node(id: $id) {
+    ...CategoryFragment
+  }
+}

@@ -1,9 +1,7 @@
 fragment CategoryFragment on Category {
-  id
-  name
+  ...BaseCategoryFragment
   analyticsName
   parentCategory {
-    id
-    name
+    ...BaseCategoryFragment
   }
 }

@@ -84,6 +84,9 @@
 		062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */; };
 		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
 		064AEF13270CFB53006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */; };
+		0655C7262732FC4C0087281F /* BaseCategoryFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7252732FC4C0087281F /* BaseCategoryFragment.graphql */; };
+		0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7272732FDA30087281F /* FetchRootCategories.graphql */; };
+		0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7292732FDE00087281F /* FetchCategory.graphql */; };
 		06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */; };
 		06566375270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */; };
 		065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */; };
@@ -1830,6 +1833,9 @@
 		062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
 		064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
+		0655C7252732FC4C0087281F /* BaseCategoryFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BaseCategoryFragment.graphql; sourceTree = "<group>"; };
+		0655C7272732FDA30087281F /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
+		0655C7292732FDE00087281F /* FetchCategory.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCategory.graphql; sourceTree = "<group>"; };
 		06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectRewardsByIdQuery.graphql; sourceTree = "<group>"; };
 		06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryData.swift"; sourceTree = "<group>"; };
 		065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UpdateBackingEnvelope+UpdateBackingMutation.Data.swift"; sourceTree = "<group>"; };
@@ -3547,6 +3553,8 @@
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
 				4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */,
+				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
+				0655C7292732FDE00087281F /* FetchCategory.graphql */,
 				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
 				8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */,
 				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,
@@ -3682,6 +3690,7 @@
 			children = (
 				8A1556D7269394A400017845 /* BackingFragment.graphql */,
 				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
+				0655C7252732FC4C0087281F /* BaseCategoryFragment.graphql */,
 				8AC3E0EC269F485100168BF8 /* CheckoutFragment.graphql */,
 				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
 				8A1556F3269398CB00017845 /* CountryFragment.graphql */,
@@ -5661,6 +5670,7 @@
 				06B3605C26E12288006CB9E4 /* FetchProjectByIdQuery.graphql in Resources */,
 				06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */,
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
+				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */,
@@ -5676,6 +5686,7 @@
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
+				0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
@@ -5686,6 +5697,7 @@
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
 				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
 				06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */,
+				0655C7262732FC4C0087281F /* BaseCategoryFragment.graphql in Resources */,
 				47A662F126AF1FCC001CE7B1 /* WatchProject.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

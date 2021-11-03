@@ -4496,6 +4496,7 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -4848,6 +4849,7 @@ public enum GraphAPI {
       document.append("\n" + CreditCardFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       return document
     }
@@ -5052,6 +5054,250 @@ public enum GraphAPI {
     }
   }
 
+  public final class FetchCategoryQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchCategory($id: ID!) {
+        node(id: $id) {
+          __typename
+          ...CategoryFragment
+        }
+      }
+      """
+
+    public let operationName: String = "FetchCategory"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
+      return document
+    }
+
+    public var id: GraphQLID
+
+    public init(id: GraphQLID) {
+      self.id = id
+    }
+
+    public var variables: GraphQLMap? {
+      return ["id": id]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("node", arguments: ["id": GraphQLVariable("id")], type: .object(Node.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(node: Node? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+      }
+
+      /// Fetches an object given its ID.
+      public var node: Node? {
+        get {
+          return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "node")
+        }
+      }
+
+      public struct Node: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User", "UserUrl", "Location", "Project", "Comment", "Category", "Photo", "ProjectFeaturedImage", "RewardItem", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "Message", "Backing", "Reward", "ShippingRule", "Video", "VideoTrack", "VideoTrackCue", "Flagging", "CreatorInterview", "CreatorPrompt", "InterviewQuestion", "InterviewAnswer", "FreeformPost", "Organization", "CuratedPage", "Conversation", "Address", "PushProject", "Checkout", "Survey"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLFragmentSpread(CategoryFragment.self),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public static func makeUser() -> Node {
+          return Node(unsafeResultMap: ["__typename": "User"])
+        }
+
+        public static func makeUserUrl() -> Node {
+          return Node(unsafeResultMap: ["__typename": "UserUrl"])
+        }
+
+        public static func makeLocation() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Location"])
+        }
+
+        public static func makeProject() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Project"])
+        }
+
+        public static func makeComment() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Comment"])
+        }
+
+        public static func makePhoto() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Photo"])
+        }
+
+        public static func makeProjectFeaturedImage() -> Node {
+          return Node(unsafeResultMap: ["__typename": "ProjectFeaturedImage"])
+        }
+
+        public static func makeRewardItem() -> Node {
+          return Node(unsafeResultMap: ["__typename": "RewardItem"])
+        }
+
+        public static func makeProjectProfile() -> Node {
+          return Node(unsafeResultMap: ["__typename": "ProjectProfile"])
+        }
+
+        public static func makeAttachedAudio() -> Node {
+          return Node(unsafeResultMap: ["__typename": "AttachedAudio"])
+        }
+
+        public static func makeAttachedVideo() -> Node {
+          return Node(unsafeResultMap: ["__typename": "AttachedVideo"])
+        }
+
+        public static func makeTag() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Tag"])
+        }
+
+        public static func makeMessage() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Message"])
+        }
+
+        public static func makeBacking() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Backing"])
+        }
+
+        public static func makeReward() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Reward"])
+        }
+
+        public static func makeShippingRule() -> Node {
+          return Node(unsafeResultMap: ["__typename": "ShippingRule"])
+        }
+
+        public static func makeVideo() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Video"])
+        }
+
+        public static func makeVideoTrack() -> Node {
+          return Node(unsafeResultMap: ["__typename": "VideoTrack"])
+        }
+
+        public static func makeVideoTrackCue() -> Node {
+          return Node(unsafeResultMap: ["__typename": "VideoTrackCue"])
+        }
+
+        public static func makeFlagging() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Flagging"])
+        }
+
+        public static func makeCreatorInterview() -> Node {
+          return Node(unsafeResultMap: ["__typename": "CreatorInterview"])
+        }
+
+        public static func makeCreatorPrompt() -> Node {
+          return Node(unsafeResultMap: ["__typename": "CreatorPrompt"])
+        }
+
+        public static func makeInterviewQuestion() -> Node {
+          return Node(unsafeResultMap: ["__typename": "InterviewQuestion"])
+        }
+
+        public static func makeInterviewAnswer() -> Node {
+          return Node(unsafeResultMap: ["__typename": "InterviewAnswer"])
+        }
+
+        public static func makeFreeformPost() -> Node {
+          return Node(unsafeResultMap: ["__typename": "FreeformPost"])
+        }
+
+        public static func makeOrganization() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Organization"])
+        }
+
+        public static func makeCuratedPage() -> Node {
+          return Node(unsafeResultMap: ["__typename": "CuratedPage"])
+        }
+
+        public static func makeConversation() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Conversation"])
+        }
+
+        public static func makeAddress() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Address"])
+        }
+
+        public static func makePushProject() -> Node {
+          return Node(unsafeResultMap: ["__typename": "PushProject"])
+        }
+
+        public static func makeCheckout() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Checkout"])
+        }
+
+        public static func makeSurvey() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Survey"])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var categoryFragment: CategoryFragment? {
+            get {
+              if !CategoryFragment.possibleTypes.contains(resultMap["__typename"]! as! String) { return nil }
+              return CategoryFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              guard let newValue = newValue else { return }
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+
   public final class FetchProjectByIdQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -5078,6 +5324,7 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -5308,6 +5555,7 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -6474,6 +6722,268 @@ public enum GraphAPI {
     }
   }
 
+  public final class FetchRootCategoriesQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchRootCategories {
+        rootCategories {
+          __typename
+          ...BaseCategoryFragment
+          subcategories {
+            __typename
+            nodes {
+              __typename
+              ...CategoryFragment
+              parentId
+              totalProjectCount
+            }
+            totalCount
+          }
+          totalProjectCount
+        }
+      }
+      """
+
+    public let operationName: String = "FetchRootCategories"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
+      document.append("\n" + CategoryFragment.fragmentDefinition)
+      return document
+    }
+
+    public init() {
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("rootCategories", type: .nonNull(.list(.nonNull(.object(RootCategory.selections))))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(rootCategories: [RootCategory]) {
+        self.init(unsafeResultMap: ["__typename": "Query", "rootCategories": rootCategories.map { (value: RootCategory) -> ResultMap in value.resultMap }])
+      }
+
+      /// Root project categories.
+      public var rootCategories: [RootCategory] {
+        get {
+          return (resultMap["rootCategories"] as! [ResultMap]).map { (value: ResultMap) -> RootCategory in RootCategory(unsafeResultMap: value) }
+        }
+        set {
+          resultMap.updateValue(newValue.map { (value: RootCategory) -> ResultMap in value.resultMap }, forKey: "rootCategories")
+        }
+      }
+
+      public struct RootCategory: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Category"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLFragmentSpread(BaseCategoryFragment.self),
+            GraphQLField("subcategories", type: .object(Subcategory.selections)),
+            GraphQLField("totalProjectCount", type: .nonNull(.scalar(Int.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Subcategories.
+        public var subcategories: Subcategory? {
+          get {
+            return (resultMap["subcategories"] as? ResultMap).flatMap { Subcategory(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "subcategories")
+          }
+        }
+
+        public var totalProjectCount: Int {
+          get {
+            return resultMap["totalProjectCount"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "totalProjectCount")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var baseCategoryFragment: BaseCategoryFragment {
+            get {
+              return BaseCategoryFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+
+        public struct Subcategory: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CategorySubcategoriesConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("nodes", type: .list(.object(Node.selections))),
+              GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(nodes: [Node?]? = nil, totalCount: Int) {
+            self.init(unsafeResultMap: ["__typename": "CategorySubcategoriesConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "totalCount": totalCount])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// A list of nodes.
+          public var nodes: [Node?]? {
+            get {
+              return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+            }
+            set {
+              resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+            }
+          }
+
+          public var totalCount: Int {
+            get {
+              return resultMap["totalCount"]! as! Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+
+          public struct Node: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["Category"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLFragmentSpread(CategoryFragment.self),
+                GraphQLField("parentId", type: .scalar(GraphQLID.self)),
+                GraphQLField("totalProjectCount", type: .nonNull(.scalar(Int.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// Parent id of the category.
+            public var parentId: GraphQLID? {
+              get {
+                return resultMap["parentId"] as? GraphQLID
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "parentId")
+              }
+            }
+
+            public var totalProjectCount: Int {
+              get {
+                return resultMap["totalProjectCount"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalProjectCount")
+              }
+            }
+
+            public var fragments: Fragments {
+              get {
+                return Fragments(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+
+            public struct Fragments {
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var categoryFragment: CategoryFragment {
+                get {
+                  return CategoryFragment(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   public final class FetchUpdateCommentsQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -7025,6 +7535,7 @@ public enum GraphAPI {
       document.append("\n" + CreditCardFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
+      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       return document
     }
@@ -8310,20 +8821,14 @@ public enum GraphAPI {
     }
   }
 
-  public struct CategoryFragment: GraphQLFragment {
+  public struct BaseCategoryFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
       """
-      fragment CategoryFragment on Category {
+      fragment BaseCategoryFragment on Category {
         __typename
         id
         name
-        analyticsName
-        parentCategory {
-          __typename
-          id
-          name
-        }
       }
       """
 
@@ -8334,8 +8839,6 @@ public enum GraphAPI {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
-        GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
-        GraphQLField("parentCategory", type: .object(ParentCategory.selections)),
       ]
     }
 
@@ -8345,8 +8848,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, name: String, analyticsName: String, parentCategory: ParentCategory? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name, "analyticsName": analyticsName, "parentCategory": parentCategory.flatMap { (value: ParentCategory) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, name: String) {
+      self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name])
     }
 
     public var __typename: String {
@@ -8376,6 +8879,48 @@ public enum GraphAPI {
         resultMap.updateValue(newValue, forKey: "name")
       }
     }
+  }
+
+  public struct CategoryFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment CategoryFragment on Category {
+        __typename
+        ...BaseCategoryFragment
+        analyticsName
+        parentCategory {
+          __typename
+          ...BaseCategoryFragment
+        }
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Category"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(BaseCategoryFragment.self),
+        GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
+        GraphQLField("parentCategory", type: .object(ParentCategory.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
 
     /// Category name in English for analytics use.
     public var analyticsName: String {
@@ -8397,14 +8942,39 @@ public enum GraphAPI {
       }
     }
 
+    public var fragments: Fragments {
+      get {
+        return Fragments(unsafeResultMap: resultMap)
+      }
+      set {
+        resultMap += newValue.resultMap
+      }
+    }
+
+    public struct Fragments {
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var baseCategoryFragment: BaseCategoryFragment {
+        get {
+          return BaseCategoryFragment(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+    }
+
     public struct ParentCategory: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["Category"]
 
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(BaseCategoryFragment.self),
         ]
       }
 
@@ -8427,22 +8997,29 @@ public enum GraphAPI {
         }
       }
 
-      public var id: GraphQLID {
+      public var fragments: Fragments {
         get {
-          return resultMap["id"]! as! GraphQLID
+          return Fragments(unsafeResultMap: resultMap)
         }
         set {
-          resultMap.updateValue(newValue, forKey: "id")
+          resultMap += newValue.resultMap
         }
       }
 
-      /// Category name.
-      public var name: String {
-        get {
-          return resultMap["name"]! as! String
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
         }
-        set {
-          resultMap.updateValue(newValue, forKey: "name")
+
+        public var baseCategoryFragment: BaseCategoryFragment {
+          get {
+            return BaseCategoryFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
         }
       }
     }

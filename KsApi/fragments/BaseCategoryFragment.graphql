@@ -1,0 +1,4 @@
+fragment BaseCategoryFragment on Category {
+  id
+  name
+}

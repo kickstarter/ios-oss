@@ -1,0 +1,14 @@
+query FetchRootCategories {
+  rootCategories {
+      ...BaseCategoryFragment
+      subcategories {
+        nodes {
+          ...CategoryFragment
+          parentId
+          totalProjectCount
+        }
+        totalCount
+      }
+      totalProjectCount
+  }
+}
