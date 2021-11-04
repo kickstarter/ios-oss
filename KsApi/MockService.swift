@@ -43,6 +43,8 @@
     fileprivate let fetchBackingResponse: Backing
     fileprivate let backingUpdate: Backing
 
+    fileprivate let fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>?
+
     fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
     fileprivate let fetchGraphCategoriesError: GraphError?
 
@@ -218,6 +220,7 @@
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
+      fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>? = nil,
       fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
       fetchGraphCategoriesError: GraphError? = nil,
       fetchCommentsResponse _: [ActivityComment]? = nil,
@@ -338,6 +341,8 @@
       self.fetchBackingResponse = fetchBackingResponse
 
       self.backingUpdate = backingUpdate
+
+      self.fetchGraphCategoryResult = fetchGraphCategoryResult
 
       // FIXME: Once converted to Apollo, remove the default value and combine the `Response` and `Error` into a `Result`
       self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (RootCategoriesEnvelope.template
@@ -712,9 +717,15 @@
       return SignalProducer(value: RootCategoriesEnvelope.template)
     }
 
-    internal func fetchGraphCategory(query: NonEmptySet<Query>)
-      -> SignalProducer<CategoryEnvelope, GraphError> {
-      return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
+    internal func fetchGraphCategory(id: String)
+      -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchGraphCategoryQuery = GraphAPI.FetchCategoryQuery(id: id, withParentCategoryAnalyticsName: true)
+
+      return client.fetchWithResult(query: fetchGraphCategoryQuery, result: self.fetchGraphCategoryResult)
     }
 
     internal func fetchGraphUser(withStoredCards: Bool)
@@ -1551,6 +1562,7 @@
             fetchActivitiesResponse: $1.fetchActivitiesResponse,
             fetchActivitiesError: $1.fetchActivitiesError,
             fetchBackingResponse: $1.fetchBackingResponse,
+            fetchGraphCategoryResult: $1.fetchGraphCategoryResult,
             fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
             fetchProjectCommentsEnvelopeResult: $1.fetchProjectCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,

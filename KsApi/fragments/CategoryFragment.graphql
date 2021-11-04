@@ -1,8 +1,10 @@
 fragment CategoryFragment on Category {
-  ...BaseCategoryFragment
+  id
+  name
   analyticsName
   parentCategory {
-    ...BaseCategoryFragment
+    id
+    name
     analyticsName @include(if: $withParentCategoryAnalyticsName)
   }
 }

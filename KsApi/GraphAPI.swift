@@ -4496,7 +4496,6 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -4851,7 +4850,6 @@ public enum GraphAPI {
       document.append("\n" + CreditCardFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       return document
     }
@@ -5062,10 +5060,25 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchCategory($id: ID!, $withParentCategoryAnalyticsName: Boolean = false) {
+      query FetchCategory($id: ID!, $withParentCategoryAnalyticsName: Boolean!) {
         node(id: $id) {
           __typename
-          ...CategoryFragment
+          ... on Category {
+            analyticsName
+            id
+            name
+            subcategories {
+              __typename
+              nodes {
+                __typename
+                ...CategoryFragment
+                parentId
+                totalProjectCount
+              }
+              totalCount
+            }
+            totalProjectCount
+          }
         }
       }
       """
@@ -5075,14 +5088,13 @@ public enum GraphAPI {
     public var queryDocument: String {
       var document: String = operationDefinition
       document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       return document
     }
 
     public var id: GraphQLID
-    public var withParentCategoryAnalyticsName: Bool?
+    public var withParentCategoryAnalyticsName: Bool
 
-    public init(id: GraphQLID, withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(id: GraphQLID, withParentCategoryAnalyticsName: Bool) {
       self.id = id
       self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
@@ -5125,8 +5137,12 @@ public enum GraphAPI {
 
         public static var selections: [GraphQLSelection] {
           return [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(CategoryFragment.self),
+            GraphQLTypeCase(
+              variants: ["Category": AsCategory.selections],
+              default: [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              ]
+            )
           ]
         }
 
@@ -5264,6 +5280,10 @@ public enum GraphAPI {
           return Node(unsafeResultMap: ["__typename": "Survey"])
         }
 
+        public static func makeCategory(analyticsName: String, id: GraphQLID, name: String, subcategories: AsCategory.Subcategory? = nil, totalProjectCount: Int) -> Node {
+          return Node(unsafeResultMap: ["__typename": "Category", "analyticsName": analyticsName, "id": id, "name": name, "subcategories": subcategories.flatMap { (value: AsCategory.Subcategory) -> ResultMap in value.resultMap }, "totalProjectCount": totalProjectCount])
+        }
+
         public var __typename: String {
           get {
             return resultMap["__typename"]! as! String
@@ -5273,30 +5293,218 @@ public enum GraphAPI {
           }
         }
 
-        public var fragments: Fragments {
+        public var asCategory: AsCategory? {
           get {
-            return Fragments(unsafeResultMap: resultMap)
+            if !AsCategory.possibleTypes.contains(__typename) { return nil }
+            return AsCategory(unsafeResultMap: resultMap)
           }
           set {
-            resultMap += newValue.resultMap
+            guard let newValue = newValue else { return }
+            resultMap = newValue.resultMap
           }
         }
 
-        public struct Fragments {
+        public struct AsCategory: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Category"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+              GraphQLField("name", type: .nonNull(.scalar(String.self))),
+              GraphQLField("subcategories", type: .object(Subcategory.selections)),
+              GraphQLField("totalProjectCount", type: .nonNull(.scalar(Int.self))),
+            ]
+          }
+
           public private(set) var resultMap: ResultMap
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
           }
 
-          public var categoryFragment: CategoryFragment? {
+          public init(analyticsName: String, id: GraphQLID, name: String, subcategories: Subcategory? = nil, totalProjectCount: Int) {
+            self.init(unsafeResultMap: ["__typename": "Category", "analyticsName": analyticsName, "id": id, "name": name, "subcategories": subcategories.flatMap { (value: Subcategory) -> ResultMap in value.resultMap }, "totalProjectCount": totalProjectCount])
+          }
+
+          public var __typename: String {
             get {
-              if !CategoryFragment.possibleTypes.contains(resultMap["__typename"]! as! String) { return nil }
-              return CategoryFragment(unsafeResultMap: resultMap)
+              return resultMap["__typename"]! as! String
             }
             set {
-              guard let newValue = newValue else { return }
-              resultMap += newValue.resultMap
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// Category name in English for analytics use.
+          public var analyticsName: String {
+            get {
+              return resultMap["analyticsName"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "analyticsName")
+            }
+          }
+
+          public var id: GraphQLID {
+            get {
+              return resultMap["id"]! as! GraphQLID
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "id")
+            }
+          }
+
+          /// Category name.
+          public var name: String {
+            get {
+              return resultMap["name"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          /// Subcategories.
+          public var subcategories: Subcategory? {
+            get {
+              return (resultMap["subcategories"] as? ResultMap).flatMap { Subcategory(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "subcategories")
+            }
+          }
+
+          public var totalProjectCount: Int {
+            get {
+              return resultMap["totalProjectCount"]! as! Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalProjectCount")
+            }
+          }
+
+          public struct Subcategory: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["CategorySubcategoriesConnection"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("nodes", type: .list(.object(Node.selections))),
+                GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(nodes: [Node?]? = nil, totalCount: Int) {
+              self.init(unsafeResultMap: ["__typename": "CategorySubcategoriesConnection", "nodes": nodes.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, "totalCount": totalCount])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// A list of nodes.
+            public var nodes: [Node?]? {
+              get {
+                return (resultMap["nodes"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Node?] in value.map { (value: ResultMap?) -> Node? in value.flatMap { (value: ResultMap) -> Node in Node(unsafeResultMap: value) } } }
+              }
+              set {
+                resultMap.updateValue(newValue.flatMap { (value: [Node?]) -> [ResultMap?] in value.map { (value: Node?) -> ResultMap? in value.flatMap { (value: Node) -> ResultMap in value.resultMap } } }, forKey: "nodes")
+              }
+            }
+
+            public var totalCount: Int {
+              get {
+                return resultMap["totalCount"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalCount")
+              }
+            }
+
+            public struct Node: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["Category"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLFragmentSpread(CategoryFragment.self),
+                  GraphQLField("parentId", type: .scalar(GraphQLID.self)),
+                  GraphQLField("totalProjectCount", type: .nonNull(.scalar(Int.self))),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// Parent id of the category.
+              public var parentId: GraphQLID? {
+                get {
+                  return resultMap["parentId"] as? GraphQLID
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "parentId")
+                }
+              }
+
+              public var totalProjectCount: Int {
+                get {
+                  return resultMap["totalProjectCount"]! as! Int
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "totalProjectCount")
+                }
+              }
+
+              public var fragments: Fragments {
+                get {
+                  return Fragments(unsafeResultMap: resultMap)
+                }
+                set {
+                  resultMap += newValue.resultMap
+                }
+              }
+
+              public struct Fragments {
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public var categoryFragment: CategoryFragment {
+                  get {
+                    return CategoryFragment(unsafeResultMap: resultMap)
+                  }
+                  set {
+                    resultMap += newValue.resultMap
+                  }
+                }
+              }
             }
           }
         }
@@ -5330,7 +5538,6 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -5563,7 +5770,6 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
@@ -6739,8 +6945,7 @@ public enum GraphAPI {
       query FetchRootCategories($withParentCategoryAnalyticsName: Boolean = true) {
         rootCategories {
           __typename
-          ...BaseCategoryFragment
-          analyticsName
+          ...CategoryFragment
           subcategories {
             __typename
             nodes {
@@ -6760,7 +6965,6 @@ public enum GraphAPI {
 
     public var queryDocument: String {
       var document: String = operationDefinition
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
       return document
     }
@@ -6810,8 +7014,7 @@ public enum GraphAPI {
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(BaseCategoryFragment.self),
-            GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
+            GraphQLFragmentSpread(CategoryFragment.self),
             GraphQLField("subcategories", type: .object(Subcategory.selections)),
             GraphQLField("totalProjectCount", type: .nonNull(.scalar(Int.self))),
           ]
@@ -6829,16 +7032,6 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        /// Category name in English for analytics use.
-        public var analyticsName: String {
-          get {
-            return resultMap["analyticsName"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "analyticsName")
           }
         }
 
@@ -6877,9 +7070,9 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public var baseCategoryFragment: BaseCategoryFragment {
+          public var categoryFragment: CategoryFragment {
             get {
-              return BaseCategoryFragment(unsafeResultMap: resultMap)
+              return CategoryFragment(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -7564,7 +7757,6 @@ public enum GraphAPI {
       document.append("\n" + CreditCardFragment.fragmentDefinition)
       document.append("\n" + ProjectFragment.fragmentDefinition)
       document.append("\n" + CategoryFragment.fragmentDefinition)
-      document.append("\n" + BaseCategoryFragment.fragmentDefinition)
       document.append("\n" + CountryFragment.fragmentDefinition)
       return document
     }
@@ -8852,14 +9044,21 @@ public enum GraphAPI {
     }
   }
 
-  public struct BaseCategoryFragment: GraphQLFragment {
+  public struct CategoryFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
       """
-      fragment BaseCategoryFragment on Category {
+      fragment CategoryFragment on Category {
         __typename
         id
         name
+        analyticsName
+        parentCategory {
+          __typename
+          id
+          name
+          analyticsName @include(if: $withParentCategoryAnalyticsName)
+        }
       }
       """
 
@@ -8870,6 +9069,8 @@ public enum GraphAPI {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
+        GraphQLField("parentCategory", type: .object(ParentCategory.selections)),
       ]
     }
 
@@ -8879,8 +9080,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, name: String) {
-      self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name])
+    public init(id: GraphQLID, name: String, analyticsName: String, parentCategory: ParentCategory? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name, "analyticsName": analyticsName, "parentCategory": parentCategory.flatMap { (value: ParentCategory) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -8910,49 +9111,6 @@ public enum GraphAPI {
         resultMap.updateValue(newValue, forKey: "name")
       }
     }
-  }
-
-  public struct CategoryFragment: GraphQLFragment {
-    /// The raw GraphQL definition of this fragment.
-    public static let fragmentDefinition: String =
-      """
-      fragment CategoryFragment on Category {
-        __typename
-        ...BaseCategoryFragment
-        analyticsName
-        parentCategory {
-          __typename
-          ...BaseCategoryFragment
-          analyticsName @include(if: $withParentCategoryAnalyticsName)
-        }
-      }
-      """
-
-    public static let possibleTypes: [String] = ["Category"]
-
-    public static var selections: [GraphQLSelection] {
-      return [
-        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(BaseCategoryFragment.self),
-        GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
-        GraphQLField("parentCategory", type: .object(ParentCategory.selections)),
-      ]
-    }
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
-    }
-
-    public var __typename: String {
-      get {
-        return resultMap["__typename"]! as! String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "__typename")
-      }
-    }
 
     /// Category name in English for analytics use.
     public var analyticsName: String {
@@ -8974,39 +9132,14 @@ public enum GraphAPI {
       }
     }
 
-    public var fragments: Fragments {
-      get {
-        return Fragments(unsafeResultMap: resultMap)
-      }
-      set {
-        resultMap += newValue.resultMap
-      }
-    }
-
-    public struct Fragments {
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public var baseCategoryFragment: BaseCategoryFragment {
-        get {
-          return BaseCategoryFragment(unsafeResultMap: resultMap)
-        }
-        set {
-          resultMap += newValue.resultMap
-        }
-      }
-    }
-
     public struct ParentCategory: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["Category"]
 
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(BaseCategoryFragment.self),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
           GraphQLBooleanCondition(variableName: "withParentCategoryAnalyticsName", inverted: false, selections: [
             GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
           ]),
@@ -9032,6 +9165,25 @@ public enum GraphAPI {
         }
       }
 
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// Category name.
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+
       /// Category name in English for analytics use.
       public var analyticsName: String? {
         get {
@@ -9039,32 +9191,6 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "analyticsName")
-        }
-      }
-
-      public var fragments: Fragments {
-        get {
-          return Fragments(unsafeResultMap: resultMap)
-        }
-        set {
-          resultMap += newValue.resultMap
-        }
-      }
-
-      public struct Fragments {
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public var baseCategoryFragment: BaseCategoryFragment {
-          get {
-            return BaseCategoryFragment(unsafeResultMap: resultMap)
-          }
-          set {
-            resultMap += newValue.resultMap
-          }
         }
       }
     }

@@ -2,7 +2,7 @@ import Foundation
 @testable import KsApi
 import XCTest
 
-final class Category_CategoryFragmentTests: XCTestCase {
+final class ProjectCategory_CategoryFragmentTests: XCTestCase {
   func test() {
     let variables = ["withParentCategoryAnalyticsName": true]
 

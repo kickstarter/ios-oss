@@ -141,8 +141,8 @@ public protocol ServiceType {
   func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError>
 
   /// Fetch Category objects using graphQL.
-  func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<CategoryEnvelope, GraphError>
+  func fetchGraphCategory(id: String)
+    -> SignalProducer<CategoryEnvelope, ErrorEnvelope>
 
   /// Fetches various fields of a given User using graphQL.
   func fetchGraphUser(withStoredCards: Bool)
