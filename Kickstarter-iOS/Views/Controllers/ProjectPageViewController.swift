@@ -19,9 +19,8 @@ protocol ProjectPageViewControllerDelegate: AnyObject {
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
+  private let dataSource = ProjectPageViewControllerDataSource()
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
-
-  private var pagesDataSource: ProjectPagesDataSource?
 
   /**
    FIXME: This `contentViewController` has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
@@ -33,21 +32,17 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let pageViewController: UIPageViewController = {
-    UIPageViewController(
-      transitionStyle: .scroll,
-      navigationOrientation: .horizontal,
-      options: nil
-    )
-  }()
-
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private let projectNavigationSelectorView: ProjectNavigationSelectorView = {
-    ProjectNavigationSelectorView(frame: .zero) |>
-      \.translatesAutoresizingMaskIntoConstraints .~ false
+    ProjectNavigationSelectorView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var tableView: UITableView = {
+    UITableView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
@@ -70,8 +65,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.setupNavigationView()
     self.configurePledgeCTAContainerView()
-    self.configureProjectNavigationSelectorView()
-    self.configurePageViewController()
+    self.configureTableView()
 
     /** FIXME:
      self.contentViewController = self.children
@@ -81,6 +75,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.projectNavigationSelectorView.delegate = self
     self.pledgeCTAContainerView.delegate = self
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    _ = self.tableView
+      |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
+      |> \.tableHeaderView .~ self.projectNavigationSelectorView
+    self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
+    self.tableView.registerCellClass(ProjectFAQsCell.self)
+    self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
+    self.tableView.registerCellClass(ProjectFAQsHeaderCell.self)
+    self.tableView.registerCellClass(ProjectEnvironmentalCommitmentCell.self)
+    self.tableView.registerCellClass(ProjectEnvironmentalCommitmentDisclaimerCell.self)
+    self.tableView.registerCellClass(ProjectEnvironmentalCommitmentHeaderCell.self)
 
     self.setupNotifications()
     self.viewModel.inputs.viewDidLoad()
@@ -129,36 +135,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
-  private func configurePageViewController() {
-    self.pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    _ = (self.pageViewController.view, self.view)
+  private func configureTableView() {
+    _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
 
-    NSLayoutConstraint.activate([
-      self.pageViewController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.pageViewController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.pageViewController.view.topAnchor
-        .constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
-      self.pageViewController.view.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor)
-    ])
-
-    self.pageViewController.ksr_setViewControllers(
-      [.init()],
-      direction: .forward,
-      animated: false,
-      completion: nil
-    )
-  }
-
-  private func configureProjectNavigationSelectorView() {
     _ = (self.projectNavigationSelectorView, self.view)
       |> ksr_addSubviewToParent()
 
     let constraints = [
-      self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      self.tableView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
+      self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor),
       self.projectNavigationSelectorView.heightAnchor
         .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout.projectNavigationSelectorHeight)
     ]
@@ -166,13 +154,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     NSLayoutConstraint.activate(constraints)
   }
 
-  // MARK: - Styles
-
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseControllerStyle()
+    _ = self.view |>
+      \.backgroundColor .~ .ksr_white
+
+    _ = self.tableView |> tableViewStyle
   }
 
   public override func bindViewModel() {
@@ -221,10 +209,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.navigationDelegate?.configureWatchProject(with: watchProjectValue)
       }
 
-    self.viewModel.outputs.configurePagesDataSource
+    self.viewModel.outputs.configureDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] navSection, project in
-        self?.configurePagesDataSource(navSection: navSection, project: project)
+      .observeValues { [weak self] navSection, projectProperties in
+        self?.dataSource.load(
+          navigationSection: navSection,
+          projectProperties: projectProperties
+        )
+        self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.configurePledgeCTAView
@@ -247,18 +239,38 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         })
       }
 
-    self.viewModel.outputs.navigatePageViewController
+    self.viewModel.outputs.presentMessageDialog
+      .observeForUI()
+      .observeValues { [weak self] project in
+        self?.presentMessageDialog(project: project)
+      }
+
+    self.viewModel.outputs.showHelpWebViewController
       .observeForControllerAction()
-      .observeValues { [weak self] section in
-        guard let self = self, let controller = self.pagesDataSource?.controllerFor(section: section) else {
-          fatalError("Controller not found for section \(section)")
-        }
-        self.pageViewController.ksr_setViewControllers(
-          [controller],
-          direction: .forward,
-          animated: false,
-          completion: nil
+      .observeValues { [weak self] helpType in
+        self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+
+    self.viewModel.outputs.updateDataSource
+      .observeForControllerAction()
+      .observeValues { [weak self] navSection, projectProperties, initialIsExpandedArray in
+        self?.dataSource.load(
+          navigationSection: navSection,
+          projectProperties: projectProperties,
+          isExpandedStates: initialIsExpandedArray
         )
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.updateFAQsInDataSource
+      .observeForControllerAction()
+      .observeValues { [weak self] projectProperties, isExpandedValues in
+        self?.dataSource.load(
+          navigationSection: .faq,
+          projectProperties: projectProperties,
+          isExpandedStates: isExpandedValues
+        )
+        self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.popToRootViewController
@@ -266,20 +278,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
-  }
-
-  private func configurePagesDataSource(navSection: NavigationSection, project: Project) {
-    self.pagesDataSource = ProjectPagesDataSource(delegate: self, project: project)
-    self.pageViewController.dataSource = self.pagesDataSource
-
-    guard let dataSource = self.pagesDataSource else { return }
-
-    self.pageViewController.ksr_setViewControllers(
-      [dataSource.controllerFor(section: navSection)].compact(),
-      direction: .forward,
-      animated: false,
-      completion: nil
-    )
   }
 
   private func showProjectStarredPrompt() {
@@ -327,6 +325,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
 
     self.present(nc, animated: true)
+  }
+
+  private func presentMessageDialog(project: Project) {
+    let dialog = MessageDialogViewController
+      .configuredWith(messageSubject: .project(project), context: .projectPage)
+    dialog.modalPresentationStyle = .formSheet
+    dialog.delegate = self
+    self.present(
+      UINavigationController(rootViewController: dialog),
+      animated: true,
+      completion: nil
+    )
   }
 
   private func updateContentInsets() {
@@ -415,4 +425,54 @@ extension ProjectPageViewController: ProjectNavigationSelectorViewDelegate {
   func projectNavigationSelectorViewDidSelect(_: ProjectNavigationSelectorView, index: Int) {
     self.viewModel.inputs.projectNavigationSelectorViewDidSelect(index: index)
   }
+}
+
+// MARK: - UITableViewDelegate
+
+extension ProjectPageViewController: UITableViewDelegate {
+  public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    switch indexPath.section {
+    case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
+      self.viewModel.inputs.askAQuestionCellTapped()
+    case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
+      let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
+      self.viewModel.inputs.didSelectRowAt(row: indexPath.row, values: values)
+    default:
+      return
+    }
+  }
+
+  public func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
+    (cell as? ProjectEnvironmentalCommitmentDisclaimerCell)?.delegate = self
+  }
+}
+
+// MARK: - MessageDialogViewControllerDelegate
+
+extension ProjectPageViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
+    dialog.dismiss(animated: true, completion: nil)
+  }
+
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
+}
+
+// MARK: - ProjectEnvironmentalCommitmentDisclaimerCellDelegate
+
+extension ProjectPageViewController: ProjectEnvironmentalCommitmentDisclaimerCellDelegate {
+  func projectEnvironmentalCommitmentDisclaimerCell(
+    _: ProjectEnvironmentalCommitmentDisclaimerCell,
+    didTapURL: URL
+  ) {
+    self.viewModel.inputs.projectEnvironmentalCommitmentDisclaimerCellDidTapURL(didTapURL)
+  }
+}
+
+// MARK: - Styles
+
+private let tableViewStyle: TableViewStyle = { tableView in
+  tableView
+    |> \.estimatedRowHeight .~ 100.0
+    |> \.rowHeight .~ UITableView.automaticDimension
+    |> \.separatorInset .~ .init(leftRight: Styles.grid(3))
 }

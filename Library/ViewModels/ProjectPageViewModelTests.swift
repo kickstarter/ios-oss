@@ -12,8 +12,8 @@ final class ProjectPageViewModelTests: TestCase {
   )
   fileprivate var vm: ProjectPageViewModelType!
 
-  private let configurePagesDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
-  private let configurePagesDataSourceProject = TestObserver<Project, Never>()
+  private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
+  private let configureDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewContext = TestObserver<PledgeCTAContainerViewContext, Never>()
@@ -27,18 +27,23 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
-  private let navigatePageViewController = TestObserver<NavigationSection, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
+  private let presentMessageDialog = TestObserver<Project, Never>()
+  private let showHelpWebViewController = TestObserver<HelpType, Never>()
+  private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
+  private let updateDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
+  private let updateFAQsInDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
+  private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm = ProjectPageViewModel()
 
-    self.vm.outputs.configurePagesDataSource.map(first)
-      .observe(self.configurePagesDataSourceNavigationSection.observer)
-    self.vm.outputs.configurePagesDataSource.map(second)
-      .observe(self.configurePagesDataSourceProject.observer)
+    self.vm.outputs.configureDataSource.map(first)
+      .observe(self.configureDataSourceNavigationSection.observer)
+    self.vm.outputs.configureDataSource.map(second)
+      .observe(self.configureDataSourceProjectProperties.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
@@ -75,8 +80,17 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
-    self.vm.outputs.navigatePageViewController.observe(self.navigatePageViewController.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
+    self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
+    self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
+    self.vm.outputs.updateDataSource.map(first)
+      .observe(self.updateDataSourceNavigationSection.observer)
+    self.vm.outputs.updateDataSource.map(second)
+      .observe(self.updateDataSourceProjectProperties.observer)
+    self.vm.outputs.updateFAQsInDataSource.map(first)
+      .observe(self.updateFAQsInDataSourceProjectProperties.observer)
+    self.vm.outputs.updateFAQsInDataSource.map(second)
+      .observe(self.updateFAQsInDataSourceIsExpandedValues.observer)
   }
 
   func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithProject() {
@@ -198,23 +212,41 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testConfigurePagesDataSourceNavigationSection() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
-    self.configurePagesDataSourceNavigationSection.assertDidNotEmitValue()
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.configureDataSourceNavigationSection.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.configurePagesDataSourceNavigationSection.assertValues([.overview])
+    self.configureDataSourceNavigationSection.assertValues([.overview])
   }
 
-  func testConfigurePagesDataSourceProject() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+  func testConfigureDataSourceProjectProperties() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
-    self.configurePagesDataSourceProject.assertDidNotEmitValue()
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.configureDataSourceProjectProperties.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.configurePagesDataSourceProject.assertValues([.template])
+    self.configureDataSourceProjectProperties.assertDidEmitValue()
   }
 
   func testConfigureProjectNavigationSelectorView() {
@@ -417,30 +449,6 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
       XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
     }
-  }
-
-  func testNavigatePageViewController() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
-
-    self.navigatePageViewController.assertDidNotEmitValue()
-
-    self.vm.inputs.viewDidLoad()
-
-    self.navigatePageViewController.assertDidNotEmitValue()
-
-    // Gets called when initially rendering and defaulting to the first
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: 0)
-
-    self.navigatePageViewController.assertDidNotEmitValue()
-
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: 3)
-
-    self.navigatePageViewController.assertValues([NavigationSection.environmentalCommitments])
-
-    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: 0)
-
-    self.navigatePageViewController
-      .assertValues([NavigationSection.environmentalCommitments, NavigationSection.overview])
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
@@ -1138,6 +1146,194 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.inputs.didBackProject()
 
     self.popToRootViewController.assertValueCount(1)
+  }
+
+  func testOutput_PresentMessageDialog() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.presentMessageDialog.assertDidNotEmitValue()
+
+    self.vm.inputs.askAQuestionCellTapped()
+
+    self.presentMessageDialog.assertValues([.template])
+  }
+
+  func testOutput_ShowHelpWebViewController() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.showHelpWebViewController.assertDidNotEmitValue()
+
+    self.vm.inputs
+      .projectEnvironmentalCommitmentDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/environment")!)
+
+    self.showHelpWebViewController.assertValues([.environment])
+  }
+
+  func testOutput_UpdateDataSourceNavigationSection() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+    let overviewSection = NavigationSection.overview.rawValue
+    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.updateDataSourceNavigationSection.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateDataSourceNavigationSection.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+    // The view model skips the first emission
+    self.updateDataSourceNavigationSection.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
+
+    self.updateDataSourceNavigationSection.assertValues([.environmentalCommitments])
+  }
+
+  func testOutput_UpdateDataSourceProjectProperties() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+    let overviewSection = NavigationSection.overview.rawValue
+    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+    // The view model skips the first emission
+    self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
+
+    self.updateDataSourceProjectProperties.assertDidEmitValue()
+  }
+
+  func testOutput_UpdateFAQsInDataSourceProjectProperties() {
+    let faqs = [
+      ProjectFAQ(
+        answer: "answer 1",
+        question: "question 1",
+        id: 0,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      ),
+      ProjectFAQ(
+        answer: "answer 2",
+        question: "question 2",
+        id: 1,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      ),
+      ProjectFAQ(
+        answer: "answer 3",
+        question: "question 3",
+        id: 2,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      ),
+      ProjectFAQ(
+        answer: "answer 4",
+        question: "question 4",
+        id: 3,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      )
+    ]
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.updateFAQsInDataSourceProjectProperties.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateFAQsInDataSourceProjectProperties.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectRowAt(row: 1, values: [false, false, false, false])
+
+    self.updateFAQsInDataSourceProjectProperties.assertDidEmitValue()
+  }
+
+  func testOutput_UpdateFAQsInDataSourceIsExpandedValues() {
+    let faqs = [
+      ProjectFAQ(
+        answer: "answer 1",
+        question: "question 1",
+        id: 0,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      ),
+      ProjectFAQ(
+        answer: "answer 2",
+        question: "question 2",
+        id: 1,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      ),
+      ProjectFAQ(
+        answer: "answer 3",
+        question: "question 3",
+        id: 2,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      ),
+      ProjectFAQ(
+        answer: "answer 4",
+        question: "question 4",
+        id: 3,
+        createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
+      )
+    ]
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectRowAt(row: 1, values: [false, false, false, false])
+
+    self.updateFAQsInDataSourceIsExpandedValues.assertValues([[false, true, false, false]])
+
+    self.vm.inputs.didSelectRowAt(row: 0, values: [false, true, false, false])
+
+    self.updateFAQsInDataSourceIsExpandedValues
+      .assertValues([[false, true, false, false], [true, true, false, false]])
   }
 
   // MARK: - Functions

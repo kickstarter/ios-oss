@@ -3,14 +3,17 @@ import Prelude
 import ReactiveSwift
 
 public protocol ProjectPageViewModelInputs {
+  /// Call when didSelectRowAt is called on a `ProjectFAQAskAQuestionCell`
+  func askAQuestionCellTapped()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
-  /// Call when the view loads.
-  func viewDidLoad()
-
   /// Call when the Thank you page is dismissed after finishing backing the project
   func didBackProject()
+
+  /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
+  func didSelectRowAt(row: Int, values: [Bool])
 
   /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
   func managePledgeViewControllerFinished(with message: String?)
@@ -21,16 +24,22 @@ public protocol ProjectPageViewModelInputs {
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
 
+  /// Call when the delegate method for the ProjectEnvironmentalCommitmentFooterCellDelegate is called.
+  func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
+
   /// Call when the `ProjectNavigationSelectorViewDelegate` delegate method is called
   func projectNavigationSelectorViewDidSelect(index: Int)
 
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
+
+  /// Call when the view loads.
+  func viewDidLoad()
 }
 
 public protocol ProjectPageViewModelOutputs {
-  /// Emits a tuple of a `NavigationSection` and `Project` to configure the page view controller.
-  var configurePagesDataSource: Signal<(NavigationSection, Project), Never> { get }
+  /// Emits a tuple of a `NavigationSection` and `ExtendedProjectProperties` to configure the data source
+  var configureDataSource: Signal<(NavigationSection, ExtendedProjectProperties), Never> { get }
 
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
@@ -50,11 +59,20 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a `NavigationSection` of the index the page view controller will navigate to
-  var navigatePageViewController: Signal<NavigationSection, Never> { get }
-
   /// Emits when the navigation stack should be popped to the root view controller.
   var popToRootViewController: Signal<(), Never> { get }
+
+  /// Emits `Project` when the MessageDialogViewController should be presented
+  var presentMessageDialog: Signal<Project, Never> { get }
+
+  /// Emits a `HelpType` to use when presenting a HelpWebViewController.
+  var showHelpWebViewController: Signal<HelpType, Never> { get }
+
+  /// Emits a tuple of a `NavigationSection`, `ExtendedProjectProperties` and `[Bool]` (isExpanded values) to instruct the data source which section it is loading.
+  var updateDataSource: Signal<(NavigationSection, ExtendedProjectProperties, [Bool]), Never> { get }
+
+  /// Emits a tuple of `ExtendedProjectProperties` and `[Bool]` (isExpanded values) for the FAQs.
+  var updateFAQsInDataSource: Signal<(ExtendedProjectProperties, [Bool]), Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -110,9 +128,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map(first)
 
     // The first tab we render by default is overview
-    self.configurePagesDataSource = project
+    self.configureDataSource = project.map(\.extendedProjectProperties)
+      .skipNil()
       .combineLatest(with: self.viewDidLoadProperty.signal)
-      .map { project, _ in (.overview, project) }
+      .map { projectProperties, _ in (.overview, projectProperties) }
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -198,12 +217,42 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
 
+    self.presentMessageDialog = project
+      .takeWhen(self.askAQuestionCellTappedProperty.signal)
+
+    self.showHelpWebViewController = self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.signal
+      .skipNil()
+      .map(HelpType.helpType)
+      .skipNil()
+
     // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
-    self.navigatePageViewController = self.projectNavigationSelectorViewDidSelectProperty.signal
+    self.updateDataSource = self.projectNavigationSelectorViewDidSelectProperty.signal
       .skipNil()
       .map { index in NavigationSection(rawValue: index) }
       .skipNil()
+      .combineLatest(with: project.map(\.extendedProjectProperties).skipNil())
+      .map { navSection, projectProperties in
+        let initialIsExpandedArray = Array(repeating: false, count: projectProperties.faqs.count)
+        return (navSection, projectProperties, initialIsExpandedArray)
+      }
       .skip(first: 1)
+
+    self.updateFAQsInDataSource = project
+      .map(\.extendedProjectProperties)
+      .skipNil()
+      .combineLatest(with: self.didSelectRowAtProperty.signal.skipNil())
+      .map { projectProperties, indexAndDataSourceValues in
+        let (index, isExpandedValues) = indexAndDataSourceValues
+        var updatedValues = isExpandedValues
+        updatedValues[index] = !updatedValues[index]
+
+        return (projectProperties, updatedValues)
+      }
+  }
+
+  fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
+  public func askAQuestionCellTapped() {
+    self.askAQuestionCellTappedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -214,6 +263,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   private let didBackProjectProperty = MutableProperty<Void>(())
   public func didBackProject() {
     self.didBackProjectProperty.value = ()
+  }
+
+  fileprivate let didSelectRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
+  public func didSelectRowAt(row: Int, values: [Bool]) {
+    self.didSelectRowAtProperty.value = (row, values)
   }
 
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
@@ -231,6 +285,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.pledgeRetryButtonTappedProperty.value = ()
   }
 
+  fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ url: URL) {
+    self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.value = url
+  }
+
   private let projectNavigationSelectorViewDidSelectProperty = MutableProperty<Int?>(nil)
   public func projectNavigationSelectorViewDidSelect(index: Int) {
     self.projectNavigationSelectorViewDidSelectProperty.value = index
@@ -246,15 +305,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewDidAppearAnimated.value = animated
   }
 
-  public let configurePagesDataSource: Signal<(NavigationSection, Project), Never>
+  public let configureDataSource: Signal<(NavigationSection, ExtendedProjectProperties), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<Void, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
-  public let navigatePageViewController: Signal<NavigationSection, Never>
   public let popToRootViewController: Signal<(), Never>
+  public let presentMessageDialog: Signal<Project, Never>
+  public let showHelpWebViewController: Signal<HelpType, Never>
+  public let updateDataSource: Signal<(NavigationSection, ExtendedProjectProperties, [Bool]), Never>
+  public let updateFAQsInDataSource: Signal<(ExtendedProjectProperties, [Bool]), Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }
