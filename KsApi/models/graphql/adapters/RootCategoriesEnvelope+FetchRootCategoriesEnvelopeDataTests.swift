@@ -11,7 +11,7 @@ final class RootCategoryEnvelope_FetchRootCategoriesEnvelopeQueryDataTests: XCTe
       return
     }
 
-    XCTAssertEqual(rootCategories.count, 15)
+    XCTAssertEqual(rootCategories.count, 2)
 
     guard let firstRootCategory = rootCategories.first else {
       XCTFail("first subcategory should exist.")
