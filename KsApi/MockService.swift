@@ -45,8 +45,7 @@
 
     fileprivate let fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>?
 
-    fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
-    fileprivate let fetchGraphCategoriesError: GraphError?
+    fileprivate let fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
     fileprivate let fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
@@ -221,8 +220,7 @@
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
       fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>? = nil,
-      fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
-      fetchGraphCategoriesError: GraphError? = nil,
+      fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>? = nil,
       fetchCommentsResponse _: [ActivityComment]? = nil,
       fetchCommentsError _: ErrorEnvelope? = nil,
       fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
@@ -344,17 +342,7 @@
 
       self.fetchGraphCategoryResult = fetchGraphCategoryResult
 
-      // FIXME: Once converted to Apollo, remove the default value and combine the `Response` and `Error` into a `Result`
-      self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (RootCategoriesEnvelope.template
-        |> RootCategoriesEnvelope.lens.categories .~ [
-          .art,
-          .filmAndVideo,
-          .illustration,
-          .documentary
-        ]
-      )
-
-      self.fetchGraphCategoriesError = fetchGraphCategoriesError
+      self.fetchGraphCategoriesResult = fetchGraphCategoriesResult
 
       self.fetchGraphUserResult = fetchGraphUserResult
 
@@ -707,14 +695,15 @@
       )
     }
 
-    internal func fetchGraphCategories(query _: NonEmptySet<Query>)
-      -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-      if let error = self.fetchGraphCategoriesError {
-        return SignalProducer(error: error)
-      } else if let response = self.fetchGraphCategoriesResponse {
-        return SignalProducer(value: response)
+    internal func fetchGraphCategories()
+      -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
       }
-      return SignalProducer(value: RootCategoriesEnvelope.template)
+
+      let fetchGraphCategoriesQuery = GraphAPI.FetchRootCategoriesQuery(withParentCategoryAnalyticsName: true)
+
+      return client.fetchWithResult(query: fetchGraphCategoriesQuery, result: self.fetchGraphCategoriesResult)
     }
 
     internal func fetchGraphCategory(id: String)
@@ -1563,7 +1552,7 @@
             fetchActivitiesError: $1.fetchActivitiesError,
             fetchBackingResponse: $1.fetchBackingResponse,
             fetchGraphCategoryResult: $1.fetchGraphCategoryResult,
-            fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
+            fetchGraphCategoriesResult: $1.fetchGraphCategoriesResult,
             fetchProjectCommentsEnvelopeResult: $1.fetchProjectCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,

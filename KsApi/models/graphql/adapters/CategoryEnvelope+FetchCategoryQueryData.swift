@@ -1,4 +1,3 @@
-import Prelude
 import ReactiveSwift
 
 extension CategoryEnvelope {

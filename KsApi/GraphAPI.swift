@@ -6942,10 +6942,12 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchRootCategories($withParentCategoryAnalyticsName: Boolean = true) {
+      query FetchRootCategories($withParentCategoryAnalyticsName: Boolean!) {
         rootCategories {
           __typename
-          ...CategoryFragment
+          id
+          name
+          analyticsName
           subcategories {
             __typename
             nodes {
@@ -6969,9 +6971,9 @@ public enum GraphAPI {
       return document
     }
 
-    public var withParentCategoryAnalyticsName: Bool?
+    public var withParentCategoryAnalyticsName: Bool
 
-    public init(withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(withParentCategoryAnalyticsName: Bool) {
       self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
@@ -7014,7 +7016,9 @@ public enum GraphAPI {
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(CategoryFragment.self),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+            GraphQLField("name", type: .nonNull(.scalar(String.self))),
+            GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
             GraphQLField("subcategories", type: .object(Subcategory.selections)),
             GraphQLField("totalProjectCount", type: .nonNull(.scalar(Int.self))),
           ]
@@ -7026,12 +7030,45 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
+        public init(id: GraphQLID, name: String, analyticsName: String, subcategories: Subcategory? = nil, totalProjectCount: Int) {
+          self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name, "analyticsName": analyticsName, "subcategories": subcategories.flatMap { (value: Subcategory) -> ResultMap in value.resultMap }, "totalProjectCount": totalProjectCount])
+        }
+
         public var __typename: String {
           get {
             return resultMap["__typename"]! as! String
           }
           set {
             resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        /// Category name.
+        public var name: String {
+          get {
+            return resultMap["name"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        /// Category name in English for analytics use.
+        public var analyticsName: String {
+          get {
+            return resultMap["analyticsName"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "analyticsName")
           }
         }
 
@@ -7051,32 +7088,6 @@ public enum GraphAPI {
           }
           set {
             resultMap.updateValue(newValue, forKey: "totalProjectCount")
-          }
-        }
-
-        public var fragments: Fragments {
-          get {
-            return Fragments(unsafeResultMap: resultMap)
-          }
-          set {
-            resultMap += newValue.resultMap
-          }
-        }
-
-        public struct Fragments {
-          public private(set) var resultMap: ResultMap
-
-          public init(unsafeResultMap: ResultMap) {
-            self.resultMap = unsafeResultMap
-          }
-
-          public var categoryFragment: CategoryFragment {
-            get {
-              return CategoryFragment(unsafeResultMap: resultMap)
-            }
-            set {
-              resultMap += newValue.resultMap
-            }
           }
         }
 

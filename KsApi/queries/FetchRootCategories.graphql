@@ -1,15 +1,16 @@
-query FetchRootCategories($withParentCategoryAnalyticsName: Boolean = true) {
+query FetchRootCategories($withParentCategoryAnalyticsName: Boolean!) {
   rootCategories {
-      ...BaseCategoryFragment
-      analyticsName
-      subcategories {
-        nodes {
-          ...CategoryFragment
-          parentId
-          totalProjectCount
-        }
-        totalCount
+    id
+    name
+    analyticsName
+    subcategories {
+      nodes {
+        ...CategoryFragment
+        parentId
+        totalProjectCount
       }
-      totalProjectCount
+      totalCount
+    }
+    totalProjectCount
   }
 }

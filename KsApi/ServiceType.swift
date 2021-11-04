@@ -138,7 +138,7 @@ public protocol ServiceType {
   func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope>
 
   /// Fetch Categories objects using graphQL.
-  func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError>
+  func fetchGraphCategories() -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope>
 
   /// Fetch Category objects using graphQL.
   func fetchGraphCategory(id: String)

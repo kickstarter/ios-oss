@@ -281,9 +281,11 @@ public struct Service: ServiceType {
     return request(.friendStats)
   }
 
-  public func fetchGraphCategories(query: NonEmptySet<Query>)
-    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphCategories()
+    -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchRootCategoriesQuery(withParentCategoryAnalyticsName: true))
+      .flatMap(RootCategoriesEnvelope.envelopeProducer(from:))
   }
 
   public func fetchGraphCategory(id: String)

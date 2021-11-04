@@ -23,7 +23,7 @@ internal final class CategorySelectionViewControllerTests: TestCase {
       .filmAndVideo
     ])
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, language: language) {
