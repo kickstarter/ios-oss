@@ -9,6 +9,21 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
   private let tableView = UITableView()
 
+  private let environmentalCommitments = [
+    ProjectEnvironmentalCommitment(
+      description: "foo bar",
+      category: .environmentallyFriendlyFactories,
+      id: 0
+    ),
+    ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
+    ProjectEnvironmentalCommitment(
+      description: "Lorem ipsum",
+      category: .reusabilityAndRecyclability,
+      id: 2
+    ),
+    ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
+  ]
+
   private let faqs = [
     ProjectFAQ(answer: "Answer 1", question: "Question 1", id: 0, createdAt: nil),
     ProjectFAQ(answer: "Answer 2", question: "Question 2", id: 1, createdAt: nil),
@@ -264,24 +279,9 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  func testLoadEnvironmentalCommitments_LoggedIn() {
-    let environmentalCommitments = [
-      ProjectEnvironmentalCommitment(
-        description: "foo bar",
-        category: .environmentallyFriendlyFactories,
-        id: 0
-      ),
-      ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
-      ProjectEnvironmentalCommitment(
-        description: "Lorem ipsum",
-        category: .reusabilityAndRecyclability,
-        id: 2
-      ),
-      ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
-    ]
-
+  func testLoadEnvironmentalCommitments() {
     let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: environmentalCommitments,
+      environmentalCommitments: self.environmentalCommitments,
       faqs: [],
       risks: "",
       story: "",
@@ -292,7 +292,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       self.dataSource.load(
         navigationSection: .environmentalCommitments,
         projectProperties: projectProperties,
-        isExpandedStates: [false, false, false, false]
+        isExpandedStates: nil
       )
       XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
 
@@ -365,35 +365,20 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  func testLoadEnvironmentalCommitments_LoggedOut() {
-    let environmentalCommitments = [
-      ProjectEnvironmentalCommitment(
-        description: "foo bar",
-        category: .environmentallyFriendlyFactories,
-        id: 0
-      ),
-      ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
-      ProjectEnvironmentalCommitment(
-        description: "Lorem ipsum",
-        category: .reusabilityAndRecyclability,
-        id: 2
-      ),
-      ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
-    ]
-
+  func testLoadEnvironmentalCommitments_EmptyState() {
     let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: environmentalCommitments,
+      environmentalCommitments: [],
       faqs: [],
       risks: "",
       story: "",
       minimumPledgeAmount: 1
     )
 
-    withEnvironment(currentUser: nil) {
+    withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .environmentalCommitments,
         projectProperties: projectProperties,
-        isExpandedStates: [false, false, false, false]
+        isExpandedStates: nil
       )
       XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
 
@@ -439,7 +424,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       // environmentalCommitments
       XCTAssertEqual(
-        4,
+        0,
         self.dataSource
           .tableView(self.tableView, numberOfRowsInSection: self.environmentalCommitmentsSection)
       )
@@ -454,10 +439,6 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(
         "ProjectEnvironmentalCommitmentHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsHeaderSection)
-      )
-      XCTAssertEqual(
-        "ProjectEnvironmentalCommitmentCell",
-        self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsSection)
       )
       XCTAssertEqual(
         "ProjectEnvironmentalCommitmentDisclaimerCell",

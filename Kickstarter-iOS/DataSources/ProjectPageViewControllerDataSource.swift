@@ -54,10 +54,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         return
       }
 
-      guard let _isExpandedStates = isExpandedStates else { return }
+      guard let isExpandedStates = isExpandedStates else { return }
 
       let values = projectFAQs.enumerated().map { idx, faq in
-        (faq, _isExpandedStates[idx])
+        (faq, isExpandedStates[idx])
       }
 
       self.set(

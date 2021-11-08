@@ -19,6 +19,8 @@ protocol ProjectPageViewControllerDelegate: AnyObject {
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
+  private var sessionStartedObserver: Any?
+
   private let dataSource = ProjectPageViewControllerDataSource()
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
@@ -80,6 +82,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.tableHeaderView .~ self.projectNavigationSelectorView
+      |> \.tableFooterView .~ nil
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -91,6 +94,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.setupNotifications()
     self.viewModel.inputs.viewDidLoad()
     self.navigationDelegate?.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   public override func viewDidLayoutSubviews() {
@@ -177,6 +184,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self,
         selector: #selector(ProjectPageViewController.didBackProject),
         name: .ksr_projectBacked,
+        object: nil
+      )
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(
+        self,
+        selector: #selector(ProjectPageViewController.userSessionStarted),
+        name: .ksr_sessionStarted,
         object: nil
       )
   }
@@ -356,6 +371,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   @objc private func pledgeRetryButtonTapped() {
     self.viewModel.inputs.pledgeRetryButtonTapped()
   }
+
+  @objc private func userSessionStarted() {
+    self.viewModel.inputs.userSessionStarted()
+  }
 }
 
 // MARK: - PledgeCTAContainerViewDelegate
@@ -436,7 +455,7 @@ extension ProjectPageViewController: UITableViewDelegate {
       self.viewModel.inputs.askAQuestionCellTapped()
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
       let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
-      self.viewModel.inputs.didSelectRowAt(row: indexPath.row, values: values)
+      self.viewModel.inputs.didSelectFAQsRowAt(row: indexPath.row, values: values)
     default:
       return
     }

@@ -13,7 +13,7 @@ public protocol ProjectPageViewModelInputs {
   func didBackProject()
 
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
-  func didSelectRowAt(row: Int, values: [Bool])
+  func didSelectFAQsRowAt(row: Int, values: [Bool])
 
   /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
   func managePledgeViewControllerFinished(with message: String?)
@@ -29,6 +29,9 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when the `ProjectNavigationSelectorViewDelegate` delegate method is called
   func projectNavigationSelectorViewDidSelect(index: Int)
+
+  /// Call when the user session starts and we want to reload the data source.
+  func userSessionStarted()
 
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
@@ -90,6 +93,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
+        self.userSessionStartedProperty.signal.mapConst(true),
         self.didBackProjectProperty.signal.ignoreValues().mapConst(false),
         self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
@@ -240,7 +244,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.updateFAQsInDataSource = project
       .map(\.extendedProjectProperties)
       .skipNil()
-      .combineLatest(with: self.didSelectRowAtProperty.signal.skipNil())
+      .combineLatest(with: self.didSelectFAQsRowAtProperty.signal.skipNil())
       .map { projectProperties, indexAndDataSourceValues in
         let (index, isExpandedValues) = indexAndDataSourceValues
         var updatedValues = isExpandedValues
@@ -265,9 +269,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.didBackProjectProperty.value = ()
   }
 
-  fileprivate let didSelectRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
-  public func didSelectRowAt(row: Int, values: [Bool]) {
-    self.didSelectRowAtProperty.value = (row, values)
+  fileprivate let didSelectFAQsRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
+  public func didSelectFAQsRowAt(row: Int, values: [Bool]) {
+    self.didSelectFAQsRowAtProperty.value = (row, values)
   }
 
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
@@ -293,6 +297,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   private let projectNavigationSelectorViewDidSelectProperty = MutableProperty<Int?>(nil)
   public func projectNavigationSelectorViewDidSelect(index: Int) {
     self.projectNavigationSelectorViewDidSelectProperty.value = index
+  }
+
+  fileprivate let userSessionStartedProperty = MutableProperty(())
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

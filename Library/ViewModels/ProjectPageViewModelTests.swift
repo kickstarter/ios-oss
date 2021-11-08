@@ -12,6 +12,15 @@ final class ProjectPageViewModelTests: TestCase {
   )
   fileprivate var vm: ProjectPageViewModelType!
 
+  private let projectWithEmptyProperties = Project.template
+    |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+      environmentalCommitments: [],
+      faqs: [],
+      risks: "",
+      story: "",
+      minimumPledgeAmount: 1
+    )
+
   private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let configureDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
@@ -211,17 +220,8 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfigurePagesDataSourceNavigationSection() {
-    let project = Project.template
-      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: [],
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
-
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+  func testConfigureProjectPageViewControllerDataSourceNavigationSection() {
+    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
     self.configureDataSourceNavigationSection.assertDidNotEmitValue()
 
@@ -230,17 +230,8 @@ final class ProjectPageViewModelTests: TestCase {
     self.configureDataSourceNavigationSection.assertValues([.overview])
   }
 
-  func testConfigureDataSourceProjectProperties() {
-    let project = Project.template
-      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: [],
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
-
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+  func testConfigureProjectPageViewControllerDataSourceProjectProperties() {
+    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
     self.configureDataSourceProjectProperties.assertDidNotEmitValue()
 
@@ -1172,18 +1163,10 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testOutput_UpdateDataSourceNavigationSection() {
-    let project = Project.template
-      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: [],
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
     self.updateDataSourceNavigationSection.assertDidNotEmitValue()
 
@@ -1202,18 +1185,10 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testOutput_UpdateDataSourceProjectProperties() {
-    let project = Project.template
-      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: [],
-        risks: "",
-        story: "",
-        minimumPledgeAmount: 1
-      )
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
     self.updateDataSourceProjectProperties.assertDidNotEmitValue()
 
@@ -1229,6 +1204,36 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
     self.updateDataSourceProjectProperties.assertDidEmitValue()
+  }
+
+  func testOutput_UpdateDataSourceProjectProperties_ReloadsAfterUserSessionStarted() {
+    let overviewSection = NavigationSection.overview.rawValue
+    let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
+
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+
+      self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+      // The view model skips the first emission
+      self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
+
+      self.updateDataSourceProjectProperties.assertDidEmitValue()
+
+      withEnvironment(currentUser: .template) {
+        self.vm.inputs.userSessionStarted()
+
+        self.updateDataSourceProjectProperties.assertDidEmitValue()
+      }
+    }
   }
 
   func testOutput_UpdateFAQsInDataSourceProjectProperties() {
@@ -1276,7 +1281,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.updateFAQsInDataSourceProjectProperties.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectRowAt(row: 1, values: [false, false, false, false])
+    self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
 
     self.updateFAQsInDataSourceProjectProperties.assertDidEmitValue()
   }
@@ -1326,11 +1331,11 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectRowAt(row: 1, values: [false, false, false, false])
+    self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
 
     self.updateFAQsInDataSourceIsExpandedValues.assertValues([[false, true, false, false]])
 
-    self.vm.inputs.didSelectRowAt(row: 0, values: [false, true, false, false])
+    self.vm.inputs.didSelectFAQsRowAt(row: 0, values: [false, true, false, false])
 
     self.updateFAQsInDataSourceIsExpandedValues
       .assertValues([[false, true, false, false], [true, true, false, false]])
