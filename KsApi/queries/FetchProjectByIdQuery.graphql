@@ -1,4 +1,4 @@
-query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
+query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
   me {
     chosenCurrency
   }

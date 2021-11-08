@@ -281,14 +281,18 @@ public struct Service: ServiceType {
     return request(.friendStats)
   }
 
-  public func fetchGraphCategories(query: NonEmptySet<Query>)
-    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphCategories()
+    -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchRootCategoriesQuery(withParentCategoryAnalyticsName: true))
+      .flatMap(RootCategoriesEnvelope.envelopeProducer(from:))
   }
 
-  public func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<CategoryEnvelope, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphCategory(id: String)
+    -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchCategoryQuery(id: id, withParentCategoryAnalyticsName: true))
+      .flatMap(CategoryEnvelope.envelopeProducer(from:))
   }
 
   public func fetchGraphUser(withStoredCards: Bool)

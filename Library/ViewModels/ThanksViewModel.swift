@@ -129,7 +129,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let rootCategory: Signal<KsApi.Category, Never> = project
       .map { toBase64($0.category) }
       .flatMap {
-        AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
+        AppEnvironment.current.apiService.fetchGraphCategory(id: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { (categoryEnvelope: KsApi.CategoryEnvelope) -> KsApi.Category
             in categoryEnvelope.node.parent ?? categoryEnvelope.node

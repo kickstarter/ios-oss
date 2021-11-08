@@ -43,7 +43,7 @@ final class CategorySelectionViewModelTests: TestCase {
       .filmAndVideo
     ])
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.loadCategorySectionTitles.assertDidNotEmitValue()
@@ -84,7 +84,7 @@ final class CategorySelectionViewModelTests: TestCase {
       .filmAndVideo
     ])
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.loadCategorySectionTitles.assertDidNotEmitValue()
@@ -131,7 +131,7 @@ final class CategorySelectionViewModelTests: TestCase {
     let filmAndVideoIndexPath = IndexPath(item: 0, section: 2)
     let documentaryIndexPath = IndexPath(item: 1, section: 2)
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -198,7 +198,7 @@ final class CategorySelectionViewModelTests: TestCase {
     let filmAndVideoIndexPath = IndexPath(item: 0, section: 2)
     let documentaryIndexPath = IndexPath(item: 1, section: 2)
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -261,7 +261,7 @@ final class CategorySelectionViewModelTests: TestCase {
     let filmAndVideoIndexPath = IndexPath(item: 0, section: 2)
     let documentaryIndexPath = IndexPath(item: 1, section: 2)
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -323,7 +323,7 @@ final class CategorySelectionViewModelTests: TestCase {
     let illustrationIndexPath = IndexPath(item: 1, section: 0)
     let gamesIndexPath = IndexPath(item: 0, section: 1)
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
       self.vm.inputs.viewDidLoad()
@@ -360,7 +360,7 @@ final class CategorySelectionViewModelTests: TestCase {
     let artIndexPath = IndexPath(item: 0, section: 0)
     let illustrationIndexPath = IndexPath(item: 1, section: 0)
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -379,7 +379,7 @@ final class CategorySelectionViewModelTests: TestCase {
   }
 
   func testShowErrorMessage() {
-    let mockService = MockService(fetchGraphCategoriesError: .invalidInput)
+    let mockService = MockService(fetchGraphCategoriesResult: .failure(.couldNotParseJSON))
 
     withEnvironment(apiService: mockService) {
       self.showErrorMessage.assertDidNotEmitValue()
@@ -395,7 +395,7 @@ final class CategorySelectionViewModelTests: TestCase {
   func testIsLoading() {
     let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
 
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.isLoading.assertDidNotEmitValue()
@@ -412,7 +412,7 @@ final class CategorySelectionViewModelTests: TestCase {
 
   func testDismiss() {
     let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(categoriesResponse))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
