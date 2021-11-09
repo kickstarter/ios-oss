@@ -262,13 +262,12 @@
 		470B771A26FCDC8900EBD5CA /* RiskMessagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */; };
 		470B771C26FD022900EBD5CA /* RiskMessagingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */; };
 		4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */; };
+		472A83C427333EBB00523BC0 /* ProjectFAQsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472A83C327333EBB00523BC0 /* ProjectFAQsHeaderCell.swift */; };
+		472A83C6273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472A83C5273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift */; };
 		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
 		473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */; };
-		4746FFEF272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */; };
-		4746FFF1272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */; };
 		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
 		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
-		4746FFF7272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */; };
 		4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */; };
 		4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C14425B1021D0098E89E /* FirebaseABTesting.framework */; };
 		4748C15625B105DF0098E89E /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C15525B105DE0098E89E /* Protobuf.framework */; };
@@ -277,9 +276,6 @@
 		4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */; };
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
 		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
-		4751A66F272B2AB500F81DD5 /* ProjectEnvironmentalCommitmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A66E272B2AB500F81DD5 /* ProjectEnvironmentalCommitmentsViewController.swift */; };
-		4751A671272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A670272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift */; };
-		4751A673272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A672272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift */; };
 		4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */; };
 		4751A677272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */; };
 		4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */; };
@@ -299,7 +295,7 @@
 		47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplates.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
 		4771DF9926EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */; };
-		477239732710F87D00D26CDA /* ProjectPagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239722710F87D00D26CDA /* ProjectPagesDataSource.swift */; };
+		477239732710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239722710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift */; };
 		477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */; };
 		477239772710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */; };
 		477239792710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */; };
@@ -313,9 +309,6 @@
 		478E31C526C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */; };
 		478E31C726C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */; };
 		478E31C926C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C826C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift */; };
-		4791BDDC27162C3B00DFE5D5 /* ProjectFAQsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */; };
-		4791BDDE27162E1700DFE5D5 /* ProjectFAQsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */; };
-		4791BDE0271749F500DFE5D5 /* ProjectFAQsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */; };
 		4791BDE227174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */; };
 		4791BDE42717604C00DFE5D5 /* ProjectFAQsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */; };
 		4791BDE6271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */; };
@@ -331,6 +324,7 @@
 		47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */; };
 		47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */; };
 		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
+		47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */; };
 		47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */; };
 		47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */; };
 		47D7D09A26C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09926C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift */; };
@@ -341,10 +335,7 @@
 		47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */; };
 		47F4CA5F267A7B1800356DBF /* OptimizelyFeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */; };
 		47F4CA63267A7B2300356DBF /* OptimizelyFeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */; };
-		47F8526D2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */; };
-		47F8526F2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */; };
 		47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */; };
-		47F8527327220C4E0050DB39 /* ProjectFAQsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */; };
 		47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F95ECF2672C587001365B2 /* ViewRepliesView.swift */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
@@ -2022,13 +2013,12 @@
 		470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModel.swift; sourceTree = "<group>"; };
 		470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModelTests.swift; sourceTree = "<group>"; };
 		4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRepliesCell.swift; sourceTree = "<group>"; };
+		472A83C327333EBB00523BC0 /* ProjectFAQsHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsHeaderCell.swift; sourceTree = "<group>"; };
+		472A83C5273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentHeaderCell.swift; sourceTree = "<group>"; };
 		473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTests.swift"; sourceTree = "<group>"; };
 		473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewController.swift; sourceTree = "<group>"; };
-		4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsDataSourceTests.swift; sourceTree = "<group>"; };
-		4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewControllerTests.swift; sourceTree = "<group>"; };
 		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
-		4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewModelTests.swift; sourceTree = "<group>"; };
 		4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
 		4748C14425B1021D0098E89E /* FirebaseABTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseABTesting.framework; path = Carthage/Build/iOS/FirebaseABTesting.framework; sourceTree = "<group>"; };
 		4748C15525B105DE0098E89E /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
@@ -2037,9 +2027,6 @@
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
 		474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelopeTests.swift; sourceTree = "<group>"; };
-		4751A66E272B2AB500F81DD5 /* ProjectEnvironmentalCommitmentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewController.swift; sourceTree = "<group>"; };
-		4751A670272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsViewModel.swift; sourceTree = "<group>"; };
-		4751A672272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentsDataSource.swift; sourceTree = "<group>"; };
 		4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCell.swift; sourceTree = "<group>"; };
 		4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModel.swift; sourceTree = "<group>"; };
 		4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCell.swift; sourceTree = "<group>"; };
@@ -2059,7 +2046,7 @@
 		47613FC52652CD11006F09FF /* CommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
 		4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewControllerTests.swift; sourceTree = "<group>"; };
-		477239722710F87D00D26CDA /* ProjectPagesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPagesDataSource.swift; sourceTree = "<group>"; };
+		477239722710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerDataSource.swift; sourceTree = "<group>"; };
 		477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorView.swift; sourceTree = "<group>"; };
 		477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModel.swift; sourceTree = "<group>"; };
 		477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModelTests.swift; sourceTree = "<group>"; };
@@ -2074,9 +2061,6 @@
 		478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift"; sourceTree = "<group>"; };
 		478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UnwatchProjectInput+WatchProjectInput.swift"; sourceTree = "<group>"; };
 		478E31C826C1CD57004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchProjectResponseEnvelope+UnwatchProjectMutation.DataTest.swift"; sourceTree = "<group>"; };
-		4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewController.swift; sourceTree = "<group>"; };
-		4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewModel.swift; sourceTree = "<group>"; };
-		4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsDataSource.swift; sourceTree = "<group>"; };
 		4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsEmptyStateCell.swift; sourceTree = "<group>"; };
 		4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCell.swift; sourceTree = "<group>"; };
 		4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModel.swift; sourceTree = "<group>"; };
@@ -2093,6 +2077,7 @@
 		47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingStateTests.swift"; sourceTree = "<group>"; };
 		47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreatePaymentSource.graphql; sourceTree = "<group>"; };
 		47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewMoreRepliesFailedCell.swift; sourceTree = "<group>"; };
+		47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerDataSourceTests.swift; sourceTree = "<group>"; };
 		47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SignInWithApple.graphql; sourceTree = "<group>"; };
 		47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift"; sourceTree = "<group>"; };
 		47D7D09926C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift"; sourceTree = "<group>"; };
@@ -2103,10 +2088,7 @@
 		47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift"; sourceTree = "<group>"; };
 		47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
 		47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
-		47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsDataSourceTests.swift; sourceTree = "<group>"; };
-		47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewControllerTests.swift; sourceTree = "<group>"; };
 		47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModelTests.swift; sourceTree = "<group>"; };
-		47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsViewModelTests.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
 		59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackView.swift; sourceTree = "<group>"; };
@@ -4079,9 +4061,11 @@
 				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
 				4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */,
 				4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */,
+				472A83C5273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift */,
 				47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */,
 				4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */,
 				4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */,
+				472A83C327333EBB00523BC0 /* ProjectFAQsHeaderCell.swift */,
 				597073B01D07281800B00444 /* ProjectNotificationCell.swift */,
 				D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */,
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
@@ -4203,10 +4187,6 @@
 				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
-				4751A66E272B2AB500F81DD5 /* ProjectEnvironmentalCommitmentsViewController.swift */,
-				4746FFF0272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift */,
-				4791BDDB27162C3B00DFE5D5 /* ProjectFAQsViewController.swift */,
-				47F8526E2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift */,
 				A78838A81D8A32060081E94D /* ProjectNavBarViewController.swift */,
 				A7ED20361E8323E900BFFA01 /* ProjectNavBarViewControllerTests.swift */,
 				A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */,
@@ -4627,15 +4607,12 @@
 				8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */,
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
-				4751A672272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift */,
-				4746FFEE272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift */,
-				4791BDDF271749F500DFE5D5 /* ProjectFAQsDataSource.swift */,
-				47F8526C2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
 				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
 				A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */,
 				A7ED20101E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift */,
-				477239722710F87D00D26CDA /* ProjectPagesDataSource.swift */,
+				477239722710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift */,
+				47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */,
 				8A45169224B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift */,
 				8A49395B24B538D400C3C3CE /* RewardAddOnSelectionDataSourceTests.swift */,
 				77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */,
@@ -4915,10 +4892,6 @@
 				4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */,
 				4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */,
 				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */,
-				4751A670272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift */,
-				4746FFF6272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift */,
-				4791BDDD27162E1700DFE5D5 /* ProjectFAQsViewModel.swift */,
-				47F8527227220C4E0050DB39 /* ProjectFAQsViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
 				A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */,
@@ -6168,7 +6141,6 @@
 				8A4B8E90263A02EA00D92E4E /* KSRAnalyticsIdentityData.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
-				4751A671272B2C2000F81DD5 /* ProjectEnvironmentalCommitmentsViewModel.swift in Sources */,
 				8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */,
 				D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */,
 				374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */,
@@ -6245,7 +6217,6 @@
 				018422C01D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift in Sources */,
 				D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */,
 				8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */,
-				4791BDDE27162E1700DFE5D5 /* ProjectFAQsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6365,7 +6336,6 @@
 				8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */,
 				3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */,
 				D79CF40521B0840E00ECB73A /* AddNewCardViewModelTests.swift in Sources */,
-				47F8527327220C4E0050DB39 /* ProjectFAQsViewModelTests.swift in Sources */,
 				D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
 				A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */,
 				D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */,
@@ -6392,7 +6362,6 @@
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
 				77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */,
-				4746FFF7272C59E300EC3429 /* ProjectEnvironmentalCommitmentsViewModelTests.swift in Sources */,
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
@@ -6493,6 +6462,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472A83C6273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift in Sources */,
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
 				D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */,
@@ -6572,7 +6542,7 @@
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				37CA16B123304DCA006044F9 /* ToggleViewController.swift in Sources */,
-				477239732710F87D00D26CDA /* ProjectPagesDataSource.swift in Sources */,
+				477239732710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift in Sources */,
@@ -6653,7 +6623,6 @@
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
 				774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */,
-				4791BDE0271749F500DFE5D5 /* ProjectFAQsDataSource.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
 				A7561A3D1D3146290028DEA1 /* ProjectNavigatorViewController.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
@@ -6685,14 +6654,12 @@
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */,
 				37CA16AD23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift in Sources */,
-				4751A66F272B2AB500F81DD5 /* ProjectEnvironmentalCommitmentsViewController.swift in Sources */,
 				D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */,
 				D6600786240EFD6300AC1EDB /* CuratedProjectsViewController.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
-				4751A673272B2F0B00F81DD5 /* ProjectEnvironmentalCommitmentsDataSource.swift in Sources */,
 				D65BF3552334050100B15B25 /* ManagePledgePaymentMethodView.swift in Sources */,
 				94BA168E2667C37F0034CC3F /* CommentTableViewFooterView.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
@@ -6702,6 +6669,7 @@
 				4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
+				472A83C427333EBB00523BC0 /* ProjectFAQsHeaderCell.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */,
 				D764370A224040D100DAFC9E /* SharedFunctions.swift in Sources */,
@@ -6723,7 +6691,6 @@
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */,
 				8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */,
-				4791BDDC27162C3B00DFE5D5 /* ProjectFAQsViewController.swift in Sources */,
 				D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */,
 				77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */,
 				8A13D15F249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift in Sources */,
@@ -6841,7 +6808,6 @@
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
 				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
 				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
-				47F8526D2721E0CE0050DB39 /* ProjectFAQsDataSourceTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
@@ -6873,16 +6839,13 @@
 				D03BBA5C21A8E880005604A7 /* MockPushRegistration.swift in Sources */,
 				771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */,
 				061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */,
-				47F8526F2721EA4D0050DB39 /* ProjectFAQsViewControllerTests.swift in Sources */,
 				771E631023426F04005967E8 /* CancelPledgeViewControllerTests.swift in Sources */,
 				3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */,
 				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,
 				776B1A15241945E000B03098 /* CategorySelectionViewControllerTests.swift in Sources */,
 				8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
-				4746FFF1272C53B800EC3429 /* ProjectEnvironmentalCommitmentsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
-				4746FFEF272C50CD00EC3429 /* ProjectEnvironmentalCommitmentsDataSourceTests.swift in Sources */,
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */,
@@ -6920,6 +6883,7 @@
 				A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */,
 				77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */,
 				A7ED201C1E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift in Sources */,
+				47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */,
 				77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */,
 				A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */,
 				37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */,
