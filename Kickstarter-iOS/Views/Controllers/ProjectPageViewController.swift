@@ -19,8 +19,6 @@ protocol ProjectPageViewControllerDelegate: AnyObject {
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
-  private var sessionStartedObserver: Any?
-
   private let dataSource = ProjectPageViewControllerDataSource()
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
@@ -94,10 +92,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.setupNotifications()
     self.viewModel.inputs.viewDidLoad()
     self.navigationDelegate?.viewDidLoad()
-  }
-
-  deinit {
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   public override func viewDidLayoutSubviews() {
@@ -187,7 +181,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         object: nil
       )
 
-    self.sessionStartedObserver = NotificationCenter.default
+    NotificationCenter.default
       .addObserver(
         self,
         selector: #selector(ProjectPageViewController.userSessionStarted),
