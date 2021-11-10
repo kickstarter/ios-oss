@@ -1285,9 +1285,16 @@
       return SignalProducer(value: messageThread)
     }
 
-    func postComment(input _: PostCommentInput)
+    func postComment(input: PostCommentInput)
       -> SignalProducer<Comment, ErrorEnvelope> {
-      return producer(for: self.postCommentResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .PostCommentMutation(input: GraphAPI.PostCommentInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.postCommentResult)
     }
 
     func resetPassword(email _: String) -> SignalProducer<User, ErrorEnvelope> {
