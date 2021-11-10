@@ -1160,6 +1160,10 @@ final class ProjectPageViewModelTests: TestCase {
       .projectEnvironmentalCommitmentDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/environment")!)
 
     self.showHelpWebViewController.assertValues([.environment])
+
+    self.vm.inputs.projectRisksDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/trust")!)
+
+    self.showHelpWebViewController.assertValues([.environment, .trust])
   }
 
   func testOutput_UpdateDataSourceNavigationSection() {

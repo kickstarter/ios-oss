@@ -10,6 +10,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case faqsEmpty
     case faqs
     case faqsAskAQuestion
+    case risksHeader
+    case risks
+    case risksDisclaimer
     case environmentalCommitmentsHeader
     case environmentalCommitments
     case environmentalCommitmentsDisclaimer
@@ -65,6 +68,24 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectFAQsCell.self,
         inSection: Section.faqs.rawValue
       )
+    case .risks:
+      self.set(
+        values: [()],
+        cellClass: ProjectRisksHeaderCell.self,
+        inSection: Section.risksHeader.rawValue
+      )
+
+      self.set(
+        values: [projectProperties.risks],
+        cellClass: ProjectRisksCell.self,
+        inSection: Section.risks.rawValue
+      )
+
+      self.set(
+        values: [()],
+        cellClass: ProjectRisksDisclaimerCell.self,
+        inSection: Section.risksDisclaimer.rawValue
+      )
     case .environmentalCommitments:
       self.set(
         values: [()],
@@ -101,6 +122,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case let (cell as ProjectFAQsEmptyStateCell, _):
       cell.configureWith(value: ())
     case let (cell as ProjectFAQsHeaderCell, _):
+      cell.configureWith(value: ())
+    case let (cell as ProjectRisksCell, value as String):
+      cell.configureWith(value: value)
+    case let (cell as ProjectRisksDisclaimerCell, _):
+      cell.configureWith(value: ())
+    case let (cell as ProjectRisksHeaderCell, _):
       cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

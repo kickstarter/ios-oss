@@ -24,11 +24,14 @@ public protocol ProjectPageViewModelInputs {
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
 
-  /// Call when the delegate method for the ProjectEnvironmentalCommitmentFooterCellDelegate is called.
+  /// Call when the delegate method for the `ProjectEnvironmentalCommitmentFooterCellDelegate` is called.
   func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
 
   /// Call when the `ProjectNavigationSelectorViewDelegate` delegate method is called
   func projectNavigationSelectorViewDidSelect(index: Int)
+
+  /// Call when the delegate method for the `ProjectRisksDisclaimerCellDelegate` is called.
+  func projectRisksDisclaimerCellDidTapURL(_ url: URL)
 
   /// Call when the user session starts and we want to reload the data source.
   func userSessionStarted()
@@ -224,10 +227,16 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.presentMessageDialog = project
       .takeWhen(self.askAQuestionCellTappedProperty.signal)
 
-    self.showHelpWebViewController = self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.signal
-      .skipNil()
-      .map(HelpType.helpType)
-      .skipNil()
+    let tappableCellURLs = Signal.merge(
+      self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.signal,
+      self.projectRisksDisclaimerCellDidTapURLProperty.signal
+    )
+    .skipNil()
+
+    self.showHelpWebViewController =
+      tappableCellURLs
+        .map(HelpType.helpType)
+        .skipNil()
 
     // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
     self.updateDataSource = self.projectNavigationSelectorViewDidSelectProperty.signal
@@ -297,6 +306,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   private let projectNavigationSelectorViewDidSelectProperty = MutableProperty<Int?>(nil)
   public func projectNavigationSelectorViewDidSelect(index: Int) {
     self.projectNavigationSelectorViewDidSelectProperty.value = index
+  }
+
+  fileprivate let projectRisksDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func projectRisksDisclaimerCellDidTapURL(_ url: URL) {
+    self.projectRisksDisclaimerCellDidTapURLProperty.value = url
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())

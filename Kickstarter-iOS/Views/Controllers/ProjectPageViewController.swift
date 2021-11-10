@@ -80,7 +80,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.tableHeaderView .~ self.projectNavigationSelectorView
-      |> \.tableFooterView .~ nil
+      |> \.tableFooterView .~ UIView(frame: .zero)
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -88,6 +88,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentCell.self)
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentDisclaimerCell.self)
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentHeaderCell.self)
+    self.tableView.registerCellClass(ProjectRisksCell.self)
+    self.tableView.registerCellClass(ProjectRisksDisclaimerCell.self)
+    self.tableView.registerCellClass(ProjectRisksHeaderCell.self)
 
     self.setupNotifications()
     self.viewModel.inputs.viewDidLoad()
@@ -146,7 +149,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let constraints = [
       self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.tableView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
+      self.tableView.bottomAnchor
+        .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -Styles.grid(1)),
       self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor),
       self.projectNavigationSelectorView.heightAnchor
         .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout.projectNavigationSelectorHeight)
@@ -456,7 +460,11 @@ extension ProjectPageViewController: UITableViewDelegate {
   }
 
   public func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
-    (cell as? ProjectEnvironmentalCommitmentDisclaimerCell)?.delegate = self
+    if let cell = cell as? ProjectEnvironmentalCommitmentDisclaimerCell, cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? ProjectRisksDisclaimerCell, cell.delegate == nil {
+      cell.delegate = self
+    }
   }
 }
 
@@ -478,6 +486,14 @@ extension ProjectPageViewController: ProjectEnvironmentalCommitmentDisclaimerCel
     didTapURL: URL
   ) {
     self.viewModel.inputs.projectEnvironmentalCommitmentDisclaimerCellDidTapURL(didTapURL)
+  }
+}
+
+// MARK: ProjectRisksDisclaimerCellDelegate
+
+extension ProjectPageViewController: ProjectRisksDisclaimerCellDelegate {
+  func projectRisksDisclaimerCell(_: ProjectRisksDisclaimerCell, didTapURL: URL) {
+    self.viewModel.inputs.projectRisksDisclaimerCellDidTapURL(didTapURL)
   }
 }
 

@@ -37,6 +37,12 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   private let faqsEmptySection = ProjectPageViewControllerDataSource.Section.faqsEmpty.rawValue
   private let faqsSection = ProjectPageViewControllerDataSource.Section.faqs.rawValue
   private let faqsAskAQuestionSection = ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue
+  private let risksHeaderSection = ProjectPageViewControllerDataSource.Section
+    .risksHeader.rawValue
+  private let risksSection = ProjectPageViewControllerDataSource.Section
+    .risks.rawValue
+  private let risksDisclaimerSection = ProjectPageViewControllerDataSource.Section
+    .risksDisclaimer.rawValue
   private let environmentalCommitmentsHeaderSection = ProjectPageViewControllerDataSource.Section
     .environmentalCommitmentsHeader.rawValue
   private let environmentalCommitmentsSection = ProjectPageViewControllerDataSource.Section
@@ -279,18 +285,18 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  func testLoadEnvironmentalCommitments() {
+  func testRisks() {
     let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: self.environmentalCommitments,
+      environmentalCommitments: [],
       faqs: [],
-      risks: "",
+      risks: "These are all the risks and challenges associated with this project. Lorem Ipsum",
       story: "",
       minimumPledgeAmount: 1
     )
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
-        navigationSection: .environmentalCommitments,
+        navigationSection: .risks,
         projectProperties: projectProperties,
         isExpandedStates: nil
       )
@@ -327,6 +333,107 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsAskAQuestionSection)
+      )
+
+      // risksHeader
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksHeaderSection)
+      )
+
+      // risks
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksSection)
+      )
+
+      // risksDisclaimer
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksDisclaimerSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectRisksHeaderCell",
+        self.dataSource.reusableId(item: 0, section: self.risksHeaderSection)
+      )
+      XCTAssertEqual(
+        "ProjectRisksCell",
+        self.dataSource.reusableId(item: 0, section: self.risksSection)
+      )
+      XCTAssertEqual(
+        "ProjectRisksDisclaimerCell",
+        self.dataSource.reusableId(item: 0, section: self.risksDisclaimerSection)
+      )
+    }
+  }
+
+  func testLoadEnvironmentalCommitments() {
+    let projectProperties = ExtendedProjectProperties(
+      environmentalCommitments: self.environmentalCommitments,
+      faqs: [],
+      risks: "",
+      story: "",
+      minimumPledgeAmount: 1
+    )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .environmentalCommitments,
+        projectProperties: projectProperties,
+        isExpandedStates: nil
+      )
+      XCTAssertEqual(12, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overview
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // campaign
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
+      )
+
+      // faqsHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsHeaderSection)
+      )
+
+      // faqsEmpty
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsEmptySection)
+      )
+
+      // faqs
+      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsSection))
+
+      // faqsAskAQuestion
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsAskAQuestionSection)
+      )
+
+      // risksHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksHeaderSection)
+      )
+
+      // risks
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksSection)
+      )
+
+      // risksDisclaimer
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksDisclaimerSection)
       )
 
       // environmentCommitmentsHeader
@@ -380,7 +487,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         projectProperties: projectProperties,
         isExpandedStates: nil
       )
-      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(12, self.dataSource.numberOfSections(in: self.tableView))
 
       // overview
       XCTAssertEqual(
@@ -413,6 +520,24 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsAskAQuestionSection)
+      )
+
+      // risksHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksHeaderSection)
+      )
+
+      // risks
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksSection)
+      )
+
+      // risksDisclaimer
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksDisclaimerSection)
       )
 
       // environmentCommitmentsHeader

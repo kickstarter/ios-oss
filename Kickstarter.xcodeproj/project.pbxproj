@@ -266,6 +266,13 @@
 		472A83C6273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472A83C5273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift */; };
 		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
 		473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */; };
+		473DE00E273C48C40033331D /* ProjectRisksHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE00D273C48C40033331D /* ProjectRisksHeaderCell.swift */; };
+		473DE010273C4BA90033331D /* ProjectRisksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE00F273C4BA90033331D /* ProjectRisksCell.swift */; };
+		473DE012273C502F0033331D /* ProjectRisksCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE011273C502F0033331D /* ProjectRisksCellViewModel.swift */; };
+		473DE014273C551C0033331D /* ProjectRisksDisclaimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE013273C551C0033331D /* ProjectRisksDisclaimerCell.swift */; };
+		473DE016273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE015273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift */; };
+		473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE017273C74BA0033331D /* ProjectRisksCellViewModelTests.swift */; };
+		473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */; };
 		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
 		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
 		4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */; };
@@ -2017,6 +2024,13 @@
 		472A83C5273349F200523BC0 /* ProjectEnvironmentalCommitmentHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentHeaderCell.swift; sourceTree = "<group>"; };
 		473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTests.swift"; sourceTree = "<group>"; };
 		473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewController.swift; sourceTree = "<group>"; };
+		473DE00D273C48C40033331D /* ProjectRisksHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksHeaderCell.swift; sourceTree = "<group>"; };
+		473DE00F273C4BA90033331D /* ProjectRisksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksCell.swift; sourceTree = "<group>"; };
+		473DE011273C502F0033331D /* ProjectRisksCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksCellViewModel.swift; sourceTree = "<group>"; };
+		473DE013273C551C0033331D /* ProjectRisksDisclaimerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCell.swift; sourceTree = "<group>"; };
+		473DE015273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModel.swift; sourceTree = "<group>"; };
+		473DE017273C74BA0033331D /* ProjectRisksCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksCellViewModelTests.swift; sourceTree = "<group>"; };
+		473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		4748C11625B0FB7A0098E89E /* FirebasePerformance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebasePerformance.framework; path = Carthage/Build/iOS/FirebasePerformance.framework; sourceTree = "<group>"; };
@@ -4071,6 +4085,9 @@
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
 				A71199F81DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift */,
 				A79F52FF1D8F50CE00C051B8 /* ProjectPamphletSubpageCell.swift */,
+				473DE013273C551C0033331D /* ProjectRisksDisclaimerCell.swift */,
+				473DE00D273C48C40033331D /* ProjectRisksHeaderCell.swift */,
+				473DE00F273C4BA90033331D /* ProjectRisksCell.swift */,
 				8A45169424B3E8FB00D8CAEF /* RewardAddOnCell.swift */,
 				77EFBAE42268E01400DA5C3C /* RewardCell.swift */,
 				8A4841B324871B9500246223 /* RewardTableViewCell.swift */,
@@ -4916,6 +4933,10 @@
 				A7ED1FA01E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift */,
 				A7B1EBB01D901DE800BEE8B3 /* ProjectPamphletViewModel.swift */,
 				A7ED1F541E831C5C00BFFA01 /* ProjectPamphletViewModelTests.swift */,
+				473DE011273C502F0033331D /* ProjectRisksCellViewModel.swift */,
+				473DE017273C74BA0033331D /* ProjectRisksCellViewModelTests.swift */,
+				473DE015273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift */,
+				473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */,
 				59392C1D1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift */,
 				A7ED1FA11E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift */,
 				A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */,
@@ -5955,6 +5976,7 @@
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
+				473DE012273C502F0033331D /* ProjectRisksCellViewModel.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
@@ -6126,6 +6148,7 @@
 				A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */,
 				8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */,
 				9D25472D1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift in Sources */,
+				473DE016273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift in Sources */,
 				20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
@@ -6406,6 +6429,7 @@
 				A7ED1FF21E831C5C00BFFA01 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */,
 				A7ED1FEF1E831C5C00BFFA01 /* LoginViewModelTests.swift in Sources */,
 				A7ED1FF31E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift in Sources */,
+				473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */,
 				A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */,
 				A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */,
 				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
@@ -6449,6 +6473,7 @@
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				A7ED1FD81E831C5C00BFFA01 /* DashboardRewardsCellViewModelTests.swift in Sources */,
 				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
+				473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */,
 				84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */,
 				D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */,
 				8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */,
@@ -6583,6 +6608,7 @@
 				598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */,
 				D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */,
 				8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */,
+				473DE00E273C48C40033331D /* ProjectRisksHeaderCell.swift in Sources */,
 				94114D72265329770063E8F6 /* CommentCellHeaderStackView.swift in Sources */,
 				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				20BCBEB7264DAA5500510EDF /* CommentInputContainerView.swift in Sources */,
@@ -6621,6 +6647,7 @@
 				8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */,
 				8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */,
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
+				473DE014273C551C0033331D /* ProjectRisksDisclaimerCell.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
 				774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
@@ -6729,6 +6756,7 @@
 				06B02BED26680D4300903A83 /* CommentCell.swift in Sources */,
 				776B1A0D2418227100B03098 /* CategoryPillCell.swift in Sources */,
 				7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */,
+				473DE010273C4BA90033331D /* ProjectRisksCell.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A731BF901D1EE4CD00A734AC /* UpdateViewModel.swift in Sources */,
 				A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
