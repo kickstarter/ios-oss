@@ -418,6 +418,11 @@ private func pledgedText(for project: Project, _ needsConversion: Bool) -> Strin
 }
 
 private func conversionText(for project: Project) -> String {
+  // Displays SEK instead of EUR here, because the text is using the project country's currency symbol which is hardcoded. Not the Project's currency.
+  // Try this on Monday to update the country with the `project.stats.currency`
+  // var updatedProjectCountry = Project.Country(currencyCode: project.country.currencyCode)
+  // updatedProjectCountry.currencyCode = project.stats.currency
+  
   return Strings.discovery_baseball_card_stats_convert_from_pledged_of_goal(
     pledged: Format.currency(
       project.stats.pledged,
