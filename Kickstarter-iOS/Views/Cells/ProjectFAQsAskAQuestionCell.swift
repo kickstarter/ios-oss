@@ -71,7 +71,7 @@ final class ProjectFAQsAskAQuestionCell: UITableViewCell, ValueCell {
 
 private let messageImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ .ksr_white
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_message")
     |> \.layer.cornerRadius .~ Styles.grid(1)
