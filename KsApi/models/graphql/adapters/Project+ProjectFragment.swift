@@ -12,7 +12,12 @@ extension Project {
     currentUserChosenCurrency: String?
   ) -> Project? {
     guard
-      let country = Country.country(from: projectFragment.country.fragments.countryFragment),
+      let country = Country.country(
+        from: projectFragment.country.fragments.countryFragment,
+        minPledge: projectFragment.minPledge,
+        maxPledge: projectFragment.maxPledge,
+        currency: projectFragment.currency
+      ),
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
       let category = Project.Category.category(from: categoryFragment),
       let dates = projectDates(from: projectFragment),
@@ -56,21 +61,12 @@ extension Project {
       .last
 
     let extendedProjectProperties = extendedProject(from: projectFragment)
-    
-    //Trial and error, because it seems like the project's country currencyCode can be different from the official ISO standard country currency code.
-    var updatedCountry = country
-    
-    if country.currencyCode != projectFragment.currency.rawValue {
-      updatedCountry = Project.Country(countryCode: country.countryCode,
-                                           currencyCode: projectFragment.currency.rawValue,
-                                           currencySymbol: country.currencySymbol,/*symbol here is wrong */ maxPledge: country.maxPledge, minPledge: country.minPledge, trailingCode: country.trailingCode)
-    }
 
     return Project(
       availableCardTypes: availableCardTypes,
       blurb: projectFragment.description,
       category: category,
-      country: updatedCountry,
+      country: country,
       creator: creator,
       extendedProjectProperties: extendedProjectProperties,
       memberData: memberData,

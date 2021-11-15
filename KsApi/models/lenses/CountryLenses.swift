@@ -25,5 +25,29 @@ extension Project.Country {
         trailingCode: $1.trailingCode
       ) }
     )
+
+    public static let currencyCode = Lens<Project.Country, String>(
+      view: { $0.currencyCode },
+      set: { Project.Country(
+        countryCode: $1.countryCode,
+        currencyCode: $0,
+        currencySymbol: $1.currencySymbol,
+        maxPledge: $1.maxPledge,
+        minPledge: $1.minPledge,
+        trailingCode: $1.trailingCode
+      ) }
+    )
+
+    public static let currencySymbol = Lens<Project.Country, String>(
+      view: { $0.currencySymbol },
+      set: { Project.Country(
+        countryCode: $1.countryCode,
+        currencyCode: $1.currencyCode,
+        currencySymbol: $0,
+        maxPledge: $1.maxPledge,
+        minPledge: $1.minPledge,
+        trailingCode: $1.trailingCode
+      ) }
+    )
   }
 }
