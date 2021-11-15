@@ -32,6 +32,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     XCTAssertEqual(NavigationSection.overview.displayString, "OVERVIEW")
     XCTAssertEqual(NavigationSection.campaign.displayString, "CAMPAIGN")
     XCTAssertEqual(NavigationSection.faq.displayString, "FAQ")
+    XCTAssertEqual(NavigationSection.risks.displayString, "RISKS")
     XCTAssertEqual(NavigationSection.environmentalCommitments.displayString, "ENVIRONMENTAL COMMITMENTS")
   }
 

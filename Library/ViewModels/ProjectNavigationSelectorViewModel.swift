@@ -6,6 +6,7 @@ public enum NavigationSection: Int, CaseIterable {
   case overview
   case campaign
   case faq
+  case risks
   case environmentalCommitments
 
   // TODO: Internationalize strings
@@ -15,6 +16,7 @@ public enum NavigationSection: Int, CaseIterable {
     case .environmentalCommitments: return "ENVIRONMENTAL COMMITMENTS"
     case .faq: return Strings.profile_settings_about_faq_short()
     case .overview: return "OVERVIEW"
+    case .risks: return "RISKS"
     }
   }
 }

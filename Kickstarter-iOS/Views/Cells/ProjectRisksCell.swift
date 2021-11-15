@@ -3,15 +3,10 @@ import Library
 import Prelude
 import UIKit
 
-final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
+final class ProjectRisksCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = ProjectEnvironmentalCommitmentCellViewModel()
-
-  private lazy var categoryLabel: UILabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private let viewModel = ProjectRisksCellViewModel()
 
   private lazy var descriptionLabel: UILabel = {
     UILabel(frame: .zero)
@@ -42,7 +37,6 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.categoryLabel.rac.text = self.viewModel.outputs.categoryLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
   }
 
@@ -55,9 +49,6 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
     _ = self.contentView
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
 
-    _ = self.categoryLabel
-      |> categoryLabelStyle
-
     _ = self.descriptionLabel
       |> descriptionLabelStyle
 
@@ -67,7 +58,7 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: ProjectEnvironmentalCommitment) {
+  func configureWith(value: String) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -76,20 +67,12 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.categoryLabel, self.descriptionLabel], self.rootStackView)
+    _ = ([self.descriptionLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 }
 
 // MARK: - Styles
-
-private let categoryLabelStyle: LabelStyle = { label in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
-}
 
 private let descriptionLabelStyle: LabelStyle = { label in
   label
