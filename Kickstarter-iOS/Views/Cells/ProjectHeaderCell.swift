@@ -2,13 +2,13 @@ import Library
 import Prelude
 import UIKit
 
-public enum ProjectEnvironmentalCommitmentHeaderCellStyles {
+public enum ProjectHeaderCellStyles {
   public enum Layout {
-    public static let insets: CGFloat = Styles.grid(9)
+    public static let insets: CGFloat = Styles.grid(30)
   }
 }
 
-final class ProjectEnvironmentalCommitmentHeaderCell: UITableViewCell, ValueCell {
+final class ProjectHeaderCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var titleTextLabel: UILabel = {
@@ -41,7 +41,7 @@ final class ProjectEnvironmentalCommitmentHeaderCell: UITableViewCell, ValueCell
         top: 0,
         left: 0,
         bottom: 0,
-        right: self.bounds.size.width + ProjectEnvironmentalCommitmentHeaderCellStyles.Layout.insets
+        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
       )
 
     _ = self.contentView
@@ -56,7 +56,9 @@ final class ProjectEnvironmentalCommitmentHeaderCell: UITableViewCell, ValueCell
 
   // MARK: - Configuration
 
-  func configureWith(value _: Void) {
+  func configureWith(value: String) {
+    _ = self.titleTextLabel
+      |> \.text .~ value
     return
   }
 
@@ -69,13 +71,11 @@ final class ProjectEnvironmentalCommitmentHeaderCell: UITableViewCell, ValueCell
 
 // MARK: - Styles
 
-// TODO: - Internationalize string
 private let titleLabelStyle: LabelStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_white
     |> \.font .~ UIFont.ksr_title1().bolded
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text .~ "Environmental commitments"
     |> \.textColor .~ .ksr_support_700
 }

@@ -101,7 +101,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectFAQsHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.faqsHeaderSection)
       )
       XCTAssertEqual(
@@ -160,7 +160,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsSection))
 
       XCTAssertEqual(
-        "ProjectFAQsHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.faqsHeaderSection)
       )
       XCTAssertEqual(
@@ -220,7 +220,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectFAQsHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.faqsHeaderSection)
       )
       XCTAssertEqual(
@@ -275,7 +275,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectFAQsHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.faqsHeaderSection)
       )
       XCTAssertEqual(
@@ -354,7 +354,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectRisksHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.risksHeaderSection)
       )
       XCTAssertEqual(
@@ -458,7 +458,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectEnvironmentalCommitmentHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsHeaderSection)
       )
       XCTAssertEqual(
@@ -562,7 +562,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectEnvironmentalCommitmentHeaderCell",
+        "ProjectHeaderCell",
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsHeaderSection)
       )
       XCTAssertEqual(

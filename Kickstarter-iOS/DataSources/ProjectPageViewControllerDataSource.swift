@@ -18,6 +18,13 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case environmentalCommitmentsDisclaimer
   }
 
+  // TODO: Internationalize strings
+  private enum HeaderValue: String {
+    case environmentalCommitments = "Environmental commitments"
+    case faqs = "Frequently asked questions"
+    case risks = "Risks and challenges"
+  }
+
   func load(
     navigationSection: NavigationSection,
     projectProperties: ExtendedProjectProperties,
@@ -31,8 +38,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       return
     case .faq:
       self.set(
-        values: [()],
-        cellClass: ProjectFAQsHeaderCell.self,
+        values: [HeaderValue.faqs.rawValue],
+        cellClass: ProjectHeaderCell.self,
         inSection: Section.faqsHeader.rawValue
       )
 
@@ -70,8 +77,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       )
     case .risks:
       self.set(
-        values: [()],
-        cellClass: ProjectRisksHeaderCell.self,
+        values: [HeaderValue.risks.rawValue],
+        cellClass: ProjectHeaderCell.self,
         inSection: Section.risksHeader.rawValue
       )
 
@@ -88,8 +95,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       )
     case .environmentalCommitments:
       self.set(
-        values: [()],
-        cellClass: ProjectEnvironmentalCommitmentHeaderCell.self,
+        values: [HeaderValue.environmentalCommitments.rawValue],
+        cellClass: ProjectHeaderCell.self,
         inSection: Section.environmentalCommitmentsHeader.rawValue
       )
 
@@ -113,21 +120,17 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ProjectEnvironmentalCommitmentDisclaimerCell, _):
       cell.configureWith(value: ())
-    case let (cell as ProjectEnvironmentalCommitmentHeaderCell, _):
-      cell.configureWith(value: ())
+    case let (cell as ProjectHeaderCell, value as String):
+      cell.configureWith(value: value)
     case let (cell as ProjectFAQsAskAQuestionCell, _):
       cell.configureWith(value: ())
     case let (cell as ProjectFAQsCell, value as (ProjectFAQ, Bool)):
       cell.configureWith(value: value)
     case let (cell as ProjectFAQsEmptyStateCell, _):
       cell.configureWith(value: ())
-    case let (cell as ProjectFAQsHeaderCell, _):
-      cell.configureWith(value: ())
     case let (cell as ProjectRisksCell, value as String):
       cell.configureWith(value: value)
     case let (cell as ProjectRisksDisclaimerCell, _):
-      cell.configureWith(value: ())
-    case let (cell as ProjectRisksHeaderCell, _):
       cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
