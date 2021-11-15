@@ -7,8 +7,7 @@ extension Comment {
 
   static func from(_ data: GraphAPI.PostCommentMutation.Data.CreateComment.Comment) -> Comment? {
     guard let author = data.author,
-      let decomposedAuthorId = decompose(id: author.id),
-      let authorBadges = data.authorBadges else {
+      let decomposedAuthorId = decompose(id: author.id) else {
       return nil
     }
 
@@ -19,7 +18,8 @@ extension Comment {
       name: author.name
     )
 
-    let commentAuthorBadges: [Comment.AuthorBadge] = authorBadges.compactMap { badge in
+    let commentBadges: [GraphAPI.CommentBadge?] = data.authorBadges ?? []
+    let commentAuthorBadges: [Comment.AuthorBadge] = commentBadges.compactMap { badge in
       guard let existingBadge = badge else {
         return nil
       }

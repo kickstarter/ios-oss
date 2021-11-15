@@ -128,7 +128,7 @@ public enum FetchProjectCommentsQueryTemplate {
                 "name": "Arthur B",
                 "uid": "292550904"
               },
-              "authorBadges": ["superbacker"],
+              "authorBadges": null,
               "body": "Pledged £1 to get a peek at the preview and judge whether I wanted to commit. Saw commitment in preview to providing in-depth details on a good swathe of the setting mysteries. Backed for hard copy.",
               "createdAt": 1628012917,
               "deleted": false,
