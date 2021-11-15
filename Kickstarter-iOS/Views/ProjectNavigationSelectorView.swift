@@ -252,10 +252,6 @@ final class ProjectNavigationSelectorView: UIView {
 private let bottomBorderViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_support_100
-    |> \.layer.shadowColor .~ UIColor.ksr_black.cgColor
-    |> \.layer.shadowOpacity .~ 0.12
-    |> \.layer.shadowOffset .~ CGSize(width: 0, height: -2.0)
-    |> \.layer.shadowRadius .~ CGFloat(1.0)
 }
 
 private let selectedButtonBorderViewStyle: ViewStyle = { view in
