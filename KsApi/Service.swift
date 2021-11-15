@@ -553,12 +553,12 @@ public struct Service: ServiceType {
     return request(.markAsRead(messageThread))
   }
 
-  // FIXME: Convert to using Apollo instead of DSL
   public func postComment(input: PostCommentInput)
     -> SignalProducer<Comment, ErrorEnvelope> {
-    return applyMutation(mutation: PostCommentMutation(input: input))
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(PostCommentEnvelope.modelProducer(from:))
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .PostCommentMutation(input: GraphAPI.PostCommentInput.from(input)))
+      .flatMap(PostCommentEnvelope.producer(from:))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
