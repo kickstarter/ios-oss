@@ -111,6 +111,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       return
     }
 
+    // Remove bottom border
+    defaultNavigationBarView.shadowImage = UIImage()
+
     _ = (self.navigationBarView, defaultNavigationBarView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -162,6 +165,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       \.backgroundColor .~ .ksr_white
 
     _ = self.tableView |> tableViewStyle
+
+    _ = self.navigationBarView
+      |> \.backgroundColor .~ .ksr_white
   }
 
   public override func bindViewModel() {

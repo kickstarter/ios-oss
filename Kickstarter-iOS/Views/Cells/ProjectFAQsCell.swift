@@ -233,7 +233,6 @@ private let questionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.alignment .~ .top
     |> \.axis .~ .horizontal
-    |> \.distribution .~ .fill
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ Styles.grid(2)
