@@ -105,12 +105,6 @@ private func projectPersonalization(isStarred: Bool,
   )
 }
 
-private func projectRewards(from rewardFragments: [GraphAPI.RewardFragment]?) -> [Reward]? {
-  return rewardFragments?.compactMap { rewardFragment in
-    Reward.reward(from: rewardFragment)
-  }
-}
-
 /**
  Returns a minimal `Project.Dates` from a `ProjectFragment`
  */
