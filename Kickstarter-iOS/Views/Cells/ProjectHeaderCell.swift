@@ -4,7 +4,7 @@ import UIKit
 
 public enum ProjectHeaderCellStyles {
   public enum Layout {
-    public static let insets: CGFloat = Styles.grid(30)
+    public static let insets: CGFloat = Styles.grid(200)
   }
 }
 
@@ -34,6 +34,7 @@ final class ProjectHeaderCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    // The separatorInset removes the bottom separator line from the view
     _ = self
       |> baseTableViewCellStyle()
       |> \.separatorInset .~

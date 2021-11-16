@@ -112,6 +112,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       return
     }
 
+    // Remove bottom border
+    defaultNavigationBarView.shadowImage = UIImage()
+
     _ = (self.navigationBarView, defaultNavigationBarView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()

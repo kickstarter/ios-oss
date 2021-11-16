@@ -52,6 +52,9 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+
     _ = self.categoryLabel
       |> categoryLabelStyle
 
@@ -99,7 +102,6 @@ private let descriptionLabelStyle: LabelStyle = { label in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ Styles.grid(3)

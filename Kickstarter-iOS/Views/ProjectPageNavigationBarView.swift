@@ -82,6 +82,8 @@ final class ProjectPageNavigationBarView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self |> \.backgroundColor .~ .ksr_white
+
     _ = self.rootStackView
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> \.isLayoutMarginsRelativeArrangement .~ true

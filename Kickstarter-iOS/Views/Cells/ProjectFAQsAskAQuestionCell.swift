@@ -41,6 +41,9 @@ final class ProjectFAQsAskAQuestionCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+
     _ = self.messageImageView
       |> messageImageViewStyle
 
@@ -71,7 +74,7 @@ final class ProjectFAQsAskAQuestionCell: UITableViewCell, ValueCell {
 
 private let messageImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.backgroundColor .~ .ksr_support_100
+    |> \.backgroundColor .~ .ksr_white
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_message")
     |> \.layer.cornerRadius .~ Styles.grid(1)
@@ -80,7 +83,6 @@ private let messageImageViewStyle: ImageViewStyle = { imageView in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .horizontal
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(1))
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ Styles.grid(1)
