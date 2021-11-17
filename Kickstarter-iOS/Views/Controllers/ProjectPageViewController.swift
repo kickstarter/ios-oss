@@ -22,12 +22,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private let dataSource = ProjectPageViewControllerDataSource()
   private let viewModel: ProjectPageViewModelType = ProjectPageViewModel()
 
-  /**
-   FIXME: This `contentViewController` has to be embedded in a `PagingViewController` in https://kickstarter.atlassian.net/browse/NTV-195
-   Maybe check `BackerDashboardViewController`'s pageViewController for in-app examples on how to do this.
-   */
-  private var contentViewController: ProjectPamphletContentViewController?
-
   private var navigationBarView: ProjectPageNavigationBarView = {
     ProjectPageNavigationBarView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -67,11 +61,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.configurePledgeCTAContainerView()
     self.configureTableView()
 
-    /** FIXME:
-     self.contentViewController = self.children
-       .compactMap { $0 as? ProjectPamphletContentViewController }.first
-     self.contentViewController.delegate = self
-     */
     self.projectNavigationSelectorView.delegate = self
     self.pledgeCTAContainerView.delegate = self
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
@@ -80,31 +69,33 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.tableHeaderView .~ self.projectNavigationSelectorView
-      |> \.tableFooterView .~ UIView(frame: .zero)
+      |> \.tableFooterView .~ UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1))
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentCell.self)
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentDisclaimerCell.self)
     self.tableView.registerCellClass(ProjectHeaderCell.self)
+    self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
+    self.tableView.register(nib: .ProjectPamphletMainCell)
+    self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
     self.tableView.registerCellClass(ProjectRisksDisclaimerCell.self)
-
     self.setupNotifications()
     self.viewModel.inputs.viewDidLoad()
     self.navigationDelegate?.viewDidLoad()
-  }
-
-  public override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.updateContentInsets()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     self.viewModel.inputs.viewDidAppear(animated: animated)
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
   public func setupNavigationView() {
@@ -196,6 +187,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func bindProjectPageViewModel() {
+    self.navigationBarView.rac.hidden = self.viewModel.outputs.navigationBarIsHidden
+
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
       .observeValues { [weak self] params in
@@ -213,9 +206,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, _ in
-        /** FIXME: How we do this might change in https://kickstarter.atlassian.net/browse/NTV-195
-         self?.contentViewController?.configureWith(value: (project, refTag))
-         */
         self?.navigationDelegate?.configureSharing(with: .project(project))
 
         let watchProjectValue = WatchProjectValue(project, KSRAnalytics.PageContext.projectPage, nil)
@@ -225,10 +215,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.configureDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] navSection, projectProperties in
+      .observeValues { [weak self] navSection, project, refTag in
         self?.dataSource.load(
           navigationSection: navSection,
-          projectProperties: projectProperties
+          project: project,
+          refTag: refTag
         )
         self?.tableView.reloadData()
       }
@@ -253,6 +244,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         })
       }
 
+    self.viewModel.outputs.goToComments
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToComments(project: $0)
+      }
+
+    self.viewModel.outputs.goToUpdates
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToUpdates(project: $0)
+      }
+
     self.viewModel.outputs.presentMessageDialog
       .observeForUI()
       .observeValues { [weak self] project in
@@ -267,10 +270,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] navSection, projectProperties, initialIsExpandedArray in
+      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray in
         self?.dataSource.load(
           navigationSection: navSection,
-          projectProperties: projectProperties,
+          project: project,
+          refTag: refTag,
           isExpandedStates: initialIsExpandedArray
         )
         self?.tableView.reloadData()
@@ -278,10 +282,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateFAQsInDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] projectProperties, isExpandedValues in
+      .observeValues { [weak self] project, refTag, isExpandedValues in
         self?.dataSource.load(
           navigationSection: .faq,
-          projectProperties: projectProperties,
+          project: project,
+          refTag: refTag,
           isExpandedStates: isExpandedValues
         )
         self?.tableView.reloadData()
@@ -341,6 +346,24 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.present(nc, animated: true)
   }
 
+  private func goToComments(project: Project) {
+    let vc = commentsViewController(for: project)
+    if self.traitCollection.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      self.present(nav, animated: true, completion: nil)
+    } else {
+      self.viewModel.inputs.hideNavigationBar()
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+
+  private func goToUpdates(project: Project) {
+    let vc = ProjectUpdatesViewController.configuredWith(project: project)
+    self.viewModel.inputs.hideNavigationBar()
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
   private func presentMessageDialog(project: Project) {
     let dialog = MessageDialogViewController
       .configuredWith(messageSubject: .project(project), context: .projectPage)
@@ -351,14 +374,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       animated: true,
       completion: nil
     )
-  }
-
-  private func updateContentInsets() {
-    let ctaViewSize = self.pledgeCTAContainerView.systemLayoutSizeFitting(
-      UIView.layoutFittingCompressedSize
-    )
-
-    self.contentViewController?.additionalSafeAreaInsets = UIEdgeInsets(bottom: ctaViewSize.height)
   }
 
   // MARK: - Selectors
@@ -450,6 +465,12 @@ extension ProjectPageViewController: ProjectNavigationSelectorViewDelegate {
 extension ProjectPageViewController: UITableViewDelegate {
   public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
+    case ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue:
+      if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
+        self.viewModel.inputs.tappedComments()
+      } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
+        self.viewModel.inputs.tappedUpdates()
+      }
     case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
       self.viewModel.inputs.askAQuestionCellTapped()
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
@@ -464,6 +485,8 @@ extension ProjectPageViewController: UITableViewDelegate {
     if let cell = cell as? ProjectEnvironmentalCommitmentDisclaimerCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ProjectRisksDisclaimerCell, cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletMainCell, cell.delegate == nil {
       cell.delegate = self
     }
   }
@@ -495,6 +518,46 @@ extension ProjectPageViewController: ProjectEnvironmentalCommitmentDisclaimerCel
 extension ProjectPageViewController: ProjectRisksDisclaimerCellDelegate {
   func projectRisksDisclaimerCell(_: ProjectRisksDisclaimerCell, didTapURL: URL) {
     self.viewModel.inputs.projectRisksDisclaimerCellDidTapURL(didTapURL)
+  }
+}
+
+// MARK: ProjectPamphletMainCellDelegate
+
+extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
+  internal func projectPamphletMainCell(
+    _: ProjectPamphletMainCell,
+    goToCampaignForProjectWith data: ProjectPamphletMainCellData
+  ) {
+    let vc = ProjectDescriptionViewController.configuredWith(data: data)
+    self.navigationBarView.isHidden = true
+    self.viewModel.inputs.hideNavigationBar()
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  internal func projectPamphletMainCell(
+    _: ProjectPamphletMainCell,
+    addChildController child: UIViewController
+  ) {
+    self.addChild(child)
+    child.beginAppearanceTransition(true, animated: false)
+    child.didMove(toParent: self)
+    child.endAppearanceTransition()
+  }
+
+  internal func projectPamphletMainCell(
+    _: ProjectPamphletMainCell,
+    goToCreatorForProject project: Project
+  ) {
+    let vc = ProjectCreatorViewController.configuredWith(project: project)
+
+    if self.traitCollection.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      self.present(nav, animated: true, completion: nil)
+    } else {
+      self.viewModel.inputs.hideNavigationBar()
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
   }
 }
 

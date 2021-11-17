@@ -4,7 +4,9 @@ import UIKit
 
 internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   internal enum Section: Int {
+    case overviewCreatorHeader
     case overview
+    case overviewSubpages
     case campaign
     case faqsHeader
     case faqsEmpty
@@ -20,6 +22,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   // TODO: Internationalize strings
   private enum HeaderValue: String {
+    case overview = "Overview"
     case environmentalCommitments = "Environmental commitments"
     case faqs = "Frequently asked questions"
     case risks = "Risks and challenges"
@@ -27,14 +30,40 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   func load(
     navigationSection: NavigationSection,
-    projectProperties: ExtendedProjectProperties,
+    project: Project,
+    refTag: RefTag?,
     isExpandedStates: [Bool]? = nil
   ) {
     // Clear all sections
     self.clearValues()
 
     switch navigationSection {
-    case .overview, .campaign:
+    case .overview:
+      if currentUserIsCreator(of: project) {
+        self.set(
+          values: [project],
+          cellClass: ProjectPamphletCreatorHeaderCell.self,
+          inSection: Section.overviewCreatorHeader.rawValue
+        )
+      }
+
+      self.set(
+        values: [(project, refTag)],
+        cellClass: ProjectPamphletMainCell.self,
+        inSection: Section.overview.rawValue
+      )
+
+      let values: [ProjectPamphletSubpage] = [
+        .comments(project.stats.commentsCount as Int?, .first),
+        .updates(project.stats.updatesCount as Int?, .last)
+      ]
+
+      self.set(
+        values: values,
+        cellClass: ProjectPamphletSubpageCell.self,
+        inSection: Section.overviewSubpages.rawValue
+      )
+    case .campaign:
       return
     case .faq:
       self.set(
@@ -52,7 +81,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         )
       }
 
-      let projectFAQs = projectProperties.faqs
+      let projectFAQs = project.extendedProjectProperties?.faqs ?? []
 
       guard !projectFAQs.isEmpty else {
         self.set(
@@ -76,6 +105,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.faqs.rawValue
       )
     case .risks:
+      // Risks are mandatory for creators
+      guard let risks = project.extendedProjectProperties?.risks else { return }
+
       self.set(
         values: [HeaderValue.risks.rawValue],
         cellClass: ProjectHeaderCell.self,
@@ -83,7 +115,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       )
 
       self.set(
-        values: [projectProperties.risks],
+        values: [risks],
         cellClass: ProjectRisksCell.self,
         inSection: Section.risks.rawValue
       )
@@ -94,6 +126,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.risksDisclaimer.rawValue
       )
     case .environmentalCommitments:
+      let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
+
       self.set(
         values: [HeaderValue.environmentalCommitments.rawValue],
         cellClass: ProjectHeaderCell.self,
@@ -101,7 +135,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       )
 
       self.set(
-        values: projectProperties.environmentalCommitments,
+        values: environmentalCommitments,
         cellClass: ProjectEnvironmentalCommitmentCell.self,
         inSection: Section.environmentalCommitments.rawValue
       )
@@ -128,6 +162,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ProjectFAQsEmptyStateCell, _):
       cell.configureWith(value: ())
+    case let (cell as ProjectPamphletCreatorHeaderCell, value as Project):
+      cell.configureWith(value: value)
+    case let (cell as ProjectPamphletMainCell, value as ProjectPamphletMainCellData):
+      cell.configureWith(value: value)
+    case let (cell as ProjectPamphletSubpageCell, value as ProjectPamphletSubpage):
+      cell.configureWith(value: value)
     case let (cell as ProjectRisksCell, value as String):
       cell.configureWith(value: value)
     case let (cell as ProjectRisksDisclaimerCell, _):
@@ -137,7 +177,15 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
-  func isExpandedValuesForFAQsSection() -> [Bool]? {
+  internal func indexPathIsCommentsSubpage(_ indexPath: IndexPath) -> Bool {
+    return (self[indexPath] as? ProjectPamphletSubpage)?.isComments == true
+  }
+
+  internal func indexPathIsUpdatesSubpage(_ indexPath: IndexPath) -> Bool {
+    return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
+  }
+
+  internal func isExpandedValuesForFAQsSection() -> [Bool]? {
     guard let values = self[section: Section.faqs.rawValue] as? [(ProjectFAQ, Bool)] else { return nil }
     return values.map { _, isExpanded in isExpanded }
   }
