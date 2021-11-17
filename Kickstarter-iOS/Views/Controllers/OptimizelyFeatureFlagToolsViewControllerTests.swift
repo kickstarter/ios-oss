@@ -20,7 +20,8 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
   func testOptimizelyFeatureFlagToolsViewController() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false
       ]
 
     withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {

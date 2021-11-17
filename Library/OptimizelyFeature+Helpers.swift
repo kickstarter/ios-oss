@@ -6,3 +6,10 @@ public func featureCommentFlaggingIsEnabled() -> Bool {
     (AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.commentFlaggingEnabled.rawValue) ?? false)
 }
+
+public func featureNavigationSelectorProjectPageIsEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue) ?? false)
+}
