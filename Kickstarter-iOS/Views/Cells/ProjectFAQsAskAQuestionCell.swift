@@ -40,9 +40,11 @@ final class ProjectFAQsAskAQuestionCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.separatorInset .~ .init(leftRight: Styles.projectPageLeftRightInset)
 
     _ = self.contentView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+      |> \.layoutMargins .~
+      .init(topBottom: Styles.grid(2), leftRight: Styles.projectPageLeftRightInset)
 
     _ = self.messageImageView
       |> messageImageViewStyle

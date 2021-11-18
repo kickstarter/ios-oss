@@ -506,7 +506,7 @@ extension ProjectPageViewController: UITableViewDelegate {
     }
   }
 
-  public func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
+  public func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     if let cell = cell as? ProjectEnvironmentalCommitmentDisclaimerCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ProjectRisksDisclaimerCell, cell.delegate == nil {
@@ -516,6 +516,10 @@ extension ProjectPageViewController: UITableViewDelegate {
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
     }
+
+    /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
+    self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
+      .overviewSubpages.rawValue ? .none : .singleLine
   }
 }
 
@@ -605,5 +609,4 @@ private let tableViewStyle: TableViewStyle = { tableView in
   tableView
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
-    |> \.separatorInset .~ .init(leftRight: Styles.grid(3))
 }
