@@ -62,7 +62,7 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
     _ = self.contentView
       |> \.layoutMargins .~
       .init(
-        topBottom: Styles.grid(2),
+        topBottom: Styles.projectPageTopBottomInset,
         leftRight: Styles.projectPageLeftRightInset
       )
 
