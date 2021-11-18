@@ -6,6 +6,7 @@ import UIKit
 public enum ProjectPageViewControllerStyles {
   public enum Layout {
     public static let projectNavigationSelectorHeight: CGFloat = 60
+    public static let tableFooterViewHeight: CGFloat = 1
   }
 }
 
@@ -69,7 +70,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.tableHeaderView .~ self.projectNavigationSelectorView
-      |> \.tableFooterView .~ UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1))
+      |> \.tableFooterView .~
+      UIView(frame: CGRect(
+        x: 0,
+        y: 0,
+        width: 0,
+        height: ProjectPageViewControllerStyles.Layout.tableFooterViewHeight
+      ))
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -250,6 +257,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToComments(project: $0)
       }
 
+    self.viewModel.outputs.goToDashboard
+      .observeForControllerAction()
+      .observeValues { [weak self] param in
+        self?.goToDashboard(param: param)
+      }
+
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -356,6 +369,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       self.viewModel.inputs.hideNavigationBar()
       self.navigationController?.pushViewController(vc, animated: true)
     }
+  }
+
+  private func goToDashboard(param: Param) {
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { root in
+        UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
+          root.switchToDashboard(project: param)
+        }, completion: { [weak self] _ in
+          self?.dismiss(animated: true, completion: nil)
+        })
+      }
   }
 
   private func goToUpdates(project: Project) {
@@ -488,6 +513,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletMainCell, cell.delegate == nil {
       cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
+      cell.delegate = self
     }
   }
 }
@@ -558,6 +585,17 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       self.viewModel.inputs.hideNavigationBar()
       self.navigationController?.pushViewController(vc, animated: true)
     }
+  }
+}
+
+// MARK: ProjectPamphletCreatorHeaderCellDelegate
+
+extension ProjectPageViewController: ProjectPamphletCreatorHeaderCellDelegate {
+  func projectPamphletCreatorHeaderCellDidTapViewProgress(
+    _: ProjectPamphletCreatorHeaderCell,
+    with project: Project
+  ) {
+    self.viewModel.inputs.tappedViewProgress(of: project)
   }
 }
 

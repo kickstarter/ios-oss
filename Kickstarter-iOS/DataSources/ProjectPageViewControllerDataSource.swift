@@ -106,7 +106,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       )
     case .risks:
       // Risks are mandatory for creators
-      guard let risks = project.extendedProjectProperties?.risks else { return }
+      let risks = project.extendedProjectProperties?.risks ?? ""
 
       self.set(
         values: [HeaderValue.risks.rawValue],
