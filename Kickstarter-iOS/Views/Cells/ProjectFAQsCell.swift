@@ -108,6 +108,10 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> \.separatorInset .~ .init(leftRight: Styles.projectPageLeftRightInset)
 
+    _ = self.contentView
+      |> \.layoutMargins .~
+      .init(topBottom: Styles.grid(2), leftRight: Styles.projectPageLeftRightInset)
+
     _ = self.answerLabel
       |> answerLabelStyle
 
@@ -244,7 +248,6 @@ private let questionStackViewStyle: StackViewStyle = { stackView in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ ProjectFAQsCellStyles.Layout.stackViewSpacing

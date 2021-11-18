@@ -25,19 +25,16 @@ public protocol ProjectNavigationSelectorViewModelInputs {
   /// Called when a button on the project navigation selector is tapped
   func buttonTapped(index: Int)
 
-  /// Called shortly after `viewDidLoad` on the `ProjectPageViewController`
-  func configureNavigationSelector()
+  /// Called with a `ExtendedProjectProperties` instance when `viewDidLoad` is called on the `ProjectPageViewController`
+  func configureNavigationSelector(with: ExtendedProjectProperties)
 }
 
 public protocol ProjectNavigationSelectorViewModelOutputs {
   /// Emits an `Int` of the index that the selectedButtonBottomBorder will animate to
   var animateButtonBottomBorderViewConstraints: Signal<Int, Never> { get }
 
-  /// Emits `Void` when called to configure the selectedButonBottomBorderView
-  var configureSelectedButtonBottomBorderView: Signal<Void, Never> { get }
-
-  /// Emits `[NavigationSection]` to set up the buttons in the UIStackView
-  var createButtons: Signal<[NavigationSection], Never> { get }
+  /// Emits `[NavigationSection]` when called to configure the selectedButonBottomBorderView
+  var configureNavigationSelectorUI: Signal<[NavigationSection], Never> { get }
 
   /// Emits `Int` of a button index being selected
   var notifyDelegateProjectNavigationSelectorDidSelect: Signal<Int, Never> { get }
@@ -56,9 +53,14 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
   public init() {
     self.animateButtonBottomBorderViewConstraints = self.buttonTappedProperty.signal
 
-    self.configureSelectedButtonBottomBorderView = self.configureNavigationSelectorProperty.signal
-
-    self.createButtons = self.configureNavigationSelectorProperty.signal.mapConst(NavigationSection.allCases)
+    self.configureNavigationSelectorUI = self.configureNavigationSelectorProperty.signal
+      .skipNil()
+      .map { projectProperties in
+        guard !projectProperties.environmentalCommitments.isEmpty else {
+          return [.overview, .campaign, .faq, .risks]
+        }
+        return NavigationSection.allCases
+      }
 
     // Called when a button is tapped or when the view is configured and we default to the first index
     let setFirstIndexOnConfigurationOrButtonTapped = Signal.merge(
@@ -76,14 +78,13 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     self.buttonTappedProperty.value = index
   }
 
-  fileprivate let configureNavigationSelectorProperty = MutableProperty(())
-  public func configureNavigationSelector() {
-    self.configureNavigationSelectorProperty.value = ()
+  fileprivate let configureNavigationSelectorProperty = MutableProperty<ExtendedProjectProperties?>(nil)
+  public func configureNavigationSelector(with projectProperties: ExtendedProjectProperties) {
+    self.configureNavigationSelectorProperty.value = projectProperties
   }
 
   public let animateButtonBottomBorderViewConstraints: Signal<Int, Never>
-  public let configureSelectedButtonBottomBorderView: Signal<Void, Never>
-  public let createButtons: Signal<[NavigationSection], Never>
+  public let configureNavigationSelectorUI: Signal<[NavigationSection], Never>
   public var notifyDelegateProjectNavigationSelectorDidSelect: Signal<Int, Never>
   public let updateNavigationSelectorUI: Signal<Int, Never>
 

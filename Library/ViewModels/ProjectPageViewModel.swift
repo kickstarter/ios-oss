@@ -68,8 +68,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
   var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
 
-  /// Emits Void to configure ProjectNavigationSelectorView
-  var configureProjectNavigationSelectorView: Signal<Void, Never> { get }
+  /// Emits `ExtendedProjectProperties` to configure ProjectNavigationSelectorView
+  var configureProjectNavigationSelectorView: Signal<ExtendedProjectProperties, Never> { get }
 
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
@@ -213,7 +213,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     )
     .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
-    self.configureProjectNavigationSelectorView = self.viewDidLoadProperty.signal
+    self.configureProjectNavigationSelectorView = project
+      .map(\.extendedProjectProperties)
+      .skipNil()
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -405,7 +407,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
-  public let configureProjectNavigationSelectorView: Signal<Void, Never>
+  public let configureProjectNavigationSelectorView: Signal<ExtendedProjectProperties, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public let goToDashboard: Signal<Param, Never>
@@ -436,8 +438,11 @@ private func fetchProjectFriends(projectOrParam: Either<Project, Param>)
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+  let configCurrency = AppEnvironment.current.launchedCountries.countries
+    .first(where: { $0.countryCode == AppEnvironment.current.countryCode })?.currencyCode
 
-  let projectAndBackingIdProducer = AppEnvironment.current.apiService.fetchProject(projectParam: param)
+  let projectAndBackingIdProducer = AppEnvironment.current.apiService
+    .fetchProject(projectParam: param, configCurrency: configCurrency)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   let projectAndBackingProducer = projectAndBackingIdProducer

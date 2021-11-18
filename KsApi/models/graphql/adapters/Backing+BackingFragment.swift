@@ -1,4 +1,4 @@
-import Foundation
+import Prelude
 import ReactiveSwift
 
 extension Backing {
@@ -56,7 +56,18 @@ private func backingStatus(from backingFragment: GraphAPI.BackingFragment) -> Ba
 }
 
 private func backingReward(from backingFragment: GraphAPI.BackingFragment) -> Reward? {
-  guard let reward = backingFragment.reward?.fragments.rewardFragment else { return .noReward }
+  guard let reward = backingFragment.reward?.fragments.rewardFragment else {
+    let projectMinimumPledgeAmount: Int = backingFragment.project?.fragments.projectFragment.minPledge ?? 1
+    let projectFXRate: Double = backingFragment.project?.fragments.projectFragment.fxRate ?? 1.0
+
+    let convertedMinimumAmount = projectFXRate * Double(projectMinimumPledgeAmount)
+
+    let emptyReward = Reward.noReward
+      |> Reward.lens.minimum .~ Double(projectMinimumPledgeAmount)
+      |> Reward.lens.convertedMinimum .~ convertedMinimumAmount
+
+    return emptyReward
+  }
 
   return Reward.reward(from: reward)
 }
