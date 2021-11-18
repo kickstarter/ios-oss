@@ -22,7 +22,7 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
   private let configureDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
-  private let configureDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
+  private let configureDataSourceProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewContext = TestObserver<PledgeCTAContainerViewContext, Never>()
@@ -32,16 +32,20 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let configureProjectNavigationSelectorView = TestObserver<ExtendedProjectProperties, Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
+  private let goToComments = TestObserver<Project, Never>()
+  private let goToDashboard = TestObserver<Param, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
+  private let goToUpdates = TestObserver<Project, Never>()
+  private let navigationBarIsHidden = TestObserver<Bool, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let presentMessageDialog = TestObserver<Project, Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
-  private let updateDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
-  private let updateFAQsInDataSourceProjectProperties = TestObserver<ExtendedProjectProperties, Never>()
+  private let updateDataSourceProject = TestObserver<Project, Never>()
+  private let updateFAQsInDataSourceProject = TestObserver<Project, Never>()
   private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
 
   internal override func setUp() {
@@ -52,7 +56,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.configureDataSource.map(first)
       .observe(self.configureDataSourceNavigationSection.observer)
     self.vm.outputs.configureDataSource.map(second)
-      .observe(self.configureDataSourceProjectProperties.observer)
+      .observe(self.configureDataSourceProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(first)
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
@@ -85,20 +89,24 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.configurePledgeCTAView.map(third).observe(self.configurePledgeCTAViewContext.observer)
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
+    self.vm.outputs.goToComments.observe(self.goToComments.observer)
+    self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
+    self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
+    self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
-    self.vm.outputs.updateDataSource.map(first)
+    self.vm.outputs.updateDataSource.map { $0.0 }
       .observe(self.updateDataSourceNavigationSection.observer)
-    self.vm.outputs.updateDataSource.map(second)
-      .observe(self.updateDataSourceProjectProperties.observer)
-    self.vm.outputs.updateFAQsInDataSource.map(first)
-      .observe(self.updateFAQsInDataSourceProjectProperties.observer)
-    self.vm.outputs.updateFAQsInDataSource.map(second)
+    self.vm.outputs.updateDataSource.map { $0.1 }
+      .observe(self.updateDataSourceProject.observer)
+    self.vm.outputs.updateFAQsInDataSource.map { $0.0 }
+      .observe(self.updateFAQsInDataSourceProject.observer)
+    self.vm.outputs.updateFAQsInDataSource.map { $0.2 }
       .observe(self.updateFAQsInDataSourceIsExpandedValues.observer)
   }
 
@@ -230,14 +238,14 @@ final class ProjectPageViewModelTests: TestCase {
     self.configureDataSourceNavigationSection.assertValues([.overview])
   }
 
-  func testConfigureProjectPageViewControllerDataSourceProjectProperties() {
+  func testConfigureProjectPageViewControllerDataSourceProject() {
     self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
-    self.configureDataSourceProjectProperties.assertDidNotEmitValue()
+    self.configureDataSourceProject.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.configureDataSourceProjectProperties.assertDidEmitValue()
+    self.configureDataSourceProject.assertDidEmitValue()
   }
 
   func testConfigureProjectNavigationSelectorView() {
@@ -627,6 +635,30 @@ final class ProjectPageViewModelTests: TestCase {
     XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
+  func testGoToComments() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToComments.assertDidNotEmitValue()
+
+    self.vm.inputs.tappedComments()
+
+    self.goToComments.assertValues([.template])
+  }
+
+  func testGoToDashboard() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToDashboard.assertDidNotEmitValue()
+
+    self.vm.inputs.tappedViewProgress(of: .template)
+
+    self.goToDashboard.assertValues([.id(Project.template.id)])
+  }
+
   func testGoToRewards() {
     withEnvironment(config: .template, mainBundle: self.releaseBundle) {
       let project = Project.template
@@ -710,6 +742,34 @@ final class ProjectPageViewModelTests: TestCase {
       self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
       self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
     }
+  }
+
+  func testGoToUpdates() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToUpdates.assertDidNotEmitValue()
+
+    self.vm.inputs.tappedUpdates()
+
+    self.goToUpdates.assertValues([.template])
+  }
+
+  func testNavigationBarIsHidden() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+
+    self.vm.inputs.viewWillAppear(animated: true)
+
+    self.navigationBarIsHidden.assertValues([false])
+
+    self.vm.inputs.hideNavigationBar()
+
+    self.navigationBarIsHidden.assertValues([false, true])
+
+    self.vm.inputs.viewWillAppear(animated: true)
+
+    self.navigationBarIsHidden.assertValues([false, true, false])
   }
 
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
@@ -1213,59 +1273,58 @@ final class ProjectPageViewModelTests: TestCase {
     self.updateDataSourceNavigationSection.assertValues([.environmentalCommitments])
   }
 
-  func testOutput_UpdateDataSourceProjectProperties() {
+  func testOutput_UpdateDataSourceProject() {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
     self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
-    self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+    self.updateDataSourceProject.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.updateDataSourceProjectProperties.assertDidNotEmitValue()
-
+    self.updateDataSourceProject.assertDidNotEmitValue()
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
     // The view model skips the first emission
-    self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+    self.updateDataSourceProject.assertDidNotEmitValue()
 
     self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-    self.updateDataSourceProjectProperties.assertDidEmitValue()
+    self.updateDataSourceProject.assertDidEmitValue()
   }
 
-  func testOutput_UpdateDataSourceProjectProperties_ReloadsAfterUserSessionStarted() {
+  func testOutput_UpdateDataSourceProject_ReloadsAfterUserSessionStarted() {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
-      self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+      self.updateDataSourceProject.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
 
-      self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+      self.updateDataSourceProject.assertDidNotEmitValue()
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
 
       // The view model skips the first emission
-      self.updateDataSourceProjectProperties.assertDidNotEmitValue()
+      self.updateDataSourceProject.assertDidNotEmitValue()
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: environmentalCommitmentsSection)
 
-      self.updateDataSourceProjectProperties.assertDidEmitValue()
+      self.updateDataSourceProject.assertDidEmitValue()
 
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()
 
-        self.updateDataSourceProjectProperties.assertDidEmitValue()
+        self.updateDataSourceProject.assertDidEmitValue()
       }
     }
   }
 
-  func testOutput_UpdateFAQsInDataSourceProjectProperties() {
+  func testOutput_UpdateFAQsInDataSourceProject() {
     let faqs = [
       ProjectFAQ(
         answer: "answer 1",
@@ -1304,15 +1363,15 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
 
-    self.updateFAQsInDataSourceProjectProperties.assertDidNotEmitValue()
+    self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.updateFAQsInDataSourceProjectProperties.assertDidNotEmitValue()
+    self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectFAQsRowAt(row: 1, values: [false, false, false, false])
 
-    self.updateFAQsInDataSourceProjectProperties.assertDidEmitValue()
+    self.updateFAQsInDataSourceProject.assertDidEmitValue()
   }
 
   func testOutput_UpdateFAQsInDataSourceIsExpandedValues() {

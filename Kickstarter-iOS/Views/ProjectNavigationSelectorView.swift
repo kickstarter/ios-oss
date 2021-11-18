@@ -8,9 +8,6 @@ private enum ProjectNavigationSelectorViewStyles {
     fileprivate static let bottomBorderViewHeight: CGFloat = 1.0
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
     fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
-    fileprivate static let shadowOffset: CGSize = CGSize(width: 0, height: 0.5)
-    fileprivate static let shadowOpacity: Float = 0.2
-    fileprivate static let shadowRadius: CGFloat = 1.0
   }
 }
 
@@ -261,10 +258,7 @@ final class ProjectNavigationSelectorView: UIView {
 private let bottomBorderViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_support_100
-    |> \.layer.shadowColor .~ UIColor.ksr_black.cgColor
-    |> \.layer.shadowOpacity .~ ProjectNavigationSelectorViewStyles.Layout.shadowOpacity
-    |> \.layer.shadowOffset .~ ProjectNavigationSelectorViewStyles.Layout.shadowOffset
-    |> \.layer.shadowRadius .~ ProjectNavigationSelectorViewStyles.Layout.shadowRadius
+    |> dropShadowStyle()
 }
 
 private let selectedButtonBorderViewStyle: ViewStyle = { view in
