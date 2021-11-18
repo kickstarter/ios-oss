@@ -31,7 +31,10 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
   ]
 
+  private let overviewCreatorHeaderSection = ProjectPageViewControllerDataSource.Section.overviewCreatorHeader
+    .rawValue
   private let overviewSection = ProjectPageViewControllerDataSource.Section.overview.rawValue
+  private let overviewSubpagesSection = ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue
   private let campaignSection = ProjectPageViewControllerDataSource.Section.campaign.rawValue
   private let faqsHeaderSection = ProjectPageViewControllerDataSource.Section.faqsHeader.rawValue
   private let faqsEmptySection = ProjectPageViewControllerDataSource.Section.faqsEmpty.rawValue
@@ -51,26 +54,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     .environmentalCommitmentsDisclaimer.rawValue
 
   func testLoadFAQs_LoggedIn() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: self.faqs,
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: self.faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .faq,
-        projectProperties: projectProperties,
+        project: project,
+        refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -116,26 +133,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   }
 
   func testLoadFAQs_LoggedOut() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: self.faqs,
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: self.faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: nil) {
       self.dataSource.load(
         navigationSection: .faq,
-        projectProperties: projectProperties,
+        project: project,
+        refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -171,25 +202,39 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   }
 
   func testLoadFAQs_EmptyState_LoggedIn() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .faq,
-        projectProperties: projectProperties
+        project: project,
+        refTag: nil
       )
-      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -235,25 +280,39 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   }
 
   func testLoadFAQs_EmptyState_LoggedOut() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: nil) {
       self.dataSource.load(
         navigationSection: .faq,
-        projectProperties: projectProperties
+        project: project,
+        refTag: nil
       )
-      XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -286,26 +345,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   }
 
   func testRisks() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      risks: "These are all the risks and challenges associated with this project. Lorem Ipsum",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "These are all the risks and challenges associated with this project. Lorem Ipsum",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .risks,
-        projectProperties: projectProperties,
+        project: project,
+        refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(11, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -369,26 +442,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   }
 
   func testLoadEnvironmentalCommitments() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: self.environmentalCommitments,
-      faqs: [],
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: self.environmentalCommitments,
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .environmentalCommitments,
-        projectProperties: projectProperties,
+        project: project,
+        refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(12, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(14, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -473,26 +560,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   }
 
   func testLoadEnvironmentalCommitments_EmptyState() {
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: [],
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
         navigationSection: .environmentalCommitments,
-        projectProperties: projectProperties,
+        project: project,
+        refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(12, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(14, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
 
       // overview
       XCTAssertEqual(
         0,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        0,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
       // campaign
@@ -572,22 +673,118 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  func testOverview() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .overview,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+      XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+
+      // overviewCreatorHeader
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
+      )
+
+      // overview
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
+      )
+
+      // overviewSubpages
+      XCTAssertEqual(
+        2,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectPamphletMainCell",
+        self.dataSource.reusableId(item: 0, section: self.overviewSection)
+      )
+      XCTAssertEqual(
+        "ProjectPamphletSubpageCell",
+        self.dataSource.reusableId(item: 0, section: self.overviewSubpagesSection)
+      )
+    }
+  }
+
   func testIsExpandedValuesForFAQsSection() {
     let isExpandedStates = [false, true, false, true]
-    let projectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [],
-      faqs: self.faqs,
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: self.faqs,
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
 
     self.dataSource.load(
       navigationSection: .faq,
-      projectProperties: projectProperties,
+      project: project,
+      refTag: nil,
       isExpandedStates: isExpandedStates
     )
 
     XCTAssertEqual(self.dataSource.isExpandedValuesForFAQsSection(), isExpandedStates)
+  }
+
+  func testIndexPathIsCommentsSubpage() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    self.dataSource.load(
+      navigationSection: .overview,
+      project: project,
+      refTag: nil
+    )
+
+    XCTAssertEqual(
+      self.dataSource
+        .indexPathIsCommentsSubpage(IndexPath(row: 0, section: self.overviewSubpagesSection)),
+      true
+    )
+  }
+
+  func testIndexPathIsUpdatesSubpage() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    self.dataSource.load(
+      navigationSection: .overview,
+      project: project,
+      refTag: nil
+    )
+
+    XCTAssertEqual(
+      self.dataSource
+        .indexPathIsUpdatesSubpage(IndexPath(row: 1, section: self.overviewSubpagesSection)),
+      true
+    )
   }
 }

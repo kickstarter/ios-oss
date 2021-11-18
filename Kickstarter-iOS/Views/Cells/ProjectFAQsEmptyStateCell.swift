@@ -30,9 +30,10 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.separatorInset .~ .init(leftRight: Styles.projectPageLeftRightInset)
 
     _ = self.contentView
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> \.layoutMargins .~ .init(all: Styles.projectPageLeftRightInset)
 
     // TODO: - Internationalize strings
     _ = self.titleTextLabel
