@@ -6,7 +6,10 @@ import XCTest
 final class Project_FetchProjectQueryDataTests: XCTestCase {
   /// `FetchProjectQueryBySlug` returns identical data.
   func testFetchProjectQueryData_Success() {
-    let producer = Project.projectProducer(from: FetchProjectQueryTemplate.valid.data)
+    let producer = Project.projectProducer(
+      from: FetchProjectQueryTemplate.valid.data,
+      configCurrency: Project.Country.de.currencyCode
+    )
 
     let projectProducer = producer
       .switchMap { projectPamphletData -> SignalProducer<Project, ErrorEnvelope> in
@@ -64,7 +67,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       "https://staging.kickstarter.com/projects/theaschneider/thequiet/posts"
     )
 
-    /// Project Statshttps://staging.kickstarter.com/projects/theaschneider/thequiet/posts
+    /// Project Stats
     XCTAssertEqual(project.stats.backersCount, 148)
     XCTAssertEqual(project.stats.currency, "EUR")
     XCTAssertEqual(project.stats.goal, 2_000)
@@ -116,7 +119,11 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.category.parentName, "Photography")
 
     /// Project Country
-    XCTAssertEqual(project.country, .de)
+    XCTAssertEqual(project.country.countryCode, "CA")
+    XCTAssertEqual(project.country.currencySymbol, "€")
+    XCTAssertEqual(project.country.maxPledge, 8_500)
+    XCTAssertEqual(project.country.minPledge, 1)
+    XCTAssertEqual(project.country.trailingCode, true)
 
     /// Project User
     XCTAssertEqual(

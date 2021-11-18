@@ -49,8 +49,8 @@ public enum FetchProjectQueryTemplate {
           "commentsCount":0,
           "country":{
              "__typename":"Country",
-             "code":"DE",
-             "name":"Germany"
+             "code":"CA",
+             "name":"Canada"
           },
           "creator":{
              "__typename":"User",
@@ -220,6 +220,7 @@ public enum FetchProjectQueryTemplate {
              "id":"TG9jYXRpb24tNjc2NzU2",
              "name":"München"
           },
+          "maxPledge": 8500,
           "minPledge": 1,
           "name":"The Quiet",
           "pid":904702116,
@@ -294,7 +295,7 @@ public enum FetchProjectQueryTemplate {
 
     var updatedCountryResultMap = countryResultMap
     var updatedCreatorResultMap = creatorResultMap
-    updatedCountryResultMap["code"] = KsApi.GraphAPI.CountryCode.de
+    updatedCountryResultMap["code"] = KsApi.GraphAPI.CountryCode.ca
     projectResultMap["country"] = updatedCountryResultMap
     projectResultMap["deadlineAt"] = "1628622000"
     projectResultMap["launchedAt"] = "1625118948"
