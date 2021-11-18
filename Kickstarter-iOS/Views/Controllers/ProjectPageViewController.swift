@@ -560,7 +560,6 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     goToCampaignForProjectWith data: ProjectPamphletMainCellData
   ) {
     let vc = ProjectDescriptionViewController.configuredWith(data: data)
-    self.navigationBarView.isHidden = true
     self.viewModel.inputs.hideNavigationBar()
     self.navigationController?.pushViewController(vc, animated: true)
   }
