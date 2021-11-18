@@ -239,8 +239,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.configureProjectNavigationSelectorView
       .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.projectNavigationSelectorView.configure()
+      .observeValues { [weak self] projectProperties in
+        self?.projectNavigationSelectorView.configure(with: projectProperties)
       }
 
     self.viewModel.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
