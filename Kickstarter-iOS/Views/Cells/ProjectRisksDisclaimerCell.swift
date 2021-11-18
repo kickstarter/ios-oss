@@ -62,7 +62,7 @@ final class ProjectRisksDisclaimerCell: UITableViewCell, ValueCell {
 
     _ = self.contentView
       |> \.layoutMargins .~
-      .init(topBottom: Styles.grid(2), leftRight: Styles.projectPageLeftRightInset)
+      .init(topBottom: Styles.projectPageTopBottomInset, leftRight: Styles.projectPageLeftRightInset)
 
     _ = self.descriptionLabel
       |> descriptionLabelStyle
