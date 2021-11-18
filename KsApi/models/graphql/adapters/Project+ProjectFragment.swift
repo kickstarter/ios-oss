@@ -12,7 +12,12 @@ extension Project {
     currentUserChosenCurrency: String?
   ) -> Project? {
     guard
-      let country = Country.country(from: projectFragment.country.fragments.countryFragment),
+      let country = Country.country(
+        from: projectFragment.country.fragments.countryFragment,
+        minPledge: projectFragment.minPledge,
+        maxPledge: projectFragment.maxPledge,
+        currency: projectFragment.currency
+      ),
       let categoryFragment = projectFragment.category?.fragments.categoryFragment,
       let category = Project.Category.category(from: categoryFragment),
       let dates = projectDates(from: projectFragment),
@@ -98,12 +103,6 @@ private func projectPersonalization(isStarred: Bool,
     isBacking: backing != nil,
     isStarred: isStarred
   )
-}
-
-private func projectRewards(from rewardFragments: [GraphAPI.RewardFragment]?) -> [Reward]? {
-  return rewardFragments?.compactMap { rewardFragment in
-    Reward.reward(from: rewardFragment)
-  }
 }
 
 /**
