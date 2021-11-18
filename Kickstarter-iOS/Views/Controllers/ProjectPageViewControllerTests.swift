@@ -87,7 +87,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_LiveProject_EmptyProjectProperties() {
+  func testLoggedIn_Backer_LiveProject_EmptyProjectProperties_RenderedEnvironmentalCommitments_Success() {
     let config = Config.template
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
@@ -329,7 +329,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedOut_NonBacker_LiveProject_EmptyProjectProperties() {
+  func testLoggedOut_NonBacker_LiveProject_EmptyProjectProperties_RenderedEnvironmentalCommitments_Success() {
     let config = Config.template
 
     let liveProject = self.project

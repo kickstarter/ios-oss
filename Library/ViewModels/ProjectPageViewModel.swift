@@ -213,10 +213,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     )
     .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
-    self.configureProjectNavigationSelectorView = self.viewDidLoadProperty.signal
-      .combineLatest(with: freshProjectAndRefTag)
-      .map(second)
-      .map(first)
+    self.configureProjectNavigationSelectorView = project
       .map(\.extendedProjectProperties)
       .skipNil()
 
