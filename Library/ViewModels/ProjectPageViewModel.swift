@@ -441,8 +441,11 @@ private func fetchProjectFriends(projectOrParam: Either<Project, Param>)
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+  let configCurrency = AppEnvironment.current.launchedCountries.countries
+    .first(where: { $0.countryCode == AppEnvironment.current.countryCode })?.currencyCode
 
-  let projectAndBackingIdProducer = AppEnvironment.current.apiService.fetchProject(projectParam: param)
+  let projectAndBackingIdProducer = AppEnvironment.current.apiService
+    .fetchProject(projectParam: param, configCurrency: configCurrency)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
   let projectAndBackingProducer = projectAndBackingIdProducer
