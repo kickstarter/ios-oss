@@ -60,8 +60,8 @@ final class ProjectNavigationSelectorView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  internal func configure() {
-    self.viewModel.inputs.configureNavigationSelector()
+  internal func configure(with projectProperties: ExtendedProjectProperties) {
+    self.viewModel.inputs.configureNavigationSelector(with: projectProperties)
   }
 
   // MARK: - Styles
@@ -96,16 +96,10 @@ final class ProjectNavigationSelectorView: UIView {
         self?.pinSelectedButtonBorderView(toIndex: index)
       }
 
-    self.viewModel.outputs.createButtons
+    self.viewModel.outputs.configureNavigationSelectorUI
       .observeForUI()
       .observeValues { [weak self] sections in
-        self?.createButtons(sections)
-      }
-
-    self.viewModel.outputs.configureSelectedButtonBottomBorderView
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.setupConstraintsForSelectedButtonBorderView()
+        self?.setupConstraintsForSelectedButtonBorderView(sections: sections)
       }
 
     self.viewModel.outputs.notifyDelegateProjectNavigationSelectorDidSelect
@@ -139,22 +133,6 @@ final class ProjectNavigationSelectorView: UIView {
       |> ksr_constrainViewToEdgesInParent()
   }
 
-  private func createButtons(_ navigationSections: [NavigationSection]) {
-    _ = self.buttonsStackView
-      |> UIStackView.lens.arrangedSubviews .~ navigationSections.enumerated().map { idx, section in
-        UIButton()
-          |> UIButton.lens.backgroundColor .~ .ksr_white
-          |> UIButton.lens.tag .~ idx
-          |> UIButton.lens.targets .~ [
-            (self, #selector(buttonTapped(_:)), .touchUpInside)
-          ]
-          |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString }
-          |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
-          |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
-          |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
-      }
-  }
-
   private func setupConstraints() {
     var horizontalConstraints: [NSLayoutConstraint] = []
 
@@ -183,7 +161,21 @@ final class ProjectNavigationSelectorView: UIView {
     ])
   }
 
-  private func setupConstraintsForSelectedButtonBorderView() {
+  private func setupConstraintsForSelectedButtonBorderView(sections: [NavigationSection]) {
+    _ = self.buttonsStackView
+      |> UIStackView.lens.arrangedSubviews .~ sections.enumerated().map { idx, section in
+        UIButton()
+          |> UIButton.lens.backgroundColor .~ .ksr_white
+          |> UIButton.lens.tag .~ idx
+          |> UIButton.lens.targets .~ [
+            (self, #selector(buttonTapped(_:)), .touchUpInside)
+          ]
+          |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString }
+          |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
+          |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
+          |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
+      }
+
     let firstButton = self.buttonsStackView.arrangedSubviews[0]
 
     let leadingConstraint = self.selectedButtonBorderView.leadingAnchor
@@ -226,19 +218,20 @@ final class ProjectNavigationSelectorView: UIView {
         self.selectedButtonBorderViewWidthConstraint?.constant = widthConstant
         self.scrollView.layoutIfNeeded()
 
-        // Moves the button to the approximate center of the scrollView if the device is not an iPad and in portrait orientation
+        // Moves the button to the approximate center of the scrollView if the device is not an iPad, not in portrait orientation or fits within the bounds of the screens width
         let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad
         let isPortrait = UIDevice.current.orientation == .portrait
+        let isButtonStackViewScrollable = self.buttonsStackView.frame.width > self.scrollView.frame.width
 
-        if isPortrait, isNotIpad {
+        if isPortrait, isNotIpad, isButtonStackViewScrollable {
           switch NavigationSection(rawValue: index) {
           case .campaign:
             self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
           case .overview:
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
           case .environmentalCommitments:
-            self.scrollView.contentOffset = CGPoint(x: button.frame.minX / 2, y: 0)
-          case .faq:
+            self.scrollView.contentOffset = CGPoint(x: button.frame.midX / 2, y: 0)
+          case .faq, .risks:
             self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
           default:
             break

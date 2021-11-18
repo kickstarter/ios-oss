@@ -53,8 +53,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
   var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
 
-  /// Emits Void to configure ProjectNavigationSelectorView
-  var configureProjectNavigationSelectorView: Signal<Void, Never> { get }
+  /// Emits `ExtendedProjectProperties` to configure ProjectNavigationSelectorView
+  var configureProjectNavigationSelectorView: Signal<ExtendedProjectProperties, Never> { get }
 
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
@@ -185,6 +185,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
     self.configureProjectNavigationSelectorView = self.viewDidLoadProperty.signal
+      .combineLatest(with: freshProjectAndRefTag)
+      .map(second)
+      .map(first)
+      .map(\.extendedProjectProperties)
+      .skipNil()
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -331,7 +336,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureDataSource: Signal<(NavigationSection, ExtendedProjectProperties), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
-  public let configureProjectNavigationSelectorView: Signal<Void, Never>
+  public let configureProjectNavigationSelectorView: Signal<ExtendedProjectProperties, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>

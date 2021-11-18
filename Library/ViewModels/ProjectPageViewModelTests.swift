@@ -30,7 +30,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
-  private let configureProjectNavigationSelectorView = TestObserver<Void, Never>()
+  private let configureProjectNavigationSelectorView = TestObserver<ExtendedProjectProperties, Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
@@ -241,13 +241,38 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testConfigureProjectNavigationSelectorView() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+    let projectPamphletData = Project
+      .ProjectPamphletData(project: self.projectWithEmptyProperties, backingId: nil)
 
-    self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([.template])
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
 
-    self.vm.inputs.viewDidLoad()
+      self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
-    self.configureProjectNavigationSelectorView.assertDidEmitValue()
+      self.vm.inputs.viewDidLoad()
+
+      self.configureProjectNavigationSelectorView.assertDidEmitValue()
+    }
+  }
+
+  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil() {
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(apiService: MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([.template])
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+
+      self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
+    }
   }
 
   func testConfiguredProject_WithFriendsNoBacking_Succcessfully() {
