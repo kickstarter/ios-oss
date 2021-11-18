@@ -45,6 +45,7 @@ fragment ProjectFragment on Project {
   location {
     ...LocationFragment
   }
+  maxPledge
   minPledge
   name
   pid
