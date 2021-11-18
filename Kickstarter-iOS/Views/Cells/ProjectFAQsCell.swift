@@ -6,6 +6,8 @@ import UIKit
 public enum ProjectFAQsCellStyles {
   public enum Layout {
     public static let chevronImageViewWidth: CGFloat = Styles.grid(5)
+    public static let cornerRadius: CGFloat = Styles.grid(1)
+    public static let stackViewSpacing: CGFloat = Styles.grid(2)
   }
 }
 
@@ -104,6 +106,7 @@ final class ProjectFAQsCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.separatorInset .~ .init(leftRight: Styles.projectPageLeftRightInset)
 
     _ = self.answerLabel
       |> answerLabelStyle
@@ -196,7 +199,7 @@ private let answerStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .vertical
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ ProjectFAQsCellStyles.Layout.stackViewSpacing
 }
 
 private let chevronDownImageViewStyle: ImageViewStyle = { imageView in
@@ -204,7 +207,7 @@ private let chevronDownImageViewStyle: ImageViewStyle = { imageView in
     |> \.backgroundColor .~ .ksr_support_100
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_chevron_down")
-    |> \.layer.cornerRadius .~ Styles.grid(1)
+    |> \.layer.cornerRadius .~ ProjectFAQsCellStyles.Layout.cornerRadius
 }
 
 private let chevronUpImageViewStyle: ImageViewStyle = { imageView in
@@ -212,7 +215,7 @@ private let chevronUpImageViewStyle: ImageViewStyle = { imageView in
     |> \.backgroundColor .~ .ksr_support_100
     |> \.contentMode .~ .scaleAspectFit
     |> \.image .~ image(named: "icon_chevron_up")
-    |> \.layer.cornerRadius .~ Styles.grid(1)
+    |> \.layer.cornerRadius .~ ProjectFAQsCellStyles.Layout.cornerRadius
 }
 
 private let imageViewStackViewStyle: StackViewStyle = { stackView in
@@ -235,7 +238,7 @@ private let questionStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .horizontal
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ ProjectFAQsCellStyles.Layout.stackViewSpacing
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
@@ -244,7 +247,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ ProjectFAQsCellStyles.Layout.stackViewSpacing
 }
 
 private let updatedLabelStyle: LabelStyle = { label in
@@ -257,7 +260,7 @@ private let updatedLabelStyle: LabelStyle = { label in
 private let updatedLabelContainerViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_support_100
-    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> roundedStyle(cornerRadius: ProjectFAQsCellStyles.Layout.cornerRadius)
 }
 
 private let updatedLabelStackViewStyle: StackViewStyle = { stackView in
@@ -265,5 +268,5 @@ private let updatedLabelStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .horizontal
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ ProjectFAQsCellStyles.Layout.stackViewSpacing
 }

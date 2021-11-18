@@ -10,6 +10,8 @@ public enum Nib: String {
   case LoadingBarButtonItemView
   case MessageBannerViewController
   case PaymentMethodsFooterView
+  case ProjectPamphletMainCell
+  case ProjectPamphletSubpageCell
   case SettingsAccountWarningCell
   case SettingsFormFieldView
   case SettingsFooterView

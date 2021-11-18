@@ -15,6 +15,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
   func didSelectFAQsRowAt(row: Int, values: [Bool])
 
+  /// Call when the navigation bar should be hidden.
+  func hideNavigationBar()
+
   /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
   func managePledgeViewControllerFinished(with message: String?)
 
@@ -33,19 +36,31 @@ public protocol ProjectPageViewModelInputs {
   /// Call when the delegate method for the `ProjectRisksDisclaimerCellDelegate` is called.
   func projectRisksDisclaimerCellDidTapURL(_ url: URL)
 
+  /// Call when didSelectRow is called on the comments cell.
+  func tappedComments()
+
+  /// Call when didSelectRow is called on the updates cell.
+  func tappedUpdates()
+
+  /// Call when the creator header cell progress view is tapped.
+  func tappedViewProgress(of project: Project)
+
   /// Call when the user session starts and we want to reload the data source.
   func userSessionStarted()
 
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
 
+  /// Call when the view will appear, and pass the animated parameter.
+  func viewWillAppear(animated: Bool)
+
   /// Call when the view loads.
   func viewDidLoad()
 }
 
 public protocol ProjectPageViewModelOutputs {
-  /// Emits a tuple of a `NavigationSection` and `ExtendedProjectProperties` to configure the data source
-  var configureDataSource: Signal<(NavigationSection, ExtendedProjectProperties), Never> { get }
+  /// Emits a tuple of a `NavigationSection`, `Project` and `RefTag?` to configure the data source
+  var configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never> { get }
 
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
@@ -59,11 +74,23 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
+  /// Emits a `Project` when the comments are to be rendered.
+  var goToComments: Signal<Project, Never> { get }
+
+  /// Emits a `Param` when the creator header cell progress view is tapped.
+  var goToDashboard: Signal<Param, Never> { get }
+
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
+  /// Emits a `Project` when the updates are to be rendered.
+  var goToUpdates: Signal<Project, Never> { get }
+
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Emits a `Bool` to hide the navigation bar.
+  var navigationBarIsHidden: Signal<Bool, Never> { get }
 
   /// Emits when the navigation stack should be popped to the root view controller.
   var popToRootViewController: Signal<(), Never> { get }
@@ -74,11 +101,11 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
 
-  /// Emits a tuple of a `NavigationSection`, `ExtendedProjectProperties` and `[Bool]` (isExpanded values) to instruct the data source which section it is loading.
-  var updateDataSource: Signal<(NavigationSection, ExtendedProjectProperties, [Bool]), Never> { get }
+  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?` and `[Bool]` (isExpanded values) to instruct the data source which section it is loading.
+  var updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never> { get }
 
-  /// Emits a tuple of `ExtendedProjectProperties` and `[Bool]` (isExpanded values) for the FAQs.
-  var updateFAQsInDataSource: Signal<(ExtendedProjectProperties, [Bool]), Never> { get }
+  /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
+  var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -135,10 +162,12 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map(first)
 
     // The first tab we render by default is overview
-    self.configureDataSource = project.map(\.extendedProjectProperties)
-      .skipNil()
+    self.configureDataSource = freshProjectAndRefTag
       .combineLatest(with: self.viewDidLoadProperty.signal)
-      .map { projectProperties, _ in (.overview, projectProperties) }
+      .map { projectAndRefTag, _ in
+        let (project, refTag) = projectAndRefTag
+        return (.overview, project, refTag)
+      }
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -200,6 +229,23 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
       .take(first: 1)
 
+    self.goToComments = project
+      .takeWhen(self.tappedCommentsProperty.signal)
+
+    self.goToDashboard = self.tappedViewProgressProperty.signal
+      .skipNil()
+      .map { .id($0.id) }
+
+    self.goToUpdates = project
+      .takeWhen(self.tappedUpdatesProperty.signal)
+
+    // Hide the custom navigation bar when pushing a new view controller
+    // Unhide the custom navigation bar when viewWillAppear is called
+    self.navigationBarIsHidden = Signal.merge(
+      self.viewWillAppearAnimatedProperty.signal.skipNil().negate(),
+      self.hideNavigationBarProperty.signal.mapConst(true)
+    )
+
     let freshProjectRefTag: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
@@ -243,23 +289,26 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
       .map { index in NavigationSection(rawValue: index) }
       .skipNil()
-      .combineLatest(with: project.map(\.extendedProjectProperties).skipNil())
-      .map { navSection, projectProperties in
-        let initialIsExpandedArray = Array(repeating: false, count: projectProperties.faqs.count)
-        return (navSection, projectProperties, initialIsExpandedArray)
+      .combineLatest(with: freshProjectAndRefTag)
+      .map { navSection, projectAndRefTag in
+        let (project, refTag) = projectAndRefTag
+        let initialIsExpandedArray = Array(
+          repeating: false,
+          count: project.extendedProjectProperties?.faqs.count ?? 0
+        )
+        return (navSection, project, refTag, initialIsExpandedArray)
       }
       .skip(first: 1)
 
-    self.updateFAQsInDataSource = project
-      .map(\.extendedProjectProperties)
-      .skipNil()
+    self.updateFAQsInDataSource = freshProjectAndRefTag
       .combineLatest(with: self.didSelectFAQsRowAtProperty.signal.skipNil())
-      .map { projectProperties, indexAndDataSourceValues in
+      .map { projectAndRefTag, indexAndDataSourceValues in
+        let (project, refTag) = projectAndRefTag
         let (index, isExpandedValues) = indexAndDataSourceValues
         var updatedValues = isExpandedValues
         updatedValues[index] = !updatedValues[index]
 
-        return (projectProperties, updatedValues)
+        return (project, refTag, updatedValues)
       }
   }
 
@@ -281,6 +330,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let didSelectFAQsRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
   public func didSelectFAQsRowAt(row: Int, values: [Bool]) {
     self.didSelectFAQsRowAtProperty.value = (row, values)
+  }
+
+  fileprivate let hideNavigationBarProperty = MutableProperty(())
+  public func hideNavigationBar() {
+    self.hideNavigationBarProperty.value = ()
   }
 
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
@@ -313,6 +367,21 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.projectRisksDisclaimerCellDidTapURLProperty.value = url
   }
 
+  fileprivate let tappedCommentsProperty = MutableProperty(())
+  public func tappedComments() {
+    self.tappedCommentsProperty.value = ()
+  }
+
+  fileprivate let tappedUpdatesProperty = MutableProperty(())
+  public func tappedUpdates() {
+    self.tappedUpdatesProperty.value = ()
+  }
+
+  fileprivate let tappedViewProgressProperty = MutableProperty<Project?>(nil)
+  public func tappedViewProgress(of project: Project) {
+    self.tappedViewProgressProperty.value = project
+  }
+
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
@@ -328,18 +397,27 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewDidAppearAnimated.value = animated
   }
 
-  public let configureDataSource: Signal<(NavigationSection, ExtendedProjectProperties), Never>
+  fileprivate let viewWillAppearAnimatedProperty = MutableProperty<Bool?>(nil)
+  public func viewWillAppear(animated: Bool) {
+    self.viewWillAppearAnimatedProperty.value = animated
+  }
+
+  public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<Void, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
+  public let goToComments: Signal<Project, Never>
+  public let goToDashboard: Signal<Param, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let goToUpdates: Signal<Project, Never>
+  public let navigationBarIsHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
-  public let updateDataSource: Signal<(NavigationSection, ExtendedProjectProperties, [Bool]), Never>
-  public let updateFAQsInDataSource: Signal<(ExtendedProjectProperties, [Bool]), Never>
+  public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never>
+  public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }
