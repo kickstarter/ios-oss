@@ -45,6 +45,7 @@
 "As_of_pledge_date" = "As of %{pledge_date}";
 "Ask_a_question" = "Ask a question";
 "Ask_me_anything" = "Ask me anything";
+"Ask_the_project_creator_directly" = "Ask the project creator directly.";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
 "Back" = "Back";
 "Back_it_because_you_believe_in_it" = "Back it because you believe in it.";

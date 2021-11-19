@@ -45,6 +45,7 @@
 "As_of_pledge_date" = "A partir del %{pledge_date}";
 "Ask_a_question" = "Haz una pregunta";
 "Ask_me_anything" = "¡Pregúntame!";
+"Ask_the_project_creator_directly" = "Pregúntale al creador del proyecto directamente.";
 "Available_to_watch_for_time_more_units" = "Disponible para reproducción %{time} %{units} más";
 "Back" = "Atrás";
 "Back_it_because_you_believe_in_it" = "Apóyalo porque crees en él.";

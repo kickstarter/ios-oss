@@ -45,6 +45,7 @@
 "As_of_pledge_date" = "%{pledge_date} 日現在";
 "Ask_a_question" = "質問する";
 "Ask_me_anything" = "お問い合わせ";
+"Ask_the_project_creator_directly" = "プロジェクトのクリエイターに直接お問い合わせください。";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
 "Back_it_because_you_believe_in_it" = "このプロジェクトの可能性を信じてバックしよう。";

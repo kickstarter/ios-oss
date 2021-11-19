@@ -807,6 +807,23 @@ public enum Strings {
     )
   }
   /**
+   "Ask the project creator directly."
+
+   - **en**: "Ask the project creator directly."
+   - **de**: "Wende dich bitte direkt an den Projektgründer."
+   - **es**: "Pregúntale al creador del proyecto directamente."
+   - **fr**: "Veuillez adresser votre question au créateur."
+   - **ja**: "プロジェクトのクリエイターに直接お問い合わせください。"
+  */
+  public static func Ask_the_project_creator_directly() -> String {
+    return localizedString(
+      key: "Ask_the_project_creator_directly",
+      defaultValue: "Ask the project creator directly.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Available to watch for %{time} more %{units}"
 
    - **en**: "Available to watch for %{time} more %{units}"

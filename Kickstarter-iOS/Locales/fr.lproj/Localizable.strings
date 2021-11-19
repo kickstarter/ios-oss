@@ -45,6 +45,7 @@
 "As_of_pledge_date" = "Depuis le %{pledge_date}";
 "Ask_a_question" = "Poser une question";
 "Ask_me_anything" = "Posez-moi une question !";
+"Ask_the_project_creator_directly" = "Veuillez adresser votre question au créateur.";
 "Available_to_watch_for_time_more_units" = "Plus que %{time}%{units} pour regarder cette diffusion";
 "Back" = "Retour";
 "Back_it_because_you_believe_in_it" = "Ce projet ne décollera pas sans vous.";
