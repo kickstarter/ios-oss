@@ -9,14 +9,13 @@ public enum NavigationSection: Int, CaseIterable {
   case risks
   case environmentalCommitments
 
-  // TODO: Internationalize strings
   public var displayString: String {
     switch self {
-    case .campaign: return "CAMPAIGN"
-    case .environmentalCommitments: return "ENVIRONMENTAL COMMITMENTS"
-    case .faq: return Strings.profile_settings_about_faq_short()
-    case .overview: return "OVERVIEW"
-    case .risks: return "RISKS"
+    case .campaign: return Strings.Campaign()
+    case .environmentalCommitments: return Strings.Environmental_Commitments()
+    case .faq: return Strings.Faq()
+    case .overview: return Strings.Overview()
+    case .risks: return Strings.Risks()
     }
   }
 }

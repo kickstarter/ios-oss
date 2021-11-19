@@ -35,11 +35,11 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   }
 
   func testDisplayStrings() {
-    XCTAssertEqual(NavigationSection.overview.displayString, "OVERVIEW")
-    XCTAssertEqual(NavigationSection.campaign.displayString, "CAMPAIGN")
+    XCTAssertEqual(NavigationSection.overview.displayString, "Overview")
+    XCTAssertEqual(NavigationSection.campaign.displayString, "Campaign")
     XCTAssertEqual(NavigationSection.faq.displayString, "FAQ")
-    XCTAssertEqual(NavigationSection.risks.displayString, "RISKS")
-    XCTAssertEqual(NavigationSection.environmentalCommitments.displayString, "ENVIRONMENTAL COMMITMENTS")
+    XCTAssertEqual(NavigationSection.risks.displayString, "Risks")
+    XCTAssertEqual(NavigationSection.environmentalCommitments.displayString, "Environmental Commitments")
   }
 
   func testOutput_animateButtonBottomBorderViewConstraints() {

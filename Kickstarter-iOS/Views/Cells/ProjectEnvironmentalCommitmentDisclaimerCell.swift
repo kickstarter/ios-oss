@@ -89,7 +89,7 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // TODO: Internationalize strings and clean up method when translations are applied
+  // TODO: Submit a new string with the html wrapped in and replace this implementation
   private func attributedTextEnvironmentalResources() -> NSAttributedString {
     let regularFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
@@ -102,7 +102,7 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
     ]
 
     let learnMoreString = NSMutableAttributedString(
-      string: "to learn how Kickstarter encourages sustainable practices.",
+      string: Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(),
       attributes: regularFontAttribute
     )
 
@@ -111,7 +111,8 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       return learnMoreString
     }
 
-    let environmentString = "<a href=\(environmentLink)>Visit our Environmental Resources Center</a>"
+    let environmentString =
+      "<a href=\(environmentLink)>\(Strings.Visit_our_Environmental_Resources_Center())</a>"
 
     guard let environmentAttributedString = try? NSMutableAttributedString(
       data: Data(environmentString.utf8),

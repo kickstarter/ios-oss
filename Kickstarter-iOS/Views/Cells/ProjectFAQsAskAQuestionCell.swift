@@ -90,11 +90,10 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(1)
 }
 
-// TODO: - Internationalize strings
 private let titleTextLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_callout().bolded
     |> \.numberOfLines .~ 1
     |> \.textColor .~ .ksr_create_700
-    |> \.text .~ "Ask a question"
+    |> \.text .~ Strings.Ask_a_question()
 }

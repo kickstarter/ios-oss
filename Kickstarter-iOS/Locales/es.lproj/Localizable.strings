@@ -43,6 +43,7 @@
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "¿Estás seguro de que quieres cancelar tu %{amount} contribución para %{project_name}?";
 "Are_you_sure_you_wish_to_remove_this_card" = "¿Estás seguro de que deseas eliminar esta tarjeta de tus opciones de métodos de pago?";
 "As_of_pledge_date" = "A partir del %{pledge_date}";
+"Ask_a_question" = "Haz una pregunta";
 "Ask_me_anything" = "¡Pregúntame!";
 "Available_to_watch_for_time_more_units" = "Disponible para reproducción %{time} %{units} más";
 "Back" = "Atrás";
@@ -76,6 +77,7 @@
 "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "Si te registras, deberás iniciar sesión en Kickstarter con tu cuenta de Facebook. Si prefieres no usar Facebook, vuelve a abrir la aplicación y elige otra opción.";
 "By_submitting_your_pledge_you_agree_that_Stripe_may_charge_your_payment_method" = "Si envías tu contribución, aceptas que Stripe, nuestro proveedor de procesamiento de pagos, te cobre a tu método de pago.";
 "CVC" = "CVC";
+"Campaign" = "Campaña";
 "Cancel" = "Cancelar";
 "Cancel_pledge" = "Cancelar contribución";
 "Cancel_your_pledge" = "Cancela tu contribución";
@@ -190,6 +192,8 @@
 "Ending_in_last_four" = "Número que termina en %{last_four}";
 "Ending_soon" = "Finaliza pronto";
 "Enter_an_amount_less_than_max_pledge" = "Ingresa una cantidad inferior a %{max_pledge}.";
+"Environmental_Commitments" = "Compromisos medioambientales";
+"Environmentally_friendly_factories" = "Fábricas ecológicas";
 "Estimated_delivery" = "Entrega estimada:";
 "Estimated_delivery_colon" = "Entrega estimada:";
 "Estimated_delivery_of" = "Entrega estimada de";
@@ -208,6 +212,7 @@
 "Facebook_reconnect_description" = "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos.";
 "Failed_to_retrieve_live_stream_event_details" = "No se pudo cargar la información acerca del evento en vivo";
 "Failed_to_update_subscription" = "No se pudo actualizar la suscripción";
+"Faq" = "Preguntas frecuentes";
 "Filter_by_all_projects" = "Filtro: Todos los proyectos";
 "Filter_by_category_name" = "Filtro: %{category_name}";
 "Filter_by_projects_backed_by_friends" = "Filtro: Proyectos patrocinados por amigos";
@@ -242,6 +247,7 @@
 "Following_Disabled_Info" = "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad.";
 "Following_More_Info" = "Más información sobre el seguimiento";
 "Follows_friend_name" = "Sigue a %{friend_name}.";
+"Frequently_asked_questions" = "Preguntas frecuentes";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Arte</i>.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Comics</i>.";
 "Friend_backed_crafts_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Artesanías</i>.";
@@ -317,6 +323,7 @@
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Kickstarter no es una tienda. Es una forma de dar vida a proyectos creativos.<br/><a href=\"%{trust_link}\">Más información sobre las responsabilidades</a>";
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones.";
+"Learn_about_accountability_on_Kickstarter" = "Más información sobre el concepto de responsabilidad en Kickstarter";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Más información sobre las reglas de los comentarios</a>";
 "Left_count_left.few" = "%{left_count} restantes";
@@ -340,6 +347,8 @@
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
 "Log_out" = "Cerrar sesión";
+"Long_lasting_design" = "Diseño de larga duración";
+"Looks_like_there_arent_any_frequently_asked_questions" = "Parece que todavía no hay preguntas frecuentes.";
 "Love_film_We_do_too" = "¿Te encanta el cine? A nosotros también.";
 "MMYY" = "MM/AA";
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
@@ -405,6 +414,7 @@
 "Or_select_a_different_reward_below_colon" = "También puedes seleccionar una de las siguientes recompensas:";
 "Other_payment_methods" = "Otros métodos de pago";
 "Other_projects_you_might_like" = "Otros proyectos que te pueden gustar.";
+"Overview" = "Descripción general";
 "Password_min_length_message" = "Tu contraseña debe tener al menos 6 caracteres.";
 "Password_visibility" = "Visibilidad de la contraseña";
 "Passwords_matching_message" = "Las nuevas contraseñas deben coincidir.";
@@ -488,6 +498,7 @@
 "Resend_verification_email" = "Volver a enviar correo electrónico de verificación";
 "Retry" = "Volver a intentar";
 "Retry_or_select_another_method" = "Vuelve a intentarlo o selecciona otro método.";
+"Reusability_and_recyclability" = "Reutilización y reciclabilidad";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";
@@ -512,6 +523,8 @@
 "Rewards_count_rewards_colon.other" = "%{rewards_count} recompensas:";
 "Rewards_count_rewards_colon.two" = "%{rewards_count} recompensas:";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} recompensas:";
+"Risks" = "Riesgos";
+"Risks_and_challenges" = "Riesgos y desafíos";
 "Save" = "Guardar";
 "Save_projects" = "Guardar proyectos";
 "Save_this_project" = "Guardar este proyecto";
@@ -586,6 +599,8 @@
 "Support_creative_independence" = "Apoya la independencia creativa";
 "Support_creative_spaces_and_businesses_affected_by" = "Apoya espacios creativos y negocios afectados por el COVID-19.";
 "Survey" = "Cuestionario";
+"Sustainable_distribution" = "Distribución sustentable";
+"Sustainable_materials" = "Materiales sustentables";
 "Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
 "Tap_the_star_on_a_project_to_get_notified" = "Toca el icono de estrella de un proyecto para recibir una notificación 48 horas antes de que finalice.";
@@ -621,6 +636,7 @@
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}.";
 "Time_left_left" = "%{time_left} restantes";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
+"To_learn_how_Kickstarter_encourages_sustainable_practices" = "para conocer cómo Kickstarter incentiva las prácticas sustentables.";
 "To_read_this_project_update_you_must_be_a_backer" = "Sólo los patrocinadores pueden leer esta actualización, por favor inicia sesión o regístrate para continuar.";
 "To_see_all_rewards_view_your_project" = "Para ver todas las recompensas, revisa tu proyecto.";
 "Toggle_saving_this_project" = "Guardar/No guardar este proyecto";
@@ -664,6 +680,7 @@
 "View_your_pledge" = "Revisa tu contribución";
 "View_your_reward" = "Mostrar recompensa";
 "View_your_rewards" = "Ver tus recompensas";
+"Visit_our_Environmental_Resources_Center" = "Visita nuestro Centro de recursos medioambientales";
 "Watch_live" = "Ver en vivo";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "No podemos procesar esta contribución por un problema con el método de pago del patrocinador.";
 "We_cant_process_your_pledge" = "No podemos procesar tu contribución.";

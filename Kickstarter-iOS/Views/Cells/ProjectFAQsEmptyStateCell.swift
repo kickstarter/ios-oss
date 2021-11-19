@@ -35,13 +35,14 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
     _ = self.contentView
       |> \.layoutMargins .~ .init(all: Styles.projectPageLeftRightInset)
 
-    // TODO: - Internationalize strings
+    let titleTextLabelText = Strings.Looks_like_there_arent_any_frequently_asked_questions() + " " + Strings
+      .Ask_the_project_creator_directly()
+
     _ = self.titleTextLabel
       |> \.font .~ UIFont.ksr_body()
       |> \.numberOfLines .~ 0
       |> \.textColor .~ .ksr_support_700
-      |> \.text .~
-      "Looks like there aren't any frequently asked questions yet. Ask the project creator directly."
+      |> \.text .~ titleTextLabelText
   }
 
   // MARK: - Configuration
