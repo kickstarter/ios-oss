@@ -46,6 +46,7 @@ public final class ProjectEnvironmentalCommitmentCellViewModel:
   public var outputs: ProjectEnvironmentalCommitmentCellViewModelOutputs { self }
 }
 
+//TODO: Apply translation for `somethingElse` when available
 private func internationalizedString(for category: ProjectCommitmentCategory) -> String {
   switch category {
   case .longLastingDesign:
