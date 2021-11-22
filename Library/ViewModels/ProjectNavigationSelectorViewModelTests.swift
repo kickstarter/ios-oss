@@ -29,6 +29,31 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     return (projectWithEmptyExtendedProperties, nil)
   }
 
+  fileprivate let projectPropertiesWithEnvironmentalCommitments: ExtendedProjectProperties =
+    ExtendedProjectProperties(
+      environmentalCommitments: [
+        ProjectEnvironmentalCommitment(
+          description: "Environment Commitment 0",
+          category: .environmentallyFriendlyFactories,
+          id: 0
+        ),
+        ProjectEnvironmentalCommitment(
+          description: "Environment Commitment 1",
+          category: .longLastingDesign,
+          id: 1
+        ),
+        ProjectEnvironmentalCommitment(
+          description: "Environment Commitment 2",
+          category: .reusabilityAndRecyclability,
+          id: 2
+        )
+      ],
+      faqs: [],
+      risks: "",
+      story: "",
+      minimumPledgeAmount: 1
+    )
+
   override func setUp() {
     super.setUp()
 
@@ -74,32 +99,8 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   }
 
   func testOutput_ConfigureNavigationSelectorUI() {
-    let projectProperties: ExtendedProjectProperties = ExtendedProjectProperties(
-      environmentalCommitments: [
-        ProjectEnvironmentalCommitment(
-          description: "Environment Commitment 0",
-          category: .environmentallyFriendlyFactories,
-          id: 0
-        ),
-        ProjectEnvironmentalCommitment(
-          description: "Environment Commitment 1",
-          category: .longLastingDesign,
-          id: 1
-        ),
-        ProjectEnvironmentalCommitment(
-          description: "Environment Commitment 2",
-          category: .reusabilityAndRecyclability,
-          id: 2
-        )
-      ],
-      faqs: [],
-      risks: "",
-      story: "",
-      minimumPledgeAmount: 1
-    )
-
     var project = Project.template
-    project.extendedProjectProperties = projectProperties
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
 
     self.vm.inputs.buttonTapped(index: 0)
 
@@ -146,5 +147,153 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     self.vm.inputs.buttonTapped(index: 3)
 
     self.updateNavigationSelectorUI.assertValues([0, 0, 3])
+  }
+
+  func testOutput_TestSegmentTracking() {
+    var project = Project.template
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+    self.vm.inputs.buttonTapped(index: 0)
+
+    self.scheduler.advance()
+
+    XCTAssertTrue(self.segmentTrackingClient.events.isEmpty, "no tracking event")
+    XCTAssertTrue(
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String }
+        .isEmpty,
+      "no tracking data"
+    )
+
+    self.vm.inputs.buttonTapped(index: 1)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+
+    self.vm.inputs.buttonTapped(index: 2)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed", "Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story", "faq"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+
+    self.vm.inputs.buttonTapped(index: 3)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed", "Page Viewed", "Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story", "faq", "risks"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+
+    self.vm.inputs.buttonTapped(index: 4)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story", "faq", "risks", "environment"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+
+    self.vm.inputs.buttonTapped(index: 0)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story", "faq", "risks", "environment", "overview"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+  }
+
+  func testOutput_TestSegmentTracking_DuplicateSameTabTapsNotTracked() {
+    var project = Project.template
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+    self.vm.inputs.buttonTapped(index: 0)
+    self.vm.inputs.buttonTapped(index: 0)
+    self.vm.inputs.buttonTapped(index: 0)
+    self.vm.inputs.buttonTapped(index: 0)
+
+    self.scheduler.advance()
+
+    XCTAssertTrue(self.segmentTrackingClient.events.isEmpty, "no tracking event")
+    XCTAssertTrue(
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String }
+        .isEmpty,
+      "no tracking data"
+    )
+
+    self.vm.inputs.buttonTapped(index: 1)
+    self.vm.inputs.buttonTapped(index: 1)
+    self.vm.inputs.buttonTapped(index: 1)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+
+    self.vm.inputs.buttonTapped(index: 0)
+    self.vm.inputs.buttonTapped(index: 0)
+    self.vm.inputs.buttonTapped(index: 0)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed", "Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["story", "overview"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
   }
 }

@@ -77,7 +77,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     self.updateNavigationSelectorUI = setFirstIndexOnConfigurationOrButtonTapped
 
     let projectTabSelectedAfterFirstLoad = configureNavigationSelector
-      .takePairWhen(self.buttonTappedProperty.signal.skipRepeats())
+      .takePairWhen(self.buttonTappedProperty.signal.skip(while: { $0 == 0 }).skipRepeats())
 
     projectTabSelectedAfterFirstLoad
       .map { projectAndRefTag, index in (projectAndRefTag.0, projectAndRefTag.1, index) }
