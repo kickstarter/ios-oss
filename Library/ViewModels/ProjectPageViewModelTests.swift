@@ -408,7 +408,7 @@ final class ProjectPageViewModelTests: TestCase {
       )
 
       // Start up another view model with the same project
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
