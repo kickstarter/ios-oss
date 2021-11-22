@@ -25,8 +25,8 @@ public protocol ProjectNavigationSelectorViewModelInputs {
   /// Called when a button on the project navigation selector is tapped
   func buttonTapped(index: Int)
 
-  /// Called with a `ExtendedProjectProperties` instance when `viewDidLoad` is called on the `ProjectPageViewController`
-  func configureNavigationSelector(with: ExtendedProjectProperties)
+  /// Called with a `(Project, RefTag?)` instance when `viewDidLoad` is called on the `ProjectPageViewController`
+  func configureNavigationSelector(with: (Project, RefTag?))
 }
 
 public protocol ProjectNavigationSelectorViewModelOutputs {
@@ -55,22 +55,54 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
     self.configureNavigationSelectorUI = self.configureNavigationSelectorProperty.signal
       .skipNil()
-      .map { projectProperties in
-        guard !projectProperties.environmentalCommitments.isEmpty else {
+      .map(first)
+      .map { project in
+        guard let extendedProjectProperties = project.extendedProjectProperties,
+          !extendedProjectProperties.environmentalCommitments.isEmpty else {
           return [.overview, .campaign, .faq, .risks]
         }
         return NavigationSection.allCases
       }
 
+    let configureNavigationSelector = self.configureNavigationSelectorProperty.signal.skipNil()
+
     // Called when a button is tapped or when the view is configured and we default to the first index
     let setFirstIndexOnConfigurationOrButtonTapped = Signal.merge(
-      self.configureNavigationSelectorProperty.signal.mapConst(0),
+      configureNavigationSelector.mapConst(0),
       self.buttonTappedProperty.signal
     )
 
     self.notifyDelegateProjectNavigationSelectorDidSelect = setFirstIndexOnConfigurationOrButtonTapped
 
     self.updateNavigationSelectorUI = setFirstIndexOnConfigurationOrButtonTapped
+
+    _ = Signal.combineLatest(
+      configureNavigationSelector,
+      setFirstIndexOnConfigurationOrButtonTapped.signal
+    )
+    .map { projectAndRefTag, index in (projectAndRefTag.0, projectAndRefTag.1, index) }
+    .observeValues { project, refTag, index in
+      guard let contextValue = self.navigationTabContext(index: index) else { return }
+
+      AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+        project,
+        refTag: refTag,
+        sectionContext: contextValue
+      )
+    }
+  }
+
+  // MARK: Helpers
+
+  private func navigationTabContext(index: Int) -> KSRAnalytics.SectionContext? {
+    switch index {
+    case 0: return .tabSelected(.overview)
+    case 1: return .tabSelected(.story)
+    case 2: return .tabSelected(.faqs)
+    case 3: return .tabSelected(.risks)
+    case 4: return .tabSelected(.environmentalCommitments)
+    default: return nil
+    }
   }
 
   fileprivate let buttonTappedProperty = MutableProperty<Int>(0)
@@ -78,8 +110,8 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     self.buttonTappedProperty.value = index
   }
 
-  fileprivate let configureNavigationSelectorProperty = MutableProperty<ExtendedProjectProperties?>(nil)
-  public func configureNavigationSelector(with projectProperties: ExtendedProjectProperties) {
+  fileprivate let configureNavigationSelectorProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureNavigationSelector(with projectProperties: (Project, RefTag?)) {
     self.configureNavigationSelectorProperty.value = projectProperties
   }
 
