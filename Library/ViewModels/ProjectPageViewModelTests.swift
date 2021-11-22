@@ -488,7 +488,7 @@ final class ProjectPageViewModelTests: TestCase {
       ),
       scheduler: scheduler1
     ) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -506,7 +506,7 @@ final class ProjectPageViewModelTests: TestCase {
       ),
       scheduler: scheduler2
     ) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -523,7 +523,7 @@ final class ProjectPageViewModelTests: TestCase {
     let scheduler1 = TestScheduler(startDate: MockDate().date)
 
     withEnvironment(scheduler: scheduler1) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -535,7 +535,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
 
     withEnvironment(scheduler: scheduler1) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -592,7 +592,7 @@ final class ProjectPageViewModelTests: TestCase {
       )
 
       // Start up another view model with the same project
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
