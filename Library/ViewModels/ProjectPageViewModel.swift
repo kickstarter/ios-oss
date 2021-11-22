@@ -244,7 +244,12 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       self.hideNavigationBarProperty.signal.mapConst(true)
     )
 
-    let freshProjectRefTag: Signal<(Project, RefTag?), Never> = Signal.zip(
+    self.configureProjectNavigationSelectorView = freshProjectAndRefTag
+      .map { project, refTag in
+        (project: project, refTag: refTag)
+      }
+
+    let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
@@ -253,7 +258,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       (project: project, refTag: refTag)
     }
 
-    self.configureProjectNavigationSelectorView = freshProjectRefTag
+    trackFreshProjectAndRefTagViewed
+      .observeValues { project, refTag in
+        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+          project,
+          refTag: refTag,
+          sectionContext: .overview
+        )
+      }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)

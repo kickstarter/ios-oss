@@ -30,7 +30,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
-  private let configureProjectNavigationSelectorView = TestObserver<ExtendedProjectProperties, Never>()
+  private let configureProjectNavigationSelectorView = TestObserver<(Project, RefTag?), Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToComments = TestObserver<Project, Never>()
   private let goToDashboard = TestObserver<Param, Never>()
@@ -266,7 +266,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil() {
+  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil_CreatesNavigationSelector_Success() {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
     withEnvironment(apiService: MockService(
@@ -279,7 +279,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
+      self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
   }
 

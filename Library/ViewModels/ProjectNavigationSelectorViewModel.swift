@@ -76,23 +76,27 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
     self.updateNavigationSelectorUI = setFirstIndexOnConfigurationOrButtonTapped
 
-    _ = Signal.combineLatest(
-      configureNavigationSelector,
-      setFirstIndexOnConfigurationOrButtonTapped.signal
-    )
-    .map { projectAndRefTag, index in (projectAndRefTag.0, projectAndRefTag.1, index) }
-    .observeValues { project, refTag, index in
-      guard let contextValue = self.navigationTabContext(index: index) else { return }
+    let projectTabSelectedAfterFirstLoad = configureNavigationSelector
+      .takePairWhen(self.buttonTappedProperty.signal.skipRepeats())
 
-      AppEnvironment.current.ksrAnalytics.trackProjectViewed(
-        project,
-        refTag: refTag,
-        sectionContext: contextValue
-      )
-    }
+    projectTabSelectedAfterFirstLoad
+      .map { projectAndRefTag, index in (projectAndRefTag.0, projectAndRefTag.1, index) }
+      .observeValues { [weak self] project, refTag, index in
+        self?.trackPageViewedProjectTab(index: index, project: project, refTag: refTag)
+      }
   }
 
   // MARK: Helpers
+
+  private func trackPageViewedProjectTab(index: Int, project: Project, refTag: RefTag?) {
+    guard let contextValue = self.navigationTabContext(index: index) else { return }
+
+    AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+      project,
+      refTag: refTag,
+      sectionContext: contextValue
+    )
+  }
 
   private func navigationTabContext(index: Int) -> KSRAnalytics.SectionContext? {
     switch index {

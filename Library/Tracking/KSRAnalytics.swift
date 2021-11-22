@@ -296,8 +296,8 @@ public final class KSRAnalytics {
         case .overview: return "overview"
         case .risks: return "risks"
         case .story: return "story"
-        case .faqs: return "faqs"
-        case .environmentalCommitments: return "environmental commitments"
+        case .faqs: return "faq"
+        case .environmentalCommitments: return "environment"
         }
       }
     }

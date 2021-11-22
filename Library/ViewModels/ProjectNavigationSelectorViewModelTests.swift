@@ -14,13 +14,20 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   fileprivate let notifyDelegateProjectNavigationSelectorDidSelect = TestObserver<Int, Never>()
   fileprivate let updateNavigationSelectorUI = TestObserver<Int, Never>()
 
-  fileprivate let emptyProjectProperties = ExtendedProjectProperties(
-    environmentalCommitments: [],
-    faqs: [],
-    risks: "",
-    story: "",
-    minimumPledgeAmount: 1
-  )
+  fileprivate var projectAndEmptyRefTag: (Project, RefTag?) {
+    var projectWithEmptyExtendedProperties = Project.template
+
+    projectWithEmptyExtendedProperties
+      .extendedProjectProperties = ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: "",
+        minimumPledgeAmount: 1
+      )
+
+    return (projectWithEmptyExtendedProperties, nil)
+  }
 
   override func setUp() {
     super.setUp()
@@ -43,7 +50,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   }
 
   func testOutput_animateButtonBottomBorderViewConstraints() {
-    self.vm.inputs.configureNavigationSelector(with: self.emptyProjectProperties)
+    self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
     self.animateButtonBottomBorderViewConstraints.assertDidNotEmitValue()
 
@@ -61,13 +68,13 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.configureNavigationSelectorUI.assertDidNotEmitValue()
 
-    self.vm.inputs.configureNavigationSelector(with: self.emptyProjectProperties)
+    self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
     self.configureNavigationSelectorUI.assertDidEmitValue()
   }
 
   func testOutput_ConfigureNavigationSelectorUI() {
-    let projectProperties = ExtendedProjectProperties(
+    let projectProperties: ExtendedProjectProperties = ExtendedProjectProperties(
       environmentalCommitments: [
         ProjectEnvironmentalCommitment(
           description: "Environment Commitment 0",
@@ -91,11 +98,14 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
       minimumPledgeAmount: 1
     )
 
+    var project = Project.template
+    project.extendedProjectProperties = projectProperties
+
     self.vm.inputs.buttonTapped(index: 0)
 
     self.configureNavigationSelectorUI.assertDidNotEmitValue()
 
-    self.vm.inputs.configureNavigationSelector(with: projectProperties)
+    self.vm.inputs.configureNavigationSelector(with: (project, nil))
 
     self.configureNavigationSelectorUI.assertValues([NavigationSection.allCases])
   }
@@ -105,13 +115,13 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.configureNavigationSelectorUI.assertDidNotEmitValue()
 
-    self.vm.inputs.configureNavigationSelector(with: self.emptyProjectProperties)
+    self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
     self.configureNavigationSelectorUI.assertValues([[.overview, .campaign, .faq, .risks]])
   }
 
   func testOutput_notifyDelegateProjectNavigationSelectorDidSelect() {
-    self.vm.inputs.configureNavigationSelector(with: self.emptyProjectProperties)
+    self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
     self.notifyDelegateProjectNavigationSelectorDidSelect.assertValues([0])
 
@@ -125,7 +135,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   }
 
   func testOutput_updateNavigationSelectorUI() {
-    self.vm.inputs.configureNavigationSelector(with: self.emptyProjectProperties)
+    self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
     self.updateNavigationSelectorUI.assertValues([0])
 
