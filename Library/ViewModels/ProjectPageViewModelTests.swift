@@ -30,7 +30,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
-  private let configureProjectNavigationSelectorView = TestObserver<ExtendedProjectProperties, Never>()
+  private let configureProjectNavigationSelectorView = TestObserver<(Project, RefTag?), Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToComments = TestObserver<Project, Never>()
   private let goToDashboard = TestObserver<Param, Never>()
@@ -266,7 +266,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil() {
+  func testConfigureProjectNavigationSelectorView_ExtendedProjectPropertiesNil_CreatesNavigationSelector_Success() {
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
 
     withEnvironment(apiService: MockService(
@@ -279,7 +279,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
+      self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
   }
 
@@ -408,7 +408,7 @@ final class ProjectPageViewModelTests: TestCase {
       )
 
       // Start up another view model with the same project
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -488,7 +488,7 @@ final class ProjectPageViewModelTests: TestCase {
       ),
       scheduler: scheduler1
     ) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -506,7 +506,7 @@ final class ProjectPageViewModelTests: TestCase {
       ),
       scheduler: scheduler2
     ) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -523,7 +523,7 @@ final class ProjectPageViewModelTests: TestCase {
     let scheduler1 = TestScheduler(startDate: MockDate().date)
 
     withEnvironment(scheduler: scheduler1) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -535,7 +535,7 @@ final class ProjectPageViewModelTests: TestCase {
     }
 
     withEnvironment(scheduler: scheduler1) {
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
@@ -592,7 +592,7 @@ final class ProjectPageViewModelTests: TestCase {
       )
 
       // Start up another view model with the same project
-      let newVm: ProjectPamphletViewModelType = ProjectPamphletViewModel()
+      let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewWillAppear(animated: true)
