@@ -50,7 +50,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     let vc = ProjectPageViewController.instantiate()
 
     vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
-    vc.setupNavigationView()
 
     return vc
   }
@@ -66,17 +65,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.pledgeCTAContainerView.delegate = self
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    _ = self.tableView
-      |> \.dataSource .~ self.dataSource
-      |> \.delegate .~ self
-      |> \.tableHeaderView .~ self.projectNavigationSelectorView
-      |> \.tableFooterView .~
-      UIView(frame: CGRect(
-        x: 0,
-        y: 0,
-        width: 0,
-        height: ProjectPageViewControllerStyles.Layout.tableFooterViewHeight
-      ))
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -142,20 +130,37 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
 
+    _ = self.tableView
+      |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
+      |> \.tableFooterView .~
+      UIView(frame: CGRect(
+        x: 0,
+        y: 0,
+        width: 0,
+        height: ProjectPageViewControllerStyles.Layout.tableFooterViewHeight
+      ))
+
     _ = (self.projectNavigationSelectorView, self.view)
       |> ksr_addSubviewToParent()
 
-    let constraints = [
-      self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.tableView.bottomAnchor
-        .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -Styles.grid(1)),
-      self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor),
+    let projectNavigationSelectorConstraints = [
+      self.projectNavigationSelectorView.topAnchor
+        .constraint(equalTo: self.view.topAnchor, constant: Styles.grid(10)),
+      self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.projectNavigationSelectorView.heightAnchor
-        .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout.projectNavigationSelectorHeight)
+        .constraint(greaterThanOrEqualToConstant: ProjectPageViewControllerStyles.Layout
+          .projectNavigationSelectorHeight)
     ]
 
-    NSLayoutConstraint.activate(constraints)
+    let tableViewConstraints = [
+      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      self.tableView.bottomAnchor
+        .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -Styles.grid(1))
+    ]
+
+    NSLayoutConstraint.activate(projectNavigationSelectorConstraints + tableViewConstraints)
   }
 
   public override func bindStyles() {
