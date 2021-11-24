@@ -5,7 +5,8 @@ import UIKit
 
 public enum ProjectPageViewControllerStyles {
   public enum Layout {
-    public static let projectNavigationSelectorHeight: CGFloat = 60
+    public static let projectNavigationSelectorHeightFormSheet: CGFloat = 60
+    public static let projectNavigationSelectorHeightFullscreen: CGFloat = 70
     public static let tableFooterViewHeight: CGFloat = 1
   }
 }
@@ -127,9 +128,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func configureTableView() {
-    _ = (self.tableView, self.view)
-      |> ksr_addSubviewToParent()
-
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
@@ -144,23 +142,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     _ = (self.projectNavigationSelectorView, self.view)
       |> ksr_addSubviewToParent()
 
-    let projectNavigationSelectorConstraints = [
-      self.projectNavigationSelectorView.topAnchor
-        .constraint(equalTo: self.view.topAnchor, constant: Styles.grid(10)),
-      self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.projectNavigationSelectorView.heightAnchor
-        .constraint(greaterThanOrEqualToConstant: ProjectPageViewControllerStyles.Layout
-          .projectNavigationSelectorHeight)
-    ]
+    _ = (self.tableView, self.view)
+      |> ksr_addSubviewToParent()
 
-    let tableViewConstraints = [
-      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
-      self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.tableView.bottomAnchor
-        .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -Styles.grid(1))
-    ]
-
-    NSLayoutConstraint.activate(projectNavigationSelectorConstraints + tableViewConstraints)
+    self.updateConstraints()
   }
 
   public override func bindStyles() {
@@ -179,6 +164,34 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   // MARK: - Private Helpers
+
+  private func updateConstraints() {
+    let presentationStyleFormSheet: CGFloat = self
+      .modalPresentationStyle == .formSheet ? ProjectPageViewControllerStyles.Layout
+      .projectNavigationSelectorHeightFormSheet : ProjectPageViewControllerStyles.Layout
+      .projectNavigationSelectorHeightFullscreen
+    let navigationSelectorFixedHeightAnchor = self.projectNavigationSelectorView.heightAnchor
+      .constraint(equalToConstant: presentationStyleFormSheet)
+
+    let tableViewBottomToPledgeCTA = self.tableView.bottomAnchor
+      .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -Styles.grid(1))
+
+    let projectNavigationSelectorConstraints = [
+      self.projectNavigationSelectorView.topAnchor
+        .constraint(equalTo: self.view.topAnchor, constant: Styles.grid(10)),
+      // come in under the navigation bar, which is part of navigation bar view, which is itself inside `self.view`.
+      self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      navigationSelectorFixedHeightAnchor
+    ]
+
+    let tableViewConstraints = [
+      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      tableViewBottomToPledgeCTA,
+      self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+    ]
+
+    NSLayoutConstraint.activate(projectNavigationSelectorConstraints + tableViewConstraints)
+  }
 
   private func setupNotifications() {
     NotificationCenter.default
