@@ -89,7 +89,6 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // TODO: Submit a new string with the html wrapped in and replace this implementation
   private func attributedTextEnvironmentalResources() -> NSAttributedString {
     let regularFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
