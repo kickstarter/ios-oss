@@ -35,7 +35,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       case .faqs:
         return Strings.Frequently_asked_questions()
       case .risks:
-        return Strings.Risks()
+        return Strings.Risks_and_challenges()
       }
     }
   }
