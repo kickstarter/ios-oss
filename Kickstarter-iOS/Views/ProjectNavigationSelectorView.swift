@@ -80,6 +80,7 @@ final class ProjectNavigationSelectorView: UIView {
 
     _ = self.scrollView
       |> \.showsHorizontalScrollIndicator .~ false
+      |> \.showsVerticalScrollIndicator .~ false
   }
 
   // MARK: - View Model
