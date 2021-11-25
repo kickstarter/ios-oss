@@ -118,7 +118,8 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       return learnMoreString
     }
 
-    let environmentString = Strings.Visit_our_Environmental_Resources_Center_Alternative(environment_link: environmentLink)
+    let environmentString = Strings
+      .Visit_our_Environmental_Resources_Center_Alternative(environment_link: environmentLink)
 
     guard let environmentAttributedString = try? NSMutableAttributedString(
       data: Data(environmentString.utf8),
