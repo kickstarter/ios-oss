@@ -101,6 +101,14 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       .underlineStyle: NSUnderlineStyle.single.rawValue
     ]
 
+    /**
+      FIXME: (Minor)
+     Ideally we would submit this string to the kickstarter repo:
+     `<a href=\"%{environmental_resources_link}\">Visit our Environmental Resources Center</a>to learn how Kickstarter encourages sustainable practices.`
+     Instead of: `to learn how Kickstarter encourages sustainable practices.`
+     And that way could just do: `Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(environmental_resources_link: environmentLink)` after line 120.
+    **/
+    
     let learnMoreString = NSMutableAttributedString(
       string: Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(),
       attributes: regularFontAttribute

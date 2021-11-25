@@ -327,6 +327,7 @@
 "Learn_about_accountability_on_Kickstarter" = "Kickstarter上の説明責任について詳しく知る";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">コメントのガイドラインについてもっと詳しく</a>";
+"Leave_page" = "ページから移動";
 "Left_count_left.few" = "残り%{left_count}";
 "Left_count_left.many" = "残り%{left_count}";
 "Left_count_left.one" = "残り%{left_count}";
@@ -346,6 +347,7 @@
 "Location" = "地域";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "ログインかサインインしてこのプロジェクトを保存してください。終了４８時間前にリマインドします。";
 "Log_in_or_sign_up_to_subscribe" = "ログインまたはサインアップしてください";
+"Log_in_to_ask_the_project_creator_directly" = "ログインしてプロジェクトのクリエイターに直接お問い合わせください。";
 "Log_in_to_leave_a_comment" = "ログインしてコメントを残す。";
 "Log_out" = "ログアウト";
 "Long_lasting_design" = "長持ちするデザイン";
@@ -566,6 +568,7 @@
 "Ships_to" = "配送先：";
 "Ships_to_shipping_summary" = "配送先: %{shipping_summary}";
 "Ships_worldwide" = "世界各地へ配送";
+"Show_comment" = "コメントを表示";
 "Show_me_projects" = "プロジェクトを表示";
 "Show_password" = "パスワードを表示する";
 "Show_up_for_the_spaces_you_love" = "お気に入りの場所や団体のためにできること";
@@ -581,6 +584,7 @@
 "Social_friend_is_backer.two" = "%{friend_name} さんと他%{remaining_count} 人";
 "Social_friend_is_backer.zero" = "%{friend_name}さんがバッカーです";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
+"Something_else" = "その他";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "何らかのエラーにより、お支払い方法を削除できませんでした。もう一度お試しください。";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
 "Something_went_wrong_pull_to_refresh" = "何らかのエラーが発生しました。リフレッシュするにはプルダウンしてください。";
@@ -630,6 +634,7 @@
 "This_comment_has_been_removed_by_Kickstarter" = "このコメントは Kickstarter によって削除されました。";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "このFacebookアカウントはすでに他のKickstarterユーザーとつながっています";
 "This_holiday_season_support_a_project_for_no_reward" = "このホリデーシーズンはぜひ、リワード無しでも「支援したい！」と思わせてくれるような、あなたの心に訴えかけるプロジェクトをサポートしてみませんか？";
+"This_person_canceled_their_pledge" = "このユーザーはプレッジをキャンセルしました。";
 "This_pledge_was_dropped_because_of_payment_errors" = "支払関連のエラーにより、このプレッジは取り消されました。";
 "This_post_is_for_backers_only" = "この投稿はバッカー向けです";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "このプロジェクトはファンディングゴールに到達しなかったため、お支払い方法への請求は行われませんでした。";
@@ -682,6 +687,7 @@
 "View_your_reward" = "リワードをみる";
 "View_your_rewards" = "リワードを見る";
 "Visit_our_Environmental_Resources_Center" = "Kickstarter の環境リソースセンターにアクセス";
+"Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Kickstarter の環境リソースセンターにアクセス</a>";
 "Watch_live" = "ライブをみる";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "バッカーのお支払い方法で問題があったためこのプレッジを処理することができません。";
 "We_cant_process_your_pledge" = "プレッジを処理することができません。";
@@ -719,6 +725,7 @@
 "Yes_continue" = "はい、続行します";
 "Yes_remove" = "はい、削除します";
 "Yes_turn_off" = "はい、オフにします";
+"You" = "あなた";
 "You_Launched" = "発表されました！";
 "You_backed" = "あなたがバックしたプロジェクト";
 "You_backed_this_project" = "バック済";
@@ -731,9 +738,11 @@
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_pledged_without_a_reward" = "リワードなしでプレッジしました";
 "You_saved_this_project" = "保存済みです";
+"You_will_lose_the_comment_if_you_leave_this_page" = "このページから移動するとコメントは破棄されます。";
 "You_wont_be_charged_for_backing_a_project" = "プロジェクトをバックした場合、プロジェクトがファンディングゴールに到達しない限り、課金されることはありません。";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "ダウンロードの準備が整い次第、%{email} にメールが届きます。";
 "Your_chat_message_wasnt_sent_successfully" = "メッセージの送信に失敗。";
+"Your_comment_wasnt_posted" = "コメントは投稿されませんでした";
 "Your_friends_havent_backed_any_projects_yet" = "バックした友達はまだいませんが、今後こちらに表示されます。";
 "Your_message_has_been_sent" = "メッセージが送信されました！";
 "Your_name_displayed" = "あなたの名前はプロフィールに常に表示されます。";
@@ -1192,7 +1201,7 @@
 "discovery.all_of_scope" = "%{scope} の全て";
 "discovery.backing" = "バック";
 "discovery.baseball_card.accessibility.category.label" = "カテゴリー";
-"discovery.baseball_card.accessibility.location.label" = "住所";
+"discovery.baseball_card.accessibility.location.label" = "地域";
 "discovery.baseball_card.blurb_read_more" = "%{blurb}%{space}<u>さらに%{space}読む</u>%{space}";
 "discovery.baseball_card.button.share" = "シェア";
 "discovery.baseball_card.deadline_units.days" = "日";

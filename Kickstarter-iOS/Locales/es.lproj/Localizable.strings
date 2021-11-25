@@ -327,6 +327,7 @@
 "Learn_about_accountability_on_Kickstarter" = "Más información sobre el concepto de responsabilidad en Kickstarter";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Más información sobre las reglas de los comentarios</a>";
+"Leave_page" = "Salir de la página";
 "Left_count_left.few" = "%{left_count} restantes";
 "Left_count_left.many" = "%{left_count} restantes";
 "Left_count_left.one" = "%{left_count} restante";
@@ -346,6 +347,7 @@
 "Location" = "Ubicación";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice.";
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
+"Log_in_to_ask_the_project_creator_directly" = "Inicia sesión para preguntarle al creador del proyecto directamente.";
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
 "Log_out" = "Cerrar sesión";
 "Long_lasting_design" = "Diseño de larga duración";
@@ -566,6 +568,7 @@
 "Ships_to" = "Envío a:";
 "Ships_to_shipping_summary" = "Países de envío: %{shipping_summary}";
 "Ships_worldwide" = "Envíos a todo el mundo";
+"Show_comment" = "Mostrar comentario";
 "Show_me_projects" = "Múestrame proyectos";
 "Show_password" = "Mostrar contraseña";
 "Show_up_for_the_spaces_you_love" = "Apoya tus espacios culturales favoritos";
@@ -581,6 +584,7 @@
 "Social_friend_is_backer.two" = "%{friend_name} y %{remaining_count} otros";
 "Social_friend_is_backer.zero" = "%{friend_name} patrocina este proyecto";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
+"Something_else" = "Algo más";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hubo un error y no pudimos eliminar tu método de pago. Inténtalo de nuevo.";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
 "Something_went_wrong_pull_to_refresh" = "Ocurrió un error. Desliza para actualizar.";
@@ -630,6 +634,7 @@
 "This_comment_has_been_removed_by_Kickstarter" = "Este comentario ha sido eliminado por Kickstarter.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
+"This_person_canceled_their_pledge" = "Esta persona canceló su contribución.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Esta contribución no pudo ser cobrada por un error en el método de pago.";
 "This_post_is_for_backers_only" = "Esta publicación es únicamente para patrocinadores";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Este proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo a tu método de pago.";
@@ -682,6 +687,7 @@
 "View_your_reward" = "Mostrar recompensa";
 "View_your_rewards" = "Ver tus recompensas";
 "Visit_our_Environmental_Resources_Center" = "Visita nuestro Centro de recursos medioambientales";
+"Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Visita nuestro Centro de recursos medioambientales</a>";
 "Watch_live" = "Ver en vivo";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "No podemos procesar esta contribución por un problema con el método de pago del patrocinador.";
 "We_cant_process_your_pledge" = "No podemos procesar tu contribución.";
@@ -719,6 +725,7 @@
 "Yes_continue" = "Sí, continuar";
 "Yes_remove" = "Sí, eliminar";
 "Yes_turn_off" = "Sí, desactivar";
+"You" = "Tú";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed" = "Patrocinaste";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
@@ -731,9 +738,11 @@
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
 "You_pledged_without_a_reward" = "Contribuiste sin recompensa";
 "You_saved_this_project" = "Uno de tus proyectos guardados.";
+"You_will_lose_the_comment_if_you_leave_this_page" = "Perderás el comentario si sales de esta página.";
 "You_wont_be_charged_for_backing_a_project" = "No se te cobrará por patrocinar un proyecto a menos que alcance su meta de financiamiento.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "Recibirás un correo electrónico en %{email} cuando la descarga esté lista.";
 "Your_chat_message_wasnt_sent_successfully" = "Tu mensaje no fue enviado.";
+"Your_comment_wasnt_posted" = "Tu comentario no se publicó";
 "Your_friends_havent_backed_any_projects_yet" = "Tus amigos todavía no han hecho contribuciones, pero en cuanto lo hagan, se verán reflejadas aquí.";
 "Your_message_has_been_sent" = "Se envió tu mensaje.";
 "Your_name_displayed" = "Tu nombre siempre se muestra en tu perfil.";

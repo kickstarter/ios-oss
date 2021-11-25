@@ -5423,6 +5423,23 @@ with friends."
     )
   }
   /**
+   "Leave page"
+
+   - **en**: "Leave page"
+   - **de**: "Seite verlassen"
+   - **es**: "Salir de la página"
+   - **fr**: "Quitter la page"
+   - **ja**: "ページから移動"
+  */
+  public static func Leave_page() -> String {
+    return localizedString(
+      key: "Leave_page",
+      defaultValue: "Leave page",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{left_count} left"
 
    - **en**: "%{left_count} left"
@@ -5673,6 +5690,23 @@ with friends."
     return localizedString(
       key: "Log_in_or_sign_up_to_subscribe",
       defaultValue: "Log in or sign up to subscribe",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Log in to ask the project creator directly."
+
+   - **en**: "Log in to ask the project creator directly."
+   - **de**: "Melde dich an, um dich direkt an den Projektgründer zu wenden."
+   - **es**: "Inicia sesión para preguntarle al creador del proyecto directamente."
+   - **fr**: "Veuillez vous connecter pour adresser votre question au créateur."
+   - **ja**: "ログインしてプロジェクトのクリエイターに直接お問い合わせください。"
+  */
+  public static func Log_in_to_ask_the_project_creator_directly() -> String {
+    return localizedString(
+      key: "Log_in_to_ask_the_project_creator_directly",
+      defaultValue: "Log in to ask the project creator directly.",
       count: nil,
       substitutions: [:]
     )
@@ -9220,6 +9254,23 @@ daring ideas."
     )
   }
   /**
+   "Show comment"
+
+   - **en**: "Show comment"
+   - **de**: "Kommentar anzeigen"
+   - **es**: "Mostrar comentario"
+   - **fr**: "Afficher le commentaire"
+   - **ja**: "コメントを表示"
+  */
+  public static func Show_comment() -> String {
+    return localizedString(
+      key: "Show_comment",
+      defaultValue: "Show comment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Show me projects"
 
    - **en**: "Show me projects"
@@ -9404,6 +9455,23 @@ catch your eye?"
     return localizedString(
       key: "Something_catch_your_eye",
       defaultValue: "Something\ncatch your eye?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something else"
+
+   - **en**: "Something else"
+   - **de**: "Etwas anderes"
+   - **es**: "Algo más"
+   - **fr**: "Autre chose"
+   - **ja**: "その他"
+  */
+  public static func Something_else() -> String {
+    return localizedString(
+      key: "Something_else",
+      defaultValue: "Something else",
       count: nil,
       substitutions: [:]
     )
@@ -10237,6 +10305,23 @@ catch your eye?"
     return localizedString(
       key: "This_holiday_season_support_a_project_for_no_reward",
       defaultValue: "This holiday season, support a project for no reward, just because it speaks to you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This person has canceled their pledge."
+
+   - **en**: "This person has canceled their pledge."
+   - **de**: "Diese Person hat ihren Finanzierungsbeitrag zurückgezogen."
+   - **es**: "Esta persona canceló su contribución."
+   - **fr**: "Cette personne a annulé son engagement."
+   - **ja**: "このユーザーはプレッジをキャンセルしました。"
+  */
+  public static func This_person_canceled_their_pledge() -> String {
+    return localizedString(
+      key: "This_person_canceled_their_pledge",
+      defaultValue: "This person has canceled their pledge.",
       count: nil,
       substitutions: [:]
     )
@@ -11126,6 +11211,23 @@ catch your eye?"
     )
   }
   /**
+   "<a href="%{environment_link}">Visit our Environmental Resources Center</a>"
+
+   - **en**: "<a href="%{environment_link}">Visit our Environmental Resources Center</a>"
+   - **de**: "<a href="%{environment_link}">Ressourcen für den Umweltschutz</a>"
+   - **es**: "<a href="%{environment_link}">Visita nuestro Centro de recursos medioambientales</a>"
+   - **fr**: "<a href="%{environment_link}">Consultez notre Centre de ressources pour l'environnement</a>"
+   - **ja**: "<a href="%{environment_link}">Kickstarter の環境リソースセンターにアクセス</a>"
+  */
+  public static func Visit_our_Environmental_Resources_Center_Alternative(environment_link: String) -> String {
+    return localizedString(
+      key: "Visit_our_Environmental_Resources_Center_Alternative",
+      defaultValue: "<a href=\"%{environment_link}\">Visit our Environmental Resources Center</a>",
+      count: nil,
+      substitutions: ["environment_link": environment_link]
+    )
+  }
+  /**
    "Watch live"
 
    - **en**: "Watch live"
@@ -11761,6 +11863,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You"
+
+   - **en**: "You"
+   - **de**: "Du"
+   - **es**: "Tú"
+   - **fr**: "Vous"
+   - **ja**: "あなた"
+  */
+  public static func You() -> String {
+    return localizedString(
+      key: "You",
+      defaultValue: "You",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You Launched!"
 
    - **en**: "You Launched!"
@@ -11965,6 +12084,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You’ll lose the comment if you leave this page."
+
+   - **en**: "You’ll lose the comment if you leave this page."
+   - **de**: "Wenn du diese Seite verlässt, wird dein Kommentar gelöscht."
+   - **es**: "Perderás el comentario si sales de esta página."
+   - **fr**: "Si vous quittez cette page, votre commentaire sera perdu."
+   - **ja**: "このページから移動するとコメントは破棄されます。"
+  */
+  public static func You_will_lose_the_comment_if_you_leave_this_page() -> String {
+    return localizedString(
+      key: "You_will_lose_the_comment_if_you_leave_this_page",
+      defaultValue: "You’ll lose the comment if you leave this page.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You won't be charged for backing a project unless it reaches its funding goal."
 
    - **en**: "You won't be charged for backing a project unless it reaches its funding goal."
@@ -12011,6 +12147,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Your_chat_message_wasnt_sent_successfully",
       defaultValue: "Your chat message wasn't sent successfully.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your comment wasn't posted"
+
+   - **en**: "Your comment wasn't posted"
+   - **de**: "Dein Kommentar wurde nicht gepostet"
+   - **es**: "Tu comentario no se publicó"
+   - **fr**: "Votre commentaire n'a pas été publié."
+   - **ja**: "コメントは投稿されませんでした"
+  */
+  public static func Your_comment_wasnt_posted() -> String {
+    return localizedString(
+      key: "Your_comment_wasnt_posted",
+      defaultValue: "Your comment wasn't posted",
       count: nil,
       substitutions: [:]
     )
@@ -17751,7 +17904,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Ort"
    - **es**: "Ubicación"
    - **fr**: "Lieu"
-   - **ja**: "住所"
+   - **ja**: "地域"
   */
   public static func discovery_baseball_card_accessibility_location_label() -> String {
     return localizedString(
@@ -18040,7 +18193,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -21417,7 +21570,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -24528,7 +24681,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -24797,7 +24950,7 @@ projets enregistrés"
    "Limited (%{rewards_remaining} left of %{reward_limit})"
 
    - **en**: "Limited (%{rewards_remaining} left of %{reward_limit})"
-   - **de**: "Begrenzt (%{rewards_remaining} von %{reward_limit} übrig)"
+   - **de**: "Limitiert (%{rewards_remaining} von %{reward_limit} übrig)"
    - **es**: "Limitado (quedan %{rewards_remaining} de %{reward_limit})"
    - **fr**: "Stock limité (il en reste %{rewards_remaining} sur %{reward_limit})"
    - **ja**: "数量限定 (%{reward_limit} 中残り%{rewards_remaining}）"
@@ -25480,7 +25633,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

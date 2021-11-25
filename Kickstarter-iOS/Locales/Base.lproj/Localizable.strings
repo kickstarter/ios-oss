@@ -327,6 +327,7 @@
 "Learn_about_accountability_on_Kickstarter" = "Learn about accountability on Kickstarter";
 "Learn_more_about_accountability" = "Learn more about accountability";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Learn more about comment guidelines</a>";
+"Leave_page" = "Leave page";
 "Left_count_left.few" = "%{left_count} left";
 "Left_count_left.many" = "%{left_count} left";
 "Left_count_left.one" = "%{left_count} left";
@@ -346,6 +347,7 @@
 "Location" = "Location";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Log in or sign up to save this project. We’ll remind you 48 hours before it ends.";
 "Log_in_or_sign_up_to_subscribe" = "Log in or sign up to subscribe";
+"Log_in_to_ask_the_project_creator_directly" = "Log in to ask the project creator directly.";
 "Log_in_to_leave_a_comment" = "Log in to leave a comment.";
 "Log_out" = "Log out";
 "Long_lasting_design" = "Long-lasting design";
@@ -566,6 +568,7 @@
 "Ships_to" = "Ships to:";
 "Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
 "Ships_worldwide" = "Ships worldwide";
+"Show_comment" = "Show comment";
 "Show_me_projects" = "Show me projects";
 "Show_password" = "Show password";
 "Show_up_for_the_spaces_you_love" = "Show up for the spaces you love";
@@ -581,6 +584,7 @@
 "Social_friend_is_backer.two" = "%{friend_name} and %{remaining_count} others";
 "Social_friend_is_backer.zero" = "%{friend_name} is a backer";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
+"Something_else" = "Something else";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Something went wrong and we were unable to remove your payment method, please try again.";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Something_went_wrong_pull_to_refresh" = "Something went wrong—pull to refresh.";
@@ -630,6 +634,7 @@
 "This_comment_has_been_removed_by_Kickstarter" = "This comment has been removed by Kickstarter.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "This_holiday_season_support_a_project_for_no_reward" = "This holiday season, support a project for no reward, just because it speaks to you.";
+"This_person_canceled_their_pledge" = "This person has canceled their pledge.";
 "This_pledge_was_dropped_because_of_payment_errors" = "This pledge was dropped because of payment errors.";
 "This_post_is_for_backers_only" = "This post is for backers only";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "This project didn’t reach its funding goal, so your payment method was never charged.";
@@ -682,6 +687,7 @@
 "View_your_reward" = "View your reward";
 "View_your_rewards" = "View your rewards";
 "Visit_our_Environmental_Resources_Center" = "Visit our Environmental Resources Center";
+"Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Visit our Environmental Resources Center</a>";
 "Watch_live" = "Watch live";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "We can’t process this pledge because of a problem with the backer’s payment method.";
 "We_cant_process_your_pledge" = "We can't process your pledge.";
@@ -719,6 +725,7 @@
 "Yes_continue" = "Yes, continue";
 "Yes_remove" = "Yes, remove";
 "Yes_turn_off" = "Yes, turn off";
+"You" = "You";
 "You_Launched" = "You Launched!";
 "You_backed" = "You backed";
 "You_backed_this_project" = "You backed this project.";
@@ -731,9 +738,11 @@
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
 "You_pledged_without_a_reward" = "You pledged without a reward";
 "You_saved_this_project" = "You saved this project.";
+"You_will_lose_the_comment_if_you_leave_this_page" = "You’ll lose the comment if you leave this page.";
 "You_wont_be_charged_for_backing_a_project" = "You won't be charged for backing a project unless it reaches its funding goal.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "You'll receive an email at %{email} when your download is ready.";
 "Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
+"Your_comment_wasnt_posted" = "Your comment wasn't posted";
 "Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
 "Your_message_has_been_sent" = "Your message has been sent!";
 "Your_name_displayed" = "Your name is always displayed on your profile.";
