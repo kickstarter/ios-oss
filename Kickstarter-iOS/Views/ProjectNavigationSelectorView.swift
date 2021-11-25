@@ -57,7 +57,7 @@ final class ProjectNavigationSelectorView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  internal func configure(with projectProperties: ExtendedProjectProperties) {
+  internal func configure(with projectProperties: (Project, RefTag?)) {
     self.viewModel.inputs.configureNavigationSelector(with: projectProperties)
   }
 

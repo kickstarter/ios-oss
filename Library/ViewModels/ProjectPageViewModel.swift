@@ -68,8 +68,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
   var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
 
-  /// Emits `ExtendedProjectProperties` to configure ProjectNavigationSelectorView
-  var configureProjectNavigationSelectorView: Signal<ExtendedProjectProperties, Never> { get }
+  /// Emits `(Project, RefTag?)` to configure `ProjectNavigationSelectorView`
+  var configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
@@ -213,10 +213,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     )
     .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
-    self.configureProjectNavigationSelectorView = project
-      .map(\.extendedProjectProperties)
-      .skipNil()
-
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
 
@@ -248,7 +244,12 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       self.hideNavigationBarProperty.signal.mapConst(true)
     )
 
-    let freshProjectRefTag: Signal<(Project, RefTag?), Never> = Signal.zip(
+    self.configureProjectNavigationSelectorView = freshProjectAndRefTag
+      .map { project, refTag in
+        (project: project, refTag: refTag)
+      }
+
+    let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
@@ -257,7 +258,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       (project: project, refTag: refTag)
     }
 
-    freshProjectRefTag
+    trackFreshProjectAndRefTagViewed
       .observeValues { project, refTag in
         AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
@@ -407,7 +408,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
-  public let configureProjectNavigationSelectorView: Signal<ExtendedProjectProperties, Never>
+  public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public let goToDashboard: Signal<Param, Never>
