@@ -201,7 +201,8 @@ final class ProjectNavigationSelectorView: UIView {
   private func pinSelectedButtonBorderView(toIndex index: Int) {
     guard let button = self.buttonsStackView.arrangedSubviews[index] as? UIButton else { return }
 
-    let leadingConstant = button.frame.origin.x - ProjectNavigationSelectorViewStyles.Layout.layoutMargins - safeAreaInsets.left
+    let leadingConstant = button.frame.origin.x - ProjectNavigationSelectorViewStyles.Layout
+      .layoutMargins - safeAreaInsets.left
 
     // The value of the constraint is originally set to the width of the first button so we have subtract this each time we want to calculate the constant
     let widthConstant = button.frame.width - self.buttonsStackView.arrangedSubviews[0].frame.width
