@@ -89,7 +89,6 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // TODO: Internationalize strings and clean up method when translations are applied
   private func attributedTextEnvironmentalResources() -> NSAttributedString {
     let regularFontAttribute: String.Attributes = [
       .font: UIFont.ksr_subhead(),
@@ -101,8 +100,16 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       .underlineStyle: NSUnderlineStyle.single.rawValue
     ]
 
+    /**
+       FIXME: (Minor)
+      Ideally we would submit this string to the kickstarter repo:
+      `<a href=\"%{environmental_resources_link}\">Visit our Environmental Resources Center</a>to learn how Kickstarter encourages sustainable practices.`
+      Instead of: `to learn how Kickstarter encourages sustainable practices.`
+      And that way could just do: `Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(environmental_resources_link: environmentLink)` after line 120.
+     **/
+
     let learnMoreString = NSMutableAttributedString(
-      string: "to learn how Kickstarter encourages sustainable practices.",
+      string: Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(),
       attributes: regularFontAttribute
     )
 
@@ -111,7 +118,8 @@ final class ProjectEnvironmentalCommitmentDisclaimerCell: UITableViewCell, Value
       return learnMoreString
     }
 
-    let environmentString = "<a href=\(environmentLink)>Visit our Environmental Resources Center</a>"
+    let environmentString = Strings
+      .Visit_our_Environmental_Resources_Center_Alternative(environment_link: environmentLink)
 
     guard let environmentAttributedString = try? NSMutableAttributedString(
       data: Data(environmentString.utf8),

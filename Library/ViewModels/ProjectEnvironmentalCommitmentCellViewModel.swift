@@ -27,7 +27,10 @@ public final class ProjectEnvironmentalCommitmentCellViewModel:
     let environmentalCommitment = self.configureWithProperty.signal
       .skipNil()
 
-    self.categoryLabelText = environmentalCommitment.map(\.category.rawValue)
+    self.categoryLabelText = environmentalCommitment
+      .map(\.category)
+      .map(internationalizedString)
+
     self.descriptionLabelText = environmentalCommitment.map(\.description)
   }
 
@@ -41,4 +44,21 @@ public final class ProjectEnvironmentalCommitmentCellViewModel:
 
   public var inputs: ProjectEnvironmentalCommitmentCellViewModelInputs { self }
   public var outputs: ProjectEnvironmentalCommitmentCellViewModelOutputs { self }
+}
+
+private func internationalizedString(for category: ProjectCommitmentCategory) -> String {
+  switch category {
+  case .longLastingDesign:
+    return Strings.Long_lasting_design()
+  case .sustainableMaterials:
+    return Strings.Sustainable_materials()
+  case .environmentallyFriendlyFactories:
+    return Strings.Environmentally_friendly_factories()
+  case .sustainableDistribution:
+    return Strings.Sustainable_distribution()
+  case .reusabilityAndRecyclability:
+    return Strings.Reusability_and_recyclability()
+  case .somethingElse:
+    return Strings.Something_else()
+  }
 }

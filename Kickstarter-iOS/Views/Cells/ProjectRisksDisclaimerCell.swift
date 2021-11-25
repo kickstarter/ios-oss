@@ -89,7 +89,6 @@ final class ProjectRisksDisclaimerCell: UITableViewCell, ValueCell {
 
   // MARK: - Helpers
 
-  // TODO: Internationalize string
   private func attributedTextForFootnoteLabel() -> NSAttributedString {
     let attributes: String.Attributes = [
       .font: UIFont.ksr_subhead(),
@@ -97,7 +96,7 @@ final class ProjectRisksDisclaimerCell: UITableViewCell, ValueCell {
     ]
 
     return NSMutableAttributedString(
-      string: "Learn about accountability on Kickstarter",
+      string: Strings.Learn_about_accountability_on_Kickstarter(),
       attributes: attributes
     )
   }

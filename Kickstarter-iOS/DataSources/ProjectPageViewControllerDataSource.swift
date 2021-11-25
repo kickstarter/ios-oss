@@ -20,12 +20,24 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case environmentalCommitmentsDisclaimer
   }
 
-  // TODO: Internationalize strings
-  private enum HeaderValue: String {
-    case overview = "Overview"
-    case environmentalCommitments = "Environmental commitments"
-    case faqs = "Frequently asked questions"
-    case risks = "Risks and challenges"
+  private enum HeaderValue {
+    case overview
+    case environmentalCommitments
+    case faqs
+    case risks
+
+    var description: String {
+      switch self {
+      case .overview:
+        return Strings.Overview()
+      case .environmentalCommitments:
+        return Strings.Environmental_Commitments()
+      case .faqs:
+        return Strings.Frequently_asked_questions()
+      case .risks:
+        return Strings.Risks_and_challenges()
+      }
+    }
   }
 
   func load(
@@ -67,7 +79,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       return
     case .faq:
       self.set(
-        values: [HeaderValue.faqs.rawValue],
+        values: [HeaderValue.faqs.description],
         cellClass: ProjectHeaderCell.self,
         inSection: Section.faqsHeader.rawValue
       )
@@ -109,7 +121,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       let risks = project.extendedProjectProperties?.risks ?? ""
 
       self.set(
-        values: [HeaderValue.risks.rawValue],
+        values: [HeaderValue.risks.description],
         cellClass: ProjectHeaderCell.self,
         inSection: Section.risksHeader.rawValue
       )
@@ -129,7 +141,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
 
       self.set(
-        values: [HeaderValue.environmentalCommitments.rawValue],
+        values: [HeaderValue.environmentalCommitments.description],
         cellClass: ProjectHeaderCell.self,
         inSection: Section.environmentalCommitmentsHeader.rawValue
       )
