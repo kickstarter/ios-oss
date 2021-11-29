@@ -98,6 +98,9 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .navigationSelectorProjectPageEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue]
+  case .projectPageStoryTabEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue]
   }
 }
 
@@ -111,5 +114,8 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .navigationSelectorProjectPageEnabled:
     AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue] = value
+  case .projectPageStoryTabEnabled:
+    AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue] = value
   }
 }

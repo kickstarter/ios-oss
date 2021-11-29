@@ -13,3 +13,10 @@ public func featureNavigationSelectorProjectPageIsEnabled() -> Bool {
     (AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue) ?? false)
 }
+
+public func featureProjectPageStoryTabEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.projectPageStoryTabEnabled.rawValue) ?? false)
+}
