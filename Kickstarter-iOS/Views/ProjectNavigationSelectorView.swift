@@ -161,10 +161,25 @@ final class ProjectNavigationSelectorView: UIView {
 
   private func setupConstraintsForSelectedButtonBorderView(sections: [NavigationSection]) {
     _ = self.buttonsStackView
-      |> UIStackView.lens.arrangedSubviews .~ sections.enumerated().map { idx, section in
-        UIButton()
+      |> UIStackView.lens.arrangedSubviews .~ sections.map { section in
+        var sectionIndex = 0
+
+        switch section {
+        case .overview:
+          sectionIndex = 0
+        case .campaign:
+          sectionIndex = 1
+        case .faq:
+          sectionIndex = 2
+        case .risks:
+          sectionIndex = 3
+        case .environmentalCommitments:
+          sectionIndex = 4
+        }
+
+        let navigationButton = UIButton()
           |> UIButton.lens.backgroundColor .~ .ksr_white
-          |> UIButton.lens.tag .~ idx
+          |> UIButton.lens.tag .~ sectionIndex
           |> UIButton.lens.targets .~ [
             (self, #selector(buttonTapped(_:)), .touchUpInside)
           ]
@@ -172,6 +187,8 @@ final class ProjectNavigationSelectorView: UIView {
           |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
           |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
           |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
+
+        return navigationButton
       }
 
     let firstButton = self.buttonsStackView.arrangedSubviews[0]
@@ -199,7 +216,10 @@ final class ProjectNavigationSelectorView: UIView {
   }
 
   private func pinSelectedButtonBorderView(toIndex index: Int) {
-    guard let button = self.buttonsStackView.arrangedSubviews[index] as? UIButton else { return }
+    guard let navigationSection = NavigationSection(rawValue: index),
+      let button = self.buttonsStackView.arrangedSubviews.first(where: { $0.tag == index }),
+      let buttonSection = NavigationSection(rawValue: button.tag),
+      buttonSection == navigationSection else { return }
 
     let leadingConstant = button.frame.origin.x - ProjectNavigationSelectorViewStyles.Layout
       .layoutMargins - safeAreaInsets.left
@@ -241,9 +261,14 @@ final class ProjectNavigationSelectorView: UIView {
   }
 
   private func selectButton(atIndex index: Int) {
-    for (idx, button) in self.buttonsStackView.arrangedSubviews.enumerated() {
+    let indexSection = NavigationSection(rawValue: index)
+
+    for button in self.buttonsStackView.arrangedSubviews {
+      let navigationSection = NavigationSection(rawValue: button.tag)
+      let validNavigationSection = navigationSection != nil
+
       _ = (button as? UIButton)
-        ?|> UIButton.lens.isSelected .~ (idx == index)
+        ?|> UIButton.lens.isSelected .~ (validNavigationSection ? navigationSection == indexSection : false)
     }
   }
 

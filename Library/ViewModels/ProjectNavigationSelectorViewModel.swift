@@ -52,16 +52,27 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
   public init() {
     self.animateButtonBottomBorderViewConstraints = self.buttonTappedProperty.signal
 
+    let displayableTabs: (Project) -> [NavigationSection] = { project in
+      let baseTabs: [NavigationSection] = [.overview]
+
+      guard let extendedProjectProperties = project.extendedProjectProperties else {
+        return baseTabs
+      }
+
+      let moreTabs: [NavigationSection] = featureProjectPageStoryTabEnabled() ? [.campaign, .faq, .risks] :
+        [.faq, .risks]
+
+      guard !extendedProjectProperties.environmentalCommitments.isEmpty else {
+        return baseTabs + moreTabs
+      }
+
+      return baseTabs + moreTabs + [.environmentalCommitments]
+    }
+
     self.configureNavigationSelectorUI = self.configureNavigationSelectorProperty.signal
       .skipNil()
       .map(first)
-      .map { project in
-        guard let extendedProjectProperties = project.extendedProjectProperties,
-          !extendedProjectProperties.environmentalCommitments.isEmpty else {
-          return [.overview, .campaign, .faq, .risks]
-        }
-        return NavigationSection.allCases
-      }
+      .map(displayableTabs)
 
     let configureNavigationSelector = self.configureNavigationSelectorProperty.signal.skipNil()
 
