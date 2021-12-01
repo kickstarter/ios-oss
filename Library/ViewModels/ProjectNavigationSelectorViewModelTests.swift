@@ -108,7 +108,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.vm.inputs.configureNavigationSelector(with: (project, nil))
 
-    self.configureNavigationSelectorUI.assertValues([NavigationSection.allCases])
+    self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
   }
 
   func testOutput_ConfigureNavigationSelectorUI_EmptyEnvironmentalCommitments() {
@@ -118,7 +118,48 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
-    self.configureNavigationSelectorUI.assertValues([[.overview, .campaign, .faq, .risks]])
+    self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks]])
+  }
+
+  func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOn_ShowsCampaignTab() {
+    var project = Project.template
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.buttonTapped(index: 0)
+
+      self.configureNavigationSelectorUI.assertDidNotEmitValue()
+
+      self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+      self.configureNavigationSelectorUI
+        .assertValues([[.overview, .campaign, .faq, .risks, .environmentalCommitments]])
+    }
+  }
+
+  func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOff_DoesNotShowCampaignTab() {
+    var project = Project.template
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.buttonTapped(index: 0)
+
+      self.configureNavigationSelectorUI.assertDidNotEmitValue()
+
+      self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+      self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
+    }
   }
 
   func testOutput_notifyDelegateProjectNavigationSelectorDidSelect() {

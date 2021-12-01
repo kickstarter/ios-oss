@@ -5,7 +5,7 @@ import UIKit
 
 private enum ProjectNavigationSelectorViewStyles {
   fileprivate enum Layout {
-    fileprivate static let bottomBorderViewHeight: CGFloat = 1.0
+    fileprivate static let bottomBorderViewHeight: CGFloat = 2.0
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
     fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
   }
@@ -40,6 +40,11 @@ final class ProjectNavigationSelectorView: UIView {
 
   private lazy var scrollView: UIScrollView = {
     UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var contentView: UIView = {
+    UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -117,45 +122,40 @@ final class ProjectNavigationSelectorView: UIView {
   // MARK: Functions
 
   private func configureSubviews() {
-    _ = (self.bottomBorderView, self.scrollView)
+    _ = (self.contentView, self)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.scrollView, self.contentView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.bottomBorderView, self.contentView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.selectedButtonBorderView, self.contentView)
       |> ksr_addSubviewToParent()
 
     _ = (self.buttonsStackView, self.scrollView)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.selectedButtonBorderView, self.scrollView)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.scrollView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
   }
 
   private func setupConstraints() {
-    var horizontalConstraints: [NSLayoutConstraint] = []
-
-    // Centering the view on iPad ensures we aren't aligned against the leading anchor
-    if AppEnvironment.current.device.userInterfaceIdiom == .phone {
-      horizontalConstraints
-        .append(self.buttonsStackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor))
-      horizontalConstraints
-        .append(self.buttonsStackView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor))
-    } else {
-      horizontalConstraints
-        .append(self.buttonsStackView.centerXAnchor.constraint(equalTo: self.scrollView.centerXAnchor))
-    }
-
-    NSLayoutConstraint.activate(horizontalConstraints)
-
     NSLayoutConstraint.activate([
-      self.buttonsStackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
+      self.scrollView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+      self.scrollView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
+      self.scrollView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+      self.scrollView.heightAnchor.constraint(equalTo: self.buttonsStackView.heightAnchor),
       self.bottomBorderView.heightAnchor
         .constraint(equalToConstant: ProjectNavigationSelectorViewStyles.Layout.bottomBorderViewHeight),
-      self.bottomBorderView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      self.bottomBorderView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      self.bottomBorderView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
+      self.bottomBorderView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
       self.bottomBorderView.topAnchor
-        .constraint(equalTo: self.buttonsStackView.bottomAnchor, constant: Styles.grid(2)),
-      self.bottomBorderView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
+        .constraint(equalTo: self.scrollView.bottomAnchor, constant: Styles.grid(2)),
+      self.contentView.bottomAnchor.constraint(equalTo: self.bottomBorderView.bottomAnchor),
+      self.contentView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.contentView.rightAnchor.constraint(equalTo: self.rightAnchor),
+      self.contentView.topAnchor.constraint(equalTo: self.topAnchor),
+      self.contentView.heightAnchor.constraint(equalTo: self.heightAnchor)
     ])
   }
 
@@ -232,10 +232,10 @@ final class ProjectNavigationSelectorView: UIView {
       delay: 0.0,
       options: .curveEaseOut,
       animations: {
-        self.scrollView.setNeedsLayout()
+        self.contentView.setNeedsLayout()
         self.selectedButtonBorderViewLeadingConstraint?.constant = leadingConstant
         self.selectedButtonBorderViewWidthConstraint?.constant = widthConstant
-        self.scrollView.layoutIfNeeded()
+        self.contentView.layoutIfNeeded()
 
         // Moves the button to the approximate center of the scrollView if the device is not an iPad, not in portrait orientation or fits within the bounds of the screens width
         let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad

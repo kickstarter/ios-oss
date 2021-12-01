@@ -287,7 +287,7 @@ public final class KSRAnalytics {
     public enum TabContext {
       case overview
       case risks
-      case story
+      case campaign
       case faqs
       case environmentalCommitments
 
@@ -295,7 +295,7 @@ public final class KSRAnalytics {
         switch self {
         case .overview: return "overview"
         case .risks: return "risks"
-        case .story: return "story"
+        case .campaign: return "campaign"
         case .faqs: return "faq"
         case .environmentalCommitments: return "environment"
         }

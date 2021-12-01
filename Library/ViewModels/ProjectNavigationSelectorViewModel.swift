@@ -111,7 +111,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
   private func navigationTabContext(index: Int) -> KSRAnalytics.SectionContext? {
     switch index {
     case 0: return .tabSelected(.overview)
-    case 1: return .tabSelected(.story)
+    case 1: return .tabSelected(.campaign)
     case 2: return .tabSelected(.faqs)
     case 3: return .tabSelected(.risks)
     case 4: return .tabSelected(.environmentalCommitments)

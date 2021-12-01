@@ -245,8 +245,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     )
 
     self.configureProjectNavigationSelectorView = freshProjectAndRefTag
-      .map { project, refTag in
-        (project: project, refTag: refTag)
+      .combineLatest(with: self.viewWillAppearAnimatedProperty.signal)
+      .map { projectAndRefTag, _ in
+        let (project, refTag) = projectAndRefTag
+        return (project: project, refTag: refTag)
       }
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
