@@ -8,6 +8,8 @@ private enum ProjectNavigationSelectorViewStyles {
     fileprivate static let bottomBorderViewHeight: CGFloat = 2.0
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
     fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
+    fileprivate static let selectedButtonBorderViewWidthExtensionLeading: CGFloat = 10.0
+    fileprivate static let selectedButtonBorderViewWidthExtensionFull: CGFloat = 20.0
   }
 }
 
@@ -150,7 +152,7 @@ final class ProjectNavigationSelectorView: UIView {
       self.bottomBorderView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
       self.bottomBorderView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
       self.bottomBorderView.topAnchor
-        .constraint(equalTo: self.scrollView.bottomAnchor, constant: Styles.grid(2)),
+        .constraint(equalTo: self.scrollView.bottomAnchor, constant: Styles.grid(1)),
       self.contentView.bottomAnchor.constraint(equalTo: self.bottomBorderView.bottomAnchor),
       self.contentView.leftAnchor.constraint(equalTo: self.leftAnchor),
       self.contentView.rightAnchor.constraint(equalTo: self.rightAnchor),
@@ -195,11 +197,13 @@ final class ProjectNavigationSelectorView: UIView {
 
     let leadingConstraint = self.selectedButtonBorderView.leadingAnchor
       .constraint(
-        equalTo: firstButton.leadingAnchor
+        equalTo: firstButton.leadingAnchor,
+        constant: -ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionLeading
       )
     let widthConstraint = self.selectedButtonBorderView.widthAnchor
       .constraint(
-        equalTo: firstButton.widthAnchor
+        equalTo: firstButton.widthAnchor,
+        constant: ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull
       )
 
     NSLayoutConstraint.activate([
@@ -222,10 +226,12 @@ final class ProjectNavigationSelectorView: UIView {
       buttonSection == navigationSection else { return }
 
     let leadingConstant = button.frame.origin.x - ProjectNavigationSelectorViewStyles.Layout
-      .layoutMargins - safeAreaInsets.left
+      .layoutMargins - safeAreaInsets.left - ProjectNavigationSelectorViewStyles.Layout
+      .selectedButtonBorderViewWidthExtensionLeading
 
     // The value of the constraint is originally set to the width of the first button so we have subtract this each time we want to calculate the constant
-    let widthConstant = button.frame.width - self.buttonsStackView.arrangedSubviews[0].frame.width
+    let widthConstant = button.frame.width - self.buttonsStackView.arrangedSubviews[0].frame
+      .width + ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull
 
     UIView.animate(
       withDuration: 0.3,
@@ -238,24 +244,24 @@ final class ProjectNavigationSelectorView: UIView {
         self.contentView.layoutIfNeeded()
 
         // Moves the button to the approximate center of the scrollView if the device is not an iPad, not in portrait orientation or fits within the bounds of the screens width
-        let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad
-        let isPortrait = UIDevice.current.orientation == .portrait
-        let isButtonStackViewScrollable = self.buttonsStackView.frame.width > self.scrollView.frame.width
-
-        if isPortrait, isNotIpad, isButtonStackViewScrollable {
-          switch NavigationSection(rawValue: index) {
-          case .campaign:
-            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-          case .overview:
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-          case .environmentalCommitments:
-            self.scrollView.contentOffset = CGPoint(x: button.frame.midX / 2, y: 0)
-          case .faq, .risks:
-            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-          default:
-            break
-          }
-        }
+//        let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad
+//        let isPortrait = UIDevice.current.orientation == .portrait
+//        let isButtonStackViewScrollable = self.buttonsStackView.frame.width > self.scrollView.frame.width
+//
+//        if isPortrait, isNotIpad, isButtonStackViewScrollable {
+//          switch NavigationSection(rawValue: index) {
+//          case .campaign:
+//            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
+//          case .overview:
+//            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+//          case .environmentalCommitments:
+//            self.scrollView.contentOffset = CGPoint(x: button.frame.midX / 2, y: 0)
+//          case .faq, .risks:
+//            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
+//          default:
+//            break
+//          }
+//        }
       }
     )
   }
