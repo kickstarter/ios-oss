@@ -242,28 +242,26 @@ final class ProjectNavigationSelectorView: UIView {
         self.selectedButtonBorderViewLeadingConstraint?.constant = leadingConstant
         self.selectedButtonBorderViewWidthConstraint?.constant = widthConstant
         self.contentView.layoutIfNeeded()
-
-        // Moves the button to the approximate center of the scrollView if the device is not an iPad, not in portrait orientation or fits within the bounds of the screens width
-//        let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad
-//        let isPortrait = UIDevice.current.orientation == .portrait
-//        let isButtonStackViewScrollable = self.buttonsStackView.frame.width > self.scrollView.frame.width
-//
-//        if isPortrait, isNotIpad, isButtonStackViewScrollable {
-//          switch NavigationSection(rawValue: index) {
-//          case .campaign:
-//            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-//          case .overview:
-//            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-//          case .environmentalCommitments:
-//            self.scrollView.contentOffset = CGPoint(x: button.frame.midX / 2, y: 0)
-//          case .faq, .risks:
-//            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-//          default:
-//            break
-//          }
-//        }
       }
     )
+
+    let origin = CGPoint(
+      x: button.frame
+        .minX -
+        (ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionLeading * 2),
+      y: 0.0
+    )
+    let size = CGSize(
+      width: button.frame.size
+        .width + (ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull * 2),
+      height: 1.0
+    )
+    let scrollToRect = CGRect(
+      origin: origin,
+      size: size
+    )
+
+    self.scrollView.scrollRectToVisible(scrollToRect, animated: true)
   }
 
   private func selectButton(atIndex index: Int) {
