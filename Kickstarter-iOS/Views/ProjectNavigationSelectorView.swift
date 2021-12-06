@@ -188,7 +188,7 @@ final class ProjectNavigationSelectorView: UIView {
           |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString.uppercased() }
           |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
           |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
-          |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
+          |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().weighted(.semibold)
 
         return navigationButton
       }
@@ -271,8 +271,13 @@ final class ProjectNavigationSelectorView: UIView {
       let navigationSection = NavigationSection(rawValue: button.tag)
       let validNavigationSection = navigationSection != nil
 
+      let isButtonSelected = validNavigationSection ? navigationSection == indexSection : false
+      let buttonSelectedFont = isButtonSelected ? UIFont.ksr_footnote().weighted(.bold) : UIFont
+        .ksr_footnote().weighted(.semibold)
+
       _ = (button as? UIButton)
-        ?|> UIButton.lens.isSelected .~ (validNavigationSection ? navigationSection == indexSection : false)
+        ?|> UIButton.lens.isSelected .~ isButtonSelected
+        ?|> UIButton.lens.titleLabel.font .~ buttonSelectedFont
     }
   }
 
