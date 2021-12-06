@@ -87,7 +87,7 @@ final class ProjectPageNavigationBarView: UIView {
     _ = self.rootStackView
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
+      |> \.insetsLayoutMarginsFromSafeArea .~ true
       |> \.spacing .~ Styles.grid(1)
   }
 
