@@ -85,10 +85,10 @@ final class ProjectPageNavigationBarView: UIView {
     _ = self |> \.backgroundColor .~ .ksr_white
 
     _ = self.rootStackView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(0), leftRight: Styles.grid(2))
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
-      |> \.spacing .~ Styles.grid(1)
+      |> \.insetsLayoutMarginsFromSafeArea .~ true
+      |> \.spacing .~ Styles.grid(0)
   }
 
   // MARK: - View Model

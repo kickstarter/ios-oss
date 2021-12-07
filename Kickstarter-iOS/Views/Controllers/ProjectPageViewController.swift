@@ -58,7 +58,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setupNavigationView()
+    self.configureNavigationView()
     self.configurePledgeCTAContainerView()
     self.configureNavigationSelectorView()
     self.configureTableView()
@@ -95,7 +95,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
-  public func setupNavigationView() {
+  public override func updateViewConstraints() {
+    super.updateViewConstraints()
+
+    self.updatePledgeCTAConstraints()
+    self.updateNavigationSelectorViewConstraints()
+    self.updateTableViewConstraints()
+  }
+
+  public func configureNavigationView() {
     guard let defaultNavigationBarView = self.navigationController?.navigationBar else {
       return
     }
@@ -118,14 +126,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.pledgeCTAContainerView.retryButton.addTarget(
       self, action: #selector(ProjectPageViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
-
-    let pledgeCTAContainerViewConstraints = [
-      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
   private func configureTableView() {
@@ -142,15 +142,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
-
-    self.updateTableViewConstraints()
   }
 
   private func configureNavigationSelectorView() {
     _ = (self.projectNavigationSelectorView, self.view)
       |> ksr_addSubviewToParent()
-
-    self.updateNavigationSelectorViewConstraints()
   }
 
   public override func bindStyles() {
@@ -186,13 +182,22 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func updateNavigationSelectorViewConstraints() {
     let projectNavigationSelectorConstraints = [
-      self.projectNavigationSelectorView.topAnchor
-        .constraint(equalTo: self.view.topAnchor, constant: self.view.safeAreaInsets.top),
+      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
     ]
 
     NSLayoutConstraint.activate(projectNavigationSelectorConstraints)
+  }
+
+  private func updatePledgeCTAConstraints() {
+    let pledgeCTAContainerViewConstraints = [
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
   private func setupNotifications() {

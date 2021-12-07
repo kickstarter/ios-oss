@@ -8,6 +8,8 @@ private enum ProjectNavigationSelectorViewStyles {
     fileprivate static let bottomBorderViewHeight: CGFloat = 2.0
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
     fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
+    fileprivate static let selectedButtonBorderViewWidthExtensionLeading: CGFloat = 10.0
+    fileprivate static let selectedButtonBorderViewWidthExtensionFull: CGFloat = 20.0
   }
 }
 
@@ -150,7 +152,7 @@ final class ProjectNavigationSelectorView: UIView {
       self.bottomBorderView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
       self.bottomBorderView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
       self.bottomBorderView.topAnchor
-        .constraint(equalTo: self.scrollView.bottomAnchor, constant: Styles.grid(2)),
+        .constraint(equalTo: self.scrollView.bottomAnchor),
       self.contentView.bottomAnchor.constraint(equalTo: self.bottomBorderView.bottomAnchor),
       self.contentView.leftAnchor.constraint(equalTo: self.leftAnchor),
       self.contentView.rightAnchor.constraint(equalTo: self.rightAnchor),
@@ -160,46 +162,64 @@ final class ProjectNavigationSelectorView: UIView {
   }
 
   private func setupConstraintsForSelectedButtonBorderView(sections: [NavigationSection]) {
-    _ = self.buttonsStackView
-      |> UIStackView.lens.arrangedSubviews .~ sections.map { section in
-        var sectionIndex = 0
+    let buttonViews: [UIButton] = sections.map { section in
+      var sectionIndex = 0
 
-        switch section {
-        case .overview:
-          sectionIndex = 0
-        case .campaign:
-          sectionIndex = 1
-        case .faq:
-          sectionIndex = 2
-        case .risks:
-          sectionIndex = 3
-        case .environmentalCommitments:
-          sectionIndex = 4
-        }
-
-        let navigationButton = UIButton()
-          |> UIButton.lens.backgroundColor .~ .ksr_white
-          |> UIButton.lens.tag .~ sectionIndex
-          |> UIButton.lens.targets .~ [
-            (self, #selector(buttonTapped(_:)), .touchUpInside)
-          ]
-          |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString.uppercased() }
-          |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
-          |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
-          |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().bolded
-
-        return navigationButton
+      switch section {
+      case .overview:
+        sectionIndex = 0
+      case .campaign:
+        sectionIndex = 1
+      case .faq:
+        sectionIndex = 2
+      case .risks:
+        sectionIndex = 3
+      case .environmentalCommitments:
+        sectionIndex = 4
       }
+
+      let navigationButton = UIButton()
+        |> UIButton.lens.backgroundColor .~ .ksr_white
+        |> UIButton.lens.tag .~ sectionIndex
+        |> UIButton.lens.targets .~ [
+          (self, #selector(buttonTapped(_:)), .touchUpInside)
+        ]
+        |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString.uppercased() }
+        |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
+        |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
+        |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().weighted(.semibold)
+        |> UIButton.lens.titleLabel.textAlignment .~ .center
+
+      return navigationButton
+    }
+
+    let buttonViewConstraints: [NSLayoutConstraint] = buttonViews.map { button -> [NSLayoutConstraint]? in
+      guard let titleLabel = button.titleLabel else { return nil }
+
+      return [
+        titleLabel.topAnchor.constraint(equalTo: button.topAnchor),
+        titleLabel.leftAnchor.constraint(equalTo: button.leftAnchor),
+        titleLabel.rightAnchor.constraint(equalTo: button.rightAnchor),
+        titleLabel.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -Styles.grid(2))
+      ]
+    }
+    .compact()
+    .flatMap { $0 }
+
+    _ = self.buttonsStackView
+      |> UIStackView.lens.arrangedSubviews .~ buttonViews
 
     let firstButton = self.buttonsStackView.arrangedSubviews[0]
 
     let leadingConstraint = self.selectedButtonBorderView.leadingAnchor
       .constraint(
-        equalTo: firstButton.leadingAnchor
+        equalTo: firstButton.leadingAnchor,
+        constant: -ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionLeading
       )
     let widthConstraint = self.selectedButtonBorderView.widthAnchor
       .constraint(
-        equalTo: firstButton.widthAnchor
+        equalTo: firstButton.widthAnchor,
+        constant: ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull
       )
 
     NSLayoutConstraint.activate([
@@ -210,6 +230,8 @@ final class ProjectNavigationSelectorView: UIView {
           .selectedButtonBorderViewHeight),
       self.selectedButtonBorderView.bottomAnchor.constraint(equalTo: self.bottomBorderView.topAnchor)
     ])
+
+    NSLayoutConstraint.activate(buttonViewConstraints)
 
     self.selectedButtonBorderViewLeadingConstraint = leadingConstraint
     self.selectedButtonBorderViewWidthConstraint = widthConstraint
@@ -222,10 +244,12 @@ final class ProjectNavigationSelectorView: UIView {
       buttonSection == navigationSection else { return }
 
     let leadingConstant = button.frame.origin.x - ProjectNavigationSelectorViewStyles.Layout
-      .layoutMargins - safeAreaInsets.left
+      .layoutMargins - safeAreaInsets.left - ProjectNavigationSelectorViewStyles.Layout
+      .selectedButtonBorderViewWidthExtensionLeading
 
     // The value of the constraint is originally set to the width of the first button so we have subtract this each time we want to calculate the constant
-    let widthConstant = button.frame.width - self.buttonsStackView.arrangedSubviews[0].frame.width
+    let widthConstant = button.frame.width - self.buttonsStackView.arrangedSubviews[0].frame
+      .width + ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull
 
     UIView.animate(
       withDuration: 0.3,
@@ -236,28 +260,26 @@ final class ProjectNavigationSelectorView: UIView {
         self.selectedButtonBorderViewLeadingConstraint?.constant = leadingConstant
         self.selectedButtonBorderViewWidthConstraint?.constant = widthConstant
         self.contentView.layoutIfNeeded()
-
-        // Moves the button to the approximate center of the scrollView if the device is not an iPad, not in portrait orientation or fits within the bounds of the screens width
-        let isNotIpad = AppEnvironment.current.device.userInterfaceIdiom != .pad
-        let isPortrait = UIDevice.current.orientation == .portrait
-        let isButtonStackViewScrollable = self.buttonsStackView.frame.width > self.scrollView.frame.width
-
-        if isPortrait, isNotIpad, isButtonStackViewScrollable {
-          switch NavigationSection(rawValue: index) {
-          case .campaign:
-            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-          case .overview:
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-          case .environmentalCommitments:
-            self.scrollView.contentOffset = CGPoint(x: button.frame.midX / 2, y: 0)
-          case .faq, .risks:
-            self.scrollView.contentOffset = CGPoint(x: self.center.x / 3, y: 0)
-          default:
-            break
-          }
-        }
       }
     )
+
+    let origin = CGPoint(
+      x: button.frame
+        .minX -
+        (ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionLeading * 2),
+      y: 0.0
+    )
+    let size = CGSize(
+      width: button.frame.size
+        .width + (ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull * 2),
+      height: 1.0
+    )
+    let scrollToRect = CGRect(
+      origin: origin,
+      size: size
+    )
+
+    self.scrollView.scrollRectToVisible(scrollToRect, animated: true)
   }
 
   private func selectButton(atIndex index: Int) {
@@ -267,8 +289,13 @@ final class ProjectNavigationSelectorView: UIView {
       let navigationSection = NavigationSection(rawValue: button.tag)
       let validNavigationSection = navigationSection != nil
 
+      let isButtonSelected = validNavigationSection ? navigationSection == indexSection : false
+      let buttonSelectedFont = isButtonSelected ? UIFont.ksr_footnote().weighted(.bold) : UIFont
+        .ksr_footnote().weighted(.semibold)
+
       _ = (button as? UIButton)
-        ?|> UIButton.lens.isSelected .~ (validNavigationSection ? navigationSection == indexSection : false)
+        ?|> UIButton.lens.isSelected .~ isButtonSelected
+        ?|> UIButton.lens.titleLabel.font .~ buttonSelectedFont
     }
   }
 
@@ -298,7 +325,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(
-      top: Styles.grid(1),
+      top: Styles.grid(0),
       left: Styles.grid(3),
       bottom: Styles.grid(1),
       right: Styles.grid(3)

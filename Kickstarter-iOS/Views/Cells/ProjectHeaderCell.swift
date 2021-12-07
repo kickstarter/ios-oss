@@ -47,7 +47,7 @@ final class ProjectHeaderCell: UITableViewCell, ValueCell {
 
     _ = self.contentView
       |> \.layoutMargins .~ .init(
-        topBottom: Styles.grid(1),
+        topBottom: Styles.grid(3),
         leftRight: Styles.grid(3)
       )
 
