@@ -248,7 +248,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.configureDataSourceProject.assertDidEmitValue()
   }
 
-  func testConfigureProjectNavigationSelectorView() {
+  func testConfigureProjectNavigationSelectorView_ExtendedPropertiesEmpty_CreatesNavigationSelector_Success() {
     let projectPamphletData = Project
       .ProjectPamphletData(project: self.projectWithEmptyProperties, backingId: nil)
 
@@ -261,6 +261,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -278,6 +279,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }

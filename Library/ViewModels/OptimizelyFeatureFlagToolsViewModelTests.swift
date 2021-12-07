@@ -23,7 +23,8 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
@@ -43,7 +44,8 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
       ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {

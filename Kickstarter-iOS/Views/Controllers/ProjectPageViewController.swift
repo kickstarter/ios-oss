@@ -60,6 +60,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.setupNavigationView()
     self.configurePledgeCTAContainerView()
+    self.configureNavigationSelectorView()
     self.configureTableView()
 
     self.projectNavigationSelectorView.delegate = self
@@ -139,13 +140,17 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         height: ProjectPageViewControllerStyles.Layout.tableFooterViewHeight
       ))
 
-    _ = (self.projectNavigationSelectorView, self.view)
-      |> ksr_addSubviewToParent()
-
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
 
-    self.updateConstraints()
+    self.updateTableViewConstraints()
+  }
+
+  private func configureNavigationSelectorView() {
+    _ = (self.projectNavigationSelectorView, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.updateNavigationSelectorViewConstraints()
   }
 
   public override func bindStyles() {
@@ -165,32 +170,29 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   // MARK: - Private Helpers
 
-  private func updateConstraints() {
-    let presentationStyleFormSheet: CGFloat = self
-      .modalPresentationStyle == .formSheet ? ProjectPageViewControllerStyles.Layout
-      .projectNavigationSelectorHeightFormSheet : ProjectPageViewControllerStyles.Layout
-      .projectNavigationSelectorHeightFullscreen
-    let navigationSelectorFixedHeightAnchor = self.projectNavigationSelectorView.heightAnchor
-      .constraint(equalToConstant: presentationStyleFormSheet)
-
+  private func updateTableViewConstraints() {
     let tableViewBottomToPledgeCTA = self.tableView.bottomAnchor
       .constraint(equalTo: self.pledgeCTAContainerView.topAnchor, constant: -Styles.grid(1))
 
+    let tableViewConstraints = [
+      tableViewBottomToPledgeCTA,
+      self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor)
+    ]
+
+    NSLayoutConstraint.activate(tableViewConstraints)
+  }
+
+  private func updateNavigationSelectorViewConstraints() {
     let projectNavigationSelectorConstraints = [
       self.projectNavigationSelectorView.topAnchor
-        .constraint(equalTo: self.view.topAnchor, constant: Styles.grid(10)),
-      // come in under the navigation bar, which is part of navigation bar view, which is itself inside `self.view`.
-      self.projectNavigationSelectorView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      navigationSelectorFixedHeightAnchor
+        .constraint(equalTo: self.view.topAnchor, constant: self.view.safeAreaInsets.top),
+      self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
     ]
 
-    let tableViewConstraints = [
-      self.tableView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
-      tableViewBottomToPledgeCTA,
-      self.tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
-    ]
-
-    NSLayoutConstraint.activate(projectNavigationSelectorConstraints + tableViewConstraints)
+    NSLayoutConstraint.activate(projectNavigationSelectorConstraints)
   }
 
   private func setupNotifications() {
@@ -239,13 +241,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
 
     self.viewModel.outputs.configureDataSource
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] navSection, project, refTag in
         self?.dataSource.load(
           navigationSection: navSection,
           project: project,
           refTag: refTag
         )
+
         self?.tableView.reloadData()
       }
 
@@ -300,7 +303,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
 
     self.viewModel.outputs.updateDataSource
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray in
         self?.dataSource.load(
           navigationSection: navSection,
@@ -308,6 +311,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           refTag: refTag,
           isExpandedStates: initialIsExpandedArray
         )
+
         self?.tableView.reloadData()
       }
 

@@ -108,7 +108,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.vm.inputs.configureNavigationSelector(with: (project, nil))
 
-    self.configureNavigationSelectorUI.assertValues([NavigationSection.allCases])
+    self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
   }
 
   func testOutput_ConfigureNavigationSelectorUI_EmptyEnvironmentalCommitments() {
@@ -118,7 +118,48 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
 
-    self.configureNavigationSelectorUI.assertValues([[.overview, .campaign, .faq, .risks]])
+    self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks]])
+  }
+
+  func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOn_ShowsCampaignTab() {
+    var project = Project.template
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.buttonTapped(index: 0)
+
+      self.configureNavigationSelectorUI.assertDidNotEmitValue()
+
+      self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+      self.configureNavigationSelectorUI
+        .assertValues([[.overview, .campaign, .faq, .risks, .environmentalCommitments]])
+    }
+  }
+
+  func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOff_DoesNotShowCampaignTab() {
+    var project = Project.template
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.buttonTapped(index: 0)
+
+      self.configureNavigationSelectorUI.assertDidNotEmitValue()
+
+      self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+      self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
+    }
   }
 
   func testOutput_notifyDelegateProjectNavigationSelectorDidSelect() {
@@ -176,7 +217,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story"],
+      ["campaign"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
@@ -191,7 +232,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story", "faq"],
+      ["campaign", "faq"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
@@ -206,7 +247,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story", "faq", "risks"],
+      ["campaign", "faq", "risks"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
@@ -221,7 +262,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story", "faq", "risks", "environment"],
+      ["campaign", "faq", "risks", "environment"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
@@ -236,7 +277,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story", "faq", "risks", "environment", "overview"],
+      ["campaign", "faq", "risks", "environment", "overview"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
@@ -274,7 +315,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story"],
+      ["campaign"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
@@ -291,7 +332,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["story", "overview"],
+      ["campaign", "overview"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )

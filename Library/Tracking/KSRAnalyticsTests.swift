@@ -1735,9 +1735,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("overview", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.story))
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.campaign))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("story", segmentClient.properties.last?["context_section"] as? String)
+    XCTAssertEqual("campaign", segmentClient.properties.last?["context_section"] as? String)
 
     ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.faqs))
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)

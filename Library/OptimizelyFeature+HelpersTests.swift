@@ -38,4 +38,22 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureNavigationSelectorProjectPageIsEnabled())
     }
   }
+
+  func testProjectPageStoryEnabled_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertTrue(featureProjectPageStoryTabEnabled())
+    }
+  }
+
+  func testProjectPageStoryEnabled_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featureProjectPageStoryTabEnabled())
+    }
+  }
 }
