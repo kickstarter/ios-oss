@@ -141,7 +141,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       ))
 
     _ = (self.tableView, self.view)
-      |> ksr_addSubviewToParent()
   }
 
   private func configureNavigationSelectorView() {
