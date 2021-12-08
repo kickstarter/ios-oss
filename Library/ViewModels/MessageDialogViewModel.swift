@@ -102,7 +102,7 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
         case let .messageThread(messageThread):
           return .init(value: messageThread.participant.name)
         case let .project(project):
-          return .init(value: project.creator.name)
+          return .init(value: project.name)
         }
       }
 

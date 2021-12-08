@@ -158,16 +158,31 @@ final class CuratedProjectsViewController: UIViewController {
   // MARK: - Functions
 
   fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(
-      project: project,
-      refTag: refTag,
-      initialPlaylist: projects,
-      navigatorDelegate: self
-    )
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      vc.modalPresentationStyle = .fullScreen
+    guard featureNavigationSelectorProjectPageIsEnabled() else {
+      let vc = ProjectNavigatorViewController.configuredWith(
+        project: project,
+        refTag: refTag,
+        initialPlaylist: projects,
+        navigatorDelegate: self
+      )
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        vc.modalPresentationStyle = .fullScreen
+      }
+      self.present(vc, animated: true, completion: nil)
+
+      return
     }
-    self.present(vc, animated: true, completion: nil)
+
+    let projectParam = Either<Project, Param>(left: project)
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: projectParam,
+      refTag: refTag
+    )
+
+    let nav = NavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 }
 

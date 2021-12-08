@@ -247,8 +247,8 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
  */
 
 private func extendedProjectFAQs(from projectFragment: GraphAPI
-  .ProjectFragment) -> [ExtendedProjectProperties.ProjectFAQ] {
-  var faqs = [ExtendedProjectProperties.ProjectFAQ]()
+  .ProjectFragment) -> [ProjectFAQ] {
+  var faqs = [ProjectFAQ]()
 
   if let allFaqs = projectFragment.faqs?.nodes.flatMap({ $0 }) {
     for faq in allFaqs {
@@ -265,8 +265,12 @@ private func extendedProjectFAQs(from projectFragment: GraphAPI
         createdAtDate = TimeInterval(existingDate)
       }
 
-      let faq = ExtendedProjectProperties
-        .ProjectFAQ(answer: faqAnswer, question: faqQuestion, id: decomposedId, createdAt: createdAtDate)
+      let faq = ProjectFAQ(
+        answer: faqAnswer,
+        question: faqQuestion,
+        id: decomposedId,
+        createdAt: createdAtDate
+      )
 
       faqs.append(faq)
     }
@@ -280,8 +284,8 @@ private func extendedProjectFAQs(from projectFragment: GraphAPI
  */
 
 private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
-  .ProjectFragment) -> [ExtendedProjectProperties.EnvironmentalCommitment] {
-  var environmentalCommitments = [ExtendedProjectProperties.EnvironmentalCommitment]()
+  .ProjectFragment) -> [ProjectEnvironmentalCommitment] {
+  var environmentalCommitments = [ProjectEnvironmentalCommitment]()
 
   if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
@@ -291,7 +295,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         continue
       }
 
-      var commitmentCategory: ExtendedProjectProperties.CommitmentCategory
+      var commitmentCategory: ProjectCommitmentCategory
 
       switch commitment?.commitmentCategory {
       case .longLastingDesign:
@@ -308,8 +312,11 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         commitmentCategory = .somethingElse
       }
 
-      let environmentalCommitment = ExtendedProjectProperties
-        .EnvironmentalCommitment(description: description, category: commitmentCategory, id: decomposedId)
+      let environmentalCommitment = ProjectEnvironmentalCommitment(
+        description: description,
+        category: commitmentCategory,
+        id: decomposedId
+      )
 
       environmentalCommitments.append(environmentalCommitment)
     }

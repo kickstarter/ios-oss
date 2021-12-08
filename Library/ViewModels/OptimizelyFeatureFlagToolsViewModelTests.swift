@@ -22,7 +22,9 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
   func testReloadWithData_AllFeaturesEnabled() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: true
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
@@ -41,7 +43,9 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
   func testReloadWithData_FeaturesEnabledAndDisabled() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
       ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {

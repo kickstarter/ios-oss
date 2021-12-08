@@ -449,9 +449,26 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .demoteErrors()
           .observeForUI()
           .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
-            (
+            guard featureNavigationSelectorProjectPageIsEnabled() else {
+              return (
+                project, subpage,
+                [
+                  ProjectPamphletViewController
+                    .configuredWith(projectOrParam: .left(project), refTag: refTag)
+                ],
+                refTag
+              )
+            }
+
+            let projectParam = Either<Project, Param>(left: project)
+            let vc = ProjectPageViewController.configuredWith(
+              projectOrParam: projectParam,
+              refTag: refTag
+            )
+
+            return (
               project, subpage,
-              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
+              [vc],
               refTag
             )
           }
