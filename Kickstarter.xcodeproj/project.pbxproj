@@ -105,6 +105,8 @@
 		066C0AEB26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */; };
 		067A445026F9135D00A65F46 /* ExtendedProjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */; };
 		06813BA426E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */; };
+		068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */; };
+		068CD2F027615F3500F69798 /* CommentWithRepliesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
 		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
@@ -1879,6 +1881,8 @@
 		066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutationTemplate.swift; sourceTree = "<group>"; };
 		067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedProjectProperties.swift; sourceTree = "<group>"; };
 		06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectBySlugQuery.graphql; sourceTree = "<group>"; };
+		068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCommentReplies.graphql; sourceTree = "<group>"; };
+		068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentWithRepliesFragment.graphql; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
 		06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarViewTests.swift; sourceTree = "<group>"; };
@@ -3603,6 +3607,7 @@
 				06BD057726F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql */,
 				8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */,
 				8A1556AF268CE6A500017845 /* FetchUpdateComments.graphql */,
+				068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */,
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
 				4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */,
 				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
@@ -3742,6 +3747,7 @@
 				8A1556EE269398CA00017845 /* CategoryFragment.graphql */,
 				8AC3E0EC269F485100168BF8 /* CheckoutFragment.graphql */,
 				8ADCCDAB2656BC1A0079D308 /* CommentFragment.graphql */,
+				068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */,
 				8A1556F3269398CB00017845 /* CountryFragment.graphql */,
 				8A1556F2269398CB00017845 /* CreditCardFragment.graphql */,
 				8A1556F4269398CB00017845 /* LocationFragment.graphql */,
@@ -5760,6 +5766,7 @@
 				8AC3E0F5269F48A400168BF8 /* UpdateBacking.graphql in Resources */,
 				8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */,
 				06DAAE5D26AA3CF500194E58 /* UserStoredCardsFragment.graphql in Resources */,
+				068CD2F027615F3500F69798 /* CommentWithRepliesFragment.graphql in Resources */,
 				061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */,
 				06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */,
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
@@ -5768,6 +5775,7 @@
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
+				068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */,
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
 				4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */,
 				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
