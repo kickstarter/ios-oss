@@ -246,10 +246,20 @@ public struct Service: ServiceType {
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
-  public func fetchCommentReplies(query: NonEmptySet<Query>)
+  public func fetchCommentReplies(
+    id: String,
+    cursor: String?,
+    limit: Int,
+    withStoredCards: Bool
+  )
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchCommentRepliesQuery(
+        commentId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      ))
       .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
   }
 

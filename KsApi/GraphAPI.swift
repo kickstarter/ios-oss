@@ -5056,7 +5056,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchCommentReplies($commentId: ID!, $cursor: String, $limit: Int, $withStoredCards: Boolean!) {
+      query FetchCommentReplies($commentId: ID!, $cursor: String, $limit: Int!, $withStoredCards: Boolean!) {
         comment: node(id: $commentId) {
           __typename
           ...CommentWithRepliesFragment
@@ -5078,10 +5078,10 @@ public enum GraphAPI {
 
     public var commentId: GraphQLID
     public var cursor: String?
-    public var limit: Int?
+    public var limit: Int
     public var withStoredCards: Bool
 
-    public init(commentId: GraphQLID, cursor: String? = nil, limit: Int? = nil, withStoredCards: Bool) {
+    public init(commentId: GraphQLID, cursor: String? = nil, limit: Int, withStoredCards: Bool) {
       self.commentId = commentId
       self.cursor = cursor
       self.limit = limit

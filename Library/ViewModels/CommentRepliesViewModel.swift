@@ -146,11 +146,21 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       },
       requestFromParams: { comment in
         AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id))
+          .fetchCommentReplies(
+            id: comment.id,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit,
+            withStoredCards: false
+          )
       },
       requestFromCursor: { comment, cursor in
         AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: comment.id, before: cursor))
+          .fetchCommentReplies(
+            id: comment.id,
+            cursor: cursor,
+            limit: CommentRepliesEnvelope.paginationLimit,
+            withStoredCards: false
+          )
       },
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }

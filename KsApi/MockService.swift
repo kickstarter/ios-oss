@@ -644,9 +644,25 @@
         .fetchWithResult(query: fetchUpdateCommentsQuery, result: self.fetchUpdateCommentsEnvelopeResult)
     }
 
-    func fetchCommentReplies(query _: NonEmptySet<Query>)
-      -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchCommentRepliesEnvelopeResult)
+    func fetchCommentReplies(
+      id: String,
+      cursor: String?,
+      limit: Int,
+      withStoredCards: Bool
+    ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchCommentRepliesQuery = GraphAPI.FetchCommentRepliesQuery(
+        commentId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      )
+
+      return client
+        .fetchWithResult(query: fetchCommentRepliesQuery, result: self.fetchCommentRepliesEnvelopeResult)
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
