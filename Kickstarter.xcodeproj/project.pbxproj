@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -329,8 +329,7 @@
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
 		47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */; };
-		47BA16402767F3FB0038A73E /* PerimeterX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA163F2767F3FB0038A73E /* PerimeterX.framework */; };
-		47BA16422767F4090038A73E /* PerimeterX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA16412767F4090038A73E /* PerimeterX.framework */; };
+		47BA16432767F9880038A73E /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 471DF1AD2767C5DA0026B4D6 /* PerimeterX.xcframework */; };
 		47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */; };
 		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
 		47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */; };
@@ -2092,8 +2091,6 @@
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
 		47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingStateTests.swift"; sourceTree = "<group>"; };
-		47BA163F2767F3FB0038A73E /* PerimeterX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerimeterX.framework; path = "Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7/PerimeterX.framework"; sourceTree = "<group>"; };
-		47BA16412767F4090038A73E /* PerimeterX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerimeterX.framework; path = "Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator/PerimeterX.framework"; sourceTree = "<group>"; };
 		47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreatePaymentSource.graphql; sourceTree = "<group>"; };
 		47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewMoreRepliesFailedCell.swift; sourceTree = "<group>"; };
 		47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3384,8 +3381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47BA16422767F4090038A73E /* PerimeterX.framework in Frameworks */,
-				47BA16402767F3FB0038A73E /* PerimeterX.framework in Frameworks */,
+				47BA16432767F9880038A73E /* PerimeterX.xcframework in Frameworks */,
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
@@ -4549,8 +4545,6 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				47BA163F2767F3FB0038A73E /* PerimeterX.framework */,
-				47BA16412767F4090038A73E /* PerimeterX.framework */,
 				471DF1AD2767C5DA0026B4D6 /* PerimeterX.xcframework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
