@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -264,6 +264,7 @@
 		470B771C26FD022900EBD5CA /* RiskMessagingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */; };
 		471235F7274450AC0035527F /* ProjectPamphletMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */; };
 		471235F9274457460035527F /* ProjectPamphletSubpageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */; };
+		471DF1AE2767C5DA0026B4D6 /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 471DF1AD2767C5DA0026B4D6 /* PerimeterX.xcframework */; };
 		4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */; };
 		473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */; };
 		473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */; };
@@ -2022,6 +2023,7 @@
 		470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModelTests.swift; sourceTree = "<group>"; };
 		471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectPamphletMainCell.xib; sourceTree = "<group>"; };
 		471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectPamphletSubpageCell.xib; sourceTree = "<group>"; };
+		471DF1AD2767C5DA0026B4D6 /* PerimeterX.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PerimeterX.xcframework; path = Carthage/Build/PerimeterX.xcframework; sourceTree = "<group>"; };
 		4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRepliesCell.swift; sourceTree = "<group>"; };
 		473387DD26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelopeTests.swift"; sourceTree = "<group>"; };
 		473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewController.swift; sourceTree = "<group>"; };
@@ -3379,6 +3381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				471DF1AE2767C5DA0026B4D6 /* PerimeterX.xcframework in Frameworks */,
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
@@ -4542,6 +4545,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				471DF1AD2767C5DA0026B4D6 /* PerimeterX.xcframework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
