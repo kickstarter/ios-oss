@@ -473,7 +473,8 @@ public enum FetchAddsOnsQueryTemplate {
             "parentCategory": {
               "__typename": "Category",
               "id": "Q2F0ZWdvcnktMQ==",
-              "name": "Art"
+              "name": "Art",
+              "analyticsName": "Art"
             }
           },
           "canComment": false,

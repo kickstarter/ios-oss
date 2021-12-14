@@ -540,7 +540,8 @@ private func backingDictionary() -> [String: Any] {
         "parentCategory": {
           "__typename": "Category",
           "id": "Q2F0ZWdvcnktMTg=",
-          "name": "Publishing"
+          "name": "Publishing",
+          "analyticsName": "Publishing"
         }
       },
       "story": "API returns this as HTML wrapped in a string. But here HTML breaks testing because the serializer does not recognize escape characters within a string.",

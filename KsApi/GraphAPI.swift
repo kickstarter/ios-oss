@@ -8323,6 +8323,7 @@ public enum GraphAPI {
           __typename
           id
           name
+          analyticsName
         }
       }
       """
@@ -8405,6 +8406,7 @@ public enum GraphAPI {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -8414,8 +8416,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, name: String) {
-        self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name])
+      public init(id: GraphQLID, name: String, analyticsName: String) {
+        self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name, "analyticsName": analyticsName])
       }
 
       public var __typename: String {
@@ -8443,6 +8445,16 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+
+      /// Category name in English for analytics use.
+      public var analyticsName: String {
+        get {
+          return resultMap["analyticsName"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "analyticsName")
         }
       }
     }

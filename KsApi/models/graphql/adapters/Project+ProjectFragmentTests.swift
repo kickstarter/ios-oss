@@ -124,7 +124,8 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "parentCategory":{
              "__typename":"Category",
              "id":"Q2F0ZWdvcnktMw==",
-             "name":"Comics"
+             "name":"Comics",
+             "analyticsName":"Comics",
           }
        },
        "canComment":true,

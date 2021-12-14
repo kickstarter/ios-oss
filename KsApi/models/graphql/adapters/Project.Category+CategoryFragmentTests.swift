@@ -10,7 +10,8 @@ final class Category_CategoryFragmentTests: XCTestCase {
       analyticsName: "Photobooks",
       parentCategory: .init(
         id: "Q2F0ZWdvcnktMTg=",
-        name: "My Parent Category"
+        name: "My Parent Category",
+        analyticsName: "My Parent Category Analytics Name"
       )
     )
 
@@ -19,6 +20,7 @@ final class Category_CategoryFragmentTests: XCTestCase {
     XCTAssertEqual(category?.id, 47)
     XCTAssertEqual(category?.name, "My Category")
     XCTAssertEqual(category?.analyticsName, "Photobooks")
+    XCTAssertEqual(category?.parentAnalyticsName, "My Parent Category Analytics Name")
     XCTAssertEqual(category?.parentId, 18)
     XCTAssertEqual(category?.parentName, "My Parent Category")
   }

@@ -11,6 +11,7 @@ extension Project.Category {
       analyticsName: categoryFragment.analyticsName,
       id: id,
       name: categoryFragment.name,
+      parentAnalyticsName: categoryFragment.parentCategory?.analyticsName,
       parentId: categoryFragment.parentCategory.map(\.id).flatMap(decompose(id:)),
       parentName: categoryFragment.parentCategory?.name
     )
