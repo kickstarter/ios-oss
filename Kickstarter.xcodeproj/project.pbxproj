@@ -332,6 +332,7 @@
 		47BA164927680CE90038A73E /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA164827680CE90038A73E /* PerimeterX.xcframework */; };
 		47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */; };
 		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
+		47CE2580276819000074F293 /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA164827680CE90038A73E /* PerimeterX.xcframework */; };
 		47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */; };
 		47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */; };
 		47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */; };
@@ -3435,6 +3436,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47CE2580276819000074F293 /* PerimeterX.xcframework in Frameworks */,
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */,
