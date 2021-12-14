@@ -293,14 +293,14 @@ public struct Service: ServiceType {
   public func fetchGraphCategories()
     -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchRootCategoriesQuery(withParentCategoryAnalyticsName: true))
+      .fetch(query: GraphAPI.FetchRootCategoriesQuery())
       .flatMap(RootCategoriesEnvelope.envelopeProducer(from:))
   }
 
   public func fetchGraphCategory(id: String)
     -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .fetch(query: GraphAPI.FetchCategoryQuery(id: id, withParentCategoryAnalyticsName: true))
+      .fetch(query: GraphAPI.FetchCategoryQuery(id: id))
       .flatMap(CategoryEnvelope.envelopeProducer(from:))
   }
 

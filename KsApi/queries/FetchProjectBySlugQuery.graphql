@@ -1,4 +1,4 @@
-query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
+query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
   me {
     chosenCurrency
   }

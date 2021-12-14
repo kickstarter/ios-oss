@@ -717,7 +717,7 @@
         return .empty
       }
 
-      let fetchGraphCategoriesQuery = GraphAPI.FetchRootCategoriesQuery(withParentCategoryAnalyticsName: true)
+      let fetchGraphCategoriesQuery = GraphAPI.FetchRootCategoriesQuery()
 
       return client.fetchWithResult(query: fetchGraphCategoriesQuery, result: self.fetchGraphCategoriesResult)
     }
@@ -728,7 +728,7 @@
         return .empty
       }
 
-      let fetchGraphCategoryQuery = GraphAPI.FetchCategoryQuery(id: id, withParentCategoryAnalyticsName: true)
+      let fetchGraphCategoryQuery = GraphAPI.FetchCategoryQuery(id: id)
 
       return client.fetchWithResult(query: fetchGraphCategoryQuery, result: self.fetchGraphCategoryResult)
     }

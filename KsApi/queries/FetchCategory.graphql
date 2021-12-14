@@ -1,4 +1,4 @@
-query FetchCategory($id: ID!, $withParentCategoryAnalyticsName: Boolean!) {
+query FetchCategory($id: ID!) {
   node(id: $id) {
     ... on Category {
       analyticsName

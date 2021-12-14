@@ -1,4 +1,4 @@
-query FetchRootCategories($withParentCategoryAnalyticsName: Boolean!) {
+query FetchRootCategories {
   rootCategories {
     id
     name

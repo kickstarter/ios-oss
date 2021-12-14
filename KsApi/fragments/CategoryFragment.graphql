@@ -5,6 +5,6 @@ fragment CategoryFragment on Category {
   parentCategory {
     id
     name
-    analyticsName @include(if: $withParentCategoryAnalyticsName)
+    analyticsName
   }
 }

@@ -4862,7 +4862,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
+      query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
         project(slug: $projectSlug) {
           __typename
           ...ProjectFragment
@@ -4905,19 +4905,17 @@ public enum GraphAPI {
     public var locationId: GraphQLID?
     public var withStoredCards: Bool
     public var includeShippingRules: Bool
-    public var withParentCategoryAnalyticsName: Bool?
 
-    public init(projectSlug: String, shippingEnabled: Bool, locationId: GraphQLID? = nil, withStoredCards: Bool, includeShippingRules: Bool, withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(projectSlug: String, shippingEnabled: Bool, locationId: GraphQLID? = nil, withStoredCards: Bool, includeShippingRules: Bool) {
       self.projectSlug = projectSlug
       self.shippingEnabled = shippingEnabled
       self.locationId = locationId
       self.withStoredCards = withStoredCards
       self.includeShippingRules = includeShippingRules
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
     public var variables: GraphQLMap? {
-      return ["projectSlug": projectSlug, "shippingEnabled": shippingEnabled, "locationId": locationId, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules, "withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+      return ["projectSlug": projectSlug, "shippingEnabled": shippingEnabled, "locationId": locationId, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -5215,7 +5213,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
+      query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
         backing(id: $id) {
           __typename
           addOns {
@@ -5251,17 +5249,15 @@ public enum GraphAPI {
     public var id: GraphQLID
     public var withStoredCards: Bool
     public var includeShippingRules: Bool
-    public var withParentCategoryAnalyticsName: Bool?
 
-    public init(id: GraphQLID, withStoredCards: Bool, includeShippingRules: Bool, withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(id: GraphQLID, withStoredCards: Bool, includeShippingRules: Bool) {
       self.id = id
       self.withStoredCards = withStoredCards
       self.includeShippingRules = includeShippingRules
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
     public var variables: GraphQLMap? {
-      return ["id": id, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules, "withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+      return ["id": id, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -5454,7 +5450,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchCategory($id: ID!, $withParentCategoryAnalyticsName: Boolean!) {
+      query FetchCategory($id: ID!) {
         node(id: $id) {
           __typename
           ... on Category {
@@ -5486,15 +5482,13 @@ public enum GraphAPI {
     }
 
     public var id: GraphQLID
-    public var withParentCategoryAnalyticsName: Bool
 
-    public init(id: GraphQLID, withParentCategoryAnalyticsName: Bool) {
+    public init(id: GraphQLID) {
       self.id = id
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
     public var variables: GraphQLMap? {
-      return ["id": id, "withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+      return ["id": id]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -6163,7 +6157,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
+      query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
         me {
           __typename
           chosenCurrency
@@ -6195,16 +6189,14 @@ public enum GraphAPI {
 
     public var projectId: Int
     public var withStoredCards: Bool
-    public var withParentCategoryAnalyticsName: Bool?
 
-    public init(projectId: Int, withStoredCards: Bool, withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(projectId: Int, withStoredCards: Bool) {
       self.projectId = projectId
       self.withStoredCards = withStoredCards
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
     public var variables: GraphQLMap? {
-      return ["projectId": projectId, "withStoredCards": withStoredCards, "withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+      return ["projectId": projectId, "withStoredCards": withStoredCards]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -6395,7 +6387,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
+      query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
         me {
           __typename
           chosenCurrency
@@ -6427,16 +6419,14 @@ public enum GraphAPI {
 
     public var slug: String
     public var withStoredCards: Bool
-    public var withParentCategoryAnalyticsName: Bool?
 
-    public init(slug: String, withStoredCards: Bool, withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(slug: String, withStoredCards: Bool) {
       self.slug = slug
       self.withStoredCards = withStoredCards
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
     public var variables: GraphQLMap? {
-      return ["slug": slug, "withStoredCards": withStoredCards, "withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+      return ["slug": slug, "withStoredCards": withStoredCards]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -7589,7 +7579,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchRootCategories($withParentCategoryAnalyticsName: Boolean!) {
+      query FetchRootCategories {
         rootCategories {
           __typename
           id
@@ -7618,14 +7608,7 @@ public enum GraphAPI {
       return document
     }
 
-    public var withParentCategoryAnalyticsName: Bool
-
-    public init(withParentCategoryAnalyticsName: Bool) {
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
-    }
-
-    public var variables: GraphQLMap? {
-      return ["withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+    public init() {
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -8374,7 +8357,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $withParentCategoryAnalyticsName: Boolean = false) {
+      query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
         me {
           __typename
           backings(status: $status) {
@@ -8422,17 +8405,15 @@ public enum GraphAPI {
     public var status: BackingState
     public var withStoredCards: Bool
     public var includeShippingRules: Bool
-    public var withParentCategoryAnalyticsName: Bool?
 
-    public init(status: BackingState, withStoredCards: Bool, includeShippingRules: Bool, withParentCategoryAnalyticsName: Bool? = nil) {
+    public init(status: BackingState, withStoredCards: Bool, includeShippingRules: Bool) {
       self.status = status
       self.withStoredCards = withStoredCards
       self.includeShippingRules = includeShippingRules
-      self.withParentCategoryAnalyticsName = withParentCategoryAnalyticsName
     }
 
     public var variables: GraphQLMap? {
-      return ["status": status, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules, "withParentCategoryAnalyticsName": withParentCategoryAnalyticsName]
+      return ["status": status, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -9715,7 +9696,7 @@ public enum GraphAPI {
           __typename
           id
           name
-          analyticsName @include(if: $withParentCategoryAnalyticsName)
+          analyticsName
         }
       }
       """
@@ -9798,9 +9779,7 @@ public enum GraphAPI {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("name", type: .nonNull(.scalar(String.self))),
-          GraphQLBooleanCondition(variableName: "withParentCategoryAnalyticsName", inverted: false, selections: [
-            GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
-          ]),
+          GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -9810,7 +9789,7 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, name: String, analyticsName: String? = nil) {
+      public init(id: GraphQLID, name: String, analyticsName: String) {
         self.init(unsafeResultMap: ["__typename": "Category", "id": id, "name": name, "analyticsName": analyticsName])
       }
 
@@ -9843,9 +9822,9 @@ public enum GraphAPI {
       }
 
       /// Category name in English for analytics use.
-      public var analyticsName: String? {
+      public var analyticsName: String {
         get {
-          return resultMap["analyticsName"] as? String
+          return resultMap["analyticsName"]! as! String
         }
         set {
           resultMap.updateValue(newValue, forKey: "analyticsName")
