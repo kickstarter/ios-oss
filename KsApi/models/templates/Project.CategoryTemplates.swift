@@ -5,6 +5,7 @@ extension Project.Category {
     analyticsName: "Ceramics",
     id: 1,
     name: "Ceramics",
+    parentAnalyticsName: "Art",
     parentId: nil,
     parentName: "Art"
   )
@@ -13,6 +14,7 @@ extension Project.Category {
     analyticsName: "Ceramics",
     id: 1,
     name: "Cerámica",
+    parentAnalyticsName: "Art",
     parentId: nil,
     parentName: "Art"
   )
