@@ -12,6 +12,7 @@ final class HelpTypeTests: XCTestCase {
     XCTAssertEqual(HelpType.trust.accessibilityTraits, UIAccessibilityTraits.link)
     XCTAssertEqual(HelpType.accessibility.accessibilityTraits, UIAccessibilityTraits.link)
     XCTAssertEqual(HelpType.community.accessibilityTraits, UIAccessibilityTraits.link)
+    XCTAssertEqual(HelpType.environment.accessibilityTraits, UIAccessibilityTraits.link)
   }
 
   func testHelpTypeFromUrl() {
@@ -38,6 +39,7 @@ final class HelpTypeTests: XCTestCase {
     XCTAssertEqual(HelpType.privacy.title, Strings.profile_settings_about_privacy())
     XCTAssertEqual(HelpType.terms.title, Strings.profile_settings_about_terms())
     XCTAssertEqual(HelpType.trust.title, "")
+    XCTAssertEqual(HelpType.environment.title, "")
   }
 
   func testUrlWithBaseUrl() {
@@ -75,6 +77,10 @@ final class HelpTypeTests: XCTestCase {
     XCTAssertEqual(
       HelpType.trust.url(withBaseUrl: baseURL),
       URL(string: "https://www.kickstarter.com/trust")!
+    )
+    XCTAssertEqual(
+      HelpType.environment.url(withBaseUrl: baseURL),
+      URL(string: "https://www.kickstarter.com/environment")!
     )
   }
 }

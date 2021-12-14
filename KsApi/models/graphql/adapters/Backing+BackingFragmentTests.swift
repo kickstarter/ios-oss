@@ -68,6 +68,8 @@ final class Backing_BackingFragmentTests: XCTestCase {
       let backing = Backing.backing(from: fragment)
       XCTAssertNotNil(backing)
       XCTAssertEqual(backing?.reward?.isNoReward, true)
+      XCTAssertEqual(backing?.reward?.convertedMinimum, 1.23244501)
+      XCTAssertEqual(backing?.reward?.minimum, 1.0)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -685,6 +687,7 @@ private func backingDictionary() -> [String: Any] {
         "id": "TG9jYXRpb24tMjQxOTk0NA==",
         "name": "Henderson"
       },
+      "maxPledge": 8500,
       "minPledge": 1,
       "name": "WEE WILLIAM WITCHLING",
       "pid": 1596594463,

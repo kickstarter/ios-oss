@@ -4,37 +4,53 @@ import Prelude
 import ReactiveSwift
 
 extension Project {
-  public typealias ProjectPamphletData = (project: Project, backingId: Int?)
+  public typealias ProjectPamphletData = (
+    project: Project,
+    backingId: Int?
+  )
 
   static func projectProducer(
-    from data: GraphAPI.FetchProjectByIdQuery.Data
+    from data: GraphAPI.FetchProjectByIdQuery.Data,
+    configCurrency: String?
   ) -> SignalProducer<ProjectPamphletData, ErrorEnvelope> {
-    let projectAndBackingId = Project.project(from: data)
+    let projectAndBackingId = Project.project(
+      from: data,
+      configCurrency: configCurrency
+    )
 
     guard let project = projectAndBackingId.0 else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }
 
-    let data = ProjectPamphletData(project: project, backingId: projectAndBackingId.1)
+    let data = ProjectPamphletData(
+      project: project,
+      backingId: projectAndBackingId.1
+    )
 
     return SignalProducer(value: data)
   }
 
-  static func projectProducer(
-    from data: GraphAPI.FetchProjectBySlugQuery.Data
-  ) -> SignalProducer<ProjectPamphletData, ErrorEnvelope> {
-    let projectAndBackingId = Project.project(from: data)
+  static func projectProducer(from data: GraphAPI.FetchProjectBySlugQuery.Data,
+                              configCurrency: String?) -> SignalProducer<ProjectPamphletData, ErrorEnvelope> {
+    let projectAndBackingId = Project.project(
+      from: data,
+      configCurrency: configCurrency
+    )
 
     guard let project = projectAndBackingId.0 else {
       return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
     }
 
-    let data = ProjectPamphletData(project: project, backingId: projectAndBackingId.1)
+    let data = ProjectPamphletData(
+      project: project,
+      backingId: projectAndBackingId.1
+    )
 
     return SignalProducer(value: data)
   }
 
-  static func project(from data: GraphAPI.FetchProjectByIdQuery.Data) -> (Project?, Int?) {
+  static func project(from data: GraphAPI.FetchProjectByIdQuery.Data,
+                      configCurrency: String?) -> (Project?, Int?) {
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
@@ -48,14 +64,15 @@ extension Project {
         rewards: [noRewardReward(from: fragment)],
         addOns: nil,
         backing: nil,
-        currentUserChosenCurrency: data.me?.chosenCurrency
+        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
       )
     else { return (nil, nil) }
 
     return (project, projectBackingId)
   }
 
-  static func project(from data: GraphAPI.FetchProjectBySlugQuery.Data) -> (Project?, Int?) {
+  static func project(from data: GraphAPI.FetchProjectBySlugQuery.Data,
+                      configCurrency: String?) -> (Project?, Int?) {
     var projectBackingId: Int?
 
     if let backingId = data.project?.backing?.id {
@@ -69,7 +86,7 @@ extension Project {
         rewards: [noRewardReward(from: fragment)],
         addOns: nil,
         backing: nil,
-        currentUserChosenCurrency: data.me?.chosenCurrency
+        currentUserChosenCurrency: data.me?.chosenCurrency ?? configCurrency
       )
     else { return (nil, nil) }
 

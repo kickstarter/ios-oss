@@ -261,6 +261,7 @@ public final class KSRAnalytics {
    - overview: Project overview landing screen
    - updates: Section of project overview screen.
    - watched:Section of BackerDashboardProjectViewController for saved Projects
+   - tabSelected: Navigation tab of ProjectPageViewController.
    */
   public enum SectionContext {
     case backed
@@ -269,6 +270,7 @@ public final class KSRAnalytics {
     case overview
     case updates
     case watched
+    case tabSelected(TabContext)
 
     var trackingString: String {
       switch self {
@@ -278,6 +280,25 @@ public final class KSRAnalytics {
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
+      case let .tabSelected(tabContext): return tabContext.trackingString
+      }
+    }
+
+    public enum TabContext {
+      case overview
+      case risks
+      case campaign
+      case faqs
+      case environmentalCommitments
+
+      var trackingString: String {
+        switch self {
+        case .overview: return "overview"
+        case .risks: return "risks"
+        case .campaign: return "campaign"
+        case .faqs: return "faq"
+        case .environmentalCommitments: return "environment"
+        }
       }
     }
   }

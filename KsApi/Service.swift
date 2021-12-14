@@ -344,10 +344,11 @@ public struct Service: ServiceType {
   /**
     Use case:
    - `ProjectPamphletViewModel`
+   - `ProjectPageViewModel`
 
-   This is the only use case at the moment as it effects the `ProjectPamphletViewController` directly.
+   This is the only use case at the moment as it effects the `ProjectPamphletViewController`, `ProjectPageViewController` directly.
    */
-  public func fetchProject(projectParam: Param)
+  public func fetchProject(projectParam: Param, configCurrency: String?)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
     switch (projectParam.id, projectParam.slug) {
     case let (.some(projectId), _):
@@ -356,14 +357,14 @@ public struct Service: ServiceType {
 
       return GraphQL.shared.client
         .fetch(query: query)
-        .flatMap(Project.projectProducer(from:))
+        .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
     case let (_, .some(projectSlug)):
       let query = GraphAPI
         .FetchProjectBySlugQuery(slug: projectSlug, withStoredCards: false)
 
       return GraphQL.shared.client
         .fetch(query: query)
-        .flatMap(Project.projectProducer(from:))
+        .flatMap { Project.projectProducer(from: $0, configCurrency: configCurrency) }
     default:
       return .empty
     }

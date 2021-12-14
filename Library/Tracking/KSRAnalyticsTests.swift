@@ -1731,6 +1731,26 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("updates", segmentClient.properties.last?["context_section"] as? String)
 
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.overview))
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("overview", segmentClient.properties.last?["context_section"] as? String)
+
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.campaign))
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("campaign", segmentClient.properties.last?["context_section"] as? String)
+
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.faqs))
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("faq", segmentClient.properties.last?["context_section"] as? String)
+
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.risks))
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("risks", segmentClient.properties.last?["context_section"] as? String)
+
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.environmentalCommitments))
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("environment", segmentClient.properties.last?["context_section"] as? String)
+
     ksrAnalytics
       .trackRewardClicked(
         project: .template,

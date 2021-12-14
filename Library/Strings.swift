@@ -773,6 +773,23 @@ public enum Strings {
     )
   }
   /**
+   "Ask a question"
+
+   - **en**: "Ask a question"
+   - **de**: "Eine Frage stellen"
+   - **es**: "Haz una pregunta"
+   - **fr**: "Poser une question"
+   - **ja**: "質問する"
+  */
+  public static func Ask_a_question() -> String {
+    return localizedString(
+      key: "Ask_a_question",
+      defaultValue: "Ask a question",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ask me anything"
 
    - **en**: "Ask me anything"
@@ -785,6 +802,23 @@ public enum Strings {
     return localizedString(
       key: "Ask_me_anything",
       defaultValue: "Ask me anything",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Ask the project creator directly."
+
+   - **en**: "Ask the project creator directly."
+   - **de**: "Wende dich bitte direkt an den Projektgründer."
+   - **es**: "Pregúntale al creador del proyecto directamente."
+   - **fr**: "Veuillez adresser votre question au créateur."
+   - **ja**: "プロジェクトのクリエイターに直接お問い合わせください。"
+  */
+  public static func Ask_the_project_creator_directly() -> String {
+    return localizedString(
+      key: "Ask_the_project_creator_directly",
+      defaultValue: "Ask the project creator directly.",
       count: nil,
       substitutions: [:]
     )
@@ -1272,6 +1306,23 @@ contributeurs"
     return localizedString(
       key: "CVC",
       defaultValue: "CVC",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Campaign"
+
+   - **en**: "Campaign"
+   - **de**: "Kampagne"
+   - **es**: "Campaña"
+   - **fr**: "Campagne"
+   - **ja**: "プロジェクト"
+  */
+  public static func Campaign() -> String {
+    return localizedString(
+      key: "Campaign",
+      defaultValue: "Campaign",
       count: nil,
       substitutions: [:]
     )
@@ -3159,6 +3210,40 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Environmental Commitments"
+
+   - **en**: "Environmental Commitments"
+   - **de**: "Verpflichtung zum Umweltschutz"
+   - **es**: "Compromisos medioambientales"
+   - **fr**: "Engagements pour l'environnement"
+   - **ja**: "環境への取り組み"
+  */
+  public static func Environmental_Commitments() -> String {
+    return localizedString(
+      key: "Environmental_Commitments",
+      defaultValue: "Environmental Commitments",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Environmentally friendly factories"
+
+   - **en**: "Environmentally friendly factories"
+   - **de**: "Umweltfreundliche Fertigungsanlagen"
+   - **es**: "Fábricas ecológicas"
+   - **fr**: "Usines respectueuses de l'environnement"
+   - **ja**: "環境に優しい工場"
+  */
+  public static func Environmentally_friendly_factories() -> String {
+    return localizedString(
+      key: "Environmentally_friendly_factories",
+      defaultValue: "Environmentally friendly factories",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Estimated delivery"
 
    - **en**: "Estimated delivery"
@@ -3460,6 +3545,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Failed_to_update_subscription",
       defaultValue: "Failed to update subscription",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "FAQ"
+
+   - **en**: "FAQ"
+   - **de**: "FAQ"
+   - **es**: "Preguntas frecuentes"
+   - **fr**: "FAQ"
+   - **ja**: "FAQ"
+  */
+  public static func Faq() -> String {
+    return localizedString(
+      key: "Faq",
+      defaultValue: "FAQ",
       count: nil,
       substitutions: [:]
     )
@@ -3972,6 +4074,23 @@ Cliquez pour réessayer."
       defaultValue: "Follows %{friend_name}.",
       count: nil,
       substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "Frequently asked questions"
+
+   - **en**: "Frequently asked questions"
+   - **de**: "Häufige Fragen"
+   - **es**: "Preguntas frecuentes"
+   - **fr**: "Questions fréquentes"
+   - **ja**: "よくある質問"
+  */
+  public static func Frequently_asked_questions() -> String {
+    return localizedString(
+      key: "Frequently_asked_questions",
+      defaultValue: "Frequently asked questions",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -5253,6 +5372,23 @@ with friends."
     )
   }
   /**
+   "Learn about accountability on Kickstarter"
+
+   - **en**: "Learn about accountability on Kickstarter"
+   - **de**: "Näheres zur Rechenschaftspflicht auf Kickstarter"
+   - **es**: "Más información sobre el concepto de responsabilidad en Kickstarter"
+   - **fr**: "En savoir plus sur la notion de responsabilité sur Kickstarter"
+   - **ja**: "Kickstarter上の説明責任について詳しく知る"
+  */
+  public static func Learn_about_accountability_on_Kickstarter() -> String {
+    return localizedString(
+      key: "Learn_about_accountability_on_Kickstarter",
+      defaultValue: "Learn about accountability on Kickstarter",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Learn more about accountability"
 
    - **en**: "Learn more about accountability"
@@ -5284,6 +5420,23 @@ with friends."
       defaultValue: "<a href=\"%{community_link}\">Learn more about comment guidelines</a>",
       count: nil,
       substitutions: ["community_link": community_link]
+    )
+  }
+  /**
+   "Leave page"
+
+   - **en**: "Leave page"
+   - **de**: "Seite verlassen"
+   - **es**: "Salir de la página"
+   - **fr**: "Quitter la page"
+   - **ja**: "ページから移動"
+  */
+  public static func Leave_page() -> String {
+    return localizedString(
+      key: "Leave_page",
+      defaultValue: "Leave page",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -5542,6 +5695,23 @@ with friends."
     )
   }
   /**
+   "Log in to ask the project creator directly."
+
+   - **en**: "Log in to ask the project creator directly."
+   - **de**: "Melde dich an, um dich direkt an den Projektgründer zu wenden."
+   - **es**: "Inicia sesión para preguntarle al creador del proyecto directamente."
+   - **fr**: "Veuillez vous connecter pour adresser votre question au créateur."
+   - **ja**: "ログインしてプロジェクトのクリエイターに直接お問い合わせください。"
+  */
+  public static func Log_in_to_ask_the_project_creator_directly() -> String {
+    return localizedString(
+      key: "Log_in_to_ask_the_project_creator_directly",
+      defaultValue: "Log in to ask the project creator directly.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Log in to leave a comment."
 
    - **en**: "Log in to leave a comment."
@@ -5571,6 +5741,40 @@ with friends."
     return localizedString(
       key: "Log_out",
       defaultValue: "Log out",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Long-lasting design"
+
+   - **en**: "Long-lasting design"
+   - **de**: "Beständiges Design"
+   - **es**: "Diseño de larga duración"
+   - **fr**: "Des produits qui durent"
+   - **ja**: "長持ちするデザイン"
+  */
+  public static func Long_lasting_design() -> String {
+    return localizedString(
+      key: "Long_lasting_design",
+      defaultValue: "Long-lasting design",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Looks like there aren't any frequently asked questions yet."
+
+   - **en**: "Looks like there aren't any frequently asked questions yet."
+   - **de**: "Offenbar gibt es noch keine häufig gestellten Fragen für dieses Projekt."
+   - **es**: "Parece que todavía no hay preguntas frecuentes."
+   - **fr**: "Il semble qu'il n'y ait pas encore de questions fréquemment posées."
+   - **ja**: "よくある質問はまだ追加されていないようです。"
+  */
+  public static func Looks_like_there_arent_any_frequently_asked_questions() -> String {
+    return localizedString(
+      key: "Looks_like_there_arent_any_frequently_asked_questions",
+      defaultValue: "Looks like there aren't any frequently asked questions yet.",
       count: nil,
       substitutions: [:]
     )
@@ -6679,6 +6883,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Other_projects_you_might_like",
       defaultValue: "Other projects you might like.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Overview"
+
+   - **en**: "Overview"
+   - **de**: "Übersicht"
+   - **es**: "Descripción general"
+   - **fr**: "Vue d'ensemble"
+   - **ja**: "概要"
+  */
+  public static func Overview() -> String {
+    return localizedString(
+      key: "Overview",
+      defaultValue: "Overview",
       count: nil,
       substitutions: [:]
     )
@@ -8098,6 +8319,23 @@ daring ideas."
     )
   }
   /**
+   "Reusability and recyclability"
+
+   - **en**: "Reusability and recyclability"
+   - **de**: "Wiederverwertung und Recyclingfähigkeit"
+   - **es**: "Reutilización y reciclabilidad"
+   - **fr**: "Recyclage et valorisation des déchets"
+   - **ja**: "再利用可能性とリサイクル可能性"
+  */
+  public static func Reusability_and_recyclability() -> String {
+    return localizedString(
+      key: "Reusability_and_recyclability",
+      defaultValue: "Reusability and recyclability",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **en**: "%{reward_survey_count} Reward Surveys"
@@ -8299,6 +8537,40 @@ daring ideas."
       defaultValue: "%{rewards_count} rewards:",
       count: nil,
       substitutions: ["rewards_count": rewards_count]
+    )
+  }
+  /**
+   "Risks"
+
+   - **en**: "Risks"
+   - **de**: "Risiken"
+   - **es**: "Riesgos"
+   - **fr**: "Risques"
+   - **ja**: "リスク"
+  */
+  public static func Risks() -> String {
+    return localizedString(
+      key: "Risks",
+      defaultValue: "Risks",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Risks and challenges"
+
+   - **en**: "Risks and challenges"
+   - **de**: "Risiken und Herausforderungen"
+   - **es**: "Riesgos y desafíos"
+   - **fr**: "Risques et défis"
+   - **ja**: "リスクと課題"
+  */
+  public static func Risks_and_challenges() -> String {
+    return localizedString(
+      key: "Risks_and_challenges",
+      defaultValue: "Risks and challenges",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -8982,6 +9254,23 @@ daring ideas."
     )
   }
   /**
+   "Show comment"
+
+   - **en**: "Show comment"
+   - **de**: "Kommentar anzeigen"
+   - **es**: "Mostrar comentario"
+   - **fr**: "Afficher le commentaire"
+   - **ja**: "コメントを表示"
+  */
+  public static func Show_comment() -> String {
+    return localizedString(
+      key: "Show_comment",
+      defaultValue: "Show comment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Show me projects"
 
    - **en**: "Show me projects"
@@ -9166,6 +9455,23 @@ catch your eye?"
     return localizedString(
       key: "Something_catch_your_eye",
       defaultValue: "Something\ncatch your eye?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something else"
+
+   - **en**: "Something else"
+   - **de**: "Etwas anderes"
+   - **es**: "Algo más"
+   - **fr**: "Autre chose"
+   - **ja**: "その他"
+  */
+  public static func Something_else() -> String {
+    return localizedString(
+      key: "Something_else",
+      defaultValue: "Something else",
       count: nil,
       substitutions: [:]
     )
@@ -9489,6 +9795,40 @@ catch your eye?"
     return localizedString(
       key: "Survey",
       defaultValue: "Survey",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Sustainable distribution"
+
+   - **en**: "Sustainable distribution"
+   - **de**: "Nachhaltiger Versand"
+   - **es**: "Distribución sustentable"
+   - **fr**: "Distribution durable"
+   - **ja**: "持続可能な流通"
+  */
+  public static func Sustainable_distribution() -> String {
+    return localizedString(
+      key: "Sustainable_distribution",
+      defaultValue: "Sustainable distribution",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Sustainable materials"
+
+   - **en**: "Sustainable materials"
+   - **de**: "Nachhaltige Materialien"
+   - **es**: "Materiales sustentables"
+   - **fr**: "Des matières durables"
+   - **ja**: "持続可能な材料"
+  */
+  public static func Sustainable_materials() -> String {
+    return localizedString(
+      key: "Sustainable_materials",
+      defaultValue: "Sustainable materials",
       count: nil,
       substitutions: [:]
     )
@@ -9970,6 +10310,23 @@ catch your eye?"
     )
   }
   /**
+   "This person has canceled their pledge."
+
+   - **en**: "This person has canceled their pledge."
+   - **de**: "Diese Person hat ihren Finanzierungsbeitrag zurückgezogen."
+   - **es**: "Esta persona canceló su contribución."
+   - **fr**: "Cette personne a annulé son engagement."
+   - **ja**: "このユーザーはプレッジをキャンセルしました。"
+  */
+  public static func This_person_canceled_their_pledge() -> String {
+    return localizedString(
+      key: "This_person_canceled_their_pledge",
+      defaultValue: "This person has canceled their pledge.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "This pledge was dropped because of payment errors."
 
    - **en**: "This pledge was dropped because of payment errors."
@@ -10084,6 +10441,23 @@ catch your eye?"
     return localizedString(
       key: "To_access_all_your_favorite_categories_tap_the_explore_dropdown",
       defaultValue: "To access all your favorite categories, tap the explore dropdown at the top of the app.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "to learn how Kickstarter encourages sustainable practices."
+
+   - **en**: "to learn how Kickstarter encourages sustainable practices."
+   - **de**: "um mehr über die von Kickstarter empfohlenen Umweltschutzmaßnahmen zu erfahren."
+   - **es**: "para conocer cómo Kickstarter incentiva las prácticas sustentables."
+   - **fr**: "pour mieux comprendre en quoi Kickstarter encourage les pratiques durables."
+   - **ja**: "して、Kickstarter がどのようにして持続可能なプロジェクトを促進しているか、その様子をチェックしてみてください。"
+  */
+  public static func To_learn_how_Kickstarter_encourages_sustainable_practices() -> String {
+    return localizedString(
+      key: "To_learn_how_Kickstarter_encourages_sustainable_practices",
+      defaultValue: "to learn how Kickstarter encourages sustainable practices.",
       count: nil,
       substitutions: [:]
     )
@@ -10820,6 +11194,40 @@ catch your eye?"
     )
   }
   /**
+   "Visit our Environmental Resources Center"
+
+   - **en**: "Visit our Environmental Resources Center"
+   - **de**: "Ressourcen für den Umweltschutz"
+   - **es**: "Visita nuestro Centro de recursos medioambientales"
+   - **fr**: "Rendez-vous dans notre Centre de ressources pour l'environnement"
+   - **ja**: "Kickstarter の環境リソースセンターにアクセス"
+  */
+  public static func Visit_our_Environmental_Resources_Center() -> String {
+    return localizedString(
+      key: "Visit_our_Environmental_Resources_Center",
+      defaultValue: "Visit our Environmental Resources Center",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "<a href="%{environment_link}">Visit our Environmental Resources Center</a>"
+
+   - **en**: "<a href="%{environment_link}">Visit our Environmental Resources Center</a>"
+   - **de**: "<a href="%{environment_link}">Ressourcen für den Umweltschutz</a>"
+   - **es**: "<a href="%{environment_link}">Visita nuestro Centro de recursos medioambientales</a>"
+   - **fr**: "<a href="%{environment_link}">Consultez notre Centre de ressources pour l'environnement</a>"
+   - **ja**: "<a href="%{environment_link}">Kickstarter の環境リソースセンターにアクセス</a>"
+  */
+  public static func Visit_our_Environmental_Resources_Center_Alternative(environment_link: String) -> String {
+    return localizedString(
+      key: "Visit_our_Environmental_Resources_Center_Alternative",
+      defaultValue: "<a href=\"%{environment_link}\">Visit our Environmental Resources Center</a>",
+      count: nil,
+      substitutions: ["environment_link": environment_link]
+    )
+  }
+  /**
    "Watch live"
 
    - **en**: "Watch live"
@@ -11455,6 +11863,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You"
+
+   - **en**: "You"
+   - **de**: "Du"
+   - **es**: "Tú"
+   - **fr**: "Vous"
+   - **ja**: "あなた"
+  */
+  public static func You() -> String {
+    return localizedString(
+      key: "You",
+      defaultValue: "You",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You Launched!"
 
    - **en**: "You Launched!"
@@ -11659,6 +12084,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You’ll lose the comment if you leave this page."
+
+   - **en**: "You’ll lose the comment if you leave this page."
+   - **de**: "Wenn du diese Seite verlässt, wird dein Kommentar gelöscht."
+   - **es**: "Perderás el comentario si sales de esta página."
+   - **fr**: "Si vous quittez cette page, votre commentaire sera perdu."
+   - **ja**: "このページから移動するとコメントは破棄されます。"
+  */
+  public static func You_will_lose_the_comment_if_you_leave_this_page() -> String {
+    return localizedString(
+      key: "You_will_lose_the_comment_if_you_leave_this_page",
+      defaultValue: "You’ll lose the comment if you leave this page.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You won't be charged for backing a project unless it reaches its funding goal."
 
    - **en**: "You won't be charged for backing a project unless it reaches its funding goal."
@@ -11705,6 +12147,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Your_chat_message_wasnt_sent_successfully",
       defaultValue: "Your chat message wasn't sent successfully.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your comment wasn't posted"
+
+   - **en**: "Your comment wasn't posted"
+   - **de**: "Dein Kommentar wurde nicht gepostet"
+   - **es**: "Tu comentario no se publicó"
+   - **fr**: "Votre commentaire n'a pas été publié."
+   - **ja**: "コメントは投稿されませんでした"
+  */
+  public static func Your_comment_wasnt_posted() -> String {
+    return localizedString(
+      key: "Your_comment_wasnt_posted",
+      defaultValue: "Your comment wasn't posted",
       count: nil,
       substitutions: [:]
     )
@@ -17445,7 +17904,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Ort"
    - **es**: "Ubicación"
    - **fr**: "Lieu"
-   - **ja**: "住所"
+   - **ja**: "地域"
   */
   public static func discovery_baseball_card_accessibility_location_label() -> String {
     return localizedString(
@@ -17734,7 +18193,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -21111,7 +21570,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -24222,7 +24681,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -24491,7 +24950,7 @@ projets enregistrés"
    "Limited (%{rewards_remaining} left of %{reward_limit})"
 
    - **en**: "Limited (%{rewards_remaining} left of %{reward_limit})"
-   - **de**: "Begrenzt (%{rewards_remaining} von %{reward_limit} übrig)"
+   - **de**: "Limitiert (%{rewards_remaining} von %{reward_limit} übrig)"
    - **es**: "Limitado (quedan %{rewards_remaining} de %{reward_limit})"
    - **fr**: "Stock limité (il en reste %{rewards_remaining} sur %{reward_limit})"
    - **ja**: "数量限定 (%{reward_limit} 中残り%{rewards_remaining}）"
@@ -25174,7 +25633,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

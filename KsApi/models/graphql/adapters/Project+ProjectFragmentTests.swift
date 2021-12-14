@@ -23,7 +23,12 @@ final class Project_ProjectFragmentTests: XCTestCase {
         return
       }
 
-      XCTAssertEqual(project.country, .us)
+      XCTAssertEqual(project.country.countryCode, Project.Country.us.countryCode)
+      XCTAssertEqual(project.country.currencySymbol, Project.Country.us.currencySymbol)
+      XCTAssertEqual(project.country.currencyCode, Project.Country.us.currencyCode)
+      XCTAssertEqual(project.country.maxPledge, 8_500)
+      XCTAssertEqual(project.country.minPledge, 23)
+      XCTAssertEqual(project.country.trailingCode, true)
       XCTAssertEqual(project.availableCardTypes?.count, 7)
       XCTAssertEqual(
         project.blurb,
@@ -326,6 +331,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "id":"TG9jYXRpb24tMjM3MTQ2NA==",
           "name":"Buffalo"
        },
+       "maxPledge": 8500,
        "minPledge": 23,
        "name":"FINAL GAMBLE Issue #1",
        "pid":1841936784,

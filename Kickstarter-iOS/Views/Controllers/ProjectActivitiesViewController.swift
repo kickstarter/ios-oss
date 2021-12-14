@@ -111,11 +111,26 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToProject(project: Project) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: .dashboardActivity)
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      vc.modalPresentationStyle = .fullScreen
+    guard featureNavigationSelectorProjectPageIsEnabled() else {
+      let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: .dashboardActivity)
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        vc.modalPresentationStyle = .fullScreen
+      }
+      self.present(vc, animated: true, completion: nil)
+
+      return
     }
-    self.present(vc, animated: true, completion: nil)
+
+    let projectParam = Either<Project, Param>(left: project)
+    let vc = ProjectPageViewController.configuredWith(
+      projectOrParam: projectParam,
+      refTag: .dashboardActivity
+    )
+
+    let nav = NavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = self.traitCollection.userInterfaceIdiom == .pad ? .fullScreen : .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   internal func goToSendMessage(

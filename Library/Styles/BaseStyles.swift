@@ -5,6 +5,8 @@ import UIKit
 public enum Styles {
   public static let cornerRadius: CGFloat = 4.0
   public static let minTouchSize: CGSize = CGSize(width: 44, height: 44)
+  public static let projectPageLeftRightInset: CGFloat = Styles.grid(3)
+  public static let projectPageTopBottomInset: CGFloat = Styles.grid(4)
 
   public static func grid(_ count: Int) -> CGFloat {
     return 6.0 * CGFloat(count)

@@ -19,7 +19,6 @@ internal final class MessageDialogViewController: UIViewController {
   @IBOutlet private var loadingView: UIView!
   @IBOutlet private var nameLabel: UILabel!
   @IBOutlet private var postButton: UIBarButtonItem!
-  @IBOutlet private var titleLabel: UILabel!
 
   internal static func configuredWith(
     messageSubject: MessageSubject,
@@ -72,14 +71,10 @@ internal final class MessageDialogViewController: UIViewController {
 
     _ = self.nameLabel
       |> UILabel.lens.textColor .~ .ksr_support_700
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
+      |> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
     _ = self.postButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_send() }
-
-    _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_support_400
-      |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
   }
 
   @IBAction fileprivate func cancelButtonPressed() {

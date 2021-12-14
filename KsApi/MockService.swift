@@ -949,7 +949,7 @@
       }
     }
 
-    internal func fetchProject(projectParam: Param)
+    internal func fetchProject(projectParam: Param, configCurrency _: String?)
       -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
