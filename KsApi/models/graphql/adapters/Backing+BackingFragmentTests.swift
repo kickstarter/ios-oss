@@ -7,7 +7,8 @@ final class Backing_BackingFragmentTests: XCTestCase {
     do {
       let variables = [
         "withStoredCards": true,
-        "includeShippingRules": true
+        "includeShippingRules": true,
+        "withParentCategoryAnalyticsName": false
       ]
       let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
@@ -54,7 +55,8 @@ final class Backing_BackingFragmentTests: XCTestCase {
     do {
       let variables = [
         "withStoredCards": true,
-        "includeShippingRules": true
+        "includeShippingRules": true,
+        "withParentCategoryAnalyticsName": false
       ]
       var dict = backingDictionary()
       dict["addOns"] = NSNull()

@@ -424,8 +424,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return .init(value: params)
         }
 
-        // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
-        return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
+        return AppEnvironment.current.apiService.fetchGraphCategories()
           .map { envelope in
             findCategoryFromRootCategories(
               envelope: envelope,

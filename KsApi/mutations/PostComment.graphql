@@ -1,0 +1,21 @@
+mutation PostComment($input: PostCommentInput!) {
+  createComment(input: $input) {
+    comment {
+      author {
+        id
+        imageUrl(width: 200)
+        isCreator
+        name
+      }
+      authorBadges
+      body
+      createdAt
+      deleted
+      parentId
+      id
+      replies {
+        totalCount
+      }
+    }
+  }
+}

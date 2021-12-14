@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -77,13 +77,27 @@
 		061645A6266979C1007D8D96 /* CommentRepliesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */; };
 		061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */; };
 		061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 061A64FC26C3037600A5DDCA /* UserSendEmailVerification.graphql */; };
+		0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C9232734778D0039AAC9 /* Category+CategoryFragmentTests.swift */; };
+		0622C92627347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92527347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift */; };
+		0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */; };
+		0622C92A273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */; };
+		0622C92C273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */; };
+		0622C92E27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */; };
+		06261603273B0E1500389981 /* PostComment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06261602273B0E1500389981 /* PostComment.graphql */; };
+		06261605273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */; };
+		06261606273B160400389981 /* GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555868264C4AE400C2C30D /* GraphComment.swift */; };
+		0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */; };
 		062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */; };
 		062868E826B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */; };
 		062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */; };
 		062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */; };
 		062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */; };
 		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
-		064AEF13270CFB53006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */; };
+		064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */; };
+		0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7272732FDA30087281F /* FetchRootCategories.graphql */; };
+		0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7292732FDE00087281F /* FetchCategory.graphql */; };
+		0655C72C273321B20087281F /* Category+CategoryFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655C72B273321B20087281F /* Category+CategoryFragment.swift */; };
+		0655C73027335CA50087281F /* CategoryEnvelope+FetchCategoryQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655C72F27335CA40087281F /* CategoryEnvelope+FetchCategoryQueryData.swift */; };
 		06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */; };
 		06566375270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */; };
 		065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */; };
@@ -108,6 +122,11 @@
 		068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */; };
 		068CD2F027615F3500F69798 /* CommentWithRepliesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */; };
 		069C07E62767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */; };
+		06962F87273B2BC400FB0B3D /* CommentsQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F85273B2BC400FB0B3D /* CommentsQueries.swift */; };
+		06962F89273B2BCA00FB0B3D /* CommentsQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F86273B2BC400FB0B3D /* CommentsQueriesTests.swift */; };
+		06962F8B273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */; };
+		06962F8D273B36A700FB0B3D /* PostCommentMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8C273B36A700FB0B3D /* PostCommentMutationTemplate.swift */; };
+		06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
 		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
 		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
@@ -333,8 +352,10 @@
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
 		47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */; };
+		47BA164927680CE90038A73E /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA164827680CE90038A73E /* PerimeterX.xcframework */; };
 		47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */; };
 		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
+		47CE2580276819000074F293 /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA164827680CE90038A73E /* PerimeterX.xcframework */; };
 		47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */; };
 		47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */; };
 		47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */; };
@@ -654,9 +675,6 @@
 		8A4E954524525AC900A578CF /* CreditCardType+ImageName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */; };
 		8A4E954724525DE400A578CF /* ProjectState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954624525DE400A578CF /* ProjectState.swift */; };
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
-		8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555868264C4AE400C2C30D /* GraphComment.swift */; };
-		8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555873264C4C8300C2C30D /* CommentsQueries.swift */; };
-		8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */; };
 		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
 		8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; };
@@ -1853,13 +1871,26 @@
 		061645A1266979B7007D8D96 /* CommentRepliesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesDataSourceTests.swift; sourceTree = "<group>"; };
 		061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewModelTests.swift; sourceTree = "<group>"; };
 		061A64FC26C3037600A5DDCA /* UserSendEmailVerification.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserSendEmailVerification.graphql; sourceTree = "<group>"; };
+		0622C9232734778D0039AAC9 /* Category+CategoryFragmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CategoryFragmentTests.swift"; sourceTree = "<group>"; };
+		0622C92527347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEnvelope+FetchCategoryQueryDataTests.swift"; sourceTree = "<group>"; };
+		0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCategoryQueryTemplate.swift; sourceTree = "<group>"; };
+		0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift"; sourceTree = "<group>"; };
+		0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift"; sourceTree = "<group>"; };
+		0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRootCategoriesQueryTemplate.swift; sourceTree = "<group>"; };
+		06261602273B0E1500389981 /* PostComment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PostComment.graphql; sourceTree = "<group>"; };
+		06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInput.swift"; sourceTree = "<group>"; };
+		06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+PostCommentMutationData.swift"; sourceTree = "<group>"; };
 		062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = DeletePaymentSource.graphql; sourceTree = "<group>"; };
 		062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift"; sourceTree = "<group>"; };
 		062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
 		062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
-		064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
+		064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
+		0655C7272732FDA30087281F /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
+		0655C7292732FDE00087281F /* FetchCategory.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCategory.graphql; sourceTree = "<group>"; };
+		0655C72B273321B20087281F /* Category+CategoryFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CategoryFragment.swift"; sourceTree = "<group>"; };
+		0655C72F27335CA40087281F /* CategoryEnvelope+FetchCategoryQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEnvelope+FetchCategoryQueryData.swift"; sourceTree = "<group>"; };
 		06566372270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectRewardsByIdQuery.graphql; sourceTree = "<group>"; };
 		06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryData.swift"; sourceTree = "<group>"; };
 		065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UpdateBackingEnvelope+UpdateBackingMutation.Data.swift"; sourceTree = "<group>"; };
@@ -1883,6 +1914,11 @@
 		068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCommentReplies.graphql; sourceTree = "<group>"; };
 		068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CommentWithRepliesFragment.graphql; sourceTree = "<group>"; };
 		069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommentRepliesQueryTemplate.swift; sourceTree = "<group>"; };
+		06962F85273B2BC400FB0B3D /* CommentsQueries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsQueries.swift; sourceTree = "<group>"; };
+		06962F86273B2BC400FB0B3D /* CommentsQueriesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsQueriesTests.swift; sourceTree = "<group>"; };
+		06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCommentEnvelope+PostCommentMutationDataTests.swift"; sourceTree = "<group>"; };
+		06962F8C273B36A700FB0B3D /* PostCommentMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTemplate.swift; sourceTree = "<group>"; };
+		06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInputTests.swift"; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
 		06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
 		06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarViewTests.swift; sourceTree = "<group>"; };
@@ -2094,6 +2130,7 @@
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
 		47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingStateTests.swift"; sourceTree = "<group>"; };
+		47BA164827680CE90038A73E /* PerimeterX.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PerimeterX.xcframework; path = Carthage/Build/PerimeterX.xcframework; sourceTree = "<group>"; };
 		47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreatePaymentSource.graphql; sourceTree = "<group>"; };
 		47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewMoreRepliesFailedCell.swift; sourceTree = "<group>"; };
 		47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2405,8 +2442,6 @@
 		8A4E954624525DE400A578CF /* ProjectState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectState.swift; sourceTree = "<group>"; };
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
 		8A555868264C4AE400C2C30D /* GraphComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphComment.swift; sourceTree = "<group>"; };
-		8A555873264C4C8300C2C30D /* CommentsQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueries.swift; sourceTree = "<group>"; };
-		8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueriesTests.swift; sourceTree = "<group>"; };
 		8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
@@ -3381,6 +3416,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47BA164927680CE90038A73E /* PerimeterX.xcframework in Frameworks */,
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
@@ -3434,6 +3470,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47CE2580276819000074F293 /* PerimeterX.xcframework in Frameworks */,
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */,
@@ -3513,6 +3550,8 @@
 				06032A8F26CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift */,
 				06032A9326CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift */,
 				06032A9526CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift */,
+				0622C92727347F980039AAC9 /* FetchCategoryQueryTemplate.swift */,
+				0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */,
 			);
 			path = query;
 			sourceTree = "<group>";
@@ -3533,8 +3572,9 @@
 				066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */,
 				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
 				066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */,
-				066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */,
+				06962F8C273B36A700FB0B3D /* PostCommentMutationTemplate.swift */,
 				066C0AE826CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift */,
+				066C0AE626CC17610048F4D8 /* WatchProjectMutationTemplate.swift */,
 				066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */,
 			);
 			path = mutation;
@@ -3555,6 +3595,7 @@
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */,
+				06261602273B0E1500389981 /* PostComment.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
@@ -3609,9 +3650,11 @@
 				068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */,
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
 				4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */,
-				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
-				8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */,
+				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
+				0655C7292732FDE00087281F /* FetchCategory.graphql */,
 				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,
+				06962F85273B2BC400FB0B3D /* CommentsQueries.swift */,
+				06962F86273B2BC400FB0B3D /* CommentsQueriesTests.swift */,
 				8A30C6B22491689300EE12E4 /* ManagePledgeViewQueriesTests.swift */,
 				D6DC652E21768502008CF69C /* Queryable.swift */,
 				8A45168E24B3E2A800D8CAEF /* RewardAddOnSelectionViewQueries.swift */,
@@ -3762,6 +3805,10 @@
 			children = (
 				8A1557062693A07500017845 /* Backing+BackingFragment.swift */,
 				8A15574226951A4B00017845 /* Backing+BackingFragmentTests.swift */,
+				0655C72B273321B20087281F /* Category+CategoryFragment.swift */,
+				0622C9232734778D0039AAC9 /* Category+CategoryFragmentTests.swift */,
+				0655C72F27335CA40087281F /* CategoryEnvelope+FetchCategoryQueryData.swift */,
+				0622C92527347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift */,
 				8AC3E0FF269F498900168BF8 /* Checkout+CheckoutFragment.swift */,
 				47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */,
 				47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */,
@@ -3770,6 +3817,7 @@
 				06F2CA302762707B00056F35 /* Comment+CommentWithRepliesFragment.swift */,
 				8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */,
 				8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */,
+				06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */,
 				8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */,
 				8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */,
 				8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */,
@@ -3789,6 +3837,8 @@
 				06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */,
 				062868E726B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift */,
 				062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */,
+				06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */,
+				06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */,
 				47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */,
 				47D7D09B26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift */,
 				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
@@ -3808,6 +3858,7 @@
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
 				8AC3E016269626A400168BF8 /* Location+LocationFragment.swift */,
 				8AC3E01E2696368A00168BF8 /* Location+LocationFragmentTests.swift */,
+				06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */,
 				8AC3E045269791D400168BF8 /* Project.Category+CategoryFragment.swift */,
 				8AC3E0582697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift */,
 				8AA407C924DB453C008C5FB0 /* Project.Category+GraphCategory.swift */,
@@ -3821,13 +3872,15 @@
 				06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */,
 				06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */,
 				06566374270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift */,
+				064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */,
 				8AC3E03826977C0200168BF8 /* Project+ProjectFragment.swift */,
 				8AC3E05026979F8600168BF8 /* Project+ProjectFragmentTests.swift */,
-				064AEF0E270CECF0006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift */,
 				8A49396424B54F9B00C3C3CE /* Reward+GraphReward.swift */,
 				8A49396624B68FA500C3C3CE /* Reward+GraphRewardTests.swift */,
 				8AC3E00626961E6400168BF8 /* Reward+RewardFragment.swift */,
 				8AC3E00B26961E8A00168BF8 /* Reward+RewardFragmentTests.swift */,
+				0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */,
+				0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */,
 				8AC3E0952698CF0500168BF8 /* ShippingRule+ShippingRuleFragment.swift */,
 				8AC3E0A32698EE9500168BF8 /* ShippingRule+ShippingRuleFragmentTests.swift */,
 				47D7D09926C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift */,
@@ -4545,6 +4598,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47BA164827680CE90038A73E /* PerimeterX.xcframework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
@@ -5753,10 +5807,12 @@
 				06B3605C26E12288006CB9E4 /* FetchProjectByIdQuery.graphql in Resources */,
 				06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */,
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
+				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */,
 				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
+				06261603273B0E1500389981 /* PostComment.graphql in Resources */,
 				06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */,
 				8AC3E0C2269E2ADC00168BF8 /* CreateBacking.graphql in Resources */,
 				06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */,
@@ -5769,6 +5825,7 @@
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
+				0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */,
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
@@ -6964,6 +7021,7 @@
 				47A662F326AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift in Sources */,
 				D015899F1EEB2ED7006E7684 /* ServiceType.swift in Sources */,
 				D7774466217A345D008D679F /* UpdateUserProfileMutation .swift in Sources */,
+				06962F87273B2BC400FB0B3D /* CommentsQueries.swift in Sources */,
 				0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */,
 				D67B6C9D221F458700B63A6B /* Config+Encode.swift in Sources */,
 				D01588391EEB2ED7006E7684 /* Method.swift in Sources */,
@@ -7008,6 +7066,7 @@
 				8A30C6B12491683C00EE12E4 /* ManagePledgeViewQueries.swift in Sources */,
 				D01588FF1EEB2ED7006E7684 /* Project.swift in Sources */,
 				D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */,
+				0655C73027335CA50087281F /* CategoryEnvelope+FetchCategoryQueryData.swift in Sources */,
 				D0158A1D1EEB30A2006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift in Sources */,
 				D79CF3BF21AC9CB200ECB73A /* PaymentType.swift in Sources */,
 				D01589831EEB2ED7006E7684 /* UpdateDraft.swift in Sources */,
@@ -7047,6 +7106,7 @@
 				8A0B1E2324D4C486009E90C0 /* GraphProject.swift in Sources */,
 				D7417CD620BF12F4004DABA6 /* ExportDataEnvelope.swift in Sources */,
 				D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */,
+				06261606273B160400389981 /* GraphComment.swift in Sources */,
 				D0198F3621793FCF0090A9EC /* Service+RequestHelpers.swift in Sources */,
 				D01588CF1EEB2ED7006E7684 /* StarEnvelopeLenses.swift in Sources */,
 				D01589151EEB2ED7006E7684 /* Reward.swift in Sources */,
@@ -7057,7 +7117,6 @@
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
 				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
-				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
 				8ACF36D1262745520026E74D /* MockService.swift in Sources */,
 				D68F0B18243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
@@ -7079,6 +7138,7 @@
 				4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */,
 				D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */,
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
+				0622C92A273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift in Sources */,
 				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
 				8A07CFF926657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift in Sources */,
@@ -7091,6 +7151,7 @@
 				D6F5C6112437E12300C1A79D /* SignInWithAppleInput.swift in Sources */,
 				062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */,
 				8AA407C224DB0C8D008C5FB0 /* GraphCountry.swift in Sources */,
+				0655C72C273321B20087281F /* Category+CategoryFragment.swift in Sources */,
 				D63BBD31217F7212007E01F0 /* UserCreditCards.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
@@ -7101,7 +7162,6 @@
 				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
 				06813BA426E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql in Sources */,
-				8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */,
 				062868E826B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
@@ -7137,6 +7197,7 @@
 				8ADCCCD0264CA18E0079D308 /* GraphCommentTemplates.swift in Sources */,
 				D0158A201EEB30A2006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift in Sources */,
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
+				06261605273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift in Sources */,
 				06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */,
 				06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */,
 				8A49396124B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift in Sources */,
@@ -7159,6 +7220,7 @@
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
+				0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */,
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
 				8AA407CA24DB453C008C5FB0 /* Project.Category+GraphCategory.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,
@@ -7252,6 +7314,7 @@
 				8AC3E00C26961E8A00168BF8 /* Reward+RewardFragmentTests.swift in Sources */,
 				47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */,
 				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
+				0622C92E27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift in Sources */,
 				06032A9626CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift in Sources */,
 				8A49396324B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift in Sources */,
 				8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */,
@@ -7259,6 +7322,7 @@
 				06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */,
 				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
+				0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */,
 				47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
@@ -7269,6 +7333,7 @@
 				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
 				066C0AE726CC17610048F4D8 /* WatchProjectMutationTemplate.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
+				06962F8D273B36A700FB0B3D /* PostCommentMutationTemplate.swift in Sources */,
 				8A1F65F2262660EF00A28E74 /* PerimeterXClientTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
 				8A15574326951A4B00017845 /* Backing+BackingFragmentTests.swift in Sources */,
@@ -7278,6 +7343,7 @@
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
 				8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
+				0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */,
 				066C0AEB26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift in Sources */,
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
 				8A41CC6C2458A0480095B15E /* GraphBackingTests.swift in Sources */,
@@ -7298,9 +7364,11 @@
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
-				064AEF13270CFB53006605DD /* Reward+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
+				064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
+				06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */,
 				8AC3E0DA269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.DataTests.swift in Sources */,
 				D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */,
+				06962F8B273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift in Sources */,
 				8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */,
 				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
 				47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */,
@@ -7336,11 +7404,13 @@
 				069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */,
 				064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
-				8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */,
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
 				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
+				06962F89273B2BCA00FB0B3D /* CommentsQueriesTests.swift in Sources */,
 				062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */,
 				8AC3E0662697AC0400168BF8 /* User+UserFragmentTests.swift in Sources */,
+				0622C92C273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift in Sources */,
+				0622C92627347EE10039AAC9 /* CategoryEnvelope+FetchCategoryQueryDataTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
 				06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */,
 				8ADCCD912655D4030079D308 /* ApolloInterceptorsTests.swift in Sources */,
@@ -7527,7 +7597,11 @@
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Beta.entitlements";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
+				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7810,7 +7884,11 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
+				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7837,7 +7915,11 @@
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Release.entitlements";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
+				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8426,7 +8508,11 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
+					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
+				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

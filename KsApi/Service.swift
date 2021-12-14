@@ -290,14 +290,18 @@ public struct Service: ServiceType {
     return request(.friendStats)
   }
 
-  public func fetchGraphCategories(query: NonEmptySet<Query>)
-    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphCategories()
+    -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchRootCategoriesQuery(withParentCategoryAnalyticsName: true))
+      .flatMap(RootCategoriesEnvelope.envelopeProducer(from:))
   }
 
-  public func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<CategoryEnvelope, GraphError> {
-    return fetch(query: query)
+  public func fetchGraphCategory(id: String)
+    -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchCategoryQuery(id: id, withParentCategoryAnalyticsName: true))
+      .flatMap(CategoryEnvelope.envelopeProducer(from:))
   }
 
   public func fetchGraphUser(withStoredCards: Bool)
@@ -559,12 +563,12 @@ public struct Service: ServiceType {
     return request(.markAsRead(messageThread))
   }
 
-  // FIXME: Convert to using Apollo instead of DSL
   public func postComment(input: PostCommentInput)
     -> SignalProducer<Comment, ErrorEnvelope> {
-    return applyMutation(mutation: PostCommentMutation(input: input))
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(PostCommentEnvelope.modelProducer(from:))
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .PostCommentMutation(input: GraphAPI.PostCommentInput.from(input)))
+      .flatMap(PostCommentEnvelope.producer(from:))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
