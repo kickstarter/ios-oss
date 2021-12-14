@@ -4,6 +4,7 @@ import XCTest
 
 final class ProjectCategory_CategoryFragmentTests: XCTestCase {
   func test() {
+
     let variables = ["withParentCategoryAnalyticsName": true]
 
     guard let categoryFragment = try? GraphAPI.CategoryFragment(
@@ -20,6 +21,7 @@ final class ProjectCategory_CategoryFragmentTests: XCTestCase {
     XCTAssertEqual(category?.id, 47)
     XCTAssertEqual(category?.name, "My Category")
     XCTAssertEqual(category?.analyticsName, "Photobooks")
+    XCTAssertEqual(category?.parentAnalyticsName, "Parent /Category")
     XCTAssertEqual(category?.parentId, 18)
     XCTAssertEqual(category?.parentName, "My Parent Category")
   }

@@ -31,6 +31,7 @@ public struct Project {
     public var analyticsName: String?
     public var id: Int
     public var name: String
+    public var parentAnalyticsName: String?
     public var parentId: Int?
     public var parentName: String?
 

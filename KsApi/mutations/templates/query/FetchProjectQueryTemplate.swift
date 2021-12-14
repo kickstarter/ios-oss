@@ -42,7 +42,8 @@ public enum FetchProjectQueryTemplate {
              "parentCategory":{
                 "__typename":"Category",
                 "id":"Q2F0ZWdvcnktMTU=",
-                "name":"Photography"
+                "name":"Photography",
+                "analyticsName":"Photography"
              }
           },
           "canComment": true,

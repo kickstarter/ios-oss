@@ -9,16 +9,19 @@ extension Project.Category {
 
     var parentCategoryId: Int?
     var parentCategoryName: String?
+    var parentCategoryAnalyticsName: String?
 
     if let parentCategoryFragment = categoryFragment.parentCategory {
       parentCategoryId = decompose(id: parentCategoryFragment.id)
       parentCategoryName = parentCategoryFragment.name
+      parentCategoryAnalyticsName = parentCategoryFragment.analyticsName
     }
 
     return Project.Category(
       analyticsName: categoryFragment.analyticsName,
       id: id,
       name: categoryFragment.name,
+      parentAnalyticsName: parentCategoryAnalyticsName,
       parentId: parentCategoryId,
       parentName: parentCategoryName
     )

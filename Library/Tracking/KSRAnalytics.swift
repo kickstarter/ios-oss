@@ -1273,7 +1273,7 @@ private func projectProperties(
   props["launched_at"] = project.dates.launchedAt.toISO8601DateTimeString()
   props["name"] = project.name
   props["pid"] = String(project.id)
-  props["category"] = project.category.parentName
+  props["category"] = project.category.parentAnalyticsName
   props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
