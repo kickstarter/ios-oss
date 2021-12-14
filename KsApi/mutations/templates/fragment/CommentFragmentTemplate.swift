@@ -100,7 +100,9 @@ public enum CommentFragmentTemplate {
         "name": "Mubarak Sadoon",
         "uid": "618005886"
       },
-      "authorBadges": [],
+      "authorBadges": [
+        "collaborator"
+      ],
       "body": "new post",
       "createdAt": 1624917189,
       "deleted": false,

@@ -208,7 +208,7 @@ public struct Service: ServiceType {
     return requestPaginationDecodable(paginationUrl)
   }
 
-  // FIXME: Should be able to convert this to Apollo.
+  // FIXME: Should be able to convert this to Apollo as it uses /v1 but check its' use cases first.
   public func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return request(.backing(projectId: project.id, backerId: user.id))
@@ -246,11 +246,20 @@ public struct Service: ServiceType {
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
-  // FIXME: Should be able to convert this to Apollo.
-  public func fetchCommentReplies(query: NonEmptySet<Query>)
+  public func fetchCommentReplies(
+    id: String,
+    cursor: String?,
+    limit: Int,
+    withStoredCards: Bool
+  )
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchCommentRepliesQuery(
+        commentId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      ))
       .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
   }
 

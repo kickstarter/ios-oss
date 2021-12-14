@@ -28,6 +28,7 @@ extension Comment {
       createdAt: commentFragment.createdAt.flatMap(TimeInterval.init) ?? 0,
       id: commentFragment.id,
       isDeleted: commentFragment.deleted,
+      parentId: commentFragment.parentId,
       replyCount: commentFragment.replies?.totalCount ?? 0,
       status: .success
     )

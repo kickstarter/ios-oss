@@ -116,8 +116,13 @@ public protocol ServiceType {
     withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comment replies for a comment with a query.
-  func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
+  /// Fetch comment replies for a comment with an id, limit, cursor and user information with stored cards.
+  func fetchCommentReplies(
+    id: String,
+    cursor: String?,
+    limit: Int,
+    withStoredCards: Bool
+  ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
 
   /// Fetch the config.
   func fetchConfig() -> SignalProducer<Config, ErrorEnvelope>

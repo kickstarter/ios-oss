@@ -587,7 +587,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         }
 
         return AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .fetchCommentReplies(
+            id: commentId,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit,
+            withStoredCards: false
+          )
           .demoteErrors()
           .observeForUI()
           .map { envelope in
@@ -676,7 +681,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return .empty
         }
         return AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .fetchCommentReplies(
+            id: commentId,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit,
+            withStoredCards: false
+          )
           .demoteErrors()
           .observeForUI()
           .map { envelope in

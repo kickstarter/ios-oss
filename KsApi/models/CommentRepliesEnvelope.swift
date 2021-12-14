@@ -10,8 +10,5 @@ public struct CommentRepliesEnvelope: Decodable {
 }
 
 extension CommentRepliesEnvelope {
-  static func envelopeProducer(from envelope: GraphCommentRepliesEnvelope)
-    -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
-    return SignalProducer(value: CommentRepliesEnvelope.commentRepliesEnvelope(from: envelope))
-  }
+  public static let paginationLimit = 7
 }

@@ -5906,6 +5906,259 @@ public enum GraphAPI {
     }
   }
 
+  public final class FetchCommentRepliesQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query FetchCommentReplies($commentId: ID!, $cursor: String, $limit: Int!, $withStoredCards: Boolean!) {
+        comment: node(id: $commentId) {
+          __typename
+          ...CommentWithRepliesFragment
+        }
+      }
+      """
+
+    public let operationName: String = "FetchCommentReplies"
+
+    public var queryDocument: String {
+      var document: String = operationDefinition
+      document.append("\n" + CommentWithRepliesFragment.fragmentDefinition)
+      document.append("\n" + UserFragment.fragmentDefinition)
+      document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
+      document.append("\n" + CommentFragment.fragmentDefinition)
+      return document
+    }
+
+    public var commentId: GraphQLID
+    public var cursor: String?
+    public var limit: Int
+    public var withStoredCards: Bool
+
+    public init(commentId: GraphQLID, cursor: String? = nil, limit: Int, withStoredCards: Bool) {
+      self.commentId = commentId
+      self.cursor = cursor
+      self.limit = limit
+      self.withStoredCards = withStoredCards
+    }
+
+    public var variables: GraphQLMap? {
+      return ["commentId": commentId, "cursor": cursor, "limit": limit, "withStoredCards": withStoredCards]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("node", alias: "comment", arguments: ["id": GraphQLVariable("commentId")], type: .object(Comment.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(comment: Comment? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "comment": comment.flatMap { (value: Comment) -> ResultMap in value.resultMap }])
+      }
+
+      /// Fetches an object given its ID.
+      public var comment: Comment? {
+        get {
+          return (resultMap["comment"] as? ResultMap).flatMap { Comment(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "comment")
+        }
+      }
+
+      public struct Comment: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User", "UserUrl", "Location", "Project", "Comment", "Category", "Photo", "ProjectFeaturedImage", "RewardItem", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "Message", "Backing", "Reward", "ShippingRule", "Video", "VideoTrack", "VideoTrackCue", "Flagging", "CreatorInterview", "CreatorPrompt", "InterviewQuestion", "InterviewAnswer", "FreeformPost", "Organization", "CuratedPage", "Conversation", "Address", "PushProject", "Checkout", "Survey"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLFragmentSpread(CommentWithRepliesFragment.self),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public static func makeUser() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "User"])
+        }
+
+        public static func makeUserUrl() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "UserUrl"])
+        }
+
+        public static func makeLocation() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Location"])
+        }
+
+        public static func makeProject() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Project"])
+        }
+
+        public static func makeCategory() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Category"])
+        }
+
+        public static func makePhoto() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Photo"])
+        }
+
+        public static func makeProjectFeaturedImage() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "ProjectFeaturedImage"])
+        }
+
+        public static func makeRewardItem() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "RewardItem"])
+        }
+
+        public static func makeProjectProfile() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "ProjectProfile"])
+        }
+
+        public static func makeAttachedAudio() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "AttachedAudio"])
+        }
+
+        public static func makeAttachedVideo() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "AttachedVideo"])
+        }
+
+        public static func makeTag() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Tag"])
+        }
+
+        public static func makeMessage() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Message"])
+        }
+
+        public static func makeBacking() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Backing"])
+        }
+
+        public static func makeReward() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Reward"])
+        }
+
+        public static func makeShippingRule() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "ShippingRule"])
+        }
+
+        public static func makeVideo() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Video"])
+        }
+
+        public static func makeVideoTrack() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "VideoTrack"])
+        }
+
+        public static func makeVideoTrackCue() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "VideoTrackCue"])
+        }
+
+        public static func makeFlagging() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Flagging"])
+        }
+
+        public static func makeCreatorInterview() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "CreatorInterview"])
+        }
+
+        public static func makeCreatorPrompt() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "CreatorPrompt"])
+        }
+
+        public static func makeInterviewQuestion() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "InterviewQuestion"])
+        }
+
+        public static func makeInterviewAnswer() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "InterviewAnswer"])
+        }
+
+        public static func makeFreeformPost() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "FreeformPost"])
+        }
+
+        public static func makeOrganization() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Organization"])
+        }
+
+        public static func makeCuratedPage() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "CuratedPage"])
+        }
+
+        public static func makeConversation() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Conversation"])
+        }
+
+        public static func makeAddress() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Address"])
+        }
+
+        public static func makePushProject() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "PushProject"])
+        }
+
+        public static func makeCheckout() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Checkout"])
+        }
+
+        public static func makeSurvey() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Survey"])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var commentWithRepliesFragment: CommentWithRepliesFragment? {
+            get {
+              if !CommentWithRepliesFragment.possibleTypes.contains(resultMap["__typename"]! as! String) { return nil }
+              return CommentWithRepliesFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              guard let newValue = newValue else { return }
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+
   public final class FetchProjectByIdQuery: GraphQLQuery {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
@@ -9952,6 +10205,412 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+    }
+  }
+
+  public struct CommentWithRepliesFragment: GraphQLFragment {
+    /// The raw GraphQL definition of this fragment.
+    public static let fragmentDefinition: String =
+      """
+      fragment CommentWithRepliesFragment on Comment {
+        __typename
+        author {
+          __typename
+          ...UserFragment
+        }
+        authorBadges
+        body
+        createdAt
+        deleted
+        id
+        parentId
+        replies(before: $cursor, last: $limit) {
+          __typename
+          edges {
+            __typename
+            node {
+              __typename
+              ...CommentFragment
+            }
+          }
+          pageInfo {
+            __typename
+            hasPreviousPage
+            startCursor
+          }
+          totalCount
+        }
+      }
+      """
+
+    public static let possibleTypes: [String] = ["Comment"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("author", type: .object(Author.selections)),
+        GraphQLField("authorBadges", type: .list(.scalar(CommentBadge.self))),
+        GraphQLField("body", type: .nonNull(.scalar(String.self))),
+        GraphQLField("createdAt", type: .scalar(String.self)),
+        GraphQLField("deleted", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("parentId", type: .scalar(String.self)),
+        GraphQLField("replies", arguments: ["before": GraphQLVariable("cursor"), "last": GraphQLVariable("limit")], type: .object(Reply.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(author: Author? = nil, authorBadges: [CommentBadge?]? = nil, body: String, createdAt: String? = nil, deleted: Bool, id: GraphQLID, parentId: String? = nil, replies: Reply? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Comment", "author": author.flatMap { (value: Author) -> ResultMap in value.resultMap }, "authorBadges": authorBadges, "body": body, "createdAt": createdAt, "deleted": deleted, "id": id, "parentId": parentId, "replies": replies.flatMap { (value: Reply) -> ResultMap in value.resultMap }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// The author of the comment
+    public var author: Author? {
+      get {
+        return (resultMap["author"] as? ResultMap).flatMap { Author(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "author")
+      }
+    }
+
+    /// The badges for the comment author
+    public var authorBadges: [CommentBadge?]? {
+      get {
+        return resultMap["authorBadges"] as? [CommentBadge?]
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "authorBadges")
+      }
+    }
+
+    /// The body of the comment
+    public var body: String {
+      get {
+        return resultMap["body"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "body")
+      }
+    }
+
+    /// When was this comment posted
+    public var createdAt: String? {
+      get {
+        return resultMap["createdAt"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "createdAt")
+      }
+    }
+
+    /// Whether the comment is deleted
+    public var deleted: Bool {
+      get {
+        return resultMap["deleted"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "deleted")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    /// The ID of the parent comment
+    public var parentId: String? {
+      get {
+        return resultMap["parentId"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "parentId")
+      }
+    }
+
+    /// The replies on a comment
+    public var replies: Reply? {
+      get {
+        return (resultMap["replies"] as? ResultMap).flatMap { Reply(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "replies")
+      }
+    }
+
+    public struct Author: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["User"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(UserFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var userFragment: UserFragment {
+          get {
+            return UserFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct Reply: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["CommentConnection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("edges", type: .list(.object(Edge.selections))),
+          GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+          GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(edges: [Edge?]? = nil, pageInfo: PageInfo, totalCount: Int) {
+        self.init(unsafeResultMap: ["__typename": "CommentConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap, "totalCount": totalCount])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// A list of edges.
+      public var edges: [Edge?]? {
+        get {
+          return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
+        }
+        set {
+          resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
+        }
+      }
+
+      /// Information to aid in pagination.
+      public var pageInfo: PageInfo {
+        get {
+          return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+        }
+      }
+
+      public var totalCount: Int {
+        get {
+          return resultMap["totalCount"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
+        }
+      }
+
+      public struct Edge: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["CommentEdge"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("node", type: .object(Node.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(node: Node? = nil) {
+          self.init(unsafeResultMap: ["__typename": "CommentEdge", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// The item at the end of the edge.
+        public var node: Node? {
+          get {
+            return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "node")
+          }
+        }
+
+        public struct Node: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Comment"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLFragmentSpread(CommentFragment.self),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var fragments: Fragments {
+            get {
+              return Fragments(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+
+          public struct Fragments {
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public var commentFragment: CommentFragment {
+              get {
+                return CommentFragment(unsafeResultMap: resultMap)
+              }
+              set {
+                resultMap += newValue.resultMap
+              }
+            }
+          }
+        }
+      }
+
+      public struct PageInfo: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["PageInfo"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("hasPreviousPage", type: .nonNull(.scalar(Bool.self))),
+            GraphQLField("startCursor", type: .scalar(String.self)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(hasPreviousPage: Bool, startCursor: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "PageInfo", "hasPreviousPage": hasPreviousPage, "startCursor": startCursor])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// When paginating backwards, are there more items?
+        public var hasPreviousPage: Bool {
+          get {
+            return resultMap["hasPreviousPage"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "hasPreviousPage")
+          }
+        }
+
+        /// When paginating backwards, the cursor to continue.
+        public var startCursor: String? {
+          get {
+            return resultMap["startCursor"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "startCursor")
+          }
         }
       }
     }
