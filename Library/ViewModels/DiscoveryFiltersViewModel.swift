@@ -357,29 +357,3 @@ private func typeContext(from discoveryParams: DiscoveryParams
     return .allProjects
   }
 }
-
-public func categoryBy(id: String) -> NonEmptySet<Query> {
-  return NonEmptySet(Query.category(id: id, categoryFields))
-}
-
-private var categoryFields: NonEmptySet<Query.Category> {
-  return .id +| [
-    .analyticsName,
-    .name,
-    .subcategories(
-      [],
-      .totalCount +| [
-        .nodes(
-          .id +| [
-            .analyticsName,
-            .name,
-            .parentCategory,
-            .parentId,
-            .totalProjectCount
-          ]
-        )
-      ]
-    ),
-    .totalProjectCount
-  ]
-}

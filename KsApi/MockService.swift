@@ -750,12 +750,6 @@
       return producer(for: self.fetchErroredUserBackingsResult)
     }
 
-    internal func fetchGraph<A>(
-      query _: NonEmptySet<Query>
-    ) -> SignalProducer<A, GraphError> where A: Decodable {
-      return .empty
-    }
-
     internal func unfollowFriend(userId _: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = unfollowFriendError {
         return SignalProducer(error: error)

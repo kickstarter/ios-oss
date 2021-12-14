@@ -6,19 +6,6 @@ import ReactiveSwift
 extension Service {
   private static let session = URLSession(configuration: .default)
 
-  func fetch<A: Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
-    let queryString: String = Query.build(query)
-
-    let request = self.preparedRequest(
-      forURL: self.serverConfig.graphQLEndpointUrl,
-      queryString: queryString
-    )
-
-    print("⚪️ [KsApi] Starting query:\n \(queryString)")
-    return Service.session.rac_graphDataResponse(request, and: self.perimeterXClient)
-      .flatMap(self.decodeGraphModel)
-  }
-
   func applyMutation<A: Decodable, B: GraphMutation>(mutation: B) -> SignalProducer<A, GraphError> {
     do {
       let request = try self.preparedGraphRequest(
