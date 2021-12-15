@@ -1232,16 +1232,6 @@
       return producer(for: self.fetchUserResult)
     }
 
-    internal func fetchCategory(param: Param)
-      -> SignalProducer<KsApi.Category, GraphError> {
-      switch param {
-      case let .id(id):
-        return SignalProducer(value: .template |> Category.lens.id .~ "\(id)")
-      default:
-        return .empty
-      }
-    }
-
     internal func incrementVideoCompletion(forProject _: Project) ->
       SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = incrementVideoCompletionError {

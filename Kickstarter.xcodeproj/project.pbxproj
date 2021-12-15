@@ -311,9 +311,6 @@
 		4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */; };
 		4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */; };
 		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
-		4753C779264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */; };
-		4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */; };
-		4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */; };
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
 		47554A5B2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
@@ -706,10 +703,7 @@
 		8AA3DB38250AF691009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		8AA407C024DA43D8008C5FB0 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */; };
-		8AA407C224DB0C8D008C5FB0 /* GraphCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */; };
-		8AA407C624DB36E8008C5FB0 /* Project.Country+GraphCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */; };
 		8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */; };
-		8AA407CA24DB453C008C5FB0 /* Project.Category+GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C924DB453C008C5FB0 /* Project.Category+GraphCategory.swift */; };
 		8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */; };
 		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
 		8AA5B063235E254C0022F5F0 /* AppCenterDistributeResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */; };
@@ -2059,9 +2053,6 @@
 		4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift; sourceTree = "<group>"; };
 		4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.swift; sourceTree = "<group>"; };
 		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
-		4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelope.swift; sourceTree = "<group>"; };
-		4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTests.swift; sourceTree = "<group>"; };
-		4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
 		47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsAskAQuestionCell.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
@@ -2426,10 +2417,7 @@
 		8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeTableView.swift; sourceTree = "<group>"; };
 		8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
-		8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCountry.swift; sourceTree = "<group>"; };
-		8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project.Country+GraphCountry.swift"; sourceTree = "<group>"; };
 		8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+GraphUser.swift"; sourceTree = "<group>"; };
-		8AA407C924DB453C008C5FB0 /* Project.Category+GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project.Category+GraphCategory.swift"; sourceTree = "<group>"; };
 		8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryTemplates.swift; sourceTree = "<group>"; };
 		8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift"; sourceTree = "<group>"; };
 		8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AppCenterDistributeResources.bundle; path = Carthage/Build/iOS/AppCenterDistribute.framework/AppCenterDistributeResources.bundle; sourceTree = "<group>"; };
@@ -3682,11 +3670,8 @@
 			isa = PBXGroup;
 			children = (
 				8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */,
-				8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */,
 				0620176B276956D200818A47 /* GraphComment.swift */,
 				0620176A276956D200818A47 /* GraphCommentTests.swift */,
-				4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */,
-				4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */,
 				D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */,
 				7798B56421750041008BC50D /* GraphUser.swift */,
 				D63BBD30217F7212007E01F0 /* UserCreditCards.swift */,
@@ -3776,10 +3761,8 @@
 				06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */,
 				8AC3E045269791D400168BF8 /* Project.Category+CategoryFragment.swift */,
 				8AC3E0582697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift */,
-				8AA407C924DB453C008C5FB0 /* Project.Category+GraphCategory.swift */,
 				8AC3E040269791C300168BF8 /* Project.Country+CountryFragment.swift */,
 				8AC3E05D2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift */,
-				8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */,
 				8AC3E0AB2698EFAA00168BF8 /* Project+FetchAddOnsQueryData.swift */,
 				8AC3E0B32698F03200168BF8 /* Project+FetchAddOnsQueryDataTests.swift */,
 				06B3605D26E12EB7006CB9E4 /* Project+FetchProjectQueryData.swift */,
@@ -5258,7 +5241,6 @@
 				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
 				D01587FB1EEB2ED7006E7684 /* FriendStatsEnvelopeTemplates.swift */,
-				4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */,
 				D01587FC1EEB2ED7006E7684 /* ItemTemplates.swift */,
 				D01587FD1EEB2ED7006E7684 /* LocationTemplates.swift */,
 				D01587FE1EEB2ED7006E7684 /* MessageTemplates.swift */,
@@ -7053,13 +7035,11 @@
 				8AC3E041269791C300168BF8 /* Project.Country+CountryFragment.swift in Sources */,
 				D6F5C6112437E12300C1A79D /* SignInWithAppleInput.swift in Sources */,
 				062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */,
-				8AA407C224DB0C8D008C5FB0 /* GraphCountry.swift in Sources */,
 				0655C72C273321B20087281F /* Category+CategoryFragment.swift in Sources */,
 				D63BBD31217F7212007E01F0 /* UserCreditCards.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
 				478E31C126C1C4C6004BF898 /* UnwatchProject.graphql in Sources */,
-				4753C779264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift in Sources */,
 				84264EEC25387B0500D8DF81 /* Param.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,
@@ -7122,7 +7102,6 @@
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
 				0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */,
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
-				8AA407CA24DB453C008C5FB0 /* Project.Category+GraphCategory.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,
 				065E6BA626B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift in Sources */,
 				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,
@@ -7132,13 +7111,11 @@
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
-				8AA407C624DB36E8008C5FB0 /* Project.Country+GraphCountry.swift in Sources */,
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				8AC3E0962698CF0600168BF8 /* ShippingRule+ShippingRuleFragment.swift in Sources */,
 				06FE2D7726CDB01E00A4C0F4 /* MockGraphQLClient.swift in Sources */,
-				4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
@@ -7278,7 +7255,6 @@
 				8A07D00426657F7800426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift in Sources */,
 				8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */,
 				062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */,
-				4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
 				066C0AE526CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift in Sources */,
 				473387DE26A7282E006AC9E7 /* UserEnvelope+GraphUserEnvelopeTests.swift in Sources */,

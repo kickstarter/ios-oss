@@ -1,15 +1,5 @@
 import Prelude
 
-// MARK: - Graph Response
-
-public struct GraphResponse<T: Decodable>: Decodable {
-  let data: T
-}
-
-public struct GraphResponseErrorEnvelope: Decodable {
-  let errors: [GraphResponseError]?
-}
-
 // MARK: - Base Query Types
 
 extension Never: CustomStringConvertible {
