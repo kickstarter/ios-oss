@@ -46,12 +46,3 @@ extension Money {
     self.symbol = try values.decodeIfPresent(String.self, forKey: .symbol)
   }
 }
-
-extension Money {
-  static var baseQueryProperties: NonEmptySet<Query.Money> {
-    return Query.Money.currency +| [
-      .amount,
-      .symbol
-    ]
-  }
-}

@@ -750,12 +750,6 @@
       return producer(for: self.fetchErroredUserBackingsResult)
     }
 
-    internal func fetchGraph<A>(
-      query _: NonEmptySet<Query>
-    ) -> SignalProducer<A, GraphError> where A: Decodable {
-      return .empty
-    }
-
     internal func unfollowFriend(userId _: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = unfollowFriendError {
         return SignalProducer(error: error)
@@ -1236,16 +1230,6 @@
 
     internal func fetchUser(_: User) -> SignalProducer<User, ErrorEnvelope> {
       return producer(for: self.fetchUserResult)
-    }
-
-    internal func fetchCategory(param: Param)
-      -> SignalProducer<KsApi.Category, GraphError> {
-      switch param {
-      case let .id(id):
-        return SignalProducer(value: .template |> Category.lens.id .~ "\(id)")
-      default:
-        return .empty
-      }
     }
 
     internal func incrementVideoCompletion(forProject _: Project) ->

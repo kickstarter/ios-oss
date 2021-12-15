@@ -17,18 +17,6 @@ public struct GraphUser: Decodable {
   public var uid: String
 }
 
-extension GraphUser {
-  /// All properties required to instantiate a `User` via a `GraphUser`
-  static var baseQueryProperties: NonEmptySet<Query.User> {
-    return Query.User.id +| [
-      .imageUrl(alias: "imageUrl", blur: false, width: Constants.imageWidth),
-      .id,
-      .uid,
-      .name
-    ]
-  }
-}
-
 extension GraphUser: Equatable {
   public static func == (lhs: GraphUser, rhs: GraphUser) -> Bool {
     lhs.chosenCurrency == rhs.chosenCurrency &&
