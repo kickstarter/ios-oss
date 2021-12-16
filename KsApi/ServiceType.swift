@@ -116,8 +116,13 @@ public protocol ServiceType {
     withStoredCards: Bool
   ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
-  /// Fetch comment replies for a comment with a query.
-  func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
+  /// Fetch comment replies for a comment with an id, limit, cursor and user information with stored cards.
+  func fetchCommentReplies(
+    id: String,
+    cursor: String?,
+    limit: Int,
+    withStoredCards: Bool
+  ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>
 
   /// Fetch the config.
   func fetchConfig() -> SignalProducer<Config, ErrorEnvelope>
@@ -138,11 +143,11 @@ public protocol ServiceType {
   func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope>
 
   /// Fetch Categories objects using graphQL.
-  func fetchGraphCategories(query: NonEmptySet<Query>) -> SignalProducer<RootCategoriesEnvelope, GraphError>
+  func fetchGraphCategories() -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope>
 
   /// Fetch Category objects using graphQL.
-  func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<CategoryEnvelope, GraphError>
+  func fetchGraphCategory(id: String)
+    -> SignalProducer<CategoryEnvelope, ErrorEnvelope>
 
   /// Fetches various fields of a given User using graphQL.
   func fetchGraphUser(withStoredCards: Bool)

@@ -43,8 +43,9 @@
     fileprivate let fetchBackingResponse: Backing
     fileprivate let backingUpdate: Backing
 
-    fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
-    fileprivate let fetchGraphCategoriesError: GraphError?
+    fileprivate let fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>?
+
+    fileprivate let fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
     fileprivate let fetchUpdateCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
@@ -218,8 +219,8 @@
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
-      fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
-      fetchGraphCategoriesError: GraphError? = nil,
+      fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>? = nil,
+      fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>? = nil,
       fetchCommentsResponse _: [ActivityComment]? = nil,
       fetchCommentsError _: ErrorEnvelope? = nil,
       fetchProjectCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
@@ -339,17 +340,9 @@
 
       self.backingUpdate = backingUpdate
 
-      // FIXME: Once converted to Apollo, remove the default value and combine the `Response` and `Error` into a `Result`
-      self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (RootCategoriesEnvelope.template
-        |> RootCategoriesEnvelope.lens.categories .~ [
-          .art,
-          .filmAndVideo,
-          .illustration,
-          .documentary
-        ]
-      )
+      self.fetchGraphCategoryResult = fetchGraphCategoryResult
 
-      self.fetchGraphCategoriesError = fetchGraphCategoriesError
+      self.fetchGraphCategoriesResult = fetchGraphCategoriesResult
 
       self.fetchGraphUserResult = fetchGraphUserResult
 
@@ -644,9 +637,25 @@
         .fetchWithResult(query: fetchUpdateCommentsQuery, result: self.fetchUpdateCommentsEnvelopeResult)
     }
 
-    func fetchCommentReplies(query _: NonEmptySet<Query>)
-      -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchCommentRepliesEnvelopeResult)
+    func fetchCommentReplies(
+      id: String,
+      cursor: String?,
+      limit: Int,
+      withStoredCards: Bool
+    ) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchCommentRepliesQuery = GraphAPI.FetchCommentRepliesQuery(
+        commentId: id,
+        cursor: cursor,
+        limit: limit,
+        withStoredCards: withStoredCards
+      )
+
+      return client
+        .fetchWithResult(query: fetchCommentRepliesQuery, result: self.fetchCommentRepliesEnvelopeResult)
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
@@ -702,19 +711,26 @@
       )
     }
 
-    internal func fetchGraphCategories(query _: NonEmptySet<Query>)
-      -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-      if let error = self.fetchGraphCategoriesError {
-        return SignalProducer(error: error)
-      } else if let response = self.fetchGraphCategoriesResponse {
-        return SignalProducer(value: response)
+    internal func fetchGraphCategories()
+      -> SignalProducer<RootCategoriesEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
       }
-      return SignalProducer(value: RootCategoriesEnvelope.template)
+
+      let fetchGraphCategoriesQuery = GraphAPI.FetchRootCategoriesQuery()
+
+      return client.fetchWithResult(query: fetchGraphCategoriesQuery, result: self.fetchGraphCategoriesResult)
     }
 
-    internal func fetchGraphCategory(query: NonEmptySet<Query>)
-      -> SignalProducer<CategoryEnvelope, GraphError> {
-      return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
+    internal func fetchGraphCategory(id: String)
+      -> SignalProducer<CategoryEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchGraphCategoryQuery = GraphAPI.FetchCategoryQuery(id: id)
+
+      return client.fetchWithResult(query: fetchGraphCategoryQuery, result: self.fetchGraphCategoryResult)
     }
 
     internal func fetchGraphUser(withStoredCards: Bool)
@@ -732,12 +748,6 @@
     internal func fetchErroredUserBackings(status _: BackingState)
       -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchErroredUserBackingsResult)
-    }
-
-    internal func fetchGraph<A>(
-      query _: NonEmptySet<Query>
-    ) -> SignalProducer<A, GraphError> where A: Decodable {
-      return .empty
     }
 
     internal func unfollowFriend(userId _: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
@@ -1222,16 +1232,6 @@
       return producer(for: self.fetchUserResult)
     }
 
-    internal func fetchCategory(param: Param)
-      -> SignalProducer<KsApi.Category, GraphError> {
-      switch param {
-      case let .id(id):
-        return SignalProducer(value: .template |> Category.lens.id .~ "\(id)")
-      default:
-        return .empty
-      }
-    }
-
     internal func incrementVideoCompletion(forProject _: Project) ->
       SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = incrementVideoCompletionError {
@@ -1285,9 +1285,16 @@
       return SignalProducer(value: messageThread)
     }
 
-    func postComment(input _: PostCommentInput)
+    func postComment(input: PostCommentInput)
       -> SignalProducer<Comment, ErrorEnvelope> {
-      return producer(for: self.postCommentResult)
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .PostCommentMutation(input: GraphAPI.PostCommentInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.postCommentResult)
     }
 
     func resetPassword(email _: String) -> SignalProducer<User, ErrorEnvelope> {
@@ -1551,7 +1558,8 @@
             fetchActivitiesResponse: $1.fetchActivitiesResponse,
             fetchActivitiesError: $1.fetchActivitiesError,
             fetchBackingResponse: $1.fetchBackingResponse,
-            fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
+            fetchGraphCategoryResult: $1.fetchGraphCategoryResult,
+            fetchGraphCategoriesResult: $1.fetchGraphCategoriesResult,
             fetchProjectCommentsEnvelopeResult: $1.fetchProjectCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,

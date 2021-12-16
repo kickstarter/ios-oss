@@ -1,0 +1,18 @@
+query FetchCategory($id: ID!) {
+  node(id: $id) {
+    ... on Category {
+      analyticsName
+      id
+      name
+      subcategories {
+        nodes {
+          ...CategoryFragment
+          parentId
+          totalProjectCount
+        }
+        totalCount
+      }
+      totalProjectCount
+    }
+  }
+}

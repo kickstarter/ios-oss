@@ -4,6 +4,8 @@ import Library
 import Prelude
 
 class ThanksViewControllerTests: TestCase {
+  private let categoryEnvelope = CategoryEnvelope(node: .template)
+
   override func setUp() {
     super.setUp()
 
@@ -22,7 +24,8 @@ class ThanksViewControllerTests: TestCase {
     let discoveryEnvelope = DiscoveryEnvelope.template
     let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.tabletopGames])
     let mockService = MockService(
-      fetchGraphCategoriesResponse: rootCategories,
+      fetchGraphCategoryResult: .success(categoryEnvelope),
+      fetchGraphCategoriesResult: .success(rootCategories),
       fetchDiscoveryResponse: discoveryEnvelope
     )
 
@@ -48,7 +51,8 @@ class ThanksViewControllerTests: TestCase {
     let discoveryEnvelope = DiscoveryEnvelope.template
     let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.tabletopGames])
     let mockService = MockService(
-      fetchGraphCategoriesResponse: rootCategories,
+      fetchGraphCategoryResult: .success(categoryEnvelope),
+      fetchGraphCategoriesResult: .success(rootCategories),
       fetchDiscoveryResponse: discoveryEnvelope
     )
 

@@ -38,7 +38,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     let categoriesEvent = self.viewDidLoadProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService
-          .fetchGraphCategories(query: rootCategoriesQuery)
+          .fetchGraphCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.rootCategories }
           .materialize()

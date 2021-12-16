@@ -27,26 +27,6 @@ struct GraphComment: Decodable {
 }
 
 extension GraphComment {
-  /// All properties required to instantiate a `Comment` via a `GraphComment`
-  static var baseQueryProperties: NonEmptySet<Query.Comment> {
-    return Query.Comment.id +| [
-      .author(
-        .id +| [
-          .isCreator,
-          .name,
-          .imageURL(width: Constants.previewImageWidth)
-        ]
-      ),
-      .body,
-      .createdAt,
-      .deleted,
-      .authorBadges,
-      .parentId
-    ]
-  }
-}
-
-extension GraphComment {
   private enum CodingKeys: String, CodingKey {
     case author
     case authorBadges

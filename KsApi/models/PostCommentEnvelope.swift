@@ -10,8 +10,16 @@ struct PostCommentEnvelope: Decodable {
 }
 
 extension PostCommentEnvelope {
-  static func modelProducer(from envelope: PostCommentEnvelope)
-    -> SignalProducer<Comment, ErrorEnvelope> {
-    return SignalProducer(value: Comment.comment(from: envelope.createComment.comment))
+  /**
+   Return a signal producer containing `Comment` or `ErrorEnvelope`
+   */
+  static func producer(from data: GraphAPI.PostCommentMutation
+    .Data) -> SignalProducer<Comment, ErrorEnvelope> {
+    guard let commentMutationRawData = data.createComment?.comment,
+      let comment = Comment.from(commentMutationRawData) else {
+      return SignalProducer(error: ErrorEnvelope.couldNotParseJSON)
+    }
+
+    return SignalProducer(value: comment)
   }
 }

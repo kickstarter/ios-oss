@@ -424,8 +424,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return .init(value: params)
         }
 
-        // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
-        return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
+        return AppEnvironment.current.apiService.fetchGraphCategories()
           .map { envelope in
             findCategoryFromRootCategories(
               envelope: envelope,
@@ -588,7 +587,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         }
 
         return AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .fetchCommentReplies(
+            id: commentId,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit,
+            withStoredCards: false
+          )
           .demoteErrors()
           .observeForUI()
           .map { envelope in
@@ -677,7 +681,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           return .empty
         }
         return AppEnvironment.current.apiService
-          .fetchCommentReplies(query: commentRepliesQuery(withCommentId: commentId))
+          .fetchCommentReplies(
+            id: commentId,
+            cursor: nil,
+            limit: CommentRepliesEnvelope.paginationLimit,
+            withStoredCards: false
+          )
           .demoteErrors()
           .observeForUI()
           .map { envelope in

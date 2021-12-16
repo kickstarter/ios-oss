@@ -86,7 +86,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     let categoriesEvent = cachedCats
       .filter { $0?.isEmpty != .some(false) }
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
+        AppEnvironment.current.apiService.fetchGraphCategories()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(starting: {
             loaderIsVisible.value = true
@@ -356,32 +356,4 @@ private func typeContext(from discoveryParams: DiscoveryParams
   } else {
     return .allProjects
   }
-}
-
-public let rootCategoriesQuery = NonEmptySet(Query.rootCategories(categoryFields))
-
-public func categoryBy(id: String) -> NonEmptySet<Query> {
-  return NonEmptySet(Query.category(id: id, categoryFields))
-}
-
-private var categoryFields: NonEmptySet<Query.Category> {
-  return .id +| [
-    .analyticsName,
-    .name,
-    .subcategories(
-      [],
-      .totalCount +| [
-        .nodes(
-          .id +| [
-            .analyticsName,
-            .name,
-            .parentCategory,
-            .parentId,
-            .totalProjectCount
-          ]
-        )
-      ]
-    ),
-    .totalProjectCount
-  ]
 }
