@@ -35,8 +35,11 @@ final class ProjectFAQsEmptyStateCell: UITableViewCell, ValueCell {
     _ = self.contentView
       |> \.layoutMargins .~ .init(all: Styles.projectPageLeftRightInset)
 
-    let titleTextLabelText = Strings.Looks_like_there_arent_any_frequently_asked_questions() + " " + Strings
-      .Ask_the_project_creator_directly()
+    let titleTextLabelSecondaryText = AppEnvironment.current.currentUser != nil ? Strings
+      .Ask_the_project_creator_directly() : Strings.Log_in_to_ask_the_project_creator_directly()
+
+    let titleTextLabelText = Strings
+      .Looks_like_there_arent_any_frequently_asked_questions() + " " + titleTextLabelSecondaryText
 
     _ = self.titleTextLabel
       |> \.font .~ UIFont.ksr_body()
