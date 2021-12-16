@@ -9,6 +9,7 @@ import XCTest
 
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
+  private let categoryEnvelope = CategoryEnvelope(node: .template)
 
   private let backedProjectText = TestObserver<String, Never>()
   private let dismissToRootViewControllerAndPostNotification = TestObserver<Notification.Name, Never>()
@@ -68,7 +69,10 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(apiService: MockService(
+      fetchGraphCategoryResult: .success(self.categoryEnvelope),
+      fetchDiscoveryResponse: response
+    )) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
 
@@ -244,7 +248,10 @@ final class ThanksViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(
-      apiService: MockService(fetchDiscoveryResponse: response)
+      apiService: MockService(
+        fetchGraphCategoryResult: .success(self.categoryEnvelope),
+        fetchDiscoveryResponse: response
+      )
     ) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
@@ -282,7 +289,10 @@ final class ThanksViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
     let project = Project.template |> Project.lens.id .~ 12
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(apiService: MockService(
+      fetchGraphCategoryResult: .success(self.categoryEnvelope),
+      fetchDiscoveryResponse: response
+    )) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
 
@@ -318,7 +328,10 @@ final class ThanksViewModelTests: TestCase {
       ]
 
     withEnvironment(
-      apiService: MockService(fetchDiscoveryResponse: response),
+      apiService: MockService(
+        fetchGraphCategoryResult: .success(self.categoryEnvelope),
+        fetchDiscoveryResponse: response
+      ),
       optimizelyClient: mockOptimizelyClient
     ) {
       self.vm.inputs.configure(with: (Project.template, Reward.template, nil))

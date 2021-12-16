@@ -49,6 +49,16 @@ final class AppDelegateViewModelTests: TestCase {
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
   private let updateConfigInEnvironment = TestObserver<Config, Never>()
 
+  private var defaultRootCategoriesTemplate: RootCategoriesEnvelope {
+    RootCategoriesEnvelope.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
+        .art,
+        .filmAndVideo,
+        .illustration,
+        .documentary
+      ]
+  }
+
   override func setUp() {
     super.setUp()
 
@@ -884,47 +894,55 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testGoToDiscoveryWithCategoryName_ValidCategoryName_RoutesToCategory() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+    let mockService = MockService(fetchGraphCategoriesResult: .success(defaultRootCategoriesTemplate))
 
-    self.goToDiscovery.assertValues([])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    let url = URL(string: "https://www.kickstarter.com/discover/categories/art")!
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: url,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+      self.goToDiscovery.assertValues([])
 
-    self.scheduler.advance()
+      let url = URL(string: "https://www.kickstarter.com/discover/categories/art")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
-    let params = .defaults |> DiscoveryParams.lens.category .~ .art
-    self.goToDiscovery.assertValues([params])
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .art
+      self.goToDiscovery.assertValues([params])
+    }
   }
 
   func testGoToDiscoveryWithCategoryName_InvalidCategoryName_DoesNotRouteToAnyCategory() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+    let mockService = MockService(fetchGraphCategoriesResult: .success(defaultRootCategoriesTemplate))
 
-    self.goToDiscovery.assertValues([])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    let url = URL(string: "https://www.kickstarter.com/discover/categories/random")!
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: url,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+      self.goToDiscovery.assertValues([])
 
-    self.scheduler.advance()
+      let url = URL(string: "https://www.kickstarter.com/discover/categories/random")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
-    let params = .defaults |> DiscoveryParams.lens.category .~ .none
-    self.goToDiscovery.assertValues([params])
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .none
+      self.goToDiscovery.assertValues([params])
+    }
   }
 
   func testGoToDiscoveryWithSubcategoryName_ValidSubcategoryName_RoutesToSubcategory() {
@@ -937,7 +955,7 @@ final class AppDelegateViewModelTests: TestCase {
         .games
       ]
 
-    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(gamesTemplate))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -972,7 +990,7 @@ final class AppDelegateViewModelTests: TestCase {
         .games
       ]
 
-    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(gamesTemplate))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -998,55 +1016,63 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testGoToDiscoveryWithCategoryId_ValidCategoryId_RoutesToCategory() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+    let mockService = MockService(fetchGraphCategoriesResult: .success(defaultRootCategoriesTemplate))
 
-    self.goToDiscovery.assertValues([])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    let url =
-      URL(string: "https://www.kickstarter.com/discover/advanced?category_id=1&sort=magic&seed=2714369&page=1")!
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: url,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+      self.goToDiscovery.assertValues([])
 
-    self.scheduler.advance()
+      let url =
+        URL(string: "https://www.kickstarter.com/discover/advanced?category_id=1&sort=magic&seed=2714369&page=1")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
-    let params = .defaults |> DiscoveryParams.lens.category .~ .art
-      |> DiscoveryParams.lens.sort .~ .magic
-      |> DiscoveryParams.lens.seed .~ 2_714_369
-      |> DiscoveryParams.lens.page .~ 1
-    self.goToDiscovery.assertValues([params])
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .art
+        |> DiscoveryParams.lens.sort .~ .magic
+        |> DiscoveryParams.lens.seed .~ 2_714_369
+        |> DiscoveryParams.lens.page .~ 1
+      self.goToDiscovery.assertValues([params])
+    }
   }
 
   func testGoToDiscoveryWithCategoryId_InvalidCategoryOrSubcategoryId_DoesNotRouteToAnyCategory() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+    let mockService = MockService(fetchGraphCategoriesResult: .success(defaultRootCategoriesTemplate))
 
-    self.goToDiscovery.assertValues([])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    let url =
-      URL(string: "https://www.kickstarter.com/discover/advanced?category_id=9999&sort=magic&seed=2714369&page=1")!
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: url,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+      self.goToDiscovery.assertValues([])
 
-    self.scheduler.advance()
+      let url =
+        URL(string: "https://www.kickstarter.com/discover/advanced?category_id=9999&sort=magic&seed=2714369&page=1")!
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
-    let params = .defaults |> DiscoveryParams.lens.category .~ .none
-      |> DiscoveryParams.lens.sort .~ .magic
-      |> DiscoveryParams.lens.seed .~ 2_714_369
-      |> DiscoveryParams.lens.page .~ 1
-    self.goToDiscovery.assertValues([params])
+      self.scheduler.advance()
+
+      let params = .defaults |> DiscoveryParams.lens.category .~ .none
+        |> DiscoveryParams.lens.sort .~ .magic
+        |> DiscoveryParams.lens.seed .~ 2_714_369
+        |> DiscoveryParams.lens.page .~ 1
+      self.goToDiscovery.assertValues([params])
+    }
   }
 
   func testGoToDiscoveryWithSubcategoryId_ValidSubcategoryId_RoutesToSubcategory() {
@@ -1059,7 +1085,7 @@ final class AppDelegateViewModelTests: TestCase {
         .games
       ]
 
-    let mockService = MockService(fetchGraphCategoriesResponse: gamesTemplate)
+    let mockService = MockService(fetchGraphCategoriesResult: .success(gamesTemplate))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(

@@ -51,6 +51,16 @@ private let categories =
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
+  private var defaultRootCategoriesTemplate: RootCategoriesEnvelope {
+    RootCategoriesEnvelope.template
+      |> RootCategoriesEnvelope.lens.categories .~ [
+        .art,
+        .filmAndVideo,
+        .illustration,
+        .documentary
+      ]
+  }
+
   private let animateInView = TestObserver<(), Never>()
   private let loadCategoryRows = TestObserver<[ExpandableRow], Never>()
   private let loadCategoryRowsInitialId = TestObserver<Int?, Never>()
@@ -311,7 +321,8 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testExpandingCategoryFilters() {
-    withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: self.categoriesResponse)) {
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self
+        .defaultRootCategoriesTemplate))) {
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
 
       self.loadCategoryRows.assertValueCount(0)
@@ -386,27 +397,30 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
         selectableRowTemplate |> SelectableRow.lens.params.category .~ .illustration
       ]
 
-    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self
+        .defaultRootCategoriesTemplate))) {
+      self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 
-    self.loadCategoryRows.assertValueCount(0)
+      self.loadCategoryRows.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
-    self.loadingIndicatorisVisible.assertValues([true])
+      self.loadingIndicatorisVisible.assertValues([true])
 
-    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    self.loadingIndicatorisVisible.assertValues([true, false])
+      self.loadingIndicatorisVisible.assertValues([true, false])
 
-    self.loadCategoryRows.assertValues(
-      [
-        [artSelectedExpandedRow, filmExpandableRow]
-      ],
-      "The art category expands."
-    )
-    self.loadCategoryRowsInitialId.assertValues([1])
-    self.loadCategoryRowsSelectedId.assertValues([1])
+      self.loadCategoryRows.assertValues(
+        [
+          [artSelectedExpandedRow, filmExpandableRow]
+        ],
+        "The art category expands."
+      )
+      self.loadCategoryRowsInitialId.assertValues([1])
+      self.loadCategoryRowsSelectedId.assertValues([1])
+    }
   }
 
   func testTappingSelectableRow() {
@@ -448,7 +462,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_With_Favorites() {
-    withEnvironment(apiService: MockService(fetchGraphCategoriesResponse: self.categoriesResponse)) {
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self.categoriesResponse))) {
       self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
       self.vm.inputs.configureWith(selectedRow: allProjectsRow)
@@ -466,24 +480,27 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   }
 
   func testFavoriteRows_With_Favorites_Selected() {
-    self.ubiquitousStore.favoriteCategoryIds = [1, 30]
+    withEnvironment(apiService: MockService(fetchGraphCategoriesResult: .success(self
+        .defaultRootCategoriesTemplate))) {
+      self.ubiquitousStore.favoriteCategoryIds = [1, 30]
 
-    self.vm.inputs.configureWith(selectedRow: artSelectableRow)
+      self.vm.inputs.configureWith(selectedRow: artSelectableRow)
 
-    self.loadFavoriteRows.assertValueCount(0)
+      self.loadFavoriteRows.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewDidAppear()
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
-    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    self.loadFavoriteRows.assertValues([
-      [
-        artSelectableRow |> SelectableRow.lens.isSelected .~ true,
-        documentarySelectableRow
-      ]
-    ])
-    self.loadFavoriteRowsId.assertValues([1])
+      self.loadFavoriteRows.assertValues([
+        [
+          artSelectableRow |> SelectableRow.lens.isSelected .~ true,
+          documentarySelectableRow
+        ]
+      ])
+      self.loadFavoriteRowsId.assertValues([1])
+    }
   }
 
   func testCategoriesFromCache() {

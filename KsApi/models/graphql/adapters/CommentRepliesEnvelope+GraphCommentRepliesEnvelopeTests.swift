@@ -2,16 +2,32 @@
 import XCTest
 
 final class CommentRepliesEnvelope_GraphCommentRepliesEnvelopeTests: XCTestCase {
-  func test() {
-    let envelope = CommentRepliesEnvelope.commentRepliesEnvelope(from: .template)
+  func testCommentReplies() {
+    guard let envelope = CommentRepliesEnvelope
+      .commentRepliesEnvelope(from: FetchCommentRepliesQueryTemplate.valid.data) else {
+      XCTFail()
+      return
+    }
 
+    guard let commentId = decompose(id: "VXNlci04MjkwODk1MDY=") else {
+      XCTFail()
+
+      return
+    }
+
+    XCTAssertEqual(envelope.comment.author.id, "\(commentId)")
+    XCTAssertEqual(envelope.comment.author.name, "Spencer Hamann")
     XCTAssertEqual(
-      envelope.replies,
-      [Comment.comment(from: .template), Comment.comment(from: .template), Comment.comment(from: .template)]
+      envelope.comment.body,
+      "Does the machine laser engrave on brass and copper? What’s max depth look like?"
     )
-    XCTAssertEqual(envelope.hasPreviousPage, true)
-    XCTAssertEqual(envelope.cursor, "WzMwNDkwNDY0XQ==")
-    XCTAssertEqual(envelope.totalCount, 100)
-    XCTAssertEqual(envelope.comment, Comment.comment(from: .template))
+    XCTAssertFalse(envelope.comment.isDeleted)
+    XCTAssertEqual(envelope.comment.id, "Q29tbWVudC0zNDc0MDc3NA==")
+    XCTAssertNil(envelope.comment.parentId)
+    XCTAssertEqual(envelope.replies[0].id, "Q29tbWVudC0zNDc0Mzc2Mg==")
+    XCTAssertEqual(envelope.replies[0].parentId, "Q29tbWVudC0zNDc0MDc3NA==")
+    XCTAssertEqual(envelope.cursor, "Mg==")
+    XCTAssertTrue(envelope.hasPreviousPage)
+    XCTAssertEqual(envelope.totalCount, 8)
   }
 }
