@@ -58,13 +58,12 @@ public enum SettingsSectionType: Int, CaseIterable {
     }
   }
 
+  // TODO: Add Strings.Following_Disabled_Info() back to .findFriends after Facebook issues are resolved
   public var footerText: String? {
     switch self {
     case .ratingAppVersion:
       let appVersionString = AppEnvironment.current.mainBundle.appVersionString
       return "\(Strings.App_version()) \(appVersionString)"
-    case .findFriends:
-      return Strings.Following_Disabled_Info()
     default:
       return nil
     }

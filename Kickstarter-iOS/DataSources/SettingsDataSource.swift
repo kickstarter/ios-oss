@@ -10,11 +10,8 @@ final class SettingsDataSource: ValueCellDataSource {
 
       switch section {
       case .findFriends:
-        self.set(
-          values: values,
-          cellClass: FindFriendsCell.self,
-          inSection: SettingsSectionType.findFriends.rawValue
-        )
+        // TODO: When Find Friends issue with Facebook is resolved, set FindFriendsCell here.
+        return
       default:
         self.set(
           values: values,

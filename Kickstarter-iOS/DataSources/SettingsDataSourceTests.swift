@@ -14,7 +14,7 @@ final class SettingsDataSourceTests: XCTestCase {
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 3))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 3))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 4))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 5))
   }
