@@ -24,7 +24,6 @@ public enum SettingsSectionType: Int, CaseIterable {
   case account
   case notificationNewsletters
   case help
-  case findFriends
   case logout
   case ratingAppVersion
 
@@ -40,8 +39,6 @@ public enum SettingsSectionType: Int, CaseIterable {
       return [.notifications, .newsletters]
     case .help:
       return [.help]
-    case .findFriends:
-      return [.findFriends]
     case .logout:
       return [SettingsCellType.logout]
     case .ratingAppVersion:
@@ -51,14 +48,13 @@ public enum SettingsSectionType: Int, CaseIterable {
 
   public var hasSectionFooter: Bool {
     switch self {
-    case .ratingAppVersion, .findFriends:
+    case .ratingAppVersion:
       return true
     default:
       return false
     }
   }
 
-  // TODO: Add Strings.Following_Disabled_Info() back to .findFriends after Facebook issues are resolved
   public var footerText: String? {
     switch self {
     case .ratingAppVersion:
@@ -70,6 +66,8 @@ public enum SettingsSectionType: Int, CaseIterable {
   }
 }
 
+// TODO: When the decision to add the Facebook friends feature back in is confirmed, refer to this PR:
+// https://github.com/kickstarter/ios-oss/pull/1655
 public enum SettingsCellType: SettingsCellTypeProtocol {
   case account
   case notifications
