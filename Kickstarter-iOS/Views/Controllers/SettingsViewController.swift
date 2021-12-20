@@ -92,8 +92,7 @@ final class SettingsViewController: UIViewController {
   private func shouldHideFooter(for section: Int) -> Bool {
     guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }
 
-    if section == SettingsSectionType.findFriends,
-      !self.viewModel.outputs.findFriendsDisabledProperty.value {
+    if !self.viewModel.outputs.findFriendsDisabledProperty.value {
       return true
     }
 

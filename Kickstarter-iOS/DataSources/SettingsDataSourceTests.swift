@@ -10,13 +10,12 @@ final class SettingsDataSourceTests: XCTestCase {
   func testConfigureRows() {
     self.dataSource.configureRows(with: User.template)
 
-    XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 3))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 4))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 5))
   }
 
   func testCellTypeForIndexPath_validIndexPath() {

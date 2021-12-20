@@ -8,20 +8,11 @@ final class SettingsDataSource: ValueCellDataSource {
     SettingsSectionType.allCases.forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0, user: user) }
 
-      switch section {
-      case .findFriends:
-        self.set(
-          values: values,
-          cellClass: FindFriendsCell.self,
-          inSection: SettingsSectionType.findFriends.rawValue
-        )
-      default:
-        self.set(
-          values: values,
-          cellClass: SettingsTableViewCell.self,
-          inSection: section.rawValue
-        )
-      }
+      self.set(
+        values: values,
+        cellClass: SettingsTableViewCell.self,
+        inSection: section.rawValue
+      )
     }
   }
 
