@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -348,10 +348,8 @@
 		47AC2139264AD5430090AEDF /* CommentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */; };
 		47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */; };
 		47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */; };
-		47BA164927680CE90038A73E /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA164827680CE90038A73E /* PerimeterX.xcframework */; };
 		47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */; };
 		47C500712696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */; };
-		47CE2580276819000074F293 /* PerimeterX.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BA164827680CE90038A73E /* PerimeterX.xcframework */; };
 		47CFFFFC27346034009B9510 /* ProjectPageViewControllerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */; };
 		47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */; };
 		47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */; };
@@ -2092,7 +2090,6 @@
 		47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModelTests.swift; sourceTree = "<group>"; };
 		47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
 		47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingStateTests.swift"; sourceTree = "<group>"; };
-		47BA164827680CE90038A73E /* PerimeterX.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PerimeterX.xcframework; path = Carthage/Build/PerimeterX.xcframework; sourceTree = "<group>"; };
 		47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreatePaymentSource.graphql; sourceTree = "<group>"; };
 		47C500702696481300BB4BF2 /* CommentViewMoreRepliesFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewMoreRepliesFailedCell.swift; sourceTree = "<group>"; };
 		47CFFFFA27346010009B9510 /* ProjectPageViewControllerDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3346,7 +3343,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47BA164927680CE90038A73E /* PerimeterX.xcframework in Frameworks */,
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
@@ -3400,7 +3396,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47CE2580276819000074F293 /* PerimeterX.xcframework in Frameworks */,
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */,
@@ -4494,7 +4489,6 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				47BA164827680CE90038A73E /* PerimeterX.xcframework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
@@ -7457,11 +7451,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Beta.entitlements";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7744,11 +7734,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7775,11 +7761,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Release.entitlements";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8368,11 +8350,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7",
-					"$(PROJECT_DIR)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
