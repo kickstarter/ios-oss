@@ -17,6 +17,3 @@ $(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment_Appboy.framework
 $(SRCROOT)/Carthage/Build/iOS/Stripe.framework
-
-$(SRCROOT)/Carthage/Build/PerimeterX.xcframework/ios-arm64_armv7/PerimeterX.framework
-$(SRCROOT)/Carthage/Build/PerimeterX.xcframework/ios-arm64_i386_x86_64-simulator/PerimeterX.framework
