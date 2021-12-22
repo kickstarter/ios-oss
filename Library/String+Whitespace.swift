@@ -1,23 +1,23 @@
 import Foundation
 
-extension String {
+public extension String {
   // Non-breaking space character.
-  public static let nbsp = "\u{00A0}"
+   static let nbsp = "\u{00A0}"
 
   /**
    Returns a new string with all spaces converted into non-breaking spaces.
 
    - returns: The new string.
    */
-  public func nonBreakingSpaced() -> String {
+ func nonBreakingSpaced() -> String {
     return self.replacingOccurrences(of: " ", with: "\u{00a0}")
   }
 
-  public func trimmed() -> String {
+   func trimmed() -> String {
     return self.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 }
 
-public func isWhitespacesAndNewlines(_ s: String) -> Bool {
+ func isWhitespacesAndNewlines(_ s: String) -> Bool {
   return s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
 }
