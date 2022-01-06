@@ -67,11 +67,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.pledgeCTAContainerView.delegate = self
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    self.tableView.registerCellClass(TextViewElementCell.self)
-    self.tableView.registerCellClass(ImageViewElementCell.self)
+    // self.tableView.registerCellClass(TextViewElementCell.self)
+    // self.tableView.registerCellClass(ImageViewElementCell.self)
 //    self.tableView.registerCellClass(VideoViewElementCell.self)
-    self.tableView.registerCellClass(EmbeddedLinkViewElementCell.self)
-    
+    // self.tableView.registerCellClass(EmbeddedLinkViewElementCell.self)
+
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)

@@ -1,10 +1,10 @@
-//import Foundation
-//import Library
-//import UIKit
-//import AVKit
-//import youtube_ios_player_helper
+// import Foundation
+// import Library
+// import UIKit
+// import AVKit
+// import youtube_ios_player_helper
 //
-//class VideoViewElementCell: UITableViewCell {
+// class VideoViewElementCell: UITableViewCell {
 //
 //    private var videoPlayerLayer: AVPlayerLayer?
 //    private var embedPlayerView: YTPlayerView?
@@ -94,4 +94,4 @@
 //        }
 //    }
 //
-//}
+// }

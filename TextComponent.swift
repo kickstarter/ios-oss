@@ -1,21 +1,24 @@
 import Foundation
 
-struct TextComponent: Codable, CustomStringConvertible, Equatable {
-    let text: String
-    let link: String?
-    let styles: [TextStyleType]
+struct TextComponent {
+  let text: String
+  let link: String?
+  let styles: [TextStyleType]
 
-    init(text: String, link: String?, styles: [TextStyleType]) {
-        self.text = text
-        self.link = link
-        self.styles = styles
-    }
+  // Direct body childs for text allows only TextBlockTypes
+  enum TextBlockType: String, CaseIterable {
+    case paragraph = "p"
+    case header1 = "h1"
+    case list = "ul"
+  }
 
-    var description: String {
-        return """
-        Text Component: \(text)
-        \(link ?? "")
-        \(styles)
-        """
-    }
+  // Styles to apply
+  enum TextStyleType: String {
+    case bold = "strong"
+    case emphasis = "em"
+    case list = "li"
+    case listEnd = "</li>"
+    case link = "a"
+    case header = "h1"
+  }
 }

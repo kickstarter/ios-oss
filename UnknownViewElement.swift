@@ -1,5 +1,5 @@
 import Foundation
 
 struct UnknownViewElement: ViewElement, Codable {
-    var text: String
+  var text: String
 }

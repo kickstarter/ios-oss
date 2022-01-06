@@ -1,11 +1,8 @@
 import Foundation
 import UIKit
 
-class ImageViewElement: ViewElement {
-    let src: String
-    var image: UIImage?
-
-    init(src: String) {
-        self.src = src
-    }
+struct ImageViewElement: ViewElement {
+  var src: String
+  var href: String?
+  var caption: String?
 }
