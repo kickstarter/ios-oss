@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 struct ImageViewElement: ViewElement {
   var src: String
