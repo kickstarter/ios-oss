@@ -5,7 +5,7 @@ final class HTMLParserTests: TestCase {
   let htmlParser = HTMLParser()
 
   func testHTMLParser_WithValidNonGIFImage_Success() {
-    let viewElements = self.htmlParser.parse(html: HTMLParserTemplates.validNonGIFImage.data)
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validNonGIFImage.data)
 
     guard let viewElement = viewElements.first as? ImageViewElement else {
       XCTFail("image view element should be created.")
@@ -30,7 +30,7 @@ final class HTMLParserTests: TestCase {
   }
 
   func testHTMLParser_WithValidGIFImage_Success() {
-    let viewElements = self.htmlParser.parse(html: HTMLParserTemplates.validGIFImage.data)
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validGIFImage.data)
 
     guard let viewElement = viewElements.first as? ImageViewElement else {
       XCTFail("image view element should be created.")
@@ -55,7 +55,7 @@ final class HTMLParserTests: TestCase {
   }
 
   func testHTMLParser_WithValidImageWithCaption_Success() {
-    let viewElements = self.htmlParser.parse(html: HTMLParserTemplates.validImageWithCaption.data)
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validImageWithCaption.data)
 
     guard let viewElement = viewElements.first as? ImageViewElement else {
       XCTFail("image view element should be created.")
@@ -81,9 +81,9 @@ final class HTMLParserTests: TestCase {
   }
 
   func testHTMLParser_WithValidImageWithCaptionAndLink_Success() {
-    let viewElements = self.htmlParser.parse(html: HTMLParserTemplates.validImageWithCaptionAndLink.data)
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validImageWithCaptionAndLink.data)
 
-    guard let viewElement = viewElements.last as? ImageViewElement else {
+    guard let viewElement = viewElements.first as? ImageViewElement else {
       XCTFail("image view element should be created.")
 
       return

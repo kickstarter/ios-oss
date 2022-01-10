@@ -1,14 +1,14 @@
 import SwiftSoup
 
 class HTMLParser {
-  func parse(html: String) -> [ViewElement] {
+  func parse(bodyHtml: String) -> [ViewElement] {
     do {
-      let doc: Document = try SwiftSoup.parse(html)
+      let doc: Document = try SwiftSoup.parseBodyFragment(bodyHtml)
 
       var viewElements = [ViewElement]()
 
-      doc.children().forEach { element in
-        viewElements.append(contentsOf: parse(element.children()))
+      doc.body()?.children().forEach { element in
+        parse(element, viewElements: &viewElements)
       }
 
       return viewElements
@@ -18,51 +18,48 @@ class HTMLParser {
     return []
   }
 
-  private func parse(_ children: Elements?) -> [ViewElement] {
-    var viewElements = [ViewElement]()
+  private func parse(_ child: Element,
+                     viewElements: inout [ViewElement]) {
+    let viewElementType = ViewElementType(element: child)
+    var element: ViewElement?
 
-    guard let elements = children else {
-      return viewElements
-    }
+    switch viewElementType {
+    case .image:
+      element = child.parseImageElement()
+    case .text:
+      var textComponents = [TextComponent]()
 
-    for element in elements {
-      let viewElementType = ViewElementType(element: element)
+      parseTextElement(element: child, textComponents: &textComponents)
 
-      switch viewElementType {
-      case .image:
-        viewElements.append(element.parseImageElement())
-      case .text:
-        var textComponents = [TextComponent]()
+      let textViewElement = TextViewElement(components: textComponents)
+      element = textViewElement
+    case .video:
+      guard let sourceUrl = child.parseVideoElement() else {
+        element = nil
 
-        parseTextElement(element: element, textComponents: &textComponents)
+        return
+      }
 
-        let textViewElement = TextViewElement(components: textComponents)
+      let thumbnailUrl = child.parseVideoElementThumbnailUrl()
+      let seekPosition: Int64 = 0
+      let videoViewElement = VideoViewElement(
+        sourceUrl: sourceUrl,
+        thumbnailUrl: thumbnailUrl,
+        seekPosition: seekPosition
+      )
 
-        viewElements.append(textViewElement)
-      case .video:
-        guard let sourceUrl = element.parseVideoElement() else {
-          continue
-        }
-
-        let thumbnailUrl = element.parseVideoElementThumbnailUrl()
-        let seekPosition: Int64 = 0
-        let videoViewElement = VideoViewElement(
-          sourceUrl: sourceUrl,
-          thumbnailUrl: thumbnailUrl,
-          seekPosition: seekPosition
-        )
-
-        viewElements.append(videoViewElement)
-      case .externalSources:
-        viewElements.append(element.parseExternalElement())
-      default:
-        let parsedRemainingChildren = self.parse(element.children())
-
-        viewElements.append(contentsOf: parsedRemainingChildren)
+      element = videoViewElement
+    case .externalSources:
+      element = child.parseExternalElement()
+    default:
+      for child in child.children() {
+        self.parse(child, viewElements: &viewElements)
       }
     }
 
-    return viewElements
+    if let elementValue = element {
+      viewElements.append(elementValue)
+    }
   }
 
   private func parseTextElement(element: Element,

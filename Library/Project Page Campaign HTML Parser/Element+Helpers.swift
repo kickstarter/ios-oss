@@ -62,34 +62,36 @@ extension Element {
     try? parent()?.attr(HTMLRawText.Image.dataImage.rawValue)
   }
 
-  func parseImageElement() -> ImageViewElement {
+  func parseImageElement() -> ImageViewElement? {
     var src = ""
     var caption: String?
     var href: String?
 
-    if let parent = parent(),
-      parent.tag().getName() == HTMLRawText.Link.anchor.rawValue {
-      href = try? parent.attr(HTMLRawText.Link.link.rawValue)
+    var wrappedInAnchorTag = false
+
+    if tag().getName() == HTMLRawText.Link.anchor.rawValue {
+      href = try? attr(HTMLRawText.Link.link.rawValue)
+
+      wrappedInAnchorTag.toggle()
     }
 
-    caption = try? attr(HTMLRawText.Image.dataCaption.rawValue)
-
-    let emptyChildren = children().isEmpty()
-    let emptyChildrensChildren = !emptyChildren ? children()[0].children().isEmpty() : true
-
-    if !emptyChildrensChildren {
-      if let updatedSrc = try? children()[0].children()[0].attr(HTMLRawText.Link.source.rawValue) {
-        src = updatedSrc
-      }
-
-      // - if it's a gif collect attribute data-src instead
-      if src.contains(HTMLRawText.Image.gifExtension.rawValue),
-        let updatedSrc = try? children()[0].children()[0].attr(HTMLRawText.Image.dataSource.rawValue) {
-        src = updatedSrc
-      }
+    guard let childValue = children().first,
+      let _ = childValue.children().first else {
+      return nil
     }
 
-    return ImageViewElement(src: src, href: href, caption: caption)
+    caption = wrappedInAnchorTag ?
+      try? childValue.attr(HTMLRawText.Image.dataCaption.rawValue) :
+      try? attr(HTMLRawText.Image.dataCaption.rawValue)
+
+    let emptyChildrensChildrensChildren = wrappedInAnchorTag ? children()[0].children()[0].children()
+      .isEmpty() : true
+
+    src = self.parseImageElementSrc(searchAfterAnchorTag: !emptyChildrensChildrensChildren)
+
+    let value = src.isEmpty ? nil : ImageViewElement(src: src, href: href, caption: caption)
+
+    return value
   }
 
   func parseExternalElement() -> ExternalSourceViewElement {
@@ -104,5 +106,22 @@ extension Element {
     let externalElementValue = ExternalSourceViewElement(htmlContent: firstChildElementWithAttributeApplied)
 
     return externalElementValue
+  }
+
+  private func parseImageElementSrc(searchAfterAnchorTag: Bool) -> String {
+    var updatedSrc = ""
+    let child = searchAfterAnchorTag ? children()[0].children()[0].children()[0] : children()[0].children()[0]
+
+    if let source = try? child.attr(HTMLRawText.Link.source.rawValue) {
+      updatedSrc = source
+    }
+
+    // - if it's a gif collect attribute data-src instead
+    if updatedSrc.contains(HTMLRawText.Image.gifExtension.rawValue),
+      let dataSource = try? child.attr(HTMLRawText.Image.dataSource.rawValue) {
+      updatedSrc = dataSource
+    }
+
+    return updatedSrc
   }
 }
