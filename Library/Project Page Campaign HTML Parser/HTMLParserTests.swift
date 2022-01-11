@@ -110,28 +110,26 @@ final class HTMLParserTests: TestCase {
     XCTAssertEqual(existingCaption, "Viktor Pushkarev using lino-cutting to create the cover art.")
   }
 
-  /**
-   func testHTMLParser_WithValidVideo_Success() {
-     let viewElements = self.htmlParser.parse(html: HTMLParserTemplates.validVideo.data)
+  func testHTMLParser_WithValidVideo_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideo.data)
 
-     guard let viewElement = viewElements.first as? VideoViewElement else {
-       XCTFail("image view element should be created.")
+    guard let viewElement = viewElements.first as? VideoViewElement else {
+      XCTFail("video view element should be created.")
 
-       return
-     }
+      return
+    }
 
-     XCTAssertEqual(
-       viewElement.src, "https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1628654686&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=061483d5e8fac13bd635b67e2ae8a258".htmlStripped())
+    XCTAssertEqual(
+      viewElement.sourceUrl,
+      "https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.mp4"
+        .htmlStripped()
+    )
 
-     XCTAssertEqual(viewElement.href, "https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&amp;utm_medium=Banner&amp;utm_campaign=Homi")
+    XCTAssertEqual(
+      viewElement.thumbnailUrl,
+      "https://dr0rfahizzuzj.cloudfront.net/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.jpg?2021"
+    )
 
-     guard let existingCaption = viewElement.caption else {
-       XCTFail("image caption should exist")
-
-       return
-     }
-
-     XCTAssertEqual(existingCaption, "Viktor Pushkarev using lino-cutting to create the cover art.")
-   }
-   */
+    XCTAssertEqual(viewElement.seekPosition, 0)
+  }
 }
