@@ -4,16 +4,9 @@ extension Element {
   func extractViewElementTypeFromDiv() -> ViewElementType? {
     var type: ViewElementType?
 
-    let emptyChildren = children().isEmpty()
-    let emptyChildrensChildren = !emptyChildren ? children()[0].children().isEmpty() : true
-
-    if self.isImageStructure(),
-      !emptyChildrensChildren,
-      children()[0].children()[0].tag().getName() == ViewElementType.image.rawValue {
+    if self.isImageStructure() {
       type = .image
-    } else if self.isIframeStructure(),
-      !emptyChildrensChildren,
-      children()[0].tag().getName() == ViewElementType.externalSources.rawValue {
+    } else if self.isIframeStructure() {
       type = .externalSources
     }
 
@@ -67,12 +60,9 @@ extension Element {
     var caption: String?
     var href: String?
 
-    var wrappedInAnchorTag = false
-
-    if tag().getName() == HTMLRawText.Link.anchor.rawValue {
-      href = try? attr(HTMLRawText.Link.link.rawValue)
-
-      wrappedInAnchorTag.toggle()
+    if let parent = parent(),
+      parent.tag().getName() == HTMLRawText.Link.anchor.rawValue {
+      href = try? parent.attr(HTMLRawText.Link.link.rawValue)
     }
 
     guard let childValue = children().first,
@@ -80,14 +70,9 @@ extension Element {
       return nil
     }
 
-    caption = wrappedInAnchorTag ?
-      try? childValue.attr(HTMLRawText.Image.dataCaption.rawValue) :
-      try? attr(HTMLRawText.Image.dataCaption.rawValue)
+    caption = try? attr(HTMLRawText.Image.dataCaption.rawValue)
 
-    let emptyChildrensChildrensChildren = wrappedInAnchorTag ? children()[0].children()[0].children()
-      .isEmpty() : true
-
-    src = self.parseImageElementSrc(searchAfterAnchorTag: !emptyChildrensChildrensChildren)
+    src = self.parseImageElementSrc()
 
     let value = src.isEmpty ? nil : ImageViewElement(src: src, href: href, caption: caption)
 
@@ -95,22 +80,24 @@ extension Element {
   }
 
   func parseExternalElement() -> ExternalSourceViewElement {
-    let children = children()
-
-    guard !children.isEmpty(),
-      let firstChildElementWithAttributeApplied = try? children[0]
-      .attr(HTMLRawText.Base.width.rawValue, HTMLRawText.Size.hundredPercent.rawValue).text() else {
-      return ExternalSourceViewElement(htmlContent: "")
+    guard !children().isEmpty() else {
+      return ExternalSourceViewElement(iFrameContent: "")
     }
 
-    let externalElementValue = ExternalSourceViewElement(htmlContent: firstChildElementWithAttributeApplied)
+    _ = try? children()[0].attr(HTMLRawText.Base.width.rawValue, HTMLRawText.Size.hundredPercent.rawValue)
+
+    guard let updatedElementHTML = try? children()[0].outerHtml() else {
+      return ExternalSourceViewElement(iFrameContent: "")
+    }
+
+    let externalElementValue = ExternalSourceViewElement(iFrameContent: updatedElementHTML)
 
     return externalElementValue
   }
 
-  private func parseImageElementSrc(searchAfterAnchorTag: Bool) -> String {
+  private func parseImageElementSrc() -> String {
     var updatedSrc = ""
-    let child = searchAfterAnchorTag ? children()[0].children()[0].children()[0] : children()[0].children()[0]
+    let child = children()[0].children()[0]
 
     if let source = try? child.attr(HTMLRawText.Link.source.rawValue) {
       updatedSrc = source

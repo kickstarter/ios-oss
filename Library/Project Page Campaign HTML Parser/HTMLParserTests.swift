@@ -155,4 +155,19 @@ final class HTMLParserTests: TestCase {
 
     XCTAssertEqual(viewElement.seekPosition, 0)
   }
+
+  func testHTMLParser_WithExternalSource_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validIFrame.data)
+
+    guard let viewElement = viewElements.first as? ExternalSourceViewElement else {
+      XCTFail("external source view element should be created.")
+
+      return
+    }
+
+    XCTAssertEqual(
+      viewElement.iFrameContent,
+      "<iframe width=\"100%\" height=\"200\" src=\"https://www.youtube.com/embed/GcoaQ3LlqWI?start=8&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+    )
+  }
 }

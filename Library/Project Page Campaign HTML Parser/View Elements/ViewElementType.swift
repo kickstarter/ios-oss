@@ -10,14 +10,6 @@ enum ViewElementType: String {
     let tagName = element.tag().getName()
 
     switch tagName {
-    case HTMLRawText.Link.anchor.rawValue:
-      guard let childElement = element.children()
-        .first(where: { $0.tagName() == HTMLRawText.Base.div.rawValue }),
-        let childElementType = childElement.extractViewElementTypeFromDiv() else {
-        return nil
-      }
-
-      self = childElementType
     case HTMLRawText.Base.div.rawValue:
       guard let childElementType = element.extractViewElementTypeFromDiv() else {
         return nil
