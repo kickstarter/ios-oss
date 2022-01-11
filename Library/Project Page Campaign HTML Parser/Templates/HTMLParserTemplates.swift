@@ -8,12 +8,10 @@ public enum HTMLParserTemplates {
   case validVideo
   case validVideoHigh
   case validIFrame
-  case validParagraphText
   case validHeaderText
-  case validList
   case validParagraphTextWithStyles
-  case validHeaderTextWithStyles
-  case validListWithStyles
+  case validParagraphTextWithLinksAndStyles
+  case validListWithNestedLinks
   case errored
 
   var data: String {
@@ -32,12 +30,47 @@ public enum HTMLParserTemplates {
       return self.validVideoHigh
     case .validIFrame:
       return self.validExternalSource
+    case .validHeaderText:
+      return self.validHeaderText
+    case .validParagraphTextWithLinksAndStyles:
+      return self.validParagraphTextWithLinksAndStyles
+    case .validParagraphTextWithStyles:
+      return self.validParagraphTextWithStyles
+    case .validListWithNestedLinks:
+      return self.validListWithNestLinks
     default:
       return self.erroredStory
     }
   }
 
   // MARK: Private Properties
+
+  private var validListWithNestLinks: String {
+    """
+    <ul><li><a href="https://www.meneame.net/" target=\\\"_blank\\\" rel=\\\"noopener\\\"><em><strong>Meneane</strong></em></a><a href="https://www.meneame.net/" target=\\\"_blank\\\" rel=\\\"noopener\\\">Another URL in this list</a> and some text</li></ul>
+    """
+  }
+
+  private var validParagraphTextWithStyles: String {
+    """
+    <p>This is a paragraph about bacon – Bacon ipsum dolor amet ham chuck short ribs, shank flank cupim frankfurter chicken. Sausage frankfurter chicken ball tip, drumstick brisket pork chop turkey. Andouille bacon ham hock, pastrami sausage pork chop corned beef frankfurter shank chislic short ribs. Hamburger bacon pork belly, drumstick pork chop capicola kielbasa pancetta buffalo pork. Meatball doner pancetta ham ribeye. Picanha ham venison ribeye short loin beef, tail pig ball tip buffalo salami shoulder ground round chicken. Porchetta capicola drumstick, tongue fatback pork pork belly cow sirloin ham hock flank venison beef ribs.<strong><em>Bold word Italic word</em></strong></p>
+    """
+  }
+
+  private var validParagraphTextWithLinksAndStyles: String {
+    """
+      <p><a href="http://record.pt/" target=\"_blank\" rel=\"noopener\"><strong>What about a bold link to that same newspaper website?</strong></a></p>
+      \n
+      <p><a href="http://recordblabla.pt/" target=\"_blank\" rel=\"noopener\"><em>Maybe an italic one?</em></a></p>
+    """
+  }
+
+  private var validHeaderText: String {
+    """
+    <h1 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h1>
+    \n<br>\n
+    """
+  }
 
   private var validVideo: String {
     """

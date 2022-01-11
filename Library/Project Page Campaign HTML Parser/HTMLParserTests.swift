@@ -170,4 +170,120 @@ final class HTMLParserTests: TestCase {
       "<iframe width=\"100%\" height=\"200\" src=\"https://www.youtube.com/embed/GcoaQ3LlqWI?start=8&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
     )
   }
+
+  func testHTMLParser_WithTextHeadline_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validHeaderText.data)
+
+    guard let viewElement = viewElements.first as? TextViewElement else {
+      XCTFail("text view element should be created.")
+
+      return
+    }
+
+    guard viewElement.components.count == 1 else {
+      XCTFail()
+
+      return
+    }
+
+    XCTAssertEqual(
+      viewElement.components[0].text,
+      "Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute."
+    )
+    XCTAssertNil(viewElement.components[0].link)
+    XCTAssertEqual(viewElement.components[0].styles, [TextComponent.TextStyleType.header])
+  }
+
+  func testHTMLParser_WithMultipleParagraphsLinksAndStyles_Success() {
+    let viewElements = self.htmlParser
+      .parse(bodyHtml: HTMLParserTemplates.validParagraphTextWithLinksAndStyles.data)
+
+    guard let textElement1 = viewElements.first as? TextViewElement,
+      let textElement2 = viewElements.last as? TextViewElement else {
+      XCTFail("text view elements should be created.")
+
+      return
+    }
+
+    guard textElement1.components.count == 1 else {
+      XCTFail()
+
+      return
+    }
+
+    XCTAssertEqual(textElement1.components[0].text, "What about a bold link to that same newspaper website?")
+    XCTAssertEqual(textElement1.components[0].link, "http://record.pt/")
+    XCTAssertEqual(
+      textElement1.components[0].styles,
+      [TextComponent.TextStyleType.bold, TextComponent.TextStyleType.link]
+    )
+
+    XCTAssertEqual(textElement2.components[0].text, "Maybe an italic one?")
+    XCTAssertEqual(textElement2.components[0].link, "http://recordblabla.pt/")
+    XCTAssertEqual(
+      textElement2.components[0].styles,
+      [TextComponent.TextStyleType.emphasis, TextComponent.TextStyleType.link]
+    )
+  }
+
+  func testHTMLParser_WithParagraphAndStyles_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validParagraphTextWithStyles.data)
+
+    guard let textElement = viewElements.first as? TextViewElement else {
+      XCTFail("text view element should be created.")
+
+      return
+    }
+
+    guard textElement.components.count == 2 else {
+      XCTFail()
+
+      return
+    }
+
+    XCTAssertEqual(
+      textElement.components[0].text,
+      "This is a paragraph about bacon – Bacon ipsum dolor amet ham chuck short ribs, shank flank cupim frankfurter chicken. Sausage frankfurter chicken ball tip, drumstick brisket pork chop turkey. Andouille bacon ham hock, pastrami sausage pork chop corned beef frankfurter shank chislic short ribs. Hamburger bacon pork belly, drumstick pork chop capicola kielbasa pancetta buffalo pork. Meatball doner pancetta ham ribeye. Picanha ham venison ribeye short loin beef, tail pig ball tip buffalo salami shoulder ground round chicken. Porchetta capicola drumstick, tongue fatback pork pork belly cow sirloin ham hock flank venison beef ribs."
+    )
+    XCTAssertNil(textElement.components[0].link)
+    XCTAssertTrue(textElement.components[0].styles.isEmpty)
+    XCTAssertEqual(textElement.components[1].text, "Bold word Italic word")
+    XCTAssertNil(textElement.components[1].link)
+    XCTAssertEqual(
+      textElement.components[1].styles,
+      [TextComponent.TextStyleType.emphasis, TextComponent.TextStyleType.bold]
+    )
+  }
+
+  func testHTMLParser_OfListWithNestedLinks_Success() {
+    let sampleLink = "https://www.meneame.net/"
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validListWithNestedLinks.data)
+
+    guard let textElement = viewElements.first as? TextViewElement else {
+      XCTFail("text view element should be created.")
+
+      return
+    }
+
+    guard textElement.components.count == 3 else {
+      XCTFail()
+
+      return
+    }
+
+    XCTAssertEqual(textElement.components[0].text, "Meneane")
+    XCTAssertEqual(textElement.components[0].link, sampleLink)
+    XCTAssertEqual(textElement.components[0].styles, [
+      TextComponent.TextStyleType.bold,
+      TextComponent.TextStyleType.emphasis,
+      TextComponent.TextStyleType.link,
+      TextComponent.TextStyleType.list
+    ])
+    XCTAssertEqual(textElement.components[1].text, "Another URL in this list")
+    XCTAssertEqual(textElement.components[1].link, sampleLink)
+    XCTAssertEqual(textElement.components[1].styles, [TextComponent.TextStyleType.link])
+    XCTAssertEqual(textElement.components[2].text, " and some text")
+    XCTAssertNil(textElement.components[2].link)
+    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.listEnd])
+  }
 }

@@ -19,7 +19,7 @@ extension TextNode {
     var textStyleList = tagsOther.compactMap { TextComponent.TextStyleType(rawValue: $0) }
       .filter { $0 != .list }
 
-    let href = urls.first ?? ""
+    let href = urls.first ?? nil
 
     // - I am child of a li, but not the element itself
     if tagsOther.contains(HTMLRawText.List.unorderedList.rawValue) {
