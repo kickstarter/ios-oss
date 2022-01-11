@@ -110,6 +110,29 @@ final class HTMLParserTests: TestCase {
     XCTAssertEqual(existingCaption, "Viktor Pushkarev using lino-cutting to create the cover art.")
   }
 
+  func testHTMLParser_WithValidVideoHigh_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideoHigh.data)
+
+    guard let viewElement = viewElements.first as? VideoViewElement else {
+      XCTFail("video view element should be created.")
+
+      return
+    }
+
+    XCTAssertEqual(
+      viewElement.sourceUrl,
+      "https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.mp4"
+        .htmlStripped()
+    )
+
+    XCTAssertEqual(
+      viewElement.thumbnailUrl,
+      "https://dr0rfahizzuzj.cloudfront.net/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.jpg?2021"
+    )
+
+    XCTAssertEqual(viewElement.seekPosition, 0)
+  }
+
   func testHTMLParser_WithValidVideo_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideo.data)
 
@@ -121,7 +144,7 @@ final class HTMLParserTests: TestCase {
 
     XCTAssertEqual(
       viewElement.sourceUrl,
-      "https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.mp4"
+      "https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_base.mp4"
         .htmlStripped()
     )
 
