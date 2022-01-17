@@ -14,7 +14,7 @@ public struct ExtendedProjectProperties: Decodable {
   public var environmentalCommitments: [ProjectEnvironmentalCommitment]
   public var faqs: [ProjectFAQ]
   public var risks: String
-  public var story: String
+  public var story: [TextViewElement]
   public var minimumPledgeAmount: Int
 }
 

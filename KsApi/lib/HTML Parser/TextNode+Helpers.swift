@@ -34,7 +34,7 @@ extension TextNode {
       // - Clean up the liElement, many times you get empty child TextNodes or TextNodes with &nbsp
       let listChildElements = listElement?.getChildNodes().filter { node in
         if let textNode = node as? TextNode {
-          return !textNode.text().trimmed().isEmpty
+          return !textNode.text().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
 
         return true

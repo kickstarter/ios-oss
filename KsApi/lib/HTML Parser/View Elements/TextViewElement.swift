@@ -1,7 +1,7 @@
 import UIKit
 
-struct TextViewElement: ViewElement {
-  var components: [TextComponent]
+public struct TextViewElement: Decodable {
+  public let components: [TextComponent]
 
   /** TODO: Test in https://kickstarter.atlassian.net/browse/NTV-340
    func attributedText(bodySize: Int,

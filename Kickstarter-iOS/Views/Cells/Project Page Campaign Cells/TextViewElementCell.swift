@@ -1,38 +1,46 @@
+import KsApi
 import Library
+import Prelude
+import Prelude_UIKit
 import UIKit
 
 class TextViewElementCell: UITableViewCell, ValueCell {
-  var label = UILabel()
+  // MARK: Properties
+
+  private var label = UILabel()
+
+  // MARK: Initializers
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    self.initialize()
+    self.configureViews()
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-
-    self.initialize()
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
-  func initialize() {
+  func configureWith(value textElement: TextViewElement) {
+    let stringText = textElement.components.reduce("") { $0 + $1.text }
+
+    self.label.text = stringText
+  }
+
+  // MARK: View Styles
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
     self.label.numberOfLines = 0
-    self.addSubview(self.label)
-    NSLayoutConstraint.activate([
-      self.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-      self.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-      self.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-      self.topAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
-    ])
+    self.selectionStyle = .none
   }
 
-  func configureWith(value: TextViewElement) {
-    // TODO: Store Element to access the links
-    self.label.attributedText = value.attributedText
-  }
+  // MARK: Helpers
 
-  private func getStyledComponents(bodySize _: Int, headerSize _: Int) -> NSAttributedString {
-    var joinSpanned = NSAttributedString("")
+  private func configureViews() {
+    _ = (self.label, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
   }
 }

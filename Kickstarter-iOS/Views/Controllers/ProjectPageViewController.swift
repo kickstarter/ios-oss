@@ -73,6 +73,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentDisclaimerCell.self)
     self.tableView.registerCellClass(ProjectHeaderCell.self)
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
+    self.tableView.registerCellClass(TextViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)

@@ -7,6 +7,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case overviewCreatorHeader
     case overview
     case overviewSubpages
+    case campaignHeader
     case campaign
     case faqsHeader
     case faqsEmpty
@@ -22,6 +23,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   private enum HeaderValue {
     case overview
+    case campaign
     case environmentalCommitments
     case faqs
     case risks
@@ -30,6 +32,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       switch self {
       case .overview:
         return Strings.Overview()
+      case .campaign:
+        return Strings.Campaign()
       case .environmentalCommitments:
         return Strings.Environmental_Commitments()
       case .faqs:
@@ -76,7 +80,19 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.overviewSubpages.rawValue
       )
     case .campaign:
-      return
+      self.set(
+        values: [HeaderValue.campaign.description],
+        cellClass: ProjectHeaderCell.self,
+        inSection: Section.campaignHeader.rawValue
+      )
+
+      let textElements = project.extendedProjectProperties?.story ?? []
+
+      self.set(
+        values: textElements,
+        cellClass: TextViewElementCell.self,
+        inSection: Section.campaign.rawValue
+      )
     case .faq:
       self.set(
         values: [HeaderValue.faqs.description],
@@ -184,6 +200,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ProjectRisksDisclaimerCell, _):
       cell.configureWith(value: ())
+    case let (cell as TextViewElementCell, value as TextViewElement):
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
