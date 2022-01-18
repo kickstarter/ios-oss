@@ -72,7 +72,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
       currentAttributedText.addAttributes(baseFontAttributes, range: fullRange)
       completedAttributedText.append(currentAttributedText)
 
-      return SignalProducer(value: completedAttributedText)
+      continue
     }
 
     textItem.styles.forEach { textStyleType in
