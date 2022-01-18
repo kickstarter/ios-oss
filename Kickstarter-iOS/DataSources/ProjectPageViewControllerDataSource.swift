@@ -86,7 +86,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.campaignHeader.rawValue
       )
 
-      let textElements = project.extendedProjectProperties?.story ?? []
+      let textElements = project.extendedProjectProperties?.story.textElements ?? []
 
       self.set(
         values: textElements,

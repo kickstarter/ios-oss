@@ -92,7 +92,6 @@
 		06232D3D2795EC2900A81755 /* HTMLRawText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C0474D2788AF6D0048CD83 /* HTMLRawText.swift */; };
 		06232D3E2795EC2C00A81755 /* Element+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FE22AD278626AB008753DB /* Element+Helpers.swift */; };
 		06232D3F2795EC3000A81755 /* TextNode+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C0474F2788B0020048CD83 /* TextNode+Helpers.swift */; };
-		06232D402795EC3600A81755 /* ViewElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D170E2773B42A009E4354 /* ViewElement.swift */; };
 		06232D412795EC3900A81755 /* ViewElementType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D17102773B4EA009E4354 /* ViewElementType.swift */; };
 		06232D422795EC3C00A81755 /* VideoViewElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D170C2773B403009E4354 /* VideoViewElement.swift */; };
 		06232D432795EC4000A81755 /* ImageViewElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D17022773B2DE009E4354 /* ImageViewElement.swift */; };
@@ -100,6 +99,7 @@
 		06232D452795EC4600A81755 /* TextViewElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D17082773B317009E4354 /* TextViewElement.swift */; };
 		06232D462795EC4A00A81755 /* TextComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D17042773B2EC009E4354 /* TextComponent.swift */; };
 		06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C047662788D23A0048CD83 /* HTMLParserTemplates.swift */; };
+		06232D4B27962F4900A81755 /* TextViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */; };
 		06261603273B0E1500389981 /* PostComment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06261602273B0E1500389981 /* PostComment.graphql */; };
 		06261605273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */; };
 		0626160A273B1F6600389981 /* Comment+PostCommentMutationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */; };
@@ -1856,6 +1856,7 @@
 		0622C929273486D10039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootCategoriesEnvelope+FetchRootCategoriesQueryData.swift"; sourceTree = "<group>"; };
 		0622C92B273499B60039AAC9 /* RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootCategoriesEnvelope+FetchRootCategoriesEnvelopeDataTests.swift"; sourceTree = "<group>"; };
 		0622C92D27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRootCategoriesQueryTemplate.swift; sourceTree = "<group>"; };
+		06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		06261602273B0E1500389981 /* PostComment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PostComment.graphql; sourceTree = "<group>"; };
 		06261604273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInput.swift"; sourceTree = "<group>"; };
 		06261609273B1F6600389981 /* Comment+PostCommentMutationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+PostCommentMutationData.swift"; sourceTree = "<group>"; };
@@ -2084,7 +2085,6 @@
 		475D17042773B2EC009E4354 /* TextComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextComponent.swift; sourceTree = "<group>"; };
 		475D17082773B317009E4354 /* TextViewElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElement.swift; sourceTree = "<group>"; };
 		475D170C2773B403009E4354 /* VideoViewElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewElement.swift; sourceTree = "<group>"; };
-		475D170E2773B42A009E4354 /* ViewElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewElement.swift; sourceTree = "<group>"; };
 		475D17102773B4EA009E4354 /* ViewElementType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewElementType.swift; sourceTree = "<group>"; };
 		475DEC0026B07BB9001B961B /* CancelBacking.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CancelBacking.graphql; sourceTree = "<group>"; };
 		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
@@ -3484,6 +3484,14 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		06232D4C27962FAA00A81755 /* HTML Parser */ = {
+			isa = PBXGroup;
+			children = (
+				06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */,
+			);
+			path = "HTML Parser";
+			sourceTree = "<group>";
+		};
 		066C0ADF26CB114A0048F4D8 /* templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -3497,7 +3505,6 @@
 		06C047512788B5940048CD83 /* View Elements */ = {
 			isa = PBXGroup;
 			children = (
-				475D170E2773B42A009E4354 /* ViewElement.swift */,
 				475D17102773B4EA009E4354 /* ViewElementType.swift */,
 				475D170C2773B403009E4354 /* VideoViewElement.swift */,
 				475D17022773B2DE009E4354 /* ImageViewElement.swift */,
@@ -3571,14 +3578,14 @@
 			path = mutation;
 			sourceTree = "<group>";
 		};
-		06FE22AF278658B7008753DB /* Project Page Campaign Cells */ = {
+		06FE22AF278658B7008753DB /* HTML Parser */ = {
 			isa = PBXGroup;
 			children = (
 				475D16FA2773B0DE009E4354 /* VideoViewElementCell.swift */,
 				475D16F62773AD36009E4354 /* ImageViewElementCell.swift */,
 				475D16F82773AD9F009E4354 /* TextViewElementCell.swift */,
 			);
-			path = "Project Page Campaign Cells";
+			path = "HTML Parser";
 			sourceTree = "<group>";
 		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
@@ -4133,7 +4140,7 @@
 				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */,
-				06FE22AF278658B7008753DB /* Project Page Campaign Cells */,
+				06FE22AF278658B7008753DB /* HTML Parser */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4836,6 +4843,7 @@
 				A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
+				06232D4C27962FAA00A81755 /* HTML Parser */,
 				D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */,
 				D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */,
 				D6050F5524047CBB00E029D2 /* LandingPageStatsViewModelTests.swift */,
@@ -6260,6 +6268,7 @@
 				A7CC13D71D00E6CF00035C52 /* FindFriendsHeaderCellViewModel.swift in Sources */,
 				A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */,
 				8A8099F122E2142C00373E66 /* RewardCardViewModel.swift in Sources */,
+				06232D4B27962F4900A81755 /* TextViewElementCellViewModel.swift in Sources */,
 				37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */,
 				8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */,
 				A7C93F801D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift in Sources */,
@@ -7149,7 +7158,6 @@
 				D01588D31EEB2ED7006E7684 /* SurveyResponseLenses.swift in Sources */,
 				8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */,
 				D01588A91EEB2ED7006E7684 /* Project.PersonalizationLenses.swift in Sources */,
-				06232D402795EC3600A81755 /* ViewElement.swift in Sources */,
 				8A1F65E6262660CB00A28E74 /* PerimeterXClient.swift in Sources */,
 				8AC3E10D269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift in Sources */,
 				D0158A281EEB30A2006E7684 /* StarEnvelopeTemplates.swift in Sources */,

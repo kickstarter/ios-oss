@@ -7,7 +7,8 @@ import UIKit
 class TextViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
-  private var label = UILabel()
+  private lazy var bodyLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel = TextViewElementCellViewModel()
 
   // MARK: Initializers
 
@@ -15,6 +16,8 @@ class TextViewElementCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.bindStyles()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -22,9 +25,13 @@ class TextViewElementCell: UITableViewCell, ValueCell {
   }
 
   func configureWith(value textElement: TextViewElement) {
-    let stringText = textElement.components.reduce("") { $0 + $1.text }
+    self.viewModel.inputs.configureWith(textElement: textElement)
+  }
 
-    self.label.text = stringText
+  // MARK: View Model
+
+  internal override func bindViewModel() {
+    self.bodyLabel.rac.attributedText = self.viewModel.outputs.attributedText
   }
 
   // MARK: View Styles
@@ -32,15 +39,19 @@ class TextViewElementCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    self.label.numberOfLines = 0
-    self.selectionStyle = .none
+    _ = self
+      |> baseTableViewCellStyle()
+
+    _ = self.bodyLabel
+      |> \.adjustsFontForContentSizeCategory .~ true
+      |> \.numberOfLines .~ 0
   }
 
   // MARK: Helpers
 
   private func configureViews() {
-    _ = (self.label, self.contentView)
+    _ = (self.bodyLabel, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 }
