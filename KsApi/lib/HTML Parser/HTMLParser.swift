@@ -66,7 +66,6 @@ class HTMLParser {
                                 textComponents: inout [TextComponent]) {
     for node in element.getChildNodes() {
       if let textNode = node as? TextNode,
-        !textNode.text().trimmingCharacters(in: .whitespaces).isEmpty,
         let textComponent = textNode.parseTextElement(element: element) {
         textComponents.append(textComponent)
       } else if let element = node as? Element {
