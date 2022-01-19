@@ -16,62 +16,10 @@ extension TextNode {
     extractTextAttributes(element: element, tags: &tagsOther, urls: &urls)
 
     // - Extract from the list of styles `null` values and `LIST`, the list style is processed separately.
-    var textStyleList = tagsOther.compactMap { TextComponent.TextStyleType(rawValue: $0) }
-      .filter { $0 != .list }
+    let textStyleList = tagsOther.compactMap { TextComponent.TextStyleType(rawValue: $0) }
+      .filter { $0 != .bulletStart }
 
     let href = urls.first ?? nil
-
-    // - I am child of a li, but not the element itself
-    if tagsOther.contains(HTMLRawText.List.unorderedList.rawValue) {
-      var list = [Element]()
-
-      getListElements(element: element, listElements: &list)
-
-      let listElement = list.first
-      let parent = element.parent()
-      let grandParent = parent?.parent()
-
-      // - Clean up the liElement, many times you get empty child TextNodes or TextNodes with &nbsp
-      let listChildElements = listElement?.getChildNodes().filter { node in
-        if let textNode = node as? TextNode {
-          return !textNode.text().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        }
-
-        return true
-      }
-
-      // Am I the first child of the LI element?
-      if self == listChildElements?.first || element == listChildElements?.first {
-        textStyleList.append(.list)
-      } else {
-        // Is my parent the first child of the LI element?
-        if listChildElements?.first == parent {
-          textStyleList.append(.list)
-        }
-      }
-
-      // Am I the last child of the LI element?
-      if self == listChildElements?.last || element == listChildElements?.last {
-        textStyleList.append(.listEnd)
-      } else {
-        // Is my parent the first child of the LI element?
-        if listChildElements?.last == parent {
-          textStyleList.append(.listEnd)
-        }
-      }
-
-      if textStyleList.count >= 3 {
-        // Is my grand parent the first child of the LI element?
-        if listChildElements?.first == grandParent {
-          textStyleList.append(.list)
-        }
-
-        // Is my grand parent the last child of the LI element?
-        if listChildElements?.last == grandParent {
-          textStyleList.append(.listEnd)
-        }
-      }
-    }
 
     return TextComponent(text: text, link: href, styles: textStyleList)
   }
@@ -100,14 +48,6 @@ extension TextNode {
       if let parent = element.parent() {
         self.extractTextAttributes(element: parent, tags: &tags, urls: &urls)
       }
-    }
-  }
-
-  private func getListElements(element: Element, listElements: inout [Element]) {
-    if element.tagName().contains(HTMLRawText.List.listItem.rawValue) {
-      listElements.append(element)
-    } else if let parent = element.parent() {
-      self.getListElements(element: parent, listElements: &listElements)
     }
   }
 }

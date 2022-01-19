@@ -17,7 +17,8 @@ enum ViewElementType: String {
 
       self = childElementType
     case TextComponent.TextBlockType.header1.rawValue,
-         TextComponent.TextBlockType.list.rawValue,
+         TextComponent.TextBlockType.unorderedList.rawValue,
+         TextComponent.TextBlockType.orderedList.rawValue,
          TextComponent.TextBlockType.paragraph.rawValue:
       self = .text
     case ViewElementType.video.rawValue:

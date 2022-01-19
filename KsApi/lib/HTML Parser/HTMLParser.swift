@@ -70,7 +70,23 @@ class HTMLParser {
         let textComponent = textNode.parseTextElement(element: element) {
         textComponents.append(textComponent)
       } else if let element = node as? Element {
+        var listStarted = false
+
+        if TextComponent.TextStyleType(rawValue: element.tagName()) == .bulletStart {
+          let listStartTextElement = TextComponent(text: "", link: nil, styles: [.bulletStart])
+
+          textComponents.append(listStartTextElement)
+
+          listStarted = true
+        }
+
         self.parseTextElement(element: element, textComponents: &textComponents)
+
+        if listStarted {
+          let listEndTextElement = TextComponent(text: "", link: nil, styles: [.bulletEnd])
+
+          textComponents.append(listEndTextElement)
+        }
       }
     }
   }

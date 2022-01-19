@@ -9,15 +9,16 @@ public struct TextComponent: Decodable {
   enum TextBlockType: String, CaseIterable, Decodable {
     case paragraph = "p"
     case header1 = "h1"
-    case list = "ul"
+    case unorderedList = "ul"
+    case orderedList = "ol"
   }
 
   // Styles to apply
   public enum TextStyleType: String, Decodable {
     case bold = "strong"
     case emphasis = "em"
-    case list = "li"
-    case listEnd = "</li>"
+    case bulletStart = "li"
+    case bulletEnd = "</li>"
     case link = "a"
     case header = "h1"
   }
