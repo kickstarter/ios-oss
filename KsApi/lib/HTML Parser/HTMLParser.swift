@@ -65,14 +65,16 @@ class HTMLParser {
   private func parseTextElement(element: Element,
                                 textComponents: inout [TextComponent]) {
     for node in element.getChildNodes() {
-      if let textNode = node as? TextNode,
-        let textComponent = textNode.parseTextElement(element: element) {
+      switch node {
+      case let textNode as TextNode:
+        guard let textComponent = textNode.parseTextElement(element: element) else { continue }
+
         textComponents.append(textComponent)
-      } else if let element = node as? Element {
+      case let element as Element:
         var listStarted = false
 
         if TextComponent.TextStyleType(rawValue: element.tagName()) == .bulletStart {
-          let listStartTextElement = TextComponent(text: "", link: nil, styles: [.bulletStart])
+          let listStartTextElement = TextComponent(text: "•  ", link: nil, styles: [.bulletStart])
 
           textComponents.append(listStartTextElement)
 
@@ -86,6 +88,8 @@ class HTMLParser {
 
           textComponents.append(listEndTextElement)
         }
+      default:
+        continue
       }
     }
   }

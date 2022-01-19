@@ -41,14 +41,11 @@ public final class TextViewElementCellViewModel:
 }
 
 private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAttributedString, Never> {
-  var listElementStarted = false
-  var bulletAndAttributeApplied = false
   let completedAttributedText = NSMutableAttributedString()
-  let bulletPrefix = "•  "
 
-  for textItem in textElement.components {
-    let componentText = listElementStarted && !bulletAndAttributeApplied ? bulletPrefix + textItem
-      .text : textItem.text
+  for textItemIndex in 0..<textElement.components.count {
+    let textItem = textElement.components[textItemIndex]
+    let componentText = textItem.text
     // TODO: This will be external URL attached to a tap gesture on the label...need to connect this to the label accurately.
     let href = textItem.link ?? ""
 
@@ -63,16 +60,6 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
       NSAttributedString.Key.foregroundColor:
         UIColor.ksr_support_700
     ]
-
-    if listElementStarted, !bulletAndAttributeApplied {
-      let paragraphStyle = NSMutableParagraphStyle()
-      paragraphStyle.headIndent = (bulletPrefix as NSString).size(withAttributes: baseFontAttributes).width
-      paragraphStyle.paragraphSpacing = Styles.grid(1)
-
-      currentAttributedText
-        .addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: fullRange)
-      bulletAndAttributeApplied.toggle()
-    }
 
     guard textItem.styles.count > 0 else {
       currentAttributedText.addAttributes(baseFontAttributes, range: fullRange)
@@ -107,14 +94,33 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
         combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
       case .bulletStart:
-        listElementStarted.toggle()
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.headIndent = (textItem.text as NSString).size(withAttributes: baseFontAttributes).width
+        paragraphStyle.paragraphSpacing = Styles.grid(1)
+
+        combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
       case .bulletEnd:
-        listElementStarted.toggle()
-        bulletAndAttributeApplied.toggle()
-        completedAttributedText.append(NSAttributedString(string: "\n"))
+        let moreBulletPointsExist = !textElement.components[textItemIndex..<textElement.components.count]
+          .compactMap { component -> TextComponent? in
+            if !component.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+              return component
+            }
+
+            return nil
+          }
+          .isEmpty
+
+        if moreBulletPointsExist {
+          completedAttributedText.append(NSAttributedString(string: "\n"))
+        }
+
       case .header:
         combinedAttributes[NSAttributedString.Key.font] = headerFont
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 25
+        combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
       }
     }
 

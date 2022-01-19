@@ -41,6 +41,19 @@ class TextViewElementCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.separatorInset .~
+      .init(
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
+      )
+
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(
+        topBottom: Styles.gridHalf(3),
+        leftRight: Styles.grid(3)
+      )
 
     _ = self.bodyLabel
       |> \.adjustsFontForContentSizeCategory .~ true
