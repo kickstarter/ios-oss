@@ -86,10 +86,22 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
     textItem.styles.forEach { textStyleType in
       switch textStyleType {
       case .bold:
-        combinedAttributes[NSAttributedString.Key.font] = baseFont.bolded
+        if let existingFont = combinedAttributes[NSAttributedString.Key.font] as? UIFont,
+          existingFont == baseFont.italicized {
+          combinedAttributes[NSAttributedString.Key.font] = baseFont.boldItalic
+        } else {
+          combinedAttributes[NSAttributedString.Key.font] = baseFont.bolded
+        }
+
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
       case .emphasis:
-        combinedAttributes[NSAttributedString.Key.font] = baseFont.italicized
+        if let existingFont = combinedAttributes[NSAttributedString.Key.font] as? UIFont,
+          existingFont == baseFont.bolded {
+          combinedAttributes[NSAttributedString.Key.font] = baseFont.boldItalic
+        } else {
+          combinedAttributes[NSAttributedString.Key.font] = baseFont.italicized
+        }
+
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
       case .link:
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
