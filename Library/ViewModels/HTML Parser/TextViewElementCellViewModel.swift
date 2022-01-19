@@ -46,19 +46,18 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
   for textItemIndex in 0..<textElement.components.count {
     let textItem = textElement.components[textItemIndex]
     let componentText = textItem.text
-    // TODO: This will be external URL attached to a tap gesture on the label...need to connect this to the label accurately.
-    let href = textItem.link ?? ""
-
+    let paragraphStyle = NSMutableParagraphStyle()
     let currentAttributedText = NSMutableAttributedString(string: componentText)
     let fullRange = (componentText as NSString).localizedStandardRange(of: textItem.text)
     let baseFontSize: CGFloat = 16.0
     let baseFont = UIFont.ksr_body(size: baseFontSize)
     let headerFontSize: CGFloat = 20.0
     let headerFont = UIFont.ksr_body(size: headerFontSize).bolded
+    paragraphStyle.minimumLineHeight = 22
     let baseFontAttributes = [
       NSAttributedString.Key.font: baseFont,
-      NSAttributedString.Key.foregroundColor:
-        UIColor.ksr_support_700
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700,
+      NSAttributedString.Key.paragraphStyle: paragraphStyle
     ]
 
     guard textItem.styles.count > 0 else {
@@ -68,7 +67,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
       continue
     }
 
-    var combinedAttributes = [NSAttributedString.Key: Any]()
+    var combinedAttributes: [NSAttributedString.Key: Any] = baseFontAttributes
 
     textItem.styles.forEach { textStyleType in
       switch textStyleType {
@@ -79,8 +78,6 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         } else {
           combinedAttributes[NSAttributedString.Key.font] = baseFont.bolded
         }
-
-        combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
       case .emphasis:
         if let existingFont = combinedAttributes[NSAttributedString.Key.font] as? UIFont,
           existingFont == baseFont.bolded {
@@ -88,16 +85,12 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         } else {
           combinedAttributes[NSAttributedString.Key.font] = baseFont.italicized
         }
-
-        combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
       case .link:
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
         combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
       case .bulletStart:
-        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.headIndent = (textItem.text as NSString).size(withAttributes: baseFontAttributes).width
         paragraphStyle.paragraphSpacing = Styles.grid(1)
-
         combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
       case .bulletEnd:
         let moreBulletPointsExist = !textElement.components[textItemIndex..<textElement.components.count]
@@ -113,13 +106,10 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         if moreBulletPointsExist {
           completedAttributedText.append(NSAttributedString(string: "\n"))
         }
-
       case .header:
         combinedAttributes[NSAttributedString.Key.font] = headerFont
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 25
+        paragraphStyle.minimumLineHeight = 25
         combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
       }
     }
