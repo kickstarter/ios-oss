@@ -108,6 +108,7 @@
 		062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */; };
 		062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */; };
 		062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */; };
+		063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */; };
 		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
 		064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */; };
 		0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7272732FDA30087281F /* FetchRootCategories.graphql */; };
@@ -1865,6 +1866,7 @@
 		062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
 		062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
+		063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
 		064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
 		0655C7272732FDA30087281F /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
@@ -3488,6 +3490,7 @@
 			isa = PBXGroup;
 			children = (
 				06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */,
+				063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */,
 			);
 			path = "HTML Parser";
 			sourceTree = "<group>";
@@ -6476,6 +6479,7 @@
 				4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */,
 				D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */,
 				A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
+				063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */,
 				47733001268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift in Sources */,
 				8A4B8E98263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift in Sources */,
 				A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */,

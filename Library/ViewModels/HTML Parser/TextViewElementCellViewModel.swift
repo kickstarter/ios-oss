@@ -90,7 +90,6 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
       case .bulletStart:
         paragraphStyle.headIndent = (textItem.text as NSString).size(withAttributes: baseFontAttributes).width
-        paragraphStyle.paragraphSpacing = Styles.grid(1)
         combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
       case .bulletEnd:
         let moreBulletPointsExist = !textElement.components[textItemIndex..<textElement.components.count]
