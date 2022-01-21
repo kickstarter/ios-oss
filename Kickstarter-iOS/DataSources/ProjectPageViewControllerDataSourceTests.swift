@@ -31,11 +31,27 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
   ]
 
+  private let storyViewableElements = ProjectStoryElements(textElements:
+    [
+      TextViewElement(components: [
+        TextComponent(
+          text: "bold and emphasis",
+          link: nil,
+          styles: [.bold, .emphasis]
+        ),
+        TextComponent(
+          text: "link",
+          link: "https://ksr.com",
+          styles: [.link]
+        )
+      ]),
+      TextViewElement(components: [])
+    ])
+
   private let overviewCreatorHeaderSection = ProjectPageViewControllerDataSource.Section.overviewCreatorHeader
     .rawValue
   private let overviewSection = ProjectPageViewControllerDataSource.Section.overview.rawValue
   private let overviewSubpagesSection = ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue
-  private let campaignSection = ProjectPageViewControllerDataSource.Section.campaign.rawValue
   private let faqsHeaderSection = ProjectPageViewControllerDataSource.Section.faqsHeader.rawValue
   private let faqsEmptySection = ProjectPageViewControllerDataSource.Section.faqsEmpty.rawValue
   private let faqsSection = ProjectPageViewControllerDataSource.Section.faqs.rawValue
@@ -52,6 +68,9 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     .environmentalCommitments.rawValue
   private let environmentalCommitmentsDisclaimerSection = ProjectPageViewControllerDataSource.Section
     .environmentalCommitmentsDisclaimer.rawValue
+  private let campaignHeaderSection = ProjectPageViewControllerDataSource.Section
+    .campaignHeader.rawValue
+  private let campaignSection = ProjectPageViewControllerDataSource.Section.campaign.rawValue
 
   func testLoadFAQs_LoggedIn() {
     let project = Project.template
@@ -59,7 +78,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: self.faqs,
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -70,31 +89,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
+      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -138,7 +133,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: self.faqs,
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -149,31 +144,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
+      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -207,7 +178,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -217,31 +188,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         project: project,
         refTag: nil
       )
-      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
+      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -285,7 +232,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -295,31 +242,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         project: project,
         refTag: nil
       )
-      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
+      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -350,7 +273,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "These are all the risks and challenges associated with this project. Lorem Ipsum",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -361,52 +284,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(11, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
-
-      // faqsHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsHeaderSection)
-      )
-
-      // faqsEmpty
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsEmptySection)
-      )
-
-      // faqs
-      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsSection))
-
-      // faqsAskAQuestion
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsAskAQuestionSection)
-      )
+      XCTAssertEqual(12, self.dataSource.numberOfSections(in: self.tableView))
 
       // risksHeader
       XCTAssertEqual(
@@ -447,7 +325,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: self.environmentalCommitments,
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -458,70 +336,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(14, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
-
-      // faqsHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsHeaderSection)
-      )
-
-      // faqsEmpty
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsEmptySection)
-      )
-
-      // faqs
-      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsSection))
-
-      // faqsAskAQuestion
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsAskAQuestionSection)
-      )
-
-      // risksHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksHeaderSection)
-      )
-
-      // risks
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksSection)
-      )
-
-      // risksDisclaimer
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksDisclaimerSection)
-      )
+      XCTAssertEqual(15, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -565,7 +380,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -576,70 +391,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(14, self.dataSource.numberOfSections(in: self.tableView))
-
-      // overviewCreatorHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewCreatorHeaderSection)
-      )
-
-      // overview
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSection)
-      )
-
-      // overviewSubpages
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
-      )
-
-      // campaign
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
-      )
-
-      // faqsHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsHeaderSection)
-      )
-
-      // faqsEmpty
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsEmptySection)
-      )
-
-      // faqs
-      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsSection))
-
-      // faqsAskAQuestion
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.faqsAskAQuestionSection)
-      )
-
-      // risksHeader
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksHeaderSection)
-      )
-
-      // risks
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksSection)
-      )
-
-      // risksDisclaimer
-      XCTAssertEqual(
-        0,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.risksDisclaimerSection)
-      )
+      XCTAssertEqual(15, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -673,13 +425,55 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  func testCampaign_WithStoryElements() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+
+      // campaign header section
+      XCTAssertEqual(
+        1,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignHeaderSection)
+      )
+
+      // campaign
+      XCTAssertEqual(
+        2,
+        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
+      )
+
+      XCTAssertEqual(
+        "TextViewElementCell",
+        self.dataSource.reusableId(item: 0, section: self.campaignSection)
+      )
+      XCTAssertEqual(
+        "ProjectHeaderCell",
+        self.dataSource.reusableId(item: 0, section: self.campaignHeaderSection)
+      )
+    }
+  }
+
   func testOverview() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -728,7 +522,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: self.faqs,
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -748,7 +542,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 
@@ -771,7 +565,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: "",
+        story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
 

@@ -14,14 +14,28 @@ internal final class ProjectPageViewControllerTests: TestCase {
     )],
     faqs: [ProjectFAQ(answer: "Answer", question: "Question", id: 0, createdAt: nil)],
     risks: "These are the risks",
-    story: "",
+    story: ProjectStoryElements(textElements:
+      [
+        TextViewElement(components: [
+          TextComponent(
+            text: "bold and emphasis",
+            link: nil,
+            styles: [.bold, .emphasis]
+          ),
+          TextComponent(
+            text: "link",
+            link: "https://ksr.com",
+            styles: [.link]
+          )
+        ])
+      ]),
     minimumPledgeAmount: 1
   )
   private let emptyProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: [],
     faqs: [],
     risks: "",
-    story: "",
+    story: ProjectStoryElements(textElements: []),
     minimumPledgeAmount: 1
   )
   private let user = User.brando
@@ -365,6 +379,45 @@ internal final class ProjectPageViewControllerTests: TestCase {
       }
     }
   }
+
+  func testLoggedIn_NonBacker_LiveProject() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success(Project.cosmicSurgery.rewards)
+    )
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  // MARK: - Logged Out
 
   func testLoggedIn_NonBacker_NonLiveProject() {
     let config = Config.template

@@ -10,6 +10,7 @@ public enum HTMLRawText {
   enum List: String {
     case listItem = "li"
     case unorderedList = "ul"
+    case orderedList = "ol"
   }
 
   enum Size: String {

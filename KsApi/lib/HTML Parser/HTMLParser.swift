@@ -1,11 +1,11 @@
 import SwiftSoup
 
 class HTMLParser {
-  func parse(bodyHtml: String) -> [ViewElement] {
+  func parse(bodyHtml: String) -> [Decodable] {
     do {
       let doc: Document = try SwiftSoup.parseBodyFragment(bodyHtml)
 
-      var viewElements = [ViewElement]()
+      var viewElements = [Decodable]()
 
       doc.body()?.children().forEach { element in
         parse(element, viewElements: &viewElements)
@@ -19,9 +19,9 @@ class HTMLParser {
   }
 
   private func parse(_ child: Element,
-                     viewElements: inout [ViewElement]) {
+                     viewElements: inout [Decodable]) {
     let viewElementType = ViewElementType(element: child)
-    var element: ViewElement?
+    var element: Decodable?
 
     switch viewElementType {
     case .image:
@@ -65,12 +65,31 @@ class HTMLParser {
   private func parseTextElement(element: Element,
                                 textComponents: inout [TextComponent]) {
     for node in element.getChildNodes() {
-      if let textNode = node as? TextNode,
-        !textNode.text().trimmingCharacters(in: .whitespaces).isEmpty,
-        let textComponent = textNode.parseTextElement(element: element) {
+      switch node {
+      case let textNode as TextNode:
+        guard let textComponent = textNode.parseTextElement(element: element) else { continue }
+
         textComponents.append(textComponent)
-      } else if let element = node as? Element {
+      case let element as Element:
+        var listStarted = false
+
+        if TextComponent.TextStyleType(rawValue: element.tagName()) == .bulletStart {
+          let listStartTextElement = TextComponent(text: "•  ", link: nil, styles: [.bulletStart])
+
+          textComponents.append(listStartTextElement)
+
+          listStarted = true
+        }
+
         self.parseTextElement(element: element, textComponents: &textComponents)
+
+        if listStarted {
+          let listEndTextElement = TextComponent(text: "", link: nil, styles: [.bulletEnd])
+
+          textComponents.append(listEndTextElement)
+        }
+      default:
+        continue
       }
     }
   }

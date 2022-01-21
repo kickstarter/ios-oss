@@ -1,7 +1,7 @@
-@testable import Library
+@testable import KsApi
 import XCTest
 
-final class HTMLParserTests: TestCase {
+final class HTMLParserTests: XCTestCase {
   let htmlParser = HTMLParser()
 
   func testHTMLParser_WithValidNonGIFImage_Success() {
@@ -15,8 +15,7 @@ final class HTMLParserTests: TestCase {
 
     XCTAssertEqual(
       viewElement.src,
-      "https://ksr-qa-ugc.imgix.net/assets/033/981/078/6a3036d55ab3c3d6f271ab0b5c532912_original.png?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1624426643&amp;auto=format&amp;gif-q=50&amp;lossless=true&amp;s=aaa772a0ea57e4697c14311f1f2e0086"
-        .htmlStripped()
+      "https://ksr-qa-ugc.imgix.net/assets/033/981/078/6a3036d55ab3c3d6f271ab0b5c532912_original.png?ixlib=rb-4.0.2&w=700&fit=max&v=1624426643&auto=format&gif-q=50&lossless=true&s=aaa772a0ea57e4697c14311f1f2e0086"
     )
     XCTAssertNil(viewElement.href)
 
@@ -40,8 +39,7 @@ final class HTMLParserTests: TestCase {
 
     XCTAssertEqual(
       viewElement.src,
-      "https://ksr-qa-ugc.imgix.net/assets/033/915/794/8dca97fb0636aeb1a4a937025f369e7e_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1623894386&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=cde086d146601f4d9c6fe07e0d93bb84"
-        .htmlStripped()
+      "https://ksr-qa-ugc.imgix.net/assets/033/915/794/8dca97fb0636aeb1a4a937025f369e7e_original.gif?ixlib=rb-4.0.2&w=700&fit=max&v=1623894386&auto=format&gif-q=50&q=92&s=cde086d146601f4d9c6fe07e0d93bb84"
     )
     XCTAssertNil(viewElement.href)
 
@@ -65,8 +63,7 @@ final class HTMLParserTests: TestCase {
 
     XCTAssertEqual(
       viewElement.src,
-      "https://ksr-qa-ugc.imgix.net/assets/035/418/752/b1fe3dc3ff2aa64161aaf7cd6def0b97_original.jpg?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1635677740&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=6f32811c554177afaafc447642d83788"
-        .htmlStripped()
+      "https://ksr-qa-ugc.imgix.net/assets/035/418/752/b1fe3dc3ff2aa64161aaf7cd6def0b97_original.jpg?ixlib=rb-4.0.2&w=700&fit=max&v=1635677740&auto=format&gif-q=50&q=92&s=6f32811c554177afaafc447642d83788"
     )
 
     XCTAssertNil(viewElement.href)
@@ -91,14 +88,12 @@ final class HTMLParserTests: TestCase {
 
     XCTAssertEqual(
       viewElement.src,
-      "https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&amp;w=700&amp;fit=max&amp;v=1628654686&amp;auto=format&amp;gif-q=50&amp;q=92&amp;s=061483d5e8fac13bd635b67e2ae8a258"
-        .htmlStripped()
+      "https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&w=700&fit=max&v=1628654686&auto=format&gif-q=50&q=92&s=061483d5e8fac13bd635b67e2ae8a258"
     )
 
     XCTAssertEqual(
       viewElement.href,
-      "https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&amp;utm_medium=Banner&amp;utm_campaign=Homi"
-        .htmlStripped()
+      "https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&utm_medium=Banner&utm_campaign=Homi"
     )
 
     guard let existingCaption = viewElement.caption else {
@@ -122,7 +117,6 @@ final class HTMLParserTests: TestCase {
     XCTAssertEqual(
       viewElement.sourceUrl,
       "https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.mp4"
-        .htmlStripped()
     )
 
     XCTAssertEqual(
@@ -145,7 +139,6 @@ final class HTMLParserTests: TestCase {
     XCTAssertEqual(
       viewElement.sourceUrl,
       "https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_base.mp4"
-        .htmlStripped()
     )
 
     XCTAssertEqual(
@@ -265,25 +258,32 @@ final class HTMLParserTests: TestCase {
       return
     }
 
-    guard textElement.components.count == 3 else {
+    guard textElement.components.count == 5 else {
       XCTFail()
 
       return
     }
 
-    XCTAssertEqual(textElement.components[0].text, "Meneane")
-    XCTAssertEqual(textElement.components[0].link, sampleLink)
+    XCTAssertEqual(textElement.components[0].text, "•  ")
+    XCTAssertNil(textElement.components[0].link)
     XCTAssertEqual(textElement.components[0].styles, [
+      TextComponent.TextStyleType.bulletStart
+    ])
+    XCTAssertEqual(textElement.components[1].text, "Meneane")
+    XCTAssertEqual(textElement.components[1].link, sampleLink)
+    XCTAssertEqual(textElement.components[1].styles, [
       TextComponent.TextStyleType.bold,
       TextComponent.TextStyleType.emphasis,
-      TextComponent.TextStyleType.link,
-      TextComponent.TextStyleType.list
+      TextComponent.TextStyleType.link
     ])
-    XCTAssertEqual(textElement.components[1].text, "Another URL in this list")
-    XCTAssertEqual(textElement.components[1].link, sampleLink)
-    XCTAssertEqual(textElement.components[1].styles, [TextComponent.TextStyleType.link])
-    XCTAssertEqual(textElement.components[2].text, " and some text")
-    XCTAssertNil(textElement.components[2].link)
-    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.listEnd])
+    XCTAssertEqual(textElement.components[2].text, "Another URL in this list")
+    XCTAssertEqual(textElement.components[2].link, sampleLink)
+    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.link])
+    XCTAssertEqual(textElement.components[3].text, " and some text")
+    XCTAssertNil(textElement.components[3].link)
+    XCTAssertTrue(textElement.components[3].styles.isEmpty)
+    XCTAssertTrue(textElement.components[4].text.isEmpty)
+    XCTAssertNil(textElement.components[4].link)
+    XCTAssertEqual(textElement.components[4].styles, [TextComponent.TextStyleType.bulletEnd])
   }
 }

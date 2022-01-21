@@ -21,6 +21,12 @@ extension UIFont {
       .map { UIFont(descriptor: $0, size: 0.0) } ?? self
   }
 
+  /// Returns a bold and italized version of `self`
+  public var boldItalic: UIFont {
+    return self.fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic])
+      .map { UIFont(descriptor: $0, size: 0.0) } ?? self
+  }
+
   /// Returns a fancy monospaced font for the countdown.
   public var countdownMonospaced: UIFont {
     let monospacedDescriptor = self.fontDescriptor

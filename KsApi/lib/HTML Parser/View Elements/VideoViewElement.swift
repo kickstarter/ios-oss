@@ -1,6 +1,6 @@
 import Foundation
 
-struct VideoViewElement: ViewElement {
+public struct VideoViewElement: Decodable {
   let sourceUrl: String
   let thumbnailUrl: String?
   let seekPosition: Int64
