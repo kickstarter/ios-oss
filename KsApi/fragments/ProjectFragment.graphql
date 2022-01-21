@@ -60,6 +60,7 @@ fragment ProjectFragment on Project {
   slug
   state
   stateChangedAt
+  story
   tags(scope: DISCOVER) {
     name
   }

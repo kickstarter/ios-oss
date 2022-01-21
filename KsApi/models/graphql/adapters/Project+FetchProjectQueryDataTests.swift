@@ -232,7 +232,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(firstTextElement.components.count, 1)
     XCTAssertEqual(firstTextComponent.text, "What about a bold link to that same newspaper website?")
     XCTAssertEqual(firstTextComponent.link, "http://record.pt/")
-    XCTAssertEqual(firstTextComponent.styles, [.link, .bold])
+    XCTAssertEqual(firstTextComponent.styles, [.bold, .link])
     XCTAssertEqual(extendedProjectProperties.risks, "Risks")
     XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)
     XCTAssertEqual(

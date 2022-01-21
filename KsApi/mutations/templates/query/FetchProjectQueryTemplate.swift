@@ -277,8 +277,7 @@ public enum FetchProjectQueryTemplate {
               }
             ]
           },
-          "risks": "Risks",
-          "story": "<p><a href="http://record.pt/" target=\"_blank\" rel=\"noopener\"><strong>What about a bold link to that same newspaper website?</strong></a></p>\n<p><a href="http://recordblabla.pt/" target=\"_blank\" rel=\"noopener\"><em>Maybe an italic one?</em></a></p>"
+          "risks": "Risks"
        }
     }
     """
@@ -396,6 +395,9 @@ public enum FetchProjectQueryTemplate {
     projectResultMap["faqs"] = updatedFaqs
     projectResultMap["environmentalCommitments"] = updatedEnvironmentalCommitments
     projectResultMap["creator"] = updatedCreatorResultMap
+    projectResultMap["story"] = """
+    <p><a href="http://record.pt/" target=\"_blank\" rel=\"noopener\"><strong>What about a bold link to that same newspaper website?</strong></a></p>\n<p><a href="http://recordblabla.pt/" target=\"_blank\" rel=\"noopener\"><em>Maybe an italic one?</em></a></p>
+    """
 
     resultMap["project"] = projectResultMap
 

@@ -266,25 +266,32 @@ final class HTMLParserTests: XCTestCase {
       return
     }
 
-    guard textElement.components.count == 3 else {
+    guard textElement.components.count == 5 else {
       XCTFail()
 
       return
     }
 
-    XCTAssertEqual(textElement.components[0].text, "Meneane")
-    XCTAssertEqual(textElement.components[0].link, sampleLink)
+    XCTAssertEqual(textElement.components[0].text, "•  ")
+    XCTAssertNil(textElement.components[0].link)
     XCTAssertEqual(textElement.components[0].styles, [
-      TextComponent.TextStyleType.bold,
-      TextComponent.TextStyleType.emphasis,
-      TextComponent.TextStyleType.link,
       TextComponent.TextStyleType.bulletStart
     ])
-    XCTAssertEqual(textElement.components[1].text, "Another URL in this list")
+    XCTAssertEqual(textElement.components[1].text, "Meneane")
     XCTAssertEqual(textElement.components[1].link, sampleLink)
-    XCTAssertEqual(textElement.components[1].styles, [TextComponent.TextStyleType.link])
-    XCTAssertEqual(textElement.components[2].text, " and some text")
-    XCTAssertNil(textElement.components[2].link)
-    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.bulletEnd])
+    XCTAssertEqual(textElement.components[1].styles, [
+      TextComponent.TextStyleType.bold,
+      TextComponent.TextStyleType.emphasis,
+      TextComponent.TextStyleType.link
+    ])
+    XCTAssertEqual(textElement.components[2].text, "Another URL in this list")
+    XCTAssertEqual(textElement.components[2].link, sampleLink)
+    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.link])
+    XCTAssertEqual(textElement.components[3].text, " and some text")
+    XCTAssertNil(textElement.components[3].link)
+    XCTAssertTrue(textElement.components[3].styles.isEmpty)
+    XCTAssertTrue(textElement.components[4].text.isEmpty)
+    XCTAssertNil(textElement.components[4].link)
+    XCTAssertEqual(textElement.components[4].styles, [TextComponent.TextStyleType.bulletEnd])
   }
 }
