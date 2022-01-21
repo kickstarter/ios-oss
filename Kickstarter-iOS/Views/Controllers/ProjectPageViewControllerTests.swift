@@ -43,7 +43,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
