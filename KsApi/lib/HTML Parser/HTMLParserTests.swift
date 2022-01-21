@@ -1,7 +1,8 @@
+@testable import KsApi
 @testable import Library
 import XCTest
 
-final class HTMLParserTests: TestCase {
+final class HTMLParserTests: XCTestCase {
   let htmlParser = HTMLParser()
 
   func testHTMLParser_WithValidNonGIFImage_Success() {
@@ -277,13 +278,13 @@ final class HTMLParserTests: TestCase {
       TextComponent.TextStyleType.bold,
       TextComponent.TextStyleType.emphasis,
       TextComponent.TextStyleType.link,
-      TextComponent.TextStyleType.list
+      TextComponent.TextStyleType.bulletStart
     ])
     XCTAssertEqual(textElement.components[1].text, "Another URL in this list")
     XCTAssertEqual(textElement.components[1].link, sampleLink)
     XCTAssertEqual(textElement.components[1].styles, [TextComponent.TextStyleType.link])
     XCTAssertEqual(textElement.components[2].text, " and some text")
     XCTAssertNil(textElement.components[2].link)
-    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.listEnd])
+    XCTAssertEqual(textElement.components[2].styles, [TextComponent.TextStyleType.bulletEnd])
   }
 }

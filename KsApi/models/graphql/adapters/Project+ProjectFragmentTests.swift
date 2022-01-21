@@ -63,13 +63,20 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNil(project.personalization.backing)
       XCTAssertNil(project.rewardData.addOns)
 
-      guard let extendedProjectProperties = project.extendedProjectProperties else {
-        XCTFail()
+      guard let extendedProjectProperties = project.extendedProjectProperties,
+        let firstTextElement = extendedProjectProperties.story.textElements.first,
+        let firstTextComponent = firstTextElement.components.first else {
+        XCTFail("extended project properties should exist.")
 
         return
       }
 
-      XCTAssertNotNil(extendedProjectProperties.story)
+      XCTAssertEqual(extendedProjectProperties.story.textElements.count, 2)
+      XCTAssertEqual(firstTextElement.components.count, 1)
+      XCTAssertEqual(firstTextComponent.text, "What about a bold link to that same newspaper website?")
+      XCTAssertEqual(firstTextComponent.link, "http://record.pt/")
+      XCTAssertEqual(firstTextComponent.styles, [.link, .bold])
+
       XCTAssertNotNil(extendedProjectProperties.risks)
       XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)
       XCTAssertEqual(
@@ -422,6 +429,10 @@ final class Project_ProjectFragmentTests: XCTestCase {
 
     resultMap["faqs"] = updatedFaqs
     resultMap["environmentalCommitments"] = updatedEnvironmentalCommitments
+    resultMap["story"] =
+      """
+                "story": "<p><a href="http://record.pt/" target=\"_blank\" rel=\"noopener\"><strong>What about a bold link to that same newspaper website?</strong></a></p>\n<p><a href="http://recordblabla.pt/" target=\"_blank\" rel=\"noopener\"><em>Maybe an italic one?</em></a></p>"
+      """
 
     return resultMap
   }

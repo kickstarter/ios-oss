@@ -220,38 +220,46 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
 
     XCTAssertTrue(firstReward.isNoReward)
 
-    /// Extended properties only available on GraphQL
-    /** FIXME: Add this back in once we add the `story` property on the `ProjectFragment` again. */
+    guard let extendedProjectProperties = project.extendedProjectProperties,
+      let firstTextElement = extendedProjectProperties.story.textElements.first,
+      let firstTextComponent = firstTextElement.components.first else {
+      XCTFail("extended project properties should exist.")
+
+      return
+    }
+
+    XCTAssertEqual(extendedProjectProperties.story.textElements.count, 2)
+    XCTAssertEqual(firstTextElement.components.count, 1)
+    XCTAssertEqual(firstTextComponent.text, "What about a bold link to that same newspaper website?")
+    XCTAssertEqual(firstTextComponent.link, "http://record.pt/")
+    XCTAssertEqual(firstTextComponent.styles, [.link, .bold])
+    XCTAssertEqual(extendedProjectProperties.risks, "Risks")
+    XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)
     XCTAssertEqual(
-      project.extendedProjectProperties?.story, ""
-    )
-    XCTAssertEqual(project.extendedProjectProperties?.risks, "Risks")
-    XCTAssertEqual(project.extendedProjectProperties?.environmentalCommitments.count, 1)
-    XCTAssertEqual(
-      project.extendedProjectProperties?.environmentalCommitments.last?.category,
+      extendedProjectProperties.environmentalCommitments.last?.category,
       .longLastingDesign
     )
     XCTAssertEqual(
-      project.extendedProjectProperties?.environmentalCommitments.last?.description,
+      extendedProjectProperties.environmentalCommitments.last?.description,
       "High quality materials and cards - there is nothing design or tech-wise that would render Dustbiters obsolete besides losing the cards."
     )
     XCTAssertEqual(
-      project.extendedProjectProperties?.environmentalCommitments.last?.id,
+      extendedProjectProperties.environmentalCommitments.last?.id,
       decompose(id: "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2")
     )
-    XCTAssertEqual(project.extendedProjectProperties?.faqs.count, 1)
+    XCTAssertEqual(extendedProjectProperties.faqs.count, 1)
     XCTAssertEqual(
-      project.extendedProjectProperties?.faqs.last!.question,
+      extendedProjectProperties.faqs.last!.question,
       "Are you planning any expansions for Dustbiters?"
     )
     XCTAssertEqual(
-      project.extendedProjectProperties?.faqs.last!.answer,
+      extendedProjectProperties.faqs.last!.answer,
       "This may sound weird in the world of big game boxes with hundreds of tokens, cards and thick manuals, but through years of playtesting and refinement we found our ideal experience is these 21 unique cards we have now. Dustbiters is balanced for quick and furious games with different strategies every time you jump back in, and we currently have no plans to mess with that."
     )
     XCTAssertEqual(
-      project.extendedProjectProperties?.faqs.last!.id,
+      extendedProjectProperties.faqs.last!.id,
       decompose(id: "UHJvamVjdEZhcS0zNzA4MDM=")
     )
-    XCTAssertEqual(project.extendedProjectProperties?.faqs.last!.createdAt!, TimeInterval(1_628_103_400))
+    XCTAssertEqual(extendedProjectProperties.faqs.last!.createdAt!, TimeInterval(1_628_103_400))
   }
 }
