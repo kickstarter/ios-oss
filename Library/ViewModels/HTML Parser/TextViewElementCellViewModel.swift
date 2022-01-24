@@ -88,6 +88,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
       case .link:
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
         combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
+        combinedAttributes[NSAttributedString.Key.link] = NSURL(string: "https://www.kickstarter.com")
       case .bulletStart:
         paragraphStyle.headIndent = (textItem.text as NSString).size(withAttributes: baseFontAttributes).width
         combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
