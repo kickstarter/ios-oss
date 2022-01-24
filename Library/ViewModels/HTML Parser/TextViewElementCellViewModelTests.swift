@@ -116,6 +116,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     expectedFontAttributes[NSAttributedString.Key.font] = self.expectedBaseFont.boldItalic
     self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
+    self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!
 
     let expectedLinkWithStylesAttributedText = NSAttributedString(
       string: expectedSampleString,
@@ -136,6 +137,7 @@ internal final class TextElementCellViewModelTests: TestCase {
 
     self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
+    self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!
 
     let expectedLinkWithNoStylesAttributedText = NSAttributedString(
       string: expectedSampleString,
@@ -214,6 +216,7 @@ internal final class TextElementCellViewModelTests: TestCase {
     self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
     self.expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     self.expectedFontAttributes[NSAttributedString.Key.paragraphStyle] = self.expectedParagraphStyle
+    self.expectedFontAttributes[NSAttributedString.Key.link] = NSURL(string: "https://ksr.com")!
 
     let expectedFirstListAttributedText = NSAttributedString(
       string: expectedFirstListValue,
