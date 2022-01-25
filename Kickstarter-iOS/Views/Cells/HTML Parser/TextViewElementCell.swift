@@ -7,7 +7,7 @@ import UIKit
 class TextViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
-  private lazy var bodyLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var textView: UITextView = { UITextView(frame: .zero) }()
   private let viewModel = TextViewElementCellViewModel()
 
   // MARK: Initializers
@@ -31,7 +31,11 @@ class TextViewElementCell: UITableViewCell, ValueCell {
   // MARK: View Model
 
   internal override func bindViewModel() {
-    self.bodyLabel.rac.attributedText = self.viewModel.outputs.attributedText
+    self.viewModel.outputs.attributedText
+      .observeForUI()
+      .observeValues { [weak self] attributedText in
+        self?.textView.attributedText = attributedText
+      }
   }
 
   // MARK: View Styles
@@ -55,15 +59,32 @@ class TextViewElementCell: UITableViewCell, ValueCell {
         leftRight: Styles.grid(3)
       )
 
-    _ = self.bodyLabel
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.numberOfLines .~ 0
+    _ = self.textView
+      |> self.textViewStyle
   }
 
   // MARK: Helpers
 
+  private let textViewStyle: TextViewStyle = { textView in
+    let t = textView
+      |> UITextView.lens.isScrollEnabled .~ false
+      |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
+      |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
+      |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
+      |> \.textAlignment .~ .left
+
+    let b = t
+      |> \.adjustsFontForContentSizeCategory .~ true
+      |> \.isEditable .~ false
+      |> \.isSelectable .~ true
+      |> \.isUserInteractionEnabled .~ true
+      |> \.dataDetectorTypes .~ .link
+
+    return b
+  }
+
   private func configureViews() {
-    _ = (self.bodyLabel, self.contentView)
+    _ = (self.textView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
   }
