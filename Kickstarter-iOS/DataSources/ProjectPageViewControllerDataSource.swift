@@ -97,6 +97,13 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
               cellClass: TextViewElementCell.self,
               toSection: Section.campaign.rawValue
             )
+        case let element as ImageViewElement:
+          self
+            .appendRow(
+              value: element,
+              cellClass: ImageViewElementCell.self,
+              toSection: Section.campaign.rawValue
+            )
         default:
           break
         }
@@ -209,6 +216,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case let (cell as ProjectRisksDisclaimerCell, _):
       cell.configureWith(value: ())
     case let (cell as TextViewElementCell, value as TextViewElement):
+      cell.configureWith(value: value)
+    case let (cell as ImageViewElementCell, value as ImageViewElement):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

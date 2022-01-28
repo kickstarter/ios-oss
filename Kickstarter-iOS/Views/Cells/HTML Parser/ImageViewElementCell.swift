@@ -1,35 +1,91 @@
+import KsApi
 import Library
+import Prelude
+import Prelude_UIKit
 import UIKit
 
 class ImageViewElementCell: UITableViewCell, ValueCell {
-  var imageElement = UIImageView()
+  // MARK: Properties
+
+  private lazy var imageAndCaptionStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var textView: UITextView = { UITextView(frame: .zero) }()
+  private lazy var storyImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private let viewModel = ImageViewElementCellViewModel()
+
+  // MARK: Initializers
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    self.initialize()
+
+    self.configureViews()
+    self.bindStyles()
+    self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    self.initialize()
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
-  override func prepareForReuse() {
-    self.imageElement.image = nil
+  func configureWith(value imageElement: ImageViewElement) {
+    self.viewModel.inputs.configureWith(imageElement: imageElement)
   }
 
-  func initialize() {
-    self.addSubview(self.imageElement)
-    self.imageElement.contentMode = .scaleAspectFit
-    NSLayoutConstraint.activate([
-      self.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      self.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-      self.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-      self.topAnchor.constraint(equalTo: self.topAnchor)
-    ])
+  // MARK: View Model
+
+  internal override func bindViewModel() {
+    self.viewModel.outputs.attributedText
+      .observeForUI()
+      .observeValues { [weak self] attributedText in
+        self?.textView.attributedText = attributedText
+      }
+
+    self.viewModel.outputs.imageURL
+      .observeForUI()
+      .observeValues { [weak self] url in
+        self?.imageView?.ksr_setImageWithURL(url)
+      }
   }
 
-  func configureWith(value: ImageViewElement) {
-    self.imageElement.image = value.image
+  // MARK: View Styles
+
+  internal override func bindStyles() {
+    super.bindStyles()
+
+    _ = self
+      |> baseTableViewCellStyle()
+      |> \.separatorInset .~
+      .init(
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
+      )
+
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(
+        topBottom: Styles.gridHalf(3),
+        leftRight: Styles.grid(3)
+      )
+
+    _ = self.imageAndCaptionStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(1)
+
+    _ = self.textView
+      |> textViewStyle
+
+    _ = self.storyImageView
+      |> imageViewStyle
+  }
+
+  // MARK: Helpers
+
+  private func configureViews() {
+    _ = (self.imageAndCaptionStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.storyImageView, self.textView], self.imageAndCaptionStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 }
