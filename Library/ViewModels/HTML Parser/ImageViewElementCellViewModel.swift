@@ -63,7 +63,6 @@ private func attributedText(imageElement: ImageViewElement) -> SignalProducer<NS
   }
 
   let completedAttributedText = NSMutableAttributedString()
-
   let paragraphStyle = NSMutableParagraphStyle()
   let currentAttributedText = NSMutableAttributedString(string: captionText)
   let fullRange = (captionText as NSString).localizedStandardRange(of: captionText)
@@ -77,11 +76,11 @@ private func attributedText(imageElement: ImageViewElement) -> SignalProducer<NS
   ]
 
   var combinedAttributes: [NSAttributedString.Key: Any] = baseFontAttributes
-  combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
-  combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
 
   if let validURLString = imageElement.href,
     let validURL = URL(string: validURLString) {
+    combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
+    combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     combinedAttributes[NSAttributedString.Key.link] = validURL
   }
 

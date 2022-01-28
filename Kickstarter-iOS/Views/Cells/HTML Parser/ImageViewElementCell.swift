@@ -41,8 +41,12 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.imageURL
       .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.storyImageView.af.cancelImageRequest()
+        self?.storyImageView.image = nil
+      })
       .observeValues { [weak self] url in
-        self?.imageView?.ksr_setImageWithURL(url)
+        self?.storyImageView.ksr_setImageWithURL(url)
       }
   }
 
