@@ -221,14 +221,14 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertTrue(firstReward.isNoReward)
 
     guard let extendedProjectProperties = project.extendedProjectProperties,
-      let firstTextElement = extendedProjectProperties.story.textElements.first,
+      let firstTextElement = extendedProjectProperties.story.htmlViewElements.first as? TextViewElement,
       let firstTextComponent = firstTextElement.components.first else {
       XCTFail("extended project properties should exist.")
 
       return
     }
 
-    XCTAssertEqual(extendedProjectProperties.story.textElements.count, 2)
+    XCTAssertEqual(extendedProjectProperties.story.htmlViewElements.count, 2)
     XCTAssertEqual(firstTextElement.components.count, 1)
     XCTAssertEqual(firstTextComponent.text, "What about a bold link to that same newspaper website?")
     XCTAssertEqual(firstTextComponent.link, "http://record.pt/")

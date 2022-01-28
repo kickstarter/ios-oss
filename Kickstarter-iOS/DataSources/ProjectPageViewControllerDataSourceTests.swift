@@ -31,7 +31,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
   ]
 
-  private let storyViewableElements = ProjectStoryElements(textElements:
+  private let storyViewableElements = ProjectStoryElements(htmlViewElements:
     [
       TextViewElement(components: [
         TextComponent(

@@ -86,13 +86,21 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.campaignHeader.rawValue
       )
 
-      let textElements = project.extendedProjectProperties?.story.textElements ?? []
+      let htmlViewElements = project.extendedProjectProperties?.story.htmlViewElements ?? []
 
-      self.set(
-        values: textElements,
-        cellClass: TextViewElementCell.self,
-        inSection: Section.campaign.rawValue
-      )
+      htmlViewElements.forEach { element in
+        switch element {
+        case let element as TextViewElement:
+          self
+            .appendRow(
+              value: element,
+              cellClass: TextViewElementCell.self,
+              toSection: Section.campaign.rawValue
+            )
+        default:
+          break
+        }
+      }
     case .faq:
       self.set(
         values: [HeaderValue.faqs.description],

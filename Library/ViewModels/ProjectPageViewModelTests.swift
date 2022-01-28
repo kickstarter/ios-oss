@@ -17,7 +17,7 @@ final class ProjectPageViewModelTests: TestCase {
       environmentalCommitments: [],
       faqs: [],
       risks: "",
-      story: ProjectStoryElements(textElements: []),
+      story: ProjectStoryElements(htmlViewElements: []),
       minimumPledgeAmount: 1
     )
 
@@ -1359,7 +1359,7 @@ final class ProjectPageViewModelTests: TestCase {
         environmentalCommitments: [],
         faqs: faqs,
         risks: "",
-        story: ProjectStoryElements(textElements: []),
+        story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
       )
 
@@ -1409,7 +1409,7 @@ final class ProjectPageViewModelTests: TestCase {
         environmentalCommitments: [],
         faqs: faqs,
         risks: "",
-        story: ProjectStoryElements(textElements: []),
+        story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
       )
 

@@ -64,16 +64,17 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNil(project.rewardData.addOns)
 
       guard let extendedProjectProperties = project.extendedProjectProperties,
-        extendedProjectProperties.story.textElements.count > 3,
-        extendedProjectProperties.story.textElements[2].components.count > 4 else {
+        extendedProjectProperties.story.htmlViewElements.count > 3,
+        let textElement = extendedProjectProperties.story.htmlViewElements[2] as? TextViewElement,
+        textElement.components.count > 4 else {
         XCTFail("extended project properties should exist.")
 
         return
       }
-      let textElement = extendedProjectProperties.story.textElements[2]
+
       let textComponent = textElement.components[4]
 
-      XCTAssertEqual(extendedProjectProperties.story.textElements.count, 9)
+      XCTAssertEqual(extendedProjectProperties.story.htmlViewElements.count, 19)
       XCTAssertEqual(textElement.components.count, 31)
       XCTAssertEqual(textComponent.text, "AFC")
       XCTAssertEqual(

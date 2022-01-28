@@ -248,8 +248,7 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
  */
 private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
   let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
-  let textElements = viewElements.compactMap { $0 as? TextViewElement }
-  let storyElements = ProjectStoryElements(textElements: textElements)
+  let storyElements = ProjectStoryElements(htmlViewElements: viewElements)
 
   return storyElements
 }

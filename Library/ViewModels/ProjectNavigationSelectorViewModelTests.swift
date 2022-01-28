@@ -22,7 +22,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
         environmentalCommitments: [],
         faqs: [],
         risks: "",
-        story: ProjectStoryElements(textElements: []),
+        story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
       )
 
@@ -50,7 +50,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
       ],
       faqs: [],
       risks: "",
-      story: ProjectStoryElements(textElements: []),
+      story: ProjectStoryElements(htmlViewElements: []),
       minimumPledgeAmount: 1
     )
 

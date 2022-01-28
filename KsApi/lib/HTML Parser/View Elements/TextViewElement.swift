@@ -1,5 +1,5 @@
 import Foundation
 
-public struct TextViewElement: Decodable {
+public struct TextViewElement: HTMLViewElement {
   public let components: [TextComponent]
 }
