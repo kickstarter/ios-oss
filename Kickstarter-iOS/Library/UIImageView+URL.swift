@@ -32,10 +32,6 @@ extension UIImageView {
       completion: nil
     )
   }
-
-  public func ksr_setImageURLsWith(_ requests: [URLRequest]) {
-    UIImageView.af.sharedImageDownloader.download(requests)
-  }
 }
 
 private enum Associations {

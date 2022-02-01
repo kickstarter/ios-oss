@@ -278,11 +278,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         })
       }
 
-    self.viewModel.outputs.downloadExternalCampaignData
-      .observeValues { urlRequests in
-        UIImageView().ksr_setImageURLsWith(urlRequests)
-      }
-
     self.viewModel.outputs.goToComments
       .observeForControllerAction()
       .observeValues { [weak self] in

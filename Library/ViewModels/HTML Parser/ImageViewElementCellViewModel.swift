@@ -58,7 +58,7 @@ public final class ImageViewElementCellViewModel:
 }
 
 private func attributedText(imageElement: ImageViewElement) -> SignalProducer<NSAttributedString?, Never> {
-  guard let captionText = imageElement.caption else {
+  guard let captionText = imageElement.caption, !captionText.isEmpty else {
     return SignalProducer(value: nil)
   }
 

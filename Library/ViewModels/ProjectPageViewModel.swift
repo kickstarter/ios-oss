@@ -74,9 +74,6 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
-  /// Emits a message to show on `MessageBannerViewController`
-  var downloadExternalCampaignData: Signal<[URLRequest], Never> { get }
-
   /// Emits a `Project` when the comments are to be rendered.
   var goToComments: Signal<Project, Never> { get }
 
@@ -163,24 +160,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let project = freshProjectAndRefTag
       .map(first)
-
-    self.downloadExternalCampaignData = project.signal
-      .filter { _ in
-        featureProjectPageStoryTabEnabled()
-      }
-      .switchMap { project -> SignalProducer<[URLRequest], Never> in
-        guard let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap({ $0 as? ImageViewElement }),
-          imageViewElements.count > 0 else {
-          return SignalProducer(value: [])
-        }
-
-        let urlStrings = imageViewElements.map { $0.src }
-        let urls = urlStrings.compactMap { URL(string: $0) }
-        let urlRequests = urls.map { URLRequest(url: $0) }
-
-        return SignalProducer(value: urlRequests)
-      }
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -433,7 +412,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
-  public let downloadExternalCampaignData: Signal<[URLRequest], Never>
   public let goToComments: Signal<Project, Never>
   public let goToDashboard: Signal<Param, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
