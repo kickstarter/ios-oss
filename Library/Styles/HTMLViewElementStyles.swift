@@ -23,7 +23,7 @@ public let textViewStyle: TextViewStyle = { textView in
 public let imageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.clipsToBounds .~ true
-    |> \.backgroundColor .~ .ksr_support_300
+    |> \.backgroundColor .~ .ksr_white
     |> \.contentMode .~ .scaleAspectFit
     |> ignoresInvertColorsImageViewStyle
 }
