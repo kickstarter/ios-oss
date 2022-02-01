@@ -165,6 +165,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .map(first)
 
     self.downloadExternalCampaignData = project.signal
+      .filter { _ in
+        featureProjectPageStoryTabEnabled()
+      }
       .switchMap { project -> SignalProducer<[URLRequest], Never> in
         guard let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
           .compactMap({ $0 as? ImageViewElement }),

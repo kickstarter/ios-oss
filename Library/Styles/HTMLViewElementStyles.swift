@@ -24,6 +24,6 @@ public let imageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.clipsToBounds .~ true
     |> \.backgroundColor .~ .ksr_white
-    |> \.contentMode .~ .scaleAspectFit
+    |> \.contentMode .~ .left
     |> ignoresInvertColorsImageViewStyle
 }
