@@ -114,6 +114,7 @@
 		064B007627A462AA007B21FE /* ImageViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16F62773AD36009E4354 /* ImageViewElementCell.swift */; };
 		064B007827A463D2007B21FE /* ImageViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */; };
 		064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */; };
+		0653738D27AC5B2D00C7D160 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0653738C27AC5B2D00C7D160 /* Kingfisher.framework */; };
 		0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7272732FDA30087281F /* FetchRootCategories.graphql */; };
 		0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7292732FDE00087281F /* FetchCategory.graphql */; };
 		0655C72C273321B20087281F /* Category+CategoryFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655C72B273321B20087281F /* Category+CategoryFragment.swift */; };
@@ -1875,6 +1876,7 @@
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
 		064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLViewElementStyles.swift; sourceTree = "<group>"; };
+		0653738C27AC5B2D00C7D160 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		0655C7272732FDA30087281F /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
 		0655C7292732FDE00087281F /* FetchCategory.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCategory.graphql; sourceTree = "<group>"; };
 		0655C72B273321B20087281F /* Category+CategoryFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CategoryFragment.swift"; sourceTree = "<group>"; };
@@ -3339,6 +3341,7 @@
 				D0B7124822AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A922AF105A001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
+				0653738D27AC5B2D00C7D160 /* Kingfisher.framework in Frameworks */,
 				D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */,
 				D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				8A04FE31262781570056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
@@ -4586,6 +4589,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0653738C27AC5B2D00C7D160 /* Kingfisher.framework */,
 				06EF13DC27A1B2770044841C /* SwiftSoup.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,

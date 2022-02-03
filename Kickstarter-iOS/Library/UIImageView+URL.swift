@@ -1,4 +1,5 @@
 import AlamofireImage
+import Kingfisher
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
@@ -30,6 +31,33 @@ extension UIImageView {
       imageTransition: .crossDissolve(0.3),
       runImageTransitionIfCached: false,
       completion: nil
+    )
+  }
+
+  public func ksr_cacheImageWith(_ url: URL) {
+    let optionsInfo: KingfisherOptionsInfo = [.scaleFactor(UIScreen.main.scale)]
+
+    _ = KingfisherManager.shared.retrieveImage(
+      with: url,
+      options: optionsInfo,
+      completionHandler: nil
+    )
+  }
+
+  public func ksr_setImageWith(_ url: URL) {
+    let optionsInfo: KingfisherOptionsInfo = [.scaleFactor(UIScreen.main.scale)]
+
+    _ = KingfisherManager.shared.retrieveImage(
+      with: url,
+      options: optionsInfo,
+      completionHandler: { [weak self] result in
+        switch result {
+        case let .success(imageResult):
+          self?.image = imageResult.image
+        case .failure:
+          self?.image = nil
+        }
+      }
     )
   }
 }
