@@ -98,6 +98,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
 
+  /// Emits `[URL]` when the project has campaign data to download
+  var prefetchImages: Signal<[URL], Never> { get }
+
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
 
@@ -160,6 +163,21 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let project = freshProjectAndRefTag
       .map(first)
+
+    self.prefetchImages = project.signal
+      .skip(first: 1)
+      .switchMap { project -> SignalProducer<[URL], Never> in
+        guard let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap({ $0 as? ImageViewElement }),
+          imageViewElements.count > 0 else {
+          return SignalProducer(value: [])
+        }
+
+        let urlStrings = imageViewElements.map { $0.src }
+        let urls = urlStrings.compactMap { URL(string: $0) }
+
+        return SignalProducer(value: urls)
+      }
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -420,6 +438,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let navigationBarIsHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
+  public let prefetchImages: Signal<[URL], Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>

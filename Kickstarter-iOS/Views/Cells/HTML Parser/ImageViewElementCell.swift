@@ -18,7 +18,6 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
-    self.setupConstraints()
     self.bindStyles()
     self.bindViewModel()
   }
@@ -46,7 +45,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         self?.storyImageView.image = nil
       })
       .observeValues { [weak self] url in
-        self?.storyImageView.setImage(url)
+        self?.storyImageView.ksr_setImageFromCache(url)
       }
   }
 

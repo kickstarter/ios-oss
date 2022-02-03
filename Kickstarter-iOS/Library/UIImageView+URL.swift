@@ -34,31 +34,28 @@ extension UIImageView {
     )
   }
 
-  public func ksr_cacheImageWith(_ url: URL) {
-    let optionsInfo: KingfisherOptionsInfo = [.scaleFactor(UIScreen.main.scale)]
-
-    _ = KingfisherManager.shared.retrieveImage(
-      with: url,
-      options: optionsInfo,
-      completionHandler: nil
+  public static func ksr_cacheImagesWith(_ urls: [URL]) {
+    let prefetcher = ImagePrefetcher(
+      resources: urls,
+      options: [.scaleFactor(UIScreen.main.scale)]
     )
+
+    prefetcher.start()
   }
 
-  public func ksr_setImageWith(_ url: URL) {
-    let optionsInfo: KingfisherOptionsInfo = [.scaleFactor(UIScreen.main.scale)]
+  public static func ksr_stopFetchingImages() {
+    ImageDownloader.default.cancelAll()
+  }
 
-    _ = KingfisherManager.shared.retrieveImage(
-      with: url,
-      options: optionsInfo,
-      completionHandler: { [weak self] result in
-        switch result {
-        case let .success(imageResult):
-          self?.image = imageResult.image
-        case .failure:
-          self?.image = nil
-        }
+  public func ksr_setImageFromCache(_ url: URL) {
+    ImageCache.default.retrieveImage(forKey: url.absoluteString) { [weak self] result in
+      switch result {
+      case let .success(imageResult):
+        self?.image = imageResult.image
+      case .failure:
+        self?.image = nil
       }
-    )
+    }
   }
 }
 

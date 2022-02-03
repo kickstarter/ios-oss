@@ -96,6 +96,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    UIImageView.ksr_stopFetchingImages()
+  }
+
   public override func updateViewConstraints() {
     super.updateViewConstraints()
 
@@ -331,6 +337,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           isExpandedStates: isExpandedValues
         )
         self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.prefetchImages
+      .observeValues { urls in
+        UIImageView.ksr_cacheImagesWith(urls)
       }
 
     self.viewModel.outputs.popToRootViewController
