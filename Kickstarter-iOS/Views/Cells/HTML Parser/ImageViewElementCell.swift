@@ -83,25 +83,6 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
   // MARK: Helpers
 
-  private func setupConstraints() {
-    _ = [
-      self.imageAndCaptionStackView,
-      self.storyImageView,
-      self.textView
-    ]
-      ||> \.translatesAutoresizingMaskIntoConstraints .~ false
-
-    let aspectRatio = CGFloat(9.0 / 16.0)
-
-    NSLayoutConstraint.activate([
-      self.storyImageView.widthAnchor.constraint(equalTo: self.imageAndCaptionStackView.widthAnchor),
-      self.storyImageView.heightAnchor.constraint(
-        equalTo: self.storyImageView.widthAnchor,
-        multiplier: aspectRatio
-      )
-    ])
-  }
-
   private func configureViews() {
     _ = (self.imageAndCaptionStackView, self.contentView)
       |> ksr_addSubviewToParent()
