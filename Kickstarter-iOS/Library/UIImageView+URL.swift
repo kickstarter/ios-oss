@@ -54,7 +54,6 @@ extension UIImageView {
         forKey: image.cacheKey,
         options: [.scaleFactor(UIScreen.main.scale)]
       ) { result in
-        print("*** retrieved image from cache \(image.cacheKey)")
 
         switch result {
         case let .success(imageResult):
