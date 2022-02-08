@@ -66,6 +66,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       guard let extendedProjectProperties = project.extendedProjectProperties,
         extendedProjectProperties.story.htmlViewElements.count > 3,
         let textElement = extendedProjectProperties.story.htmlViewElements[2] as? TextViewElement,
+        let imageViewElement = extendedProjectProperties.story.htmlViewElements[8] as? ImageViewElement,
         textElement.components.count > 4 else {
         XCTFail("extended project properties should exist.")
 
@@ -82,6 +83,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "https://www.goal.com/en/news/afc-richmond-real-team-ted-lasso-club-inspiration-stadium/dsktplas5tln1usbhdmqjarih#afc-richmond-real-team"
       )
       XCTAssertEqual(textComponent.styles, [.emphasis, .link])
+
+      XCTAssertEqual(
+        imageViewElement.src,
+        "https://ksr-qa-ugc.imgix.net/assets/035/659/917/05e192776dee3dc2a94e45f3ed8501d3_original.jpg?ixlib=rb-4.0.2&w=700&fit=max&v=1641856715&auto=format&gif-q=50&q=92&s=99e2650ab12af78bdb3f5722c7e5e43e"
+      )
+      XCTAssertEqual(imageViewElement.caption, "Ice baths are great")
+      XCTAssertNil(imageViewElement.data)
+      XCTAssertNil(imageViewElement.href)
 
       XCTAssertNotNil(extendedProjectProperties.risks)
       XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)

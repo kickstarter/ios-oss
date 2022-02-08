@@ -108,6 +108,7 @@
 		062868EA26B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */; };
 		062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */; };
 		062868EE26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */; };
+		062BE3BA27B3224A006B5251 /* ImageViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062BE3B927B3224A006B5251 /* ImageViewElementCellViewModelTests.swift */; };
 		063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */; };
 		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
 		064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */; };
@@ -1871,6 +1872,7 @@
 		062868E926B99FB400EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.Data.swift"; sourceTree = "<group>"; };
 		062868EB26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		062868ED26B9F4E100EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
+		062BE3B927B3224A006B5251 /* ImageViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
 		063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
 		064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
@@ -3502,6 +3504,7 @@
 			children = (
 				06232D4A27962F4900A81755 /* TextViewElementCellViewModel.swift */,
 				064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */,
+				062BE3B927B3224A006B5251 /* ImageViewElementCellViewModelTests.swift */,
 				063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */,
 			);
 			path = "HTML Parser";
@@ -6380,6 +6383,7 @@
 				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
 				A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */,
 				D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */,
+				062BE3BA27B3224A006B5251 /* ImageViewElementCellViewModelTests.swift in Sources */,
 				47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */,
 				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
 				77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */,
