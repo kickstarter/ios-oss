@@ -10,3 +10,4 @@ $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
 $(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment_Appboy.framework
+$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework
