@@ -10,6 +10,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   private lazy var imageAndCaptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) }()
   private lazy var storyImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private var textViewHeightConstraint: NSLayoutConstraint?
   private let viewModel = ImageViewElementCellViewModel()
 
   // MARK: Initializers
@@ -18,6 +19,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindStyles()
     self.bindViewModel()
   }
@@ -30,12 +32,21 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(imageElement: imageElement)
   }
 
+  func setupConstraints() {
+    self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: 0)
+    self.textViewHeightConstraint?.isActive = true
+  }
+
   // MARK: View Model
 
   internal override func bindViewModel() {
     self.viewModel.outputs.attributedText
       .observeForUI()
       .observeValues { [weak self] attributedText in
+        if attributedText.length > 0 {
+          self?.textViewHeightConstraint?.isActive = false
+        }
+
         self?.textView.attributedText = attributedText
       }
 

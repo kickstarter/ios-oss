@@ -346,9 +346,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
             if campaignSectionEmpty {
               initialDatasourceLoad()
 
+              // TODO: This is not ideal, because `reloadRows` triggers `prefetchRowsAt` when triggers multiple calls to the `ImagePrefetcher` to download duplicate urls when the page first loads. Alternative solutions should hide `performBatchUpdates`, run app, note the downloaded image urls in the `ImagePrefetcher` and ensure every image url is unique (ie. no duplicate urls hit the `ImagePrefetcher`)
               self?.tableView.indexPathsForVisibleRows?.forEach { indexPath in
                 self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: imageUrls) {
-                  self?.tableView.reloadRows(at: [indexPath], with: .none)
+                  self?.tableView.performBatchUpdates({
+                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                  }, completion: nil)
                 }
               }
             }
