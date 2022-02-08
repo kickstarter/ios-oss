@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import Prelude
 import UIKit
 
 internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
@@ -98,12 +99,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
               toSection: Section.campaign.rawValue
             )
         case let element as ImageViewElement:
-          self
-            .appendRow(
-              value: element,
-              cellClass: ImageViewElementCell.self,
-              toSection: Section.campaign.rawValue
-            )
+
+          self.appendRow(
+            value: element,
+            cellClass: ImageViewElementCell.self,
+            toSection: Section.campaign.rawValue
+          )
         default:
           break
         }
@@ -224,6 +225,41 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
+  // MARK: Helpers
+
+  internal func updateImageViewElementWith(_ imageData: (URL, Data),
+                                           imageViewElement: ImageViewElement,
+                                           indexPath: IndexPath) {
+    let updateElementWithData = imageViewElement
+      |> ImageViewElement.lens.data .~ .some(imageData.1)
+
+    self.set(
+      value: updateElementWithData,
+      cellClass: ImageViewElementCell.self,
+      inSection: indexPath.section,
+      row: indexPath.row
+    )
+  }
+
+  internal func imageViewElementWith(urls: [URL],
+                                     indexPath: IndexPath) -> (URL, ImageViewElement, IndexPath)? {
+    let allURLStrings = urls.map { $0.absoluteString }
+
+    guard let indexPathSection = Section(rawValue: indexPath.section)?.rawValue,
+      let imageViewElementItem = self.items(in: indexPathSection)[indexPath.row].value as? ImageViewElement
+    else {
+      return nil
+    }
+
+    for index in 0..<allURLStrings.count {
+      if allURLStrings[index] == imageViewElementItem.src {
+        return (urls[index], imageViewElementItem, indexPath)
+      }
+    }
+
+    return nil
+  }
+
   internal func indexPathIsCommentsSubpage(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isComments == true
   }
@@ -235,5 +271,28 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   internal func isExpandedValuesForFAQsSection() -> [Bool]? {
     guard let values = self[section: Section.faqs.rawValue] as? [(ProjectFAQ, Bool)] else { return nil }
     return values.map { _, isExpanded in isExpanded }
+  }
+
+  public func isIndexPathAnImageViewElement(tableView: UITableView,
+                                            indexPath: IndexPath,
+                                            section: ProjectPageViewControllerDataSource.Section) -> Bool {
+    guard indexPath.section == section.rawValue else { return false }
+
+    if self.numberOfSections(in: tableView) > section.rawValue,
+      self.numberOfItems(in: section.rawValue) > indexPath.row,
+      let _ = self.items(in: section.rawValue)[indexPath.row].value as? ImageViewElement {
+      return true
+    }
+
+    return false
+  }
+
+  public func isSectionEmpty(in tableView: UITableView, section: Section) -> Bool {
+    let sectionValue = section.rawValue
+
+    if self.numberOfSections(in: tableView) > sectionValue {
+      return self.numberOfItems(in: sectionValue) == 0
+    }
+    return true
   }
 }

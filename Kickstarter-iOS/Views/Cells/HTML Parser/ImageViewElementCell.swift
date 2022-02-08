@@ -39,13 +39,16 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         self?.textView.attributedText = attributedText
       }
 
-    self.viewModel.outputs.imageURL
+    self.viewModel.outputs.imageData
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.storyImageView.image = nil
       })
-      .observeValues { [weak self] url in
-        self?.storyImageView.ksr_setImageFromCache(url)
+      .observeValues { [weak self] data in
+        if let imageData = data,
+          let image = UIImage(data: imageData, scale: UIScreen.main.scale) {
+          self?.storyImageView.image = image
+        }
       }
   }
 

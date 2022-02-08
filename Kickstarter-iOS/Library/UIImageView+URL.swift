@@ -34,28 +34,47 @@ extension UIImageView {
     )
   }
 
-  public static func ksr_cacheImagesWith(_ urls: [URL]) {
+  public static func ksr_cacheImageWith(_ url: URL,
+                                        serializer: CacheSerializer = DefaultCacheSerializer(),
+                                        completionHandler: @escaping ((Data)?) -> Void) {
     let prefetcher = ImagePrefetcher(
-      resources: urls,
+      resources: [url],
       options: [.scaleFactor(UIScreen.main.scale)]
-    )
+    ) { cachedImages, failedImages, downloadedImages in
+      var urlData: (Data)?
+
+      guard failedImages.isEmpty,
+        let image = (cachedImages + downloadedImages).first else {
+        completionHandler(urlData)
+
+        return
+      }
+
+      ImageCache.default.retrieveImage(
+        forKey: image.cacheKey,
+        options: [.scaleFactor(UIScreen.main.scale)]
+      ) { result in
+        print("*** retrieved image from cache \(image.cacheKey)")
+
+        switch result {
+        case let .success(imageResult):
+          if let imageResultImage = imageResult.image,
+            let imageResultData = serializer.data(with: imageResultImage, original: nil) {
+            urlData = imageResultData
+          }
+
+          completionHandler(urlData)
+        case .failure:
+          completionHandler(urlData)
+        }
+      }
+    }
 
     prefetcher.start()
   }
 
   public static func ksr_stopFetchingImages() {
     ImageDownloader.default.cancelAll()
-  }
-
-  public func ksr_setImageFromCache(_ url: URL) {
-    ImageCache.default.retrieveImage(forKey: url.absoluteString) { [weak self] result in
-      switch result {
-      case let .success(imageResult):
-        self?.image = imageResult.image
-      case .failure:
-        self?.image = nil
-      }
-    }
   }
 }
 

@@ -11,8 +11,8 @@ public protocol ImageViewElementCellViewModelOutputs {
   /// Emits attributed text containing content of image caption after styling has been applied.
   var attributedText: Signal<NSAttributedString, Never> { get }
 
-  /// Emits a valid image url for image view
-  var imageURL: Signal<URL, Never> { get }
+  /// Emits an optional image data for image view
+  var imageData: Signal<Data?, Never> { get }
 }
 
 public protocol ImageViewElementCellViewModelType {
@@ -33,16 +33,17 @@ public final class ImageViewElementCellViewModel:
 
     self.attributedText = attributedText
 
-    self.imageURL = self.imageElement.signal
+    let imageData = self.imageElement.signal
       .skipNil()
-      .switchMap { imageElement -> SignalProducer<URL?, Never> in
-        guard let url = URL(string: imageElement.src) else {
+      .switchMap { imageElement -> SignalProducer<Data?, Never> in
+        guard let data = imageElement.data else {
           return SignalProducer(value: nil)
         }
 
-        return SignalProducer(value: url)
+        return SignalProducer(value: data)
       }
-      .skipNil()
+
+    self.imageData = imageData
   }
 
   fileprivate let imageElement = MutableProperty<ImageViewElement?>(nil)
@@ -51,7 +52,7 @@ public final class ImageViewElementCellViewModel:
   }
 
   public let attributedText: Signal<NSAttributedString, Never>
-  public let imageURL: Signal<URL, Never>
+  public let imageData: Signal<Data?, Never>
 
   public var inputs: ImageViewElementCellViewModelInputs { self }
   public var outputs: ImageViewElementCellViewModelOutputs { self }
