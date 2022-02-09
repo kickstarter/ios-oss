@@ -1,4 +1,5 @@
 import AlamofireImage
+import Kingfisher
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
@@ -31,6 +32,48 @@ extension UIImageView {
       runImageTransitionIfCached: false,
       completion: nil
     )
+  }
+
+  public static func ksr_cacheImageWith(_ url: URL,
+                                        serializer: CacheSerializer = DefaultCacheSerializer(),
+                                        completionHandler: @escaping ((Data)?) -> Void) {
+    let prefetcher = ImagePrefetcher(
+      resources: [url],
+      options: [.scaleFactor(UIScreen.main.scale)]
+    ) { cachedImages, failedImages, downloadedImages in
+      var urlData: (Data)?
+
+      guard failedImages.isEmpty,
+        let image = (cachedImages + downloadedImages).first else {
+        completionHandler(urlData)
+
+        return
+      }
+
+      ImageCache.default.retrieveImage(
+        forKey: image.cacheKey,
+        options: [.scaleFactor(UIScreen.main.scale)]
+      ) { result in
+
+        switch result {
+        case let .success(imageResult):
+          if let imageResultImage = imageResult.image,
+            let imageResultData = serializer.data(with: imageResultImage, original: nil) {
+            urlData = imageResultData
+          }
+
+          completionHandler(urlData)
+        case .failure:
+          completionHandler(urlData)
+        }
+      }
+    }
+
+    prefetcher.start()
+  }
+
+  public static func ksr_stopFetchingImages() {
+    ImageDownloader.default.cancelAll()
   }
 }
 

@@ -221,14 +221,25 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertTrue(firstReward.isNoReward)
 
     guard let extendedProjectProperties = project.extendedProjectProperties,
-      let firstTextElement = extendedProjectProperties.story.textElements.first,
+      let firstTextElement = extendedProjectProperties.story.htmlViewElements.first as? TextViewElement,
+      let firstImageElement = extendedProjectProperties.story.htmlViewElements.last as? ImageViewElement,
       let firstTextComponent = firstTextElement.components.first else {
       XCTFail("extended project properties should exist.")
 
       return
     }
 
-    XCTAssertEqual(extendedProjectProperties.story.textElements.count, 2)
+    XCTAssertEqual(firstImageElement.caption, "Viktor Pushkarev using lino-cutting to create the cover art.")
+    XCTAssertEqual(
+      firstImageElement.src,
+      "https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&w=700&fit=max&v=1628654686&auto=format&gif-q=50&q=92&s=061483d5e8fac13bd635b67e2ae8a258"
+    )
+    XCTAssertEqual(
+      firstImageElement.href,
+      "https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&utm_medium=Banner&utm_campaign=Homi"
+    )
+    XCTAssertNil(firstImageElement.data)
+    XCTAssertEqual(extendedProjectProperties.story.htmlViewElements.count, 3)
     XCTAssertEqual(firstTextElement.components.count, 1)
     XCTAssertEqual(firstTextComponent.text, "What about a bold link to that same newspaper website?")
     XCTAssertEqual(firstTextComponent.link, "http://record.pt/")

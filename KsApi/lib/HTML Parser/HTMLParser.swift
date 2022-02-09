@@ -1,11 +1,13 @@
 import SwiftSoup
 
+public protocol HTMLViewElement {}
+
 class HTMLParser {
-  func parse(bodyHtml: String) -> [Decodable] {
+  func parse(bodyHtml: String) -> [HTMLViewElement] {
     do {
       let doc: Document = try SwiftSoup.parseBodyFragment(bodyHtml)
 
-      var viewElements = [Decodable]()
+      var viewElements = [HTMLViewElement]()
 
       doc.body()?.children().forEach { element in
         parse(element, viewElements: &viewElements)
@@ -19,9 +21,9 @@ class HTMLParser {
   }
 
   private func parse(_ child: Element,
-                     viewElements: inout [Decodable]) {
+                     viewElements: inout [HTMLViewElement]) {
     let viewElementType = ViewElementType(element: child)
-    var element: Decodable?
+    var element: HTMLViewElement?
 
     switch viewElementType {
     case .image:

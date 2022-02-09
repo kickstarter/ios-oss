@@ -74,6 +74,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectHeaderCell.self)
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.registerCellClass(TextViewElementCell.self)
+    self.tableView.registerCellClass(ImageViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -93,6 +94,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
+  }
+
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    UIImageView.ksr_stopFetchingImages()
   }
 
   public override func updateViewConstraints() {
@@ -130,6 +137,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func configureTableView() {
     _ = self.tableView
+      |> \.prefetchDataSource .~ self
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.tableFooterView .~
@@ -295,6 +303,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToUpdates(project: $0)
       }
 
+    self.viewModel.outputs.prefetchImageURLs
+      .observeValues { [weak self] urls, indexPath in
+        self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: urls)
+      }
+
     self.viewModel.outputs.presentMessageDialog
       .observeForUI()
       .observeValues { [weak self] project in
@@ -309,15 +322,47 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray in
-        self?.dataSource.load(
-          navigationSection: navSection,
-          project: project,
-          refTag: refTag,
-          isExpandedStates: initialIsExpandedArray
-        )
+      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, imageUrls in
+        let initialDatasourceLoad = {
+          self?.dataSource.load(
+            navigationSection: navSection,
+            project: project,
+            refTag: refTag,
+            isExpandedStates: initialIsExpandedArray
+          )
 
-        self?.tableView.reloadData()
+          self?.tableView.reloadData()
+        }
+
+        switch navSection {
+        case .campaign:
+          guard let tableView = self?.tableView else { return }
+
+          if let campaignSectionEmpty = self?.dataSource.isSectionEmpty(
+            in: tableView,
+            section: ProjectPageViewControllerDataSource
+              .Section.campaign
+          ) {
+            if campaignSectionEmpty {
+              initialDatasourceLoad()
+
+              // TODO: This is not ideal, because `reloadRows` triggers `prefetchRowsAt` when triggers multiple calls to the `ImagePrefetcher` to download duplicate urls when the page first loads. Alternative solutions should hide `performBatchUpdates`, run app, note the downloaded image urls in the `ImagePrefetcher` and ensure every image url is unique (ie. no duplicate urls hit the `ImagePrefetcher`)
+              self?.tableView.indexPathsForVisibleRows?.forEach { indexPath in
+                self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: imageUrls) {
+                  self?.tableView.performBatchUpdates({
+                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                  }, completion: nil)
+                }
+              }
+            }
+
+            return
+          }
+
+          initialDatasourceLoad()
+        default:
+          initialDatasourceLoad()
+        }
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
@@ -426,6 +471,44 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       animated: true,
       completion: nil
     )
+  }
+
+  fileprivate func prefetchImageDataAndUpdateWith(
+    _ indexPath: IndexPath,
+    imageUrls: [URL],
+    completionHandler: (() -> Void)? = nil
+  ) {
+    guard let urlImageViewElementAndIndexPath = self.dataSource.imageViewElementWith(
+      urls: imageUrls,
+      indexPath: indexPath
+    ) else {
+      return
+    }
+
+    let imageViewElement = urlImageViewElementAndIndexPath.1
+
+    guard imageViewElement.data == nil else { return }
+
+    UIImageView.ksr_cacheImageWith(urlImageViewElementAndIndexPath.0) { data in
+      guard let imageData = data else { return }
+
+      let urlAndData = (urlImageViewElementAndIndexPath.0, imageData)
+
+      let updateIndexPath = urlImageViewElementAndIndexPath.2
+
+      self.dataSource
+        .updateImageViewElementWith(
+          urlAndData,
+          imageViewElement: imageViewElement,
+          indexPath: updateIndexPath
+        )
+
+      if let uiUpdate = completionHandler {
+        DispatchQueue.main.async {
+          uiUpdate()
+        }
+      }
+    }
   }
 
   // MARK: - Selectors
@@ -547,6 +630,24 @@ extension ProjectPageViewController: UITableViewDelegate {
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
       .overviewSubpages.rawValue ? .none : .singleLine
+  }
+}
+
+// MARK: - ProjectPageViewControllerDataSourcePrefetching
+
+extension ProjectPageViewController: UITableViewDataSourcePrefetching {
+  public func tableView(_: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+    let campaignSectionIndexPaths = indexPaths.filter { indexPath in
+      self.dataSource.isIndexPathAnImageViewElement(
+        tableView: self.tableView,
+        indexPath: indexPath,
+        section: .campaign
+      )
+    }
+
+    campaignSectionIndexPaths.forEach { indexPath in
+      self.viewModel.inputs.prepareImageAt(indexPath)
+    }
   }
 }
 

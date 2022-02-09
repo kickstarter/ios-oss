@@ -18,3 +18,4 @@ $(SRCROOT)/Carthage/Build/iOS/Segment.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment_Appboy.framework
 $(SRCROOT)/Carthage/Build/iOS/Stripe.framework
 $(SRCROOT)/Carthage/Build/iOS/SwiftSoup.framework
+$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework

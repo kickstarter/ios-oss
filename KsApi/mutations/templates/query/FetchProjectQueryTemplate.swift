@@ -397,6 +397,9 @@ public enum FetchProjectQueryTemplate {
     projectResultMap["creator"] = updatedCreatorResultMap
     projectResultMap["story"] = """
     <p><a href="http://record.pt/" target=\"_blank\" rel=\"noopener\"><strong>What about a bold link to that same newspaper website?</strong></a></p>\n<p><a href="http://recordblabla.pt/" target=\"_blank\" rel=\"noopener\"><em>Maybe an italic one?</em></a></p>
+    <a href="https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&utm_medium=Banner&utm_campaign=Homi" target="_blank" rel="noopener">
+      <div class="template asset" contenteditable="false" data-alt-text="" data-caption=\"Viktor Pushkarev using lino-cutting to create the cover art.\" data-id="34488736">\n
+        <figure>\n <img alt="" class="fit js-lazy-image" data-src="https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&w=700&fit=max&v=1628654686&auto=format&gif-q=50&q=92&s=061483d5e8fac13bd635b67e2ae8a258" src="https://ksr-qa-ugc.imgix.net/assets/034/488/736/c35446a93f1f9faedd76e9db814247bf_original.gif?ixlib=rb-4.0.2&w=700&fit=max&v=1628654686&auto=format&frame=1&q=92&s=463cb21e97dd89bd564e6fc898ea6075">\n </figure>\n\n </div>\n </a>\n\n
     """
 
     resultMap["project"] = projectResultMap

@@ -31,7 +31,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     ProjectFAQ(answer: "Answer 4", question: "Question 4", id: 3, createdAt: nil)
   ]
 
-  private let storyViewableElements = ProjectStoryElements(textElements:
+  private let storyViewableElements = ProjectStoryElements(htmlViewElements:
     [
       TextViewElement(components: [
         TextComponent(
@@ -45,7 +45,13 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
           styles: [.link]
         )
       ]),
-      TextViewElement(components: [])
+      TextViewElement(components: []),
+      ImageViewElement(
+        src: "http://imagetest.com",
+        href: nil,
+        caption: nil,
+        data: nil
+      )
     ])
 
   private let overviewCreatorHeaderSection = ProjectPageViewControllerDataSource.Section.overviewCreatorHeader
@@ -452,13 +458,17 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       // campaign
       XCTAssertEqual(
-        2,
+        3,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
       )
 
       XCTAssertEqual(
         "TextViewElementCell",
         self.dataSource.reusableId(item: 0, section: self.campaignSection)
+      )
+      XCTAssertEqual(
+        "ImageViewElementCell",
+        self.dataSource.reusableId(item: 2, section: self.campaignSection)
       )
       XCTAssertEqual(
         "ProjectHeaderCell",
@@ -580,5 +590,228 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         .indexPathIsUpdatesSubpage(IndexPath(row: 1, section: self.overviewSubpagesSection)),
       true
     )
+  }
+
+  func testUpdatingCampaign_WithImageViewElementData_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      guard let items = self.dataSource
+        .items(in: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue) as? [(value: HTMLViewElement, reusableId: String)] else {
+        XCTFail("campaign section should have values")
+
+        return
+      }
+
+      var imageViewElementValues = items.compactMap { $0.value as? ImageViewElement }
+
+      guard let imageViewElementValue = imageViewElementValues.first else {
+        XCTFail("campaign section should t least one image view element value")
+
+        return
+      }
+
+      XCTAssertEqual("http://imagetest.com", imageViewElementValue.src)
+      XCTAssertNil(imageViewElementValue.href)
+      XCTAssertNil(imageViewElementValue.caption)
+      XCTAssertNil(imageViewElementValue.data)
+
+      let sampleImageData = UIImage(systemName: "camera")!.pngData()
+
+      let (url, data) = (
+        URL(string: "https://kickstarter.com")!,
+        sampleImageData
+      )
+      let indexPath = IndexPath(
+        row: 2,
+        section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
+      )
+
+      self.dataSource.updateImageViewElementWith(
+        (url, data!),
+        imageViewElement: imageViewElementValue,
+        indexPath: indexPath
+      )
+
+      guard let items = self.dataSource
+        .items(in: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue) as? [(value: HTMLViewElement, reusableId: String)] else {
+        XCTFail("campaign section should have values")
+
+        return
+      }
+
+      imageViewElementValues = items.compactMap { $0.0 as? ImageViewElement }
+
+      guard let imageViewElementValue = imageViewElementValues.first else {
+        XCTFail("campaign section should t least one image view element value")
+
+        return
+      }
+
+      XCTAssertEqual("http://imagetest.com", imageViewElementValue.src)
+      XCTAssertNil(imageViewElementValue.href)
+      XCTAssertNil(imageViewElementValue.caption)
+      XCTAssertEqual(imageViewElementValue.data?.count, sampleImageData?.count)
+    }
+  }
+
+  func testCampaign_WithImageViewElementRetrieval_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      let indexPath = IndexPath(
+        row: 2,
+        section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
+      )
+      let noImageViewElementWithURLFound = self.dataSource
+        .imageViewElementWith(urls: [], indexPath: indexPath)
+
+      XCTAssertNil(noImageViewElementWithURLFound)
+
+      let sampleURL = URL(string: "http://imagetest.com")!
+
+      guard let imageViewElementWithURLFound = self.dataSource.imageViewElementWith(
+        urls: [sampleURL],
+        indexPath: indexPath
+      ) else {
+        XCTFail("one image view element should be found for matching URL")
+
+        return
+      }
+
+      XCTAssertEqual(imageViewElementWithURLFound.0, sampleURL)
+
+      guard let items = self.dataSource
+        .items(in: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue) as? [(value: HTMLViewElement, reusableId: String)] else {
+        XCTFail("campaign section should have values")
+
+        return
+      }
+
+      let imageViewElementValues = items.compactMap { $0.0 as? ImageViewElement }
+
+      guard let imageViewElementValue = imageViewElementValues.first else {
+        XCTFail("campaign section should t least one image view element value")
+
+        return
+      }
+
+      XCTAssertEqual(imageViewElementWithURLFound.1.src, imageViewElementValue.src)
+      XCTAssertEqual(imageViewElementWithURLFound.1.href, imageViewElementValue.href)
+      XCTAssertEqual(imageViewElementWithURLFound.1.caption, imageViewElementValue.caption)
+      XCTAssertEqual(imageViewElementWithURLFound.1.data, imageViewElementValue.data)
+      XCTAssertEqual(imageViewElementWithURLFound.2, indexPath)
+    }
+  }
+
+  func testCampaign_IsIndexPathAnImageViewElement_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      let textViewIndexPath = IndexPath(
+        row: 1,
+        section: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue
+      )
+      let textViewElement = self.dataSource.isIndexPathAnImageViewElement(
+        tableView: self.tableView,
+        indexPath: textViewIndexPath,
+        section: ProjectPageViewControllerDataSource
+          .Section.campaign
+      )
+      XCTAssertFalse(textViewElement)
+
+      let imageViewIndexPath = IndexPath(
+        row: 2,
+        section: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue
+      )
+      let imageViewElement = self.dataSource.isIndexPathAnImageViewElement(
+        tableView: self.tableView,
+        indexPath: imageViewIndexPath,
+        section: ProjectPageViewControllerDataSource
+          .Section.campaign
+      )
+      XCTAssertTrue(imageViewElement)
+    }
+  }
+
+  func testCampaign_IsSectionEmpty_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      let emptySection = self.dataSource.isSectionEmpty(
+        in: self.tableView,
+        section: ProjectPageViewControllerDataSource.Section
+          .risks
+      )
+      XCTAssertTrue(emptySection)
+
+      let nonEmptySection = self.dataSource.isSectionEmpty(
+        in: self.tableView,
+        section: ProjectPageViewControllerDataSource
+          .Section.campaign
+      )
+      XCTAssertFalse(nonEmptySection)
+    }
   }
 }

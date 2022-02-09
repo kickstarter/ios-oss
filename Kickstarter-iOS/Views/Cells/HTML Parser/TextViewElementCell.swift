@@ -60,28 +60,10 @@ class TextViewElementCell: UITableViewCell, ValueCell {
       )
 
     _ = self.textView
-      |> self.textViewStyle
+      |> textViewStyle
   }
 
   // MARK: Helpers
-
-  private let textViewStyle: TextViewStyle = { textView in
-    let t = textView
-      |> UITextView.lens.isScrollEnabled .~ false
-      |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
-      |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
-      |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
-      |> \.textAlignment .~ .left
-
-    let b = t
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.isEditable .~ false
-      |> \.isSelectable .~ true
-      |> \.isUserInteractionEnabled .~ true
-      |> \.dataDetectorTypes .~ .link
-
-    return b
-  }
 
   private func configureViews() {
     _ = (self.textView, self.contentView)

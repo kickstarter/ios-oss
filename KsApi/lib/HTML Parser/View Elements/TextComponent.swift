@@ -1,12 +1,12 @@
 import Foundation
 
-public struct TextComponent: Decodable {
+public struct TextComponent {
   public let text: String
   public let link: String?
   public let styles: [TextStyleType]
 
   // Direct body childs for text allows only TextBlockTypes
-  enum TextBlockType: String, CaseIterable, Decodable {
+  enum TextBlockType: String, CaseIterable {
     case paragraph = "p"
     case header1 = "h1"
     case unorderedList = "ul"
@@ -14,7 +14,7 @@ public struct TextComponent: Decodable {
   }
 
   // Styles to apply
-  public enum TextStyleType: String, Decodable {
+  public enum TextStyleType: String {
     case bold = "strong"
     case emphasis = "em"
     case bulletStart = "li"

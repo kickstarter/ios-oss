@@ -1,6 +1,6 @@
 import Foundation
 
 // Represents iFrame HTML, loaded on webview...
-public struct ExternalSourceViewElement: Decodable {
+public struct ExternalSourceViewElement: HTMLViewElement {
   let iFrameContent: String
 }

@@ -27,6 +27,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
 
+  /// Call when prefetchRowsAt is called for campaign tab
+  func prepareImageAt(_ indexPath: IndexPath)
+
   /// Call when the delegate method for the `ProjectEnvironmentalCommitmentFooterCellDelegate` is called.
   func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
 
@@ -98,11 +101,14 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
 
+  /// Emits `[URL]` and `IndexPath` when the project has campaign data to download for a row
+  var prefetchImageURLs: Signal<([URL], IndexPath), Never> { get }
+
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
 
-  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?` and `[Bool]` (isExpanded values) to instruct the data source which section it is loading.
-  var updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never> { get }
+  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?`, `[Bool]` (isExpanded values) and `[URL]` for campaign data to instruct the data source which section it is loading.
+  var updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never> { get }
 
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
@@ -160,6 +166,24 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let project = freshProjectAndRefTag
       .map(first)
+
+    self.prefetchImageURLs = project.signal
+      .skip(first: 1)
+      .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
+      .switchMap { project, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
+        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement } ?? []
+
+        if imageViewElements.count > 0 {
+          let urlStrings = imageViewElements.map { $0.src }
+          let urls = urlStrings.compactMap { URL(string: $0) }
+
+          return SignalProducer(value: (urls, indexPath))
+        }
+
+        return SignalProducer(value: nil)
+      }
+      .skipNil()
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -292,6 +316,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
     self.updateDataSource = self.projectNavigationSelectorViewDidSelectProperty.signal
       .skipNil()
+      .skipRepeats()
       .map { index in NavigationSection(rawValue: index) }
       .skipNil()
       .combineLatest(with: freshProjectAndRefTag)
@@ -301,7 +326,25 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           repeating: false,
           count: project.extendedProjectProperties?.faqs.count ?? 0
         )
-        return (navSection, project, refTag, initialIsExpandedArray)
+
+        var dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, [URL]())
+
+        switch navSection {
+        case .campaign:
+          let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+            .compactMap { $0 as? ImageViewElement } ?? []
+
+          if imageViewElements.count > 0 {
+            let urlStrings = imageViewElements.map { $0.src }
+            let urls = urlStrings.compactMap { URL(string: $0) }
+
+            dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, urls)
+          }
+        default:
+          break
+        }
+
+        return dataSourceUpdate
       }
       .skip(first: 1)
 
@@ -355,6 +398,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   private let pledgeRetryButtonTappedProperty = MutableProperty(())
   public func pledgeRetryButtonTapped() {
     self.pledgeRetryButtonTappedProperty.value = ()
+  }
+
+  private let prepareImageAtProperty = MutableProperty<IndexPath?>(nil)
+  public func prepareImageAt(_ indexPath: IndexPath) {
+    self.prepareImageAtProperty.value = indexPath
   }
 
   fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
@@ -420,8 +468,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let navigationBarIsHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
+  public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
-  public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never>
+  public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }

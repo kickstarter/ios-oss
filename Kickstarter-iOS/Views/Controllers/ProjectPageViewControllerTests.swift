@@ -14,7 +14,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     )],
     faqs: [ProjectFAQ(answer: "Answer", question: "Question", id: 0, createdAt: nil)],
     risks: "These are the risks",
-    story: ProjectStoryElements(textElements:
+    story: ProjectStoryElements(htmlViewElements:
       [
         TextViewElement(components: [
           TextComponent(
@@ -35,7 +35,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
     environmentalCommitments: [],
     faqs: [],
     risks: "",
-    story: ProjectStoryElements(textElements: []),
+    story: ProjectStoryElements(htmlViewElements: []),
     minimumPledgeAmount: 1
   )
   private let user = User.brando
@@ -590,7 +590,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
           parent.view.frame.size.height = 2_300
         }
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .milliseconds(1))
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
