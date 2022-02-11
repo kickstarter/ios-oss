@@ -743,32 +743,33 @@ private let tableViewStyle: TableViewStyle = { tableView in
 }
 
 extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting {
-  public func pinchZoomDidBegin(_ gestureRecognizer: UIPinchGestureRecognizer, frame: CGRect,
+  public func pinchZoomDidBegin(_ gestureRecognizer: UIPinchGestureRecognizer,
+                                frame: CGRect,
                                 image: UIImage) {
-    self.tableView.isScrollEnabled.toggle()
+    self.tableView.isScrollEnabled = false
 
     if gestureRecognizer.scale > 1 {
-      let gestureCenterInContainer = locationInView(gestureRecognizer)
       let imageView = UIImageView(image: image)
-        |> \.contentMode .~ .scaleAspectFill
+        |> \.contentMode .~ .scaleAspectFit
         |> \.clipsToBounds .~ true
         |> \.frame .~ frame
+
+      showOverlayView(with: imageView)
+
+      let gestureCenterInContainer = locationInView(gestureRecognizer)
 
       self.pinchToZoomData = PinchToZoomData(
         referenceFrame: frame,
         referenceCenter: gestureCenterInContainer,
         imageView: imageView
       )
-
-      showOverlayView(with: [imageView])
     }
   }
 
-  func pinchZoomDidChange(_ gestureRecognizer: UIPinchGestureRecognizer) {
+  func pinchZoomDidChange(_ gestureRecognizer: UIPinchGestureRecognizer,
+                          completionHandler: () -> Void) {
     guard let data = self.pinchToZoomData,
-      let currentOverlayView = self.overlayView,
       let windowTransform = windowTransform else {
-      self.tableView.isScrollEnabled.toggle()
       hideOverlayView()
 
       return
@@ -777,15 +778,14 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
     let currentScale = data.imageView.frame.width / data.referenceFrame.size.width
     let newZoomScale = currentScale * gestureRecognizer.scale
 
+    if newZoomScale > 1 {
+      completionHandler()
+    }
+
     let currentAlpha = OverlayViewLayout.Alpha.min + (newZoomScale - 1)
     let newAlpha = currentAlpha < OverlayViewLayout.Alpha.max ? currentAlpha : OverlayViewLayout.Alpha.max
 
     updateOverlayView(with: newAlpha)
-
-    let pinchCenter = CGPoint(
-      x: locationInView(gestureRecognizer).x - currentOverlayView.bounds.midX,
-      y: locationInView(gestureRecognizer).y - currentOverlayView.bounds.midY
-    )
 
     let centerXDiff = data.referenceCenter.x - locationInView(gestureRecognizer).x
     let centerYDiff = data.referenceCenter.y - locationInView(gestureRecognizer).y
@@ -794,7 +794,6 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
       currentScale
 
     let transform = windowTransform
-      .translatedBy(x: pinchCenter.x, y: pinchCenter.y)
       .scaledBy(x: zoomScale, y: zoomScale)
       .translatedBy(x: -centerXDiff, y: -centerYDiff)
 
@@ -806,8 +805,9 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
     gestureRecognizer.scale = 1
   }
 
-  func pinchZoomDidEnd(_: UIPinchGestureRecognizer) {
-    self.tableView.isScrollEnabled.toggle()
+  func pinchZoomDidEnd(_: UIPinchGestureRecognizer,
+                       completionHandler: @escaping () -> Void) {
+    self.tableView.isScrollEnabled = true
 
     UIView.animate(withDuration: 0.3, animations: {
       self.pinchToZoomData = nil
@@ -816,6 +816,7 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
     }, completion: { [weak self] _ in
 
       self?.hideOverlayView()
+      completionHandler()
     })
   }
 }

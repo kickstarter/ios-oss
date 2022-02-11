@@ -9,7 +9,7 @@ protocol OverlayViewPresenting {
 
   func hideOverlayView()
   func locationInView(_ gestureRecognizer: UIGestureRecognizer) -> CGPoint
-  func showOverlayView(with subviews: [UIView])
+  func showOverlayView(with subview: UIView)
   func updateOverlayView(with alpha: CGFloat)
   func transformSubviews(with transform: CGAffineTransform)
 }
@@ -22,15 +22,8 @@ internal enum OverlayViewLayout {
 }
 
 final class OverlayView: UIView {
-  fileprivate lazy var stackView = { UIStackView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   override init(frame: CGRect) {
     super.init(frame: frame)
-
-    self.configureSubviews()
-    self.setupConstraints()
   }
 
   required init?(coder _: NSCoder) {
@@ -42,26 +35,6 @@ final class OverlayView: UIView {
 
     _ = self
       |> overlayViewStyle
-
-    _ = self.stackView
-      |> stackViewStyle
-  }
-
-  // MARK: Helpers
-
-  private func configureSubviews() {
-    _ = (self.stackView, self)
-      |> ksr_addSubviewToParent()
-  }
-
-  private func setupConstraints() {
-    let margins = self.layoutMarginsGuide
-
-    NSLayoutConstraint.activate([
-      self.stackView.leftAnchor.constraint(equalTo: margins.leftAnchor),
-      self.stackView.rightAnchor.constraint(equalTo: margins.rightAnchor),
-      self.stackView.centerYAnchor.constraint(equalTo: margins.centerYAnchor)
-    ])
   }
 }
 
@@ -69,14 +42,7 @@ final class OverlayView: UIView {
 
 private let overlayViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(OverlayViewLayout.Alpha.max)
-}
-
-private let stackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> \.alignment .~ .center
-    |> \.distribution .~ .fill
+    |> \.backgroundColor .~ UIColor.ksr_black.withAlphaComponent(OverlayViewLayout.Alpha.max)
 }
 
 extension OverlayViewPresenting where Self: UIViewController {
@@ -84,7 +50,7 @@ extension OverlayViewPresenting where Self: UIViewController {
     UIApplication.shared.windows.first?.transform
   }
 
-  func showOverlayView(with subviews: [UIView]) {
+  func showOverlayView(with subview: UIView) {
     self.overlayView?.removeFromSuperview()
 
     guard let window = UIApplication.shared.windows.first,
@@ -92,11 +58,12 @@ extension OverlayViewPresenting where Self: UIViewController {
       return
     }
 
-    _ = (subviews, overlayView.stackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    _ = (subview, overlayView)
+      |> ksr_addSubviewToParent()
 
     _ = (overlayView, window)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     if AppEnvironment.current.isVoiceOverRunning() {
       UIAccessibility.post(
@@ -107,6 +74,7 @@ extension OverlayViewPresenting where Self: UIViewController {
   }
 
   func hideOverlayView() {
+    self.overlayView?.subviews.forEach { $0.removeFromSuperview() }
     self.overlayView?.removeFromSuperview()
   }
 
@@ -115,11 +83,11 @@ extension OverlayViewPresenting where Self: UIViewController {
   }
 
   func updateOverlayView(with alpha: CGFloat) {
-    self.overlayView?.alpha = alpha
+    self.overlayView?.backgroundColor = .ksr_black.withAlphaComponent(alpha)
   }
 
   func transformSubviews(with transform: CGAffineTransform) {
-    self.overlayView?.stackView.arrangedSubviews.forEach { view in
+    self.overlayView?.subviews.forEach { view in
       view.transform = transform
     }
   }

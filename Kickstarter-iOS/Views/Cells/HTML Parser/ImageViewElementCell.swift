@@ -124,7 +124,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         to: nil
       )
 
-      let frameWithoutParentView = CGRect(
+      let frameWithinWindow = CGRect(
         x: originWithoutParentView.x,
         y: originWithoutParentView.y,
         width: self.storyImageView.frame.width,
@@ -133,15 +133,19 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
       self.delegate?.pinchZoomDidBegin(
         self.pinchGesture,
-        frame: frameWithoutParentView,
+        frame: frameWithinWindow,
         image: image
       )
-      self.storyImageView.isHidden.toggle()
     case .changed:
-      self.delegate?.pinchZoomDidChange(self.pinchGesture)
+      self.delegate?.pinchZoomDidChange(self.pinchGesture) {
+        if !self.storyImageView.isHidden {
+          self.storyImageView.isHidden.toggle()
+        }
+      }
     case .ended, .failed, .cancelled:
-      self.delegate?.pinchZoomDidEnd(self.pinchGesture)
-      self.storyImageView.isHidden.toggle()
+      self.delegate?.pinchZoomDidEnd(self.pinchGesture) {
+        self.storyImageView.isHidden = false
+      }
     default:
       return
     }
