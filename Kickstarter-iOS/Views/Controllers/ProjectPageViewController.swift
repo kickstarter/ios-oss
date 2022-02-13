@@ -368,7 +368,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] project, refTag, isExpandedValues in
         self?.dataSource.load(
           navigationSection: .faq,
@@ -491,14 +491,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     guard imageViewElement.data == nil else { return }
 
-    UIImageView.ksr_cacheImageWith(urlImageViewElementAndIndexPath.0) { data in
-      guard let imageData = data else { return }
+    UIImageView.ksr_cacheImageWith(urlImageViewElementAndIndexPath.0) { [weak self] data in
+      guard let imageData = data,
+        let tableView = self?.tableView,
+        let dataSource = self?.dataSource,
+        dataSource.isIndexPathAnImageViewElement(
+          tableView: tableView,
+          indexPath: indexPath,
+          section: .campaign
+        ) else { return }
 
       let urlAndData = (urlImageViewElementAndIndexPath.0, imageData)
 
       let updateIndexPath = urlImageViewElementAndIndexPath.2
 
-      self.dataSource
+      dataSource
         .updateImageViewElementWith(
           urlAndData,
           imageViewElement: imageViewElement,

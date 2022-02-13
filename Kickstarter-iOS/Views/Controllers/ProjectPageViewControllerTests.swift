@@ -12,7 +12,12 @@ internal final class ProjectPageViewControllerTests: TestCase {
       category: .environmentallyFriendlyFactories,
       id: 0
     )],
-    faqs: [ProjectFAQ(answer: "Answer", question: "Question", id: 0, createdAt: nil)],
+    faqs: [ProjectFAQ(
+      answer: "Answer",
+      question: "Question",
+      id: 0,
+      createdAt: MockDate().timeIntervalSince1970
+    )],
     risks: "These are the risks",
     story: ProjectStoryElements(htmlViewElements:
       [
@@ -27,7 +32,13 @@ internal final class ProjectPageViewControllerTests: TestCase {
             link: "https://ksr.com",
             styles: [.link]
           )
-        ])
+        ]),
+        ImageViewElement(
+          src: "bad-url",
+          href: "https://ksr.com",
+          caption: "camera",
+          data: UIImage.init(systemName: "camera")?.pngData()
+        )
       ]),
     minimumPledgeAmount: 1
   )
@@ -591,6 +602,186 @@ internal final class ProjectPageViewControllerTests: TestCase {
         }
 
         self.scheduler.advance(by: .milliseconds(1))
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  // MARK: - Tab Content Tests
+
+  func testLoggedOut_NonBacker_LiveProjectSwitchedToCampaignTab_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        config: config,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.advance()
+
+        // INFO: We are not testing that the navigation selector view changed, simply the content of the view controller.
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 1)
+
+        scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLoggedOut_NonBacker_LiveProjectSwitchedToRisksTab_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        config: config,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.advance()
+
+        // INFO: We are not testing that the navigation selector view changed, simply the content of the view controller.
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 3)
+
+        scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLoggedIn_NonBacker_LiveProjectSwitchedToFaqsTab_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        config: config,
+        currentUser: .template,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.advance()
+
+        // INFO: We are not testing that the navigation selector view, just the content of the view controller after the tab selection occurs.
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 2)
+
+        scheduler.advance()
+
+        let faqSelectionIndexPath = IndexPath(
+          row: 0,
+          section: ProjectPageViewControllerDataSource.Section.faqs.rawValue
+        )
+
+        vc.tableView(UITableView(), didSelectRowAt: faqSelectionIndexPath)
+
+        scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLoggedOut_NonBacker_LiveProjectSwitchedToEnvironmentalCommitmentsTab_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        config: config,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.advance()
+
+        // INFO: We are not testing that the navigation selector view, just the content of the view controller after the tab selection occurs.
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 4)
+
+        scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
