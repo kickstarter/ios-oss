@@ -43,6 +43,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
   public var messageBannerViewController: MessageBannerViewController?
+  private var pinchToZoomData: PinchToZoomData?
+  internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
@@ -366,7 +368,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] project, refTag, isExpandedValues in
         self?.dataSource.load(
           navigationSection: .faq,
@@ -489,14 +491,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     guard imageViewElement.data == nil else { return }
 
-    UIImageView.ksr_cacheImageWith(urlImageViewElementAndIndexPath.0) { data in
-      guard let imageData = data else { return }
+    UIImageView.ksr_cacheImageWith(urlImageViewElementAndIndexPath.0) { [weak self] data in
+      guard let imageData = data,
+        let tableView = self?.tableView,
+        let dataSource = self?.dataSource,
+        dataSource.isIndexPathAnImageViewElement(
+          tableView: tableView,
+          indexPath: indexPath,
+          section: .campaign
+        ) else { return }
 
       let urlAndData = (urlImageViewElementAndIndexPath.0, imageData)
 
       let updateIndexPath = urlImageViewElementAndIndexPath.2
 
-      self.dataSource
+      dataSource
         .updateImageViewElementWith(
           urlAndData,
           imageViewElement: imageViewElement,
@@ -625,6 +634,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
+    } else if let cell = cell as? ImageViewElementCell {
+      cell.delegate = self
     }
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
@@ -736,4 +747,83 @@ private let tableViewStyle: TableViewStyle = { tableView in
   tableView
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
+}
+
+extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting {
+  public func pinchZoomDidBegin(_ gestureRecognizer: UIPinchGestureRecognizer,
+                                frame: CGRect,
+                                image: UIImage) {
+    self.tableView.isScrollEnabled = false
+
+    if gestureRecognizer.scale > 1 {
+      let imageView = UIImageView(image: image)
+        |> \.contentMode .~ .scaleAspectFit
+        |> \.clipsToBounds .~ true
+        |> \.frame .~ frame
+
+      showOverlayView(with: imageView)
+
+      let gestureCenterInContainer = locationInView(gestureRecognizer)
+
+      self.pinchToZoomData = PinchToZoomData(
+        referenceFrame: frame,
+        referenceCenter: gestureCenterInContainer,
+        imageView: imageView
+      )
+    }
+  }
+
+  func pinchZoomDidChange(_ gestureRecognizer: UIPinchGestureRecognizer,
+                          completionHandler: () -> Void) {
+    guard let data = self.pinchToZoomData,
+      let windowTransform = windowTransform else {
+      hideOverlayView()
+
+      return
+    }
+
+    let currentScale = data.imageView.frame.width / data.referenceFrame.size.width
+    let newZoomScale = currentScale * gestureRecognizer.scale
+
+    if newZoomScale > 1 {
+      completionHandler()
+    }
+
+    let currentAlpha = OverlayViewLayout.Alpha.min + (newZoomScale - 1)
+    let newAlpha = currentAlpha < OverlayViewLayout.Alpha.max ? currentAlpha : OverlayViewLayout.Alpha.max
+
+    updateOverlayView(with: newAlpha)
+
+    let centerXDiff = data.referenceCenter.x - locationInView(gestureRecognizer).x
+    let centerYDiff = data.referenceCenter.y - locationInView(gestureRecognizer).y
+
+    let zoomScale = (newZoomScale * data.imageView.frame.width >= data.referenceFrame.width) ? newZoomScale :
+      currentScale
+
+    let transform = windowTransform
+      .scaledBy(x: zoomScale, y: zoomScale)
+      .translatedBy(x: -centerXDiff, y: -centerYDiff)
+
+    data.imageView.transform = transform
+    transformSubviews(with: transform)
+
+    self.pinchToZoomData = data
+
+    gestureRecognizer.scale = 1
+  }
+
+  func pinchZoomDidEnd(_: UIPinchGestureRecognizer,
+                       completionHandler: @escaping () -> Void) {
+    self.tableView.isScrollEnabled = true
+
+    UIView.animate(withDuration: 0.3, animations: {
+      self.pinchToZoomData = nil
+
+      self.transformSubviews(with: .identity)
+    }, completion: { [weak self] _ in
+
+      self?.hideOverlayView()
+      completionHandler()
+    })
+  }
 }

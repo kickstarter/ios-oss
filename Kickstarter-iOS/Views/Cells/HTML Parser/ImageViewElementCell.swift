@@ -12,6 +12,8 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   private lazy var storyImageView: UIImageView = { UIImageView(frame: .zero) }()
   private var textViewHeightConstraint: NSLayoutConstraint?
   private let viewModel = ImageViewElementCellViewModel()
+  private var pinchGesture: UIPinchGestureRecognizer!
+  weak var delegate: PinchToZoomDelegate?
 
   // MARK: Initializers
 
@@ -93,6 +95,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
     _ = self.storyImageView
       |> imageViewStyle
+      |> \.isUserInteractionEnabled .~ true
   }
 
   // MARK: Helpers
@@ -104,5 +107,47 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
     _ = ([self.storyImageView, self.textView], self.imageAndCaptionStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(sender:)))
+    self.pinchGesture.delegate = self
+
+    self.storyImageView.addGestureRecognizer(self.pinchGesture)
+  }
+
+  @objc func pinch(sender: UIPinchGestureRecognizer) {
+    switch sender.state {
+    case .began:
+      guard let image = self.storyImageView.image else { return }
+
+      let originWithoutParentView = self.storyImageView.convert(
+        self.storyImageView.frame.origin,
+        to: nil
+      )
+
+      let frameWithinWindow = CGRect(
+        x: originWithoutParentView.x,
+        y: originWithoutParentView.y,
+        width: self.storyImageView.frame.width,
+        height: self.storyImageView.frame.height
+      )
+
+      self.delegate?.pinchZoomDidBegin(
+        self.pinchGesture,
+        frame: frameWithinWindow,
+        image: image
+      )
+    case .changed:
+      self.delegate?.pinchZoomDidChange(self.pinchGesture) {
+        if !self.storyImageView.isHidden {
+          self.storyImageView.isHidden.toggle()
+        }
+      }
+    case .ended, .failed, .cancelled:
+      self.delegate?.pinchZoomDidEnd(self.pinchGesture) {
+        self.storyImageView.isHidden = false
+      }
+    default:
+      return
+    }
   }
 }
