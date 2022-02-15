@@ -15,8 +15,8 @@ public protocol ProjectPageViewModelInputs {
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
   func didSelectFAQsRowAt(row: Int, values: [Bool])
 
-  /// Call when the navigation bar should be hidden.
-  func hideNavigationBar()
+  /// Call when the navigation bar should be hidden/shown.
+  func showNavigationBar(_ flag: Bool)
 
   /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
   func managePledgeViewControllerFinished(with message: String?)
@@ -53,9 +53,6 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
-
-  /// Call when the view will appear, and pass the animated parameter.
-  func viewWillAppear(animated: Bool)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -263,14 +260,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // Hide the custom navigation bar when pushing a new view controller
     // Unhide the custom navigation bar when viewWillAppear is called
-    self.navigationBarIsHidden = Signal.merge(
-      self.viewWillAppearAnimatedProperty.signal.skipNil().negate(),
-      self.hideNavigationBarProperty.signal.mapConst(true)
-    )
+    self.navigationBarIsHidden = self.showNavigationBarProperty.signal.negate()
 
     self.configureProjectNavigationSelectorView = freshProjectAndRefTag
-      .combineLatest(with: self.viewWillAppearAnimatedProperty.signal)
-      .map { projectAndRefTag, _ in
+      .map { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
         return (project: project, refTag: refTag)
       }
@@ -380,9 +373,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.didSelectFAQsRowAtProperty.value = (row, values)
   }
 
-  fileprivate let hideNavigationBarProperty = MutableProperty(())
-  public func hideNavigationBar() {
-    self.hideNavigationBarProperty.value = ()
+  fileprivate let showNavigationBarProperty = MutableProperty<Bool>(false)
+  public func showNavigationBar(_ flag: Bool) {
+    self.showNavigationBarProperty.value = flag
   }
 
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
@@ -448,11 +441,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let viewDidAppearAnimated = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimated.value = animated
-  }
-
-  fileprivate let viewWillAppearAnimatedProperty = MutableProperty<Bool?>(nil)
-  public func viewWillAppear(animated: Bool) {
-    self.viewWillAppearAnimatedProperty.value = animated
   }
 
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>

@@ -95,7 +95,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.viewModel.inputs.viewWillAppear(animated: animated)
+    self.viewModel.inputs.showNavigationBar(true)
   }
 
   public override func viewDidDisappear(_ animated: Bool) {
@@ -440,7 +440,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.hideNavigationBar()
+      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -459,7 +459,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
-    self.viewModel.inputs.hideNavigationBar()
+    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -699,7 +699,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     goToCampaignForProjectWith data: ProjectPamphletMainCellData
   ) {
     let vc = ProjectDescriptionViewController.configuredWith(data: data)
-    self.viewModel.inputs.hideNavigationBar()
+    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -724,7 +724,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.hideNavigationBar()
+      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
