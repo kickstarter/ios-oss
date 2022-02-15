@@ -266,7 +266,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -284,7 +284,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -418,7 +418,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       self.scheduler.advance()
@@ -498,7 +497,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler1.advance()
@@ -516,7 +514,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler2.advance()
@@ -533,7 +530,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler1.advance()
@@ -545,7 +541,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler1.advance()
@@ -602,7 +597,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       self.scheduler.advance()
@@ -766,17 +760,13 @@ final class ProjectPageViewModelTests: TestCase {
   func testNavigationBarIsHidden() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
 
-    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.showNavigationBar(true)
 
     self.navigationBarIsHidden.assertValues([false])
 
-    self.vm.inputs.hideNavigationBar()
+    self.vm.inputs.showNavigationBar(false)
 
     self.navigationBarIsHidden.assertValues([false, true])
-
-    self.vm.inputs.viewWillAppear(animated: true)
-
-    self.navigationBarIsHidden.assertValues([false, true, false])
   }
 
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
