@@ -38,8 +38,7 @@ extension UIImageView {
                                         serializer: CacheSerializer = DefaultCacheSerializer(),
                                         completionHandler: @escaping ((Data)?) -> Void) {
     let prefetcher = ImagePrefetcher(
-      resources: [url],
-      options: [.scaleFactor(UIScreen.main.scale)]
+      resources: [url]
     ) { cachedImages, failedImages, downloadedImages in
       var urlData: (Data)?
 
@@ -51,8 +50,7 @@ extension UIImageView {
       }
 
       ImageCache.default.retrieveImage(
-        forKey: image.cacheKey,
-        options: [.scaleFactor(UIScreen.main.scale)]
+        forKey: image.cacheKey
       ) { result in
 
         switch result {

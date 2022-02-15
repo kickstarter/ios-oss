@@ -58,10 +58,25 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         self?.storyImageView.image = nil
       })
       .observeValues { [weak self] data in
-        if let imageData = data,
-          let image = UIImage(data: imageData, scale: UIScreen.main.scale) {
-          self?.storyImageView.image = image
+        guard let imageData = data,
+          let nonScaledImage = UIImage(data: imageData) else {
+          return
         }
+
+        var newScale: CGFloat = 1.0
+        let maxWidth = UIScreen.main.bounds.width - Styles.grid(3)
+        let currentWidth = nonScaledImage.size.width
+
+        if currentWidth <= maxWidth {
+          self?.storyImageView.image = nonScaledImage
+
+          return
+        } else {
+          newScale = currentWidth / maxWidth
+        }
+
+        let scaledImage = UIImage(data: imageData, scale: newScale) ?? nonScaledImage
+        self?.storyImageView.image = scaledImage
       }
   }
 
