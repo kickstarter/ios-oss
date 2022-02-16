@@ -45,12 +45,15 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
+  private var prevexistingImageViewElementsWithData = [ImageViewElement]()
+
   func load(
     navigationSection: NavigationSection,
     project: Project,
     refTag: RefTag?,
     isExpandedStates: [Bool]? = nil
   ) {
+    self.prepareCampaignSection(section: navigationSection)
     // Clear all sections
     self.clearValues()
 
@@ -99,9 +102,18 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
               toSection: Section.campaign.rawValue
             )
         case let element as ImageViewElement:
+          var elementWithData = element
+          let preExistingElementData = prevexistingImageViewElementsWithData.filter { $0.src == element.src }
+            .first?.data
+          let dataExists = preExistingElementData != nil
+
+          if dataExists {
+            elementWithData = element
+              |> \.data .~ preExistingElementData
+          }
 
           self.appendRow(
-            value: element,
+            value: elementWithData,
             cellClass: ImageViewElementCell.self,
             toSection: Section.campaign.rawValue
           )
@@ -192,6 +204,14 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
+  func preloadCampaignImageViewElement(_ element: ImageViewElement) {
+    self.appendRow(
+      value: element,
+      cellClass: ImageViewElementCell.self,
+      toSection: Section.campaign.rawValue
+    )
+  }
+
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as ProjectEnvironmentalCommitmentCell, value as ProjectEnvironmentalCommitment):
@@ -226,6 +246,21 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   }
 
   // MARK: Helpers
+
+  private func prepareCampaignSection(section: NavigationSection) {
+    if self.prevexistingImageViewElementsWithData.isEmpty,
+      section == .campaign,
+      self.numberOfItems() >= Section.campaign.rawValue {
+      self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
+        guard let imageViewElement = valueAndResuseId.value as? ImageViewElement,
+          imageViewElement.data != nil else {
+          return
+        }
+
+        prevexistingImageViewElementsWithData.append(imageViewElement)
+      }
+    }
+  }
 
   internal func updateImageViewElementWith(_ imageData: (URL, Data),
                                            imageViewElement: ImageViewElement,
@@ -285,14 +320,5 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
 
     return false
-  }
-
-  public func isSectionEmpty(in tableView: UITableView, section: Section) -> Bool {
-    let sectionValue = section.rawValue
-
-    if self.numberOfSections(in: tableView) > sectionValue {
-      return self.numberOfItems(in: sectionValue) == 0
-    }
-    return true
   }
 }

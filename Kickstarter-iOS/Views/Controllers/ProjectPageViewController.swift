@@ -95,7 +95,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.viewModel.inputs.viewWillAppear(animated: animated)
+    self.viewModel.inputs.showNavigationBar(true)
   }
 
   public override func viewDidDisappear(_ animated: Bool) {
@@ -310,6 +310,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: urls)
       }
 
+    self.viewModel.outputs.prefetchImageURLsOnFirstLoad
+      .observeValues { [weak self] imageViewElements in
+
+        imageViewElements.forEach { element in
+          guard let url = URL(string: element.src) else { return }
+
+          UIImageView.ksr_cacheImageWith(url) { [weak self] data in
+            guard let dataSource = self?.dataSource else { return }
+
+            let elementWithData: ImageViewElement = element
+              |> \.data .~ data
+
+            dataSource.preloadCampaignImageViewElement(elementWithData)
+          }
+        }
+      }
+
     self.viewModel.outputs.presentMessageDialog
       .observeForUI()
       .observeValues { [weak self] project in
@@ -324,7 +341,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, imageUrls in
+      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, _ in
         let initialDatasourceLoad = {
           self?.dataSource.load(
             navigationSection: navSection,
@@ -336,35 +353,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           self?.tableView.reloadData()
         }
 
-        switch navSection {
-        case .campaign:
-          guard let tableView = self?.tableView else { return }
-
-          if let campaignSectionEmpty = self?.dataSource.isSectionEmpty(
-            in: tableView,
-            section: ProjectPageViewControllerDataSource
-              .Section.campaign
-          ) {
-            if campaignSectionEmpty {
-              initialDatasourceLoad()
-
-              // TODO: This is not ideal, because `reloadRows` triggers `prefetchRowsAt` when triggers multiple calls to the `ImagePrefetcher` to download duplicate urls when the page first loads. Alternative solutions should hide `performBatchUpdates`, run app, note the downloaded image urls in the `ImagePrefetcher` and ensure every image url is unique (ie. no duplicate urls hit the `ImagePrefetcher`)
-              self?.tableView.indexPathsForVisibleRows?.forEach { indexPath in
-                self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: imageUrls) {
-                  self?.tableView.performBatchUpdates({
-                    self?.tableView.reloadRows(at: [indexPath], with: .none)
-                  }, completion: nil)
-                }
-              }
-            }
-
-            return
-          }
-
-          initialDatasourceLoad()
-        default:
-          initialDatasourceLoad()
-        }
+        initialDatasourceLoad()
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
@@ -440,7 +429,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.hideNavigationBar()
+      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -459,7 +448,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
-    self.viewModel.inputs.hideNavigationBar()
+    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -477,8 +466,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   fileprivate func prefetchImageDataAndUpdateWith(
     _ indexPath: IndexPath,
-    imageUrls: [URL],
-    completionHandler: (() -> Void)? = nil
+    imageUrls: [URL]
   ) {
     guard let urlImageViewElementAndIndexPath = self.dataSource.imageViewElementWith(
       urls: imageUrls,
@@ -511,12 +499,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           imageViewElement: imageViewElement,
           indexPath: updateIndexPath
         )
-
-      if let uiUpdate = completionHandler {
-        DispatchQueue.main.async {
-          uiUpdate()
-        }
-      }
     }
   }
 
@@ -699,7 +681,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     goToCampaignForProjectWith data: ProjectPamphletMainCellData
   ) {
     let vc = ProjectDescriptionViewController.configuredWith(data: data)
-    self.viewModel.inputs.hideNavigationBar()
+    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -724,7 +706,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.hideNavigationBar()
+      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }

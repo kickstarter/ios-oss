@@ -780,38 +780,4 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertTrue(imageViewElement)
     }
   }
-
-  func testCampaign_IsSectionEmpty_Success() {
-    let project = Project.template
-      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: [],
-        risks: "",
-        story: self.storyViewableElements,
-        minimumPledgeAmount: 1
-      )
-
-    withEnvironment(currentUser: .template) {
-      self.dataSource.load(
-        navigationSection: .campaign,
-        project: project,
-        refTag: nil,
-        isExpandedStates: nil
-      )
-
-      let emptySection = self.dataSource.isSectionEmpty(
-        in: self.tableView,
-        section: ProjectPageViewControllerDataSource.Section
-          .risks
-      )
-      XCTAssertTrue(emptySection)
-
-      let nonEmptySection = self.dataSource.isSectionEmpty(
-        in: self.tableView,
-        section: ProjectPageViewControllerDataSource
-          .Section.campaign
-      )
-      XCTAssertFalse(nonEmptySection)
-    }
-  }
 }
