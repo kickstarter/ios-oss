@@ -43,6 +43,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let popToRootViewController = TestObserver<(), Never>()
   private let presentMessageDialog = TestObserver<Project, Never>()
   private let prefetchImageURLs = TestObserver<([URL], IndexPath), Never>()
+  private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let updateDataSourceProject = TestObserver<Project, Never>()
@@ -102,6 +103,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
     self.vm.outputs.prefetchImageURLs.observe(self.prefetchImageURLs.observer)
+    self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(self.prefetchImageURLsFirstLoad.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
     self.vm.outputs.updateDataSource.map { $0.0 }
       .observe(self.updateDataSourceNavigationSection.observer)
@@ -1427,6 +1429,63 @@ final class ProjectPageViewModelTests: TestCase {
 
       XCTAssertEqual(self.prefetchImageURLs.lastValue?.0, [expectedUrl])
       XCTAssertEqual(self.prefetchImageURLs.lastValue?.1, expectedIndexPath)
+    }
+  }
+
+  func testOutputForNonEmptyImageURLS_UpdatedPrefetchImageURLsOnFirstLoad() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedUrl = URL(string: "https://image.com")!
+    let expectedIndexPath = IndexPath(row: 0, section: campaignSection)
+    let expectedImageViewElement = ImageViewElement(
+      src: expectedUrl.absoluteString,
+      href: nil,
+      caption: nil,
+      data: nil
+    )
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          expectedImageViewElement
+        ]),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      self.vm.inputs.prepareImageAt(expectedIndexPath)
+
+      guard let imageViewElement = self.prefetchImageURLsFirstLoad.lastValue?.first else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(imageViewElement.src, expectedImageViewElement.src)
+      XCTAssertEqual(imageViewElement.href, expectedImageViewElement.href)
+      XCTAssertEqual(imageViewElement.caption, expectedImageViewElement.caption)
+      XCTAssertEqual(imageViewElement.data, expectedImageViewElement.data)
     }
   }
 

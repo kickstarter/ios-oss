@@ -101,6 +101,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `[URL]` and `IndexPath` when the project has campaign data to download for a row
   var prefetchImageURLs: Signal<([URL], IndexPath), Never> { get }
 
+  /// Emits `[ImageViewElement]` when the project has campaign data to download for a row as soon as the urls are available.
+  var prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never> { get }
+
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
 
@@ -181,6 +184,15 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return SignalProducer(value: nil)
       }
       .skipNil()
+
+    self.prefetchImageURLsOnFirstLoad = project.signal
+      .skip(first: 1)
+      .switchMap { project -> SignalProducer<[ImageViewElement], Never> in
+        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement } ?? []
+
+        return SignalProducer(value: imageViewElements)
+      }
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -457,6 +469,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
   public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
+  public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>

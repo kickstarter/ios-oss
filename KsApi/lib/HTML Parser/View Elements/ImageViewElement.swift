@@ -4,7 +4,7 @@ public struct ImageViewElement: HTMLViewElement {
   public let src: String
   public let href: String?
   public let caption: String?
-  public let data: Data?
+  public var data: Data?
 }
 
 extension ImageViewElement {
