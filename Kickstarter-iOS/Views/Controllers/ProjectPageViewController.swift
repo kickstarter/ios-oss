@@ -77,6 +77,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.registerCellClass(TextViewElementCell.self)
     self.tableView.registerCellClass(ImageViewElementCell.self)
+    self.tableView.registerCellClass(VideoViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -529,13 +530,13 @@ extension ProjectPageViewController: PledgeCTAContainerViewDelegate {
 
 extension ProjectPageViewController: VideoViewControllerDelegate {
   public func videoViewControllerDidFinish(_: VideoViewController) {
-    /** FIXME: Currently unused - fix in https://kickstarter.atlassian.net/browse/NTV-196
+    /** FIXME: Currently unused - fix in future when refactoring the overview tab.
      self.navBarController.projectVideoDidFinish()
      */
   }
 
   public func videoViewControllerDidStart(_: VideoViewController) {
-    /** FIXME: Currently unused fix in https://kickstarter.atlassian.net/browse/NTV-196
+    /** FIXME: Currently unused fix infuture when refactoring the overview tab.
      self.navBarController.projectVideoDidStart()
      */
   }
@@ -623,6 +624,18 @@ extension ProjectPageViewController: UITableViewDelegate {
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
       .overviewSubpages.rawValue ? .none : .singleLine
+  }
+
+  public func tableView(
+    _: UITableView,
+    didEndDisplaying cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    if let cell = cell as? VideoViewElementCell,
+      let seekTime = cell.delegate?.pausePlayback() {
+      self.dataSource
+        .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
+    }
   }
 }
 

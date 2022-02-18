@@ -247,7 +247,17 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
  Returns a `ProjectStoryElements` object from `ProjectFragment`
  */
 private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
-  let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
+  var viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
+
+  let videoViewElementTest =
+    VideoViewElement(
+      sourceUrlString: "https://v.kickstarter.com/1645302993_cb730d534495b35de1fd1d190f3fbae899b259cc/assets/034/747/335/b060e1907417e761401ac958a6df9cd7_h264_high.mp4",
+      thumbnailUrlString: "https://dr0rfahizzuzj.cloudfront.net/assets/034/747/335/b060e1907417e761401ac958a6df9cd7_h264_high.jpg?2021",
+      seekPosition: .zero
+    )
+
+  viewElements.insert(videoViewElementTest, at: viewElements.count / 2)
+
   let storyElements = ProjectStoryElements(htmlViewElements: viewElements)
 
   return storyElements
