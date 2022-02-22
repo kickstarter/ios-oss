@@ -13,8 +13,13 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
   private let viewModel: VideoViewElementCellViewModelType = VideoViewElementCellViewModel()
-  private lazy var playerController = AVPlayerViewController()
-  private lazy var playButton: UIButton = { UIButton(frame: .zero) }()
+  private lazy var playerController: AVPlayerViewController = {
+    let playerController = AVPlayerViewController()
+
+    playerController.player = AVPlayer()
+
+    return playerController
+  }()
 
   weak var delegate: VideoViewElementCellPlaybackDelegate?
 
@@ -47,28 +52,28 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: View Model
 
   internal override func bindViewModel() {
-    self.playButton.rac.hidden = self.viewModel.outputs.playButtonHidden
-
     self.viewModel.outputs.videoURL
       .observeForUI()
       .observeValues { [weak self] url in
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
 
-        self?.playerController.player = AVPlayer(url: url)
+        self?.playerController.player? = AVPlayer(url: url)
+//        let asset = AVAsset(url: url)
+//
+//        asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
+//          // heavy slow down -- move to `ProjectPageViewModel`
+//          let playerItem = AVPlayerItem(asset: asset)
+//
+//          self?.playerController.player?.replaceCurrentItem(with: playerItem)
+//        }
       }
 
     self.viewModel.outputs.seekTime
       .observeForUI()
       .observeValues { [weak self] seekTime in
         let validPlayTime = seekTime.isValid ? seekTime : .zero
-
+        print("*** seek to \(seekTime)")
         self?.playerController.player?.seek(to: validPlayTime)
-      }
-
-    self.viewModel.outputs.playVideo
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.playerController.player?.play()
       }
 
     self.viewModel.outputs.pauseVideo
@@ -109,11 +114,6 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
         leftRight: Styles.grid(3)
       )
 
-    _ = self.playButton
-      |> UIButton.lens.image(for: .normal) .~ Library.image(named: "play-arrow-icon")
-      <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_white.withAlphaComponent(0.5)
-      <> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_play_video() }
-
     let aspectRatio = CGFloat(9.0 / 16.0)
 
     NSLayoutConstraint.activate([
@@ -128,18 +128,9 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: Helpers
 
   private func configureViews() {
-    self.playButton.addTarget(self, action: #selector(self.playButtonTapped), for: .touchUpInside)
-
     _ = (self.playerController.view, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
-
-    _ = (self.playButton, self.playerController.view)
-      |> ksr_addSubviewToParent()
-  }
-
-  @objc private func playButtonTapped() {
-    self.viewModel.inputs.playButtonTapped()
   }
 }
 

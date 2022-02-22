@@ -44,8 +44,8 @@ class HTMLParser {
 
       let thumbnailUrl = child.parseVideoElementThumbnailUrl()
       let videoViewElement = VideoViewElement(
-        sourceUrlString: sourceUrl,
-        thumbnailUrlString: thumbnailUrl,
+        sourceURLString: sourceUrl,
+        thumbnailURLString: thumbnailUrl,
         seekPosition: .zero
       )
 

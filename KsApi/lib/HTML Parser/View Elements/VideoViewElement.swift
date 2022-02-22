@@ -2,8 +2,8 @@ import CoreMedia
 import Prelude
 
 public struct VideoViewElement: HTMLViewElement {
-  public let sourceUrlString: String
-  public let thumbnailUrlString: String?
+  public let sourceURLString: String
+  public let thumbnailURLString: String?
   public var seekPosition: CMTime
 }
 
@@ -12,8 +12,8 @@ extension VideoViewElement {
     public static let seekPosition = Lens<VideoViewElement, CMTime>(
       view: { $0.seekPosition },
       set: { VideoViewElement(
-        sourceUrlString: $1.sourceUrlString,
-        thumbnailUrlString: $1.thumbnailUrlString,
+        sourceURLString: $1.sourceURLString,
+        thumbnailURLString: $1.thumbnailURLString,
         seekPosition: $0
       )
       }
