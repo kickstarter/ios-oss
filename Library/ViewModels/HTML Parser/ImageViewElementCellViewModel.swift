@@ -3,16 +3,16 @@ import Prelude
 import ReactiveSwift
 
 public protocol ImageViewElementCellViewModelInputs {
-  /// Call to configure with a ImageElement representing raw HTML
-  func configureWith(imageElement: ImageViewElement)
+  /// Call to configure with a `ImageViewElement`  representing raw HTML along with an optional displayable image
+  func configureWith(imageElement: ImageViewElement, image: UIImage?)
 }
 
 public protocol ImageViewElementCellViewModelOutputs {
   /// Emits attributed text containing content of image caption after styling has been applied.
   var attributedText: Signal<NSAttributedString, Never> { get }
 
-  /// Emits an optional image data for image view
-  var imageData: Signal<Data?, Never> { get }
+  /// Emits an image for image view
+  var image: Signal<UIImage, Never> { get }
 }
 
 public protocol ImageViewElementCellViewModelType {
@@ -26,39 +26,39 @@ public final class ImageViewElementCellViewModel:
   // MARK: Helpers
 
   public init() {
-    let attributedText = self.imageElement.signal
+    self.attributedText = self.imageData.signal
       .skipNil()
-      .switchMap(attributedText(imageElement:))
+      .switchMap { (imageElement, _) -> SignalProducer<NSAttributedString?, Never> in
+        attributedTextFrom(imageElement)
+      }
       .skipNil()
 
-    self.attributedText = attributedText
-
-    let imageData = self.imageElement.signal
+    self.image = self.imageData.signal
       .skipNil()
-      .switchMap { imageElement -> SignalProducer<Data?, Never> in
-        guard let data = imageElement.data else {
+      .switchMap { (_, image) -> SignalProducer<UIImage?, Never> in
+        guard let displayableImage = image else {
           return SignalProducer(value: nil)
         }
 
-        return SignalProducer(value: data)
+        return SignalProducer(value: displayableImage)
       }
-
-    self.imageData = imageData
+      .skipNil()
   }
 
-  fileprivate let imageElement = MutableProperty<ImageViewElement?>(nil)
-  public func configureWith(imageElement: ImageViewElement) {
-    self.imageElement.value = imageElement
+  fileprivate let imageData = MutableProperty<(ImageViewElement, UIImage?)?>(nil)
+  public func configureWith(imageElement: ImageViewElement, image: UIImage?) {
+    self.imageData.value = (imageElement, image)
   }
 
   public let attributedText: Signal<NSAttributedString, Never>
-  public let imageData: Signal<Data?, Never>
+  public let image: Signal<UIImage, Never>
 
   public var inputs: ImageViewElementCellViewModelInputs { self }
   public var outputs: ImageViewElementCellViewModelOutputs { self }
 }
 
-private func attributedText(imageElement: ImageViewElement) -> SignalProducer<NSAttributedString?, Never> {
+private func attributedTextFrom(_ imageElement: ImageViewElement)
+  -> SignalProducer<NSAttributedString?, Never> {
   guard let captionText = imageElement.caption, !captionText.isEmpty else {
     return SignalProducer(value: nil)
   }
