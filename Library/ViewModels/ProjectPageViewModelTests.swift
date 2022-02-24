@@ -1359,8 +1359,7 @@ final class ProjectPageViewModelTests: TestCase {
           ImageViewElement(
             src: expectedUrl.absoluteString,
             href: nil,
-            caption: nil,
-            data: nil
+            caption: nil
           )
         ]),
         minimumPledgeAmount: 1
@@ -1401,8 +1400,7 @@ final class ProjectPageViewModelTests: TestCase {
           ImageViewElement(
             src: expectedUrl.absoluteString,
             href: nil,
-            caption: nil,
-            data: nil
+            caption: nil
           )
         ]),
         minimumPledgeAmount: 1
@@ -1439,8 +1437,7 @@ final class ProjectPageViewModelTests: TestCase {
     let expectedImageViewElement = ImageViewElement(
       src: expectedUrl.absoluteString,
       href: nil,
-      caption: nil,
-      data: nil
+      caption: nil
     )
     let config = Config.template
     let friends = [User.template]
@@ -1485,7 +1482,6 @@ final class ProjectPageViewModelTests: TestCase {
       XCTAssertEqual(imageViewElement.src, expectedImageViewElement.src)
       XCTAssertEqual(imageViewElement.href, expectedImageViewElement.href)
       XCTAssertEqual(imageViewElement.caption, expectedImageViewElement.caption)
-      XCTAssertEqual(imageViewElement.data, expectedImageViewElement.data)
     }
   }
 

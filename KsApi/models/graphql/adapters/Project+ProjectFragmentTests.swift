@@ -89,7 +89,6 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "https://ksr-qa-ugc.imgix.net/assets/035/659/917/05e192776dee3dc2a94e45f3ed8501d3_original.jpg?ixlib=rb-4.0.2&w=700&fit=max&v=1641856715&auto=format&gif-q=50&q=92&s=99e2650ab12af78bdb3f5722c7e5e43e"
       )
       XCTAssertEqual(imageViewElement.caption, "Ice baths are great")
-      XCTAssertNil(imageViewElement.data)
       XCTAssertNil(imageViewElement.href)
 
       XCTAssertNotNil(extendedProjectProperties.risks)

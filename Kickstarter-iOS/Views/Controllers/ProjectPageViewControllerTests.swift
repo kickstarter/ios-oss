@@ -36,8 +36,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         ImageViewElement(
           src: "bad-url",
           href: "https://ksr.com",
-          caption: "camera",
-          data: UIImage.init(systemName: "camera")?.pngData()
+          caption: "camera"
         )
       ]),
     minimumPledgeAmount: 1
