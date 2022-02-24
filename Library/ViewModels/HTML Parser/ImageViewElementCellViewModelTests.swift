@@ -8,8 +8,8 @@ import XCTest
 internal final class ImageViewElementCellViewModelTests: TestCase {
   private let vm: ImageViewElementCellViewModelType = ImageViewElementCellViewModel()
 
-  private let captionText = TestObserver<NSAttributedString, Never>()
-  private let image = TestObserver<UIImage, Never>()
+  private let captionText = TestObserver<NSAttributedString?, Never>()
+  private let image = TestObserver<UIImage?, Never>()
 
   private let expectedImage = UIImage(systemName: "camera")!
   private let expectedSampleString = "sample attributed string"
@@ -77,7 +77,7 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(imageElement: dataImageViewElement, image: nil)
 
-    self.image.assertDidNotEmitValue()
+    self.image.assertLastValue(nil)
 
     self.vm.inputs.configureWith(imageElement: dataImageViewElement, image: self.expectedImage)
 

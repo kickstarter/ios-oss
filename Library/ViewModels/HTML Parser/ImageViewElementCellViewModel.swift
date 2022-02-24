@@ -8,11 +8,11 @@ public protocol ImageViewElementCellViewModelInputs {
 }
 
 public protocol ImageViewElementCellViewModelOutputs {
-  /// Emits attributed text containing content of image caption after styling has been applied.
-  var attributedText: Signal<NSAttributedString, Never> { get }
+  /// Emits optional attributed text containing content of image caption after styling has been applied.
+  var attributedText: Signal<NSAttributedString?, Never> { get }
 
-  /// Emits an image for image view
-  var image: Signal<UIImage, Never> { get }
+  /// Emits an optional image for image view
+  var image: Signal<UIImage?, Never> { get }
 }
 
 public protocol ImageViewElementCellViewModelType {
@@ -31,7 +31,6 @@ public final class ImageViewElementCellViewModel:
       .switchMap { (imageElement, _) -> SignalProducer<NSAttributedString?, Never> in
         attributedTextFrom(imageElement)
       }
-      .skipNil()
 
     self.image = self.imageData.signal
       .skipNil()
@@ -42,7 +41,6 @@ public final class ImageViewElementCellViewModel:
 
         return SignalProducer(value: displayableImage)
       }
-      .skipNil()
   }
 
   fileprivate let imageData = MutableProperty<(ImageViewElement, UIImage?)?>(nil)
@@ -50,8 +48,8 @@ public final class ImageViewElementCellViewModel:
     self.imageData.value = (imageElement, image)
   }
 
-  public let attributedText: Signal<NSAttributedString, Never>
-  public let image: Signal<UIImage, Never>
+  public let attributedText: Signal<NSAttributedString?, Never>
+  public let image: Signal<UIImage?, Never>
 
   public var inputs: ImageViewElementCellViewModelInputs { self }
   public var outputs: ImageViewElementCellViewModelOutputs { self }

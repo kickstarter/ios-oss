@@ -8,7 +8,7 @@ final class GIFAnimatedImageView: AnimatedImageView {
     self.scaledImageSize
   }
 
-  func setImageWith(_ image: UIImage, scaledImageSize: CGSize) {
+  func setImageWith(_ image: UIImage?, scaledImageSize: CGSize) {
     self.image = image
     self.scaledImageSize = scaledImageSize
   }
