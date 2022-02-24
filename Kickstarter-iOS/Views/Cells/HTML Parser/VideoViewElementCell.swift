@@ -58,21 +58,13 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
 
         self?.playerController.player? = AVPlayer(url: url)
-//        let asset = AVAsset(url: url)
-//
-//        asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
-//          // heavy slow down -- move to `ProjectPageViewModel`
-//          let playerItem = AVPlayerItem(asset: asset)
-//
-//          self?.playerController.player?.replaceCurrentItem(with: playerItem)
-//        }
       }
 
     self.viewModel.outputs.seekTime
       .observeForUI()
       .observeValues { [weak self] seekTime in
         let validPlayTime = seekTime.isValid ? seekTime : .zero
-        print("*** seek to \(seekTime)")
+        
         self?.playerController.player?.seek(to: validPlayTime)
       }
 

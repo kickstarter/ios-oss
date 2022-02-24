@@ -625,7 +625,7 @@ extension ProjectPageViewController: UITableViewDelegate {
   ) {
     if let cell = cell as? VideoViewElementCell,
       let seekTime = cell.delegate?.pausePlayback() {
-      print("*** did end displaying video cell \(seekTime)")
+
       self.dataSource
         .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
     }
