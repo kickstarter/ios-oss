@@ -238,7 +238,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       firstImageElement.href,
       "https://producthype.co/most-powerful-crowdfunding-newsletter/?utm_source=ProductHype&utm_medium=Banner&utm_campaign=Homi"
     )
-    XCTAssertNil(firstImageElement.data)
+
     XCTAssertEqual(extendedProjectProperties.story.htmlViewElements.count, 3)
     XCTAssertEqual(firstTextElement.components.count, 1)
     XCTAssertEqual(firstTextComponent.text, "What about a bold link to that same newspaper website?")

@@ -48,9 +48,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       TextViewElement(components: []),
       ImageViewElement(
         src: "http://imagetest.com",
-        href: nil,
-        caption: nil,
-        data: nil
+        href: "https://href.com",
+        caption: "caption"
       )
     ])
 
@@ -592,7 +591,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     )
   }
 
-  func testUpdatingCampaign_WithImageViewElementData_Success() {
+  func testUpdatingCampaign_WithImageViewElementImage_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
@@ -610,64 +609,47 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         isExpandedStates: nil
       )
 
-      guard let items = self.dataSource
-        .items(in: ProjectPageViewControllerDataSource.Section.campaign
-          .rawValue) as? [(value: HTMLViewElement, reusableId: String)] else {
-        XCTFail("campaign section should have values")
-
-        return
-      }
-
-      var imageViewElementValues = items.compactMap { $0.value as? ImageViewElement }
-
-      guard let imageViewElementValue = imageViewElementValues.first else {
-        XCTFail("campaign section should t least one image view element value")
-
-        return
-      }
-
-      XCTAssertEqual("http://imagetest.com", imageViewElementValue.src)
-      XCTAssertNil(imageViewElementValue.href)
-      XCTAssertNil(imageViewElementValue.caption)
-      XCTAssertNil(imageViewElementValue.data)
-
-      let sampleImageData = UIImage(systemName: "camera")!.pngData()
-
-      let (url, data) = (
-        URL(string: "https://kickstarter.com")!,
-        sampleImageData
-      )
-      let indexPath = IndexPath(
+      let expectedURL = URL(string: "http://imagetest.com")!
+      let expectedIndexPath = IndexPath(
         row: 2,
         section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
       )
 
-      self.dataSource.updateImageViewElementWith(
-        (url, data!),
-        imageViewElement: imageViewElementValue,
-        indexPath: indexPath
-      )
-
-      guard let items = self.dataSource
-        .items(in: ProjectPageViewControllerDataSource.Section.campaign
-          .rawValue) as? [(value: HTMLViewElement, reusableId: String)] else {
-        XCTFail("campaign section should have values")
+      guard let noImageData = self.dataSource.imageViewElementWith(
+        urls: [expectedURL],
+        indexPath: expectedIndexPath
+      ) else {
+        XCTFail("one image view element should have been loaded.")
 
         return
       }
 
-      imageViewElementValues = items.compactMap { $0.0 as? ImageViewElement }
+      XCTAssertEqual(noImageData.element.src, "http://imagetest.com")
+      XCTAssertEqual(noImageData.element.href, "https://href.com")
+      XCTAssertEqual(noImageData.element.caption, "caption")
 
-      guard let imageViewElementValue = imageViewElementValues.first else {
-        XCTFail("campaign section should t least one image view element value")
+      let expectedImage = UIImage(systemName: "camera")!
+
+      self.dataSource
+        .updateImageViewElementWith(
+          noImageData.element,
+          image: expectedImage,
+          indexPath: noImageData.indexPath
+        )
+
+      guard let imageData = self.dataSource.imageViewElementWith(
+        urls: [expectedURL],
+        indexPath: expectedIndexPath
+      ) else {
+        XCTFail("one image view element should have been loaded.")
 
         return
       }
 
-      XCTAssertEqual("http://imagetest.com", imageViewElementValue.src)
-      XCTAssertNil(imageViewElementValue.href)
-      XCTAssertNil(imageViewElementValue.caption)
-      XCTAssertEqual(imageViewElementValue.data?.count, sampleImageData?.count)
+      XCTAssertEqual("http://imagetest.com", imageData.element.src)
+      XCTAssertEqual(noImageData.element.href, "https://href.com")
+      XCTAssertEqual(noImageData.element.caption, "caption")
+      XCTAssertEqual(imageData.image, expectedImage)
     }
   }
 
@@ -689,49 +671,101 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         isExpandedStates: nil
       )
 
-      let indexPath = IndexPath(
+      let expectedIndexPath = IndexPath(
         row: 2,
         section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
       )
-      let noImageViewElementWithURLFound = self.dataSource
-        .imageViewElementWith(urls: [], indexPath: indexPath)
 
-      XCTAssertNil(noImageViewElementWithURLFound)
+      let emptyData = self.dataSource.imageViewElementWith(urls: [], indexPath: expectedIndexPath)
 
-      let sampleURL = URL(string: "http://imagetest.com")!
+      XCTAssertNil(emptyData)
 
-      guard let imageViewElementWithURLFound = self.dataSource.imageViewElementWith(
-        urls: [sampleURL],
-        indexPath: indexPath
+      let expectedURL = URL(string: "http://imagetest.com")!
+      let expectedImage = UIImage(systemName: "camera")!
+
+      guard let noImageData = self.dataSource.imageViewElementWith(
+        urls: [expectedURL],
+        indexPath: expectedIndexPath
       ) else {
         XCTFail("one image view element should be found for matching URL")
 
         return
       }
 
-      XCTAssertEqual(imageViewElementWithURLFound.0, sampleURL)
+      self.dataSource
+        .updateImageViewElementWith(
+          noImageData.element,
+          image: expectedImage,
+          indexPath: noImageData.indexPath
+        )
 
-      guard let items = self.dataSource
-        .items(in: ProjectPageViewControllerDataSource.Section.campaign
-          .rawValue) as? [(value: HTMLViewElement, reusableId: String)] else {
-        XCTFail("campaign section should have values")
-
-        return
-      }
-
-      let imageViewElementValues = items.compactMap { $0.0 as? ImageViewElement }
-
-      guard let imageViewElementValue = imageViewElementValues.first else {
-        XCTFail("campaign section should t least one image view element value")
+      guard let imageData = self.dataSource.imageViewElementWith(
+        urls: [expectedURL],
+        indexPath: expectedIndexPath
+      ) else {
+        XCTFail("one image view element should be found for matching URL")
 
         return
       }
 
-      XCTAssertEqual(imageViewElementWithURLFound.1.src, imageViewElementValue.src)
-      XCTAssertEqual(imageViewElementWithURLFound.1.href, imageViewElementValue.href)
-      XCTAssertEqual(imageViewElementWithURLFound.1.caption, imageViewElementValue.caption)
-      XCTAssertEqual(imageViewElementWithURLFound.1.data, imageViewElementValue.data)
-      XCTAssertEqual(imageViewElementWithURLFound.2, indexPath)
+      XCTAssertEqual(imageData.element.src, "http://imagetest.com")
+      XCTAssertEqual(imageData.element.href, "https://href.com")
+      XCTAssertEqual(imageData.element.caption, "caption")
+      XCTAssertEqual(imageData.image, expectedImage)
+      XCTAssertEqual(imageData.url, expectedURL)
+      XCTAssertEqual(imageData.indexPath, expectedIndexPath)
+    }
+  }
+
+  func testCampaign_WithImageViewElementPreload_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      guard let imageViewElement = self.storyViewableElements.htmlViewElements.last as? ImageViewElement
+      else {
+        XCTFail("image view element should exist in story view elements.")
+
+        return
+      }
+
+      let expectedImage = UIImage(systemName: "camera")!
+      let expectedURL = URL(string: "http://imagetest.com")!
+      let expectedIndexPath = IndexPath(
+        row: 2,
+        section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
+      )
+
+      self.dataSource.preloadCampaignImageViewElement(imageViewElement, image: expectedImage)
+
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      guard let imageData = self.dataSource.imageViewElementWith(
+        urls: [expectedURL],
+        indexPath: expectedIndexPath
+      ) else {
+        XCTFail("one image view element should have been loaded.")
+
+        return
+      }
+
+      XCTAssertEqual(imageData.element.src, "http://imagetest.com")
+      XCTAssertEqual(imageData.element.href, "https://href.com")
+      XCTAssertEqual(imageData.element.caption, "caption")
+      XCTAssertEqual(imageData.image, expectedImage)
+      XCTAssertEqual(imageData.url, expectedURL)
+      XCTAssertEqual(imageData.indexPath, expectedIndexPath)
     }
   }
 

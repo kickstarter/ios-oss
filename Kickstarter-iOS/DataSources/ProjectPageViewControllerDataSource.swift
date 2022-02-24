@@ -46,7 +46,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
-  private var preexistingImageViewElementsWithData = [ImageViewElement]()
+  private var preexistingImageViewElementsWithData = [(element: ImageViewElement, image: UIImage?)]()
 
   func load(
     navigationSection: NavigationSection,
@@ -54,7 +54,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     refTag: RefTag?,
     isExpandedStates: [Bool]? = nil
   ) {
-    self.prepareCampaignSection(section: navigationSection)
+    self.prepareImagesInCampaignSection(section: navigationSection)
     // Clear all sections
     self.clearValues()
 
@@ -103,18 +103,14 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
               toSection: Section.campaign.rawValue
             )
         case let element as ImageViewElement:
-          var elementWithData = element
-          let preExistingElementData = preexistingImageViewElementsWithData.filter { $0.src == element.src }
-            .first?.data
-          let dataExists = preExistingElementData != nil
-
-          if dataExists {
-            elementWithData = element
-              |> \.data .~ preExistingElementData
-          }
+          let preExistingElementImage = preexistingImageViewElementsWithData
+            .filter { $0.element.src == element.src }
+            .first?.image
+          let dataExists = preExistingElementImage != nil
+          let value = dataExists ? (element, preExistingElementImage) : (element, nil)
 
           self.appendRow(
-            value: elementWithData,
+            value: value,
             cellClass: ImageViewElementCell.self,
             toSection: Section.campaign.rawValue
           )
@@ -211,9 +207,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
-  func preloadCampaignImageViewElement(_ element: ImageViewElement) {
+  func preloadCampaignImageViewElement(_ element: ImageViewElement, image: UIImage) {
     self.appendRow(
-      value: element,
+      value: (element, image),
       cellClass: ImageViewElementCell.self,
       toSection: Section.campaign.rawValue
     )
@@ -245,7 +241,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: ())
     case let (cell as TextViewElementCell, value as TextViewElement):
       cell.configureWith(value: value)
-    case let (cell as ImageViewElementCell, value as ImageViewElement):
+    case let (cell as ImageViewElementCell, value as (ImageViewElement, UIImage?)):
       cell.configureWith(value: value)
     case let (cell as VideoViewElementCell, value as VideoViewElement):
       cell.configureWith(value: value)
@@ -256,29 +252,26 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   // MARK: Helpers
 
-  private func prepareCampaignSection(section: NavigationSection) {
+  private func prepareImagesInCampaignSection(section: NavigationSection) {
     if self.preexistingImageViewElementsWithData.isEmpty,
       section == .campaign,
-      self.numberOfItems() >= Section.campaign.rawValue {
+      self.numberOfSections(in: UITableView()) >= Section.campaign.rawValue {
       self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
-        guard let imageViewElement = valueAndResuseId.value as? ImageViewElement,
-          imageViewElement.data != nil else {
+        guard let imageViewData = valueAndResuseId.value as? (element: ImageViewElement, image: UIImage?),
+          imageViewData.image != nil else {
           return
         }
 
-        preexistingImageViewElementsWithData.append(imageViewElement)
+        preexistingImageViewElementsWithData.append(imageViewData)
       }
     }
   }
 
-  internal func updateImageViewElementWith(_ imageData: (URL, Data),
-                                           imageViewElement: ImageViewElement,
+  internal func updateImageViewElementWith(_ imageViewElement: ImageViewElement,
+                                           image: UIImage,
                                            indexPath: IndexPath) {
-    let updateElementWithData = imageViewElement
-      |> ImageViewElement.lens.data .~ .some(imageData.1)
-
     self.set(
-      value: updateElementWithData,
+      value: (imageViewElement, image),
       cellClass: ImageViewElementCell.self,
       inSection: indexPath.section,
       row: indexPath.row
@@ -286,18 +279,22 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   }
 
   internal func imageViewElementWith(urls: [URL],
-                                     indexPath: IndexPath) -> (URL, ImageViewElement, IndexPath)? {
+                                     indexPath: IndexPath) -> (url: URL,
+                                                               element: ImageViewElement,
+                                                               image: UIImage?,
+                                                               indexPath: IndexPath)? {
     let allURLStrings = urls.map { $0.absoluteString }
 
     guard let indexPathSection = Section(rawValue: indexPath.section)?.rawValue,
-      let imageViewElementItem = self.items(in: indexPathSection)[indexPath.row].value as? ImageViewElement
+      let imageViewElementItem = self.items(in: indexPathSection)[indexPath.row]
+      .value as? (element: ImageViewElement, image: UIImage?)
     else {
       return nil
     }
 
     for index in 0..<allURLStrings.count {
-      if allURLStrings[index] == imageViewElementItem.src {
-        return (urls[index], imageViewElementItem, indexPath)
+      if allURLStrings[index] == imageViewElementItem.element.src {
+        return (urls[index], imageViewElementItem.element, imageViewElementItem.image, indexPath)
       }
     }
 
@@ -324,7 +321,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
     if self.numberOfSections(in: tableView) > section.rawValue,
       self.numberOfItems(in: section.rawValue) > indexPath.row,
-      let _ = self.items(in: section.rawValue)[indexPath.row].value as? ImageViewElement {
+      let _ = self.items(in: section.rawValue)[indexPath.row].value as? (ImageViewElement, UIImage?) {
       return true
     }
 

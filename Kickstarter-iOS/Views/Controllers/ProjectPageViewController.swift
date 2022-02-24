@@ -317,13 +317,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         imageViewElements.forEach { element in
           guard let url = URL(string: element.src) else { return }
 
-          UIImageView.ksr_cacheImageWith(url) { [weak self] data in
-            guard let dataSource = self?.dataSource else { return }
+          UIImageView.ksr_cacheImageWith(url) { [weak self] image in
+            guard let dataSource = self?.dataSource,
+              let crossPlatformImage = image else { return }
 
-            let elementWithData: ImageViewElement = element
-              |> \.data .~ data
-
-            dataSource.preloadCampaignImageViewElement(elementWithData)
+            dataSource.preloadCampaignImageViewElement(element, image: crossPlatformImage)
           }
         }
       }
@@ -469,19 +467,17 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     _ indexPath: IndexPath,
     imageUrls: [URL]
   ) {
-    guard let urlImageViewElementAndIndexPath = self.dataSource.imageViewElementWith(
+    guard let preexistingImageData = self.dataSource.imageViewElementWith(
       urls: imageUrls,
       indexPath: indexPath
     ) else {
       return
     }
 
-    let imageViewElement = urlImageViewElementAndIndexPath.1
+    guard preexistingImageData.image == nil else { return }
 
-    guard imageViewElement.data == nil else { return }
-
-    UIImageView.ksr_cacheImageWith(urlImageViewElementAndIndexPath.0) { [weak self] data in
-      guard let imageData = data,
+    UIImageView.ksr_cacheImageWith(preexistingImageData.url) { [weak self] image in
+      guard let imageData = image,
         let tableView = self?.tableView,
         let dataSource = self?.dataSource,
         dataSource.isIndexPathAnImageViewElement(
@@ -490,15 +486,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           section: .campaign
         ) else { return }
 
-      let urlAndData = (urlImageViewElementAndIndexPath.0, imageData)
-
-      let updateIndexPath = urlImageViewElementAndIndexPath.2
-
       dataSource
         .updateImageViewElementWith(
-          urlAndData,
-          imageViewElement: imageViewElement,
-          indexPath: updateIndexPath
+          preexistingImageData.element,
+          image: imageData,
+          indexPath: preexistingImageData.indexPath
         )
     }
   }

@@ -8,9 +8,10 @@ import XCTest
 internal final class ImageViewElementCellViewModelTests: TestCase {
   private let vm: ImageViewElementCellViewModelType = ImageViewElementCellViewModel()
 
-  private let captionText = TestObserver<NSAttributedString, Never>()
-  private let imageData = TestObserver<Data?, Never>()
+  private let captionText = TestObserver<NSAttributedString?, Never>()
+  private let image = TestObserver<UIImage?, Never>()
 
+  private let expectedImage = UIImage(systemName: "camera")!
   private let expectedSampleString = "sample attributed string"
   private let expectedBaseFontSize: CGFloat = 12.0
   private var expectedBaseFont = UIFont.ksr_body()
@@ -29,22 +30,21 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
     ]
 
     self.vm.outputs.attributedText.observe(self.captionText.observer)
-    self.vm.outputs.imageData.observe(self.imageData.observer)
+    self.vm.outputs.image.observe(self.image.observer)
   }
 
   func testPlainAttributedTextElement_Success() {
     let nonLinkCaptionImageViewElement = ImageViewElement(
       src: "https://image.com",
       href: nil,
-      caption: expectedSampleString,
-      data: nil
+      caption: expectedSampleString
     )
     let expectedNonLinkAttributedText = NSAttributedString(
       string: expectedSampleString,
       attributes: expectedFontAttributes
     )
 
-    self.vm.inputs.configureWith(imageElement: nonLinkCaptionImageViewElement)
+    self.vm.inputs.configureWith(imageElement: nonLinkCaptionImageViewElement, image: nil)
     self.captionText.assertValue(expectedNonLinkAttributedText)
   }
 
@@ -52,8 +52,7 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
     let linkCaptionImageViewElement = ImageViewElement(
       src: "https://image.com",
       href: "https://link.com",
-      caption: expectedSampleString,
-      data: nil
+      caption: expectedSampleString
     )
 
     expectedFontAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
@@ -65,28 +64,23 @@ internal final class ImageViewElementCellViewModelTests: TestCase {
       attributes: expectedFontAttributes
     )
 
-    self.vm.inputs.configureWith(imageElement: linkCaptionImageViewElement)
+    self.vm.inputs.configureWith(imageElement: linkCaptionImageViewElement, image: nil)
     self.captionText.assertValue(expectedLinkAttributedText)
   }
 
   func testImageViewElementData_Success() {
-    let expectedDataImage = UIImage(systemName: "camera")!.pngData()
     let dataImageViewElement = ImageViewElement(
       src: "https://image.com",
       href: "https://link.com",
-      caption: expectedSampleString,
-      data: nil
+      caption: expectedSampleString
     )
 
-    self.vm.inputs.configureWith(imageElement: dataImageViewElement)
+    self.vm.inputs.configureWith(imageElement: dataImageViewElement, image: nil)
 
-    self.imageData.assertValue(nil)
+    self.image.assertLastValue(nil)
 
-    let updateImageViewElement = dataImageViewElement
-      |> ImageViewElement.lens.data .~ expectedDataImage
+    self.vm.inputs.configureWith(imageElement: dataImageViewElement, image: self.expectedImage)
 
-    self.vm.inputs.configureWith(imageElement: updateImageViewElement)
-
-    self.imageData.assertLastValue(expectedDataImage)
+    self.image.assertLastValue(self.expectedImage)
   }
 }

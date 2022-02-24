@@ -75,7 +75,7 @@ extension Element {
 
     src = self.parseImageElementSrc()
 
-    let value = src.isEmpty ? nil : ImageViewElement(src: src, href: href, caption: caption, data: nil)
+    let value = src.isEmpty ? nil : ImageViewElement(src: src, href: href, caption: caption)
 
     return value
   }

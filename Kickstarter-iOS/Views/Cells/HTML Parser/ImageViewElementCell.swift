@@ -9,7 +9,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
   private lazy var imageAndCaptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) }()
-  private lazy var storyImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var storyImageView: GIFAnimatedImageView = { GIFAnimatedImageView(frame: .zero) }()
   private var textViewHeightConstraint: NSLayoutConstraint?
   private let viewModel = ImageViewElementCellViewModel()
   private var pinchGesture: UIPinchGestureRecognizer!
@@ -30,13 +30,8 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func configureWith(value imageElement: ImageViewElement) {
-    self.viewModel.inputs.configureWith(imageElement: imageElement)
-  }
-
-  func setupConstraints() {
-    self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: 0)
-    self.textViewHeightConstraint?.isActive = true
+  func configureWith(value imageData: (element: ImageViewElement, image: UIImage?)) {
+    self.viewModel.inputs.configureWith(imageElement: imageData.element, image: imageData.image)
   }
 
   // MARK: View Model
@@ -44,39 +39,51 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     self.viewModel.outputs.attributedText
       .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.resetTextView()
+      })
       .observeValues { [weak self] attributedText in
-        if attributedText.length > 0 {
+        guard let viewableAttributedText = attributedText else { return }
+
+        if viewableAttributedText.length > 0 {
           self?.textViewHeightConstraint?.isActive = false
         }
 
-        self?.textView.attributedText = attributedText
+        self?.textView.attributedText = viewableAttributedText
       }
 
-    self.viewModel.outputs.imageData
+    self.viewModel.outputs.image
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.storyImageView.image = nil
+        self?.resetImageView()
       })
-      .observeValues { [weak self] data in
-        guard let imageData = data,
-          let nonScaledImage = UIImage(data: imageData) else {
-          return
-        }
+      .observeValues { [weak self] image in
+        guard let viewableImage = image else { return }
 
         var newScale: CGFloat = 1.0
         let maxWidth = UIScreen.main.bounds.width - Styles.grid(3)
-        let currentWidth = nonScaledImage.size.width
+        let currentWidth = viewableImage.size.width
+        let currentHeight = viewableImage.size.height
 
         if currentWidth <= maxWidth {
-          self?.storyImageView.image = nonScaledImage
-
-          return
+          self?.storyImageView.setImageWith(viewableImage, scaledImageSize: viewableImage.size)
         } else {
           newScale = currentWidth / maxWidth
+          let newSize = CGSize(
+            width: maxWidth,
+            height: currentHeight * newScale
+          )
+          let scaledImage = viewableImage.scalePreservingAspectRatio(targetSize: newSize)
+
+          switch viewableImage.sd_imageFormat {
+          case .GIF:
+            self?.storyImageView.setImageWith(viewableImage, scaledImageSize: scaledImage.size)
+          default:
+            self?.storyImageView.setImageWith(scaledImage, scaledImageSize: scaledImage.size)
+          }
         }
 
-        let scaledImage = UIImage(data: imageData, scale: newScale) ?? nonScaledImage
-        self?.storyImageView.image = scaledImage
+        self?.storyImageView.invalidateIntrinsicContentSize()
       }
   }
 
@@ -115,6 +122,18 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
   // MARK: Helpers
 
+  private func resetImageView() {
+    if self.storyImageView.isAnimating {
+      self.storyImageView.stopAnimating()
+      self.storyImageView.setImageWith(nil, scaledImageSize: .zero)
+    }
+  }
+
+  private func resetTextView() {
+    self.textView.attributedText = nil
+    self.textViewHeightConstraint?.isActive = true
+  }
+
   private func configureViews() {
     _ = (self.imageAndCaptionStackView, self.contentView)
       |> ksr_addSubviewToParent()
@@ -127,6 +146,11 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
     self.pinchGesture.delegate = self
 
     self.storyImageView.addGestureRecognizer(self.pinchGesture)
+  }
+
+  private func setupConstraints() {
+    self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: 0)
+    self.textViewHeightConstraint?.isActive = true
   }
 
   @objc func pinch(sender: UIPinchGestureRecognizer) {
