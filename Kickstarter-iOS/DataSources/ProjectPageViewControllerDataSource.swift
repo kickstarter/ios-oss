@@ -246,7 +246,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   private func prepareImagesInCampaignSection(section: NavigationSection) {
     if self.preexistingImageViewElementsWithData.isEmpty,
       section == .campaign,
-      self.numberOfItems() >= Section.campaign.rawValue {
+      self.numberOfSections(in: UITableView()) >= Section.campaign.rawValue {
       self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
         guard let imageViewData = valueAndResuseId.value as? (element: ImageViewElement, image: UIImage?),
           imageViewData.image != nil else {
