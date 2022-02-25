@@ -1,3 +1,4 @@
+import AVFoundation
 import KsApi
 import Library
 import Prelude
@@ -313,7 +314,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.prefetchImageURLsOnFirstLoad
       .observeValues { [weak self] imageViewElements in
-
         imageViewElements.forEach { element in
           guard let url = URL(string: element.src) else { return }
 
@@ -323,6 +323,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
             dataSource.preloadCampaignImageViewElement(element, image: crossPlatformImage)
           }
+        }
+      }
+
+    self.viewModel.outputs.createVideoAssets
+      .observeValues { [weak self] elements in
+        elements.forEach { element in
+          guard let url = URL(string: element.sourceURLString) else { return }
+
+          self?.prepareToPlayVideoURL(url, for: element)
         }
       }
 
@@ -372,6 +381,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
+  }
+
+  private func prepareToPlayVideoURL(_ url: URL, for element: VideoViewElement) {
+    // Create asset to be played
+    let asset = AVAsset(url: url)
+
+    let assetKeys = [
+      "playable"
+    ]
+    // Create a new AVPlayerItem with the asset and an
+    // array of asset keys to be automatically loaded
+    let playerItem = AVPlayerItem(
+      asset: asset,
+      automaticallyLoadedAssetKeys: assetKeys
+    )
+
+    self.dataSource.preloadCampaignVideoViewElement(element, playerItem: playerItem)
   }
 
   private func showProjectStarredPrompt() {
@@ -625,7 +651,6 @@ extension ProjectPageViewController: UITableViewDelegate {
   ) {
     if let cell = cell as? VideoViewElementCell,
       let seekTime = cell.delegate?.pausePlayback() {
-
       self.dataSource
         .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
     }

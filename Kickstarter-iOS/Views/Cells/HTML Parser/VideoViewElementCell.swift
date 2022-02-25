@@ -13,13 +13,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
   private let viewModel: VideoViewElementCellViewModelType = VideoViewElementCellViewModel()
-  private lazy var playerController: AVPlayerViewController = {
-    let playerController = AVPlayerViewController()
-
-    playerController.player = AVPlayer()
-
-    return playerController
-  }()
+  private lazy var playerLayer: AVPlayerLayer = { AVPlayerLayer() }()
 
   weak var delegate: VideoViewElementCellPlaybackDelegate?
 
@@ -39,41 +33,43 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-
-    self.playerController.player?.replaceCurrentItem(with: nil)
-  }
-
-  func configureWith(value videoElement: VideoViewElement) {
-    self.viewModel.inputs.configureWith(videoElement: videoElement)
+  func configureWith(value: (element: VideoViewElement, item: AVPlayerItem?)) {
+    self.viewModel.inputs.configureWith(element: value.element, item: value.item)
   }
 
   // MARK: View Model
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.videoURL
+    self.viewModel.outputs.videoItem
       .observeForUI()
-      .observeValues { [weak self] url in
+      .on(event: { [weak self] _ in
+        self?.resetPlayerLayer()
+      })
+      .observeValues { [weak self] playerItem in
+        guard let playerWithItem = playerItem else { return }
+
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
 
-        self?.playerController.player? = AVPlayer(url: url)
+        self?.playerLayer.player = playerWithItem
+        print("*** frame \(self?.playerLayer.frame)")
+        print("*** player \(self?.playerLayer.player)")
+        print("*** player item status \(self?.playerLayer.player?.currentItem?.status)")
       }
 
     self.viewModel.outputs.seekTime
       .observeForUI()
       .observeValues { [weak self] seekTime in
         let validPlayTime = seekTime.isValid ? seekTime : .zero
-        
-        self?.playerController.player?.seek(to: validPlayTime)
+
+        self?.playerLayer.player?.seek(to: validPlayTime)
       }
 
     self.viewModel.outputs.pauseVideo
       .observeForUI()
       .observeValues { [weak self] _ in
-        self?.playerController.player?.pause()
+        self?.playerLayer.player?.pause()
 
-        guard let player = self?.playerController.player else {
+        guard let player = self?.playerLayer.player else {
           self?.viewModel.inputs.recordSeektime(.zero)
 
           return
@@ -92,6 +88,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.backgroundColor .~ .red
       |> \.separatorInset .~
       .init(
         top: 0,
@@ -105,24 +102,16 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
         topBottom: Styles.gridHalf(3),
         leftRight: Styles.grid(3)
       )
-
-    let aspectRatio = CGFloat(9.0 / 16.0)
-
-    NSLayoutConstraint.activate([
-      self.playerController.view.heightAnchor.constraint(
-        equalTo: self.contentView.widthAnchor,
-        multiplier: aspectRatio
-      )
-    ]
-    )
   }
 
   // MARK: Helpers
 
+  private func resetPlayerLayer() {
+    self.playerLayer.player = nil
+  }
+
   private func configureViews() {
-    _ = (self.playerController.view, self.contentView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+    self.contentView.layer.insertSublayer(self.playerLayer, above: self.contentView.layer.sublayers?.last)
   }
 }
 

@@ -71,6 +71,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `(Project, RefTag?)` to configure `ProjectNavigationSelectorView`
   var configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never> { get }
 
+  /// Emits `[VideoViewElement]` to preload the data source with `AVAsset` objects for video player cells.
+  var createVideoAssets: Signal<[VideoViewElement], Never> { get }
+
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
@@ -192,6 +195,15 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           .compactMap { $0 as? ImageViewElement } ?? []
 
         return SignalProducer(value: imageViewElements)
+      }
+
+    self.createVideoAssets = project.signal
+      .skip(first: 1)
+      .switchMap { project -> SignalProducer<[VideoViewElement], Never> in
+        let videoViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? VideoViewElement } ?? []
+
+        return SignalProducer(value: videoViewElements)
       }
 
     // The first tab we render by default is overview
@@ -459,6 +471,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
+  public let createVideoAssets: Signal<[VideoViewElement], Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public let goToDashboard: Signal<Param, Never>
