@@ -5,8 +5,8 @@ extension Element {
   func extractViewElementTypeFromDiv() -> ViewElementType? {
     var type: ViewElementType?
 
-    if self.isImageStructure() {
-      type = .image
+    if self.isImageOrVideoStructure() {
+      type = .imageOrVideo
     } else if self.isIframeStructure() {
       type = .externalSources
     }
@@ -14,7 +14,7 @@ extension Element {
     return type
   }
 
-  func isIframeStructure() -> Bool {
+  private func isIframeStructure() -> Bool {
     let templateDivAttributes = getAttributes()?.filter { attribute in
       let classKey = attribute.getKey() == HTMLRawText.Base.htmlClass.rawValue
       let templateOembedValue = attribute.getValue() == HTMLRawText.KSRSpecific.templateOembed.rawValue
@@ -29,7 +29,7 @@ extension Element {
     return false
   }
 
-  func isImageStructure() -> Bool {
+  private func isImageOrVideoStructure() -> Bool {
     let templateDivAttributes = getAttributes()?.filter { attribute in
       let classKey = attribute.getKey() == HTMLRawText.Base.htmlClass.rawValue
       let templateAssetValue = attribute.getValue() == HTMLRawText.KSRSpecific.templateAsset.rawValue

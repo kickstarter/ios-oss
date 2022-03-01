@@ -26,8 +26,13 @@ class HTMLParser {
     var element: HTMLViewElement?
 
     switch viewElementType {
-    case .image:
-      element = child.parseImageElement()
+    case .imageOrVideo:
+      if let imageElement = child.parseImageElement() {
+        element = imageElement
+      } else if let childrenWithVideoTag = try? child.getElementsByTag(HTMLRawText.Base.video.rawValue),
+        let childWithVideoTag = childrenWithVideoTag.first {
+        element = self.createVideoElement(childWithVideoTag)
+      }
     case .text:
       var textComponents = [TextComponent]()
 
@@ -36,20 +41,7 @@ class HTMLParser {
       let textViewElement = TextViewElement(components: textComponents)
       element = textViewElement
     case .video:
-      guard let sourceUrl = child.parseVideoElement() else {
-        element = nil
-
-        return
-      }
-
-      let thumbnailUrl = child.parseVideoElementThumbnailUrl()
-      let videoViewElement = VideoViewElement(
-        sourceURLString: sourceUrl,
-        thumbnailURLString: thumbnailUrl,
-        seekPosition: .zero
-      )
-
-      element = videoViewElement
+      element = self.createVideoElement(child)
     case .externalSources:
       element = child.parseExternalElement()
     default:
@@ -61,6 +53,21 @@ class HTMLParser {
     if let elementValue = element {
       viewElements.append(elementValue)
     }
+  }
+
+  private func createVideoElement(_ child: Element) -> VideoViewElement? {
+    guard let sourceUrl = child.parseVideoElement() else {
+      return nil
+    }
+
+    let thumbnailUrl = child.parseVideoElementThumbnailUrl()
+    let videoViewElement = VideoViewElement(
+      sourceURLString: sourceUrl,
+      thumbnailURLString: thumbnailUrl,
+      seekPosition: .zero
+    )
+
+    return videoViewElement
   }
 
   private func parseTextElement(element: Element,
