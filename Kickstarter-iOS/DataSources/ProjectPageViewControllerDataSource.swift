@@ -47,7 +47,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   }
 
   private var preexistingImageViewElementsWithData = [(element: ImageViewElement, image: UIImage?)]()
-  private var preexistingVideoViewElementsWithAssets = [(element: VideoViewElement, item: AVPlayerItem?)]()
+  private var preexistingVideoViewElementsWithPlayer = [(element: VideoViewElement, player: AVPlayer?)]()
 
   func load(
     navigationSection: NavigationSection,
@@ -117,14 +117,14 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
             toSection: Section.campaign.rawValue
           )
         case let element as VideoViewElement:
-          let preExistingVideoElementWithAsset = preexistingVideoViewElementsWithAssets
+          let preExistingVideoElementWithPlayer = preexistingVideoViewElementsWithPlayer
             .filter { $0.0.sourceURLString == element.sourceURLString }
             .first
 
-          let elementWithAsset = (element, preExistingVideoElementWithAsset?.item)
+          let elementWithPlayer = (element, preExistingVideoElementWithPlayer?.player)
 
           self.appendRow(
-            value: elementWithAsset,
+            value: elementWithPlayer,
             cellClass: VideoViewElementCell.self,
             toSection: Section.campaign.rawValue
           )
@@ -243,7 +243,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ImageViewElementCell, value as (ImageViewElement, UIImage?)):
       cell.configureWith(value: value)
-    case let (cell as VideoViewElementCell, value as (VideoViewElement, AVPlayerItem?)):
+    case let (cell as VideoViewElementCell, value as (VideoViewElement, AVPlayer?)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
@@ -264,10 +264,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
         var seenURLStrings = Set<String>()
         var uniqueElements = [(element: ImageViewElement, image: UIImage?)]()
-        for (videoElement, image) in preexistingImageViewElementsWithData {
-          if !seenURLStrings.contains(videoElement.src) {
-            uniqueElements.append((videoElement, image))
-            seenURLStrings.insert(videoElement.src)
+        for (imageElement, image) in preexistingImageViewElementsWithData {
+          if !seenURLStrings.contains(imageElement.src) {
+            uniqueElements.append((imageElement, image))
+            seenURLStrings.insert(imageElement.src)
           }
         }
 
@@ -279,23 +279,23 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   private func prepareVideosInCampaignSection() {
     if self.numberOfSections(in: UITableView()) > Section.campaign.rawValue {
       self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
-        guard let videoViewElementWithAsset = valueAndResuseId.value as? (VideoViewElement, AVPlayerItem?)
+        guard let videoViewElementWithPlayer = valueAndResuseId.value as? (VideoViewElement, AVPlayer?)
         else {
           return
         }
 
-        preexistingVideoViewElementsWithAssets.append(videoViewElementWithAsset)
+        preexistingVideoViewElementsWithPlayer.append(videoViewElementWithPlayer)
 
         var seenURLStrings = Set<String>()
-        var uniqueElements = [(element: VideoViewElement, item: AVPlayerItem?)]()
-        for (videoElement, urlString) in preexistingVideoViewElementsWithAssets {
+        var uniqueElements = [(element: VideoViewElement, player: AVPlayer?)]()
+        for (videoElement, urlString) in preexistingVideoViewElementsWithPlayer {
           if !seenURLStrings.contains(videoElement.sourceURLString) {
             uniqueElements.append((videoElement, urlString))
             seenURLStrings.insert(videoElement.sourceURLString)
           }
         }
 
-        preexistingVideoViewElementsWithAssets = uniqueElements
+        preexistingVideoViewElementsWithPlayer = uniqueElements
       }
     }
   }
@@ -366,13 +366,13 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
                                                indexPath: IndexPath) {
     if self.numberOfSections(in: tableView) > indexPath.section,
       self.numberOfItems(in: indexPath.section) > indexPath.row,
-      let videoViewElementWithAsset = self.items(in: indexPath.section)[indexPath.row]
-      .value as? (VideoViewElement, AVPlayerItem) {
-      let updatedVideoElement = videoViewElementWithAsset.0
+      let videoViewElementWithPlayer = self.items(in: indexPath.section)[indexPath.row]
+      .value as? (VideoViewElement, AVPlayer) {
+      let updatedVideoElement = videoViewElementWithPlayer.0
         |> VideoViewElement.lens.seekPosition .~ seekTime
 
       self.set(
-        value: (updatedVideoElement, videoViewElementWithAsset.1),
+        value: (updatedVideoElement, videoViewElementWithPlayer.1),
         cellClass: VideoViewElementCell.self,
         inSection: indexPath.section,
         row: indexPath.row
@@ -388,9 +388,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     )
   }
 
-  internal func preloadCampaignVideoViewElement(_ element: VideoViewElement, playerItem: AVPlayerItem) {
+  internal func preloadCampaignVideoViewElement(_ element: VideoViewElement, player: AVPlayer) {
     self.appendRow(
-      value: (element, playerItem),
+      value: (element, player),
       cellClass: VideoViewElementCell.self,
       toSection: Section.campaign.rawValue
     )

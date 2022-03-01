@@ -1,4 +1,5 @@
 import AVFoundation
+import Combine
 import KsApi
 import Library
 import Prelude
@@ -387,17 +388,34 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     // Create asset to be played
     let asset = AVAsset(url: url)
 
-    let assetKeys = [
-      "playable"
-    ]
-    // Create a new AVPlayerItem with the asset and an
-    // array of asset keys to be automatically loaded
-    let playerItem = AVPlayerItem(
-      asset: asset,
-      automaticallyLoadedAssetKeys: assetKeys
-    )
+    asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
+      var durationError: NSError?
+      var tracksError: NSError?
 
-    self.dataSource.preloadCampaignVideoViewElement(element, playerItem: playerItem)
+      if asset.statusOfValue(forKey: "duration", error: &durationError) == .loaded,
+        asset.statusOfValue(forKey: "tracks", error: &tracksError) == .loaded {
+        let playerItem = AVPlayerItem(
+          asset: asset,
+          automaticallyLoadedAssetKeys: ["duration", "tracks"]
+        )
+
+        var player: AVPlayer?
+
+        _ = playerItem.publisher(for: \.status).subscribe(on: DispatchQueue.global(qos: .background))
+          .sink { status in
+            switch status {
+            case .readyToPlay:
+              guard let availablePlayer = player else { return }
+
+              self.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+            default:
+              return
+            }
+          }
+
+        player = AVPlayer(playerItem: playerItem)
+      }
+    }
   }
 
   private func showProjectStarredPrompt() {

@@ -251,7 +251,7 @@ private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> Pr
 
   let videoViewElementTest =
     VideoViewElement(
-      sourceURLString: "https://v.kickstarter.com/1645738126_47433a36333112f2c9da0a5ecb1e1d41b61a2855/assets/036/138/673/9bb769e34751b606057fc6c570eb6a14_h264_high.mp4",
+      sourceURLString: "https://v.kickstarter.com/1646253861_eee618959d375e50481b4b31a19b416125ecc615/assets/036/484/390/7d3797530a67146d18b5c32a1bcae961_h264_high.mp4",
       thumbnailURLString: "https://dr0rfahizzuzj.cloudfront.net/assets/034/747/335/b060e1907417e761401ac958a6df9cd7_h264_high.jpg?2021",
       seekPosition: .zero
     )
