@@ -13,13 +13,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
   private let viewModel: VideoViewElementCellViewModelType = VideoViewElementCellViewModel()
-  private lazy var playerController: AVPlayerViewController = {
-    let controller = AVPlayerViewController()
-
-    controller.player = AVPlayer()
-
-    return controller
-  }()
+  private lazy var playerController: AVPlayerViewController = { AVPlayerViewController() }()
 
   weak var delegate: VideoViewElementCellPlaybackDelegate?
 

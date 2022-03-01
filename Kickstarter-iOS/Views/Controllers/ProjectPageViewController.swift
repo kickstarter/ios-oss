@@ -400,14 +400,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         )
 
         var player: AVPlayer?
+        var cancellable: AnyCancellable?
 
-        _ = playerItem.publisher(for: \.status).subscribe(on: DispatchQueue.global(qos: .background))
-          .sink { status in
+        cancellable = playerItem.publisher(for: \.status)
+          .subscribe(on: DispatchQueue.global(qos: .background))
+          .sink { [weak self] status in
             switch status {
             case .readyToPlay:
               guard let availablePlayer = player else { return }
 
-              self.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+              self?.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+
+              cancellable = nil
             default:
               return
             }

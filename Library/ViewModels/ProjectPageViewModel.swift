@@ -71,7 +71,7 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `(Project, RefTag?)` to configure `ProjectNavigationSelectorView`
   var configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits `[VideoViewElement]` to preload the data source with `AVAsset` objects for video player cells.
+  /// Emits `[VideoViewElement]` to preload the data source with `AVPlayer` objects for video player cells (only unique urls).
   var createVideoAssets: Signal<[VideoViewElement], Never> { get }
 
   /// Emits a message to show on `MessageBannerViewController`
