@@ -288,9 +288,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
         var seenURLStrings = Set<String>()
         var uniqueElements = [(element: VideoViewElement, player: AVPlayer?)]()
-        for (videoElement, urlString) in preexistingVideoViewElementsWithPlayer {
+        for (videoElement, player) in preexistingVideoViewElementsWithPlayer {
           if !seenURLStrings.contains(videoElement.sourceURLString) {
-            uniqueElements.append((videoElement, urlString))
+            uniqueElements.append((videoElement, player))
             seenURLStrings.insert(videoElement.sourceURLString)
           }
         }
@@ -306,6 +306,17 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     self.set(
       value: (imageViewElement, image),
       cellClass: ImageViewElementCell.self,
+      inSection: indexPath.section,
+      row: indexPath.row
+    )
+  }
+
+  internal func updateVideoViewElementWith(_ videoViewElement: VideoViewElement,
+                                           player: AVPlayer,
+                                           indexPath: IndexPath) {
+    self.set(
+      value: (videoViewElement, player),
+      cellClass: VideoViewElementCell.self,
       inSection: indexPath.section,
       row: indexPath.row
     )
@@ -359,6 +370,24 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
 
     return false
+  }
+
+  internal func videoViewElementWithNoPlayer(
+    tableView: UITableView,
+    indexPath: IndexPath,
+    section: ProjectPageViewControllerDataSource.Section
+  ) -> (VideoViewElement, IndexPath)? {
+    guard indexPath.section == section.rawValue else { return nil }
+
+    if self.numberOfSections(in: tableView) > section.rawValue,
+      self.numberOfItems(in: section.rawValue) > indexPath.row,
+      let (element, player) = self.items(in: section.rawValue)[indexPath.row]
+      .value as? (VideoViewElement, AVPlayer?),
+      player == nil {
+      return (element, indexPath)
+    }
+
+    return nil
   }
 
   internal func updateVideoViewElementSeektime(with seekTime: CMTime,

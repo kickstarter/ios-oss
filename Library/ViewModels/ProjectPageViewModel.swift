@@ -27,8 +27,11 @@ public protocol ProjectPageViewModelInputs {
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
 
-  /// Call when prefetchRowsAt is called for campaign tab
+  /// Call for image view elements that are missing inside `prefetchRowsAt` delegate in `ProjectPageViewController`
   func prepareImageAt(_ indexPath: IndexPath)
+
+  /// Call for video view elements that are missing a player inside `prefetchRowsAt` delegate in `ProjectPageViewController`
+  func prepareVideoAt(_ indexPath: IndexPath, with videoViewElement: VideoViewElement)
 
   /// Call when the delegate method for the `ProjectEnvironmentalCommitmentFooterCellDelegate` is called.
   func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
@@ -71,9 +74,6 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `(Project, RefTag?)` to configure `ProjectNavigationSelectorView`
   var configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits `[VideoViewElement]` to preload the data source with `AVPlayer` objects for video player cells (only unique urls).
-  var createVideoAssets: Signal<[VideoViewElement], Never> { get }
-
   /// Emits a message to show on `MessageBannerViewController`
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
@@ -100,6 +100,12 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
+
+  /// Emits `VideoViewElement` and `IndexPath` when the project has campaign data to download for a row
+  var precreateVideoURLs: Signal<(VideoViewElement, IndexPath), Never> { get }
+
+  /// Emits `[VideoViewElement]` to preload the data source with `AVPlayer` objects for video player cells.
+  var precreateVideoURLsOnFirstLoad: Signal<[VideoViewElement], Never> { get }
 
   /// Emits `[URL]` and `IndexPath` when the project has campaign data to download for a row
   var prefetchImageURLs: Signal<([URL], IndexPath), Never> { get }
@@ -197,7 +203,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return SignalProducer(value: imageViewElements)
       }
 
-    self.createVideoAssets = project.signal
+    self.precreateVideoURLsOnFirstLoad = project.signal
       .skip(first: 1)
       .switchMap { project -> SignalProducer<[VideoViewElement], Never> in
         let videoViewElements = project.extendedProjectProperties?.story.htmlViewElements
@@ -205,6 +211,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         return SignalProducer(value: videoViewElements)
       }
+
+    self.precreateVideoURLs = self.prepareVideoAtProperty.signal.skipNil()
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -422,6 +430,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.prepareImageAtProperty.value = indexPath
   }
 
+  private let prepareVideoAtProperty = MutableProperty<(VideoViewElement, IndexPath)?>(nil)
+  public func prepareVideoAt(_ indexPath: IndexPath, with videoViewElement: VideoViewElement) {
+    self.prepareVideoAtProperty.value = (videoViewElement, indexPath)
+  }
+
   fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
   public func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ url: URL) {
     self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.value = url
@@ -471,7 +484,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
-  public let createVideoAssets: Signal<[VideoViewElement], Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
   public let goToDashboard: Signal<Param, Never>
@@ -481,6 +493,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let navigationBarIsHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
+  public let precreateVideoURLs: Signal<(VideoViewElement, IndexPath), Never>
+  public let precreateVideoURLsOnFirstLoad: Signal<[VideoViewElement], Never>
   public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
   public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
   public let showHelpWebViewController: Signal<HelpType, Never>

@@ -327,12 +327,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         }
       }
 
-    self.viewModel.outputs.createVideoAssets
+    self.viewModel.outputs.precreateVideoURLsOnFirstLoad
       .observeValues { [weak self] elements in
         elements.forEach { element in
           guard let url = URL(string: element.sourceURLString) else { return }
 
-          self?.prepareToPlayVideoURL(url, for: element)
+          self?.prepareToPlayVideoURL(url) { availablePlayer in
+            self?.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+          }
+        }
+      }
+
+    self.viewModel.outputs.precreateVideoURLs
+      .observeValues { [weak self] element, indexPath in
+        guard let url = URL(string: element.sourceURLString) else { return }
+
+        self?.prepareToPlayVideoURL(url) { availablePlayer in
+          self?.dataSource.updateVideoViewElementWith(element, player: availablePlayer, indexPath: indexPath)
         }
       }
 
@@ -384,7 +395,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
-  private func prepareToPlayVideoURL(_ url: URL, for element: VideoViewElement) {
+  private func prepareToPlayVideoURL(_ url: URL, completionHandler: @escaping (AVPlayer) -> Void) {
     // Create asset to be played
     let asset = AVAsset(url: url)
 
@@ -404,12 +415,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
         cancellable = playerItem.publisher(for: \.status)
           .subscribe(on: DispatchQueue.global(qos: .background))
-          .sink { [weak self] status in
+          .sink { status in
             switch status {
             case .readyToPlay:
               guard let availablePlayer = player else { return }
 
-              self?.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+              completionHandler(availablePlayer)
 
               cancellable = nil
             default:
@@ -683,7 +694,7 @@ extension ProjectPageViewController: UITableViewDelegate {
 
 extension ProjectPageViewController: UITableViewDataSourcePrefetching {
   public func tableView(_: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-    let campaignSectionIndexPaths = indexPaths.filter { indexPath in
+    let campaignSectionImageIndexPaths = indexPaths.filter { indexPath in
       self.dataSource.isIndexPathAnImageViewElement(
         tableView: self.tableView,
         indexPath: indexPath,
@@ -691,8 +702,20 @@ extension ProjectPageViewController: UITableViewDataSourcePrefetching {
       )
     }
 
-    campaignSectionIndexPaths.forEach { indexPath in
+    campaignSectionImageIndexPaths.forEach { indexPath in
       self.viewModel.inputs.prepareImageAt(indexPath)
+    }
+
+    let campaignSectionVideoIndexPaths = indexPaths.compactMap { indexPath in
+      self.dataSource.videoViewElementWithNoPlayer(
+        tableView: self.tableView,
+        indexPath: indexPath,
+        section: .campaign
+      )
+    }
+
+    campaignSectionVideoIndexPaths.forEach { element, indexPath in
+      self.viewModel.inputs.prepareVideoAt(indexPath, with: element)
     }
   }
 }
