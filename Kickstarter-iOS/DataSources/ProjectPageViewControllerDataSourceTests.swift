@@ -1,3 +1,4 @@
+import AVFoundation
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
@@ -6,9 +7,9 @@ import XCTest
 
 final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   private let dataSource = ProjectPageViewControllerDataSource()
-
   private let tableView = UITableView()
 
+  private let expectedTime = CMTime(seconds: 123.4, preferredTimescale: CMTimeScale(1))
   private let environmentalCommitments = [
     ProjectEnvironmentalCommitment(
       description: "foo bar",
@@ -50,6 +51,11 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         src: "http://imagetest.com",
         href: "https://href.com",
         caption: "caption"
+      ),
+      VideoViewElement(
+        sourceURLString: "https://source.com",
+        thumbnailURLString: "https://thumbnail.com",
+        seekPosition: .zero
       )
     ])
 
@@ -457,7 +463,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       // campaign
       XCTAssertEqual(
-        3,
+        4,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
       )
 
@@ -728,7 +734,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
     withEnvironment(currentUser: .template) {
-      guard let imageViewElement = self.storyViewableElements.htmlViewElements.last as? ImageViewElement
+      guard let imageViewElement = self.storyViewableElements.htmlViewElements[2] as? ImageViewElement
       else {
         XCTFail("image view element should exist in story view elements.")
 
@@ -766,6 +772,55 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(imageData.image, expectedImage)
       XCTAssertEqual(imageData.url, expectedURL)
       XCTAssertEqual(imageData.indexPath, expectedIndexPath)
+    }
+  }
+
+  func testCampaign_WithVideoViewElementPreload_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      guard let videoViewElement = self.storyViewableElements.htmlViewElements[3] as? VideoViewElement
+      else {
+        XCTFail("video view element should exist in story view elements.")
+
+        return
+      }
+
+      let expectedIndexPath = IndexPath(
+        row: 3,
+        section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
+      )
+
+      self.dataSource.preloadCampaignVideoViewElement(videoViewElement, player: AVPlayer())
+
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      guard let updatedItem = self.dataSource
+        .items(in: expectedIndexPath.section)[expectedIndexPath.row] as? (
+          value: (VideoViewElement, AVPlayer),
+          reusableId: String
+        ) else {
+        XCTFail("video view element should exist")
+
+        return
+      }
+
+      XCTAssertEqual(updatedItem.value.0.sourceURLString, "https://source.com")
+      XCTAssertEqual(updatedItem.value.0.thumbnailURLString, "https://thumbnail.com")
+      XCTAssertEqual(updatedItem.value.0.seekPosition, .zero)
+      XCTAssertNotNil(updatedItem.value.1)
     }
   }
 
@@ -812,6 +867,115 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
           .Section.campaign
       )
       XCTAssertTrue(imageViewElement)
+    }
+  }
+
+  func testCampaign_VideoViewElementWithNoPlayer_Updated_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      let videoViewIndexPath = IndexPath(
+        row: 3,
+        section: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue
+      )
+      var videoViewElementWithNoPlayer = self.dataSource.videoViewElementWithNoPlayer(
+        tableView: self.tableView,
+        indexPath: videoViewIndexPath,
+        section: ProjectPageViewControllerDataSource
+          .Section.campaign
+      )
+
+      XCTAssertNotNil(videoViewElementWithNoPlayer)
+
+      self.dataSource
+        .updateVideoViewElementWith(
+          videoViewElementWithNoPlayer!.0,
+          player: AVPlayer(),
+          indexPath: videoViewElementWithNoPlayer!.1
+        )
+
+      videoViewElementWithNoPlayer = self.dataSource.videoViewElementWithNoPlayer(
+        tableView: self.tableView,
+        indexPath: videoViewIndexPath,
+        section: ProjectPageViewControllerDataSource
+          .Section.campaign
+      )
+
+      XCTAssertNil(videoViewElementWithNoPlayer)
+    }
+  }
+
+  func testCampaign_VideoViewElementWithNoSeektime_Updated_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      let videoViewIndexPath = IndexPath(
+        row: 3,
+        section: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue
+      )
+
+      let videoViewElementWithNoPlayer = self.dataSource.videoViewElementWithNoPlayer(
+        tableView: self.tableView,
+        indexPath: videoViewIndexPath,
+        section: ProjectPageViewControllerDataSource
+          .Section.campaign
+      )
+
+      self.dataSource
+        .updateVideoViewElementWith(
+          videoViewElementWithNoPlayer!.0,
+          player: AVPlayer(),
+          indexPath: videoViewElementWithNoPlayer!.1
+        )
+
+      self.dataSource.updateVideoViewElementSeektime(
+        with: expectedTime,
+        tableView: self.tableView,
+        indexPath: videoViewIndexPath
+      )
+      guard let updatedItem = self.dataSource
+        .items(in: videoViewIndexPath
+          .section)[videoViewIndexPath.row] as? (value: (VideoViewElement, AVPlayer), reusableId: String)
+      else {
+        XCTFail("video view element should exist")
+
+        return
+      }
+
+      XCTAssertEqual(
+        updatedItem.value.0.seekPosition,
+        expectedTime
+      )
     }
   }
 }

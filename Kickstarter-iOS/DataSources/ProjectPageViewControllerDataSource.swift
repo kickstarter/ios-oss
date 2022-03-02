@@ -1,3 +1,4 @@
+import AVFoundation
 import KsApi
 import Library
 import Prelude
@@ -46,6 +47,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   }
 
   private var preexistingImageViewElementsWithData = [(element: ImageViewElement, image: UIImage?)]()
+  private var preexistingVideoViewElementsWithPlayer = [(element: VideoViewElement, player: AVPlayer?)]()
 
   func load(
     navigationSection: NavigationSection,
@@ -53,7 +55,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     refTag: RefTag?,
     isExpandedStates: [Bool]? = nil
   ) {
-    self.prepareImagesInCampaignSection(section: navigationSection)
+    self.prepareImagesInCampaignSection()
+    self.prepareVideosInCampaignSection()
     // Clear all sections
     self.clearValues()
 
@@ -111,6 +114,18 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           self.appendRow(
             value: value,
             cellClass: ImageViewElementCell.self,
+            toSection: Section.campaign.rawValue
+          )
+        case let element as VideoViewElement:
+          let preExistingVideoElementWithPlayer = preexistingVideoViewElementsWithPlayer
+            .filter { $0.0.sourceURLString == element.sourceURLString }
+            .first
+
+          let elementWithPlayer = (element, preExistingVideoElementWithPlayer?.player)
+
+          self.appendRow(
+            value: elementWithPlayer,
+            cellClass: VideoViewElementCell.self,
             toSection: Section.campaign.rawValue
           )
         default:
@@ -200,14 +215,6 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
-  func preloadCampaignImageViewElement(_ element: ImageViewElement, image: UIImage) {
-    self.appendRow(
-      value: (element, image),
-      cellClass: ImageViewElementCell.self,
-      toSection: Section.campaign.rawValue
-    )
-  }
-
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as ProjectEnvironmentalCommitmentCell, value as ProjectEnvironmentalCommitment):
@@ -236,6 +243,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ImageViewElementCell, value as (ImageViewElement, UIImage?)):
       cell.configureWith(value: value)
+    case let (cell as VideoViewElementCell, value as (VideoViewElement, AVPlayer?)):
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
@@ -243,10 +252,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   // MARK: Helpers
 
-  private func prepareImagesInCampaignSection(section: NavigationSection) {
-    if self.preexistingImageViewElementsWithData.isEmpty,
-      section == .campaign,
-      self.numberOfSections(in: UITableView()) >= Section.campaign.rawValue {
+  private func prepareImagesInCampaignSection() {
+    if self.numberOfSections(in: UITableView()) > Section.campaign.rawValue {
       self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
         guard let imageViewData = valueAndResuseId.value as? (element: ImageViewElement, image: UIImage?),
           imageViewData.image != nil else {
@@ -254,6 +261,41 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         }
 
         preexistingImageViewElementsWithData.append(imageViewData)
+
+        var seenURLStrings = Set<String>()
+        var uniqueElements = [(element: ImageViewElement, image: UIImage?)]()
+        for (imageElement, image) in preexistingImageViewElementsWithData {
+          if !seenURLStrings.contains(imageElement.src) {
+            uniqueElements.append((imageElement, image))
+            seenURLStrings.insert(imageElement.src)
+          }
+        }
+
+        preexistingImageViewElementsWithData = uniqueElements
+      }
+    }
+  }
+
+  private func prepareVideosInCampaignSection() {
+    if self.numberOfSections(in: UITableView()) > Section.campaign.rawValue {
+      self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
+        guard let videoViewElementWithPlayer = valueAndResuseId.value as? (VideoViewElement, AVPlayer?)
+        else {
+          return
+        }
+
+        preexistingVideoViewElementsWithPlayer.append(videoViewElementWithPlayer)
+
+        var seenURLStrings = Set<String>()
+        var uniqueElements = [(element: VideoViewElement, player: AVPlayer?)]()
+        for (videoElement, player) in preexistingVideoViewElementsWithPlayer {
+          if !seenURLStrings.contains(videoElement.sourceURLString) {
+            uniqueElements.append((videoElement, player))
+            seenURLStrings.insert(videoElement.sourceURLString)
+          }
+        }
+
+        preexistingVideoViewElementsWithPlayer = uniqueElements
       }
     }
   }
@@ -264,6 +306,17 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     self.set(
       value: (imageViewElement, image),
       cellClass: ImageViewElementCell.self,
+      inSection: indexPath.section,
+      row: indexPath.row
+    )
+  }
+
+  internal func updateVideoViewElementWith(_ videoViewElement: VideoViewElement,
+                                           player: AVPlayer,
+                                           indexPath: IndexPath) {
+    self.set(
+      value: (videoViewElement, player),
+      cellClass: VideoViewElementCell.self,
       inSection: indexPath.section,
       row: indexPath.row
     )
@@ -305,9 +358,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     return values.map { _, isExpanded in isExpanded }
   }
 
-  public func isIndexPathAnImageViewElement(tableView: UITableView,
-                                            indexPath: IndexPath,
-                                            section: ProjectPageViewControllerDataSource.Section) -> Bool {
+  internal func isIndexPathAnImageViewElement(tableView: UITableView,
+                                              indexPath: IndexPath,
+                                              section: ProjectPageViewControllerDataSource.Section) -> Bool {
     guard indexPath.section == section.rawValue else { return false }
 
     if self.numberOfSections(in: tableView) > section.rawValue,
@@ -317,5 +370,58 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
 
     return false
+  }
+
+  internal func videoViewElementWithNoPlayer(
+    tableView: UITableView,
+    indexPath: IndexPath,
+    section: ProjectPageViewControllerDataSource.Section
+  ) -> (VideoViewElement, IndexPath)? {
+    guard indexPath.section == section.rawValue else { return nil }
+
+    if self.numberOfSections(in: tableView) > section.rawValue,
+      self.numberOfItems(in: section.rawValue) > indexPath.row,
+      let (element, player) = self.items(in: section.rawValue)[indexPath.row]
+      .value as? (VideoViewElement, AVPlayer?),
+      player == nil {
+      return (element, indexPath)
+    }
+
+    return nil
+  }
+
+  internal func updateVideoViewElementSeektime(with seekTime: CMTime,
+                                               tableView: UITableView,
+                                               indexPath: IndexPath) {
+    if self.numberOfSections(in: tableView) > indexPath.section,
+      self.numberOfItems(in: indexPath.section) > indexPath.row,
+      let videoViewElementWithPlayer = self.items(in: indexPath.section)[indexPath.row]
+      .value as? (VideoViewElement, AVPlayer) {
+      let updatedVideoElement = videoViewElementWithPlayer.0
+        |> VideoViewElement.lens.seekPosition .~ seekTime
+
+      self.set(
+        value: (updatedVideoElement, videoViewElementWithPlayer.1),
+        cellClass: VideoViewElementCell.self,
+        inSection: indexPath.section,
+        row: indexPath.row
+      )
+    }
+  }
+
+  internal func preloadCampaignImageViewElement(_ element: ImageViewElement, image: UIImage) {
+    self.appendRow(
+      value: (element, image),
+      cellClass: ImageViewElementCell.self,
+      toSection: Section.campaign.rawValue
+    )
+  }
+
+  internal func preloadCampaignVideoViewElement(_ element: VideoViewElement, player: AVPlayer) {
+    self.appendRow(
+      value: (element, player),
+      cellClass: VideoViewElementCell.self,
+      toSection: Section.campaign.rawValue
+    )
   }
 }

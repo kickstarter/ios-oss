@@ -37,6 +37,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
           src: "bad-url",
           href: "https://ksr.com",
           caption: "camera"
+        ),
+        VideoViewElement(
+          sourceURLString: "https://source.com",
+          thumbnailURLString: nil,
+          seekPosition: .zero
         )
       ]),
     minimumPledgeAmount: 1

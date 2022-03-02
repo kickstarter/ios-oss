@@ -247,8 +247,24 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
  Returns a `ProjectStoryElements` object from `ProjectFragment`
  */
 private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
-  let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
-  let storyElements = ProjectStoryElements(htmlViewElements: viewElements)
+  var viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
+  var seenURLStrings = Set<String>()
+  var htmlElementsWithUniqueVideoViewElements = [HTMLViewElement]()
+
+  for viewElement in viewElements {
+    guard let videoViewElement = viewElement as? VideoViewElement else {
+      htmlElementsWithUniqueVideoViewElements.append(viewElement)
+
+      continue
+    }
+
+    if !seenURLStrings.contains(videoViewElement.sourceURLString) {
+      htmlElementsWithUniqueVideoViewElements.append(viewElement)
+      seenURLStrings.insert(videoViewElement.sourceURLString)
+    }
+  }
+
+  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueVideoViewElements)
 
   return storyElements
 }

@@ -1,7 +1,7 @@
 import SwiftSoup
 
 enum ViewElementType: String {
-  case image = "img"
+  case imageOrVideo
   case text
   case video
   case externalSources = "iframe"

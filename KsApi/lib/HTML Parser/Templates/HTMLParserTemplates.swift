@@ -7,6 +7,7 @@ public enum HTMLParserTemplates {
   case validImageWithCaptionAndLink
   case validVideo
   case validVideoHigh
+  case validHiddenVideo
   case validIFrame
   case validHeaderText
   case validParagraphTextWithStyles
@@ -26,6 +27,8 @@ public enum HTMLParserTemplates {
       return self.validImageWithCaptionAndLink
     case .validVideo:
       return self.validVideo
+    case .validHiddenVideo:
+      return self.validHiddenVideo
     case .validVideoHigh:
       return self.validVideoHigh
     case .validIFrame:
@@ -87,6 +90,30 @@ public enum HTMLParserTemplates {
        \n
     </div>
     \n
+    """
+  }
+
+  private var validHiddenVideo: String {
+    """
+      <div class=\"template asset\" contenteditable=\"false\" data-id=\"35786501\">
+         \n
+         <figure class=\"page-anchor\" id=\"asset-35786501\">
+            \n
+            <div class="video-player" data-video-url="https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.mp4" data-image="https://dr0rfahizzuzj.cloudfront.net/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.jpg?2021" data-dimensions='{"width":640,"height":360}' data-context="Story Description">
+               \n
+               <video class="landscape" preload="none">
+                  \n
+                  <source src="https://v.kickstarter.com/1642030675_192c029616b9f219c821971712835747963f13cc/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_base.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></source>
+                  \nYou'll need an HTML5 capable browser to see this content.\n
+               </video>
+               \n<img class="has_played_hide full-width poster landscape" alt=" project video thumbnail" src="https://dr0rfahizzuzj.cloudfront.net/assets/035/455/706/2610a2ac226ce966cc74ff97c8b6344d_h264_high.jpg?2021">\n
+               <div class="play_button_container absolute-center has_played_hide">\n<button aria-label="Play video" class="play_button_big play_button_dark radius2px" type="button">\n<span class="ksr-icon__play" aria-hidden="true"></span>\nPlay\n</button>\n</div>
+               \n
+            </div>
+            \n
+      </figure>
+      \n
+    </div>
     """
   }
 

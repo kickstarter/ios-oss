@@ -1,95 +1,119 @@
 import AVKit
-import Foundation
+import KsApi
 import Library
+import Prelude
+import Prelude_UIKit
 import UIKit
-import youtube_ios_player_helper
 
-class VideoViewElementCell: UITableViewCell {
-  private var videoPlayerLayer: AVPlayerLayer?
-  private var embedPlayerView: YTPlayerView?
-  private var videoPlayerGestureRecognizer: UIGestureRecognizer?
+internal protocol VideoViewElementCellPlaybackDelegate: AnyObject {
+  func pausePlayback() -> CMTime
+}
+
+class VideoViewElementCell: UITableViewCell, ValueCell {
+  // MARK: Properties
+
+  private let viewModel: VideoViewElementCellViewModelType = VideoViewElementCellViewModel()
+  private lazy var playerController: AVPlayerViewController = { AVPlayerViewController() }()
+
+  weak var delegate: VideoViewElementCellPlaybackDelegate?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    self.initialize()
+    self.delegate = self
+
+    self.configureViews()
+    self.bindStyles()
+    self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+  // MARK: Initializers
 
-    self.initialize()
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
-  override func prepareForReuse() {
-    self.videoPlayerLayer?.player?.replaceCurrentItem(with: nil)
-    self.videoPlayerLayer?.removeFromSuperlayer()
-    self.videoPlayerLayer = nil
-
-    self.embedPlayerView?.stopVideo()
-    self.embedPlayerView?.removeFromSuperview()
-    self.embedPlayerView = nil
-
-    if let videoPlayerGestureRecognizer = videoPlayerGestureRecognizer {
-      removeGestureRecognizer(videoPlayerGestureRecognizer)
-    }
+  func configureWith(value: (element: VideoViewElement, player: AVPlayer?)) {
+    self.viewModel.inputs.configureWith(element: value.element, player: value.player)
   }
 
-  func initialize() {
-    backgroundColor = UIColor.gray
-  }
+  // MARK: View Model
 
-  func configureWith(value: VideoViewElement) {
-    // The first will play the high quality video (0: high - 1: base)
-    // TODO: Be able to remember where the user stopped playing the video
-    guard let urlString = value.sourceUrls.first, let url = URL(string: urlString) else {
-      return
-    }
+  internal override func bindViewModel() {
+    self.viewModel.outputs.videoItem
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.resetPlayer()
+      })
+      .observeValues { [weak self] playerItem in
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
 
-    // Example Urls
-    // https://youtu.be/DEG1qicbAmU
-    // https://www.youtube.com/watch?v=i0uU5IV_4ZA
-    if url.host == "youtu.be", let videoId = url.pathComponents.last {
-      self.configureYouTubeVideo(videoId: videoId)
-    } else if url.host == "www.youtube.com", let queryItems = URLComponents(string: urlString)?.queryItems {
-      let videoIdItem = queryItems.first { $0.name == "v" }
-      if let videoId = videoIdItem?.value {
-        self.configureYouTubeVideo(videoId: videoId)
+        self?.playerController.player = playerItem
       }
-    } else {
-      self.configureVideo(videoUrl: url)
-    }
+
+    self.viewModel.outputs.pauseVideo
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.playerController.player?.pause()
+
+        guard let player = self?.playerController.player else {
+          self?.viewModel.inputs.recordSeektime(.zero)
+
+          return
+        }
+
+        let currentSeekTime = player.currentTime()
+
+        self?.viewModel.inputs.recordSeektime(currentSeekTime)
+      }
   }
 
-  private func configureVideo(videoUrl: URL) {
-    let videoPlayer = AVPlayer(url: videoUrl)
-    videoPlayerLayer = AVPlayerLayer(player: videoPlayer)
+  // MARK: View Styles
 
-    if let videoPlayerLayer = videoPlayerLayer {
-      videoPlayerLayer.frame = bounds
-      layer.addSublayer(videoPlayerLayer)
-    }
+  internal override func bindStyles() {
+    super.bindStyles()
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.togglePlay))
-    self.videoPlayerGestureRecognizer = tapGestureRecognizer
-    addGestureRecognizer(tapGestureRecognizer)
+    _ = self
+      |> baseTableViewCellStyle()
+      |> \.separatorInset .~
+      .init(
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
+      )
+
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(
+        topBottom: Styles.gridHalf(3),
+        leftRight: Styles.grid(3)
+      )
+
+    let aspectRatio = CGFloat(9.0 / 16.0)
+
+    NSLayoutConstraint.activate([
+      self.playerController.view.heightAnchor.constraint(
+        equalTo: self.contentView.layoutMarginsGuide.widthAnchor,
+        multiplier: aspectRatio
+      )
+    ])
   }
 
-  private func configureYouTubeVideo(videoId: String) {
-    // TODO: ADD Youtube Player to the element to be able to preload the elements
-    let videoPlayerView = YTPlayerView()
-    embedPlayerView = videoPlayerView
-    videoPlayerView.load(withVideoId: videoId)
+  // MARK: Helpers
 
-    addSubview(videoPlayerView)
-    videoPlayerView.snp.makeConstraints { make in
-      make.leading.trailing.top.bottom.equalToSuperview()
-    }
+  private func resetPlayer() {
+    self.playerController.player = nil
   }
 
-  @IBAction func togglePlay() {
-    if let player = videoPlayerLayer?.player {
-      player.rate == 1 ? player.pause() : player.play()
-    }
+  private func configureViews() {
+    _ = (self.playerController.view, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+  }
+}
+
+extension VideoViewElementCell: VideoViewElementCellPlaybackDelegate {
+  func pausePlayback() -> CMTime {
+    self.viewModel.inputs.pausePlayback()
   }
 }

@@ -5,6 +5,7 @@ public enum HTMLRawText {
     case htmlClass = "class"
     case width
     case div
+    case video
   }
 
   enum List: String {

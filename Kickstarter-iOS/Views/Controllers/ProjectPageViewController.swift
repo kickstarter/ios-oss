@@ -1,3 +1,5 @@
+import AVFoundation
+import Combine
 import KsApi
 import Library
 import Prelude
@@ -77,6 +79,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.registerCellClass(TextViewElementCell.self)
     self.tableView.registerCellClass(ImageViewElementCell.self)
+    self.tableView.registerCellClass(VideoViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -312,7 +315,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.prefetchImageURLsOnFirstLoad
       .observeValues { [weak self] imageViewElements in
-
         imageViewElements.forEach { element in
           guard let url = URL(string: element.src) else { return }
 
@@ -322,6 +324,26 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
             dataSource.preloadCampaignImageViewElement(element, image: crossPlatformImage)
           }
+        }
+      }
+
+    self.viewModel.outputs.precreateVideoURLsOnFirstLoad
+      .observeValues { [weak self] elements in
+        elements.forEach { element in
+          guard let url = URL(string: element.sourceURLString) else { return }
+
+          self?.prepareToPlayVideoURL(url) { availablePlayer in
+            self?.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+          }
+        }
+      }
+
+    self.viewModel.outputs.precreateVideoURLs
+      .observeValues { [weak self] element, indexPath in
+        guard let url = URL(string: element.sourceURLString) else { return }
+
+        self?.prepareToPlayVideoURL(url) { availablePlayer in
+          self?.dataSource.updateVideoViewElementWith(element, player: availablePlayer, indexPath: indexPath)
         }
       }
 
@@ -371,6 +393,44 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
+  }
+
+  private func prepareToPlayVideoURL(_ url: URL, completionHandler: @escaping (AVPlayer) -> Void) {
+    // Create asset to be played
+    let asset = AVAsset(url: url)
+
+    asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
+      var durationError: NSError?
+      var tracksError: NSError?
+
+      if asset.statusOfValue(forKey: "duration", error: &durationError) == .loaded,
+        asset.statusOfValue(forKey: "tracks", error: &tracksError) == .loaded {
+        let playerItem = AVPlayerItem(
+          asset: asset,
+          automaticallyLoadedAssetKeys: ["duration", "tracks"]
+        )
+
+        var player: AVPlayer?
+        var cancellable: AnyCancellable?
+
+        cancellable = playerItem.publisher(for: \.status)
+          .subscribe(on: DispatchQueue.global(qos: .background))
+          .sink { status in
+            switch status {
+            case .readyToPlay:
+              guard let availablePlayer = player else { return }
+
+              completionHandler(availablePlayer)
+
+              cancellable = nil
+            default:
+              return
+            }
+          }
+
+        player = AVPlayer(playerItem: playerItem)
+      }
+    }
   }
 
   private func showProjectStarredPrompt() {
@@ -521,13 +581,13 @@ extension ProjectPageViewController: PledgeCTAContainerViewDelegate {
 
 extension ProjectPageViewController: VideoViewControllerDelegate {
   public func videoViewControllerDidFinish(_: VideoViewController) {
-    /** FIXME: Currently unused - fix in https://kickstarter.atlassian.net/browse/NTV-196
+    /** FIXME: Currently unused - fix in future when refactoring the overview tab.
      self.navBarController.projectVideoDidFinish()
      */
   }
 
   public func videoViewControllerDidStart(_: VideoViewController) {
-    /** FIXME: Currently unused fix in https://kickstarter.atlassian.net/browse/NTV-196
+    /** FIXME: Currently unused fix infuture when refactoring the overview tab.
      self.navBarController.projectVideoDidStart()
      */
   }
@@ -616,13 +676,25 @@ extension ProjectPageViewController: UITableViewDelegate {
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
       .overviewSubpages.rawValue ? .none : .singleLine
   }
+
+  public func tableView(
+    _: UITableView,
+    didEndDisplaying cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    if let cell = cell as? VideoViewElementCell,
+      let seekTime = cell.delegate?.pausePlayback() {
+      self.dataSource
+        .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
+    }
+  }
 }
 
 // MARK: - ProjectPageViewControllerDataSourcePrefetching
 
 extension ProjectPageViewController: UITableViewDataSourcePrefetching {
   public func tableView(_: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-    let campaignSectionIndexPaths = indexPaths.filter { indexPath in
+    let campaignSectionImageIndexPaths = indexPaths.filter { indexPath in
       self.dataSource.isIndexPathAnImageViewElement(
         tableView: self.tableView,
         indexPath: indexPath,
@@ -630,8 +702,20 @@ extension ProjectPageViewController: UITableViewDataSourcePrefetching {
       )
     }
 
-    campaignSectionIndexPaths.forEach { indexPath in
+    campaignSectionImageIndexPaths.forEach { indexPath in
       self.viewModel.inputs.prepareImageAt(indexPath)
+    }
+
+    let campaignSectionVideoIndexPaths = indexPaths.compactMap { indexPath in
+      self.dataSource.videoViewElementWithNoPlayer(
+        tableView: self.tableView,
+        indexPath: indexPath,
+        section: .campaign
+      )
+    }
+
+    campaignSectionVideoIndexPaths.forEach { element, indexPath in
+      self.viewModel.inputs.prepareVideoAt(indexPath, with: element)
     }
   }
 }
