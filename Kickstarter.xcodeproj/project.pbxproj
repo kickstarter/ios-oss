@@ -115,6 +115,7 @@
 		064B007627A462AA007B21FE /* ImageViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16F62773AD36009E4354 /* ImageViewElementCell.swift */; };
 		064B007827A463D2007B21FE /* ImageViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */; };
 		064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */; };
+		064E10BF27CF038300A9A75F /* VideoViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064E10BE27CF038300A9A75F /* VideoViewElementCellViewModelTests.swift */; };
 		0653738D27AC5B2D00C7D160 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0653738C27AC5B2D00C7D160 /* Kingfisher.framework */; };
 		0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7272732FDA30087281F /* FetchRootCategories.graphql */; };
 		0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7292732FDE00087281F /* FetchCategory.graphql */; };
@@ -1883,6 +1884,7 @@
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
 		064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLViewElementStyles.swift; sourceTree = "<group>"; };
+		064E10BE27CF038300A9A75F /* VideoViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
 		0653738C27AC5B2D00C7D160 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		0655C7272732FDA30087281F /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
 		0655C7292732FDE00087281F /* FetchCategory.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCategory.graphql; sourceTree = "<group>"; };
@@ -3517,6 +3519,7 @@
 				064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */,
 				062BE3B927B3224A006B5251 /* ImageViewElementCellViewModelTests.swift */,
 				067E7EC827BF0F2B00F02B33 /* VideoViewElementCellViewModel.swift */,
+				064E10BE27CF038300A9A75F /* VideoViewElementCellViewModelTests.swift */,
 			);
 			path = "HTML Parser";
 			sourceTree = "<group>";
@@ -6557,6 +6560,7 @@
 				D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */,
 				8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */,
 				D65BF353233023E500B15B25 /* ManagePledgeSummaryViewModelTests.swift in Sources */,
+				064E10BF27CF038300A9A75F /* VideoViewElementCellViewModelTests.swift in Sources */,
 				A7ED1FC71E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift in Sources */,
 				A7ED1FD51E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift in Sources */,
 			);

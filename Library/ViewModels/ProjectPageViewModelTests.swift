@@ -1,3 +1,4 @@
+import AVFoundation
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -44,6 +45,8 @@ final class ProjectPageViewModelTests: TestCase {
   private let presentMessageDialog = TestObserver<Project, Never>()
   private let prefetchImageURLs = TestObserver<([URL], IndexPath), Never>()
   private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
+  private let precreateVideoURLs = TestObserver<(VideoViewElement, IndexPath), Never>()
+  private let precreateVideoURLsFirstLoad = TestObserver<[VideoViewElement], Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let updateDataSourceProject = TestObserver<Project, Never>()
@@ -102,6 +105,8 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
+    self.vm.outputs.precreateVideoURLs.observe(self.precreateVideoURLs.observer)
+    self.vm.outputs.precreateVideoURLsOnFirstLoad.observe(self.precreateVideoURLsFirstLoad.observer)
     self.vm.outputs.prefetchImageURLs.observe(self.prefetchImageURLs.observer)
     self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(self.prefetchImageURLsFirstLoad.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
@@ -1430,10 +1435,124 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  func testOutputForNonEmptyVideoURLS_UpdatedPrepareVideoIndexPath() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedTime = CMTime(
+      seconds: 123.4,
+      preferredTimescale: CMTimeScale(1)
+    )
+    let expectedVideoElement = VideoViewElement(
+      sourceURLString: "https://video.com",
+      thumbnailURLString: "https://thumbnail.com",
+      seekPosition: expectedTime
+    )
+    let expectedIndexPath = IndexPath(row: 0, section: campaignSection)
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      self.vm.inputs.prepareVideoAt(
+        expectedIndexPath,
+        with: expectedVideoElement
+      )
+
+      XCTAssertEqual(
+        self.precreateVideoURLs.lastValue?.0.sourceURLString,
+        expectedVideoElement.sourceURLString
+      )
+      XCTAssertEqual(
+        self.precreateVideoURLs.lastValue?.0.thumbnailURLString,
+        expectedVideoElement.thumbnailURLString
+      )
+      XCTAssertEqual(self.precreateVideoURLs.lastValue?.0.seekPosition, expectedTime)
+      XCTAssertEqual(self.precreateVideoURLs.lastValue?.1, expectedIndexPath)
+    }
+  }
+
+  func testOutputForNonEmptyVideoURLS_UpdatedPrefetchVideoURLsOnFirstLoad() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedTime = CMTime(
+      seconds: 123.4,
+      preferredTimescale: CMTimeScale(1)
+    )
+    let expectedVideoElement = VideoViewElement(
+      sourceURLString: "https://video.com",
+      thumbnailURLString: "https://thumbnail.com",
+      seekPosition: expectedTime
+    )
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          expectedVideoElement
+        ]),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      guard let videoViewElement = self.precreateVideoURLsFirstLoad.lastValue?.first else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(videoViewElement.sourceURLString, expectedVideoElement.sourceURLString)
+      XCTAssertEqual(videoViewElement.thumbnailURLString, expectedVideoElement.thumbnailURLString)
+      XCTAssertEqual(videoViewElement.seekPosition, expectedTime)
+    }
+  }
+
   func testOutputForNonEmptyImageURLS_UpdatedPrefetchImageURLsOnFirstLoad() {
     let campaignSection = NavigationSection.campaign.rawValue
     let expectedUrl = URL(string: "https://image.com")!
-    let expectedIndexPath = IndexPath(row: 0, section: campaignSection)
     let expectedImageViewElement = ImageViewElement(
       src: expectedUrl.absoluteString,
       href: nil,
@@ -1470,8 +1589,6 @@ final class ProjectPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
-
-      self.vm.inputs.prepareImageAt(expectedIndexPath)
 
       guard let imageViewElement = self.prefetchImageURLsFirstLoad.lastValue?.first else {
         XCTFail()
