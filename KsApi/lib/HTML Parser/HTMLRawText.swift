@@ -3,7 +3,8 @@ import Foundation
 public enum HTMLRawText {
   enum Base: String {
     case htmlClass = "class"
-    case width
+    case height
+    case iframe
     case div
     case video
   }
@@ -12,10 +13,6 @@ public enum HTMLRawText {
     case listItem = "li"
     case unorderedList = "ul"
     case orderedList = "ol"
-  }
-
-  enum Size: String {
-    case hundredPercent = "100%"
   }
 
   enum Link: String {

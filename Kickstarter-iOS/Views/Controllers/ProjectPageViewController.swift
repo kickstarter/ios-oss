@@ -80,6 +80,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(TextViewElementCell.self)
     self.tableView.registerCellClass(ImageViewElementCell.self)
     self.tableView.registerCellClass(VideoViewElementCell.self)
+    self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -670,6 +671,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       cell.delegate = self
     } else if let cell = cell as? ImageViewElementCell {
       cell.delegate = self
+    } else if let cell = cell as? ExternalSourceViewElementCell {
+      cell.delegate?.resetContentHeight()
     }
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
@@ -686,6 +689,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       let seekTime = cell.delegate?.pausePlayback() {
       self.dataSource
         .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
+    } else if let cell = cell as? ExternalSourceViewElementCell {
+      cell.delegate?.resetWebViewContent()
     }
   }
 }

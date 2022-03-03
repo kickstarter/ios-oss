@@ -128,6 +128,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
             cellClass: VideoViewElementCell.self,
             toSection: Section.campaign.rawValue
           )
+        case let element as ExternalSourceViewElement:
+          self.appendRow(
+            value: element,
+            cellClass: ExternalSourceViewElementCell.self,
+            toSection: Section.campaign.rawValue
+          )
         default:
           break
         }
@@ -244,6 +250,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case let (cell as ImageViewElementCell, value as (ImageViewElement, UIImage?)):
       cell.configureWith(value: value)
     case let (cell as VideoViewElementCell, value as (VideoViewElement, AVPlayer?)):
+      cell.configureWith(value: value)
+    case let (cell as ExternalSourceViewElementCell, value as ExternalSourceViewElement):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

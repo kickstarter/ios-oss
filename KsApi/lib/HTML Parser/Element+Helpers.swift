@@ -81,17 +81,43 @@ extension Element {
   }
 
   func parseExternalElement() -> ExternalSourceViewElement {
-    guard !children().isEmpty() else {
-      return ExternalSourceViewElement(iFrameContent: "")
+    var contentString = ""
+    var contentHeight: Int?
+
+    guard let iFrameElement = try? children().first()?.getElementsByTag(HTMLRawText.Base.iframe.rawValue)
+      .first(),
+      let iFrameSourceString = iFrameElement.getAttributes()?
+      .first(where: { $0.getKey() == HTMLRawText.Link.source.rawValue })?.getValue() else {
+      return ExternalSourceViewElement(
+        embeddedURLString: contentString,
+        embeddedURLContentHeight: contentHeight
+      )
     }
 
-    _ = try? children()[0].attr(HTMLRawText.Base.width.rawValue, HTMLRawText.Size.hundredPercent.rawValue)
+    /// Ensure content that is embedded can be parsed for a src tag.
+    contentString = iFrameSourceString
 
-    guard let updatedElementHTML = try? children()[0].outerHtml() else {
-      return ExternalSourceViewElement(iFrameContent: "")
+    if let urlComponents = URLComponents(string: iFrameSourceString),
+      let srcQueryItemValue = urlComponents.queryItems?
+      .first(where: { $0.name == HTMLRawText.Link.source.rawValue })?.value {
+      contentString = srcQueryItemValue
     }
 
-    let externalElementValue = ExternalSourceViewElement(iFrameContent: updatedElementHTML)
+    guard let heightAttributeText: String = iFrameElement.getAttributes()?
+      .first(where: { $0.getKey() == HTMLRawText.Base.height.rawValue })?.getValue(),
+      let contentHeightValue = Int(heightAttributeText) else {
+      return ExternalSourceViewElement(
+        embeddedURLString: contentString,
+        embeddedURLContentHeight: contentHeight
+      )
+    }
+
+    contentHeight = contentHeightValue
+
+    let externalElementValue = ExternalSourceViewElement(
+      embeddedURLString: contentString,
+      embeddedURLContentHeight: contentHeight
+    )
 
     return externalElementValue
   }
