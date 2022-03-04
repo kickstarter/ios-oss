@@ -457,7 +457,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
 
       // campaign header section
       XCTAssertEqual(
