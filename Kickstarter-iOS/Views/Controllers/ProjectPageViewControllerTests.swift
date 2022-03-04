@@ -42,6 +42,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
           sourceURLString: "https://source.com",
           thumbnailURLString: nil,
           seekPosition: .zero
+        ),
+        ExternalSourceViewElement(
+          embeddedURLString: "https://source.com",
+          embeddedURLContentHeight: 123
         )
       ]),
     minimumPledgeAmount: 1

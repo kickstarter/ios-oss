@@ -9,6 +9,7 @@ public enum HTMLParserTemplates {
   case validVideoHigh
   case validHiddenVideo
   case validIFrame
+  case validIFrameWithEmbeddedSource
   case validHeaderText
   case validParagraphTextWithStyles
   case validParagraphTextWithLinksAndStyles
@@ -33,6 +34,8 @@ public enum HTMLParserTemplates {
       return self.validVideoHigh
     case .validIFrame:
       return self.validExternalSource
+    case .validIFrameWithEmbeddedSource:
+      return self.validEmbeddedExternalSource
     case .validHeaderText:
       return self.validHeaderText
     case .validParagraphTextWithLinksAndStyles:
@@ -168,6 +171,13 @@ public enum HTMLParserTemplates {
   private var validExternalSource: String {
     """
     <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=GcoaQ3LlqWI&amp;t=8s\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/GcoaQ3LlqWI?start=8&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n\n</div>
+    \n\n
+    """
+  }
+
+  private var validEmbeddedExternalSource: String {
+    """
+    <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=GcoaQ3LlqWI&amp;t=8s\">\n<iframe width=\"356\" height=\"400\" src=\"https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.tiktok.com%2Fembed%2Fv2%2F7056148230324653359&amp;display_name=tiktok&amp;url=https%3A%2F%2Fwww.tiktok.com%2F%40mister.larrie%2Fvideo%2F7056148230324653359&amp;image=https%3A%2F%2Fp16-sign.tiktokcdn-us.com%2Ftos-useast5-p-0068-tx%2Fc2fb40eb0e5d416b8b4e8e6cc9da6877_1642887536%7Etplv-tiktok-play.jpeg%3Fx-expires%3D1646848800%26x-signature%3D%252BVY%252Bg5hMnnAHb%252B24XUDHSPRNFUQ%253D&amp;key=d3cf44f504524614bc66d6797c5dd848&amp;type=text%2Fhtml&amp;schema=tiktok" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n\n</div>
     \n\n
     """
   }

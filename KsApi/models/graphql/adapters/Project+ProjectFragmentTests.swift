@@ -68,7 +68,9 @@ final class Project_ProjectFragmentTests: XCTestCase {
         let textElement = extendedProjectProperties.story.htmlViewElements[2] as? TextViewElement,
         let imageViewElement = extendedProjectProperties.story.htmlViewElements[8] as? ImageViewElement,
         let videoViewElement = extendedProjectProperties.story.htmlViewElements[11] as? VideoViewElement,
-        textElement.components.count > 4 else {
+        let externalSourceViewElement = extendedProjectProperties.story
+        .htmlViewElements[17] as? ExternalSourceViewElement,
+        textElement.components.count > 5 else {
         XCTFail("extended project properties should exist.")
 
         return
@@ -101,6 +103,12 @@ final class Project_ProjectFragmentTests: XCTestCase {
         "https://dr0rfahizzuzj.cloudfront.net/assets/035/786/501/b99cdfe87fc9b942dce0fe9a59a3767a_h264_base.jpg?2021"
       )
       XCTAssertEqual(videoViewElement.seekPosition, .zero)
+
+      XCTAssertEqual(
+        externalSourceViewElement.embeddedURLString,
+        "https://open.spotify.com/embed/track/0dpyzcT3RMNNSd2xKBf35I?si=8c3a869d82464083&utm_source=oembed"
+      )
+      XCTAssertEqual(externalSourceViewElement.embeddedURLContentHeight, 80)
 
       XCTAssertNotNil(extendedProjectProperties.risks)
       XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)

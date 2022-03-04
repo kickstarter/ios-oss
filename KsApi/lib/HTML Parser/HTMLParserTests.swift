@@ -181,9 +181,23 @@ final class HTMLParserTests: XCTestCase {
     }
 
     XCTAssertEqual(
-      viewElement.iFrameContent,
-      "<iframe width=\"100%\" height=\"200\" src=\"https://www.youtube.com/embed/GcoaQ3LlqWI?start=8&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+      viewElement.embeddedURLString,
+      "https://www.youtube.com/embed/GcoaQ3LlqWI?start=8&feature=oembed&wmode=transparent"
     )
+    XCTAssertEqual(viewElement.embeddedURLContentHeight, 200)
+  }
+
+  func testHTMLParser_WithExternalEmbeddedSource_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validIFrameWithEmbeddedSource.data)
+
+    guard let viewElement = viewElements.first as? ExternalSourceViewElement else {
+      XCTFail("external source view element should be created.")
+
+      return
+    }
+
+    XCTAssertEqual(viewElement.embeddedURLString, "https://www.tiktok.com/embed/v2/7056148230324653359")
+    XCTAssertEqual(viewElement.embeddedURLContentHeight, 400)
   }
 
   func testHTMLParser_WithTextHeadline_Success() {

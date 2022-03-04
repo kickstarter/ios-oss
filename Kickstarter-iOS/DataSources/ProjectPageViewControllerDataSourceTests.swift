@@ -56,6 +56,10 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         sourceURLString: "https://source.com",
         thumbnailURLString: "https://thumbnail.com",
         seekPosition: .zero
+      ),
+      ExternalSourceViewElement(
+        embeddedURLString: "https://externalsource.com",
+        embeddedURLContentHeight: 123
       )
     ])
 
@@ -453,7 +457,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
 
       // campaign header section
       XCTAssertEqual(
@@ -463,7 +467,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       // campaign
       XCTAssertEqual(
-        4,
+        5,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.campaignSection)
       )
 
@@ -474,6 +478,14 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(
         "ImageViewElementCell",
         self.dataSource.reusableId(item: 2, section: self.campaignSection)
+      )
+      XCTAssertEqual(
+        "VideoViewElementCell",
+        self.dataSource.reusableId(item: 3, section: self.campaignSection)
+      )
+      XCTAssertEqual(
+        "ExternalSourceViewElementCell",
+        self.dataSource.reusableId(item: 4, section: self.campaignSection)
       )
       XCTAssertEqual(
         "ProjectHeaderCell",
