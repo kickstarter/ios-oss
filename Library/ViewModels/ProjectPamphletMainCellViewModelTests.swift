@@ -43,6 +43,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.statsStackViewAccessibilityLabel
       .observe(self.statsStackViewAccessibilityLabel.observer)
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
+    self.vm.outputs.campaignTabShown.observe(self.readMoreButtonIsHidden.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)
@@ -67,6 +68,66 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
+  }
+
+  func testReadMoreButton_ExperimentTabs_Disabled_ExperimentStory_Disabled_Success() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(value: (.template, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsHidden.assertValues([false])
+    }
+  }
+
+  func testReadMoreButton_ExperimentTabs_Enabled_ExperimentStory_Disabled_Success() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(value: (.template, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsHidden.assertValues([false])
+    }
+  }
+
+  func testReadMoreButton_ExperimentTabs_Disabled_ExperimentStory_Enabled_Success() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(value: (.template, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsHidden.assertValues([false])
+    }
+  }
+
+  func testReadMoreButton_ExperimentTabs_Enabled_ExperimentStory_Enabled_Success() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(value: (.template, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsHidden.assertValues([true])
+    }
   }
 
   func testStatsStackViewAccessibilityLabel() {
