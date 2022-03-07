@@ -271,6 +271,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.readMoreButton.rac.hidden = self.viewModel.outputs.campaignTabShown
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.backersTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
