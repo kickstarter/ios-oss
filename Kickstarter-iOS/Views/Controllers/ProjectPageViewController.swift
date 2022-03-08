@@ -230,6 +230,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         name: .ksr_sessionStarted,
         object: nil
       )
+
+    NotificationCenter.default
+      .addObserver(
+        self,
+        selector: #selector(self.appBackgrounded),
+        name: .ksr_applicationDidEnterBackground,
+        object: nil
+      )
   }
 
   private func bindProjectPageViewModel() {
@@ -393,6 +401,25 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
+      }
+
+    self.viewModel.outputs.pauseMedia
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let tableView = self?.tableView else { return }
+
+        tableView.indexPathsForVisibleRows?.forEach { indexPath in
+          if let cell = tableView.cellForRow(at: indexPath) as? VideoViewElementCell,
+            let isPlaying = cell.delegate?.isPlaying(),
+            isPlaying,
+            let seekTime = cell.delegate?.pausePlayback() {
+            self?.dataSource.updateVideoViewElementSeektime(
+              with: seekTime,
+              tableView: tableView,
+              indexPath: indexPath
+            )
+          }
+        }
       }
   }
 
@@ -567,6 +594,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   @objc private func userSessionStarted() {
     self.viewModel.inputs.userSessionStarted()
+  }
+
+  @objc private func appBackgrounded() {
+    self.viewModel.inputs.applicationDidEnterBackground()
   }
 }
 

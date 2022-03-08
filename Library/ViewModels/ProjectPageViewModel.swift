@@ -6,6 +6,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call when didSelectRowAt is called on a `ProjectFAQAskAQuestionCell`
   func askAQuestionCellTapped()
 
+  /// Call when `AppDelegate`'s `applicationDidEnterBackground` is triggered.
+  func applicationDidEnterBackground()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -94,6 +97,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a `Bool` to hide the navigation bar.
   var navigationBarIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits a signal when the app is no longer being actively used to pause any playing media.
+  var pauseMedia: Signal<Void, Never> { get }
 
   /// Emits when the navigation stack should be popped to the root view controller.
   var popToRootViewController: Signal<(), Never> { get }
@@ -383,11 +389,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         return (project, refTag, updatedValues)
       }
+
+    self.pauseMedia = self.applicationDidEnterBackgroundProperty.signal
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
   public func askAQuestionCellTapped() {
     self.askAQuestionCellTappedProperty.value = ()
+  }
+
+  fileprivate let applicationDidEnterBackgroundProperty = MutableProperty(())
+  public func applicationDidEnterBackground() {
+    self.applicationDidEnterBackgroundProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -491,6 +504,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
   public let navigationBarIsHidden: Signal<Bool, Never>
+  public let pauseMedia: Signal<Void, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
   public let precreateVideoURLs: Signal<(VideoViewElement, IndexPath), Never>

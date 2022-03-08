@@ -37,6 +37,8 @@ public final class VideoViewController: UIViewController {
     self.playButton.addTarget(self, action: #selector(self.playButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
+
+    self.setupNotifications()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -201,6 +203,20 @@ public final class VideoViewController: UIViewController {
     self.playerController.player?.removeObserver(self, forKeyPath: durationKeyPath)
     self.playerController.player?.removeObserver(self, forKeyPath: rateKeyPath)
     self.playerController?.player?.replaceCurrentItem(with: nil)
+  }
+
+  private func setupNotifications() {
+    NotificationCenter.default
+      .addObserver(
+        self,
+        selector: #selector(self.pauseVideo),
+        name: .ksr_applicationDidEnterBackground,
+        object: nil
+      )
+  }
+
+  @objc private func pauseVideo() {
+    self.viewModel.inputs.viewWillDisappear()
   }
 }
 

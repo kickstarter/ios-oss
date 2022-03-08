@@ -7,6 +7,7 @@ import UIKit
 
 internal protocol VideoViewElementCellPlaybackDelegate: AnyObject {
   func pausePlayback() -> CMTime
+  func isPlaying() -> Bool
 }
 
 class VideoViewElementCell: UITableViewCell, ValueCell {
@@ -115,5 +116,9 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
 extension VideoViewElementCell: VideoViewElementCellPlaybackDelegate {
   func pausePlayback() -> CMTime {
     self.viewModel.inputs.pausePlayback()
+  }
+
+  func isPlaying() -> Bool {
+    self.playerController.player?.timeControlStatus == .playing
   }
 }
