@@ -23,6 +23,8 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+    self.delegate = self
+
     self.configureViews()
     self.setupConstraints()
     self.bindStyles()
@@ -42,6 +44,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] htmlText in
         guard let url = URL(string: htmlText) else { return }
+
         let request = URLRequest(url: url)
 
         self?.webView.load(request)
@@ -61,6 +64,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
       }
 
     self.viewModel.outputs.resetWebViewContent
+      .observeForUI()
       .observeValues { [weak self] emptyHTML in
         guard let emptyContentURL = URL(string: emptyHTML) else { return }
 
