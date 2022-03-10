@@ -479,7 +479,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
   }
 
-  func testAppStateEnteringBackground_SendNotification_Sucess() {
+  func testAppStateEnteringBackground_SendNotification_Success() {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: User.template)
     AppEnvironment.login(env)
 
