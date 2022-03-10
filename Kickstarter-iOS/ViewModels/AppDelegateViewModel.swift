@@ -258,11 +258,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .signal
       .mapConst(Notification(name: .ksr_optimizelyClientConfigurationFailed, object: nil))
 
+    let appEnteredBackgroundNotification = self.applicationDidEnterBackgroundProperty.signal
+      .mapConst(Notification(name: .ksr_applicationDidEnterBackground, object: nil))
+
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
       configUpdatedNotification,
       optimizelyClientConfiguredNotification,
-      optimizelyClientConfigurationFailedNotification
+      optimizelyClientConfigurationFailedNotification,
+      appEnteredBackgroundNotification
     )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()

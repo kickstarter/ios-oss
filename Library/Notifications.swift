@@ -19,12 +19,18 @@ public enum CurrentUserNotifications {
   public static let userUpdated = "CurrentUserNotifications.userUpdated"
 }
 
+public enum AppStateNotifications {
+  public static let didEnterBackground = "AppStateNotifications.didEnterBackground"
+}
+
 public enum UserInfoKeys {
   public static let context = "UserInfoKeys.context"
   public static let viewController = "UserInfoKeys.viewController"
 }
 
 extension Notification.Name {
+  public static let ksr_applicationDidEnterBackground = Notification
+    .Name(rawValue: AppStateNotifications.didEnterBackground)
   public static let ksr_configUpdated = Notification.Name(rawValue: CurrentUserNotifications.configUpdated)
   public static let ksr_dataRequested = Notification.Name(rawValue: CurrentUserNotifications.dataRequested)
   public static let ksr_environmentChanged = Notification.Name(

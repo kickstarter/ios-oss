@@ -41,12 +41,14 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
   private let navigationBarIsHidden = TestObserver<Bool, Never>()
+  private let pauseMedia = TestObserver<(), Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let presentMessageDialog = TestObserver<Project, Never>()
   private let prefetchImageURLs = TestObserver<([URL], IndexPath), Never>()
   private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
   private let precreateVideoURLs = TestObserver<(VideoViewElement, IndexPath), Never>()
   private let precreateVideoURLsFirstLoad = TestObserver<[VideoViewElement], Never>()
+  private let reloadCampaignData = TestObserver<(), Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let updateDataSourceProject = TestObserver<Project, Never>()
@@ -103,12 +105,14 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
     self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
+    self.vm.outputs.pauseMedia.observe(self.pauseMedia.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
     self.vm.outputs.precreateVideoURLs.observe(self.precreateVideoURLs.observer)
     self.vm.outputs.precreateVideoURLsOnFirstLoad.observe(self.precreateVideoURLsFirstLoad.observer)
     self.vm.outputs.prefetchImageURLs.observe(self.prefetchImageURLs.observer)
     self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(self.prefetchImageURLsFirstLoad.observer)
+    self.vm.outputs.reloadCampaignData.observe(self.reloadCampaignData.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
     self.vm.outputs.updateDataSource.map { $0.0 }
       .observe(self.updateDataSourceNavigationSection.observer)
@@ -1705,6 +1709,63 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.updateFAQsInDataSourceIsExpandedValues
       .assertValues([[false, true, false, false], [true, true, false, false]])
+  }
+
+  func testOutput_PauseMediaWhenAppIsBackgrounded_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.pauseMedia.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidEnterBackground()
+
+    self.pauseMedia.assertDidEmitValue()
+  }
+
+  func testReloadCampaignData_WhenOrientationChangedOnlyForCampaignTab_Success() {
+    let faqSection = NavigationSection.faq.rawValue
+    let campaignSection = NavigationSection.campaign.rawValue
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: faqSection)
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.viewWillTransition()
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.viewWillTransition()
+
+    self.reloadCampaignData.assertDidEmitValue()
   }
 
   // MARK: - Functions

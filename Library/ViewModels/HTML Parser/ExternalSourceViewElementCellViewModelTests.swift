@@ -11,16 +11,12 @@ internal final class ExternalElementSourceViewElementCellViewModelTests: TestCas
   private let expectedContentHeight = 32
   private let htmlText = TestObserver<String, Never>()
   private let contentHeight = TestObserver<Int, Never>()
-  private let resetWebViewContent = TestObserver<String, Never>()
-  private let toggleContentHeight = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.htmlText.observe(self.htmlText.observer)
     self.vm.outputs.contentHeight.observe(self.contentHeight.observer)
-    self.vm.outputs.resetWebViewContent.observe(self.resetWebViewContent.observer)
-    self.vm.outputs.toggleContentHeight.observe(self.toggleContentHeight.observer)
   }
 
   func testExternalSourceElementData_Success() {
@@ -33,25 +29,5 @@ internal final class ExternalElementSourceViewElementCellViewModelTests: TestCas
 
     self.htmlText.assertLastValue(self.expectedExternalURLString)
     self.contentHeight.assertLastValue(self.expectedContentHeight)
-  }
-
-  func testToggleContentHeight_Success() {
-    self.toggleContentHeight.assertDidNotEmitValue()
-
-    self.vm.inputs.toggleContentHeight(true)
-
-    self.toggleContentHeight.assertLastValue(true)
-
-    self.vm.inputs.toggleContentHeight(false)
-
-    self.toggleContentHeight.assertLastValue(false)
-  }
-
-  func testResetWebView_Success() {
-    self.resetWebViewContent.assertDidNotEmitValue()
-
-    self.vm.inputs.resetWebView()
-
-    self.resetWebViewContent.assertDidEmitValue()
   }
 }
