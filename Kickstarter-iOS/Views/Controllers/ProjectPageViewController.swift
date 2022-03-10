@@ -421,6 +421,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           }
         }
       }
+
+    self.viewModel.outputs.reloadCampaignData
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.tableView.reloadData()
+      }
   }
 
   private func prepareToPlayVideoURL(_ url: URL, completionHandler: @escaping (AVPlayer) -> Void) {
@@ -719,6 +725,15 @@ extension ProjectPageViewController: UITableViewDelegate {
       self.dataSource
         .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
     }
+  }
+
+  public override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
+    super.viewWillTransition(to: size, with: coordinator)
+
+    self.viewModel.inputs.viewWillTransition()
   }
 }
 

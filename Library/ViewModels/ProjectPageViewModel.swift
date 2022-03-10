@@ -62,6 +62,9 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when right before orientation change on view
+  func viewWillTransition()
 }
 
 public protocol ProjectPageViewModelOutputs {
@@ -118,6 +121,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits `[ImageViewElement]` when the project has campaign data to download for a row as soon as the urls are available.
   var prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never> { get }
+
+  /// Emits a signal when an orientation change happens if the currently selected tab is campaign.
+  var reloadCampaignData: Signal<Void, Never> { get }
 
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
@@ -308,7 +314,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
-      self.viewDidAppearAnimated.signal.ignoreValues()
+      self.viewDidAppearAnimatedProperty.signal.ignoreValues()
     )
     .map(unpack)
     .map { project, refTag, _ in
@@ -391,6 +397,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     self.pauseMedia = self.applicationDidEnterBackgroundProperty.signal
+    self.reloadCampaignData = self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil()
+      .takeWhen(self.viewWillTransitionProperty.signal)
+      .filter { NavigationSection(rawValue: $0) == .campaign }
+      .ignoreValues()
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
@@ -488,9 +498,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let viewDidAppearAnimated = MutableProperty(false)
+  fileprivate let viewDidAppearAnimatedProperty = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
-    self.viewDidAppearAnimated.value = animated
+    self.viewDidAppearAnimatedProperty.value = animated
+  }
+
+  fileprivate let viewWillTransitionProperty = MutableProperty(())
+  public func viewWillTransition() {
+    self.viewWillTransitionProperty.value = ()
   }
 
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
@@ -511,6 +526,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let precreateVideoURLsOnFirstLoad: Signal<[VideoViewElement], Never>
   public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
   public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
+  public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
