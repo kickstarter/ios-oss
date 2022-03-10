@@ -41,7 +41,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
         self?.webView.load(request)
       })
       .observeValues { [weak self] htmlText in
-        guard let url = URL(string: htmlText + "?playsline=0") else { return }
+        guard let url = URL(string: htmlText + "?playsinline=0") else { return }
 
         let request = URLRequest(url: url)
 
