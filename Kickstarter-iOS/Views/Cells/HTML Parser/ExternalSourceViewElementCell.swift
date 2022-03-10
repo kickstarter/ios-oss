@@ -4,11 +4,6 @@ import Prelude
 import Prelude_UIKit
 import WebKit
 
-internal protocol ExternalSourceViewElementCellDelegate: AnyObject {
-  func resetContentHeight()
-  func resetWebViewContent()
-}
-
 class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
@@ -16,14 +11,10 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   private var contentHeightConstraint: NSLayoutConstraint?
   private let viewModel: ExternalSourceViewElementCellViewModelType = ExternalSourceViewElementCellViewModel()
 
-  weak var delegate: ExternalSourceViewElementCellDelegate?
-
   // MARK: Initializers
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    self.delegate = self
 
     self.configureViews()
     self.setupConstraints()
@@ -42,8 +33,15 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     self.viewModel.outputs.htmlText
       .observeForUI()
+      .on(event: { [weak self] _ in
+        guard let emptyContentURL = URL(string: "about:blank") else { return }
+
+        let request = URLRequest(url: emptyContentURL)
+
+        self?.webView.load(request)
+      })
       .observeValues { [weak self] htmlText in
-        guard let url = URL(string: htmlText) else { return }
+        guard let url = URL(string: htmlText + "?playsline=0") else { return }
 
         let request = URLRequest(url: url)
 
@@ -52,25 +50,12 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.contentHeight
       .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.contentHeightConstraint?.isActive = false
+      })
       .observeValues { [weak self] value in
         self?.contentHeightConstraint = self?.webView.heightAnchor.constraint(equalToConstant: CGFloat(value))
-        self?.viewModel.inputs.toggleContentHeight(true)
-      }
-
-    self.viewModel.outputs.toggleContentHeight
-      .observeForUI()
-      .observeValues { [weak self] isActive in
-        self?.contentHeightConstraint?.isActive = isActive
-      }
-
-    self.viewModel.outputs.resetWebViewContent
-      .observeForUI()
-      .observeValues { [weak self] emptyHTML in
-        guard let emptyContentURL = URL(string: emptyHTML) else { return }
-
-        let request = URLRequest(url: emptyContentURL)
-
-        self?.webView.load(request)
+        self?.contentHeightConstraint?.isActive = true
       }
   }
 
@@ -104,10 +89,9 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
 
   private func configureViews() {
     self.webView.configuration.suppressesIncrementalRendering = true
-    self.webView.configuration.allowsInlineMediaPlayback = true
+    self.webView.configuration.allowsInlineMediaPlayback = false
     self.webView.configuration.applicationNameForUserAgent = "Kickstarter-iOS"
     self.webView.customUserAgent = Service.userAgent
-    self.delegate = self
 
     _ = (self.webView, self.contentView)
       |> ksr_addSubviewToParent()
@@ -118,15 +102,5 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
     self.contentHeightConstraint = self.webView.heightAnchor.constraint(equalToConstant: .zero)
     self.contentHeightConstraint?.priority = .defaultHigh
     self.contentHeightConstraint?.isActive = true
-  }
-}
-
-extension ExternalSourceViewElementCell: ExternalSourceViewElementCellDelegate {
-  func resetContentHeight() {
-    self.viewModel.inputs.toggleContentHeight(false)
-  }
-
-  func resetWebViewContent() {
-    self.viewModel.inputs.resetWebView()
   }
 }

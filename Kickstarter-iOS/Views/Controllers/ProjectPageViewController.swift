@@ -408,8 +408,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         guard let tableView = self?.tableView else { return }
 
-        var reloadableUpdateIndexPaths = [IndexPath]()
-
         tableView.indexPathsForVisibleRows?.forEach { indexPath in
           if let cell = tableView.cellForRow(at: indexPath) as? VideoViewElementCell,
             let isPlaying = cell.delegate?.isPlaying(),
@@ -420,24 +418,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
               tableView: tableView,
               indexPath: indexPath
             )
-          } else if let cell = tableView.cellForRow(at: indexPath) as? ExternalSourceViewElementCell {
-            reloadableUpdateIndexPaths.append(indexPath)
-
-            cell.delegate?.resetWebViewContent()
-            cell.delegate?.resetContentHeight()
           }
-        }
-
-        var allowableIndexPaths = [IndexPath]()
-
-        reloadableUpdateIndexPaths.forEach { indexPath in
-          if let _ = tableView.cellForRow(at: indexPath) as? ExternalSourceViewElementCell {
-            allowableIndexPaths.append(indexPath)
-          }
-        }
-
-        tableView.performBatchUpdates {
-          tableView.reloadRows(at: allowableIndexPaths, with: .none)
         }
       }
   }
@@ -737,9 +718,6 @@ extension ProjectPageViewController: UITableViewDelegate {
       let seekTime = cell.delegate?.pausePlayback() {
       self.dataSource
         .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
-    } else if let cell = cell as? ExternalSourceViewElementCell {
-      cell.delegate?.resetContentHeight()
-      cell.delegate?.resetWebViewContent()
     }
   }
 }
