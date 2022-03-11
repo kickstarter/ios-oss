@@ -46,10 +46,26 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
       .on(event: { [weak self] _ in
         self?.resetPlayer()
       })
-      .observeValues { [weak self] playerItem in
+      .observeValues { [weak self] player in
+        guard let strongSelf = self else { return }
+        
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
-
-        self?.playerController.player = playerItem
+        
+        strongSelf.playerController.player = player
+        
+        strongSelf.playerController.player?.addObserver(strongSelf, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
+        
+        if let contentOverlayView = strongSelf.playerController.contentOverlayView {
+          let image = Library.image(named: "zack-sears")
+          let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100.0, height: 100.0))
+          imageView.image = image
+          print("*** add overlay view to player \(imageView)")
+          print("*** image \(image)")
+          
+          contentOverlayView.addSubview(imageView)
+        }
+        
+        print("*** content overlay view's subviews \(strongSelf.playerController.contentOverlayView?.subviews)")
       }
 
     self.viewModel.outputs.pauseVideo
@@ -101,9 +117,24 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   }
 
   // MARK: Helpers
+  
+  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        print("*** observe called")
+          if keyPath == "timeControlStatus" {
+            self.playerController.contentOverlayView?.subviews.forEach { $0.removeFromSuperview() }
+          }
+  }
+  
+//  override func observeValue( {
+//    print("*** observe called")
+//      if keyPath == "status" {
+//        print("*** Player status \(self.playerController.player?.status)")
+//      }
+//  }
 
   private func resetPlayer() {
     self.playerController.player = nil
+    self.playerController.contentOverlayView?.subviews.forEach { $0.removeFromSuperview() }
   }
 
   private func configureViews() {
