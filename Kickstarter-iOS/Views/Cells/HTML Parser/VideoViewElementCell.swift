@@ -76,8 +76,11 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
 
         if let contentOverlayView = strongSelf.playerController.contentOverlayView {
           let imageView = UIImageView()
-
           imageView.image = image
+
+          _ = imageView
+            |> thumbnailImageViewStyle
+            |> \.isUserInteractionEnabled .~ false
 
           _ = (imageView, contentOverlayView)
             |> ksr_addSubviewToParent()

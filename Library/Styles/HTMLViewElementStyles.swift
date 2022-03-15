@@ -27,3 +27,11 @@ public let imageViewStyle: ImageViewStyle = { imageView in
     |> \.contentMode .~ .scaleAspectFit
     |> ignoresInvertColorsImageViewStyle
 }
+
+public let thumbnailImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.clipsToBounds .~ true
+    |> \.backgroundColor .~ .ksr_black
+    |> \.contentMode .~ .scaleAspectFit
+    |> ignoresInvertColorsImageViewStyle
+}
