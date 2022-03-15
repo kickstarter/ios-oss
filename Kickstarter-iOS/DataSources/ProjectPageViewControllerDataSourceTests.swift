@@ -893,7 +893,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
-    let camera = UIImage(named: "camera")!
+    let camera = UIImage(systemName: "camera")!
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
