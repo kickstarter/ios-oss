@@ -18,6 +18,7 @@ internal final class VideoViewElementCellViewModelTests: TestCase {
 
     self.vm.outputs.pauseVideo.observe(self.pauseVideo.observer)
     self.vm.outputs.videoItem.observe(self.videoItem.observer)
+    self.vm.outputs.thumbnailImage.observe(self.thumbnailImage.observer)
   }
 
   func testVideoViewElementData_Success() {
