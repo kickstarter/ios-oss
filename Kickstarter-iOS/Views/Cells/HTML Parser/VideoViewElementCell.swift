@@ -14,6 +14,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
   private let viewModel: VideoViewElementCellViewModelType = VideoViewElementCellViewModel()
+  private let observerKeyPath = "timeControlStatus"
   private lazy var playerController: AVPlayerViewController = { AVPlayerViewController() }()
 
   weak var delegate: VideoViewElementCellPlaybackDelegate?
@@ -34,8 +35,12 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func configureWith(value: (element: VideoViewElement, player: AVPlayer?)) {
-    self.viewModel.inputs.configureWith(element: value.element, player: value.player)
+  func configureWith(value: (element: VideoViewElement, player: AVPlayer?, thumbnailImage: UIImage?)) {
+    self.viewModel.inputs.configureWith(
+      element: value.element,
+      player: value.player,
+      thumbnailImage: value.thumbnailImage
+    )
   }
 
   // MARK: View Model
@@ -48,24 +53,36 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
       })
       .observeValues { [weak self] player in
         guard let strongSelf = self else { return }
-        
+
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
-        
+
         strongSelf.playerController.player = player
-        
-        strongSelf.playerController.player?.addObserver(strongSelf, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
-        
+      }
+
+    self.viewModel.outputs.thumbnailImage
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.playerController.contentOverlayView?.subviews.forEach { $0.removeFromSuperview() }
+      })
+      .observeValues { [weak self] image in
+        guard let strongSelf = self else { return }
+
+        strongSelf.playerController.player?.addObserver(
+          strongSelf,
+          forKeyPath: strongSelf.observerKeyPath,
+          options: [.old, .new],
+          context: nil
+        )
+
         if let contentOverlayView = strongSelf.playerController.contentOverlayView {
-          let image = Library.image(named: "zack-sears")
-          let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100.0, height: 100.0))
+          let imageView = UIImageView()
+
           imageView.image = image
-          print("*** add overlay view to player \(imageView)")
-          print("*** image \(image)")
-          
-          contentOverlayView.addSubview(imageView)
+
+          _ = (imageView, contentOverlayView)
+            |> ksr_addSubviewToParent()
+            |> ksr_constrainViewToMarginsInParent()
         }
-        
-        print("*** content overlay view's subviews \(strongSelf.playerController.contentOverlayView?.subviews)")
       }
 
     self.viewModel.outputs.pauseVideo
@@ -117,20 +134,16 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   }
 
   // MARK: Helpers
-  
-  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        print("*** observe called")
-          if keyPath == "timeControlStatus" {
-            self.playerController.contentOverlayView?.subviews.forEach { $0.removeFromSuperview() }
-          }
+
+  override func observeValue(forKeyPath keyPath: String?,
+                             of _: Any?,
+                             change _: [NSKeyValueChangeKey: Any]?,
+                             context _: UnsafeMutableRawPointer?) {
+    if keyPath == self.observerKeyPath {
+      self.playerController.contentOverlayView?.subviews.forEach { $0.removeFromSuperview() }
+      self.playerController.player?.removeObserver(self, forKeyPath: self.observerKeyPath, context: nil)
+    }
   }
-  
-//  override func observeValue( {
-//    print("*** observe called")
-//      if keyPath == "status" {
-//        print("*** Player status \(self.playerController.player?.status)")
-//      }
-//  }
 
   private func resetPlayer() {
     self.playerController.player = nil

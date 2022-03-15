@@ -119,7 +119,7 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `[URL]` and `IndexPath` when the project has campaign data to download for a row
   var prefetchImageURLs: Signal<([URL], IndexPath), Never> { get }
 
-  /// Emits `[ImageViewElement]` when the project has campaign data to download for a row as soon as the urls are available.
+  /// Emits `[ImageViewElement]` when the project has campaign data to download for an image row as soon as the urls are available.
   var prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never> { get }
 
   /// Emits a signal when an orientation change happens if the currently selected tab is campaign.

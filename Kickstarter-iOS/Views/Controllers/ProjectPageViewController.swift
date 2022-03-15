@@ -341,8 +341,19 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         elements.forEach { element in
           guard let url = URL(string: element.sourceURLString) else { return }
 
-          self?.prepareToPlayVideoURL(url) { availablePlayer in
-            self?.dataSource.preloadCampaignVideoViewElement(element, player: availablePlayer)
+          var videoThumbnailURL: URL?
+
+          if let videoThumbnailURLString = element.thumbnailURLString {
+            videoThumbnailURL = URL(string: videoThumbnailURLString)
+          }
+
+          self?.prepareToPlayVideoURL(
+            videoURL: url,
+            thumbnailURL: videoThumbnailURL
+          ) { availablePlayer, image in
+            guard let usablePlayer = availablePlayer else { return }
+
+            self?.dataSource.preloadCampaignVideoViewElement(element, player: usablePlayer, image: image)
           }
         }
       }
@@ -351,8 +362,24 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] element, indexPath in
         guard let url = URL(string: element.sourceURLString) else { return }
 
-        self?.prepareToPlayVideoURL(url) { availablePlayer in
-          self?.dataSource.updateVideoViewElementWith(element, player: availablePlayer, indexPath: indexPath)
+        var videoThumbnailURL: URL?
+
+        if let videoThumbnailURLString = element.thumbnailURLString {
+          videoThumbnailURL = URL(string: videoThumbnailURLString)
+        }
+
+        self?.prepareToPlayVideoURL(
+          videoURL: url,
+          thumbnailURL: videoThumbnailURL
+        ) { availablePlayer, image in
+          guard let usablePlayer = availablePlayer else { return }
+
+          self?.dataSource.updateVideoViewElementWith(
+            element,
+            player: usablePlayer,
+            thumbnailImage: image,
+            indexPath: indexPath
+          )
         }
       }
 
@@ -429,9 +456,20 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
-  private func prepareToPlayVideoURL(_ url: URL, completionHandler: @escaping (AVPlayer) -> Void) {
+  private func prepareToPlayVideoURL(videoURL: URL,
+                                     thumbnailURL: URL?,
+                                     completionHandler: @escaping (AVPlayer?, UIImage?) -> Void) {
+    // Fetch the thumbnail
+    var cachedImage: UIImage?
+
+    if let videoThumbnailURL = thumbnailURL {
+      UIImageView.ksr_cacheImageWith(videoThumbnailURL) { image in
+        cachedImage = image
+      }
+    }
+
     // Create asset to be played
-    let asset = AVAsset(url: url)
+    let asset = AVAsset(url: videoURL)
 
     asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
       var durationError: NSError?
@@ -452,9 +490,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
           .sink { status in
             switch status {
             case .readyToPlay:
-              guard let availablePlayer = player else { return }
+              guard let availablePlayer = player else {
+                completionHandler(nil, nil)
 
-              completionHandler(availablePlayer)
+                return
+              }
+
+              completionHandler(availablePlayer, cachedImage)
 
               cancellable = nil
             default:
