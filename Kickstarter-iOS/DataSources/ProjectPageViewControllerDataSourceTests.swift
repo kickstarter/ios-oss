@@ -796,6 +796,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
+    let image = UIImage(systemName: "camera")!
 
     withEnvironment(currentUser: .template) {
       guard let videoViewElement = self.storyViewableElements.htmlViewElements[3] as? VideoViewElement
@@ -810,7 +811,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
       )
 
-      self.dataSource.preloadCampaignVideoViewElement(videoViewElement, player: AVPlayer())
+      self.dataSource.preloadCampaignVideoViewElement(videoViewElement, player: AVPlayer(), image: image)
 
       self.dataSource.load(
         navigationSection: .campaign,
@@ -821,7 +822,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       guard let updatedItem = self.dataSource
         .items(in: expectedIndexPath.section)[expectedIndexPath.row] as? (
-          value: (VideoViewElement, AVPlayer),
+          value: (VideoViewElement, AVPlayer, UIImage),
           reusableId: String
         ) else {
         XCTFail("video view element should exist")
@@ -833,6 +834,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(updatedItem.value.0.thumbnailURLString, "https://thumbnail.com")
       XCTAssertEqual(updatedItem.value.0.seekPosition, .zero)
       XCTAssertNotNil(updatedItem.value.1)
+      XCTAssertNotNil(updatedItem.value.2)
     }
   }
 
@@ -891,6 +893,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
       )
+    let camera = UIImage(systemName: "camera")!
 
     withEnvironment(currentUser: .template) {
       self.dataSource.load(
@@ -918,6 +921,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         .updateVideoViewElementWith(
           videoViewElementWithNoPlayer!.0,
           player: AVPlayer(),
+          thumbnailImage: camera,
           indexPath: videoViewElementWithNoPlayer!.1
         )
 
@@ -967,6 +971,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         .updateVideoViewElementWith(
           videoViewElementWithNoPlayer!.0,
           player: AVPlayer(),
+          thumbnailImage: nil,
           indexPath: videoViewElementWithNoPlayer!.1
         )
 
@@ -977,7 +982,10 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
       guard let updatedItem = self.dataSource
         .items(in: videoViewIndexPath
-          .section)[videoViewIndexPath.row] as? (value: (VideoViewElement, AVPlayer), reusableId: String)
+          .section)[videoViewIndexPath.row] as? (
+          value: (VideoViewElement, AVPlayer, UIImage?),
+            reusableId: String
+          )
       else {
         XCTFail("video view element should exist")
 
