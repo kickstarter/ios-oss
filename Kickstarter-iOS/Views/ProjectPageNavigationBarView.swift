@@ -25,7 +25,6 @@ final class ProjectPageNavigationBarView: UIView {
   private lazy var navigationShareButton: UIButton = {
     let buttonView = UIButton()
       |> shareButtonStyle
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: -Layout.Button.height)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
     return buttonView
@@ -85,7 +84,6 @@ final class ProjectPageNavigationBarView: UIView {
     _ = self |> \.backgroundColor .~ .ksr_white
 
     _ = self.rootStackView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(0), leftRight: Styles.grid(2))
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.insetsLayoutMarginsFromSafeArea .~ true
       |> \.spacing .~ Styles.grid(0)
@@ -165,6 +163,16 @@ final class ProjectPageNavigationBarView: UIView {
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
+
+    NSLayoutConstraint
+      .activate([
+        self.navigationShareButton.widthAnchor
+          .constraint(equalTo: self.navigationShareButton.heightAnchor),
+        self.navigationSaveButton.widthAnchor
+          .constraint(equalTo: self.navigationSaveButton.heightAnchor),
+        self.navigationCloseButton.widthAnchor
+          .constraint(equalTo: self.navigationCloseButton.heightAnchor)
+      ])
   }
 
   private func setupNotifications() {
