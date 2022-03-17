@@ -58,15 +58,16 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         self?.resetImageView()
       })
       .observeValues { [weak self] image in
-        guard let viewableImage = image else { return }
+        guard let strongSelf = self,
+          let viewableImage = image else { return }
 
         var newScale: CGFloat = 1.0
-        let maxWidth = UIScreen.main.bounds.width - Styles.grid(3)
+        let maxWidth = strongSelf.contentView.bounds.size.width - Styles.grid(6)
         let currentWidth = viewableImage.size.width
         let currentHeight = viewableImage.size.height
 
         if currentWidth <= maxWidth {
-          self?.storyImageView.setImageWith(viewableImage, scaledImageSize: viewableImage.size)
+          strongSelf.storyImageView.setImageWith(viewableImage, scaledImageSize: viewableImage.size)
         } else {
           newScale = currentWidth / maxWidth
           let newSize = CGSize(
@@ -77,13 +78,13 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
           switch viewableImage.sd_imageFormat {
           case .GIF:
-            self?.storyImageView.setImageWith(viewableImage, scaledImageSize: scaledImage.size)
+            strongSelf.storyImageView.setImageWith(viewableImage, scaledImageSize: scaledImage.size)
           default:
-            self?.storyImageView.setImageWith(scaledImage, scaledImageSize: scaledImage.size)
+            strongSelf.storyImageView.setImageWith(scaledImage, scaledImageSize: scaledImage.size)
           }
         }
 
-        self?.storyImageView.invalidateIntrinsicContentSize()
+        strongSelf.storyImageView.invalidateIntrinsicContentSize()
       }
   }
 
