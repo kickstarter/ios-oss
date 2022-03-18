@@ -90,7 +90,7 @@ public func dropShadowStyle<V: UIViewProtocol>(
 ) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.ksr_black.cgColor
-      <> V.lens.layer.shadowOpacity .~ 0.17
+      <> V.lens.layer.shadowOpacity .~ 1.0
       <> V.lens.layer.shadowRadius .~ radius
       <> V.lens.layer.masksToBounds .~ false
       <> V.lens.layer.shouldRasterize .~ true

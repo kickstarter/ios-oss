@@ -37,6 +37,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private let projectNavigationSelectorView: ProjectNavigationSelectorView = {
     ProjectNavigationSelectorView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+  
+  private let projectNavigationShadowView: UIView = {
+    UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var tableView: UITableView = {
     UITableView(frame: .zero)
@@ -114,6 +118,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.updatePledgeCTAConstraints()
     self.updateNavigationSelectorViewConstraints()
     self.updateTableViewConstraints()
+    self.updateNavigationShadowViewConstraints()
   }
 
   public func configureNavigationView() {
@@ -156,6 +161,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
+    
+    _ = (self.projectNavigationShadowView, self.view)
+      |> ksr_addSubviewToParent()
   }
 
   private func configureNavigationSelectorView() {
@@ -170,6 +178,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       \.backgroundColor .~ .ksr_white
 
     _ = self.tableView |> tableViewStyle
+
+    _ = self.projectNavigationShadowView
+      |> \.backgroundColor .~ .ksr_white
+      |> dropShadowStyle(offset: .init(width: 0, height: 0))
   }
 
   public override func bindViewModel() {
@@ -196,12 +208,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func updateNavigationSelectorViewConstraints() {
     let projectNavigationSelectorConstraints = [
-      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
+      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
     ]
 
     NSLayoutConstraint.activate(projectNavigationSelectorConstraints)
+  }
+  
+  private func updateNavigationShadowViewConstraints() {
+    let projectNavigationShadowViewConstraints = [
+      self.projectNavigationShadowView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.projectNavigationShadowView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.projectNavigationShadowView.topAnchor.constraint(equalTo: self.projectNavigationSelectorView.bottomAnchor),
+      self.projectNavigationShadowView.heightAnchor.constraint(equalToConstant: 1)
+    ]
+
+    NSLayoutConstraint.activate(projectNavigationShadowViewConstraints)
   }
 
   private func updatePledgeCTAConstraints() {
