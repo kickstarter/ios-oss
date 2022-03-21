@@ -5,9 +5,9 @@ import UIKit
 
 private enum ProjectNavigationSelectorViewStyles {
   fileprivate enum Layout {
-    fileprivate static let bottomBorderViewHeight: CGFloat = 2.0
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
     fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
+    fileprivate static let selectedButtonBorderViewVerticalOriginModifier: CGFloat = 1.0
     fileprivate static let selectedButtonBorderViewWidthExtensionLeading: CGFloat = 10.0
     fileprivate static let selectedButtonBorderViewWidthExtensionFull: CGFloat = 20.0
   }
@@ -24,11 +24,6 @@ final class ProjectNavigationSelectorView: UIView {
   private var selectedButtonBorderViewLeadingConstraint: NSLayoutConstraint?
   private var selectedButtonBorderViewWidthConstraint: NSLayoutConstraint?
   private let viewModel: ProjectNavigationSelectorViewModelType = ProjectNavigationSelectorViewModel()
-
-  private lazy var bottomBorderView: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   private lazy var buttonsStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -75,9 +70,7 @@ final class ProjectNavigationSelectorView: UIView {
 
     _ = self
       |> \.layoutMargins .~ .init(all: ProjectNavigationSelectorViewStyles.Layout.layoutMargins)
-
-    _ = self.bottomBorderView
-      |> bottomBorderViewStyle
+      |> \.backgroundColor .~ .ksr_white
 
     _ = self.buttonsStackView
       |> rootStackViewStyle
@@ -130,9 +123,6 @@ final class ProjectNavigationSelectorView: UIView {
     _ = (self.scrollView, self.contentView)
       |> ksr_addSubviewToParent()
 
-    _ = (self.bottomBorderView, self.contentView)
-      |> ksr_addSubviewToParent()
-
     _ = (self.selectedButtonBorderView, self.contentView)
       |> ksr_addSubviewToParent()
 
@@ -146,14 +136,9 @@ final class ProjectNavigationSelectorView: UIView {
       self.scrollView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
       self.scrollView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
       self.scrollView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+      self.scrollView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
       self.scrollView.heightAnchor.constraint(equalTo: self.buttonsStackView.heightAnchor),
-      self.bottomBorderView.heightAnchor
-        .constraint(equalToConstant: ProjectNavigationSelectorViewStyles.Layout.bottomBorderViewHeight),
-      self.bottomBorderView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-      self.bottomBorderView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
-      self.bottomBorderView.topAnchor
-        .constraint(equalTo: self.scrollView.bottomAnchor),
-      self.contentView.bottomAnchor.constraint(equalTo: self.bottomBorderView.bottomAnchor),
+      self.contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       self.contentView.leftAnchor.constraint(equalTo: self.leftAnchor),
       self.contentView.rightAnchor.constraint(equalTo: self.rightAnchor),
       self.contentView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -228,7 +213,11 @@ final class ProjectNavigationSelectorView: UIView {
       self.selectedButtonBorderView.heightAnchor
         .constraint(equalToConstant: ProjectNavigationSelectorViewStyles.Layout
           .selectedButtonBorderViewHeight),
-      self.selectedButtonBorderView.bottomAnchor.constraint(equalTo: self.bottomBorderView.topAnchor)
+      self.selectedButtonBorderView.bottomAnchor
+        .constraint(
+          equalTo: self.scrollView.bottomAnchor,
+          constant: ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewVerticalOriginModifier
+        )
     ])
 
     NSLayoutConstraint.activate(buttonViewConstraints)
@@ -308,12 +297,6 @@ final class ProjectNavigationSelectorView: UIView {
 }
 
 // MARK: - Styles
-
-private let bottomBorderViewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ .ksr_support_100
-    |> dropShadowStyle()
-}
 
 private let selectedButtonBorderViewStyle: ViewStyle = { view in
   view
