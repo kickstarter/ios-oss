@@ -6,7 +6,8 @@ import UIKit
 private enum ProjectNavigationSelectorViewStyles {
   fileprivate enum Layout {
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
-    fileprivate static let selectedButtonBorderViewHeight: CGFloat = 3.0
+    fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
+    fileprivate static let selectedButtonBorderViewVerticalOriginModifier: CGFloat = 1.0
     fileprivate static let selectedButtonBorderViewWidthExtensionLeading: CGFloat = 10.0
     fileprivate static let selectedButtonBorderViewWidthExtensionFull: CGFloat = 20.0
   }
@@ -69,15 +70,7 @@ final class ProjectNavigationSelectorView: UIView {
 
     _ = self
       |> \.layoutMargins .~ .init(all: ProjectNavigationSelectorViewStyles.Layout.layoutMargins)
-//      |> \.layer.masksToBounds .~ false
-//      |> \.layer.shadowColor .~ UIColor.ksr_black.cgColor
-//      |> \.layer.shadowOffset .~ .init(width: 0, height: 1)
-//      |> \.layer.shadowRadius .~ 2
-//      |> \.layer.shadowOpacity .~ 1
-//      |> \.layer.shadowPath .~ UIBezierPath(rect: CGRect(x: .zero,
-//                                                         y: .zero,
-//                                                         width: 300,
-//                                                         height: 3.0)).cgPath
+      |> \.backgroundColor .~ .ksr_white
 
     _ = self.buttonsStackView
       |> rootStackViewStyle
@@ -220,7 +213,11 @@ final class ProjectNavigationSelectorView: UIView {
       self.selectedButtonBorderView.heightAnchor
         .constraint(equalToConstant: ProjectNavigationSelectorViewStyles.Layout
           .selectedButtonBorderViewHeight),
-      self.selectedButtonBorderView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor, constant: 1)
+      self.selectedButtonBorderView.bottomAnchor
+        .constraint(
+          equalTo: self.scrollView.bottomAnchor,
+          constant: ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewVerticalOriginModifier
+        )
     ])
 
     NSLayoutConstraint.activate(buttonViewConstraints)
