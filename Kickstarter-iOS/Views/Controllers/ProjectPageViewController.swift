@@ -23,6 +23,10 @@ protocol ProjectPageViewControllerDelegate: AnyObject {
   func showShareSheet(_ controller: UIActivityViewController, sourceView: UIView?)
 }
 
+protocol VideoViewControllerPlaybackDelegate: AnyObject {
+  func pauseVideoPlayback()
+}
+
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
@@ -51,6 +55,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }()
 
   weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
+  weak var playbackDelegate: VideoViewControllerPlaybackDelegate?
   public var messageBannerViewController: MessageBannerViewController?
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
@@ -441,6 +446,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.updateDataSource
       .observeForUI()
       .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, _ in
+        self?.pausePlayingMainCellVideo(navSection: navSection)
+
         let initialDatasourceLoad = {
           self?.dataSource.load(
             navigationSection: navSection,
@@ -673,6 +680,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func pausePlayingMainCellVideo(navSection: NavigationSection) {
+    let mainCellIndexPath = IndexPath(
+      row: .zero,
+      section: ProjectPageViewControllerDataSource.Section.overview.rawValue
+    )
+
+    if let _ = tableView.cellForRow(at: mainCellIndexPath) as? ProjectPamphletMainCell,
+      navSection != .overview {
+      self.playbackDelegate?.pauseVideoPlayback()
+    }
+  }
+
   // MARK: - Selectors
 
   @objc private func didBackProject() {
@@ -703,17 +722,8 @@ extension ProjectPageViewController: PledgeCTAContainerViewDelegate {
 // MARK: - VideoViewControllerDelegate
 
 extension ProjectPageViewController: VideoViewControllerDelegate {
-  public func videoViewControllerDidFinish(_: VideoViewController) {
-    /** FIXME: Currently unused - fix in future when refactoring the overview tab.
-     self.navBarController.projectVideoDidFinish()
-     */
-  }
-
-  public func videoViewControllerDidStart(_: VideoViewController) {
-    /** FIXME: Currently unused fix infuture when refactoring the overview tab.
-     self.navBarController.projectVideoDidStart()
-     */
-  }
+  public func videoViewControllerDidFinish(_: VideoViewController) {}
+  public func videoViewControllerDidStart(_: VideoViewController) {}
 }
 
 // MARK: - ManagePledgeViewControllerDelegate
@@ -789,6 +799,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletMainCell, cell.delegate == nil {
       cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletMainCell, playbackDelegate == nil {
+      playbackDelegate = cell
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
     } else if let cell = cell as? ImageViewElementCell {

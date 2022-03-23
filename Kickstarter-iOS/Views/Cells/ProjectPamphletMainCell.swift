@@ -363,6 +363,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.delegate?.projectPamphletMainCell(self, addChildController: vc)
     self.videoController = vc
+    self.videoController?.playbackDelegate = vc
   }
 
   @objc fileprivate func readMoreButtonTapped() {
@@ -383,5 +384,11 @@ extension ProjectPamphletMainCell: VideoViewControllerDelegate {
   internal func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidStart(controller)
     self.viewModel.inputs.videoDidStart()
+  }
+}
+
+extension ProjectPamphletMainCell: VideoViewControllerPlaybackDelegate {
+  func pauseVideoPlayback() {
+    self.videoController?.playbackDelegate?.pauseVideoPlayback()
   }
 }
