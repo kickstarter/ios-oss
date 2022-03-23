@@ -8,8 +8,6 @@ private enum ProjectNavigationSelectorViewStyles {
     fileprivate static let layoutMargins: CGFloat = Styles.grid(3)
     fileprivate static let selectedButtonBorderViewHeight: CGFloat = 2.0
     fileprivate static let selectedButtonBorderViewVerticalOriginModifier: CGFloat = 1.0
-    fileprivate static let selectedButtonBorderViewWidthExtensionLeading: CGFloat = 10.0
-    fileprivate static let selectedButtonBorderViewWidthExtensionFull: CGFloat = 20.0
   }
 }
 
@@ -183,8 +181,8 @@ final class ProjectNavigationSelectorView: UIView {
 
       return [
         titleLabel.topAnchor.constraint(equalTo: button.topAnchor),
-        titleLabel.leftAnchor.constraint(equalTo: button.leftAnchor),
-        titleLabel.rightAnchor.constraint(equalTo: button.rightAnchor),
+        titleLabel.leftAnchor.constraint(equalTo: button.leftAnchor, constant: Styles.grid(2)),
+        titleLabel.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -Styles.grid(2)),
         titleLabel.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -Styles.grid(2))
       ]
     }
@@ -198,13 +196,11 @@ final class ProjectNavigationSelectorView: UIView {
 
     let leadingConstraint = self.selectedButtonBorderView.leadingAnchor
       .constraint(
-        equalTo: firstButton.leadingAnchor,
-        constant: -ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionLeading
+        equalTo: firstButton.leadingAnchor
       )
     let widthConstraint = self.selectedButtonBorderView.widthAnchor
       .constraint(
-        equalTo: firstButton.widthAnchor,
-        constant: ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull
+        equalTo: firstButton.widthAnchor
       )
 
     NSLayoutConstraint.activate([
@@ -232,13 +228,11 @@ final class ProjectNavigationSelectorView: UIView {
       let buttonSection = NavigationSection(rawValue: button.tag),
       buttonSection == navigationSection else { return }
 
-    let leadingConstant = button.frame.origin.x - ProjectNavigationSelectorViewStyles.Layout
-      .layoutMargins - safeAreaInsets.left - ProjectNavigationSelectorViewStyles.Layout
-      .selectedButtonBorderViewWidthExtensionLeading
+    let leadingConstant = button.frame.origin.x - safeAreaInsets.left
 
     // The value of the constraint is originally set to the width of the first button so we have subtract this each time we want to calculate the constant
     let widthConstant = button.frame.width - self.buttonsStackView.arrangedSubviews[0].frame
-      .width + ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull
+      .width
 
     UIView.animate(
       withDuration: 0.3,
@@ -254,13 +248,12 @@ final class ProjectNavigationSelectorView: UIView {
 
     let origin = CGPoint(
       x: button.frame
-        .minX -
-        (ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionLeading * 2),
+        .minX,
       y: 0.0
     )
     let size = CGSize(
       width: button.frame.size
-        .width + (ProjectNavigationSelectorViewStyles.Layout.selectedButtonBorderViewWidthExtensionFull * 2),
+        .width,
       height: 1.0
     )
     let scrollToRect = CGRect(
@@ -309,9 +302,9 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(
       top: Styles.grid(0),
-      left: Styles.grid(3),
+      left: Styles.grid(0),
       bottom: Styles.grid(1),
-      right: Styles.grid(3)
+      right: Styles.grid(0)
     )
-    |> \.spacing .~ Styles.grid(6)
+    |> \.spacing .~ Styles.grid(2)
 }
