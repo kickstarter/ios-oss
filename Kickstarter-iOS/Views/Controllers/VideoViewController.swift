@@ -15,6 +15,7 @@ public protocol VideoViewControllerDelegate: AnyObject {
 
 public final class VideoViewController: UIViewController {
   internal weak var delegate: VideoViewControllerDelegate?
+  internal weak var playbackDelegate: VideoViewControllerPlaybackDelegate?
   fileprivate let viewModel: VideoViewModelType = VideoViewModel()
   fileprivate var playerController: AVPlayerViewController!
   fileprivate var timeObserver: Any?
@@ -223,4 +224,12 @@ public final class VideoViewController: UIViewController {
 // Helper function inserted by Swift 4.2 migrator.
 private func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
   return input.rawValue
+}
+
+extension VideoViewController: VideoViewControllerPlaybackDelegate {
+  func pauseVideoPlayback() {
+    if self.playerController.player?.timeControlStatus == .playing {
+      self.playerController.player?.pause()
+    }
+  }
 }
