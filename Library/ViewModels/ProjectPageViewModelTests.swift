@@ -40,6 +40,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
+  private let goToURL = TestObserver<URL, Never>()
   private let navigationBarIsHidden = TestObserver<Bool, Never>()
   private let pauseMedia = TestObserver<(), Never>()
   private let popToRootViewController = TestObserver<(), Never>()
@@ -104,6 +105,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
+    self.vm.outputs.goToURL.observe(self.goToURL.observer)
     self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
     self.vm.outputs.pauseMedia.observe(self.pauseMedia.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
@@ -1766,6 +1768,29 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.inputs.viewWillTransition()
 
     self.reloadCampaignData.assertDidEmitValue()
+  }
+
+  func testSelectCampaignImageLink_WhenURLAvailable_ReturnsURL_Success() {
+    let url = URL(string: "https://www.kickstarter.com")!
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToURL.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectCampaignImageLink(url: url)
+
+    self.goToURL.assertValue(url)
   }
 
   // MARK: - Functions
