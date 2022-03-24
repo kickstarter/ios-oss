@@ -387,6 +387,24 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     return false
   }
 
+  internal func imageViewElementURL(tableView: UITableView,
+                                    indexPath: IndexPath) -> URL? {
+    let section = ProjectPageViewControllerDataSource.Section.campaign
+
+    guard indexPath.section == section.rawValue else { return nil }
+
+    if self.numberOfSections(in: tableView) > section.rawValue,
+      self.numberOfItems(in: section.rawValue) > indexPath.row,
+      let (imageViewElement, _) = self.items(in: section.rawValue)[indexPath.row]
+      .value as? (ImageViewElement, UIImage?),
+      let urlString = imageViewElement.href,
+      let url = URL(string: urlString) {
+      return url
+    }
+
+    return nil
+  }
+
   internal func videoViewElementWithNoPlayer(
     tableView: UITableView,
     indexPath: IndexPath,

@@ -365,6 +365,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToUpdates(project: $0)
       }
 
+    self.viewModel.outputs.goToURL
+      .observeForControllerAction()
+      .observeValues { url in
+        UIApplication.shared.open(url)
+      }
+
     self.viewModel.outputs.prefetchImageURLs
       .observeValues { [weak self] urls, indexPath in
         self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: urls)
@@ -774,7 +780,7 @@ extension ProjectPageViewController: ProjectNavigationSelectorViewDelegate {
 // MARK: - UITableViewDelegate
 
 extension ProjectPageViewController: UITableViewDelegate {
-  public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
     case ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue:
       if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
@@ -787,6 +793,10 @@ extension ProjectPageViewController: UITableViewDelegate {
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
       let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
       self.viewModel.inputs.didSelectFAQsRowAt(row: indexPath.row, values: values)
+    case ProjectPageViewControllerDataSource.Section.campaign.rawValue:
+      if let url = self.dataSource.imageViewElementURL(tableView: tableView, indexPath: indexPath) {
+        self.viewModel.inputs.didSelectCampaignImageLink(url: url)
+      }
     default:
       return
     }
