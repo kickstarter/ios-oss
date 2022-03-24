@@ -18,6 +18,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
   func didSelectFAQsRowAt(row: Int, values: [Bool])
 
+  /// Call with the `URL` of the `ImageViewElement` cell selected in the Campaign section of the data source.
+  func didSelectCampaignImageLink(url: URL)
+
   /// Call when the navigation bar should be hidden/shown.
   func showNavigationBar(_ flag: Bool)
 
@@ -97,6 +100,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Emits a URL that will be opened by an external Safari browser.
+  var goToURL: Signal<URL, Never> { get }
 
   /// Emits a `Bool` to hide the navigation bar.
   var navigationBarIsHidden: Signal<Bool, Never> { get }
@@ -401,6 +407,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(self.viewWillTransitionProperty.signal)
       .filter { NavigationSection(rawValue: $0) == .campaign }
       .ignoreValues()
+
+    self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
@@ -426,6 +434,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let didSelectFAQsRowAtProperty = MutableProperty<(Int, [Bool])?>(nil)
   public func didSelectFAQsRowAt(row: Int, values: [Bool]) {
     self.didSelectFAQsRowAtProperty.value = (row, values)
+  }
+
+  fileprivate let didSelectCampaignImageLinkProperty = MutableProperty<(URL)?>(nil)
+  public func didSelectCampaignImageLink(url: URL) {
+    self.didSelectCampaignImageLinkProperty.value = url
   }
 
   fileprivate let showNavigationBarProperty = MutableProperty<Bool>(false)
@@ -518,6 +531,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
+  public let goToURL: Signal<URL, Never>
   public let navigationBarIsHidden: Signal<Bool, Never>
   public let pauseMedia: Signal<Void, Never>
   public let popToRootViewController: Signal<(), Never>

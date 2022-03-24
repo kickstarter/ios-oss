@@ -884,6 +884,53 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  func testCampaign_ImageViewElementURL_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .campaign,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+
+      let textViewIndexPath = IndexPath(
+        row: 1,
+        section: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue
+      )
+
+      let textViewElementURL = self.dataSource.imageViewElementURL(
+        tableView: self.tableView,
+        indexPath: textViewIndexPath
+      )
+
+      XCTAssertNil(textViewElementURL)
+
+      let imageViewIndexPath = IndexPath(
+        row: 2,
+        section: ProjectPageViewControllerDataSource.Section.campaign
+          .rawValue
+      )
+
+      let imageViewElementURL = self.dataSource.imageViewElementURL(
+        tableView: self.tableView,
+        indexPath: imageViewIndexPath
+      )!
+      let url = URL(string: "https://href.com")!
+
+      XCTAssertEqual(imageViewElementURL, url)
+    }
+  }
+
   func testCampaign_VideoViewElementWithNoPlayer_Updated_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
