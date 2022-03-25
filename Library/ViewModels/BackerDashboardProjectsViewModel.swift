@@ -29,9 +29,6 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call when pull-to-refresh is invoked.
   func refresh()
 
-  /// Call when the project navigator has transitioned to a new project with its index.
-  func transitionedToProject(at row: Int, outOf totalRows: Int)
-
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -54,9 +51,6 @@ public protocol BackerDashboardProjectsViewModelOutputs {
 
   /// Emits a list of projects for the tableview datasource.
   var projects: Signal<[Project], Never> { get }
-
-  /// Emits when should scroll to the table view row while swiping projects in the navigator.
-  var scrollToProjectRow: Signal<Int, Never> { get }
 }
 
 public protocol BackerDashboardProjectsViewModelType {
@@ -103,14 +97,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         }
       }
 
-    let isCloseToBottom = Signal.merge(
-      self.willDisplayRowProperty.signal.skipNil(),
-      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
-    )
-    .map { row, total in total > 5 && row >= total - 3 }
-    .skipRepeats()
-    .filter(isTrue)
-    .ignoreValues()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+      .map { row, total in total > 5 && row >= total - 3 }
+      .skipRepeats()
+      .filter(isTrue)
+      .ignoreValues()
 
     let isLoading: Signal<Bool, Never>
     (self.projects, isLoading, _, _) = paginate(
@@ -138,8 +129,6 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
         let ref = (projectsType == .backed) ? RefTag.profileBacked : RefTag.profileSaved
         return (project, projects, ref)
       }
-
-    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     // Tracking
 
@@ -179,11 +168,6 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.refreshProperty.value = ()
   }
 
-  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
-    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
-  }
-
   private let viewWillAppearProperty = MutableProperty(false)
   public func viewWillAppear(_ animated: Bool) {
     self.viewWillAppearProperty.value = animated
@@ -203,7 +187,6 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   public let goToProject: Signal<(Project, [Project], RefTag), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let projects: Signal<[Project], Never>
-  public let scrollToProjectRow: Signal<Int, Never>
 
   public var inputs: BackerDashboardProjectsViewModelInputs { return self }
   public var outputs: BackerDashboardProjectsViewModelOutputs { return self }

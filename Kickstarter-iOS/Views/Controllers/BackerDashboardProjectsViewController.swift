@@ -73,24 +73,12 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
       .observeValues { [weak self] in
         self?.dataSource.load(projects: $0)
         self?.tableView.reloadData()
-        self?.updateProjectPlaylist($0)
       }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, reftag in
         self?.goTo(project: project, initialPlaylist: projects, refTag: reftag)
-      }
-
-    self.viewModel.outputs.scrollToProjectRow
-      .observeForUI()
-      .observeValues { [weak self] row in
-        guard let _self = self else { return }
-        _self.tableView.scrollToRow(
-          at: _self.dataSource.indexPath(for: row),
-          at: .top,
-          animated: false
-        )
       }
   }
 
@@ -120,22 +108,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.viewModel.inputs.projectTapped(project)
   }
 
-  private func goTo(project: Project, initialPlaylist: [Project], refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(
-        project: project,
-        refTag: refTag,
-        initialPlaylist: initialPlaylist,
-        navigatorDelegate: self
-      )
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
+  private func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
@@ -148,18 +121,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func updateProjectPlaylist(_ playlist: [Project]) {
-    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
-    navigator.updatePlaylist(playlist)
-  }
-
   @objc private func refresh() {
     self.viewModel.inputs.refresh()
-  }
-}
-
-extension BackerDashboardProjectsViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at index: Int) {
-    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }

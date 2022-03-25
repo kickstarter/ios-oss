@@ -352,10 +352,9 @@ public struct Service: ServiceType {
 
   /**
     Use case:
-   - `ProjectPamphletViewModel`
    - `ProjectPageViewModel`
 
-   This is the only use case at the moment as it effects the `ProjectPamphletViewController`, `ProjectPageViewController` directly.
+   This is the only use case at the moment as it effects the `ProjectPageViewController` directly.
    */
   public func fetchProject(projectParam: Param, configCurrency: String?)
     -> SignalProducer<Project.ProjectPamphletData, ErrorEnvelope> {

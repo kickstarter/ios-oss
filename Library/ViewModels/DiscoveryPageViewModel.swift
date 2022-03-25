@@ -40,9 +40,6 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the user taps on a project.
   func tapped(project: Project)
 
-  /// Call when the project navigator has transitioned to a new project with its index.
-  func transitionedToProject(at row: Int, outOf totalRows: Int)
-
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
@@ -108,9 +105,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoadingAnimated: Signal<(Bool, Bool), Never> { get }
 
-  /// Emits when should scroll to project with row number.
-  var scrollToProjectRow: Signal<Int, Never> { get }
-
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, Never> { get }
 
@@ -146,16 +140,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
     .map(DiscoveryParams.lens.sort.set)
 
-    let isCloseToBottom = Signal.merge(
-      self.willDisplayRowProperty.signal.skipNil(),
-      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
-    )
-    .map { row, total in
-      row >= total - 3 && row > 0
-    }
-    .skipRepeats()
-    .filter(isTrue)
-    .ignoreValues()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+      .map { row, total in
+        row >= total - 3 && row > 0
+      }
+      .skipRepeats()
+      .filter(isTrue)
+      .ignoreValues()
 
     let isVisible = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
@@ -329,8 +320,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { user, params in user == nil && params.sort == .magic }
       .skipRepeats()
 
-    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
-
     self.setScrollsToTop = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
@@ -451,11 +440,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.tappedProject.value = project
   }
 
-  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
-    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
-  }
-
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
@@ -500,7 +484,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsLoaded: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never>
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
-  public let scrollToProjectRow: Signal<Int, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
   public let showPersonalization: Signal<Bool, Never>

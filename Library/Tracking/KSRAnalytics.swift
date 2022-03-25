@@ -43,7 +43,7 @@ public final class KSRAnalytics {
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card" // AddNewCardViewController
     case pledgeScreen = "pledge" // PledgeViewController
-    case projectPage = "project" // ProjectPamphletViewController
+    case projectPage = "project" // ProjectPageViewController
     case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
