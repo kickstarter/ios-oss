@@ -228,16 +228,6 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func goToProject(_ project: Project, refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,

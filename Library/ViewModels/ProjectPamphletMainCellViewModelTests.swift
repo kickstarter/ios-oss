@@ -70,10 +70,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
   }
 
-  func testReadMoreButton_ExperimentTabs_Disabled_ExperimentStory_Disabled_Success() {
+  func testReadMoreButton_ExperimentStory_Disabled_Success() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
       ]
 
@@ -85,40 +84,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-  func testReadMoreButton_ExperimentTabs_Enabled_ExperimentStory_Disabled_Success() {
+  func testReadMoreButton_ExperimentStory_Enabled_Success() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
-      ]
-
-    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([false])
-    }
-  }
-
-  func testReadMoreButton_ExperimentTabs_Disabled_ExperimentStory_Enabled_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
-    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([false])
-    }
-  }
-
-  func testReadMoreButton_ExperimentTabs_Enabled_ExperimentStory_Enabled_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 

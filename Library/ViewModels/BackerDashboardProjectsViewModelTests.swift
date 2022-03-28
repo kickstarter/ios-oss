@@ -14,7 +14,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
   private let goToProject = TestObserver<Project, Never>()
   private let goToProjectRefTag = TestObserver<RefTag, Never>()
   private let projects = TestObserver<[Project], Never>()
-  private let scrollToProjectRow = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()
@@ -25,7 +24,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
     self.vm.outputs.goToProject.map(first).observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map(third).observe(self.goToProjectRefTag.observer)
     self.vm.outputs.projects.observe(self.projects.observer)
-    self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
   }
 
   func testProjects() {
@@ -155,51 +153,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         ["account_menu"],
         self.segmentTrackingClient.properties(forKey: "context_location", as: String.self)
       )
-    }
-  }
-
-  func testScrollAndUpdateProjects_ViaProjectNavigator() {
-    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let projectEnv = .template
-      |> DiscoveryEnvelope.lens.projects .~ playlist
-
-    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
-    let projectEnv2 = .template
-      |> DiscoveryEnvelope.lens.projects .~ playlist2
-
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv), currentUser: .template) {
-      self.vm.inputs.configureWith(projectsType: .backed, sort: .endingSoon)
-      self.vm.inputs.viewWillAppear(false)
-
-      self.scheduler.advance()
-
-      self.projects.assertValues([playlist], "Projects are loaded.")
-
-      self.vm.inputs.projectTapped(playlist[4])
-      self.vm.inputs.transitionedToProject(at: 5, outOf: playlist.count)
-
-      self.scrollToProjectRow.assertValues([5])
-
-      self.vm.inputs.transitionedToProject(at: 6, outOf: playlist.count)
-
-      self.scrollToProjectRow.assertValues([5, 6])
-
-      self.vm.inputs.transitionedToProject(at: 7, outOf: playlist.count)
-
-      self.scrollToProjectRow.assertValues([5, 6, 7])
-
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
-        self.vm.inputs.transitionedToProject(at: 8, outOf: playlist.count)
-
-        self.scheduler.advance()
-
-        self.scrollToProjectRow.assertValues([5, 6, 7, 8])
-        self.projects.assertValues([playlist, playlist + playlist2], "More projects are loaded.")
-
-        self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
-
-        self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
-      }
     }
   }
 }

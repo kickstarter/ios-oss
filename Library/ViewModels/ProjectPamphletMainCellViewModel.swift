@@ -378,7 +378,7 @@ private func fundingStatus(forProject project: Project) -> String {
 }
 
 private func campaignTabEnabled() -> Bool {
-  featureNavigationSelectorProjectPageIsEnabled() && featureProjectPageStoryTabEnabled()
+  featureProjectPageStoryTabEnabled()
 }
 
 typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)

@@ -22,13 +22,7 @@ final class ProjectPageNavigationBarView: UIView {
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
 
-  private lazy var navigationShareButton: UIButton = {
-    let buttonView = UIButton()
-      |> shareButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
-
-    return buttonView
-  }()
+  private lazy var navigationShareButton: UIButton = { UIButton(type: .custom) }()
 
   private lazy var navigationCloseButton: UIButton = {
     let buttonView = UIButton(type: .custom)
@@ -41,13 +35,7 @@ final class ProjectPageNavigationBarView: UIView {
     return buttonView
   }()
 
-  private lazy var navigationSaveButton: UIButton = {
-    let buttonView = UIButton()
-      |> saveButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
-
-    return buttonView
-  }()
+  private lazy var navigationSaveButton: UIButton = { UIButton(type: .custom) }()
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -87,6 +75,14 @@ final class ProjectPageNavigationBarView: UIView {
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.insetsLayoutMarginsFromSafeArea .~ true
       |> \.spacing .~ Styles.grid(0)
+
+    _ = self.navigationShareButton
+      |> shareButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+
+    _ = self.navigationSaveButton
+      |> saveButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
 
   // MARK: - View Model

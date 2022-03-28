@@ -149,7 +149,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 
@@ -204,7 +203,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
       ]
 
@@ -631,7 +629,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 
@@ -673,7 +670,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 
@@ -715,7 +711,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 
@@ -767,7 +762,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
       ]
 

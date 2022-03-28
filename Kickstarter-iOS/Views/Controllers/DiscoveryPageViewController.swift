@@ -192,7 +192,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeValues { [weak self] projects, params, variant in
         self?.dataSource.load(projects: projects, params: params, projectCardVariant: variant)
         self?.tableView.reloadData()
-        self?.updateProjectPlaylist(projects)
       }
 
     self.viewModel.outputs.showOnboarding
@@ -239,17 +238,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] in
         _ = self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
-      }
-
-    self.viewModel.outputs.scrollToProjectRow
-      .observeForUI()
-      .observeValues { [weak self] row in
-        guard let self = self else { return }
-        self.tableView.scrollToRow(
-          at: self.dataSource.indexPath(forProjectRow: row),
-          at: .top,
-          animated: false
-        )
       }
 
     self.shareViewModel.outputs.showShareSheet
@@ -355,16 +343,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
@@ -377,24 +355,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func goTo(project: Project, initialPlaylist: [Project], refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(
-        project: project,
-        refTag: refTag,
-        initialPlaylist: initialPlaylist,
-        navigatorDelegate: self
-      )
-
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
+  fileprivate func goTo(project: Project, initialPlaylist _: [Project], refTag: RefTag) {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
@@ -427,11 +388,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     if let discovery = self.parent?.parent as? DiscoveryViewController {
       discovery.setSortsEnabled(false)
     }
-  }
-
-  private func updateProjectPlaylist(_ playlist: [Project]) {
-    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
-    navigator.updatePlaylist(playlist)
   }
 
   // MARK: - Accessors
@@ -530,12 +486,6 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
       |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
     self.present(nav, animated: true, completion: nil)
-  }
-}
-
-extension DiscoveryPageViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at index: Int) {
-    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }
 
