@@ -224,7 +224,8 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       let firstTextElement = extendedProjectProperties.story.htmlViewElements.first as? TextViewElement,
       let firstImageElement = extendedProjectProperties.story
       .htmlViewElements[extendedProjectProperties.story.htmlViewElements.count - 2] as? ImageViewElement,
-      let firstVideoElement = extendedProjectProperties.story.htmlViewElements.last as? VideoViewElement,
+      let firstAudioVideoElement = extendedProjectProperties.story.htmlViewElements
+      .last as? AudioVideoViewElement,
       let firstTextComponent = firstTextElement.components.first else {
       XCTFail("extended project properties should exist.")
 
@@ -247,14 +248,14 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(firstTextComponent.link, "http://record.pt/")
     XCTAssertEqual(firstTextComponent.styles, [.bold, .link])
     XCTAssertEqual(
-      firstVideoElement.sourceURLString,
+      firstAudioVideoElement.sourceURLString,
       "https://v.kickstarter.com/1646345127_8366452d275cb8330ca0cee82a6c5259a1df288e/assets/035/786/501/b99cdfe87fc9b942dce0fe9a59a3767a_h264_high.mp4"
     )
     XCTAssertEqual(
-      firstVideoElement.thumbnailURLString,
+      firstAudioVideoElement.thumbnailURLString,
       "https://dr0rfahizzuzj.cloudfront.net/assets/035/786/501/b99cdfe87fc9b942dce0fe9a59a3767a_h264_base.jpg?2021"
     )
-    XCTAssertEqual(firstVideoElement.seekPosition, .zero)
+    XCTAssertEqual(firstAudioVideoElement.seekPosition, .zero)
     XCTAssertEqual(extendedProjectProperties.risks, "Risks")
     XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)
     XCTAssertEqual(

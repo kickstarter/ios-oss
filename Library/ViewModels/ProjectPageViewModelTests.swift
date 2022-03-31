@@ -47,8 +47,8 @@ final class ProjectPageViewModelTests: TestCase {
   private let presentMessageDialog = TestObserver<Project, Never>()
   private let prefetchImageURLs = TestObserver<([URL], IndexPath), Never>()
   private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
-  private let precreateVideoURLs = TestObserver<(VideoViewElement, IndexPath), Never>()
-  private let precreateVideoURLsFirstLoad = TestObserver<[VideoViewElement], Never>()
+  private let precreateAudioVideoURLs = TestObserver<(AudioVideoViewElement, IndexPath), Never>()
+  private let precreateAudioVideoURLsFirstLoad = TestObserver<[AudioVideoViewElement], Never>()
   private let reloadCampaignData = TestObserver<(), Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
@@ -110,8 +110,8 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.pauseMedia.observe(self.pauseMedia.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
-    self.vm.outputs.precreateVideoURLs.observe(self.precreateVideoURLs.observer)
-    self.vm.outputs.precreateVideoURLsOnFirstLoad.observe(self.precreateVideoURLsFirstLoad.observer)
+    self.vm.outputs.precreateAudioVideoURLs.observe(self.precreateAudioVideoURLs.observer)
+    self.vm.outputs.precreateAudioVideoURLsOnFirstLoad.observe(self.precreateAudioVideoURLsFirstLoad.observer)
     self.vm.outputs.prefetchImageURLs.observe(self.prefetchImageURLs.observer)
     self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(self.prefetchImageURLsFirstLoad.observer)
     self.vm.outputs.reloadCampaignData.observe(self.reloadCampaignData.observer)
@@ -1441,13 +1441,13 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
-  func testOutputForNonEmptyVideoURLS_UpdatedPrepareVideoIndexPath() {
+  func testOutputForNonEmptyAudioVideoURLS_UpdatedPrepareAudioVideoIndexPath() {
     let campaignSection = NavigationSection.campaign.rawValue
     let expectedTime = CMTime(
       seconds: 123.4,
       preferredTimescale: CMTimeScale(1)
     )
-    let expectedVideoElement = VideoViewElement(
+    let expectedAudioVideoElement = AudioVideoViewElement(
       sourceURLString: "https://video.com",
       thumbnailURLString: "https://thumbnail.com",
       seekPosition: expectedTime
@@ -1483,31 +1483,31 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      self.vm.inputs.prepareVideoAt(
+      self.vm.inputs.prepareAudioVideoAt(
         expectedIndexPath,
-        with: expectedVideoElement
+        with: expectedAudioVideoElement
       )
 
       XCTAssertEqual(
-        self.precreateVideoURLs.lastValue?.0.sourceURLString,
-        expectedVideoElement.sourceURLString
+        self.precreateAudioVideoURLs.lastValue?.0.sourceURLString,
+        expectedAudioVideoElement.sourceURLString
       )
       XCTAssertEqual(
-        self.precreateVideoURLs.lastValue?.0.thumbnailURLString,
-        expectedVideoElement.thumbnailURLString
+        self.precreateAudioVideoURLs.lastValue?.0.thumbnailURLString,
+        expectedAudioVideoElement.thumbnailURLString
       )
-      XCTAssertEqual(self.precreateVideoURLs.lastValue?.0.seekPosition, expectedTime)
-      XCTAssertEqual(self.precreateVideoURLs.lastValue?.1, expectedIndexPath)
+      XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.0.seekPosition, expectedTime)
+      XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.1, expectedIndexPath)
     }
   }
 
-  func testOutputForNonEmptyVideoURLS_UpdatedPrefetchVideoURLsOnFirstLoad() {
+  func testOutputForNonEmptyAudioVideoURLS_UpdatedPrefetchAudioVideoURLsOnFirstLoad() {
     let campaignSection = NavigationSection.campaign.rawValue
     let expectedTime = CMTime(
       seconds: 123.4,
       preferredTimescale: CMTimeScale(1)
     )
-    let expectedVideoElement = VideoViewElement(
+    let expectedAudioVideoElement = AudioVideoViewElement(
       sourceURLString: "https://video.com",
       thumbnailURLString: "https://thumbnail.com",
       seekPosition: expectedTime
@@ -1522,7 +1522,7 @@ final class ProjectPageViewModelTests: TestCase {
         faqs: [],
         risks: "",
         story: ProjectStoryElements(htmlViewElements: [
-          expectedVideoElement
+          expectedAudioVideoElement
         ]),
         minimumPledgeAmount: 1
       )
@@ -1544,15 +1544,15 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
 
-      guard let videoViewElement = self.precreateVideoURLsFirstLoad.lastValue?.first else {
+      guard let audioVideoViewElement = self.precreateAudioVideoURLsFirstLoad.lastValue?.first else {
         XCTFail()
 
         return
       }
 
-      XCTAssertEqual(videoViewElement.sourceURLString, expectedVideoElement.sourceURLString)
-      XCTAssertEqual(videoViewElement.thumbnailURLString, expectedVideoElement.thumbnailURLString)
-      XCTAssertEqual(videoViewElement.seekPosition, expectedTime)
+      XCTAssertEqual(audioVideoViewElement.sourceURLString, expectedAudioVideoElement.sourceURLString)
+      XCTAssertEqual(audioVideoViewElement.thumbnailURLString, expectedAudioVideoElement.thumbnailURLString)
+      XCTAssertEqual(audioVideoViewElement.seekPosition, expectedTime)
     }
   }
 

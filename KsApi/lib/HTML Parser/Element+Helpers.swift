@@ -52,7 +52,7 @@ extension Element {
     return highDefinitionSourceURL ?? sourceUrls.first
   }
 
-  func parseVideoElementThumbnailUrl() -> String? {
+  func parseAudioVideoElementThumbnailUrl() -> String? {
     try? parent()?.attr(HTMLRawText.Image.dataImage.rawValue)
   }
 

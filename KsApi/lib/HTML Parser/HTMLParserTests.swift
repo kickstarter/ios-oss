@@ -108,8 +108,8 @@ final class HTMLParserTests: XCTestCase {
   func testHTMLParser_WithValidVideoHigh_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideoHigh.data)
 
-    guard let viewElement = viewElements.first as? VideoViewElement else {
-      XCTFail("video view element should be created.")
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
+      XCTFail("audio video view element should be created.")
 
       return
     }
@@ -130,8 +130,8 @@ final class HTMLParserTests: XCTestCase {
   func testHTMLParser_WithValidVideo_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideo.data)
 
-    guard let viewElement = viewElements.first as? VideoViewElement else {
-      XCTFail("video view element should be created.")
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
+      XCTFail("audio video view element should be created.")
 
       return
     }
@@ -152,7 +152,7 @@ final class HTMLParserTests: XCTestCase {
   func testHTMLParser_WithValidHiddenVideo_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validHiddenVideo.data)
 
-    guard let viewElement = viewElements.first as? VideoViewElement else {
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
       XCTFail("video view element should be created.")
 
       return

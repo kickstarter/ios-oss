@@ -15,7 +15,7 @@ public protocol VideoViewControllerDelegate: AnyObject {
 
 public final class VideoViewController: UIViewController {
   internal weak var delegate: VideoViewControllerDelegate?
-  internal weak var playbackDelegate: VideoViewControllerPlaybackDelegate?
+  internal weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   fileprivate let viewModel: VideoViewModelType = VideoViewModel()
   fileprivate var playerController: AVPlayerViewController!
   fileprivate var timeObserver: Any?
@@ -226,8 +226,8 @@ private func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category)
   return input.rawValue
 }
 
-extension VideoViewController: VideoViewControllerPlaybackDelegate {
-  func pauseVideoPlayback() {
+extension VideoViewController: AudioVideoViewControllerPlaybackDelegate {
+  func pauseAudioVideoPlayback() {
     if self.playerController.player?.timeControlStatus == .playing {
       self.playerController.player?.pause()
     }

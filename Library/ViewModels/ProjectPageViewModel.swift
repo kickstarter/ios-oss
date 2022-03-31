@@ -36,8 +36,8 @@ public protocol ProjectPageViewModelInputs {
   /// Call for image view elements that are missing inside `prefetchRowsAt` delegate in `ProjectPageViewController`
   func prepareImageAt(_ indexPath: IndexPath)
 
-  /// Call for video view elements that are missing a player inside `prefetchRowsAt` delegate in `ProjectPageViewController`
-  func prepareVideoAt(_ indexPath: IndexPath, with videoViewElement: VideoViewElement)
+  /// Call for audio/video view elements that are missing a player inside `prefetchRowsAt` delegate in `ProjectPageViewController`
+  func prepareAudioVideoAt(_ indexPath: IndexPath, with audioVideoViewElement: AudioVideoViewElement)
 
   /// Call when the delegate method for the `ProjectEnvironmentalCommitmentFooterCellDelegate` is called.
   func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
@@ -116,11 +116,11 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
 
-  /// Emits `VideoViewElement` and `IndexPath` when the project has campaign data to download for a row
-  var precreateVideoURLs: Signal<(VideoViewElement, IndexPath), Never> { get }
+  /// Emits `AudioVideoViewElement` and `IndexPath` when the project has campaign data to download for a row
+  var precreateAudioVideoURLs: Signal<(AudioVideoViewElement, IndexPath), Never> { get }
 
-  /// Emits `[VideoViewElement]` to preload the data source with `AVPlayer` objects for video player cells.
-  var precreateVideoURLsOnFirstLoad: Signal<[VideoViewElement], Never> { get }
+  /// Emits `[AudioVideoViewElement]` to preload the data source with `AVPlayer` objects for video player cells.
+  var precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never> { get }
 
   /// Emits `[URL]` and `IndexPath` when the project has campaign data to download for a row
   var prefetchImageURLs: Signal<([URL], IndexPath), Never> { get }
@@ -221,16 +221,16 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return SignalProducer(value: imageViewElements)
       }
 
-    self.precreateVideoURLsOnFirstLoad = project.signal
+    self.precreateAudioVideoURLsOnFirstLoad = project.signal
       .skip(first: 1)
-      .switchMap { project -> SignalProducer<[VideoViewElement], Never> in
-        let videoViewElements = project.extendedProjectProperties?.story.htmlViewElements
-          .compactMap { $0 as? VideoViewElement } ?? []
+      .switchMap { project -> SignalProducer<[AudioVideoViewElement], Never> in
+        let audioVideoViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? AudioVideoViewElement } ?? []
 
-        return SignalProducer(value: videoViewElements)
+        return SignalProducer(value: audioVideoViewElements)
       }
 
-    self.precreateVideoURLs = self.prepareVideoAtProperty.signal.skipNil()
+    self.precreateAudioVideoURLs = self.prepareAudioVideoAtProperty.signal.skipNil()
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -466,9 +466,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.prepareImageAtProperty.value = indexPath
   }
 
-  private let prepareVideoAtProperty = MutableProperty<(VideoViewElement, IndexPath)?>(nil)
-  public func prepareVideoAt(_ indexPath: IndexPath, with videoViewElement: VideoViewElement) {
-    self.prepareVideoAtProperty.value = (videoViewElement, indexPath)
+  private let prepareAudioVideoAtProperty = MutableProperty<(AudioVideoViewElement, IndexPath)?>(nil)
+  public func prepareAudioVideoAt(_ indexPath: IndexPath, with audioVideoViewElement: AudioVideoViewElement) {
+    self.prepareAudioVideoAtProperty.value = (audioVideoViewElement, indexPath)
   }
 
   fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
@@ -536,8 +536,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let pauseMedia: Signal<Void, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
-  public let precreateVideoURLs: Signal<(VideoViewElement, IndexPath), Never>
-  public let precreateVideoURLsOnFirstLoad: Signal<[VideoViewElement], Never>
+  public let precreateAudioVideoURLs: Signal<(AudioVideoViewElement, IndexPath), Never>
+  public let precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never>
   public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
   public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
   public let reloadCampaignData: Signal<Void, Never>

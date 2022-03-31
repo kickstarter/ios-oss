@@ -55,19 +55,19 @@ class HTMLParser {
     }
   }
 
-  private func createVideoElement(_ child: Element) -> VideoViewElement? {
+  private func createVideoElement(_ child: Element) -> AudioVideoViewElement? {
     guard let sourceUrl = child.parseVideoElement() else {
       return nil
     }
 
-    let thumbnailUrl = child.parseVideoElementThumbnailUrl()
-    let videoViewElement = VideoViewElement(
+    let thumbnailUrl = child.parseAudioVideoElementThumbnailUrl()
+    let audioVideoViewElement = AudioVideoViewElement(
       sourceURLString: sourceUrl,
       thumbnailURLString: thumbnailUrl,
       seekPosition: .zero
     )
 
-    return videoViewElement
+    return audioVideoViewElement
   }
 
   private func parseTextElement(element: Element,

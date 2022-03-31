@@ -52,7 +52,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         href: "https://href.com",
         caption: "caption"
       ),
-      VideoViewElement(
+      AudioVideoViewElement(
         sourceURLString: "https://source.com",
         thumbnailURLString: "https://thumbnail.com",
         seekPosition: .zero
@@ -480,7 +480,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         self.dataSource.reusableId(item: 2, section: self.campaignSection)
       )
       XCTAssertEqual(
-        "VideoViewElementCell",
+        "AudioVideoViewElementCell",
         self.dataSource.reusableId(item: 3, section: self.campaignSection)
       )
       XCTAssertEqual(
@@ -787,7 +787,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  func testCampaign_WithVideoViewElementPreload_Success() {
+  func testCampaign_WithAudioVideoViewElementPreload_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
@@ -799,9 +799,10 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     let image = UIImage(systemName: "camera")!
 
     withEnvironment(currentUser: .template) {
-      guard let videoViewElement = self.storyViewableElements.htmlViewElements[3] as? VideoViewElement
+      guard let audioVideoViewElement = self.storyViewableElements
+        .htmlViewElements[3] as? AudioVideoViewElement
       else {
-        XCTFail("video view element should exist in story view elements.")
+        XCTFail("audio video view element should exist in story view elements.")
 
         return
       }
@@ -811,7 +812,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         section: ProjectPageViewControllerDataSource.Section.campaign.rawValue
       )
 
-      self.dataSource.preloadCampaignVideoViewElement(videoViewElement, player: AVPlayer(), image: image)
+      self.dataSource
+        .preloadCampaignAudioVideoViewElement(audioVideoViewElement, player: AVPlayer(), image: image)
 
       self.dataSource.load(
         navigationSection: .campaign,
@@ -822,10 +824,10 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       guard let updatedItem = self.dataSource
         .items(in: expectedIndexPath.section)[expectedIndexPath.row] as? (
-          value: (VideoViewElement, AVPlayer, UIImage),
+          value: (AudioVideoViewElement, AVPlayer, UIImage),
           reusableId: String
         ) else {
-        XCTFail("video view element should exist")
+        XCTFail("audio video view element should exist")
 
         return
       }
@@ -931,7 +933,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  func testCampaign_VideoViewElementWithNoPlayer_Updated_Success() {
+  func testCampaign_AudioVideoViewElementWithNoPlayer_Updated_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
@@ -950,40 +952,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         isExpandedStates: nil
       )
 
-      let videoViewIndexPath = IndexPath(
+      let audioVideoViewIndexPath = IndexPath(
         row: 3,
         section: ProjectPageViewControllerDataSource.Section.campaign
           .rawValue
       )
-      var videoViewElementWithNoPlayer = self.dataSource.videoViewElementWithNoPlayer(
+      var audioVideoViewElementWithNoPlayer = self.dataSource.audioVideoViewElementWithNoPlayer(
         tableView: self.tableView,
-        indexPath: videoViewIndexPath,
+        indexPath: audioVideoViewIndexPath,
         section: ProjectPageViewControllerDataSource
           .Section.campaign
       )
 
-      XCTAssertNotNil(videoViewElementWithNoPlayer)
+      XCTAssertNotNil(audioVideoViewElementWithNoPlayer)
 
       self.dataSource
-        .updateVideoViewElementWith(
-          videoViewElementWithNoPlayer!.0,
+        .updateAudioVideoViewElementWith(
+          audioVideoViewElementWithNoPlayer!.0,
           player: AVPlayer(),
           thumbnailImage: camera,
-          indexPath: videoViewElementWithNoPlayer!.1
+          indexPath: audioVideoViewElementWithNoPlayer!.1
         )
 
-      videoViewElementWithNoPlayer = self.dataSource.videoViewElementWithNoPlayer(
+      audioVideoViewElementWithNoPlayer = self.dataSource.audioVideoViewElementWithNoPlayer(
         tableView: self.tableView,
-        indexPath: videoViewIndexPath,
+        indexPath: audioVideoViewIndexPath,
         section: ProjectPageViewControllerDataSource
           .Section.campaign
       )
 
-      XCTAssertNil(videoViewElementWithNoPlayer)
+      XCTAssertNil(audioVideoViewElementWithNoPlayer)
     }
   }
 
-  func testCampaign_VideoViewElementWithNoSeektime_Updated_Success() {
+  func testCampaign_AudioVideoViewElementWithNoSeektime_Updated_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
@@ -1001,40 +1003,40 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         isExpandedStates: nil
       )
 
-      let videoViewIndexPath = IndexPath(
+      let audioVideoViewIndexPath = IndexPath(
         row: 3,
         section: ProjectPageViewControllerDataSource.Section.campaign
           .rawValue
       )
 
-      let videoViewElementWithNoPlayer = self.dataSource.videoViewElementWithNoPlayer(
+      let audioVideoViewElementWithNoPlayer = self.dataSource.audioVideoViewElementWithNoPlayer(
         tableView: self.tableView,
-        indexPath: videoViewIndexPath,
+        indexPath: audioVideoViewIndexPath,
         section: ProjectPageViewControllerDataSource
           .Section.campaign
       )
 
       self.dataSource
-        .updateVideoViewElementWith(
-          videoViewElementWithNoPlayer!.0,
+        .updateAudioVideoViewElementWith(
+          audioVideoViewElementWithNoPlayer!.0,
           player: AVPlayer(),
           thumbnailImage: nil,
-          indexPath: videoViewElementWithNoPlayer!.1
+          indexPath: audioVideoViewElementWithNoPlayer!.1
         )
 
-      self.dataSource.updateVideoViewElementSeektime(
+      self.dataSource.updateAudioVideoViewElementSeektime(
         with: expectedTime,
         tableView: self.tableView,
-        indexPath: videoViewIndexPath
+        indexPath: audioVideoViewIndexPath
       )
       guard let updatedItem = self.dataSource
-        .items(in: videoViewIndexPath
-          .section)[videoViewIndexPath.row] as? (
-          value: (VideoViewElement, AVPlayer, UIImage?),
+        .items(in: audioVideoViewIndexPath
+          .section)[audioVideoViewIndexPath.row] as? (
+          value: (AudioVideoViewElement, AVPlayer, UIImage?),
             reusableId: String
           )
       else {
-        XCTFail("video view element should exist")
+        XCTFail("audio video view element should exist")
 
         return
       }

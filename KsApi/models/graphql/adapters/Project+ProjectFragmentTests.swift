@@ -67,7 +67,8 @@ final class Project_ProjectFragmentTests: XCTestCase {
         extendedProjectProperties.story.htmlViewElements.count > 3,
         let textElement = extendedProjectProperties.story.htmlViewElements[2] as? TextViewElement,
         let imageViewElement = extendedProjectProperties.story.htmlViewElements[8] as? ImageViewElement,
-        let videoViewElement = extendedProjectProperties.story.htmlViewElements[11] as? VideoViewElement,
+        let audioVideoViewElement = extendedProjectProperties.story
+        .htmlViewElements[11] as? AudioVideoViewElement,
         let externalSourceViewElement = extendedProjectProperties.story
         .htmlViewElements[17] as? ExternalSourceViewElement,
         textElement.components.count > 5 else {
@@ -95,14 +96,14 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNil(imageViewElement.href)
 
       XCTAssertEqual(
-        videoViewElement.sourceURLString,
+        audioVideoViewElement.sourceURLString,
         "https://v.kickstarter.com/1646345127_8366452d275cb8330ca0cee82a6c5259a1df288e/assets/035/786/501/b99cdfe87fc9b942dce0fe9a59a3767a_h264_high.mp4"
       )
       XCTAssertEqual(
-        videoViewElement.thumbnailURLString,
+        audioVideoViewElement.thumbnailURLString,
         "https://dr0rfahizzuzj.cloudfront.net/assets/035/786/501/b99cdfe87fc9b942dce0fe9a59a3767a_h264_base.jpg?2021"
       )
-      XCTAssertEqual(videoViewElement.seekPosition, .zero)
+      XCTAssertEqual(audioVideoViewElement.seekPosition, .zero)
 
       XCTAssertEqual(
         externalSourceViewElement.embeddedURLString,
