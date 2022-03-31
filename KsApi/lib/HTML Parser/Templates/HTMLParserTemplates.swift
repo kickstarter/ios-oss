@@ -5,6 +5,7 @@ public enum HTMLParserTemplates {
   case validGIFImage
   case validImageWithCaption
   case validImageWithCaptionAndLink
+  case validAudio
   case validVideo
   case validVideoHigh
   case validHiddenVideo
@@ -26,6 +27,8 @@ public enum HTMLParserTemplates {
       return self.validImageWithCaption
     case .validImageWithCaptionAndLink:
       return self.validImageWithCaptionAndLink
+    case .validAudio:
+      return self.validAudio
     case .validVideo:
       return self.validVideo
     case .validHiddenVideo:
@@ -75,6 +78,17 @@ public enum HTMLParserTemplates {
     """
     <h1 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h1>
     \n<br>\n
+    """
+  }
+
+  private var validAudio: String {
+    """
+    \n
+    <div class="template asset" contenteditable="false" data-id="2236466">
+    <figure>
+    <audio controls="controls" preload="none"><source src="https://d15chbti7ht62o.cloudfront.net/assets/002/236/466/f17de99e2a9e76a4954418c16d963f9b_mp3.mp3?2015" type="audio/mp3"><source src="https://d15chbti7ht62o.cloudfront.net/assets/002/236/466/f17de99e2a9e76a4954418c16d963f9b_aac.aac?2015" type="audio/aac"><source src="https://d15chbti7ht62o.cloudfront.net/assets/002/236/466/f17de99e2a9e76a4954418c16d963f9b_ogg.ogg?2015" type="audio/ogg"><source src="https://d15chbti7ht62o.cloudfront.net/assets/002/236/466/f17de99e2a9e76a4954418c16d963f9b_webm.webm?2015" type="audio/webm"></audio>
+    </figure>
+    \n
     """
   }
 

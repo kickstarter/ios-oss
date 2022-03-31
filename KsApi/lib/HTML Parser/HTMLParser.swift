@@ -26,12 +26,15 @@ class HTMLParser {
     var element: HTMLViewElement?
 
     switch viewElementType {
-    case .imageOrVideo:
+    case .imageAudioOrVideo:
       if let imageElement = child.parseImageElement() {
         element = imageElement
       } else if let childrenWithVideoTag = try? child.getElementsByTag(HTMLRawText.Base.video.rawValue),
         let childWithVideoTag = childrenWithVideoTag.first {
         element = self.createVideoElement(childWithVideoTag)
+      } else if let childrenWithAudioTag = try? child.getElementsByTag(HTMLRawText.Base.audio.rawValue),
+        let childWithAudioTag = childrenWithAudioTag.first {
+        element = self.createAudioElement(childWithAudioTag)
       }
     case .text:
       var textComponents = [TextComponent]()
@@ -42,6 +45,8 @@ class HTMLParser {
       element = textViewElement
     case .video:
       element = self.createVideoElement(child)
+    case .audio:
+      element = self.createAudioElement(child)
     case .externalSources:
       element = child.parseExternalElement()
     default:
@@ -53,6 +58,21 @@ class HTMLParser {
     if let elementValue = element {
       viewElements.append(elementValue)
     }
+  }
+
+  private func createAudioElement(_ child: Element) -> AudioVideoViewElement? {
+    guard let sourceUrl = child.parseAudioElement() else {
+      return nil
+    }
+
+    let thumbnailUrl = child.parseAudioVideoElementThumbnailUrl()
+    let audioVideoViewElement = AudioVideoViewElement(
+      sourceURLString: sourceUrl,
+      thumbnailURLString: thumbnailUrl,
+      seekPosition: .zero
+    )
+
+    return audioVideoViewElement
   }
 
   private func createVideoElement(_ child: Element) -> AudioVideoViewElement? {

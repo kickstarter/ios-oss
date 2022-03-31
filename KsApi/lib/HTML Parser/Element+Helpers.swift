@@ -5,8 +5,8 @@ extension Element {
   func extractViewElementTypeFromDiv() -> ViewElementType? {
     var type: ViewElementType?
 
-    if self.isImageOrVideoStructure() {
-      type = .imageOrVideo
+    if self.isImageAudioOrVideoStructure() {
+      type = .imageAudioOrVideo
     } else if self.isIframeStructure() {
       type = .externalSources
     }
@@ -29,7 +29,7 @@ extension Element {
     return false
   }
 
-  private func isImageOrVideoStructure() -> Bool {
+  private func isImageAudioOrVideoStructure() -> Bool {
     let templateDivAttributes = getAttributes()?.filter { attribute in
       let classKey = attribute.getKey() == HTMLRawText.Base.htmlClass.rawValue
       let templateAssetValue = attribute.getValue() == HTMLRawText.KSRSpecific.templateAsset.rawValue
@@ -50,6 +50,12 @@ extension Element {
     let highDefinitionSourceURL = sourceUrls.first { $0.contains(HTMLRawText.Video.high.rawValue) }
 
     return highDefinitionSourceURL ?? sourceUrls.first
+  }
+
+  func parseAudioElement() -> String? {
+    let sourceUrls = children().compactMap { try? $0.attr(HTMLRawText.Link.source.rawValue) }
+
+    return sourceUrls.first
   }
 
   func parseAudioVideoElementThumbnailUrl() -> String? {
