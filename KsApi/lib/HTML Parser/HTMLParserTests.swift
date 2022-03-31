@@ -163,7 +163,7 @@ final class HTMLParserTests: XCTestCase {
       "https://d15chbti7ht62o.cloudfront.net/assets/002/236/466/f17de99e2a9e76a4954418c16d963f9b_mp3.mp3?2015"
     )
 
-    XCTAssertNil(viewElement.thumbnailURLString)
+    XCTAssertTrue(viewElement.thumbnailURLString!.isEmpty)
     XCTAssertEqual(viewElement.seekPosition, .zero)
   }
 
