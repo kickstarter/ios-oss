@@ -1,7 +1,8 @@
 import SwiftSoup
 
 enum ViewElementType: String {
-  case imageOrVideo
+  case audio
+  case imageAudioOrVideo
   case text
   case video
   case externalSources = "iframe"
@@ -23,6 +24,8 @@ enum ViewElementType: String {
       self = .text
     case ViewElementType.video.rawValue:
       self = .video
+    case ViewElementType.audio.rawValue:
+      self = .audio
     default:
       return nil
     }

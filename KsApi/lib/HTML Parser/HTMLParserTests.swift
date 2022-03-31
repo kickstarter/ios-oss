@@ -108,8 +108,8 @@ final class HTMLParserTests: XCTestCase {
   func testHTMLParser_WithValidVideoHigh_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideoHigh.data)
 
-    guard let viewElement = viewElements.first as? VideoViewElement else {
-      XCTFail("video view element should be created.")
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
+      XCTFail("audio video view element should be created.")
 
       return
     }
@@ -130,8 +130,8 @@ final class HTMLParserTests: XCTestCase {
   func testHTMLParser_WithValidVideo_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validVideo.data)
 
-    guard let viewElement = viewElements.first as? VideoViewElement else {
-      XCTFail("video view element should be created.")
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
+      XCTFail("audio video view element should be created.")
 
       return
     }
@@ -149,10 +149,28 @@ final class HTMLParserTests: XCTestCase {
     XCTAssertEqual(viewElement.seekPosition, .zero)
   }
 
+  func testHTMLParser_WithValidAudio_Success() {
+    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validAudio.data)
+
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
+      XCTFail("audio video view element should be created.")
+
+      return
+    }
+
+    XCTAssertEqual(
+      viewElement.sourceURLString,
+      "https://d15chbti7ht62o.cloudfront.net/assets/002/236/466/f17de99e2a9e76a4954418c16d963f9b_mp3.mp3?2015"
+    )
+
+    XCTAssertTrue(viewElement.thumbnailURLString!.isEmpty)
+    XCTAssertEqual(viewElement.seekPosition, .zero)
+  }
+
   func testHTMLParser_WithValidHiddenVideo_Success() {
     let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validHiddenVideo.data)
 
-    guard let viewElement = viewElements.first as? VideoViewElement else {
+    guard let viewElement = viewElements.first as? AudioVideoViewElement else {
       XCTFail("video view element should be created.")
 
       return

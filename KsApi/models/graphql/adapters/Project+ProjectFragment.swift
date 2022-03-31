@@ -249,22 +249,22 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
 private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
   let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
   var seenURLStrings = Set<String>()
-  var htmlElementsWithUniqueVideoViewElements = [HTMLViewElement]()
+  var htmlElementsWithUniqueAudioVideoViewElements = [HTMLViewElement]()
 
   for viewElement in viewElements {
-    guard let videoViewElement = viewElement as? VideoViewElement else {
-      htmlElementsWithUniqueVideoViewElements.append(viewElement)
+    guard let audioVideoViewElement = viewElement as? AudioVideoViewElement else {
+      htmlElementsWithUniqueAudioVideoViewElements.append(viewElement)
 
       continue
     }
 
-    if !seenURLStrings.contains(videoViewElement.sourceURLString) {
-      htmlElementsWithUniqueVideoViewElements.append(viewElement)
-      seenURLStrings.insert(videoViewElement.sourceURLString)
+    if !seenURLStrings.contains(audioVideoViewElement.sourceURLString) {
+      htmlElementsWithUniqueAudioVideoViewElements.append(viewElement)
+      seenURLStrings.insert(audioVideoViewElement.sourceURLString)
     }
   }
 
-  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueVideoViewElements)
+  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements)
 
   return storyElements
 }

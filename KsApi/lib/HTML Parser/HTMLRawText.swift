@@ -7,6 +7,7 @@ public enum HTMLRawText {
     case iframe
     case div
     case video
+    case audio
   }
 
   enum List: String {

@@ -38,7 +38,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
           href: "https://ksr.com",
           caption: "camera"
         ),
-        VideoViewElement(
+        AudioVideoViewElement(
           sourceURLString: "https://source.com",
           thumbnailURLString: nil,
           seekPosition: .zero
