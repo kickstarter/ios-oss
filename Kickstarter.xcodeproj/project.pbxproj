@@ -990,7 +990,6 @@
 		A7C93F801D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C93F7F1D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift */; };
 		A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */; };
 		A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */; };
-		A7CA8C0E1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */; };
 		A7CC13D31D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC13CE1D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift */; };
 		A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC13CF1D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift */; };
 		A7CC13D71D00E6CF00035C52 /* FindFriendsHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC13D01D00E6CF00035C52 /* FindFriendsHeaderCellViewModel.swift */; };
@@ -1087,7 +1086,6 @@
 		A7ED1FF21E831C5C00BFFA01 /* ProjectActivityLaunchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F961E831C5C00BFFA01 /* ProjectActivityLaunchCellViewModelTests.swift */; };
 		A7ED1FF31E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */; };
 		A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */; };
-		A7ED1FF51E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F991E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift */; };
 		A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */; };
 		A7ED1FF81E831C5C00BFFA01 /* VideoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */; };
 		A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F9D1E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift */; };
@@ -2720,7 +2718,6 @@
 		A7C93F7F1D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellViewModel.swift; sourceTree = "<group>"; };
 		A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDescriptionViewModel.swift; sourceTree = "<group>"; };
 		A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCell.swift; sourceTree = "<group>"; };
-		A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavBarViewModel.swift; sourceTree = "<group>"; };
 		A7CC13CE1D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsFacebookConnectCellViewModel.swift; sourceTree = "<group>"; };
 		A7CC13CF1D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsFriendFollowCellViewModel.swift; sourceTree = "<group>"; };
 		A7CC13D01D00E6CF00035C52 /* FindFriendsHeaderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsHeaderCellViewModel.swift; sourceTree = "<group>"; };
@@ -2822,7 +2819,6 @@
 		A7ED1F961E831C5C00BFFA01 /* ProjectActivityLaunchCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDescriptionViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F991E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavBarViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F9D1E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationsViewModelTest.swift; sourceTree = "<group>"; };
@@ -4951,8 +4947,6 @@
 				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
-				A7CA8C0D1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift */,
-				A7ED1F991E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift */,
 				477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */,
 				477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */,
 				597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */,
@@ -6098,7 +6092,6 @@
 				771123FB23BF9E7E00BA5702 /* OptimizelyLogLevelType.swift in Sources */,
 				A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
 				771E630C23426B27005967E8 /* CancelPledgeViewModel.swift in Sources */,
-				A7CA8C0E1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift in Sources */,
 				A7F441C51D005A9400FE6FC5 /* LoginToutViewModel.swift in Sources */,
 				94F4A95A26125C8C000C21F9 /* TimeInterval+ISO8601Date.swift in Sources */,
 				D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */,
@@ -6514,7 +6507,6 @@
 				778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */,
 				373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */,
 				D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */,
-				A7ED1FF51E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift in Sources */,
 				D6600790241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift in Sources */,
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				A7ED1FD81E831C5C00BFFA01 /* DashboardRewardsCellViewModelTests.swift in Sources */,
