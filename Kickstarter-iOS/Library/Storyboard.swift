@@ -30,7 +30,6 @@ public enum Storyboard: String {
   case Update
   case UpdateDraft
   case Video
-  case WebModal
 
   public func instantiate<VC: UIViewController>(_: VC.Type, inBundle bundle: Bundle = .framework) -> VC {
     guard
