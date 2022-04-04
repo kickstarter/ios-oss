@@ -2517,9 +2517,6 @@
 		9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewController.swift; sourceTree = "<group>"; };
 		9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewModel.swift; sourceTree = "<group>"; };
 		9D8772121D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCellViewModel.swift; sourceTree = "<group>"; };
-		9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewController.swift; sourceTree = "<group>"; };
-		9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewModel.swift; sourceTree = "<group>"; };
-		9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebModal.storyboard; sourceTree = "<group>"; };
 		9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityBackingCell.swift; sourceTree = "<group>"; };
 		9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityEmptyStateCell.swift; sourceTree = "<group>"; };
 		9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityLaunchCell.swift; sourceTree = "<group>"; };
@@ -2770,7 +2767,6 @@
 		A7ED1F871E831C5C00BFFA01 /* FindFriendsFaceookConnectCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsFaceookConnectCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F881E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F891E831C5C00BFFA01 /* MessageDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDialogViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebModalViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F8B1E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F8C1E831C5C00BFFA01 /* FindFriendsHeaderCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsHeaderCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewModelTests.swift; sourceTree = "<group>"; };
@@ -3862,7 +3858,6 @@
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
-				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
 				777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */,
 				7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */,
 			);
@@ -4204,7 +4199,6 @@
 				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
-				9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4957,8 +4951,6 @@
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
-				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
-				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
