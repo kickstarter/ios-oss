@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Prelude",
+        "repositoryURL": "https://github.com/kickstarter/Kickstarter-Prelude.git",
+        "state": {
+          "branch": "feature/swift-package",
+          "revision": "9dd4866020feecf5ae1bde4963af691f28e2cbc8",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

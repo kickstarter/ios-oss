@@ -1,6 +1,5 @@
 ### Internal
 
-github "kickstarter/Kickstarter-Prelude" "9118beee2b37fa5fc5a4f56502c1fa99030b9f9e"
 github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd313302bb59d9c3fe9"
 
 ### 3rd Party

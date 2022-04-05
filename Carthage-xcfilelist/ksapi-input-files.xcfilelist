@@ -3,7 +3,6 @@
 $(SRCROOT)/Carthage/Build/iOS/Apollo.framework
 $(SRCROOT)/Carthage/Build/iOS/ApolloAPI.framework
 $(SRCROOT)/Carthage/Build/iOS/ApolloUtils.framework
-$(SRCROOT)/Carthage/Build/iOS/Prelude.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
 $(SRCROOT)/Carthage/Build/iOS/SwiftSoup.framework
