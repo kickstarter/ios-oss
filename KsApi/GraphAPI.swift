@@ -5454,6 +5454,7 @@ public enum GraphAPI {
         node(id: $id) {
           __typename
           ... on Category {
+            __typename
             analyticsName
             id
             name
@@ -5697,6 +5698,7 @@ public enum GraphAPI {
 
           public static var selections: [GraphQLSelection] {
             return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("analyticsName", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
@@ -7855,6 +7857,7 @@ public enum GraphAPI {
         post(id: $postId) {
           __typename
           ... on FreeformPost {
+            __typename
             comments(after: $cursor, first: $limit) {
               __typename
               edges {
@@ -7986,6 +7989,7 @@ public enum GraphAPI {
 
           public static var selections: [GraphQLSelection] {
             return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("comments", arguments: ["after": GraphQLVariable("cursor"), "first": GraphQLVariable("limit")], type: .object(Comment.selections)),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
@@ -10663,6 +10667,7 @@ public enum GraphAPI {
       fragment CreditCardFragment on PaymentSource {
         __typename
         ... on CreditCard {
+          __typename
           expirationDate
           id
           lastFour
@@ -10725,6 +10730,7 @@ public enum GraphAPI {
 
       public static var selections: [GraphQLSelection] {
         return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("expirationDate", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(String.self))),
