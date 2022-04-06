@@ -133,6 +133,11 @@
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
 		0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */; };
 		0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */; };
+		0666DFF127FDF0A90021B277 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFF027FDF0A90021B277 /* Apollo */; };
+		0666DFF327FDF0A90021B277 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFF227FDF0A90021B277 /* ApolloAPI */; };
+		0666DFF527FDF0A90021B277 /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFF427FDF0A90021B277 /* ApolloUtils */; };
+		0666DFFD27FDF5A30021B277 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFFC27FDF5A30021B277 /* Prelude */; };
+		0666DFFF27FDF5A30021B277 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFFE27FDF5A30021B277 /* Prelude_UIKit */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		066A518526C598390009898C /* CommentsDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066A518426C598390009898C /* CommentsDialog.storyboard */; };
@@ -184,8 +189,6 @@
 		06D23BBF26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBE26F2484500F76122 /* Project+FetchProjectFriendsQueryDataTests.swift */; };
 		06D23BC126F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BC026F2498100F76122 /* FetchProjectFriendsQueryTemplate.swift */; };
 		06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D23BBC26F2454700F76122 /* Project+FetchProjectFriendsQueryData.swift */; };
-		06D9B16127FCEEF2003C8A92 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06D9B16027FCEEF2003C8A92 /* Prelude */; };
-		06D9B16327FCEEF2003C8A92 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06D9B16227FCEEF2003C8A92 /* Prelude_UIKit */; };
 		06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556F1269398CB00017845 /* UserFragment.graphql */; };
 		06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556DF269394B600017845 /* RewardFragment.graphql */; };
 		06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8A1556EF269398CB00017845 /* ProjectFragment.graphql */; };
@@ -688,12 +691,6 @@
 		8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */; };
 		8A6C978E24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */; };
 		8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */; };
-		8A713AEC268BE85400159D7B /* ApolloAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; };
-		8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; };
-		8A713AF0268BE86F00159D7B /* ApolloUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; };
-		8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; };
-		8A713AF2268BE87000159D7B /* ApolloUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; };
-		8A713AF3268BE87000159D7B /* ApolloAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; };
 		8A713AF4268BE88100159D7B /* ApolloAPI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A713AEA268BE85400159D7B /* ApolloAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A713AF5268BE88100159D7B /* ApolloUtils.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A713AEB268BE85400159D7B /* ApolloUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */; };
@@ -789,8 +786,6 @@
 		8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCAD264C98A50079D308 /* Comment.swift */; };
 		8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */; };
 		8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */; };
-		8ADCCD32265309CD0079D308 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; };
-		8ADCCD34265309EC0079D308 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; };
 		8ADCCD35265309FA0079D308 /* Apollo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8ADCCD31265309CD0079D308 /* Apollo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8ADCCD4F2654281E0079D308 /* GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD4E2654281E0079D308 /* GraphAPI.swift */; };
 		8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */; };
@@ -3368,9 +3363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
-				8A713AEE268BE85400159D7B /* ApolloUtils.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
-				06D9B16327FCEEF2003C8A92 /* Prelude_UIKit in Frameworks */,
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
 				8A417DE725AE2F8600A2C406 /* Segment.framework in Frameworks */,
 				8A04FE27262781240056F413 /* Segment_Appboy.framework in Frameworks */,
@@ -3384,17 +3377,14 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				8A86D7EE24FDC84400037A7B /* GoogleAppMeasurement.framework in Frameworks */,
 				774D98DA23A9795100FC81C2 /* Optimizely.framework in Frameworks */,
-				8ADCCD32265309CD0079D308 /* Apollo.framework in Frameworks */,
 				4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */,
 				4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */,
 				4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */,
-				06D9B16127FCEEF2003C8A92 /* Prelude in Frameworks */,
 				4748C11725B0FB7A0098E89E /* FirebasePerformance.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
 				4748C15625B105DF0098E89E /* Protobuf.framework in Frameworks */,
-				8A713AEC268BE85400159D7B /* ApolloAPI.framework in Frameworks */,
 				4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */,
 				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
 				8A86D7D924FDC7B000037A7B /* GoogleUtilities.framework in Frameworks */,
@@ -3421,11 +3411,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
+				0666DFF127FDF0A90021B277 /* Apollo in Frameworks */,
+				0666DFFD27FDF5A30021B277 /* Prelude in Frameworks */,
+				0666DFFF27FDF5A30021B277 /* Prelude_UIKit in Frameworks */,
 				06EF13DD27A1B2770044841C /* SwiftSoup.framework in Frameworks */,
-				8A713AF1268BE86F00159D7B /* ApolloAPI.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
-				8ADCCD34265309EC0079D308 /* Apollo.framework in Frameworks */,
-				8A713AF0268BE86F00159D7B /* ApolloUtils.framework in Frameworks */,
+				0666DFF327FDF0A90021B277 /* ApolloAPI in Frameworks */,
+				0666DFF527FDF0A90021B277 /* ApolloUtils in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3434,8 +3426,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */,
-				8A713AF2268BE87000159D7B /* ApolloUtils.framework in Frameworks */,
-				8A713AF3268BE87000159D7B /* ApolloAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5435,6 +5425,8 @@
 			dependencies = (
 			);
 			name = "Library-iOS";
+			packageProductDependencies = (
+			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
 			productType = "com.apple.product-type.framework";
@@ -5497,8 +5489,6 @@
 			);
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
-				06D9B16027FCEEF2003C8A92 /* Prelude */,
-				06D9B16227FCEEF2003C8A92 /* Prelude_UIKit */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -5541,6 +5531,13 @@
 			dependencies = (
 			);
 			name = KsApi;
+			packageProductDependencies = (
+				0666DFF027FDF0A90021B277 /* Apollo */,
+				0666DFF227FDF0A90021B277 /* ApolloAPI */,
+				0666DFF427FDF0A90021B277 /* ApolloUtils */,
+				0666DFFC27FDF5A30021B277 /* Prelude */,
+				0666DFFE27FDF5A30021B277 /* Prelude_UIKit */,
+			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
 			productType = "com.apple.product-type.framework";
@@ -5661,7 +5658,8 @@
 			);
 			mainGroup = A7E06C701C5A6EB300EBDCC2;
 			packageReferences = (
-				06D9B15F27FCEEF2003C8A92 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
+				0666DFEF27FDF0A90021B277 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -8732,7 +8730,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		06D9B15F27FCEEF2003C8A92 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
+		0666DFEF27FDF0A90021B277 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kickstarter/Kickstarter-Prelude.git";
 			requirement = {
@@ -8743,14 +8749,29 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		06D9B16027FCEEF2003C8A92 /* Prelude */ = {
+		0666DFF027FDF0A90021B277 /* Apollo */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 06D9B15F27FCEEF2003C8A92 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			package = 0666DFEF27FDF0A90021B277 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		0666DFF227FDF0A90021B277 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0666DFEF27FDF0A90021B277 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
+		};
+		0666DFF427FDF0A90021B277 /* ApolloUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0666DFEF27FDF0A90021B277 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloUtils;
+		};
+		0666DFFC27FDF5A30021B277 /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
 		};
-		06D9B16227FCEEF2003C8A92 /* Prelude_UIKit */ = {
+		0666DFFE27FDF5A30021B277 /* Prelude_UIKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 06D9B15F27FCEEF2003C8A92 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			package = 0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude_UIKit;
 		};
 /* End XCSwiftPackageProductDependency section */

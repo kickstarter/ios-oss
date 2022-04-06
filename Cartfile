@@ -5,7 +5,6 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd3133
 ### 3rd Party
 
 github "Alamofire/AlamofireImage" == 4.1.0
-github "apollographql/apollo-ios" == 0.44.0
 github "optimizely/swift-sdk" == 3.6.1
 github "facebook/facebook-objc-sdk" == 6.5.2
 github "microsoft/appcenter-sdk-apple" == 4.0.0

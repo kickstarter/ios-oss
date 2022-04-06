@@ -1,16 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Prelude",
-        "repositoryURL": "https://github.com/kickstarter/Kickstarter-Prelude.git",
-        "state": {
-          "branch": "feature/swift-package",
-          "revision": "9dd4866020feecf5ae1bde4963af691f28e2cbc8",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "apollo-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apollographql/apollo-ios.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "26351b5d115d2bb88223ab5882d5ef540ea1e8d9"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "kickstarter-prelude",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
+      "state" : {
+        "branch" : "feature/swift-package",
+        "revision" : "4486b275b8772c43f293b8057cca90302aa27be2"
+      }
+    },
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "4d543d811ee644fa4cc4bfa0be996b4dd6ba0f54",
+        "version" : "0.13.3"
+      }
+    }
+  ],
+  "version" : 2
 }

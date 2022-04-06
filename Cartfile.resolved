@@ -8,7 +8,6 @@ binary "https://raw.githubusercontent.com/PerimeterX/px-iOS-Framework/master/Per
 github "Alamofire/Alamofire" "5.4.3"
 github "Alamofire/AlamofireImage" "4.1.0"
 github "ReactiveCocoa/ReactiveSwift" "6.5.0"
-github "apollographql/apollo-ios" "0.44.0"
 github "appboy/appboy-segment-ios" "4.0.0"
 github "facebook/facebook-objc-sdk" "v6.5.2"
 github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd313302bb59d9c3fe9"
