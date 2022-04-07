@@ -1,4 +1,4 @@
-import Foundation
+import UIKit /// FIXME: Not ideal as we should abstract away UIKit properties referenced within a network layer.
 import Prelude
 import ReactiveSwift
 
