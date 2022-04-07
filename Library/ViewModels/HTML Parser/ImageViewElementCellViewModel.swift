@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol ImageViewElementCellViewModelInputs {
   /// Call to configure with a `ImageViewElement`  representing raw HTML along with an optional displayable image

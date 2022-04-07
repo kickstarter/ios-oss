@@ -2,9 +2,6 @@
 
 $(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
 $(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework
-$(SRCROOT)/Carthage/Build/iOS/Apollo.framework
-$(SRCROOT)/Carthage/Build/iOS/ApolloAPI.framework
-$(SRCROOT)/Carthage/Build/iOS/ApolloUtils.framework
 $(SRCROOT)/Carthage/Build/iOS/Appboy_iOS_SDK.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework

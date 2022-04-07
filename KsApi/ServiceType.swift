@@ -1,6 +1,6 @@
-import UIKit /// FIXME: Not ideal as we should abstract away UIKit properties referenced within a network layer.
 import Prelude
 import ReactiveSwift
+import UIKit // FIXME: Not ideal to include `UIKit` into a networking layer, but it's only used for `UIDevice` and `UIScreen` constant values. Remove this dependency in the future.
 
 public enum Mailbox: String {
   case inbox

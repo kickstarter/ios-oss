@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol ActivityFriendBackingViewModelInputs {
   /// Call to configure with an Activity.

@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public struct DiscoveryPillData: Equatable {
   public let imageName: String

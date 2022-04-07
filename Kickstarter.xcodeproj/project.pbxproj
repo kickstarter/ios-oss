@@ -133,8 +133,6 @@
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
 		0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */; };
 		0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */; };
-		0666DFFD27FDF5A30021B277 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFFC27FDF5A30021B277 /* Prelude */; };
-		0666DFFF27FDF5A30021B277 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0666DFFE27FDF5A30021B277 /* Prelude_UIKit */; };
 		0667C89D26569DBC003FB5E3 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */; };
 		0667C8B326569F39003FB5E3 /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		066A518526C598390009898C /* CommentsDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066A518426C598390009898C /* CommentsDialog.storyboard */; };
@@ -158,6 +156,8 @@
 		06A3333A27FF299000F564E0 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 06A3333927FF299000F564E0 /* Apollo */; };
 		06A3333C27FF299000F564E0 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 06A3333B27FF299000F564E0 /* ApolloAPI */; };
 		06A3333E27FF299000F564E0 /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 06A3333D27FF299000F564E0 /* ApolloUtils */; };
+		06A3334227FF30C400F564E0 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06A3334127FF30C400F564E0 /* Prelude */; };
+		06A3334427FF30C400F564E0 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06A3334327FF30C400F564E0 /* Prelude_UIKit */; };
 		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
 		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */; };
@@ -3412,9 +3412,9 @@
 			files = (
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				06A3333A27FF299000F564E0 /* Apollo in Frameworks */,
-				0666DFFD27FDF5A30021B277 /* Prelude in Frameworks */,
+				06A3334227FF30C400F564E0 /* Prelude in Frameworks */,
+				06A3334427FF30C400F564E0 /* Prelude_UIKit in Frameworks */,
 				06A3333E27FF299000F564E0 /* ApolloUtils in Frameworks */,
-				0666DFFF27FDF5A30021B277 /* Prelude_UIKit in Frameworks */,
 				06EF13DD27A1B2770044841C /* SwiftSoup.framework in Frameworks */,
 				06A3333C27FF299000F564E0 /* ApolloAPI in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
@@ -5532,11 +5532,11 @@
 			);
 			name = KsApi;
 			packageProductDependencies = (
-				0666DFFC27FDF5A30021B277 /* Prelude */,
-				0666DFFE27FDF5A30021B277 /* Prelude_UIKit */,
 				06A3333927FF299000F564E0 /* Apollo */,
 				06A3333B27FF299000F564E0 /* ApolloAPI */,
 				06A3333D27FF299000F564E0 /* ApolloUtils */,
+				06A3334127FF30C400F564E0 /* Prelude */,
+				06A3334327FF30C400F564E0 /* Prelude_UIKit */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -5658,8 +5658,8 @@
 			);
 			mainGroup = A7E06C701C5A6EB300EBDCC2;
 			packageReferences = (
-				0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
 				06A3333827FF299000F564E0 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				06A3334027FF30C400F564E0 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -8077,6 +8077,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = KsApi/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -8111,6 +8112,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = KsApi/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -8145,6 +8147,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = KsApi/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -8578,6 +8581,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = KsApi/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -8730,14 +8734,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kickstarter/Kickstarter-Prelude.git";
-			requirement = {
-				branch = "feature/swift-package";
-				kind = branch;
-			};
-		};
 		06A3333827FF299000F564E0 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
@@ -8746,19 +8742,17 @@
 				version = 0.44.0;
 			};
 		};
+		06A3334027FF30C400F564E0 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kickstarter/Kickstarter-Prelude.git";
+			requirement = {
+				branch = "feature/swift-package";
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0666DFFC27FDF5A30021B277 /* Prelude */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
-			productName = Prelude;
-		};
-		0666DFFE27FDF5A30021B277 /* Prelude_UIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0666DFFB27FDF5A30021B277 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
-			productName = Prelude_UIKit;
-		};
 		06A3333927FF299000F564E0 /* Apollo */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06A3333827FF299000F564E0 /* XCRemoteSwiftPackageReference "apollo-ios" */;
@@ -8773,6 +8767,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06A3333827FF299000F564E0 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloUtils;
+		};
+		06A3334127FF30C400F564E0 /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06A3334027FF30C400F564E0 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude;
+		};
+		06A3334327FF30C400F564E0 /* Prelude_UIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06A3334027FF30C400F564E0 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude_UIKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
