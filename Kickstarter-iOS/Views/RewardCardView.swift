@@ -1,8 +1,8 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import UIKit
 
 protocol RewardCardViewDelegate: AnyObject {
   func rewardCardView(_ rewardCardView: RewardCardView, didTapWithRewardId rewardId: Int)

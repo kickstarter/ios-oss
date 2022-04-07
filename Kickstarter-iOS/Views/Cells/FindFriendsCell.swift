@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
+import UIKit
 
 final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   @IBOutlet fileprivate var arrowImageView: UIImageView!

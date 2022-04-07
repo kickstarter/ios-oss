@@ -127,7 +127,7 @@ public func optimizelyUserAttributes(
 ) -> [String: Any] {
   let user = AppEnvironment.current.currentUser
   let user_country = user?.location?.country
-  let properties: [String: Any] = [
+  let properties: [String: Any?] = [
     "user_distinct_id": debugDeviceIdentifier(),
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
@@ -140,10 +140,8 @@ public func optimizelyUserAttributes(
     "session_apple_pay_device": AppEnvironment.current.applePayCapabilities.applePayDevice(),
     "session_device_type": AppEnvironment.current.device.deviceType
   ]
-  .compact()
-  .withAllValuesFrom(sessionRefTagProperties(with: project, refTag: refTag))
 
-  return properties
+  return properties.compact().withAllValuesFrom(sessionRefTagProperties(with: project, refTag: refTag))
 }
 
 private func sessionRefTagProperties(with project: Project?, refTag: RefTag?) -> [String: Any] {

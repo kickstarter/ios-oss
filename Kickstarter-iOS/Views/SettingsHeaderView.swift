@@ -1,5 +1,6 @@
 import Library
 import Prelude
+import UIKit
 
 final class SettingsHeaderView: UITableViewHeaderFooterView {
   @IBOutlet fileprivate var titleLabel: UILabel!

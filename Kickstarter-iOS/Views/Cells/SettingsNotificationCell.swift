@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
+import UIKit
 
 protocol SettingsNotificationCellDelegate: AnyObject {
   func settingsNotificationCell(_ cell: SettingsNotificationCell, didFailToUpdateUser errorMessage: String)
