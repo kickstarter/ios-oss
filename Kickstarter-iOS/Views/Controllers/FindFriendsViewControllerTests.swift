@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import UIKit
 
 internal final class FindFriendsViewControllerTests: TestCase {
   override func setUp() {

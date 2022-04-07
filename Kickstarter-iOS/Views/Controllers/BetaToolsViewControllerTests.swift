@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import UIKit
 
 final class BetaToolsViewControllerTests: TestCase {
   override func setUp() {
