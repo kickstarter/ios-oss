@@ -1,6 +1,5 @@
 import Foundation
 import KsApi
-import Prelude
 
 public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
