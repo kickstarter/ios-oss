@@ -1,4 +1,5 @@
 import Apollo
+import Foundation
 @testable import KsApi
 
 public enum FetchProjectRewardsByIdQueryTemplate {
