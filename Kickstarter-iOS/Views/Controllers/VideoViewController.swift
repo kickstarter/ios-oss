@@ -15,6 +15,7 @@ public protocol VideoViewControllerDelegate: AnyObject {
 
 public final class VideoViewController: UIViewController {
   internal weak var delegate: VideoViewControllerDelegate?
+  internal weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   fileprivate let viewModel: VideoViewModelType = VideoViewModel()
   fileprivate var playerController: AVPlayerViewController!
   fileprivate var timeObserver: Any?
@@ -37,6 +38,8 @@ public final class VideoViewController: UIViewController {
     self.playButton.addTarget(self, action: #selector(self.playButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
+
+    self.setupNotifications()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -202,9 +205,31 @@ public final class VideoViewController: UIViewController {
     self.playerController.player?.removeObserver(self, forKeyPath: rateKeyPath)
     self.playerController?.player?.replaceCurrentItem(with: nil)
   }
+
+  private func setupNotifications() {
+    NotificationCenter.default
+      .addObserver(
+        self,
+        selector: #selector(self.pauseVideo),
+        name: .ksr_applicationDidEnterBackground,
+        object: nil
+      )
+  }
+
+  @objc private func pauseVideo() {
+    self.viewModel.inputs.viewWillDisappear()
+  }
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 private func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
   return input.rawValue
+}
+
+extension VideoViewController: AudioVideoViewControllerPlaybackDelegate {
+  func pauseAudioVideoPlayback() {
+    if self.playerController.player?.timeControlStatus == .playing {
+      self.playerController.player?.pause()
+    }
+  }
 }

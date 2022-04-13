@@ -1,3 +1,4 @@
+import AVFoundation
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -17,7 +18,7 @@ final class ProjectPageViewModelTests: TestCase {
       environmentalCommitments: [],
       faqs: [],
       risks: "",
-      story: "",
+      story: ProjectStoryElements(htmlViewElements: []),
       minimumPledgeAmount: 1
     )
 
@@ -39,12 +40,20 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
+  private let goToURL = TestObserver<URL, Never>()
   private let navigationBarIsHidden = TestObserver<Bool, Never>()
+  private let pauseMedia = TestObserver<(), Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let presentMessageDialog = TestObserver<Project, Never>()
+  private let prefetchImageURLs = TestObserver<([URL], IndexPath), Never>()
+  private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
+  private let precreateAudioVideoURLs = TestObserver<(AudioVideoViewElement, IndexPath), Never>()
+  private let precreateAudioVideoURLsFirstLoad = TestObserver<[AudioVideoViewElement], Never>()
+  private let reloadCampaignData = TestObserver<(), Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
   private let updateDataSourceProject = TestObserver<Project, Never>()
+  private let updateDataSourceImageURLS = TestObserver<[URL], Never>()
   private let updateFAQsInDataSourceProject = TestObserver<Project, Never>()
   private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
 
@@ -96,14 +105,23 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
+    self.vm.outputs.goToURL.observe(self.goToURL.observer)
     self.vm.outputs.navigationBarIsHidden.observe(self.navigationBarIsHidden.observer)
+    self.vm.outputs.pauseMedia.observe(self.pauseMedia.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.presentMessageDialog.observe(self.presentMessageDialog.observer)
+    self.vm.outputs.precreateAudioVideoURLs.observe(self.precreateAudioVideoURLs.observer)
+    self.vm.outputs.precreateAudioVideoURLsOnFirstLoad.observe(self.precreateAudioVideoURLsFirstLoad.observer)
+    self.vm.outputs.prefetchImageURLs.observe(self.prefetchImageURLs.observer)
+    self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(self.prefetchImageURLsFirstLoad.observer)
+    self.vm.outputs.reloadCampaignData.observe(self.reloadCampaignData.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
     self.vm.outputs.updateDataSource.map { $0.0 }
       .observe(self.updateDataSourceNavigationSection.observer)
     self.vm.outputs.updateDataSource.map { $0.1 }
       .observe(self.updateDataSourceProject.observer)
+    self.vm.outputs.updateDataSource.map { $0.4 }
+      .observe(self.updateDataSourceImageURLS.observer)
     self.vm.outputs.updateFAQsInDataSource.map { $0.0 }
       .observe(self.updateFAQsInDataSourceProject.observer)
     self.vm.outputs.updateFAQsInDataSource.map { $0.2 }
@@ -261,7 +279,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -279,7 +297,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.showNavigationBar(true)
 
       self.configureProjectNavigationSelectorView.assertDidEmitValue()
     }
@@ -413,7 +431,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       self.scheduler.advance()
@@ -493,7 +510,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler1.advance()
@@ -511,7 +527,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler2.advance()
@@ -528,7 +543,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler1.advance()
@@ -540,7 +554,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       scheduler1.advance()
@@ -597,7 +610,6 @@ final class ProjectPageViewModelTests: TestCase {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
       newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
       newVm.inputs.viewDidLoad()
-      newVm.inputs.viewWillAppear(animated: true)
       newVm.inputs.viewDidAppear(animated: true)
 
       self.scheduler.advance()
@@ -761,17 +773,13 @@ final class ProjectPageViewModelTests: TestCase {
   func testNavigationBarIsHidden() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
 
-    self.vm.inputs.viewWillAppear(animated: true)
+    self.vm.inputs.showNavigationBar(true)
 
     self.navigationBarIsHidden.assertValues([false])
 
-    self.vm.inputs.hideNavigationBar()
+    self.vm.inputs.showNavigationBar(false)
 
     self.navigationBarIsHidden.assertValues([false, true])
-
-    self.vm.inputs.viewWillAppear(animated: true)
-
-    self.navigationBarIsHidden.assertValues([false, true, false])
   }
 
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
@@ -1326,6 +1334,280 @@ final class ProjectPageViewModelTests: TestCase {
     }
   }
 
+  func testOutputForEmptyImageURLS_UpdateDataSourceProject() {
+    let overviewSection = NavigationSection.overview.rawValue
+    let campaignSection = NavigationSection.campaign.rawValue
+
+    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+
+    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+    // The view model skips the first emission
+    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+    self.updateDataSourceImageURLS.assertDidEmitValue()
+    self.updateDataSourceImageURLS.assertLastValue([])
+  }
+
+  func testOutputForNonEmptyImageURLS_UpdateDataSourceProject() {
+    let overviewSection = NavigationSection.overview.rawValue
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedUrl = URL(string: "https://image.com")!
+
+    let nonEmptyProjectProperties = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: expectedUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(nonEmptyProjectProperties), refTag: .category)
+
+    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: overviewSection)
+
+    // The view model skips the first emission
+    self.updateDataSourceImageURLS.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+    self.updateDataSourceImageURLS.assertDidEmitValue()
+    self.updateDataSourceImageURLS.assertLastValue([expectedUrl])
+  }
+
+  func testOutputForNonEmptyImageURLS_UpdatedPrepareImageIndexPath() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedUrl = URL(string: "https://image.com")!
+    let expectedIndexPath = IndexPath(row: 0, section: campaignSection)
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          ImageViewElement(
+            src: expectedUrl.absoluteString,
+            href: nil,
+            caption: nil
+          )
+        ]),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      self.vm.inputs.prepareImageAt(expectedIndexPath)
+
+      XCTAssertEqual(self.prefetchImageURLs.lastValue?.0, [expectedUrl])
+      XCTAssertEqual(self.prefetchImageURLs.lastValue?.1, expectedIndexPath)
+    }
+  }
+
+  func testOutputForNonEmptyAudioVideoURLS_UpdatedPrepareAudioVideoIndexPath() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedTime = CMTime(
+      seconds: 123.4,
+      preferredTimescale: CMTimeScale(1)
+    )
+    let expectedAudioVideoElement = AudioVideoViewElement(
+      sourceURLString: "https://video.com",
+      thumbnailURLString: "https://thumbnail.com",
+      seekPosition: expectedTime
+    )
+    let expectedIndexPath = IndexPath(row: 0, section: campaignSection)
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      self.vm.inputs.prepareAudioVideoAt(
+        expectedIndexPath,
+        with: expectedAudioVideoElement
+      )
+
+      XCTAssertEqual(
+        self.precreateAudioVideoURLs.lastValue?.0.sourceURLString,
+        expectedAudioVideoElement.sourceURLString
+      )
+      XCTAssertEqual(
+        self.precreateAudioVideoURLs.lastValue?.0.thumbnailURLString,
+        expectedAudioVideoElement.thumbnailURLString
+      )
+      XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.0.seekPosition, expectedTime)
+      XCTAssertEqual(self.precreateAudioVideoURLs.lastValue?.1, expectedIndexPath)
+    }
+  }
+
+  func testOutputForNonEmptyAudioVideoURLS_UpdatedPrefetchAudioVideoURLsOnFirstLoad() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedTime = CMTime(
+      seconds: 123.4,
+      preferredTimescale: CMTimeScale(1)
+    )
+    let expectedAudioVideoElement = AudioVideoViewElement(
+      sourceURLString: "https://video.com",
+      thumbnailURLString: "https://thumbnail.com",
+      seekPosition: expectedTime
+    )
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          expectedAudioVideoElement
+        ]),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      guard let audioVideoViewElement = self.precreateAudioVideoURLsFirstLoad.lastValue?.first else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(audioVideoViewElement.sourceURLString, expectedAudioVideoElement.sourceURLString)
+      XCTAssertEqual(audioVideoViewElement.thumbnailURLString, expectedAudioVideoElement.thumbnailURLString)
+      XCTAssertEqual(audioVideoViewElement.seekPosition, expectedTime)
+    }
+  }
+
+  func testOutputForNonEmptyImageURLS_UpdatedPrefetchImageURLsOnFirstLoad() {
+    let campaignSection = NavigationSection.campaign.rawValue
+    let expectedUrl = URL(string: "https://image.com")!
+    let expectedImageViewElement = ImageViewElement(
+      src: expectedUrl.absoluteString,
+      href: nil,
+      caption: nil
+    )
+    let config = Config.template
+    let friends = [User.template]
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: [
+          expectedImageViewElement
+        ]),
+        minimumPledgeAmount: 1
+      )
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: projectFull, backing: .template)
+    let projectFullPamphletData = Project.ProjectPamphletData(project: projectFull, backingId: nil)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectFullPamphletData),
+      fetchProjectFriendsResult: .success(friends),
+      fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+    )
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+      guard let imageViewElement = self.prefetchImageURLsFirstLoad.lastValue?.first else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(imageViewElement.src, expectedImageViewElement.src)
+      XCTAssertEqual(imageViewElement.href, expectedImageViewElement.href)
+      XCTAssertEqual(imageViewElement.caption, expectedImageViewElement.caption)
+    }
+  }
+
   func testOutput_UpdateFAQsInDataSourceProject() {
     let faqs = [
       ProjectFAQ(
@@ -1359,7 +1641,7 @@ final class ProjectPageViewModelTests: TestCase {
         environmentalCommitments: [],
         faqs: faqs,
         risks: "",
-        story: "",
+        story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
       )
 
@@ -1409,7 +1691,7 @@ final class ProjectPageViewModelTests: TestCase {
         environmentalCommitments: [],
         faqs: faqs,
         risks: "",
-        story: "",
+        story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
       )
 
@@ -1429,6 +1711,86 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.updateFAQsInDataSourceIsExpandedValues
       .assertValues([[false, true, false, false], [true, true, false, false]])
+  }
+
+  func testOutput_PauseMediaWhenAppIsBackgrounded_Success() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.pauseMedia.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidEnterBackground()
+
+    self.pauseMedia.assertDidEmitValue()
+  }
+
+  func testReloadCampaignData_WhenOrientationChangedOnlyForCampaignTab_Success() {
+    let faqSection = NavigationSection.faq.rawValue
+    let campaignSection = NavigationSection.campaign.rawValue
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: faqSection)
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.viewWillTransition()
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.projectNavigationSelectorViewDidSelect(index: campaignSection)
+
+    self.reloadCampaignData.assertDidNotEmitValue()
+
+    self.vm.inputs.viewWillTransition()
+
+    self.reloadCampaignData.assertDidEmitValue()
+  }
+
+  func testSelectCampaignImageLink_WhenURLAvailable_ReturnsURL_Success() {
+    let url = URL(string: "https://www.kickstarter.com")!
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        risks: "",
+        story: ProjectStoryElements(htmlViewElements: []),
+        minimumPledgeAmount: 1
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToURL.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectCampaignImageLink(url: url)
+
+    self.goToURL.assertValue(url)
   }
 
   // MARK: - Functions

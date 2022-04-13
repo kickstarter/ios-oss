@@ -15,6 +15,8 @@ github "kickstarter/Kickstarter-Prelude" "9118beee2b37fa5fc5a4f56502c1fa99030b9f
 github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd313302bb59d9c3fe9"
 github "microsoft/appcenter-sdk-apple" "4.0.0"
 github "optimizely/swift-sdk" "v3.6.1"
+github "scinfu/SwiftSoup" "2.3.8"
 github "segmentio/analytics-ios" "4.1.2"
 github "stripe/stripe-ios" "v18.0.0"
 github "uber/ios-snapshot-test-case" "6.2.0"
+github "onevcat/Kingfisher" "7.0.0"

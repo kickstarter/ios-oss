@@ -6,6 +6,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call when didSelectRowAt is called on a `ProjectFAQAskAQuestionCell`
   func askAQuestionCellTapped()
 
+  /// Call when `AppDelegate`'s `applicationDidEnterBackground` is triggered.
+  func applicationDidEnterBackground()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -15,8 +18,11 @@ public protocol ProjectPageViewModelInputs {
   /// Call with the `Int` (index) of the cell selected and the existing values (`[Bool]`) in the data source
   func didSelectFAQsRowAt(row: Int, values: [Bool])
 
-  /// Call when the navigation bar should be hidden.
-  func hideNavigationBar()
+  /// Call with the `URL` of the `ImageViewElement` cell selected in the Campaign section of the data source.
+  func didSelectCampaignImageLink(url: URL)
+
+  /// Call when the navigation bar should be hidden/shown.
+  func showNavigationBar(_ flag: Bool)
 
   /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
   func managePledgeViewControllerFinished(with message: String?)
@@ -26,6 +32,12 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
+
+  /// Call for image view elements that are missing inside `prefetchRowsAt` delegate in `ProjectPageViewController`
+  func prepareImageAt(_ indexPath: IndexPath)
+
+  /// Call for audio/video view elements that are missing a player inside `prefetchRowsAt` delegate in `ProjectPageViewController`
+  func prepareAudioVideoAt(_ indexPath: IndexPath, with audioVideoViewElement: AudioVideoViewElement)
 
   /// Call when the delegate method for the `ProjectEnvironmentalCommitmentFooterCellDelegate` is called.
   func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
@@ -51,11 +63,11 @@ public protocol ProjectPageViewModelInputs {
   /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
 
-  /// Call when the view will appear, and pass the animated parameter.
-  func viewWillAppear(animated: Bool)
-
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when right before orientation change on view
+  func viewWillTransition()
 }
 
 public protocol ProjectPageViewModelOutputs {
@@ -89,8 +101,14 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
+  /// Emits a URL that will be opened by an external Safari browser.
+  var goToURL: Signal<URL, Never> { get }
+
   /// Emits a `Bool` to hide the navigation bar.
   var navigationBarIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits a signal when the app is no longer being actively used to pause any playing media.
+  var pauseMedia: Signal<Void, Never> { get }
 
   /// Emits when the navigation stack should be popped to the root view controller.
   var popToRootViewController: Signal<(), Never> { get }
@@ -98,11 +116,26 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `Project` when the MessageDialogViewController should be presented
   var presentMessageDialog: Signal<Project, Never> { get }
 
+  /// Emits `AudioVideoViewElement` and `IndexPath` when the project has campaign data to download for a row
+  var precreateAudioVideoURLs: Signal<(AudioVideoViewElement, IndexPath), Never> { get }
+
+  /// Emits `[AudioVideoViewElement]` to preload the data source with `AVPlayer` objects for video player cells.
+  var precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never> { get }
+
+  /// Emits `[URL]` and `IndexPath` when the project has campaign data to download for a row
+  var prefetchImageURLs: Signal<([URL], IndexPath), Never> { get }
+
+  /// Emits `[ImageViewElement]` when the project has campaign data to download for an image row as soon as the urls are available.
+  var prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never> { get }
+
+  /// Emits a signal when an orientation change happens if the currently selected tab is campaign.
+  var reloadCampaignData: Signal<Void, Never> { get }
+
   /// Emits a `HelpType` to use when presenting a HelpWebViewController.
   var showHelpWebViewController: Signal<HelpType, Never> { get }
 
-  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?` and `[Bool]` (isExpanded values) to instruct the data source which section it is loading.
-  var updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never> { get }
+  /// Emits a tuple of a `NavigationSection`, `Project`, `RefTag?`, `[Bool]` (isExpanded values) and `[URL]` for campaign data to instruct the data source which section it is loading.
+  var updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never> { get }
 
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
@@ -160,6 +193,44 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let project = freshProjectAndRefTag
       .map(first)
+
+    self.prefetchImageURLs = project.signal
+      .skip(first: 1)
+      .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
+      .switchMap { project, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
+        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement } ?? []
+
+        if imageViewElements.count > 0 {
+          let urlStrings = imageViewElements.map { $0.src }
+          let urls = urlStrings.compactMap { URL(string: $0) }
+
+          return SignalProducer(value: (urls, indexPath))
+        }
+
+        return SignalProducer(value: nil)
+      }
+      .skipNil()
+
+    self.prefetchImageURLsOnFirstLoad = project.signal
+      .skip(first: 1)
+      .switchMap { project -> SignalProducer<[ImageViewElement], Never> in
+        let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? ImageViewElement } ?? []
+
+        return SignalProducer(value: imageViewElements)
+      }
+
+    self.precreateAudioVideoURLsOnFirstLoad = project.signal
+      .skip(first: 1)
+      .switchMap { project -> SignalProducer<[AudioVideoViewElement], Never> in
+        let audioVideoViewElements = project.extendedProjectProperties?.story.htmlViewElements
+          .compactMap { $0 as? AudioVideoViewElement } ?? []
+
+        return SignalProducer(value: audioVideoViewElements)
+      }
+
+    self.precreateAudioVideoURLs = self.prepareAudioVideoAtProperty.signal.skipNil()
 
     // The first tab we render by default is overview
     self.configureDataSource = freshProjectAndRefTag
@@ -239,21 +310,17 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // Hide the custom navigation bar when pushing a new view controller
     // Unhide the custom navigation bar when viewWillAppear is called
-    self.navigationBarIsHidden = Signal.merge(
-      self.viewWillAppearAnimatedProperty.signal.skipNil().negate(),
-      self.hideNavigationBarProperty.signal.mapConst(true)
-    )
+    self.navigationBarIsHidden = self.showNavigationBarProperty.signal.negate()
 
     self.configureProjectNavigationSelectorView = freshProjectAndRefTag
-      .combineLatest(with: self.viewWillAppearAnimatedProperty.signal)
-      .map { projectAndRefTag, _ in
+      .map { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
         return (project: project, refTag: refTag)
       }
 
     let trackFreshProjectAndRefTagViewed: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
-      self.viewDidAppearAnimated.signal.ignoreValues()
+      self.viewDidAppearAnimatedProperty.signal.ignoreValues()
     )
     .map(unpack)
     .map { project, refTag, _ in
@@ -292,6 +359,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     // We skip the first one here because on `viewDidLoad` we are setting .overview so we don't need a useless emission here
     self.updateDataSource = self.projectNavigationSelectorViewDidSelectProperty.signal
       .skipNil()
+      .skipRepeats()
       .map { index in NavigationSection(rawValue: index) }
       .skipNil()
       .combineLatest(with: freshProjectAndRefTag)
@@ -301,7 +369,25 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           repeating: false,
           count: project.extendedProjectProperties?.faqs.count ?? 0
         )
-        return (navSection, project, refTag, initialIsExpandedArray)
+
+        var dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, [URL]())
+
+        switch navSection {
+        case .campaign:
+          let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
+            .compactMap { $0 as? ImageViewElement } ?? []
+
+          if imageViewElements.count > 0 {
+            let urlStrings = imageViewElements.map { $0.src }
+            let urls = urlStrings.compactMap { URL(string: $0) }
+
+            dataSourceUpdate = (navSection, project, refTag, initialIsExpandedArray, urls)
+          }
+        default:
+          break
+        }
+
+        return dataSourceUpdate
       }
       .skip(first: 1)
 
@@ -315,11 +401,24 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         return (project, refTag, updatedValues)
       }
+
+    self.pauseMedia = self.applicationDidEnterBackgroundProperty.signal
+    self.reloadCampaignData = self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil()
+      .takeWhen(self.viewWillTransitionProperty.signal)
+      .filter { NavigationSection(rawValue: $0) == .campaign }
+      .ignoreValues()
+
+    self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
   public func askAQuestionCellTapped() {
     self.askAQuestionCellTappedProperty.value = ()
+  }
+
+  fileprivate let applicationDidEnterBackgroundProperty = MutableProperty(())
+  public func applicationDidEnterBackground() {
+    self.applicationDidEnterBackgroundProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -337,9 +436,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.didSelectFAQsRowAtProperty.value = (row, values)
   }
 
-  fileprivate let hideNavigationBarProperty = MutableProperty(())
-  public func hideNavigationBar() {
-    self.hideNavigationBarProperty.value = ()
+  fileprivate let didSelectCampaignImageLinkProperty = MutableProperty<(URL)?>(nil)
+  public func didSelectCampaignImageLink(url: URL) {
+    self.didSelectCampaignImageLinkProperty.value = url
+  }
+
+  fileprivate let showNavigationBarProperty = MutableProperty<Bool>(false)
+  public func showNavigationBar(_ flag: Bool) {
+    self.showNavigationBarProperty.value = flag
   }
 
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
@@ -355,6 +459,16 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   private let pledgeRetryButtonTappedProperty = MutableProperty(())
   public func pledgeRetryButtonTapped() {
     self.pledgeRetryButtonTappedProperty.value = ()
+  }
+
+  private let prepareImageAtProperty = MutableProperty<IndexPath?>(nil)
+  public func prepareImageAt(_ indexPath: IndexPath) {
+    self.prepareImageAtProperty.value = indexPath
+  }
+
+  private let prepareAudioVideoAtProperty = MutableProperty<(AudioVideoViewElement, IndexPath)?>(nil)
+  public func prepareAudioVideoAt(_ indexPath: IndexPath, with audioVideoViewElement: AudioVideoViewElement) {
+    self.prepareAudioVideoAtProperty.value = (audioVideoViewElement, indexPath)
   }
 
   fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
@@ -397,14 +511,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let viewDidAppearAnimated = MutableProperty(false)
+  fileprivate let viewDidAppearAnimatedProperty = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
-    self.viewDidAppearAnimated.value = animated
+    self.viewDidAppearAnimatedProperty.value = animated
   }
 
-  fileprivate let viewWillAppearAnimatedProperty = MutableProperty<Bool?>(nil)
-  public func viewWillAppear(animated: Bool) {
-    self.viewWillAppearAnimatedProperty.value = animated
+  fileprivate let viewWillTransitionProperty = MutableProperty(())
+  public func viewWillTransition() {
+    self.viewWillTransitionProperty.value = ()
   }
 
   public let configureDataSource: Signal<(NavigationSection, Project, RefTag?), Never>
@@ -417,11 +531,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
+  public let goToURL: Signal<URL, Never>
   public let navigationBarIsHidden: Signal<Bool, Never>
+  public let pauseMedia: Signal<Void, Never>
   public let popToRootViewController: Signal<(), Never>
   public let presentMessageDialog: Signal<Project, Never>
+  public let precreateAudioVideoURLs: Signal<(AudioVideoViewElement, IndexPath), Never>
+  public let precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never>
+  public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
+  public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
+  public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
-  public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool]), Never>
+  public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }

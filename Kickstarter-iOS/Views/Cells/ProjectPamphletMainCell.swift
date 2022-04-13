@@ -271,6 +271,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.readMoreButton.rac.hidden = self.viewModel.outputs.campaignTabShown
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.backersTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
@@ -362,6 +363,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.delegate?.projectPamphletMainCell(self, addChildController: vc)
     self.videoController = vc
+    self.videoController?.playbackDelegate = vc
   }
 
   @objc fileprivate func readMoreButtonTapped() {
@@ -382,5 +384,11 @@ extension ProjectPamphletMainCell: VideoViewControllerDelegate {
   internal func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidStart(controller)
     self.viewModel.inputs.videoDidStart()
+  }
+}
+
+extension ProjectPamphletMainCell: AudioVideoViewControllerPlaybackDelegate {
+  func pauseAudioVideoPlayback() {
+    self.videoController?.playbackDelegate?.pauseAudioVideoPlayback()
   }
 }

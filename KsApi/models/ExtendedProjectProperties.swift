@@ -10,28 +10,32 @@ import Foundation
  This property will eventually replace `Project`, but right now we're using it to build out additional functionality that only comes from GraphQL.
  */
 
-public struct ExtendedProjectProperties: Decodable {
+public struct ExtendedProjectProperties {
   public var environmentalCommitments: [ProjectEnvironmentalCommitment]
   public var faqs: [ProjectFAQ]
   public var risks: String
-  public var story: String
+  public var story: ProjectStoryElements
   public var minimumPledgeAmount: Int
 }
 
-public struct ProjectFAQ: Decodable {
+public struct ProjectFAQ {
   public var answer: String
   public var question: String
   public var id: Int
   public var createdAt: TimeInterval?
 }
 
-public struct ProjectEnvironmentalCommitment: Decodable {
+public struct ProjectStoryElements {
+  public var htmlViewElements: [HTMLViewElement]
+}
+
+public struct ProjectEnvironmentalCommitment {
   public var description: String
   public var category: ProjectCommitmentCategory
   public var id: Int
 }
 
-public enum ProjectCommitmentCategory: String, Decodable {
+public enum ProjectCommitmentCategory: String {
   case longLastingDesign = "Long-lasting design"
   case sustainableMaterials = "Sustainable materials"
   case environmentallyFriendlyFactories = "Environmentally friendly factories"

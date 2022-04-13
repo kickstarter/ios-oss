@@ -21,24 +21,6 @@ final class OptimizelyFeatureHelpersTests: TestCase {
     }
   }
 
-  func testNavigationSelectorProjectPageEnabled_Optimizely_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertTrue(featureNavigationSelectorProjectPageIsEnabled())
-    }
-  }
-
-  func testNavigationSelectorProjectPageEnabled_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featureNavigationSelectorProjectPageIsEnabled())
-    }
-  }
-
   func testProjectPageStoryEnabled_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true]
