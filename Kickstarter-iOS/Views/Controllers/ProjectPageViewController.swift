@@ -23,8 +23,8 @@ protocol ProjectPageViewControllerDelegate: AnyObject {
   func showShareSheet(_ controller: UIActivityViewController, sourceView: UIView?)
 }
 
-protocol VideoViewControllerPlaybackDelegate: AnyObject {
-  func pauseVideoPlayback()
+protocol AudioVideoViewControllerPlaybackDelegate: AnyObject {
+  func pauseAudioVideoPlayback()
 }
 
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -55,7 +55,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }()
 
   weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
-  weak var playbackDelegate: VideoViewControllerPlaybackDelegate?
+  weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   public var messageBannerViewController: MessageBannerViewController?
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
@@ -90,7 +90,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.registerCellClass(TextViewElementCell.self)
     self.tableView.registerCellClass(ImageViewElementCell.self)
-    self.tableView.registerCellClass(VideoViewElementCell.self)
+    self.tableView.registerCellClass(AudioVideoViewElementCell.self)
     self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
@@ -390,45 +390,45 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         }
       }
 
-    self.viewModel.outputs.precreateVideoURLsOnFirstLoad
+    self.viewModel.outputs.precreateAudioVideoURLsOnFirstLoad
       .observeValues { [weak self] elements in
         elements.forEach { element in
           guard let url = URL(string: element.sourceURLString) else { return }
 
-          var videoThumbnailURL: URL?
+          var audioVideoThumbnailURL: URL?
 
-          if let videoThumbnailURLString = element.thumbnailURLString {
-            videoThumbnailURL = URL(string: videoThumbnailURLString)
+          if let audioVideoThumbnailURLString = element.thumbnailURLString {
+            audioVideoThumbnailURL = URL(string: audioVideoThumbnailURLString)
           }
 
-          self?.prepareToPlayVideoURL(
-            videoURL: url,
-            thumbnailURL: videoThumbnailURL
+          self?.prepareToPlayAudioVideoURL(
+            audioVideoURL: url,
+            thumbnailURL: audioVideoThumbnailURL
           ) { availablePlayer, image in
             guard let usablePlayer = availablePlayer else { return }
 
-            self?.dataSource.preloadCampaignVideoViewElement(element, player: usablePlayer, image: image)
+            self?.dataSource.preloadCampaignAudioVideoViewElement(element, player: usablePlayer, image: image)
           }
         }
       }
 
-    self.viewModel.outputs.precreateVideoURLs
+    self.viewModel.outputs.precreateAudioVideoURLs
       .observeValues { [weak self] element, indexPath in
         guard let url = URL(string: element.sourceURLString) else { return }
 
-        var videoThumbnailURL: URL?
+        var audioVideoThumbnailURL: URL?
 
-        if let videoThumbnailURLString = element.thumbnailURLString {
-          videoThumbnailURL = URL(string: videoThumbnailURLString)
+        if let audioVideoThumbnailURLString = element.thumbnailURLString {
+          audioVideoThumbnailURL = URL(string: audioVideoThumbnailURLString)
         }
 
-        self?.prepareToPlayVideoURL(
-          videoURL: url,
-          thumbnailURL: videoThumbnailURL
+        self?.prepareToPlayAudioVideoURL(
+          audioVideoURL: url,
+          thumbnailURL: audioVideoThumbnailURL
         ) { availablePlayer, image in
           guard let usablePlayer = availablePlayer else { return }
 
-          self?.dataSource.updateVideoViewElementWith(
+          self?.dataSource.updateAudioVideoViewElementWith(
             element,
             player: usablePlayer,
             thumbnailImage: image,
@@ -492,11 +492,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         guard let tableView = self?.tableView else { return }
 
         tableView.indexPathsForVisibleRows?.forEach { indexPath in
-          if let cell = tableView.cellForRow(at: indexPath) as? VideoViewElementCell,
+          if let cell = tableView.cellForRow(at: indexPath) as? AudioVideoViewElementCell,
             let isPlaying = cell.delegate?.isPlaying(),
             isPlaying,
             let seekTime = cell.delegate?.pausePlayback() {
-            self?.dataSource.updateVideoViewElementSeektime(
+            self?.dataSource.updateAudioVideoViewElementSeektime(
               with: seekTime,
               tableView: tableView,
               indexPath: indexPath
@@ -512,20 +512,20 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       }
   }
 
-  private func prepareToPlayVideoURL(videoURL: URL,
-                                     thumbnailURL: URL?,
-                                     completionHandler: @escaping (AVPlayer?, UIImage?) -> Void) {
+  private func prepareToPlayAudioVideoURL(audioVideoURL: URL,
+                                          thumbnailURL: URL?,
+                                          completionHandler: @escaping (AVPlayer?, UIImage?) -> Void) {
     // Fetch the thumbnail
     var cachedImage: UIImage?
 
-    if let videoThumbnailURL = thumbnailURL {
-      UIImageView.ksr_cacheImageWith(videoThumbnailURL) { image in
+    if let audioVideoThumbnailURL = thumbnailURL {
+      UIImageView.ksr_cacheImageWith(audioVideoThumbnailURL) { image in
         cachedImage = image
       }
     }
 
     // Create asset to be played
-    let asset = AVAsset(url: videoURL)
+    let asset = AVAsset(url: audioVideoURL)
 
     asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
       var durationError: NSError?
@@ -694,7 +694,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     if let _ = tableView.cellForRow(at: mainCellIndexPath) as? ProjectPamphletMainCell,
       navSection != .overview {
-      self.playbackDelegate?.pauseVideoPlayback()
+      self.playbackDelegate?.pauseAudioVideoPlayback()
     }
   }
 
@@ -827,10 +827,10 @@ extension ProjectPageViewController: UITableViewDelegate {
     didEndDisplaying cell: UITableViewCell,
     forRowAt indexPath: IndexPath
   ) {
-    if let cell = cell as? VideoViewElementCell,
+    if let cell = cell as? AudioVideoViewElementCell,
       let seekTime = cell.delegate?.pausePlayback() {
       self.dataSource
-        .updateVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
+        .updateAudioVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
     }
   }
 
@@ -860,16 +860,16 @@ extension ProjectPageViewController: UITableViewDataSourcePrefetching {
       self.viewModel.inputs.prepareImageAt(indexPath)
     }
 
-    let campaignSectionVideoIndexPaths = indexPaths.compactMap { indexPath in
-      self.dataSource.videoViewElementWithNoPlayer(
+    let campaignSectionAudioVideoIndexPaths = indexPaths.compactMap { indexPath in
+      self.dataSource.audioVideoViewElementWithNoPlayer(
         tableView: self.tableView,
         indexPath: indexPath,
         section: .campaign
       )
     }
 
-    campaignSectionVideoIndexPaths.forEach { element, indexPath in
-      self.viewModel.inputs.prepareVideoAt(indexPath, with: element)
+    campaignSectionAudioVideoIndexPaths.forEach { element, indexPath in
+      self.viewModel.inputs.prepareAudioVideoAt(indexPath, with: element)
     }
   }
 }

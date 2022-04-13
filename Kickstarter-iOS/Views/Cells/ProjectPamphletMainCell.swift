@@ -387,8 +387,8 @@ extension ProjectPamphletMainCell: VideoViewControllerDelegate {
   }
 }
 
-extension ProjectPamphletMainCell: VideoViewControllerPlaybackDelegate {
-  func pauseVideoPlayback() {
-    self.videoController?.playbackDelegate?.pauseVideoPlayback()
+extension ProjectPamphletMainCell: AudioVideoViewControllerPlaybackDelegate {
+  func pauseAudioVideoPlayback() {
+    self.videoController?.playbackDelegate?.pauseAudioVideoPlayback()
   }
 }

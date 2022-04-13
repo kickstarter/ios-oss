@@ -5,19 +5,19 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol VideoViewElementCellPlaybackDelegate: AnyObject {
+internal protocol AudioVideoViewElementCellPlaybackDelegate: AnyObject {
   func pausePlayback() -> CMTime
   func isPlaying() -> Bool
 }
 
-class VideoViewElementCell: UITableViewCell, ValueCell {
+class AudioVideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
-  private let viewModel: VideoViewElementCellViewModelType = VideoViewElementCellViewModel()
+  private let viewModel: AudioVideoViewElementCellViewModelType = AudioVideoViewElementCellViewModel()
   private let observerKeyPath = "timeControlStatus"
   private lazy var playerController: AVPlayerViewController = { AVPlayerViewController() }()
 
-  weak var delegate: VideoViewElementCellPlaybackDelegate?
+  weak var delegate: AudioVideoViewElementCellPlaybackDelegate?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -35,7 +35,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func configureWith(value: (element: VideoViewElement, player: AVPlayer?, thumbnailImage: UIImage?)) {
+  func configureWith(value: (element: AudioVideoViewElement, player: AVPlayer?, thumbnailImage: UIImage?)) {
     self.viewModel.inputs.configureWith(
       element: value.element,
       player: value.player,
@@ -46,7 +46,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   // MARK: View Model
 
   internal override func bindViewModel() {
-    self.viewModel.outputs.videoItem
+    self.viewModel.outputs.audioVideoItem
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.resetPlayer()
@@ -88,7 +88,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
         }
       }
 
-    self.viewModel.outputs.pauseVideo
+    self.viewModel.outputs.pauseAudioVideo
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.playerController.player?.pause()
@@ -160,7 +160,7 @@ class VideoViewElementCell: UITableViewCell, ValueCell {
   }
 }
 
-extension VideoViewElementCell: VideoViewElementCellPlaybackDelegate {
+extension AudioVideoViewElementCell: AudioVideoViewElementCellPlaybackDelegate {
   func pausePlayback() -> CMTime {
     self.viewModel.inputs.pausePlayback()
   }
