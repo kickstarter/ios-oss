@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import UIKit
 
 class PaymentMethodsViewControllerTests: TestCase {
   override func setUp() {
