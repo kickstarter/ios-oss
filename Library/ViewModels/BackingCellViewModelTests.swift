@@ -3,6 +3,7 @@
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
+import UIKit
 
 internal final class BackingCellViewModelTests: TestCase {
   fileprivate let vm: BackingCellViewModelType = BackingCellViewModel()

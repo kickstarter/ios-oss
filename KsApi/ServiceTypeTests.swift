@@ -329,7 +329,7 @@ final class ServiceTypeTests: XCTestCase {
 // swiftformat:disable wrap
 private func userAgent() -> String {
   return """
-  com.apple.dt.xctest.tool/\(testToolBuildNumber()) (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) Scale/\(UIScreen.main.scale))
+  xctest/\(testToolBuildNumber()) (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) Scale/\(UIScreen.main.scale))
   """
 }
 
