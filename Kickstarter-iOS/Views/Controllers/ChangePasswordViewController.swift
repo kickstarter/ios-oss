@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
+import UIKit
 
 final class ChangePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet fileprivate var changePasswordLabel: UILabel!

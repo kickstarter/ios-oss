@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import UIKit
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
   weak var cellDelegate: SettingsNotificationCellDelegate?

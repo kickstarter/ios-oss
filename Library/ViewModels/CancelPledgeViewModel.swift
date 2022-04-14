@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public struct CancelPledgeViewData {
   public let project: Project // TODO: remove once tracking is updated.

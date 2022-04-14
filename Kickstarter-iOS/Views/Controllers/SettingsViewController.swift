@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import UIKit
 
 final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate var tableView: UITableView!

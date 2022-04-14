@@ -1,6 +1,6 @@
-import Foundation
 import Library
 import Prelude
+import UIKit
 
 final class CategorySelectionHeaderView: UIView {
   // MARK: - Properties

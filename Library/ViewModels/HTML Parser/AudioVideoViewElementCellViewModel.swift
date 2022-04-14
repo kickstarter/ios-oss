@@ -2,6 +2,7 @@ import AVFoundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol AudioVideoViewElementCellViewModelInputs {
   /// Call to configure with a `AudioVideoViewElement` representing raw audio/video view with an optional `AVPlayer` and `UIImage`` if its ready with its asset.

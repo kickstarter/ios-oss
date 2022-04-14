@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol ActivitySurveyResponseCellViewModelInputs {
   /// Call to configure with survey response, number of surveys, and the cell's position in the survey stack.

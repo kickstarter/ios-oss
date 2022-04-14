@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
+import UIKit
 
 final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCell {
   @IBOutlet fileprivate var titleLabel: UILabel!

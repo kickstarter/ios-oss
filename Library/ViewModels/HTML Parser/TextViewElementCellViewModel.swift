@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol TextViewElementCellViewModelInputs {
   /// Call to configure with a TextElement representing raw HTML

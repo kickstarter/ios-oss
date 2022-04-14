@@ -1,3 +1,4 @@
+import Foundation
 import Prelude
 
 // swiftformat:disable wrap

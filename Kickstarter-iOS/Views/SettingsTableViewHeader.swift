@@ -1,5 +1,6 @@
 import Library
 import Prelude
+import UIKit
 
 final class SettingsTableViewHeader: UIView, NibLoading {
   @IBOutlet fileprivate var titleLabel: UILabel!
