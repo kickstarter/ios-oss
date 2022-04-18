@@ -39,7 +39,7 @@ test_job: &test_job
     - restore_cache:
         name: Restore SPM Cache
         keys:
-          - spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+          - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap SPM
         command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
@@ -88,7 +88,7 @@ distribute_job: &distribute_job
     - restore_cache:
         name: Restore SPM Cache
         keys:
-          - spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+          - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap SPM
         command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
@@ -151,7 +151,7 @@ jobs:
       - restore_cache:
           name: Restore SPM Cache
           keys:
-            - spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
       - run:
           name: Bootstrap SPM
           command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
@@ -169,7 +169,7 @@ jobs:
             - Carthage
       - save_cache:
           name: Cache SPM
-          key: spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+          key: spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - SourcePackages
       - restore_cache:
