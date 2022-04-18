@@ -42,7 +42,7 @@ test_job: &test_job
           - spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap SPM
-        command: bootstrap-spm
+        command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
     - restore_cache:
         name: Restore Carthage Cache
         keys:
@@ -91,7 +91,7 @@ distribute_job: &distribute_job
           - spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap SPM
-        command: bootstrap-spm
+        command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
     - restore_cache:
         name: Restore Carthage Cache
         keys:
@@ -154,7 +154,7 @@ jobs:
             - spm-cache-v1-{{ checksum "SourcePackages/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
       - run:
           name: Bootstrap SPM
-          command: bootstrap-spm
+          command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
       - restore_cache:
           name: Restore Carthage Cache
           keys:

@@ -41,9 +41,6 @@ dependencies: carthage-bootstrap configs secrets
 
 bootstrap: hooks dependencies
 
-bootstrap-spm:
-	bin/spm.sh -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages || exit 1
-
 carthage-bootstrap:
 	bin/carthage.sh bootstrap --platform iOS || exit 1
 
