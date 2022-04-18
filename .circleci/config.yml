@@ -36,6 +36,13 @@ test_job: &test_job
     - run:
         name: Store Xcode Version
         command: xcodebuild -version > xcode_version.txt
+    - run:
+        name: Setup SPM Package Dependency Path
+        command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+    - restore_cache:
+        name: Restore SPM Cache
+        keys:
+          - spm-cache-v1-{{ checksum "Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - restore_cache:
         name: Restore Carthage Cache
         keys:
@@ -78,6 +85,13 @@ distribute_job: &distribute_job
     - run:
         name: Store Xcode Version
         command: xcodebuild -version > xcode_version.txt
+    - run:
+        name: Setup SPM Package Dependency Path
+        command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+    - restore_cache:
+        name: Restore SPM Cache
+        keys:
+          - spm-cache-v1-{{ checksum "Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - restore_cache:
         name: Restore Carthage Cache
         keys:
@@ -134,6 +148,13 @@ jobs:
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
+      - run:
+          name: Setup SPM Package Dependency Path
+          command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+      - restore_cache:
+          name: Restore SPM Cache
+          keys:
+            - spm-cache-v1-{{ checksum "Package.resolved" }}-{{ checksum "xcode_version.txt" }}
       - restore_cache:
           name: Restore Carthage Cache
           keys:
@@ -146,6 +167,11 @@ jobs:
           key: carthage-cache-v3-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
+      - save_cache:
+          name: Cache SPM
+          key: spm-cache-v1-{{ checksum "Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+          paths:
+            - SourcePackages
       - restore_cache:
           name: Restore Bundler
           keys:
