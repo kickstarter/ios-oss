@@ -204,6 +204,7 @@
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
 		06E3296B270E39B300216306 /* ProjectPageNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */; };
+		06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06EA2D4B280F76B700F4DE2E /* Prelude */; };
 		06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */; };
 		06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */; };
 		06ED88D727BFF02200893A24 /* AudioVideoViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16FA2773B0DE009E4354 /* AudioVideoViewElementCell.swift */; };
@@ -3333,6 +3334,7 @@
 				8A417DE725AE2F8600A2C406 /* Segment.framework in Frameworks */,
 				8A04FE27262781240056F413 /* Segment_Appboy.framework in Frameworks */,
 				8A04FE28262781240056F413 /* SDWebImage.framework in Frameworks */,
+				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */,
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -5421,6 +5423,8 @@
 				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-Framework-iOS";
+			packageProductDependencies = (
+			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -5443,6 +5447,9 @@
 				D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
+			packageProductDependencies = (
+				06EA2D4B280F76B700F4DE2E /* Prelude */,
+			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
 			productType = "com.apple.product-type.application";
@@ -8723,6 +8730,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude_UIKit;
+		};
+		06EA2D4B280F76B700F4DE2E /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
