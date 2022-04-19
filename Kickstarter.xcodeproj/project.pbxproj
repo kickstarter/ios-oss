@@ -1913,6 +1913,7 @@
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
 		06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarView.swift; sourceTree = "<group>"; };
+		06EA2D36280F1F1900F4DE2E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchToZoom.swift; sourceTree = "<group>"; };
 		06EF13DC27A1B2770044841C /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/iOS/SwiftSoup.framework; sourceTree = "<group>"; };
@@ -2398,8 +2399,6 @@
 		8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+StartRefreshing.swift"; sourceTree = "<group>"; };
 		8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAView.swift; sourceTree = "<group>"; };
 		8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModel.swift; sourceTree = "<group>"; };
-		8A713AEA268BE85400159D7B /* ApolloAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApolloAPI.framework; path = Carthage/Build/iOS/ApolloAPI.framework; sourceTree = "<group>"; };
-		8A713AEB268BE85400159D7B /* ApolloUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApolloUtils.framework; path = Carthage/Build/iOS/ApolloUtils.framework; sourceTree = "<group>"; };
 		8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModel.swift; sourceTree = "<group>"; };
 		8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModelTests.swift; sourceTree = "<group>"; };
 		8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeTypes.swift; sourceTree = "<group>"; };
@@ -2476,7 +2475,6 @@
 		8ADCCCAD264C98A50079D308 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelope.swift"; sourceTree = "<group>"; };
 		8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelopeTests.swift"; sourceTree = "<group>"; };
-		8ADCCD31265309CD0079D308 /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
 		8ADCCD3D26532D730079D308 /* FetchProjectComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchProjectComments.graphql; sourceTree = "<group>"; };
 		8ADCCD4E2654281E0079D308 /* GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphAPI.swift; sourceTree = "<group>"; };
 		8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+RAC.swift"; sourceTree = "<group>"; };
@@ -3072,11 +3070,9 @@
 		D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Carthage/Build/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
 		D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
-		D0D58D792257FADE00532AC1 /* Prelude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Prelude.framework; path = Carthage/Build/iOS/Prelude.framework; sourceTree = "<group>"; };
 		D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions.framework; path = Carthage/Build/iOS/ReactiveExtensions.framework; sourceTree = "<group>"; };
 		D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSnapshotTestCase.framework; path = Carthage/Build/iOS/FBSnapshotTestCase.framework; sourceTree = "<group>"; };
 		D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = "<group>"; };
-		D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Prelude_UIKit.framework; path = Carthage/Build/iOS/Prelude_UIKit.framework; sourceTree = "<group>"; };
 		D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions_TestHelpers.framework; path = Carthage/Build/iOS/ReactiveExtensions_TestHelpers.framework; sourceTree = "<group>"; };
 		D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+ThreadSafety.swift"; sourceTree = "<group>"; };
 		D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelope.swift; sourceTree = "<group>"; };
@@ -4526,14 +4522,12 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				06EA2D36280F1F1900F4DE2E /* XCTest.framework */,
 				0653738C27AC5B2D00C7D160 /* Kingfisher.framework */,
 				06EF13DC27A1B2770044841C /* SwiftSoup.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
-				8ADCCD31265309CD0079D308 /* Apollo.framework */,
-				8A713AEA268BE85400159D7B /* ApolloAPI.framework */,
-				8A713AEB268BE85400159D7B /* ApolloUtils.framework */,
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
 				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,
@@ -4552,8 +4546,6 @@
 				4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */,
 				8A86D7D824FDC7B000037A7B /* GoogleUtilities.framework */,
 				D7B962AA23888A0B003AA616 /* Optimizely.framework */,
-				D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */,
-				D0D58D792257FADE00532AC1 /* Prelude.framework */,
 				8A86D7DB24FDC7C900037A7B /* PromisesObjC.framework */,
 				4748C15525B105DE0098E89E /* Protobuf.framework */,
 				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
