@@ -133,9 +133,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       return
     }
 
-    // Remove bottom border
-    defaultNavigationBarView.shadowImage = UIImage()
-
     _ = (self.navigationBarView, defaultNavigationBarView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -290,6 +287,17 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func bindProjectPageViewModel() {
     self.navigationBarView.rac.hidden = self.viewModel.outputs.navigationBarIsHidden
+
+    self.viewModel.outputs.navigationBarIsHidden
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let defaultNavigationBarView = self?.navigationController?.navigationBar else {
+          return
+        }
+
+        defaultNavigationBarView.standardAppearance.shadowColor = .ksr_white
+        defaultNavigationBarView.scrollEdgeAppearance?.shadowColor = .ksr_white
+      }
 
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()

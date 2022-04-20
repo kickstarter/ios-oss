@@ -24,7 +24,7 @@
       "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
       "state" : {
         "branch" : "feature/swift-package",
-        "revision" : "1a9213ebdb0c416a4dbdb494052d0d186ebb3797"
+        "revision" : "b0cec69c19a13088864b52ad1745397f587daec7"
       }
     },
     {

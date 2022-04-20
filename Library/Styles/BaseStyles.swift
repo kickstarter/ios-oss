@@ -180,8 +180,17 @@ private let baseNavigationBarStyle =
     NSAttributedString.Key.foregroundColor: UIColor.ksr_black
   ]
   <> UINavigationBar.lens.isTranslucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .ksr_white
   <> UINavigationBar.lens.tintColor .~ .ksr_create_700
+  <> UINavigationBar.lens.standardAppearance .~ navigationBarAppearance
+  <> UINavigationBar.lens.scrollEdgeAppearance .~ navigationBarAppearance
+
+private var navigationBarAppearance: UINavigationBarAppearance {
+  let navBarAppearance = UINavigationBarAppearance()
+  navBarAppearance.configureWithOpaqueBackground()
+  navBarAppearance.backgroundColor = .ksr_white
+
+  return navBarAppearance
+}
 
 public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
   toolbar
