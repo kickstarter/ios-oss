@@ -582,39 +582,37 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
   // MARK: - Error fetching project
 
-  /** FIXME: Flaky test, investigate and fix, fails on CI consistently.
-   func testErrorFetchingProject() {
-     let config = Config.template
+  func testErrorFetchingProject() {
+    let config = Config.template
 
-     let mockService = MockService(
-       fetchManagePledgeViewBackingResult: .success(.template),
-       fetchProjectPamphletResult: .failure(.couldNotParseJSON)
-     )
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .failure(.couldNotParseJSON)
+    )
 
-     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
-       withEnvironment(
-         apiService: mockService,
-         config: config,
-         language: language
-       ) {
-         let vc = ProjectPageViewController.configuredWith(
-           projectOrParam: .left(self.project),
-           refTag: nil
-         )
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config,
+        language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(self.project),
+          refTag: nil
+        )
 
-         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-         if device == .pad {
-           parent.view.frame.size.height = 2_300
-         }
+        if device == .pad {
+          parent.view.frame.size.height = 2_300
+        }
 
-         self.scheduler.advance(by: .milliseconds(1))
+        self.scheduler.advance(by: .milliseconds(1))
 
-         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
-       }
-     }
-   }
-   */
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 
   // MARK: - Tab Content Tests
 
