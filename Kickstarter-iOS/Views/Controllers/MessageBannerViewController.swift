@@ -1,6 +1,6 @@
-import Foundation
 import Library
 import Prelude
+import UIKit
 
 public protocol MessageBannerViewControllerPresenting {
   var messageBannerViewController: MessageBannerViewController? { get set }

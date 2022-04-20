@@ -7,6 +7,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol SettingsViewModelInputs {
   func currentUserUpdated()

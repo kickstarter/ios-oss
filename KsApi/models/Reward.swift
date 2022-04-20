@@ -1,4 +1,4 @@
-
+import Foundation
 import Prelude
 
 public struct Reward {

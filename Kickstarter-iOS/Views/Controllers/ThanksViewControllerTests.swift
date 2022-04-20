@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import UIKit
 
 class ThanksViewControllerTests: TestCase {
   private let categoryEnvelope = CategoryEnvelope(node: .template)

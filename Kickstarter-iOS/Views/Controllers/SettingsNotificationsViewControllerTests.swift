@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import UIKit
 
 final class SettingsNotificationsViewControllerTests: TestCase {
   override func setUp() {

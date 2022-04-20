@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol ProjectPamphletSubpageCellViewModelInputs {
   /// Call with the ProjectPamphletSubpage

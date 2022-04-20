@@ -1,5 +1,6 @@
 import Library
 import Prelude
+import UIKit
 
 final class SettingsFooterView: UITableViewHeaderFooterView {
   static var defaultHeight: CGFloat = 44

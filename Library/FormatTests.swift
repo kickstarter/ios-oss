@@ -422,10 +422,10 @@ final class FormatTests: TestCase {
 
     withEnvironment(locale: Locale(identifier: "es")) {
       withEnvironment(calendar: calUTC) {
-        XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct 1983 0:00:00")
+        XCTAssertEqual(Format.date(secondsInUTC: date), "10 oct 1983, 0:00:00")
       }
       withEnvironment(calendar: calEST) {
-        XCTAssertEqual(Format.date(secondsInUTC: date), "9 oct 1983 20:00:00")
+        XCTAssertEqual(Format.date(secondsInUTC: date), "9 oct 1983, 20:00:00")
       }
     }
 

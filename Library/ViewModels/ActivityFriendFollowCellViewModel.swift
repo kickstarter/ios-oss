@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public protocol ActivityFriendFollowCellViewModelInputs {
   /// Call to configure activity with Activity.

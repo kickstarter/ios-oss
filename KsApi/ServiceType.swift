@@ -1,6 +1,6 @@
-import Foundation
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public enum Mailbox: String {
   case inbox

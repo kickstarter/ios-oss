@@ -1,7 +1,7 @@
-import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public enum PledgeExpandableRewardsHeaderItem {
   case header(PledgeExpandableHeaderRewardCellData)

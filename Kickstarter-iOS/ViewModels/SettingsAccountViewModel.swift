@@ -6,6 +6,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public typealias SettingsAccountData = (
   currency: Currency,
