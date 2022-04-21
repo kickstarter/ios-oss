@@ -5,8 +5,7 @@ $(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
 $(SRCROOT)/Carthage/Build/iOS/Optimizely.framework
-$(SRCROOT)/Carthage/Build/iOS/Prelude.framework
-$(SRCROOT)/Carthage/Build/iOS/Prelude_UIKit.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
 $(SRCROOT)/Carthage/Build/iOS/Stripe.framework
+$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework

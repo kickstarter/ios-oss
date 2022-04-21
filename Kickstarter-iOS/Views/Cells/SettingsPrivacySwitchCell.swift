@@ -1,6 +1,6 @@
-import Foundation
 import Library
 import Prelude
+import UIKit
 
 protocol SettingsPrivacySwitchCellDelegate: AnyObject {
   func privacySettingsSwitchCell(

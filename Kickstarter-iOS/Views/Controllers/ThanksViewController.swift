@@ -206,22 +206,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     UIApplication.shared.open(url)
   }
 
-  fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(
-        project: project,
-        refTag: refTag,
-        initialPlaylist: projects,
-        navigatorDelegate: self
-      )
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
+  fileprivate func goToProject(_ project: Project, projects _: [Project], refTag: RefTag) {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
@@ -293,10 +278,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
-}
-
-extension ThanksViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at _: Int) {}
 }
 
 extension ThanksViewController: ThanksCategoryCellDelegate {

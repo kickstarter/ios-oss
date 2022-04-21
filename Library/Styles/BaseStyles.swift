@@ -86,11 +86,12 @@ public let containerViewBackgroundStyle =
 
 public func dropShadowStyle<V: UIViewProtocol>(
   radius: CGFloat = 2.0,
-  offset: CGSize = .init(width: 0, height: 1)
+  offset: CGSize = .init(width: 0, height: 1),
+  shadowOpacity: Float = 0.17
 ) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.ksr_black.cgColor
-      <> V.lens.layer.shadowOpacity .~ 0.17
+      <> V.lens.layer.shadowOpacity .~ shadowOpacity
       <> V.lens.layer.shadowRadius .~ radius
       <> V.lens.layer.masksToBounds .~ false
       <> V.lens.layer.shouldRasterize .~ true
@@ -179,8 +180,17 @@ private let baseNavigationBarStyle =
     NSAttributedString.Key.foregroundColor: UIColor.ksr_black
   ]
   <> UINavigationBar.lens.isTranslucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .ksr_white
   <> UINavigationBar.lens.tintColor .~ .ksr_create_700
+  <> UINavigationBar.lens.standardAppearance .~ navigationBarAppearance
+  <> UINavigationBar.lens.scrollEdgeAppearance .~ navigationBarAppearance
+
+private var navigationBarAppearance: UINavigationBarAppearance {
+  let navBarAppearance = UINavigationBarAppearance()
+  navBarAppearance.configureWithOpaqueBackground()
+  navBarAppearance.backgroundColor = .ksr_white
+
+  return navBarAppearance
+}
 
 public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
   toolbar

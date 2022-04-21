@@ -23,6 +23,17 @@ internal final class ProjectPageNavBarViewTests: TestCase {
       let view = ProjectPageNavigationBarView(frame: .zero)
         |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
+      let project = .template |> Project.lens.personalization.isStarred .~ false
+
+      let watchValue = WatchProjectValue(
+        project: project,
+        context: .projectPage,
+        discoveryParams: nil
+      )
+
+      view.configureWatchProject(with: watchValue)
+      view.viewDidLoad()
+
       let (parent, _) = traitControllers(
         device: device,
         orientation: .portrait,
@@ -30,6 +41,8 @@ internal final class ProjectPageNavBarViewTests: TestCase {
       )
 
       parent.view.frame.size.height = 44
+
+      scheduler.run()
 
       FBSnapshotVerifyView(parent.view, identifier: "unwatched")
     }
@@ -48,10 +61,8 @@ internal final class ProjectPageNavBarViewTests: TestCase {
         discoveryParams: nil
       )
 
-      view.viewDidLoad()
       view.configureWatchProject(with: watchValue)
-
-      scheduler.run()
+      view.viewDidLoad()
 
       let (parent, _) = traitControllers(
         device: device,
@@ -60,6 +71,8 @@ internal final class ProjectPageNavBarViewTests: TestCase {
       )
 
       parent.view.frame.size.height = 44
+
+      scheduler.run()
 
       FBSnapshotVerifyView(parent.view, identifier: "watched")
     }

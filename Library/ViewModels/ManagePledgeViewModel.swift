@@ -85,8 +85,8 @@ public final class ManagePledgeViewModel:
 
     /**
      FIXME: This should be refactored so that the VM is configured with a `Project` or `Param` and `Backing?`
-     so that it behaves similarly to `ProjectPamphletViewModel` i.e it's initially configured with the objects
-     that are passed to it and then those objects are refreshed via these calls with more update-to-date
+     so that it behaves similarly to previously existing `ProjectPamphletViewModel` i.e it's initially configured with the objects
+     that are passed to it and then those objects are refreshed via these calls with more up-to-date
      information.
      */
     let fetchProjectEvent = shouldFetchProjectWithParam

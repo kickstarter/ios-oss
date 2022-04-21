@@ -1,6 +1,6 @@
-import Foundation
 import Library
 import Prelude
+import UIKit
 
 final class SettingsFormFieldView: UIView, NibLoading {
   @IBOutlet var textField: UITextField!

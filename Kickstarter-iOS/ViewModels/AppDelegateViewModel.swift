@@ -258,11 +258,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .signal
       .mapConst(Notification(name: .ksr_optimizelyClientConfigurationFailed, object: nil))
 
+    let appEnteredBackgroundNotification = self.applicationDidEnterBackgroundProperty.signal
+      .mapConst(Notification(name: .ksr_applicationDidEnterBackground, object: nil))
+
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
       configUpdatedNotification,
       optimizelyClientConfiguredNotification,
-      optimizelyClientConfigurationFailedNotification
+      optimizelyClientConfigurationFailedNotification,
+      appEnteredBackgroundNotification
     )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
@@ -448,17 +452,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .demoteErrors()
           .observeForUI()
           .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
-            guard featureNavigationSelectorProjectPageIsEnabled() else {
-              return (
-                project, subpage,
-                [
-                  ProjectPamphletViewController
-                    .configuredWith(projectOrParam: .left(project), refTag: refTag)
-                ],
-                refTag
-              )
-            }
-
             let projectParam = Either<Project, Param>(left: project)
             let vc = ProjectPageViewController.configuredWith(
               projectOrParam: projectParam,

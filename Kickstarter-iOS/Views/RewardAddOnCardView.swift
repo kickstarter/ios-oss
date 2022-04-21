@@ -1,8 +1,8 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import UIKit
 
 protocol RewardAddOnCardViewDelegate: AnyObject {
   func rewardAddOnCardView(

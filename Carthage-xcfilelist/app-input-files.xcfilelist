@@ -2,18 +2,15 @@
 
 $(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
 $(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework
-$(SRCROOT)/Carthage/Build/iOS/Apollo.framework
-$(SRCROOT)/Carthage/Build/iOS/ApolloAPI.framework
-$(SRCROOT)/Carthage/Build/iOS/ApolloUtils.framework
 $(SRCROOT)/Carthage/Build/iOS/Appboy_iOS_SDK.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
 $(SRCROOT)/Carthage/Build/iOS/Optimizely.framework
-$(SRCROOT)/Carthage/Build/iOS/Prelude.framework
-$(SRCROOT)/Carthage/Build/iOS/Prelude_UIKit.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
 $(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment.framework
 $(SRCROOT)/Carthage/Build/iOS/Segment_Appboy.framework
 $(SRCROOT)/Carthage/Build/iOS/Stripe.framework
+$(SRCROOT)/Carthage/Build/iOS/SwiftSoup.framework
+$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework

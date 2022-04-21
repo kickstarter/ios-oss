@@ -1,6 +1,10 @@
 import Foundation
 
 extension Project {
+  fileprivate static var htmlParser = {
+    HTMLParser()
+  }()
+
   /**
    Returns a minimal `Project` from a `ProjectFragment`
    */
@@ -223,9 +227,6 @@ private func projectVideo(from projectFragment: GraphAPI.ProjectFragment) -> Pro
  Returns a `ExtendedProjectProperties` object from `ProjectFragment`
  */
 private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> ExtendedProjectProperties {
-  /**
-   FIXME: `story` currently causes a full 0.5s slowdown of the project page load, so removing it avoids the pledge cta from taking too long to load. Will need to add this back in at some point for the Story tab to properly load its content (along with the HTML parser).
-   */
   let risks = projectFragment.risks
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
   let faqs = extendedProjectFAQs(from: projectFragment)
@@ -235,11 +236,37 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
     environmentalCommitments: environmentalCommitments,
     faqs: faqs,
     risks: risks,
-    story: "",
+    story: storyElements(from: projectFragment),
     minimumPledgeAmount: minimumSingleTierPledgeAmount
   )
 
   return extendedProjectProperties
+}
+
+/**
+ Returns a `ProjectStoryElements` object from `ProjectFragment`
+ */
+private func storyElements(from projectFragment: GraphAPI.ProjectFragment) -> ProjectStoryElements {
+  let viewElements = Project.htmlParser.parse(bodyHtml: projectFragment.story)
+  var seenURLStrings = Set<String>()
+  var htmlElementsWithUniqueAudioVideoViewElements = [HTMLViewElement]()
+
+  for viewElement in viewElements {
+    guard let audioVideoViewElement = viewElement as? AudioVideoViewElement else {
+      htmlElementsWithUniqueAudioVideoViewElements.append(viewElement)
+
+      continue
+    }
+
+    if !seenURLStrings.contains(audioVideoViewElement.sourceURLString) {
+      htmlElementsWithUniqueAudioVideoViewElements.append(viewElement)
+      seenURLStrings.insert(audioVideoViewElement.sourceURLString)
+    }
+  }
+
+  let storyElements = ProjectStoryElements(htmlViewElements: htmlElementsWithUniqueAudioVideoViewElements)
+
+  return storyElements
 }
 
 /**

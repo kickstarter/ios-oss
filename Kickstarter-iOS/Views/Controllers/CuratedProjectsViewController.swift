@@ -157,22 +157,7 @@ final class CuratedProjectsViewController: UIViewController {
 
   // MARK: - Functions
 
-  fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(
-        project: project,
-        refTag: refTag,
-        initialPlaylist: projects,
-        navigatorDelegate: self
-      )
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
+  fileprivate func goToProject(_ project: Project, projects _: [Project], refTag: RefTag) {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
@@ -192,10 +177,6 @@ extension CuratedProjectsViewController: UITableViewDelegate {
 
     self.viewModel.inputs.projectTapped(project)
   }
-}
-
-extension CuratedProjectsViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at _: Int) {}
 }
 
 // MARK: - Styles

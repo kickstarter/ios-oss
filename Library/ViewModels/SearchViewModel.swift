@@ -19,9 +19,6 @@ public protocol SearchViewModelInputs {
   /// Call when the user taps the return key.
   func searchTextEditingDidEnd()
 
-  /// Call when the project navigator has transitioned to a new project with its index.
-  func transitionedToProject(at row: Int, outOf totalRows: Int)
-
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -59,9 +56,6 @@ public protocol SearchViewModelOutputs {
 
   /// Emits when the search field should resign focus.
   var resignFirstResponder: Signal<(), Never> { get }
-
-  /// Emits when should scroll to project with row number.
-  var scrollToProjectRow: Signal<Int, Never> { get }
 
   /// Emits a string that should be filled into the search field.
   var searchFieldText: Signal<String, Never> { get }
@@ -111,16 +105,13 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { !$0.isEmpty }
       .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
 
-    let isCloseToBottom = Signal.merge(
-      self.willDisplayRowProperty.signal.skipNil(),
-      self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
-    )
-    .map { row, total in
-      row >= total - 3
-    }
-    .skipRepeats()
-    .filter(isTrue)
-    .ignoreValues()
+    let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
+      .map { row, total in
+        row >= total - 3
+      }
+      .skipRepeats()
+      .filter(isTrue)
+      .ignoreValues()
 
     let requestFromParamsWithDebounce: (DiscoveryParams)
       -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> = { params in
@@ -189,8 +180,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       self.viewDidLoadProperty.signal.mapConst(true),
       popularEvent.filter { $0.isTerminating }.mapConst(false)
     )
-
-    self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     self.goToProject = Signal.combineLatest(self.projects, query)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
@@ -287,11 +276,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.tappedProjectProperty.value = project
   }
 
-  private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
-  public func transitionedToProject(at row: Int, outOf totalRows: Int) {
-    self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
-  }
-
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -313,7 +297,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
   public let popularLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let projects: Signal<[Project], Never>
   public let resignFirstResponder: Signal<(), Never>
-  public let scrollToProjectRow: Signal<Int, Never>
   public let searchFieldText: Signal<String, Never>
   public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
   public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>

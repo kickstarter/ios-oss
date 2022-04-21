@@ -1,6 +1,7 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public typealias ProjectPamphletMainCellData = (
   project: Project,
@@ -33,6 +34,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, Never> { get }
+
+  /// Emits a hide/show `Bool` for the read more campaign button if the compaign tab is enabled.
+  var campaignTabShown: Signal<Bool, Never> { get }
 
   /// Emits a string to use for the category name label.
   var categoryNameLabelText: Signal<String, Never> { get }
@@ -248,6 +252,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.notifyDelegateToGoToCreator.observeValues { project in
       AppEnvironment.current.ksrAnalytics.trackGotoCreatorDetailsClicked(project: project)
     }
+
+    self.campaignTabShown = project.ignoreValues()
+      .map(campaignTabEnabled)
   }
 
   private let awakeFromNibProperty = MutableProperty(())
@@ -289,6 +296,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersSubtitleLabelText: Signal<String, Never>
   public let backersTitleLabelText: Signal<String, Never>
   public let categoryNameLabelText: Signal<String, Never>
+  public let campaignTabShown: Signal<Bool, Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
@@ -368,6 +376,10 @@ private func fundingStatus(forProject project: Project) -> String {
   case .live, .purged, .started, .submitted:
     return ""
   }
+}
+
+private func campaignTabEnabled() -> Bool {
+  featureProjectPageStoryTabEnabled()
 }
 
 typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)

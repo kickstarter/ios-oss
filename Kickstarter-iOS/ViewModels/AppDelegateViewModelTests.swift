@@ -465,7 +465,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.updateCurrentUserInEnvironment.assertValues([env.user])
     self.postNotificationName.assertValues([.ksr_userUpdated])
 
-    self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
     self.scheduler.advance(by: .seconds(5))
 
@@ -477,6 +476,26 @@ final class AppDelegateViewModelTests: TestCase {
     self.updateCurrentUserInEnvironment.assertValues([env.user, env.user])
     self.postNotificationName.assertValues(
       [.ksr_userUpdated, .ksr_userUpdated]
+    )
+  }
+
+  func testAppStateEnteringBackground_SendNotification_Success() {
+    let env = AccessTokenEnvelope(accessToken: "deadbeef", user: User.template)
+    AppEnvironment.login(env)
+
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    self.scheduler.advance(by: .seconds(5))
+
+    self.postNotificationName.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidEnterBackground()
+    self.scheduler.advance(by: .seconds(5))
+
+    self.postNotificationName.assertValues([.ksr_applicationDidEnterBackground]
     )
   }
 

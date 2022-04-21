@@ -1,3 +1,5 @@
+import AVFoundation
+import Combine
 import KsApi
 import Library
 import Prelude
@@ -5,6 +7,9 @@ import UIKit
 
 public enum ProjectPageViewControllerStyles {
   public enum Layout {
+    public static let projectNavigationSelectorShadowViewHeight: CGFloat = 1
+    public static let projectNavigationSelectorShadowOpacity: Float = 0.35
+    public static let projectNavigationSelectorShadowVerticalOriginModifier: CGFloat = -1
     public static let projectNavigationSelectorHeightFormSheet: CGFloat = 60
     public static let projectNavigationSelectorHeightFullscreen: CGFloat = 70
     public static let tableFooterViewHeight: CGFloat = 1
@@ -16,6 +21,10 @@ protocol ProjectPageViewControllerDelegate: AnyObject {
   func goToLogin()
   func displayProjectStarredPrompt()
   func showShareSheet(_ controller: UIActivityViewController, sourceView: UIView?)
+}
+
+protocol AudioVideoViewControllerPlaybackDelegate: AnyObject {
+  func pauseAudioVideoPlayback()
 }
 
 public final class ProjectPageViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -36,13 +45,20 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     ProjectNavigationSelectorView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private let projectNavigationShadowView: UIView = {
+    UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var tableView: UITableView = {
     UITableView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   weak var navigationDelegate: ProjectPageNavigationBarViewDelegate?
+  weak var playbackDelegate: AudioVideoViewControllerPlaybackDelegate?
   public var messageBannerViewController: MessageBannerViewController?
+  private var pinchToZoomData: PinchToZoomData?
+  internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
@@ -60,13 +76,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.configureNavigationView()
     self.configurePledgeCTAContainerView()
-    self.configureNavigationSelectorView()
     self.configureTableView()
+    self.configureNavigationShadowView()
+    self.configureNavigationSelectorView()
 
-    self.projectNavigationSelectorView.delegate = self
-    self.pledgeCTAContainerView.delegate = self
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
-
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -74,6 +88,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectEnvironmentalCommitmentDisclaimerCell.self)
     self.tableView.registerCellClass(ProjectHeaderCell.self)
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
+    self.tableView.registerCellClass(TextViewElementCell.self)
+    self.tableView.registerCellClass(ImageViewElementCell.self)
+    self.tableView.registerCellClass(AudioVideoViewElementCell.self)
+    self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -92,7 +110,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.viewModel.inputs.viewWillAppear(animated: animated)
+    self.viewModel.inputs.showNavigationBar(true)
+  }
+
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    UIImageView.ksr_stopFetchingImages()
   }
 
   public override func updateViewConstraints() {
@@ -100,6 +124,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.updatePledgeCTAConstraints()
     self.updateNavigationSelectorViewConstraints()
+    self.updateNavigationShadowViewConstraints()
     self.updateTableViewConstraints()
   }
 
@@ -107,9 +132,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     guard let defaultNavigationBarView = self.navigationController?.navigationBar else {
       return
     }
-
-    // Remove bottom border
-    defaultNavigationBarView.shadowImage = UIImage()
 
     _ = (self.navigationBarView, defaultNavigationBarView)
       |> ksr_addSubviewToParent()
@@ -126,10 +148,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.pledgeCTAContainerView.retryButton.addTarget(
       self, action: #selector(ProjectPageViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
+
+    self.pledgeCTAContainerView.delegate = self
   }
 
   private func configureTableView() {
     _ = self.tableView
+      |> \.prefetchDataSource .~ self
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.tableFooterView .~
@@ -147,6 +172,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private func configureNavigationSelectorView() {
     _ = (self.projectNavigationSelectorView, self.view)
       |> ksr_addSubviewToParent()
+
+    self.projectNavigationSelectorView.delegate = self
+  }
+
+  private func configureNavigationShadowView() {
+    _ = (self.projectNavigationShadowView, self.view)
+      |> ksr_addSubviewToParent()
   }
 
   public override func bindStyles() {
@@ -156,6 +188,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       \.backgroundColor .~ .ksr_white
 
     _ = self.tableView |> tableViewStyle
+
+    _ = self.projectNavigationShadowView
+      |> \.backgroundColor .~ .ksr_white
+      |> dropShadowStyle(
+        offset: .init(width: 0, height: 0),
+        shadowOpacity: ProjectPageViewControllerStyles.Layout
+          .projectNavigationSelectorShadowOpacity
+      )
   }
 
   public override func bindViewModel() {
@@ -182,12 +222,31 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func updateNavigationSelectorViewConstraints() {
     let projectNavigationSelectorConstraints = [
-      self.projectNavigationSelectorView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.projectNavigationSelectorView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
+      self.projectNavigationSelectorView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.projectNavigationSelectorView.topAnchor
+        .constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
     ]
 
     NSLayoutConstraint.activate(projectNavigationSelectorConstraints)
+  }
+
+  private func updateNavigationShadowViewConstraints() {
+    let projectNavigationShadowViewConstraints = [
+      self.projectNavigationShadowView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.projectNavigationShadowView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.projectNavigationShadowView.topAnchor
+        .constraint(
+          equalTo: self.projectNavigationSelectorView.bottomAnchor,
+          constant: ProjectPageViewControllerStyles.Layout
+            .projectNavigationSelectorShadowVerticalOriginModifier
+        ),
+      self.projectNavigationShadowView.heightAnchor
+        .constraint(equalToConstant: ProjectPageViewControllerStyles.Layout
+          .projectNavigationSelectorShadowViewHeight)
+    ]
+
+    NSLayoutConstraint.activate(projectNavigationShadowViewConstraints)
   }
 
   private func updatePledgeCTAConstraints() {
@@ -216,10 +275,29 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         name: .ksr_sessionStarted,
         object: nil
       )
+
+    NotificationCenter.default
+      .addObserver(
+        self,
+        selector: #selector(self.appBackgrounded),
+        name: .ksr_applicationDidEnterBackground,
+        object: nil
+      )
   }
 
   private func bindProjectPageViewModel() {
     self.navigationBarView.rac.hidden = self.viewModel.outputs.navigationBarIsHidden
+
+    self.viewModel.outputs.navigationBarIsHidden
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let defaultNavigationBarView = self?.navigationController?.navigationBar else {
+          return
+        }
+
+        defaultNavigationBarView.standardAppearance.shadowColor = .ksr_white
+        defaultNavigationBarView.scrollEdgeAppearance?.shadowColor = .ksr_white
+      }
 
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
@@ -295,6 +373,78 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToUpdates(project: $0)
       }
 
+    self.viewModel.outputs.goToURL
+      .observeForControllerAction()
+      .observeValues { url in
+        UIApplication.shared.open(url)
+      }
+
+    self.viewModel.outputs.prefetchImageURLs
+      .observeValues { [weak self] urls, indexPath in
+        self?.prefetchImageDataAndUpdateWith(indexPath, imageUrls: urls)
+      }
+
+    self.viewModel.outputs.prefetchImageURLsOnFirstLoad
+      .observeValues { [weak self] imageViewElements in
+        imageViewElements.forEach { element in
+          guard let url = URL(string: element.src) else { return }
+
+          UIImageView.ksr_cacheImageWith(url) { [weak self] image in
+            guard let dataSource = self?.dataSource,
+              let crossPlatformImage = image else { return }
+
+            dataSource.preloadCampaignImageViewElement(element, image: crossPlatformImage)
+          }
+        }
+      }
+
+    self.viewModel.outputs.precreateAudioVideoURLsOnFirstLoad
+      .observeValues { [weak self] elements in
+        elements.forEach { element in
+          guard let url = URL(string: element.sourceURLString) else { return }
+
+          var audioVideoThumbnailURL: URL?
+
+          if let audioVideoThumbnailURLString = element.thumbnailURLString {
+            audioVideoThumbnailURL = URL(string: audioVideoThumbnailURLString)
+          }
+
+          self?.prepareToPlayAudioVideoURL(
+            audioVideoURL: url,
+            thumbnailURL: audioVideoThumbnailURL
+          ) { availablePlayer, image in
+            guard let usablePlayer = availablePlayer else { return }
+
+            self?.dataSource.preloadCampaignAudioVideoViewElement(element, player: usablePlayer, image: image)
+          }
+        }
+      }
+
+    self.viewModel.outputs.precreateAudioVideoURLs
+      .observeValues { [weak self] element, indexPath in
+        guard let url = URL(string: element.sourceURLString) else { return }
+
+        var audioVideoThumbnailURL: URL?
+
+        if let audioVideoThumbnailURLString = element.thumbnailURLString {
+          audioVideoThumbnailURL = URL(string: audioVideoThumbnailURLString)
+        }
+
+        self?.prepareToPlayAudioVideoURL(
+          audioVideoURL: url,
+          thumbnailURL: audioVideoThumbnailURL
+        ) { availablePlayer, image in
+          guard let usablePlayer = availablePlayer else { return }
+
+          self?.dataSource.updateAudioVideoViewElementWith(
+            element,
+            player: usablePlayer,
+            thumbnailImage: image,
+            indexPath: indexPath
+          )
+        }
+      }
+
     self.viewModel.outputs.presentMessageDialog
       .observeForUI()
       .observeValues { [weak self] project in
@@ -309,19 +459,25 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.updateDataSource
       .observeForUI()
-      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray in
-        self?.dataSource.load(
-          navigationSection: navSection,
-          project: project,
-          refTag: refTag,
-          isExpandedStates: initialIsExpandedArray
-        )
+      .observeValues { [weak self] navSection, project, refTag, initialIsExpandedArray, _ in
+        self?.pausePlayingMainCellVideo(navSection: navSection)
 
-        self?.tableView.reloadData()
+        let initialDatasourceLoad = {
+          self?.dataSource.load(
+            navigationSection: navSection,
+            project: project,
+            refTag: refTag,
+            isExpandedStates: initialIsExpandedArray
+          )
+
+          self?.tableView.reloadData()
+        }
+
+        initialDatasourceLoad()
       }
 
     self.viewModel.outputs.updateFAQsInDataSource
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] project, refTag, isExpandedValues in
         self?.dataSource.load(
           navigationSection: .faq,
@@ -337,6 +493,84 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.navigationController?.popToRootViewController(animated: false)
       }
+
+    self.viewModel.outputs.pauseMedia
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let tableView = self?.tableView else { return }
+
+        tableView.indexPathsForVisibleRows?.forEach { indexPath in
+          if let cell = tableView.cellForRow(at: indexPath) as? AudioVideoViewElementCell,
+            let isPlaying = cell.delegate?.isPlaying(),
+            isPlaying,
+            let seekTime = cell.delegate?.pausePlayback() {
+            self?.dataSource.updateAudioVideoViewElementSeektime(
+              with: seekTime,
+              tableView: tableView,
+              indexPath: indexPath
+            )
+          }
+        }
+      }
+
+    self.viewModel.outputs.reloadCampaignData
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.tableView.reloadData()
+      }
+  }
+
+  private func prepareToPlayAudioVideoURL(audioVideoURL: URL,
+                                          thumbnailURL: URL?,
+                                          completionHandler: @escaping (AVPlayer?, UIImage?) -> Void) {
+    // Fetch the thumbnail
+    var cachedImage: UIImage?
+
+    if let audioVideoThumbnailURL = thumbnailURL {
+      UIImageView.ksr_cacheImageWith(audioVideoThumbnailURL) { image in
+        cachedImage = image
+      }
+    }
+
+    // Create asset to be played
+    let asset = AVAsset(url: audioVideoURL)
+
+    asset.loadValuesAsynchronously(forKeys: ["duration", "tracks"]) {
+      var durationError: NSError?
+      var tracksError: NSError?
+
+      if asset.statusOfValue(forKey: "duration", error: &durationError) == .loaded,
+        asset.statusOfValue(forKey: "tracks", error: &tracksError) == .loaded {
+        let playerItem = AVPlayerItem(
+          asset: asset,
+          automaticallyLoadedAssetKeys: ["duration", "tracks"]
+        )
+
+        var player: AVPlayer?
+        var cancellable: AnyCancellable?
+
+        cancellable = playerItem.publisher(for: \.status)
+          .subscribe(on: DispatchQueue.global(qos: .background))
+          .sink { status in
+            switch status {
+            case .readyToPlay:
+              guard let availablePlayer = player else {
+                completionHandler(nil, nil)
+
+                return
+              }
+
+              completionHandler(availablePlayer, cachedImage)
+
+              cancellable = nil
+            default:
+              return
+            }
+          }
+
+        player = AVPlayer(playerItem: playerItem)
+      }
+    }
   }
 
   private func showProjectStarredPrompt() {
@@ -393,7 +627,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.hideNavigationBar()
+      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -412,7 +646,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
-    self.viewModel.inputs.hideNavigationBar()
+    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -428,6 +662,50 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     )
   }
 
+  fileprivate func prefetchImageDataAndUpdateWith(
+    _ indexPath: IndexPath,
+    imageUrls: [URL]
+  ) {
+    guard let preexistingImageData = self.dataSource.imageViewElementWith(
+      urls: imageUrls,
+      indexPath: indexPath
+    ) else {
+      return
+    }
+
+    guard preexistingImageData.image == nil else { return }
+
+    UIImageView.ksr_cacheImageWith(preexistingImageData.url) { [weak self] image in
+      guard let imageData = image,
+        let tableView = self?.tableView,
+        let dataSource = self?.dataSource,
+        dataSource.isIndexPathAnImageViewElement(
+          tableView: tableView,
+          indexPath: indexPath,
+          section: .campaign
+        ) else { return }
+
+      dataSource
+        .updateImageViewElementWith(
+          preexistingImageData.element,
+          image: imageData,
+          indexPath: preexistingImageData.indexPath
+        )
+    }
+  }
+
+  private func pausePlayingMainCellVideo(navSection: NavigationSection) {
+    let mainCellIndexPath = IndexPath(
+      row: .zero,
+      section: ProjectPageViewControllerDataSource.Section.overview.rawValue
+    )
+
+    if let _ = tableView.cellForRow(at: mainCellIndexPath) as? ProjectPamphletMainCell,
+      navSection != .overview {
+      self.playbackDelegate?.pauseAudioVideoPlayback()
+    }
+  }
+
   // MARK: - Selectors
 
   @objc private func didBackProject() {
@@ -440,6 +718,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   @objc private func userSessionStarted() {
     self.viewModel.inputs.userSessionStarted()
+  }
+
+  @objc private func appBackgrounded() {
+    self.viewModel.inputs.applicationDidEnterBackground()
   }
 }
 
@@ -454,17 +736,8 @@ extension ProjectPageViewController: PledgeCTAContainerViewDelegate {
 // MARK: - VideoViewControllerDelegate
 
 extension ProjectPageViewController: VideoViewControllerDelegate {
-  public func videoViewControllerDidFinish(_: VideoViewController) {
-    /** FIXME: Currently unused - fix in https://kickstarter.atlassian.net/browse/NTV-196
-     self.navBarController.projectVideoDidFinish()
-     */
-  }
-
-  public func videoViewControllerDidStart(_: VideoViewController) {
-    /** FIXME: Currently unused fix in https://kickstarter.atlassian.net/browse/NTV-196
-     self.navBarController.projectVideoDidStart()
-     */
-  }
+  public func videoViewControllerDidFinish(_: VideoViewController) {}
+  public func videoViewControllerDidStart(_: VideoViewController) {}
 }
 
 // MARK: - ManagePledgeViewControllerDelegate
@@ -515,7 +788,7 @@ extension ProjectPageViewController: ProjectNavigationSelectorViewDelegate {
 // MARK: - UITableViewDelegate
 
 extension ProjectPageViewController: UITableViewDelegate {
-  public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
     case ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue:
       if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
@@ -528,6 +801,10 @@ extension ProjectPageViewController: UITableViewDelegate {
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
       let values = self.dataSource.isExpandedValuesForFAQsSection() ?? []
       self.viewModel.inputs.didSelectFAQsRowAt(row: indexPath.row, values: values)
+    case ProjectPageViewControllerDataSource.Section.campaign.rawValue:
+      if let url = self.dataSource.imageViewElementURL(tableView: tableView, indexPath: indexPath) {
+        self.viewModel.inputs.didSelectCampaignImageLink(url: url)
+      }
     default:
       return
     }
@@ -540,13 +817,68 @@ extension ProjectPageViewController: UITableViewDelegate {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletMainCell, cell.delegate == nil {
       cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletMainCell, playbackDelegate == nil {
+      playbackDelegate = cell
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
+      cell.delegate = self
+    } else if let cell = cell as? ImageViewElementCell {
       cell.delegate = self
     }
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
       .overviewSubpages.rawValue ? .none : .singleLine
+  }
+
+  public func tableView(
+    _: UITableView,
+    didEndDisplaying cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    if let cell = cell as? AudioVideoViewElementCell,
+      let seekTime = cell.delegate?.pausePlayback() {
+      self.dataSource
+        .updateAudioVideoViewElementSeektime(with: seekTime, tableView: self.tableView, indexPath: indexPath)
+    }
+  }
+
+  public override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
+    super.viewWillTransition(to: size, with: coordinator)
+
+    self.viewModel.inputs.viewWillTransition()
+  }
+}
+
+// MARK: - ProjectPageViewControllerDataSourcePrefetching
+
+extension ProjectPageViewController: UITableViewDataSourcePrefetching {
+  public func tableView(_: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+    let campaignSectionImageIndexPaths = indexPaths.filter { indexPath in
+      self.dataSource.isIndexPathAnImageViewElement(
+        tableView: self.tableView,
+        indexPath: indexPath,
+        section: .campaign
+      )
+    }
+
+    campaignSectionImageIndexPaths.forEach { indexPath in
+      self.viewModel.inputs.prepareImageAt(indexPath)
+    }
+
+    let campaignSectionAudioVideoIndexPaths = indexPaths.compactMap { indexPath in
+      self.dataSource.audioVideoViewElementWithNoPlayer(
+        tableView: self.tableView,
+        indexPath: indexPath,
+        section: .campaign
+      )
+    }
+
+    campaignSectionAudioVideoIndexPaths.forEach { element, indexPath in
+      self.viewModel.inputs.prepareAudioVideoAt(indexPath, with: element)
+    }
   }
 }
 
@@ -587,7 +919,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     goToCampaignForProjectWith data: ProjectPamphletMainCellData
   ) {
     let vc = ProjectDescriptionViewController.configuredWith(data: data)
-    self.viewModel.inputs.hideNavigationBar()
+    self.viewModel.inputs.showNavigationBar(false)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -612,7 +944,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
       self.present(nav, animated: true, completion: nil)
     } else {
-      self.viewModel.inputs.hideNavigationBar()
+      self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -635,4 +967,83 @@ private let tableViewStyle: TableViewStyle = { tableView in
   tableView
     |> \.estimatedRowHeight .~ 100.0
     |> \.rowHeight .~ UITableView.automaticDimension
+}
+
+extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting {
+  public func pinchZoomDidBegin(_ gestureRecognizer: UIPinchGestureRecognizer,
+                                frame: CGRect,
+                                image: UIImage) {
+    self.tableView.isScrollEnabled = false
+
+    if gestureRecognizer.scale > 1 {
+      let imageView = UIImageView(image: image)
+        |> \.contentMode .~ .scaleAspectFit
+        |> \.clipsToBounds .~ true
+        |> \.frame .~ frame
+
+      showOverlayView(with: imageView)
+
+      let gestureCenterInContainer = locationInView(gestureRecognizer)
+
+      self.pinchToZoomData = PinchToZoomData(
+        referenceFrame: frame,
+        referenceCenter: gestureCenterInContainer,
+        imageView: imageView
+      )
+    }
+  }
+
+  func pinchZoomDidChange(_ gestureRecognizer: UIPinchGestureRecognizer,
+                          completionHandler: () -> Void) {
+    guard let data = self.pinchToZoomData,
+      let windowTransform = windowTransform else {
+      hideOverlayView()
+
+      return
+    }
+
+    let currentScale = data.imageView.frame.width / data.referenceFrame.size.width
+    let newZoomScale = currentScale * gestureRecognizer.scale
+
+    if newZoomScale > 1 {
+      completionHandler()
+    }
+
+    let currentAlpha = OverlayViewLayout.Alpha.min + (newZoomScale - 1)
+    let newAlpha = currentAlpha < OverlayViewLayout.Alpha.max ? currentAlpha : OverlayViewLayout.Alpha.max
+
+    updateOverlayView(with: newAlpha)
+
+    let centerXDiff = data.referenceCenter.x - locationInView(gestureRecognizer).x
+    let centerYDiff = data.referenceCenter.y - locationInView(gestureRecognizer).y
+
+    let zoomScale = (newZoomScale * data.imageView.frame.width >= data.referenceFrame.width) ? newZoomScale :
+      currentScale
+
+    let transform = windowTransform
+      .scaledBy(x: zoomScale, y: zoomScale)
+      .translatedBy(x: -centerXDiff, y: -centerYDiff)
+
+    data.imageView.transform = transform
+    transformSubviews(with: transform)
+
+    self.pinchToZoomData = data
+
+    gestureRecognizer.scale = 1
+  }
+
+  func pinchZoomDidEnd(_: UIPinchGestureRecognizer,
+                       completionHandler: @escaping () -> Void) {
+    self.tableView.isScrollEnabled = true
+
+    UIView.animate(withDuration: 0.3, animations: {
+      self.pinchToZoomData = nil
+
+      self.transformSubviews(with: .identity)
+    }, completion: { [weak self] _ in
+
+      self?.hideOverlayView()
+      completionHandler()
+    })
+  }
 }

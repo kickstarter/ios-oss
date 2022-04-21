@@ -78,14 +78,6 @@ internal final class SurveyResponseViewController: WebViewController {
   }
 
   fileprivate func goToProject(param: Param, refTag: RefTag?) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .right(param), refTag: refTag)
-      let nav = UINavigationController(rootViewController: vc)
-      self.present(nav, animated: true, completion: nil)
-
-      return
-    }
-
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: .right(param),
       refTag: refTag

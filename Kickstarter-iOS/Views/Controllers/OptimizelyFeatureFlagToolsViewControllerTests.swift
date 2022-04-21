@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import UIKit
 
 final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
   override func setUp() {
@@ -21,7 +22,6 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.navigationSelectorProjectPageEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
       ]
 

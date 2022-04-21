@@ -117,7 +117,6 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
-        self?.updateProjectPlaylist(projects)
       }
 
     self.viewModel.outputs.isPopularTitleVisible
@@ -181,32 +180,9 @@ internal final class SearchViewController: UITableViewController {
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
       }
-
-    self.viewModel.outputs.scrollToProjectRow
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.scrollToProjectRow($0) }
   }
 
-  private func scrollToProjectRow(_ row: Int) {
-    self.tableView.scrollToRow(at: self.dataSource.indexPath(forProjectRow: row), at: .top, animated: false)
-  }
-
-  fileprivate func goTo(project: Project, projects: [Project], refTag: RefTag) {
-    guard featureNavigationSelectorProjectPageIsEnabled() else {
-      let vc = ProjectNavigatorViewController.configuredWith(
-        project: project,
-        refTag: refTag,
-        initialPlaylist: projects,
-        navigatorDelegate: self
-      )
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        vc.modalPresentationStyle = .fullScreen
-      }
-      self.present(vc, animated: true, completion: nil)
-
-      return
-    }
-
+  fileprivate func goTo(project: Project, projects _: [Project], refTag: RefTag) {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
@@ -258,11 +234,6 @@ internal final class SearchViewController: UITableViewController {
     )
   }
 
-  private func updateProjectPlaylist(_ playlist: [Project]) {
-    guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
-    navigator.updatePlaylist(playlist)
-  }
-
   @objc fileprivate func searchTextChanged(_ textField: UITextField) {
     self.viewModel.inputs.searchTextChanged(textField.text ?? "")
   }
@@ -288,12 +259,6 @@ extension SearchViewController: UITextFieldDelegate {
   internal func textFieldShouldClear(_: UITextField) -> Bool {
     self.viewModel.inputs.clearSearchText()
     return true
-  }
-}
-
-extension SearchViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at index: Int) {
-    self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }
 
