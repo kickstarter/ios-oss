@@ -582,82 +582,80 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
   // MARK: - Error fetching project
 
-  /** FIXME: Very flakey tests
-   func testErrorFetchingProject() {
-     let config = Config.template
+  func testErrorFetchingProject() {
+    let config = Config.template
 
-     let mockService = MockService(
-       fetchManagePledgeViewBackingResult: .success(.template),
-       fetchProjectPamphletResult: .failure(.couldNotParseJSON)
-     )
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectPamphletResult: .failure(.couldNotParseJSON)
+    )
 
-     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
-       withEnvironment(
-         apiService: mockService,
-         config: config,
-         language: language
-       ) {
-         let vc = ProjectPageViewController.configuredWith(
-           projectOrParam: .left(self.project),
-           refTag: nil
-         )
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config,
+        language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(self.project),
+          refTag: nil
+        )
 
-         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-         if device == .pad {
-           parent.view.frame.size.height = 2_300
-         }
+        if device == .pad {
+          parent.view.frame.size.height = 2_300
+        }
 
-         self.scheduler.advance(by: .milliseconds(1))
+        self.scheduler.advance(by: .milliseconds(1))
 
-         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
-       }
-     }
-   }
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 
-   // MARK: - Tab Content Tests
+  // MARK: - Tab Content Tests
 
-   func testLoggedOut_NonBacker_LiveProjectSwitchedToCampaignTab_Success() {
-     let config = Config.template
-     let project = Project.cosmicSurgery
-       |> Project.lens.photo.full .~ ""
-       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-       |> Project.lens.personalization.isBacking .~ false
-       |> Project.lens.state .~ .live
-       |> Project.lens.rewardData.rewards .~ []
-       |> \.extendedProjectProperties .~ self.extendedProjectProperties
+  func testLoggedOut_NonBacker_LiveProjectSwitchedToCampaignTab_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-     let mockOptimizelyClient = MockOptimizelyClient()
-       |> \.features .~ [
-         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-       ]
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+      ]
 
-     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
-       withEnvironment(
-         config: config,
-         language: language,
-         optimizelyClient: mockOptimizelyClient
-       ) {
-         let vc = ProjectPageViewController.configuredWith(
-           projectOrParam: .left(project), refTag: nil
-         )
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        config: config,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
 
-         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
 
-         scheduler.advance()
+        scheduler.advance()
 
-         // INFO: We are not testing that the navigation selector view changed, simply the content of the view controller.
-         vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 1)
+        // INFO: We are not testing that the navigation selector view changed, simply the content of the view controller.
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 1)
 
-         scheduler.run()
+        scheduler.run()
 
-         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
-       }
-     }
-   }
-   */
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 
   func testLoggedOut_NonBacker_LiveProjectSwitchedToRisksTab_Success() {
     let config = Config.template
