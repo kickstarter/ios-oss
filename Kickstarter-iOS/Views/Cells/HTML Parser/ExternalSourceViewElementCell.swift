@@ -17,6 +17,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.setupDelegate()
     self.setupConstraints()
     self.bindStyles()
     self.bindViewModel()
@@ -98,9 +99,31 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToMarginsInParent()
   }
 
+  private func setupDelegate() {
+    self.webView.uiDelegate = self
+  }
+
   private func setupConstraints() {
     self.contentHeightConstraint = self.webView.heightAnchor.constraint(equalToConstant: .zero)
     self.contentHeightConstraint?.priority = .defaultHigh
     self.contentHeightConstraint?.isActive = true
+  }
+}
+
+extension ExternalSourceViewElementCell: WKUIDelegate {
+  func webView(_: WKWebView,
+               createWebViewWith _: WKWebViewConfiguration,
+               for navigationAction: WKNavigationAction,
+               windowFeatures _: WKWindowFeatures) -> WKWebView? {
+    let canOpenInNewWindow = navigationAction.targetFrame == nil || navigationAction.targetFrame?
+      .isMainFrame == false
+
+    if canOpenInNewWindow,
+      let urlToLoad = navigationAction.request.url,
+      AppEnvironment.current.application.canOpenURL(urlToLoad) {
+      AppEnvironment.current.application.open(urlToLoad, options: [:], completionHandler: nil)
+    }
+
+    return nil
   }
 }
