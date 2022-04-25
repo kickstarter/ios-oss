@@ -78,8 +78,8 @@ extension OverlayViewPresenting where Self: UIViewController {
     self.overlayView?.removeFromSuperview()
   }
 
-  func locationInView(_ gestureRecgonizer: UIGestureRecognizer) -> CGPoint {
-    gestureRecgonizer.location(in: self.overlayView)
+  func locationInView(_ gestureRecognizer: UIGestureRecognizer) -> CGPoint {
+    gestureRecognizer.location(in: self.overlayView)
   }
 
   func updateOverlayView(with alpha: CGFloat) {
