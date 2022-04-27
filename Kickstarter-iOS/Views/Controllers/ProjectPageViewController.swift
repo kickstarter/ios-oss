@@ -822,7 +822,7 @@ extension ProjectPageViewController: UITableViewDelegate {
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
     } else if let cell = cell as? ImageViewElementCell {
-      cell.delegate = self
+      cell.pinchToZoomDelegate = self
     }
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
