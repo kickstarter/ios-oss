@@ -11,9 +11,22 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   private lazy var textView: UITextView = { UITextView(frame: .zero) }()
   private lazy var storyImageView: GIFAnimatedImageView = { GIFAnimatedImageView(frame: .zero) }()
   private var textViewHeightConstraint: NSLayoutConstraint?
+  private var imageViewAspectConstraint: NSLayoutConstraint? {
+    didSet {
+      if let oldValue = oldValue {
+        self.storyImageView.removeConstraint(oldValue)
+      }
+
+      if let newValue = imageViewAspectConstraint {
+        self.storyImageView.addConstraint(newValue)
+      }
+    }
+  }
+
   private let viewModel = ImageViewElementCellViewModel()
   private var pinchGesture: UIPinchGestureRecognizer!
-  weak var delegate: PinchToZoomDelegate?
+  private var imageAspectRatio = CGFloat.zero
+  weak var pinchToZoomDelegate: PinchToZoomDelegate?
 
   // MARK: Initializers
 
@@ -28,6 +41,12 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.imageViewAspectConstraint = nil
   }
 
   func configureWith(value imageData: (element: ImageViewElement, image: UIImage?)) {
@@ -61,30 +80,17 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         guard let strongSelf = self,
           let viewableImage = image else { return }
 
-        var newScale: CGFloat = 1.0
-        let maxWidth = strongSelf.contentView.bounds.size.width - Styles.grid(6)
-        let currentWidth = viewableImage.size.width
-        let currentHeight = viewableImage.size.height
-
-        if currentWidth <= maxWidth {
-          strongSelf.storyImageView.setImageWith(viewableImage, scaledImageSize: viewableImage.size)
-        } else {
-          newScale = currentWidth / maxWidth
-          let newSize = CGSize(
-            width: maxWidth,
-            height: currentHeight * newScale
-          )
-          let scaledImage = viewableImage.scalePreservingAspectRatio(targetSize: newSize)
-
-          switch viewableImage.sd_imageFormat {
-          case .GIF:
-            strongSelf.storyImageView.setImageWith(viewableImage, scaledImageSize: scaledImage.size)
-          default:
-            strongSelf.storyImageView.setImageWith(scaledImage, scaledImageSize: scaledImage.size)
-          }
-        }
-
-        strongSelf.storyImageView.invalidateIntrinsicContentSize()
+        strongSelf.imageAspectRatio = viewableImage.size.width / viewableImage.size.height
+        strongSelf.imageViewAspectConstraint = NSLayoutConstraint(
+          item: strongSelf.storyImageView,
+          attribute: .width,
+          relatedBy: .equal,
+          toItem: strongSelf.storyImageView,
+          attribute: .height,
+          multiplier: strongSelf.imageAspectRatio,
+          constant: 0.0
+        )
+        strongSelf.storyImageView.image = viewableImage
       }
   }
 
@@ -126,7 +132,7 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
   private func resetImageView() {
     if self.storyImageView.isAnimating {
       self.storyImageView.stopAnimating()
-      self.storyImageView.setImageWith(nil, scaledImageSize: .zero)
+      self.storyImageView.image = nil
     }
   }
 
@@ -171,19 +177,19 @@ class ImageViewElementCell: UITableViewCell, ValueCell {
         height: self.storyImageView.frame.height
       )
 
-      self.delegate?.pinchZoomDidBegin(
+      self.pinchToZoomDelegate?.pinchZoomDidBegin(
         self.pinchGesture,
         frame: frameWithinWindow,
         image: image
       )
     case .changed:
-      self.delegate?.pinchZoomDidChange(self.pinchGesture) {
+      self.pinchToZoomDelegate?.pinchZoomDidChange(self.pinchGesture) {
         if !self.storyImageView.isHidden {
           self.storyImageView.isHidden.toggle()
         }
       }
     case .ended, .failed, .cancelled:
-      self.delegate?.pinchZoomDidEnd(self.pinchGesture) {
+      self.pinchToZoomDelegate?.pinchZoomDidEnd(self.pinchGesture) {
         self.storyImageView.isHidden = false
       }
     default:

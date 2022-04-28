@@ -822,7 +822,7 @@ extension ProjectPageViewController: UITableViewDelegate {
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
     } else if let cell = cell as? ImageViewElementCell {
-      cell.delegate = self
+      cell.pinchToZoomDelegate = self
     }
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
@@ -973,8 +973,6 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
   public func pinchZoomDidBegin(_ gestureRecognizer: UIPinchGestureRecognizer,
                                 frame: CGRect,
                                 image: UIImage) {
-    self.tableView.isScrollEnabled = false
-
     if gestureRecognizer.scale > 1 {
       let imageView = UIImageView(image: image)
         |> \.contentMode .~ .scaleAspectFit
@@ -1034,8 +1032,6 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
 
   func pinchZoomDidEnd(_: UIPinchGestureRecognizer,
                        completionHandler: @escaping () -> Void) {
-    self.tableView.isScrollEnabled = true
-
     UIView.animate(withDuration: 0.3, animations: {
       self.pinchToZoomData = nil
 

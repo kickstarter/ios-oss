@@ -7,9 +7,21 @@ import WebKit
 class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
-  private lazy var webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
-  private var contentHeightConstraint: NSLayoutConstraint?
+  private lazy var webView: WKWebView = {
+    let configuration = WKWebViewConfiguration()
+    configuration.allowsInlineMediaPlayback = true
+    configuration.suppressesIncrementalRendering = true
+    configuration.applicationNameForUserAgent = "Kickstarter-iOS"
+
+    let webView = WKWebView(frame: .zero, configuration: configuration)
+
+    webView.customUserAgent = Service.userAgent
+
+    return webView
+  }()
+
   private let viewModel: ExternalSourceViewElementCellViewModelType = ExternalSourceViewElementCellViewModel()
+  private var contentHeightConstraint: NSLayoutConstraint?
 
   // MARK: Initializers
 
@@ -17,6 +29,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.setupDelegate()
     self.setupConstraints()
     self.bindStyles()
     self.bindViewModel()
@@ -41,7 +54,7 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
         self?.webView.load(request)
       })
       .observeValues { [weak self] htmlText in
-        guard let url = URL(string: htmlText + "?playsinline=0") else { return }
+        guard let url = URL(string: htmlText + "?playsinline=1") else { return }
 
         let request = URLRequest(url: url)
 
@@ -88,19 +101,36 @@ class ExternalSourceViewElementCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    self.webView.configuration.suppressesIncrementalRendering = true
-    self.webView.configuration.allowsInlineMediaPlayback = false
-    self.webView.configuration.applicationNameForUserAgent = "Kickstarter-iOS"
-    self.webView.customUserAgent = Service.userAgent
-
     _ = (self.webView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+  }
+
+  private func setupDelegate() {
+    self.webView.uiDelegate = self
   }
 
   private func setupConstraints() {
     self.contentHeightConstraint = self.webView.heightAnchor.constraint(equalToConstant: .zero)
     self.contentHeightConstraint?.priority = .defaultHigh
     self.contentHeightConstraint?.isActive = true
+  }
+}
+
+extension ExternalSourceViewElementCell: WKUIDelegate {
+  func webView(_: WKWebView,
+               createWebViewWith _: WKWebViewConfiguration,
+               for navigationAction: WKNavigationAction,
+               windowFeatures _: WKWindowFeatures) -> WKWebView? {
+    let canOpenInNewWindow = navigationAction.targetFrame == nil || navigationAction.targetFrame?
+      .isMainFrame == false
+
+    if canOpenInNewWindow,
+      let urlToLoad = navigationAction.request.url,
+      AppEnvironment.current.application.canOpenURL(urlToLoad) {
+      AppEnvironment.current.application.open(urlToLoad, options: [:], completionHandler: nil)
+    }
+
+    return nil
   }
 }
