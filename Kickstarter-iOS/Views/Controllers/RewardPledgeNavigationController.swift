@@ -9,8 +9,17 @@ final class RewardPledgeNavigationController: UINavigationController {
     super.viewDidLoad()
 
     _ = self.navigationBar
-      ?|> \.barTintColor .~ .ksr_support_100
+      ?|> \.standardAppearance .~ self.navigationBarAppearance
+      ?|> \.scrollEdgeAppearance .~ self.navigationBarAppearance
       ?|> \.isTranslucent .~ false
       ?|> \.shadowImage .~ UIImage()
+  }
+
+  private var navigationBarAppearance: UINavigationBarAppearance {
+    let navBarAppearance = UINavigationBarAppearance()
+    navBarAppearance.configureWithOpaqueBackground()
+    navBarAppearance.backgroundColor = .ksr_white
+
+    return navBarAppearance
   }
 }
