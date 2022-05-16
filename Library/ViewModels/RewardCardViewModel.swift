@@ -302,10 +302,10 @@ private func shippingSummaryString(project: Project, reward: Reward) -> RewardCa
       text: shippingSummaryText,
       textColor: UIColor.ksr_create_700
     )
-    /** Remove these from Localized Strings
+    /** FIXME: No longer used on iOS. Might still be needed on Android/Web before removing from: `Kickstarter` `config/locales/native/en.yml`
      Strings.Ships_worldwide()
      Strings.Limited_shipping()
-     Strings.location_name_only(location_name: name)
+     Strings.location_name_only(location_name: name)(location_name: name)
      */
   }
 
