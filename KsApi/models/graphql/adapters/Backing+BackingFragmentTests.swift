@@ -128,6 +128,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Art of the Quietly Quixotic",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -205,6 +206,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Wee William Journal & Coloring Book",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -282,6 +284,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Wee William Journal & Coloring Book",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -359,6 +362,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Wee William Journal & Coloring Book",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -793,6 +797,7 @@ private func backingDictionary() -> [String: Any] {
       },
       "remainingQuantity": null,
       "shippingPreference": "unrestricted",
+      "shippingSummary": "Ships worldwide",
       "shippingRules": [
         {
           "__typename": "ShippingRule",

@@ -41,11 +41,11 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertEqual(addOn.minimum, 4.0)
     XCTAssertEqual(addOn.shipping.enabled, false)
     XCTAssertEqual(addOn.shipping.preference!, .none)
+    XCTAssertEqual(addOn.shipping.summary, "Ships worldwide")
     XCTAssertNil(addOn.limit)
     XCTAssertNil(addOn.remaining)
     XCTAssertNil(addOn.startsAt)
     XCTAssertNil(addOn.shipping.location)
-    XCTAssertNil(addOn.shipping.summary)
     XCTAssertNil(addOn.shipping.type)
 
     guard let hasAnExpandedShippingRule = envelope.addOns?.first?.shippingRulesExpanded?.first else {

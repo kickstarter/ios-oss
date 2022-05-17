@@ -99,6 +99,7 @@ public enum FetchAddsOnsQueryTemplate {
                 },
                 "remainingQuantity": null,
                 "shippingPreference": "unrestricted",
+                "shippingSummary": "Ships worldwide",
                 "shippingRules": [
                   {
                     "__typename": "ShippingRule",
@@ -213,6 +214,7 @@ public enum FetchAddsOnsQueryTemplate {
                 },
                 "remainingQuantity": null,
                 "shippingPreference": "restricted",
+                "shippingSummary": "Ships worldwide",
                 "shippingRules": [
                   {
                     "__typename": "ShippingRule",

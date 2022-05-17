@@ -680,7 +680,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
       )
 
     self.vm.inputs.configure(with: (.template, reward, .pledge))
@@ -722,7 +722,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.type .~ .singleLocation
-          |> Reward.Shipping.lens.location .~ .init(id: 123, localizedName: "United States")
+          |> Reward.Shipping.lens.summary .~ "United States only"
       )
 
     self.vm.inputs.configure(with: (.template, reward, .pledge))
@@ -763,7 +763,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .multipleLocations
+          |> Reward.Shipping.lens.summary .~ "Limited shipping"
       )
 
     self.vm.inputs.configure(with: (.template, reward, .pledge))
@@ -804,7 +804,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
       )
 
     let project = Project.template
@@ -848,7 +848,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
       )
 
     let project = Project.template

@@ -42,6 +42,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
 
       XCTAssertEqual(v1Reward.shipping.enabled, true)
       XCTAssertEqual(v1Reward.shipping.preference, .unrestricted)
+      XCTAssertEqual(v1Reward.shipping.summary, "Ships worldwide")
       XCTAssertEqual(v1Reward.shippingRules?.count, 2)
       XCTAssertEqual(v1Reward.startsAt, nil)
       XCTAssertEqual(v1Reward.title, "Soft Cover Book (Signed)")
@@ -115,6 +116,7 @@ private func rewardDictionary() -> [String: Any] {
       "id": "UHJvamVjdC0xNTk2NTk0NDYz"
     },
     "remainingQuantity": null,
+    "shippingSummary": "Ships worldwide",
     "shippingPreference": "unrestricted",
     "shippingRules": [{
         "__typename": "ShippingRule",
