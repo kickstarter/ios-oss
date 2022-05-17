@@ -607,7 +607,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
           parent.view.frame.size.height = 2_300
         }
 
-        self.scheduler.advance(by: .milliseconds(1))
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
