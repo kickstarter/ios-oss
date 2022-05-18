@@ -86,7 +86,7 @@ private func shippingData(
     enabled: [.restricted, .unrestricted].contains(rewardFragment.shippingPreference),
     location: nil,
     preference: shippingPreference(from: rewardFragment),
-    summary: nil,
+    summary: rewardFragment.shippingSummary,
     type: nil
   )
 }

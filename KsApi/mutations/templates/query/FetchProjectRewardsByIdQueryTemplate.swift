@@ -68,6 +68,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"none",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       
                    ],
@@ -127,6 +128,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":44,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -230,6 +232,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -318,6 +321,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -421,6 +425,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -509,6 +514,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -606,6 +612,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":1,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -703,6 +710,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -800,6 +808,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":7,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -897,6 +906,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":6,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -994,6 +1004,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":4,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -1091,6 +1102,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":7,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -1188,6 +1200,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":9,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -1285,6 +1298,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":9,
                    "shippingPreference":"restricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{

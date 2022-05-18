@@ -294,32 +294,19 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
 }
 
 private func shippingSummaryString(project: Project, reward: Reward) -> RewardCardPillData? {
-  if project.state == .live, reward.shipping.enabled, let type = reward.shipping.type {
-    switch type {
-    case .anywhere:
-      return RewardCardPillData(
-        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
-        text: Strings.Ships_worldwide(),
-        textColor: UIColor.ksr_create_700
-      )
-    case .multipleLocations:
-      return RewardCardPillData(
-        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
-        text: Strings.Limited_shipping(),
-        textColor: UIColor.ksr_create_700
-      )
-    case .noShipping: return nil
-    case .singleLocation:
-      if let name = reward.shipping.location?.localizedName {
-        return RewardCardPillData(
-          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
-          text: Strings.location_name_only(location_name: name),
-          textColor: UIColor.ksr_create_700
-        )
-      }
-
-      return nil
-    }
+  if project.state == .live,
+    reward.shipping.enabled,
+    let shippingSummaryText = reward.shipping.summary {
+    return RewardCardPillData(
+      backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
+      text: shippingSummaryText,
+      textColor: UIColor.ksr_create_700
+    )
+    /** FIXME: No longer used on iOS. Might still be needed on Android/Web before removing from: `Kickstarter` `config/locales/native/en.yml`
+     Strings.Ships_worldwide()
+     Strings.Limited_shipping()
+     Strings.location_name_only(location_name: name)(location_name: name)
+     */
   }
 
   return nil

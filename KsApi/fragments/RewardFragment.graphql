@@ -34,6 +34,7 @@ fragment RewardFragment on Reward {
   }
   remainingQuantity
   shippingPreference
+  shippingSummary
   shippingRules @include(if: $includeShippingRules) {
     ...ShippingRuleFragment
   }

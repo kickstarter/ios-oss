@@ -66,9 +66,9 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     XCTAssertEqual(lastReward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
     XCTAssertFalse(lastReward.shipping.enabled)
     XCTAssertEqual(lastReward.shipping.preference!, .none)
+    XCTAssertEqual(lastReward.shipping.summary, "Ships worldwide")
     XCTAssertNil(lastReward.shippingRulesExpanded)
     XCTAssertNil(lastReward.shipping.location)
-    XCTAssertNil(lastReward.shipping.summary)
     XCTAssertNil(lastReward.shipping.type)
   }
 }
