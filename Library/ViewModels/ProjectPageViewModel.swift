@@ -197,6 +197,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.prefetchImageURLs = project.signal
       .skip(first: 1)
       .combineLatest(with: self.prepareImageAtProperty.signal.skipNil())
+      .filterWhenLatestFrom(
+        self.projectNavigationSelectorViewDidSelectProperty.signal.skipNil(),
+        satisfies: { NavigationSection(rawValue: $0) == .campaign }
+      )
       .switchMap { project, indexPath -> SignalProducer<([URL], IndexPath)?, Never> in
         let imageViewElements = project.extendedProjectProperties?.story.htmlViewElements
           .compactMap { $0 as? ImageViewElement } ?? []
