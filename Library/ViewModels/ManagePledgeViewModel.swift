@@ -89,6 +89,9 @@ public final class ManagePledgeViewModel:
       .switchMap { param in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .switchMap { project in
+            fetchProjectRewards(project: project)
+          }
           .materialize()
       }
 
@@ -414,6 +417,25 @@ public final class ManagePledgeViewModel:
 }
 
 // MARK: - Functions
+
+private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+  return AppEnvironment.current.apiService
+    .fetchProjectRewards(projectId: project.id)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
+
+      var allRewards = projectRewards
+
+      if let noRewardReward = project.rewardData.rewards.first {
+        allRewards.insert(noRewardReward, at: 0)
+      }
+
+      let projectWithBackingAndRewards = project
+        |> Project.lens.rewardData.rewards .~ allRewards
+
+      return SignalProducer(value: projectWithBackingAndRewards)
+    }
+}
 
 private func pledgeViewData(
   project: Project,

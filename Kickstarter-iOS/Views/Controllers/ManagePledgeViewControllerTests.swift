@@ -38,14 +38,13 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
-      |> \.rewardData.rewards .~ [reward]
-      |> \.rewardData.addOns .~ addOns
 
     let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project)
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -91,14 +90,13 @@ final class ManagePledgeViewControllerTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.creator.id .~ 1
-      |> \.rewardData.rewards .~ [reward]
-      |> \.rewardData.addOns .~ addOns
 
     let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project)
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -143,14 +141,13 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
-      |> \.rewardData.rewards .~ [reward]
-      |> \.rewardData.addOns .~ addOns
 
     let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project)
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -199,14 +196,13 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
-      |> \.rewardData.rewards .~ [reward]
-      |> \.rewardData.addOns .~ addOns
 
     let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project)
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -251,14 +247,13 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
-      |> \.rewardData.rewards .~ [reward]
-      |> \.rewardData.addOns .~ addOns
 
     let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResult: .success(project)
+      fetchProjectResult: .success(project),
+      fetchProjectRewardsResult: .success([reward])
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
