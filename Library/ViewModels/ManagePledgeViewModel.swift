@@ -83,12 +83,6 @@ public final class ManagePledgeViewModel:
       projectParam.takeWhen(shouldBeginRefresh)
     )
 
-    /**
-     FIXME: This should be refactored so that the VM is configured with a `Project` or `Param` and `Backing?`
-     so that it behaves similarly to previously existing `ProjectPamphletViewModel` i.e it's initially configured with the objects
-     that are passed to it and then those objects are refreshed via these calls with more up-to-date
-     information.
-     */
     let fetchProjectEvent = shouldFetchProjectWithParam
       // Only fetch the project if it hasn't yet succeeded, to avoid this call occurring with each refresh.
       .filter { [projectLoaded] _ in projectLoaded.value == false }

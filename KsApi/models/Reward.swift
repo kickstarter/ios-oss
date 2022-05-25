@@ -19,6 +19,7 @@ public struct Reward {
   public let shippingRulesExpanded: [ShippingRule]? // only GraphQL
   public let startsAt: TimeInterval?
   public let title: String?
+  public let localPickup: Location?
 
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
@@ -139,6 +140,8 @@ extension Reward: Decodable {
     ) ?? []
     self.startsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .startsAt)
     self.title = try values.decodeIfPresent(String.self, forKey: .title)
+    // NOTE: `v1` is deprecated and doesn't contain any location pickup information.
+    self.localPickup = nil
   }
 }
 

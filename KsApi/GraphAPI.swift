@@ -2746,6 +2746,7 @@ public enum GraphAPI {
     case `none`
     case restricted
     case unrestricted
+    case local
     /// Auto generated constant for unknown enum values
     case __unknown(RawValue)
 
@@ -2754,6 +2755,7 @@ public enum GraphAPI {
         case "none": self = .none
         case "restricted": self = .restricted
         case "unrestricted": self = .unrestricted
+        case "local": self = .local
         default: self = .__unknown(rawValue)
       }
     }
@@ -2763,6 +2765,7 @@ public enum GraphAPI {
         case .none: return "none"
         case .restricted: return "restricted"
         case .unrestricted: return "unrestricted"
+        case .local: return "local"
         case .__unknown(let value): return value
       }
     }
@@ -2772,6 +2775,7 @@ public enum GraphAPI {
         case (.none, .none): return true
         case (.restricted, .restricted): return true
         case (.unrestricted, .unrestricted): return true
+        case (.local, .local): return true
         case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
         default: return false
       }
@@ -2782,6 +2786,7 @@ public enum GraphAPI {
         .none,
         .restricted,
         .unrestricted,
+        .local,
       ]
     }
   }
@@ -4862,7 +4867,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
+      query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
         project(slug: $projectSlug) {
           __typename
           ...ProjectFragment
@@ -4905,17 +4910,19 @@ public enum GraphAPI {
     public var locationId: GraphQLID?
     public var withStoredCards: Bool
     public var includeShippingRules: Bool
+    public var includeLocalPickup: Bool
 
-    public init(projectSlug: String, shippingEnabled: Bool, locationId: GraphQLID? = nil, withStoredCards: Bool, includeShippingRules: Bool) {
+    public init(projectSlug: String, shippingEnabled: Bool, locationId: GraphQLID? = nil, withStoredCards: Bool, includeShippingRules: Bool, includeLocalPickup: Bool) {
       self.projectSlug = projectSlug
       self.shippingEnabled = shippingEnabled
       self.locationId = locationId
       self.withStoredCards = withStoredCards
       self.includeShippingRules = includeShippingRules
+      self.includeLocalPickup = includeLocalPickup
     }
 
     public var variables: GraphQLMap? {
-      return ["projectSlug": projectSlug, "shippingEnabled": shippingEnabled, "locationId": locationId, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
+      return ["projectSlug": projectSlug, "shippingEnabled": shippingEnabled, "locationId": locationId, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules, "includeLocalPickup": includeLocalPickup]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -5213,7 +5220,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
+      query FetchBacking($id: ID!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
         backing(id: $id) {
           __typename
           addOns {
@@ -5234,8 +5241,8 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + BackingFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
@@ -5249,15 +5256,17 @@ public enum GraphAPI {
     public var id: GraphQLID
     public var withStoredCards: Bool
     public var includeShippingRules: Bool
+    public var includeLocalPickup: Bool
 
-    public init(id: GraphQLID, withStoredCards: Bool, includeShippingRules: Bool) {
+    public init(id: GraphQLID, withStoredCards: Bool, includeShippingRules: Bool, includeLocalPickup: Bool) {
       self.id = id
       self.withStoredCards = withStoredCards
       self.includeShippingRules = includeShippingRules
+      self.includeLocalPickup = includeLocalPickup
     }
 
     public var variables: GraphQLMap? {
-      return ["id": id, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
+      return ["id": id, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules, "includeLocalPickup": includeLocalPickup]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -5521,7 +5530,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["User", "UserUrl", "Location", "Project", "Comment", "Category", "Photo", "ProjectFeaturedImage", "RewardItem", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "Message", "Backing", "Reward", "ShippingRule", "Video", "VideoTrack", "VideoTrackCue", "Flagging", "CreatorInterview", "CreatorPrompt", "InterviewQuestion", "InterviewAnswer", "FreeformPost", "Organization", "CuratedPage", "Conversation", "Address", "PushProject", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "ProjectFeaturedImage", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -5540,16 +5549,20 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public static func makeUser() -> Node {
-          return Node(unsafeResultMap: ["__typename": "User"])
+        public static func makeBacking() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Backing"])
         }
 
-        public static func makeUserUrl() -> Node {
-          return Node(unsafeResultMap: ["__typename": "UserUrl"])
+        public static func makeReward() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Reward"])
         }
 
-        public static func makeLocation() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Location"])
+        public static func makePhoto() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Photo"])
+        }
+
+        public static func makeRewardItem() -> Node {
+          return Node(unsafeResultMap: ["__typename": "RewardItem"])
         }
 
         public static func makeProject() -> Node {
@@ -5560,16 +5573,56 @@ public enum GraphAPI {
           return Node(unsafeResultMap: ["__typename": "Comment"])
         }
 
-        public static func makePhoto() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Photo"])
+        public static func makeUser() -> Node {
+          return Node(unsafeResultMap: ["__typename": "User"])
+        }
+
+        public static func makeAddress() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Address"])
+        }
+
+        public static func makeConversation() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Conversation"])
+        }
+
+        public static func makeMessage() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Message"])
+        }
+
+        public static func makeCuratedPage() -> Node {
+          return Node(unsafeResultMap: ["__typename": "CuratedPage"])
+        }
+
+        public static func makeLocation() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Location"])
+        }
+
+        public static func makeOrganization() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Organization"])
+        }
+
+        public static func makeUserUrl() -> Node {
+          return Node(unsafeResultMap: ["__typename": "UserUrl"])
         }
 
         public static func makeProjectFeaturedImage() -> Node {
           return Node(unsafeResultMap: ["__typename": "ProjectFeaturedImage"])
         }
 
-        public static func makeRewardItem() -> Node {
-          return Node(unsafeResultMap: ["__typename": "RewardItem"])
+        public static func makeFlagging() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Flagging"])
+        }
+
+        public static func makeVideo() -> Node {
+          return Node(unsafeResultMap: ["__typename": "Video"])
+        }
+
+        public static func makeVideoTrack() -> Node {
+          return Node(unsafeResultMap: ["__typename": "VideoTrack"])
+        }
+
+        public static func makeVideoTrackCue() -> Node {
+          return Node(unsafeResultMap: ["__typename": "VideoTrackCue"])
         }
 
         public static func makeProjectProfile() -> Node {
@@ -5588,76 +5641,28 @@ public enum GraphAPI {
           return Node(unsafeResultMap: ["__typename": "Tag"])
         }
 
-        public static func makeMessage() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Message"])
-        }
-
-        public static func makeBacking() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Backing"])
-        }
-
-        public static func makeReward() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Reward"])
-        }
-
-        public static func makeShippingRule() -> Node {
-          return Node(unsafeResultMap: ["__typename": "ShippingRule"])
-        }
-
-        public static func makeVideo() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Video"])
-        }
-
-        public static func makeVideoTrack() -> Node {
-          return Node(unsafeResultMap: ["__typename": "VideoTrack"])
-        }
-
-        public static func makeVideoTrackCue() -> Node {
-          return Node(unsafeResultMap: ["__typename": "VideoTrackCue"])
-        }
-
-        public static func makeFlagging() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Flagging"])
-        }
-
         public static func makeCreatorInterview() -> Node {
           return Node(unsafeResultMap: ["__typename": "CreatorInterview"])
-        }
-
-        public static func makeCreatorPrompt() -> Node {
-          return Node(unsafeResultMap: ["__typename": "CreatorPrompt"])
-        }
-
-        public static func makeInterviewQuestion() -> Node {
-          return Node(unsafeResultMap: ["__typename": "InterviewQuestion"])
         }
 
         public static func makeInterviewAnswer() -> Node {
           return Node(unsafeResultMap: ["__typename": "InterviewAnswer"])
         }
 
+        public static func makeInterviewQuestion() -> Node {
+          return Node(unsafeResultMap: ["__typename": "InterviewQuestion"])
+        }
+
+        public static func makeCreatorPrompt() -> Node {
+          return Node(unsafeResultMap: ["__typename": "CreatorPrompt"])
+        }
+
         public static func makeFreeformPost() -> Node {
           return Node(unsafeResultMap: ["__typename": "FreeformPost"])
         }
 
-        public static func makeOrganization() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Organization"])
-        }
-
-        public static func makeCuratedPage() -> Node {
-          return Node(unsafeResultMap: ["__typename": "CuratedPage"])
-        }
-
-        public static func makeConversation() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Conversation"])
-        }
-
-        public static func makeAddress() -> Node {
-          return Node(unsafeResultMap: ["__typename": "Address"])
-        }
-
-        public static func makePushProject() -> Node {
-          return Node(unsafeResultMap: ["__typename": "PushProject"])
+        public static func makeShippingRule() -> Node {
+          return Node(unsafeResultMap: ["__typename": "ShippingRule"])
         }
 
         public static func makeCheckout() -> Node {
@@ -5970,7 +5975,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["User", "UserUrl", "Location", "Project", "Comment", "Category", "Photo", "ProjectFeaturedImage", "RewardItem", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "Message", "Backing", "Reward", "ShippingRule", "Video", "VideoTrack", "VideoTrackCue", "Flagging", "CreatorInterview", "CreatorPrompt", "InterviewQuestion", "InterviewAnswer", "FreeformPost", "Organization", "CuratedPage", "Conversation", "Address", "PushProject", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "ProjectFeaturedImage", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -5985,36 +5990,80 @@ public enum GraphAPI {
           self.resultMap = unsafeResultMap
         }
 
-        public static func makeUser() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "User"])
+        public static func makeBacking() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Backing"])
         }
 
-        public static func makeUserUrl() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "UserUrl"])
-        }
-
-        public static func makeLocation() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Location"])
-        }
-
-        public static func makeProject() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Project"])
-        }
-
-        public static func makeCategory() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Category"])
+        public static func makeReward() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Reward"])
         }
 
         public static func makePhoto() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "Photo"])
         }
 
+        public static func makeRewardItem() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "RewardItem"])
+        }
+
+        public static func makeProject() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Project"])
+        }
+
+        public static func makeUser() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "User"])
+        }
+
+        public static func makeAddress() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Address"])
+        }
+
+        public static func makeConversation() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Conversation"])
+        }
+
+        public static func makeMessage() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Message"])
+        }
+
+        public static func makeCuratedPage() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "CuratedPage"])
+        }
+
+        public static func makeLocation() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Location"])
+        }
+
+        public static func makeOrganization() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Organization"])
+        }
+
+        public static func makeUserUrl() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "UserUrl"])
+        }
+
+        public static func makeCategory() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Category"])
+        }
+
         public static func makeProjectFeaturedImage() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "ProjectFeaturedImage"])
         }
 
-        public static func makeRewardItem() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "RewardItem"])
+        public static func makeFlagging() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Flagging"])
+        }
+
+        public static func makeVideo() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "Video"])
+        }
+
+        public static func makeVideoTrack() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "VideoTrack"])
+        }
+
+        public static func makeVideoTrackCue() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "VideoTrackCue"])
         }
 
         public static func makeProjectProfile() -> Comment {
@@ -6033,76 +6082,28 @@ public enum GraphAPI {
           return Comment(unsafeResultMap: ["__typename": "Tag"])
         }
 
-        public static func makeMessage() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Message"])
-        }
-
-        public static func makeBacking() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Backing"])
-        }
-
-        public static func makeReward() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Reward"])
-        }
-
-        public static func makeShippingRule() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "ShippingRule"])
-        }
-
-        public static func makeVideo() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Video"])
-        }
-
-        public static func makeVideoTrack() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "VideoTrack"])
-        }
-
-        public static func makeVideoTrackCue() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "VideoTrackCue"])
-        }
-
-        public static func makeFlagging() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Flagging"])
-        }
-
         public static func makeCreatorInterview() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "CreatorInterview"])
-        }
-
-        public static func makeCreatorPrompt() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "CreatorPrompt"])
-        }
-
-        public static func makeInterviewQuestion() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "InterviewQuestion"])
         }
 
         public static func makeInterviewAnswer() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "InterviewAnswer"])
         }
 
+        public static func makeInterviewQuestion() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "InterviewQuestion"])
+        }
+
+        public static func makeCreatorPrompt() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "CreatorPrompt"])
+        }
+
         public static func makeFreeformPost() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "FreeformPost"])
         }
 
-        public static func makeOrganization() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Organization"])
-        }
-
-        public static func makeCuratedPage() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "CuratedPage"])
-        }
-
-        public static func makeConversation() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Conversation"])
-        }
-
-        public static func makeAddress() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "Address"])
-        }
-
-        public static func makePushProject() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "PushProject"])
+        public static func makeShippingRule() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "ShippingRule"])
         }
 
         public static func makeCheckout() -> Comment {
@@ -7375,7 +7376,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!) {
+      query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
         project(pid: $projectId) {
           __typename
           rewards {
@@ -7395,21 +7396,23 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       return document
     }
 
     public var projectId: Int
     public var includeShippingRules: Bool
+    public var includeLocalPickup: Bool
 
-    public init(projectId: Int, includeShippingRules: Bool) {
+    public init(projectId: Int, includeShippingRules: Bool, includeLocalPickup: Bool) {
       self.projectId = projectId
       self.includeShippingRules = includeShippingRules
+      self.includeLocalPickup = includeLocalPickup
     }
 
     public var variables: GraphQLMap? {
-      return ["projectId": projectId, "includeShippingRules": includeShippingRules]
+      return ["projectId": projectId, "includeShippingRules": includeShippingRules, "includeLocalPickup": includeLocalPickup]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -8357,7 +8360,7 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
+      query FetchUserBackings($status: BackingState!, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
         me {
           __typename
           backings(status: $status) {
@@ -8390,8 +8393,8 @@ public enum GraphAPI {
       var document: String = operationDefinition
       document.append("\n" + RewardFragment.fragmentDefinition)
       document.append("\n" + MoneyFragment.fragmentDefinition)
-      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + LocationFragment.fragmentDefinition)
+      document.append("\n" + ShippingRuleFragment.fragmentDefinition)
       document.append("\n" + BackingFragment.fragmentDefinition)
       document.append("\n" + UserFragment.fragmentDefinition)
       document.append("\n" + UserStoredCardsFragment.fragmentDefinition)
@@ -8405,15 +8408,17 @@ public enum GraphAPI {
     public var status: BackingState
     public var withStoredCards: Bool
     public var includeShippingRules: Bool
+    public var includeLocalPickup: Bool
 
-    public init(status: BackingState, withStoredCards: Bool, includeShippingRules: Bool) {
+    public init(status: BackingState, withStoredCards: Bool, includeShippingRules: Bool, includeLocalPickup: Bool) {
       self.status = status
       self.withStoredCards = withStoredCards
       self.includeShippingRules = includeShippingRules
+      self.includeLocalPickup = includeLocalPickup
     }
 
     public var variables: GraphQLMap? {
-      return ["status": status, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules]
+      return ["status": status, "withStoredCards": withStoredCards, "includeShippingRules": includeShippingRules, "includeLocalPickup": includeLocalPickup]
     }
 
     public struct Data: GraphQLSelectionSet {
@@ -11183,7 +11188,7 @@ public enum GraphAPI {
       }
     }
 
-    /// True if the current user can comment
+    /// True if the current user can comment (considers restrictions)
     public var canComment: Bool {
       get {
         return resultMap["canComment"]! as! Bool
@@ -12383,6 +12388,10 @@ public enum GraphAPI {
         }
         limit
         limitPerBacker
+        localReceiptLocation @include(if: $includeLocalPickup) {
+          __typename
+          ...LocationFragment
+        }
         name
         project {
           __typename
@@ -12417,6 +12426,9 @@ public enum GraphAPI {
         GraphQLField("items", type: .object(Item.selections)),
         GraphQLField("limit", type: .scalar(Int.self)),
         GraphQLField("limitPerBacker", type: .scalar(Int.self)),
+        GraphQLBooleanCondition(variableName: "includeLocalPickup", inverted: false, selections: [
+          GraphQLField("localReceiptLocation", type: .object(LocalReceiptLocation.selections)),
+        ]),
         GraphQLField("name", type: .scalar(String.self)),
         GraphQLField("project", type: .object(Project.selections)),
         GraphQLField("remainingQuantity", type: .scalar(Int.self)),
@@ -12435,8 +12447,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, name: String? = nil, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "name": name, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
+    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
     }
 
     public var __typename: String {
@@ -12576,6 +12588,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "limitPerBacker")
+      }
+    }
+
+    /// Where the reward can be locally received if local receipt is selected as the shipping preference
+    public var localReceiptLocation: LocalReceiptLocation? {
+      get {
+        return (resultMap["localReceiptLocation"] as? ResultMap).flatMap { LocalReceiptLocation(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "localReceiptLocation")
       }
     }
 
@@ -12977,6 +12999,62 @@ public enum GraphAPI {
             set {
               resultMap.updateValue(newValue, forKey: "name")
             }
+          }
+        }
+      }
+    }
+
+    public struct LocalReceiptLocation: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Location"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(LocationFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(country: String, countryName: String? = nil, displayableName: String, id: GraphQLID, name: String) {
+        self.init(unsafeResultMap: ["__typename": "Location", "country": country, "countryName": countryName, "displayableName": displayableName, "id": id, "name": name])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var locationFragment: LocationFragment {
+          get {
+            return LocationFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
           }
         }
       }

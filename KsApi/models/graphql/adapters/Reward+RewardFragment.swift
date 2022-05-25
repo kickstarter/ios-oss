@@ -28,6 +28,12 @@ extension Reward {
 
     let rewardHasAddons = rewardFragment.allowedAddons.pageInfo.startCursor != nil
 
+    var location: Location?
+
+    if let locationFragment = rewardFragment.localReceiptLocation?.fragments.locationFragment {
+      location = Location.location(from: locationFragment)
+    }
+
     return Reward(
       backersCount: rewardFragment.backersCount,
       convertedMinimum: rewardFragment.convertedAmount.fragments.moneyFragment.amount
@@ -46,7 +52,8 @@ extension Reward {
       shippingRules: shippingRulesData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
-      title: rewardFragment.name
+      title: rewardFragment.name,
+      localPickup: location
     )
   }
 }
