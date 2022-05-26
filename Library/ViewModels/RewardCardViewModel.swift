@@ -36,6 +36,8 @@ public protocol RewardCardViewModelOutputs {
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
   var reloadPills: Signal<[RewardCardPillData], Never> { get }
+  var rewardLocationPickupLabelText: Signal<String, Never> { get }
+  var rewardLocationStackViewHidden: Signal<Bool, Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
@@ -115,7 +117,12 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map { context, reward in
         context == .manage || reward.estimatedDeliveryOn == nil
       }
+
+    self.rewardLocationStackViewHidden = reward
+      .map { $0.localPickup == nil }
+
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
+    self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -138,6 +145,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
   public let reloadPills: Signal<[RewardCardPillData], Never>
+  public let rewardLocationPickupLabelText: Signal<String, Never>
+  public let rewardLocationStackViewHidden: Signal<Bool, Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>

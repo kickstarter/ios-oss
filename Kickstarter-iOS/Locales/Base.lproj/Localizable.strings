@@ -193,7 +193,7 @@
 "Ending_in_last_four" = "Ending in %{last_four}";
 "Ending_soon" = "Ending Soon";
 "Enter_an_amount_less_than_max_pledge" = "Enter an amount less than %{max_pledge}.";
-"Environmental_Commitments" = "Environmental Commitments";
+"Environmental_commitments" = "Environmental commitments";
 "Environmentally_friendly_factories" = "Environmentally friendly factories";
 "Estimated_delivery" = "Estimated delivery";
 "Estimated_delivery_colon" = "Estimated delivery:";
@@ -510,6 +510,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} Reward Surveys";
 "Reward_delivered" = "Reward delivered?";
 "Reward_estimated_for_delivery_in_date" = "<b>Reward</b> estimated for delivery in %{delivery_date}";
+"Reward_location" = "Reward location";
 "Reward_received" = "Reward received";
 "Reward_selected" = "Reward selected";
 "Reward_surveys" = "Reward surveys";

@@ -193,7 +193,7 @@
 "Ending_in_last_four" = "Endet auf %{last_four}";
 "Ending_soon" = "Endet bald";
 "Enter_an_amount_less_than_max_pledge" = "Gib einen Betrag unter %{max_pledge} ein.";
-"Environmental_Commitments" = "Verpflichtung zum Umweltschutz";
+"Environmental_commitments" = "Verpflichtung zum Umweltschutz";
 "Environmentally_friendly_factories" = "Umweltfreundliche Fertigungsanlagen";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_colon" = "Voraussichtliche Lieferung:";
@@ -510,6 +510,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} Befragungen";
 "Reward_delivered" = "Belohnung versandt?";
 "Reward_estimated_for_delivery_in_date" = "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}";
+"Reward_location" = "Standort der Belohnung";
 "Reward_received" = "Belohnung erhalten";
 "Reward_selected" = "Ausgewählte Belohnung";
 "Reward_surveys" = "Befragungen";
@@ -1233,7 +1234,7 @@
 "discovery.baseball_card.stats.accessibility.non_live_stat_value.two" = "Gesamt 2 Unterstützer, %{percent_funded} finanziert, noch %{time_left}";
 "discovery.baseball_card.stats.accessibility.non_live_stat_value.zero" = "Gesamt 0 Unterstützer, %{percent_funded} finanziert, noch %{time_left}";
 "discovery.baseball_card.stats.backers" = "Unterstützer";
-"discovery.baseball_card.stats.convert_from_pledged_of_goal" = "Umgerechneter Betrag: %{pledged} von %{goal} (Fianzierungsziel).";
+"discovery.baseball_card.stats.convert_from_pledged_of_goal" = "Umgerechneter Betrag: %{pledged} von %{goal} (Finanzierungsziel).";
 "discovery.baseball_card.stats.funded" = "finanziert";
 "discovery.baseball_card.stats.pledged_of_goal" = "von %{goal}";
 "discovery.baseball_card.stats.pledged_of_goal_short" = "von %{goal}";

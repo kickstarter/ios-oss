@@ -193,7 +193,7 @@
 "Ending_in_last_four" = "下の桁が%{last_four} の番号";
 "Ending_soon" = "終了直前";
 "Enter_an_amount_less_than_max_pledge" = "%{max_pledge} 以下の額を入力してください。";
-"Environmental_Commitments" = "環境への取り組み";
+"Environmental_commitments" = "環境への取り組み";
 "Environmentally_friendly_factories" = "環境に優しい工場";
 "Estimated_delivery" = "配達予定";
 "Estimated_delivery_colon" = "配達予定:";
@@ -510,6 +510,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_delivered" = "リワードを受け取りましたか？";
 "Reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配達予定日は%{delivery_date}";
+"Reward_location" = "リワードの場所";
 "Reward_received" = "リワードを受け取りました";
 "Reward_selected" = "選択中のリワード";
 "Reward_surveys" = "リワードのサーベイ";
