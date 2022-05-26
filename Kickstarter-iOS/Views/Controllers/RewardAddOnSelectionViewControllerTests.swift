@@ -7,6 +7,7 @@ import UIKit
 final class RewardAddOnSelectionViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -21,10 +22,12 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
   func testView_NoShipping() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.localPickup .~ nil
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.localPickup .~ nil
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -68,11 +71,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.localPickup .~ nil
 
     let shippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ shippingRules
+      |> Reward.lens.localPickup .~ nil
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -130,6 +135,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.id .~ 99
       |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.localPickup .~ nil
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
@@ -137,6 +143,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shippingRules .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
+      |> Reward.lens.localPickup .~ nil
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
@@ -144,6 +151,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shippingRules .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
+      |> Reward.lens.localPickup .~ nil
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
@@ -151,6 +159,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shippingRules .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
+      |> Reward.lens.localPickup .~ nil
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
@@ -158,6 +167,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shippingRules .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
+      |> Reward.lens.localPickup .~ nil
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -205,12 +215,52 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
   func testView_Error() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.localPickup .~ nil
     let project = Project.template
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
+        let controller = RewardAddOnSelectionViewController.instantiate()
+
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [:],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .pledge
+        )
+        controller.configure(with: data)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 600
+
+        self.scheduler.advance()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_NoShippingWithLocalPickup_Success() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.localPickup .~ .london
+
+    let noShippingAddOn = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.localPickup .~ .australia
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [noShippingAddOn]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+      withEnvironment(apiService: mockService, language: language) {
         let controller = RewardAddOnSelectionViewController.instantiate()
 
         let data = PledgeViewData(
