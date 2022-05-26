@@ -367,7 +367,7 @@ final class RewardAddOnCardViewModelTests: TestCase {
       selectedQuantities: [:]
     ))
 
-    self.rewardLocationStackViewHidden.assertValue([true])
+    self.rewardLocationStackViewHidden.assertValues([true])
     self.rewardLocationPickupLabelText.assertDidNotEmitValue()
   }
 
