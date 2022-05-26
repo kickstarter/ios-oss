@@ -84,7 +84,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       }
     }
   }
-  
+
   func testRewards_LocalPickUp_LiveProject_Landscape() {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
@@ -104,7 +104,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       }
     }
   }
-  
+
   func testRewards_LocalPickUp_LiveProject_Portrait() {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live

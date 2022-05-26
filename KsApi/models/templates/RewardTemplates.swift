@@ -93,6 +93,7 @@ extension Reward {
     |> Reward.lens.backersCount .~ 23
     |> Reward.lens.title .~ "Postcards"
     |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series."
+    |> Reward.lens.localPickup .~ nil
     |> Reward.lens.rewardsItems .~ Array(1...5)
     .map { number in
       RewardsItem.template
