@@ -860,7 +860,8 @@
         shippingEnabled: shippingEnabled,
         locationId: locationId,
         withStoredCards: false,
-        includeShippingRules: true
+        includeShippingRules: true,
+        includeLocalPickup: true
       )
 
       return client
@@ -1076,7 +1077,11 @@
       }
 
       let fetchProjectRewardsQuery = GraphAPI
-        .FetchProjectRewardsByIdQuery(projectId: projectId, includeShippingRules: false)
+        .FetchProjectRewardsByIdQuery(
+          projectId: projectId,
+          includeShippingRules: false,
+          includeLocalPickup: true
+        )
 
       return client
         .fetchWithResult(

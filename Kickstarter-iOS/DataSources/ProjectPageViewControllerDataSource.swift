@@ -37,7 +37,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       case .campaign:
         return Strings.Campaign()
       case .environmentalCommitments:
-        return Strings.Environmental_Commitments()
+        return Strings.Environmental_commitments()
       case .faqs:
         return Strings.Frequently_asked_questions()
       case .risks:

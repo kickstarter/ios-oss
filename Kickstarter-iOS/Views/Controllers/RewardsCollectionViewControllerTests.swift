@@ -84,4 +84,44 @@ final class RewardsCollectionViewControllerTests: TestCase {
       }
     }
   }
+
+  func testRewards_LocalPickUp_LiveProject_Landscape() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ [.template]
+
+    combos(Language.allLanguages, [Device.pad]).forEach {
+      language, device in
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+        let vc = RewardsCollectionViewController.instantiate(
+          with: project,
+          refTag: nil,
+          context: .createPledge
+        )
+        _ = traitControllers(device: device, orientation: .landscape, child: vc)
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testRewards_LocalPickUp_LiveProject_Portrait() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ [.template]
+
+    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
+      language, device in
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+        let vc = RewardsCollectionViewController.instantiate(
+          with: project,
+          refTag: nil,
+          context: .createPledge
+        )
+        _ = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }

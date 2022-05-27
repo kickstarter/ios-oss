@@ -318,7 +318,12 @@ public struct Service: ServiceType {
 
     return GraphQL.shared.client
       .fetch(query: GraphAPI
-        .FetchUserBackingsQuery(status: status, withStoredCards: false, includeShippingRules: true))
+        .FetchUserBackingsQuery(
+          status: status,
+          withStoredCards: false,
+          includeShippingRules: true,
+          includeLocalPickup: false
+        ))
       .flatMap(ErroredBackingsEnvelope.producer(from:))
   }
 
@@ -326,7 +331,12 @@ public struct Service: ServiceType {
     -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .fetch(query: GraphAPI
-        .FetchBackingQuery(id: "\(id)", withStoredCards: withStoredCards, includeShippingRules: true))
+        .FetchBackingQuery(
+          id: "\(id)",
+          withStoredCards: withStoredCards,
+          includeShippingRules: true,
+          includeLocalPickup: true
+        ))
       .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
@@ -394,7 +404,12 @@ public struct Service: ServiceType {
 
   public func fetchProjectRewards(projectId: Int)
     -> SignalProducer<[Reward], ErrorEnvelope> {
-    let query = GraphAPI.FetchProjectRewardsByIdQuery(projectId: projectId, includeShippingRules: false)
+    let query = GraphAPI
+      .FetchProjectRewardsByIdQuery(
+        projectId: projectId,
+        includeShippingRules: false,
+        includeLocalPickup: true
+      )
 
     return GraphQL.shared.client
       .fetch(query: query)
@@ -465,7 +480,8 @@ public struct Service: ServiceType {
       shippingEnabled: shippingEnabled,
       locationId: locationId,
       withStoredCards: false,
-      includeShippingRules: true
+      includeShippingRules: true,
+      includeLocalPickup: true
     )
 
     return GraphQL.shared.client

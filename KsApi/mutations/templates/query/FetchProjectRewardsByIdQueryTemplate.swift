@@ -30,6 +30,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -80,6 +81,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -184,6 +186,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -273,6 +276,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -377,6 +381,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -466,6 +471,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -555,6 +561,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -653,6 +660,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -751,6 +759,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -849,6 +858,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -947,6 +957,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -1045,6 +1056,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -1143,6 +1155,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -1240,6 +1253,13 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "amount":"400.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "localReceiptLocation": {
+                     "country": "US",
+                     "countryName": "United States",
+                     "displayableName": "San Jose, CA",
+                     "id": "TG9jYXRpb24tMjQ4ODA0Mg==",
+                     "name": "San Jose"
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",

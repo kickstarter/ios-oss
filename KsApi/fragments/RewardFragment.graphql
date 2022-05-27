@@ -28,6 +28,9 @@ fragment RewardFragment on Reward {
   }
   limit
   limitPerBacker
+  localReceiptLocation @include(if: $includeLocalPickup) {
+    ...LocationFragment
+  }
   name
   project {
     id

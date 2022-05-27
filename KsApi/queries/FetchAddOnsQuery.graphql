@@ -1,4 +1,4 @@
-query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $withStoredCards: Boolean!, $includeShippingRules: Boolean!) {
+query FetchAddOns($projectSlug: String!, $shippingEnabled: Boolean!, $locationId: ID, $withStoredCards: Boolean!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
   project(slug: $projectSlug) {
     ...ProjectFragment
     addOns {
