@@ -71,6 +71,7 @@ final class PledgeViewController: UIViewController,
     [
       self.shippingLocationViewController.view,
       self.shippingSummaryView,
+      self.localPickupLocationView,
       self.pledgeAmountViewController.view
     ]
   }()
@@ -102,6 +103,10 @@ final class PledgeViewController: UIViewController,
   private lazy var shippingLocationViewController = {
     PledgeShippingLocationViewController.instantiate()
       |> \.delegate .~ self
+  }()
+
+  private lazy var localPickupLocationView = {
+    PledgeLocalPickupView(frame: .zero)
   }()
 
   private lazy var shippingSummaryView: PledgeShippingSummaryView = {
@@ -287,6 +292,12 @@ final class PledgeViewController: UIViewController,
         self?.beginSCAFlow(withClientSecret: secret)
       }
 
+    self.viewModel.outputs.configureLocalPickupViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.localPickupLocationView.configure(with: data)
+      }
+
     self.viewModel.outputs.configureStripeIntegration
       .observeForUI()
       .observeValues { merchantIdentifier, publishableKey in
@@ -407,6 +418,7 @@ final class PledgeViewController: UIViewController,
         self?.rootStackView.layoutMargins = margins
       }
 
+    self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
     self.shippingSummaryView.rac.hidden

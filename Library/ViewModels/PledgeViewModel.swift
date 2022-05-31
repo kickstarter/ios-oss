@@ -67,6 +67,7 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
+  var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
@@ -81,6 +82,7 @@ public protocol PledgeViewModelOutputs {
   var goToRiskMessagingModal: Signal<Bool, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
+  var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -197,30 +199,32 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     /**
      Shipping location selector is hidden if the context hides it,
-     if the base reward has no shipping or when add-ons were selected.
+     if the base reward has no shipping, when add-ons were selected or when base reward has local pickup option.
      */
     self.shippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
       .map { baseReward, rewards, context in
-        [
+        let baseShippingLocationViewHidden = [
           context.shippingLocationViewHidden,
           !baseReward.shipping.enabled,
           rewards.count > 1
-        ]
-        .contains(true)
+        ].contains(true)
+
+        return baseReward.localPickup != nil ? true : baseShippingLocationViewHidden
       }
 
     /**
      Shipping summary view is hidden when updating,
-     if the base reward has no shipping or when NO add-ons were selected.
+     if the base reward has no shipping, when NO add-ons were selected or when base reward has local pickup option.
      */
     self.shippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
       .map { baseReward, rewards, context in
-        [
+        let baseShippingSummaryViewHidden = [
           context.isAny(of: .update, .changePaymentMethod, .fixPaymentMethod),
           !baseReward.shipping.enabled,
           rewards.count == 1
-        ]
-        .contains(true)
+        ].contains(true)
+
+        return baseReward.localPickup != nil ? true : baseShippingSummaryViewHidden
       }
 
     let shippingViewsHidden = Signal.combineLatest(
@@ -231,6 +235,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       let r = a && b
       return r
     }
+
+    self.localPickupViewHidden = baseReward.map { $0.localPickup == nil }
 
     // Only shown for regular non-add-ons based rewards
     self.configureShippingLocationViewWithData = Signal.combineLatest(
@@ -266,6 +272,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         additionalPledgeAmount
       )
     }
+
+    // Only shown for if the shipping summary view and shipping location view are hidden
+    self.configureLocalPickupViewWithData = Signal.combineLatest(
+      projectAndReward,
+      shippingViewsHidden.filter(isTrue)
+    )
+    .switchMap { projectAndReward, _ -> SignalProducer<PledgeLocalPickupViewData?, Never> in
+      guard let locationName = projectAndReward.1.localPickup?.displayableName else {
+        return SignalProducer(value: nil)
+      }
+
+      let localPickupLocationData = PledgeLocalPickupViewData(locationName: locationName)
+
+      return SignalProducer(value: localPickupLocationData)
+    }
+    .skipNil()
 
     /**
      * The total pledge amount that will be used to create the backing.
@@ -1100,6 +1122,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
   public let configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
+  public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
@@ -1114,6 +1137,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToRiskMessagingModal: Signal<Bool, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
+  public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
