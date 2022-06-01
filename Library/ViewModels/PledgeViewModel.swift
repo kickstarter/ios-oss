@@ -201,30 +201,37 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
      Shipping location selector is hidden if the context hides it,
      if the base reward has no shipping, when add-ons were selected or when base reward has local pickup option.
      */
-    self.shippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
+    let nonLocalPickupShippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
       .map { baseReward, rewards, context in
-        let baseShippingLocationViewHidden = [
+        [
           context.shippingLocationViewHidden,
           !baseReward.shipping.enabled,
           rewards.count > 1
         ].contains(true)
+      }
 
-        return baseReward.localPickup != nil ? true : baseShippingLocationViewHidden
+    self.shippingLocationViewHidden = Signal
+      .combineLatest(nonLocalPickupShippingLocationViewHidden, baseReward)
+      .map { flag, baseReward in
+        baseReward.localPickup != nil ? true : flag
       }
 
     /**
      Shipping summary view is hidden when updating,
      if the base reward has no shipping, when NO add-ons were selected or when base reward has local pickup option.
      */
-    self.shippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
+    let nonLocalPickupShippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
       .map { baseReward, rewards, context in
-        let baseShippingSummaryViewHidden = [
+        [
           context.isAny(of: .update, .changePaymentMethod, .fixPaymentMethod),
           !baseReward.shipping.enabled,
           rewards.count == 1
         ].contains(true)
+      }
 
-        return baseReward.localPickup != nil ? true : baseShippingSummaryViewHidden
+    self.shippingSummaryViewHidden = Signal.combineLatest(nonLocalPickupShippingSummaryViewHidden, baseReward)
+      .map { flag, baseReward in
+        baseReward.localPickup != nil ? true : flag
       }
 
     let shippingViewsHidden = Signal.combineLatest(
@@ -235,6 +242,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       let r = a && b
       return r
     }
+
+    let shippingViewsHiddenConditionsForPledgeAmountSummary = Signal
+      .combineLatest(
+        nonLocalPickupShippingLocationViewHidden,
+        nonLocalPickupShippingSummaryViewHidden
+      )
+      .map { a, b -> Bool in
+        let r = a && b
+        return r
+      }
 
     self.localPickupViewHidden = baseReward.map { $0.localPickup == nil }
 
@@ -324,7 +341,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       projectAndReward,
       allRewardsTotal,
       additionalPledgeAmount,
-      shippingViewsHidden,
+      shippingViewsHiddenConditionsForPledgeAmountSummary,
       context
     )
     .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
@@ -1272,6 +1289,8 @@ private func pledgeAmountSummaryViewData(
 ) -> PledgeAmountSummaryViewData? {
   guard let backing = project.personalization.backing else { return nil }
 
+  let rewardIsLocalPickup = backing.reward?.localPickup != nil
+
   return .init(
     bonusAmount: additionalPledgeAmount,
     bonusAmountHidden: context == .update,
@@ -1282,6 +1301,7 @@ private func pledgeAmountSummaryViewData(
     pledgedOn: backing.pledgedAt,
     rewardMinimum: allRewardsTotal,
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: !shippingViewsHidden
+    shippingAmountHidden: !shippingViewsHidden,
+    rewardIsLocalPickup: rewardIsLocalPickup
   )
 }

@@ -546,7 +546,8 @@ private func managePledgeSummaryViewData(
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: backing.reward?.shipping.enabled == false
+    shippingAmountHidden: backing.reward?.shipping.enabled == false,
+    rewardIsLocalPickup: backing.reward?.localPickup != nil
   )
 }
 
