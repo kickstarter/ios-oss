@@ -181,6 +181,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       self.shippingLocationViewDidFailToLoadProperty.signal.mapConst(true),
       fetchShippingLocations.mapConst(false)
     )
+    .combineLatest(with: baseReward)
+    .switchMap { flag, baseReward -> SignalProducer<Bool, Never> in
+      let shippingLocationViewHidden = baseReward.localPickup != nil ? true : flag
+
+      return SignalProducer(value: shippingLocationViewHidden)
+    }
     .skipRepeats()
 
     let dataSourceItems = Signal.merge(
