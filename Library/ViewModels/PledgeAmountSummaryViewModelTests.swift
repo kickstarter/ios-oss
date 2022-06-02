@@ -43,7 +43,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 23,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -66,7 +67,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -88,7 +90,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -108,7 +111,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -128,7 +132,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -148,7 +153,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -168,7 +174,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -188,7 +195,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -208,7 +216,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)

@@ -51,7 +51,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectState: Project.State.live,
       rewardMinimum: 30,
       shippingAmount: nil,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -85,7 +86,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectState: Project.State.live,
       rewardMinimum: 30,
       shippingAmount: nil,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     withEnvironment(currentUser: user) {
@@ -122,7 +124,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectState: Project.State.live,
       rewardMinimum: 30,
       shippingAmount: nil,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     withEnvironment(currentUser: user) {
