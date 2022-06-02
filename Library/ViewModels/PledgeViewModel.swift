@@ -253,7 +253,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return r
       }
 
-    self.localPickupViewHidden = baseReward.map(isRewardLocalPickup)
+    self.localPickupViewHidden = baseReward.map(isRewardLocalPickup).negate()
 
     // Only shown for regular non-add-ons based rewards
     self.configureShippingLocationViewWithData = Signal.combineLatest(
