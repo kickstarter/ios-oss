@@ -183,7 +183,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .combineLatest(with: baseReward)
     .switchMap { flag, baseReward -> SignalProducer<Bool, Never> in
-      let shippingLocationViewHidden = baseReward.localPickup != nil ? true : flag
+      let shippingLocationViewHidden = isRewardLocalPickup(baseReward) ? true : flag
 
       return SignalProducer(value: shippingLocationViewHidden)
     }

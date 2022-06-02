@@ -67,6 +67,7 @@ public struct Reward {
     }
 
     public enum Preference: String, Decodable {
+      case local
       case none
       case restricted
       case unrestricted
