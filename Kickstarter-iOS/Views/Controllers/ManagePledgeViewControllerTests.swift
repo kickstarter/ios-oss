@@ -289,6 +289,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.shipping.preference .~ .local
 
     let addOns = [
       Reward.postcards
