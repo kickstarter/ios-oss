@@ -633,4 +633,17 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertEqual(30.0, rewardsTotal)
   }
+
+  func test_IsRewardLocalPickup_Success() {
+    let baseReward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.preference .~ .unrestricted)
+      |> Reward.lens.localPickup .~ .losAngeles
+
+    XCTAssertFalse(isRewardLocalPickup(baseReward))
+
+    let reward = baseReward
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.preference .~ .local)
+
+    XCTAssertTrue(isRewardLocalPickup(reward))
+  }
 }

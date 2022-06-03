@@ -550,6 +550,72 @@ final class PledgeViewControllerTests: TestCase {
       }
   }
 
+  func testView_ShowsShippingSummaryViewSection() {
+    let reward = Reward.template
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: .template,
+            rewards: [reward, .noReward],
+            selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          self.scheduler.advance(by: .seconds(1))
+
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
+      }
+  }
+
+  func testView_ShowsRewardLocationSection() {
+    let reward = Reward.template
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.preference) .~ .local
+      |> Reward.lens.localPickup .~ Location.losAngeles
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: .template,
+            rewards: [reward, .noReward],
+            selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          self.scheduler.advance(by: .seconds(1))
+
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
+      }
+  }
+
   func testView_HasAddOns_ShippingSelected() {
     let project = Project.template
     let reward = Reward.template

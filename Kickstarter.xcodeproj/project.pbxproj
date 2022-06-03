@@ -160,6 +160,7 @@
 		06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */; };
 		069C07E62767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
+		069FA8CC284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */; };
 		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
 		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */; };
@@ -1879,6 +1880,7 @@
 		06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInputTests.swift"; sourceTree = "<group>"; };
 		069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommentRepliesQueryTemplate.swift; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
+		069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeLocalPickupViewModelTests.swift; sourceTree = "<group>"; };
 		06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
 		06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarViewTests.swift; sourceTree = "<group>"; };
 		06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModelTests.swift; sourceTree = "<group>"; };
@@ -4863,8 +4865,9 @@
 				3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift */,
 				8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */,
-				063D2D0B2846779100CEDE33 /* PledgeLocalPickupViewModel.swift */,
 				8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */,
+				063D2D0B2846779100CEDE33 /* PledgeLocalPickupViewModel.swift */,
+				069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */,
 				8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */,
 				8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */,
 				D0237C2522BD7B540092C792 /* PledgeSummaryViewModel.swift */,
@@ -6323,6 +6326,7 @@
 				D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */,
 				062BE3BA27B3224A006B5251 /* ImageViewElementCellViewModelTests.swift in Sources */,
 				47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */,
+				069FA8CC284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift in Sources */,
 				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
 				77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */,
 				77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */,
