@@ -14,6 +14,7 @@ public struct PledgeAmountSummaryViewData {
   public let rewardMinimum: Double
   public let shippingAmount: Double?
   public let shippingAmountHidden: Bool
+  public let rewardIsLocalPickup: Bool
 }
 
 public protocol PledgeAmountSummaryViewModelInputs {
@@ -70,7 +71,10 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
 
     self.bonusAmountStackViewIsHidden = data.map { $0.isNoReward || $0.bonusAmountHidden }
     self.shippingLocationStackViewIsHidden = data.map {
-      $0.locationName == nil || $0.shippingAmountHidden
+      let nonLocalPickupShippingLocationStackViewIsHiddenConditions = ($0.locationName == nil || $0
+        .shippingAmountHidden)
+
+      return $0.rewardIsLocalPickup ? true : nonLocalPickupShippingLocationStackViewIsHiddenConditions
     }
   }
 

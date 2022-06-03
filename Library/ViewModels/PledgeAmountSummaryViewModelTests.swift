@@ -43,7 +43,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 23,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -66,7 +67,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -88,7 +90,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -108,7 +111,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -128,7 +132,50 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationStackViewIsHidden.assertValue(false)
+  }
+
+  func testShippingLocationStackViewIsHidden_isTrue_WhenRewardIsLocalPickup() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      bonusAmountHidden: false,
+      isNoReward: false,
+      locationName: "United States",
+      omitUSCurrencyCode: true,
+      projectCountry: Project.Country.us,
+      pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
+      shippingAmount: 7.0,
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: true
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationStackViewIsHidden.assertValue(true)
+  }
+
+  func testShippingLocationStackViewIsHidden_isFalse_WhenRewardIsNotLocalPickup() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      bonusAmountHidden: false,
+      isNoReward: false,
+      locationName: "United States",
+      omitUSCurrencyCode: true,
+      projectCountry: Project.Country.us,
+      pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
+      shippingAmount: 7.0,
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -148,13 +195,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
-    self.shippingLocationStackViewIsHidden.assertValue(true)
+    self.bonusAmountStackViewIsHidden.assertValue(true)
   }
 
   func testBonusAmountStackViewIsHidden_isFalse_WhenIsNotNoReward() {
@@ -168,13 +216,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
-    self.shippingLocationStackViewIsHidden.assertValue(true)
+    self.bonusAmountStackViewIsHidden.assertValue(false)
   }
 
   func testBonusAmountStackViewIsHidden_isTrue_WhenBonusAmountHidden() {
@@ -188,13 +237,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
-    self.shippingLocationStackViewIsHidden.assertValue(true)
+    self.bonusAmountStackViewIsHidden.assertValue(true)
   }
 
   func testPledgeAmountText_NoReward() {
@@ -208,7 +258,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
-      shippingAmountHidden: false
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)

@@ -16,6 +16,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   private let backerNumberText = TestObserver<String, Never>()
   private let backingDateText = TestObserver<String, Never>()
   private let circleAvatarViewHidden = TestObserver<Bool, Never>()
+  private let configurePledgeAmountSummary = TestObserver<PledgeAmountSummaryViewData, Never>()
   private let totalAmountText = TestObserver<String, Never>()
 
   override func setUp() {
@@ -27,6 +28,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     self.vm.outputs.backerNameText.observe(self.backerNameText.observer)
     self.vm.outputs.backerNumberText.observe(self.backerNumberText.observer)
     self.vm.outputs.backingDateText.observe(self.backingDateText.observer)
+    self.vm.outputs.configurePledgeAmountSummaryViewWithData
+      .observe(self.configurePledgeAmountSummary.observer)
     self.vm.outputs.circleAvatarViewHidden.observe(self.circleAvatarViewHidden.observer)
     self.vm.outputs.totalAmountText.map { $0.string }
       .observe(self.totalAmountText.observer)
@@ -51,7 +54,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectState: Project.State.live,
       rewardMinimum: 30,
       shippingAmount: nil,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     self.vm.inputs.configureWith(data)
@@ -85,7 +89,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectState: Project.State.live,
       rewardMinimum: 30,
       shippingAmount: nil,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     withEnvironment(currentUser: user) {
@@ -122,7 +127,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectState: Project.State.live,
       rewardMinimum: 30,
       shippingAmount: nil,
-      shippingAmountHidden: true
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
     )
 
     withEnvironment(currentUser: user) {
@@ -135,5 +141,49 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       self.backerImagePlaceholderImageName.assertDidNotEmitValue()
       self.circleAvatarViewHidden.assertValues([true])
     }
+  }
+
+  func testConfiguringPledgeAmountSummaryViewData_Success() {
+    let data = ManagePledgeSummaryViewData(
+      backerId: 1,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
+      currentUserIsCreatorOfProject: false,
+      isNoReward: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      projectDeadline: 1_572_626_213.0,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
+      shippingAmount: nil,
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: true
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    guard let pledgeAmountSummaryValue = self.configurePledgeAmountSummary.lastValue else {
+      XCTFail("pledge amount summary view data should exist")
+      return
+    }
+
+    XCTAssertTrue(pledgeAmountSummaryValue.omitUSCurrencyCode)
+    XCTAssertNil(pledgeAmountSummaryValue.bonusAmount)
+    XCTAssertFalse(pledgeAmountSummaryValue.bonusAmountHidden)
+    XCTAssertFalse(pledgeAmountSummaryValue.isNoReward)
+    XCTAssertNil(pledgeAmountSummaryValue.locationName)
+    XCTAssertNil(pledgeAmountSummaryValue.shippingAmount)
+    XCTAssertEqual(pledgeAmountSummaryValue.projectCountry, .us)
+    XCTAssertEqual(pledgeAmountSummaryValue.pledgedOn, 1_568_666_243.0)
+    XCTAssertEqual(pledgeAmountSummaryValue.rewardMinimum, 30)
+    XCTAssertTrue(pledgeAmountSummaryValue.shippingAmountHidden)
+    XCTAssertTrue(pledgeAmountSummaryValue.rewardIsLocalPickup)
   }
 }

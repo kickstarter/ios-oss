@@ -614,3 +614,19 @@ public func checkoutProperties(
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
 }
+
+/**
+ Indicates `Reward` is locally picked up/not.
+
+ - parameter reward: A `Reward` object
+
+ - returns: A `Bool` for if a reward is locally picked up/not
+ */
+
+public func isRewardLocalPickup(_ reward: Reward?) -> Bool {
+  guard let existingReward = reward else {
+    return false
+  }
+
+  return existingReward.localPickup != nil && existingReward.shipping.preference == .local
+}

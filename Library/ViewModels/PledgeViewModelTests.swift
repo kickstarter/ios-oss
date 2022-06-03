@@ -22,7 +22,7 @@ final class PledgeViewModelTests: TestCase {
     = TestObserver<SelectedRewardQuantities, Never>()
   private let configureExpandableRewardsHeaderWithDataProjectCountry = TestObserver<Project.Country, Never>()
   private let configureExpandableRewardsHeaderWithDataOmitCurrencyCode = TestObserver<Bool, Never>()
-
+  private let configureLocalPickupViewWithData = TestObserver<PledgeLocalPickupViewData, Never>()
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
   private let configurePaymentMethodsViewControllerWithReward = TestObserver<Reward, Never>()
@@ -59,7 +59,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToThanksCheckoutData = TestObserver<KSRAnalytics.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
   private let goToThanksReward = TestObserver<Reward, Never>()
-
+  private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let notifyDelegateUpdatePledgeDidSucceedWithMessage = TestObserver<String, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
@@ -92,7 +92,7 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configureExpandableRewardsHeaderWithDataProjectCountry.observer)
     self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.omitCurrencyCode)
       .observe(self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.observer)
-
+    self.vm.outputs.configureLocalPickupViewWithData.observe(self.configureLocalPickupViewWithData.observer)
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.1 }
@@ -156,6 +156,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.goToThanks.map(first).observe(self.goToThanksProject.observer)
     self.vm.outputs.goToThanks.map(second).observe(self.goToThanksReward.observer)
     self.vm.outputs.goToThanks.map(third).observe(self.goToThanksCheckoutData.observer)
+    self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
 
     self.vm.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
       .observe(self.notifyDelegateUpdatePledgeDidSucceedWithMessage.observer)
@@ -5835,6 +5836,93 @@ final class PledgeViewModelTests: TestCase {
     self.shippingSummaryViewHidden.assertValues([false])
   }
 
+  func testShippingLocationViewHidden_IsHidden_RegularReward_Shipping_NoAddOns_RewardIsLocalPckup() {
+    self.shippingSummaryViewHidden.assertDidNotEmitValue()
+    self.shippingLocationViewHidden.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .losAngeles
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationViewHidden.assertValues([true])
+    self.shippingSummaryViewHidden.assertValues([true])
+  }
+
+  func testLocalRewardViewHidden_IsVisible_RegularReward_Shipping_NoAddOns_RewardIsLocalPckup() {
+    self.shippingSummaryViewHidden.assertDidNotEmitValue()
+    self.shippingLocationViewHidden.assertDidNotEmitValue()
+    self.localPickupViewHidden.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .losAngeles
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationViewHidden.assertValues([true])
+    self.shippingSummaryViewHidden.assertValues([true])
+    self.localPickupViewHidden.assertValues([false])
+  }
+
+  func testLocalRewardView_IsHidden_RegularReward_Shipping_HasAddOns_RewardIsNotLocalPickup() {
+    self.shippingSummaryViewHidden.assertDidNotEmitValue()
+    self.shippingLocationViewHidden.assertDidNotEmitValue()
+    self.localPickupViewHidden.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.localPickup .~ .losAngeles
+    let addOnReward1 = Reward.template
+      |> Reward.lens.id .~ 2
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward, addOnReward1],
+      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationViewHidden.assertValues([true])
+    self.shippingSummaryViewHidden.assertValues([false])
+    self.localPickupViewHidden.assertValues([true])
+  }
+
   func testConfigureShippingSummaryViewWithData_HasAddOns() {
     self.configureShippingSummaryViewWithData.assertDidNotEmitValue()
 
@@ -5910,6 +5998,39 @@ final class PledgeViewModelTests: TestCase {
         projectCountry: .us,
         total: 10
       )
+    ])
+  }
+
+  func testConfigureLocalPickupViewWithData_Success() {
+    self.configureLocalPickupViewWithData.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.localPickup .~ .losAngeles
+      |> Reward.lens.shipping.preference .~ .local
+
+    let addOnReward1 = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.shipping.enabled .~ true
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let shippingRule = ShippingRule.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward, addOnReward1],
+      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+      selectedLocationId: shippingRule.id,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.configureLocalPickupViewWithData.assertValues([
+      PledgeLocalPickupViewData(locationName: "Los Angeles, CA")
     ])
   }
 

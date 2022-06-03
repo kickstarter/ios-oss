@@ -103,6 +103,7 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
 
   switch preference {
   case .none: return Reward.Shipping.Preference.none
+  case .local: return .local
   case .restricted: return .restricted
   case .unrestricted: return .unrestricted
   default: return .none

@@ -528,6 +528,9 @@ private func managePledgeSummaryViewData(
   backing: Backing
 ) -> ManagePledgeSummaryViewData? {
   guard let backer = backing.backer else { return nil }
+
+  let isRewardLocalPickup = isRewardLocalPickup(backing.reward)
+
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
     backerName: backer.name,
@@ -546,7 +549,8 @@ private func managePledgeSummaryViewData(
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: backing.reward?.shipping.enabled == false
+    shippingAmountHidden: backing.reward?.shipping.enabled == false,
+    rewardIsLocalPickup: isRewardLocalPickup
   )
 }
 
