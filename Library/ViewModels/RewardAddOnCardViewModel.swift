@@ -131,7 +131,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .withLatest(from: reward.map(\.id))
 
     self.rewardLocationStackViewHidden = reward
-      .map { $0.localPickup == nil }
+      .map { !isRewardLocalPickup($0) }
 
     self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
 

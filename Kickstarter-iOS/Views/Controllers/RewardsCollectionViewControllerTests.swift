@@ -86,9 +86,13 @@ final class RewardsCollectionViewControllerTests: TestCase {
   }
 
   func testRewards_LocalPickUp_LiveProject_Landscape() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .canada
+
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
-      |> Project.lens.rewardData.rewards .~ [.template]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     combos(Language.allLanguages, [Device.pad]).forEach {
       language, device in
@@ -106,9 +110,13 @@ final class RewardsCollectionViewControllerTests: TestCase {
   }
 
   func testRewards_LocalPickUp_LiveProject_Portrait() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .canada
+
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
-      |> Project.lens.rewardData.rewards .~ [.template]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
       language, device in

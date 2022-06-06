@@ -28,7 +28,7 @@ extension Reward {
     shippingRulesExpanded: nil,
     startsAt: nil,
     title: "My Reward",
-    localPickup: .canada
+    localPickup: nil
   )
 
   public static let noReward = Reward(

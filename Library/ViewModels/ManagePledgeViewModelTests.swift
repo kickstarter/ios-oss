@@ -560,11 +560,14 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   func testGoToRewards_WithRewardDataIncludingLocalPickup_Success() {
     let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.localPickup .~ .canada
+      |> Reward.lens.shipping.preference .~ .local
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
       fetchProjectResult: .success(project),
-      fetchProjectRewardsResult: .success([.template])
+      fetchProjectRewardsResult: .success([reward])
     )
 
     withEnvironment(apiService: mockService) {
@@ -582,7 +585,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       XCTAssertNotNil(self.goToRewards.lastValue?.rewards.first?.localPickup)
       XCTAssertEqual(
         self.goToRewards.lastValue?.rewards.first?.localPickup,
-        Reward.template.localPickup
+        .canada
       )
     }
   }

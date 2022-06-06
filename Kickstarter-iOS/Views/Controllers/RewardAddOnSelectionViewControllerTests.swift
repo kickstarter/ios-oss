@@ -247,10 +247,11 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.localPickup .~ .london
+      |> Reward.lens.shipping.preference .~ .local
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ false
-      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .australia
 
     let project = Project.template
