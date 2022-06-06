@@ -359,9 +359,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.rewardLocationStackViewHidden.assertDidNotEmitValue()
     self.rewardLocationPickupLabelText.assertDidNotEmitValue()
 
+    let reward = .template
+      |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.shipping.preference .~ .local
+
     self.vm.inputs.configure(with: .init(
       project: .template,
-      reward: .template |> Reward.lens.localPickup .~ nil,
+      reward: reward,
       context: .pledge,
       shippingRule: nil,
       selectedQuantities: [:]
@@ -375,15 +379,39 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.rewardLocationStackViewHidden.assertDidNotEmitValue()
     self.rewardLocationPickupLabelText.assertDidNotEmitValue()
 
+    let reward = .template
+      |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.shipping.preference .~ .local
+
     self.vm.inputs.configure(with: .init(
       project: .template,
-      reward: .template |> Reward.lens.localPickup .~ .brooklyn,
+      reward: reward,
       context: .pledge,
       shippingRule: nil,
       selectedQuantities: [:]
     ))
 
     self.rewardLocationStackViewHidden.assertValues([false])
+    self.rewardLocationPickupLabelText.assertValue("Brooklyn, NY")
+  }
+
+  func testRewardLocalPickup_WithLocationAndNoShippingPreference() {
+    self.rewardLocationStackViewHidden.assertDidNotEmitValue()
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+
+    let reward = .template
+      |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+
+    self.vm.inputs.configure(with: .init(
+      project: .template,
+      reward: reward,
+      context: .pledge,
+      shippingRule: nil,
+      selectedQuantities: [:]
+    ))
+
+    self.rewardLocationStackViewHidden.assertValues([true])
     self.rewardLocationPickupLabelText.assertValue("Brooklyn, NY")
   }
 

@@ -295,6 +295,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       Reward.postcards
         |> Reward.lens.minimum .~ 10
         |> Reward.lens.localPickup .~ .greatBritain
+        |> Reward.lens.shipping.preference .~ .local
         |> Reward.lens.rewardsItems .~ []
     ]
 

@@ -119,7 +119,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       }
 
     self.rewardLocationStackViewHidden = reward
-      .map { $0.localPickup == nil }
+      .map { !isRewardLocalPickup($0) }
 
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
     self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()

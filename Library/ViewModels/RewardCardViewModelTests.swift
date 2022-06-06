@@ -1084,6 +1084,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 50
       |> Reward.lens.backersCount .~ 50
       |> Reward.lens.localPickup .~ .losAngeles
+      |> Reward.lens.shipping.preference .~ .local
 
     let project = Project.template
       |> Project.lens.state .~ .successful
