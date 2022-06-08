@@ -490,22 +490,36 @@ private func filteredAddOns(
   let isBaseRewardLocalPickup = isRewardLocalPickup(baseReward)
 
   return addOns.filter { addOn in
+    var isValidAddonToDisplay = false
     let isAddOnDigital = isRewardDigital(addOn)
-    let isAddOnLocalPickupAndSameLocation = isRewardLocalPickup(addOn)
+    let isAddOnLocalPickup = isRewardLocalPickup(addOn)
+    let isAddOnLocalOrDigital = isAddOnDigital || isAddOnLocalPickup
     // For digital-only base rewards only return add-ons that are also digital-only.
     if isBaseRewardDigital, isAddOnDigital {
-      return true
-    } else if isBaseRewardLocalPickup, isAddOnDigital || isAddOnLocalPickup {
-      return true
+      isValidAddonToDisplay = true
+    } else if isBaseRewardLocalPickup, isAddOnLocalOrDigital {
+      isValidAddonToDisplay = true // return all addons that are digital for local base reward
+
+      if isAddOnLocalPickup {
+        if let addOnLocationId = addOn.localPickup?.id,
+          let baseRewardLocationId = baseReward.localPickup?.id,
+          addOnLocationId ==
+          baseRewardLocationId {
+          // if add on is local for local base, ensure locations are equal before displaying
+          isValidAddonToDisplay = true
+        } else {
+          isValidAddonToDisplay = false
+        }
+      }
     } else if !isBaseRewardDigital, !isBaseRewardLocalPickup {
       /**
        For restricted or unrestricted shipping base rewards, unrestricted shipping
        or digital-only add-ons are available.
        */
-      return isAddOnDigital || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+      isValidAddonToDisplay = isAddOnDigital || addOnReward(addOn, shipsTo: shippingRule?.location.id)
     }
 
-    return false
+    return isValidAddonToDisplay
   }
 }
 
