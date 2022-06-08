@@ -486,18 +486,26 @@ private func filteredAddOns(
   filteredBy shippingRule: ShippingRule?,
   baseReward: Reward
 ) -> [Reward] {
+  let isBaseRewardDigital = isRewardDigital(baseReward)
+  let isBaseRewardLocalPickup = isRewardLocalPickup(baseReward)
+
   return addOns.filter { addOn in
+    let isAddOnDigital = isRewardDigital(addOn)
+    let isAddOnLocalPickupAndSameLocation = isRewardLocalPickup(addOn)
     // For digital-only base rewards only return add-ons that are also digital-only.
-    if baseReward.shipping.enabled == false {
-      return addOn.shipping.enabled == false
+    if isBaseRewardDigital, isAddOnDigital {
+      return true
+    } else if isBaseRewardLocalPickup, isAddOnDigital || isAddOnLocalPickup {
+      return true
+    } else if !isBaseRewardDigital, !isBaseRewardLocalPickup {
+      /**
+       For restricted or unrestricted shipping base rewards, unrestricted shipping
+       or digital-only add-ons are available.
+       */
+      return isAddOnDigital || addOnReward(addOn, shipsTo: shippingRule?.location.id)
     }
 
-    /**
-     For restricted or unrestricted shipping base rewards, unrestricted shipping
-     or digital-only add-ons are available.
-     */
-    return addOn.shipping.preference
-      .isAny(of: Reward.Shipping.Preference.none) || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+    return false
   }
 }
 
