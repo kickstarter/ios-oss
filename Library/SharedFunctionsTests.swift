@@ -658,14 +658,14 @@ final class SharedFunctionsTests: TestCase {
 
   func test_IsRewardDigital_Success() {
     let baseReward = Reward.template
-      |> Reward.lens.shipping .~ (.template
-        |> Reward.Shipping.lens.preference .~ .unrestricted)
+      |> Reward.lens
+      .shipping .~ (.template |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.unrestricted)
 
     XCTAssertFalse(isRewardDigital(baseReward))
 
-    let reward = baseReward
-      |> Reward.lens.shipping .~ (.template
-        |> Reward.Shipping.lens.preference .~ .none)
+    let reward = Reward.template
+      |> Reward.lens
+      .shipping .~ (.template |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.none)
 
     XCTAssertTrue(isRewardDigital(reward))
   }
