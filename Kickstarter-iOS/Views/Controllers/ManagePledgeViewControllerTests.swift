@@ -286,7 +286,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> User.lens.id .~ 1
 
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.remaining .~ 49
       |> Reward.lens.localPickup .~ .brooklyn
       |> Reward.lens.shipping.preference .~ .local
@@ -294,9 +294,10 @@ final class ManagePledgeViewControllerTests: TestCase {
     let addOns = [
       Reward.postcards
         |> Reward.lens.minimum .~ 10
-        |> Reward.lens.localPickup .~ .greatBritain
+        |> Reward.lens.localPickup .~ .brooklyn
         |> Reward.lens.shipping.preference .~ .local
         |> Reward.lens.rewardsItems .~ []
+        |> Reward.lens.shipping.enabled .~ false
     ]
 
     let backing = Backing.template

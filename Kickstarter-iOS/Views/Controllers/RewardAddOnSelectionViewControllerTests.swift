@@ -246,7 +246,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
   func testView_NoShippingWithLocalPickup_Success() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
-      |> Reward.lens.localPickup .~ .london
+      |> Reward.lens.localPickup .~ .australia
       |> Reward.lens.shipping.preference .~ .local
 
     let noShippingAddOn = Reward.template

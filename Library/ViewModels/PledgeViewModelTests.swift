@@ -2146,12 +2146,14 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.hasAddOns .~ true
         |> Reward.lens.minimum .~ 10.0
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
         |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn1 = Reward.template
         |> Reward.lens.id .~ 2
         |> Reward.lens.minimum .~ 5.0
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
         |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn2 = Reward.template
@@ -2263,12 +2265,14 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.hasAddOns .~ true
         |> Reward.lens.minimum .~ 10.0
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
         |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn1 = Reward.template
         |> Reward.lens.id .~ 2
         |> Reward.lens.minimum .~ 5.0
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
         |> Reward.lens.shippingRules .~ [shippingRule]
 
       let addOn2 = Reward.template
@@ -3207,6 +3211,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.id .~ 99
     let addOnReward1 = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
       |> Reward.lens.id .~ 1
     let addOnReward2 = Reward.template
       |> Reward.lens.id .~ 2
@@ -5841,7 +5846,7 @@ final class PledgeViewModelTests: TestCase {
     self.shippingLocationViewHidden.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .losAngeles
     let project = Project.template
@@ -5869,7 +5874,7 @@ final class PledgeViewModelTests: TestCase {
     self.localPickupViewHidden.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .losAngeles
     let project = Project.template
@@ -5965,9 +5970,11 @@ final class PledgeViewModelTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
     let addOnReward1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
     let addOnReward2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ false
@@ -6005,13 +6012,13 @@ final class PledgeViewModelTests: TestCase {
     self.configureLocalPickupViewWithData.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.localPickup .~ .losAngeles
       |> Reward.lens.shipping.preference .~ .local
 
     let addOnReward1 = Reward.template
       |> Reward.lens.id .~ 2
-      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.enabled .~ false
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
 
