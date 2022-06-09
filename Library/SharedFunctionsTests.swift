@@ -655,4 +655,18 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertTrue(isRewardLocalPickup(reward))
   }
+
+  func test_IsRewardDigital_Success() {
+    let baseReward = Reward.template
+      |> Reward.lens.shipping .~ (.template
+        |> Reward.Shipping.lens.preference .~ .unrestricted)
+
+    XCTAssertFalse(isRewardDigital(baseReward))
+
+    let reward = baseReward
+      |> Reward.lens.shipping .~ (.template
+        |> Reward.Shipping.lens.preference .~ .none)
+
+    XCTAssertTrue(isRewardDigital(reward))
+  }
 }
