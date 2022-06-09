@@ -20,7 +20,7 @@ extension Reward {
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
-      preference: nil,
+      preference: Reward.Shipping.Preference.none,
       summary: nil,
       type: nil
     ),
@@ -47,7 +47,7 @@ extension Reward {
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
-      preference: nil,
+      preference: Reward.Shipping.Preference.none,
       summary: nil,
       type: nil
     ),
@@ -74,7 +74,7 @@ extension Reward {
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
-      preference: nil,
+      preference: Reward.Shipping.Preference.none,
       summary: nil,
       type: nil
     ),

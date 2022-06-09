@@ -161,6 +161,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
 
@@ -234,6 +235,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
 
@@ -300,18 +302,22 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.id .~ 99
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]

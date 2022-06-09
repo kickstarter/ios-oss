@@ -457,6 +457,7 @@ final class SharedFunctionsTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.hasAddOns .~ true
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -498,13 +499,21 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testGetCalculated_ShippingDisabled_Total() {
+    let shipping = Reward.Shipping.template
+      |> Reward.Shipping.lens.enabled .~ false
+      |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.none
+
     let reward = Reward.template
-      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ false)
+      |> Reward.lens.shipping .~ shipping
       |> Reward.lens.id .~ 99
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 5
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 10
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
 
     let quantities: SelectedRewardQuantities = [
       reward.id: 1,
