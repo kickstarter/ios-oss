@@ -53,7 +53,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map(first)
 
     let rewards = project
-      .map { $0.rewards }
+      .map(allowableProjectRewards)
 
     self.title = configData
       .map { project, _, context in (context, project) }
@@ -338,4 +338,38 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   let shippingTotal = reward.shipping.enabled ? backing?.shippingAmount.flatMap(Double.init) : 0.0
 
   return (backing, shippingTotal)
+}
+
+private func allowableProjectRewards(from project: Project) -> [Reward] {
+  let rewards = project.rewards
+  var allowedDisplay = true
+  var backedReward: Reward?
+
+  if let backing = project.personalization.backing {
+    backedReward = reward(from: backing, inProject: project)
+  }
+
+  let isRewardBeingBacked: (Reward) -> Bool = { reward in
+    var rewardIsBacked = false
+
+    if let backedRewardExists = backedReward,
+      backedRewardExists.id == reward.id {
+      rewardIsBacked = true
+    }
+
+    return rewardIsBacked
+  }
+
+  let allowedNonbackedRewardsFromFeatureFlagRules = rewards.filter { reward in
+
+    if !featureRewardLocalPickupEnabled(),
+      isRewardLocalPickup(reward),
+      !isRewardBeingBacked(reward) {
+      allowedDisplay = false
+    }
+
+    return allowedDisplay
+  }
+
+  return allowedNonbackedRewardsFromFeatureFlagRules
 }
