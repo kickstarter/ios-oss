@@ -152,4 +152,111 @@ final class RewardsCollectionViewControllerTests: TestCase {
       }
     }
   }
+
+  func testRewards_LocalPickUp_FeatureDisabled_RewardNotBacked_NoLocalPickupRewardShown_Success() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .canada
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ [.noReward, reward]
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          false
+      ]
+
+    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
+      language, device in
+      withEnvironment(
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
+        let vc = RewardsCollectionViewController.instantiate(
+          with: project,
+          refTag: nil,
+          context: .createPledge
+        )
+        _ = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testRewards_LocalPickUp_FeatureDisabled_RewardBacked_LocalPickupRewardShown_Success() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .canada
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          false
+      ]
+
+    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
+      language, device in
+      withEnvironment(
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
+        let vc = RewardsCollectionViewController.instantiate(
+          with: project,
+          refTag: nil,
+          context: .createPledge
+        )
+        _ = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testRewards_LocalPickUp_FeatureEnabled_RewardNotBacked_LocalPickupRewardShown_Success() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .canada
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          true
+      ]
+
+    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
+      language, device in
+      withEnvironment(
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
+        let vc = RewardsCollectionViewController.instantiate(
+          with: project,
+          refTag: nil,
+          context: .createPledge
+        )
+        _ = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }

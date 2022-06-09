@@ -64,6 +64,234 @@ final class RewardsCollectionViewModelTests: TestCase {
     XCTAssertTrue(value?.count == rewardsCount)
   }
 
+  func testConfigureWithProject_NoLocalPickupRewards_FeatureFlagDisabled_ShowsAllRewards_Success() {
+    let project = Project.cosmicSurgery
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          false
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+
+      self.reloadDataWithValues.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadDataWithValues.assertDidEmitValue()
+
+      let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
+
+      XCTAssertEqual(displayableRewards, project.rewards)
+    }
+  }
+
+  func testConfigureWithProject_NoLocalPickupRewards_FeatureFlagEnabled_ShowsAllRewards_Success() {
+    let project = Project.cosmicSurgery
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          true
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+
+      self.reloadDataWithValues.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadDataWithValues.assertDidEmitValue()
+
+      let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
+
+      XCTAssertEqual(displayableRewards, project.rewards)
+    }
+  }
+
+  func testConfigureWithProject_LocalPickupRewards_FeatureFlagDisabled_ShowsNonLocalRewards_Success() {
+    let rewards = Project.cosmicSurgery.rewards
+
+    let lastRewardId = rewards.last?.id ?? -1
+
+    let updatedLocalRewards = rewards.map { reward -> Reward in
+      if reward.id == lastRewardId {
+        let updatedReward = reward
+          |> Reward.lens.localPickup .~ .brooklyn
+          |> Reward.lens.shipping.preference .~ .local
+          |> Reward.lens.shipping.enabled .~ false
+
+        return updatedReward
+      }
+
+      return reward
+    }
+
+    let allNonLocalPickupRewards = updatedLocalRewards.filter { !isRewardLocalPickup($0) }
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ updatedLocalRewards
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          false
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+
+      self.reloadDataWithValues.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadDataWithValues.assertDidEmitValue()
+
+      let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
+
+      XCTAssertEqual(displayableRewards, allNonLocalPickupRewards)
+    }
+  }
+
+  func testConfigureWithProject_LocalPickupRewards_FeatureFlagEnabled_ShowsAllRewards_Success() {
+    let rewards = Project.cosmicSurgery.rewards
+
+    let lastRewardId = rewards.last?.id ?? -1
+
+    let updatedLocalRewards = rewards.map { reward -> Reward in
+      if reward.id == lastRewardId {
+        let updatedReward = reward
+          |> Reward.lens.localPickup .~ .brooklyn
+          |> Reward.lens.shipping.preference .~ .local
+          |> Reward.lens.shipping.enabled .~ false
+
+        return updatedReward
+      }
+
+      return reward
+    }
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ updatedLocalRewards
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          true
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+
+      self.reloadDataWithValues.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadDataWithValues.assertDidEmitValue()
+
+      let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
+
+      XCTAssertEqual(displayableRewards, updatedLocalRewards)
+    }
+  }
+
+  func testConfigureWithProject_LocalPickupRewards_IncludesBackedLocalPickup_FeatureFlagDisabled_ShowsAllRewards_Success() {
+    let rewards = Project.cosmicSurgery.rewards
+
+    let lastRewardId = rewards.last?.id ?? -1
+
+    let updatedLocalRewards = rewards.map { reward -> Reward in
+      if reward.id == lastRewardId {
+        let updatedReward = reward
+          |> Reward.lens.localPickup .~ .brooklyn
+          |> Reward.lens.shipping.preference .~ .local
+          |> Reward.lens.shipping.enabled .~ false
+
+        return updatedReward
+      }
+
+      return reward
+    }
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ updatedLocalRewards
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ updatedLocalRewards.last
+          |> Backing.lens.rewardId .~ updatedLocalRewards.last?.id
+      )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          false
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+
+      self.reloadDataWithValues.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadDataWithValues.assertDidEmitValue()
+
+      let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
+
+      XCTAssertEqual(displayableRewards, updatedLocalRewards)
+    }
+  }
+
+  func testConfigureWithProject_LocalPickupRewards_IncludesBackedLocalPickup_FeatureFlagEnabled_ShowsAllRewards_Success() {
+    let rewards = Project.cosmicSurgery.rewards
+
+    let lastRewardId = rewards.last?.id ?? -1
+
+    let updatedLocalRewards = rewards.map { reward -> Reward in
+      if reward.id == lastRewardId {
+        let updatedReward = reward
+          |> Reward.lens.localPickup .~ .brooklyn
+          |> Reward.lens.shipping.preference .~ .local
+          |> Reward.lens.shipping.enabled .~ false
+
+        return updatedReward
+      }
+
+      return reward
+    }
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ updatedLocalRewards
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ updatedLocalRewards.last
+          |> Backing.lens.rewardId .~ updatedLocalRewards.last?.id
+      )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          true
+      ]
+
+    withEnvironment(config: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
+
+      self.reloadDataWithValues.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadDataWithValues.assertDidEmitValue()
+
+      let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
+
+      XCTAssertEqual(displayableRewards, updatedLocalRewards)
+    }
+  }
+
   func testGoToAddOnSelection_NotBacked() {
     withEnvironment(config: .template) {
       var rewards = Project.cosmicSurgery.rewards
