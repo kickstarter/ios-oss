@@ -94,9 +94,19 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.rewardData.rewards .~ [reward]
 
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          true
+      ]
+
     combos(Language.allLanguages, [Device.pad]).forEach {
       language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
         let vc = RewardsCollectionViewController.instantiate(
           with: project,
           refTag: nil,
@@ -118,9 +128,19 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.rewardData.rewards .~ [reward]
 
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue:
+          true
+      ]
+
     combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
       language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
         let vc = RewardsCollectionViewController.instantiate(
           with: project,
           refTag: nil,
