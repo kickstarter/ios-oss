@@ -115,10 +115,10 @@ final class RewardsCollectionViewModelTests: TestCase {
   func testConfigureWithProject_LocalPickupRewards_FeatureFlagDisabled_ShowsNonLocalRewards_Success() {
     let rewards = Project.cosmicSurgery.rewards
 
-    let lastRewardId = rewards.last?.id ?? -1
+    let middleRewardId = rewards[2]?.id ?? -1
 
     let updatedLocalRewards = rewards.map { reward -> Reward in
-      if reward.id == lastRewardId {
+      if reward.id == middleRewardId {
         let updatedReward = reward
           |> Reward.lens.localPickup .~ .brooklyn
           |> Reward.lens.shipping.preference .~ .local

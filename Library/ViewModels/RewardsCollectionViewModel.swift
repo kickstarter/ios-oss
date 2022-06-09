@@ -361,6 +361,7 @@ private func allowableProjectRewards(from project: Project) -> [Reward] {
   }
 
   let allowedNonbackedRewardsFromFeatureFlagRules = rewards.filter { reward in
+    allowedDisplay = true
 
     if !featureRewardLocalPickupEnabled(),
       isRewardLocalPickup(reward),
