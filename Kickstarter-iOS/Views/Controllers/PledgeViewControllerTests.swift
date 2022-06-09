@@ -624,7 +624,7 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_ShowsRewardLocationSection() {
     let reward = Reward.template
-      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ false
       |> (Reward.lens.shipping .. Reward.Shipping.lens.preference) .~ .local
       |> Reward.lens.localPickup .~ Location.losAngeles
 

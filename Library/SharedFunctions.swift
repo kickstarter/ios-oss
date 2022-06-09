@@ -452,7 +452,8 @@ public func getBaseRewardShippingTotal(
 ) -> Double {
   // If digital or local pickup there is no shipping
   guard !isRewardDigital(baseReward),
-    !isRewardLocalPickup(baseReward) else { return 0.0 }
+    !isRewardLocalPickup(baseReward),
+    baseReward != .noReward else { return 0.0 }
   let backing = project.personalization.backing
 
   // If there is no `Backing` (new pledge), return the rewards shipping rule
@@ -476,7 +477,7 @@ func calculateShippingTotal(
   quantities: SelectedRewardQuantities
 ) -> Double {
   let calculatedShippingTotal = addOnRewards.reduce(0.0) { total, reward in
-    guard !isRewardDigital(reward), !isRewardLocalPickup(reward) else { return total }
+    guard !isRewardDigital(reward), !isRewardLocalPickup(reward), reward != .noReward else { return total }
 
     let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
 
@@ -629,7 +630,9 @@ public func isRewardLocalPickup(_ reward: Reward?) -> Bool {
     return false
   }
 
-  return existingReward.localPickup != nil && existingReward.shipping
+  return !existingReward.shipping.enabled &&
+    existingReward.localPickup != nil &&
+    existingReward.shipping
     .preference.isAny(of: Reward.Shipping.Preference.local)
 }
 
@@ -646,6 +649,7 @@ public func isRewardDigital(_ reward: Reward?) -> Bool {
     return false
   }
 
-  return existingReward.shipping.enabled == false && existingReward.shipping.preference
+  return !existingReward.shipping.enabled &&
+    existingReward.shipping.preference
     .isAny(of: Reward.Shipping.Preference.none)
 }
