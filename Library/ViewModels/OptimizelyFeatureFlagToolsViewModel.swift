@@ -98,6 +98,9 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .projectPageStoryTabEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue]
+  case .rewardLocalPickupEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue]
   }
 }
 
@@ -111,5 +114,8 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .projectPageStoryTabEnabled:
     AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue] = value
+  case .rewardLocalPickupEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue] = value
   }
 }
