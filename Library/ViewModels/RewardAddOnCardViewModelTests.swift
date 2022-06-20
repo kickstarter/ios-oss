@@ -28,6 +28,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
   private let reloadPills = TestObserver<[String], Never>()
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelText = TestObserver<String, Never>()
+  private let rewardLocationPickupLabelText = TestObserver<String, Never>()
+  private let rewardLocationStackViewHidden = TestObserver<Bool, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
   private let stepperStackViewHidden = TestObserver<Bool, Never>()
   private let stepperValue = TestObserver<Double, Never>()
@@ -57,6 +59,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelText.observe(self.rewardTitleLabelText.observer)
+    self.vm.outputs.rewardLocationStackViewHidden.observe(self.rewardLocationStackViewHidden.observer)
+    self.vm.outputs.rewardLocationPickupLabelText.observe(self.rewardLocationPickupLabelText.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
     self.vm.outputs.stepperStackViewHidden.observe(self.stepperStackViewHidden.observer)
     self.vm.outputs.stepperValue.observe(self.stepperValue.observer)
@@ -349,6 +353,66 @@ final class RewardAddOnCardViewModelTests: TestCase {
     ))
 
     self.includedItemsStackViewHidden.assertValues([true])
+  }
+
+  func testRewardLocalPickup_WithNoLocation() {
+    self.rewardLocationStackViewHidden.assertDidNotEmitValue()
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+
+    let reward = .template
+      |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.shipping.preference .~ .local
+
+    self.vm.inputs.configure(with: .init(
+      project: .template,
+      reward: reward,
+      context: .pledge,
+      shippingRule: nil,
+      selectedQuantities: [:]
+    ))
+
+    self.rewardLocationStackViewHidden.assertValues([true])
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+  }
+
+  func testRewardLocalPickup_WithLocation() {
+    self.rewardLocationStackViewHidden.assertDidNotEmitValue()
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+
+    let reward = .template
+      |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.shipping.preference .~ .local
+
+    self.vm.inputs.configure(with: .init(
+      project: .template,
+      reward: reward,
+      context: .pledge,
+      shippingRule: nil,
+      selectedQuantities: [:]
+    ))
+
+    self.rewardLocationStackViewHidden.assertValues([false])
+    self.rewardLocationPickupLabelText.assertValue("Brooklyn, NY")
+  }
+
+  func testRewardLocalPickup_WithLocationAndNoShippingPreference() {
+    self.rewardLocationStackViewHidden.assertDidNotEmitValue()
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+
+    let reward = .template
+      |> Reward.lens.localPickup .~ .brooklyn
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+
+    self.vm.inputs.configure(with: .init(
+      project: .template,
+      reward: reward,
+      context: .pledge,
+      shippingRule: nil,
+      selectedQuantities: [:]
+    ))
+
+    self.rewardLocationStackViewHidden.assertValues([true])
+    self.rewardLocationPickupLabelText.assertValue("Brooklyn, NY")
   }
 
   // MARK: Description Label

@@ -30,6 +30,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -68,6 +69,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"none",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       
                    ],
@@ -79,6 +81,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -127,6 +130,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":44,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -182,6 +186,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -230,6 +235,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -270,6 +276,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -318,6 +325,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -373,6 +381,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -421,6 +430,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -461,6 +471,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -509,6 +520,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":null,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -549,6 +561,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -606,6 +619,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":1,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -646,6 +660,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -703,6 +718,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":0,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -743,6 +759,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -800,6 +817,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":7,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -840,6 +858,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -897,6 +916,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":6,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -937,6 +957,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -994,6 +1015,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":4,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -1034,6 +1056,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -1091,6 +1114,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":7,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -1131,6 +1155,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "currency":"EUR",
                       "symbol":"€"
                    },
+                   "localReceiptLocation": null,
                    "allowedAddons": {
                      "__typename": "RewardConnection",
                      "pageInfo": {
@@ -1188,6 +1213,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":9,
                    "shippingPreference":"unrestricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{
@@ -1227,6 +1253,13 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                       "amount":"400.0",
                       "currency":"EUR",
                       "symbol":"€"
+                   },
+                   "localReceiptLocation": {
+                     "country": "US",
+                     "countryName": "United States",
+                     "displayableName": "San Jose, CA",
+                     "id": "TG9jYXRpb24tMjQ4ODA0Mg==",
+                     "name": "San Jose"
                    },
                    "allowedAddons": {
                      "__typename": "RewardConnection",
@@ -1285,6 +1318,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    },
                    "remainingQuantity":9,
                    "shippingPreference":"restricted",
+                   "shippingSummary": "Ships worldwide",
                    "shippingRules":[
                       {
                          "cost":{

@@ -38,6 +38,9 @@ public final class RewardAddOnCardView: UIView {
   private var pillsViewHeightConstraint: NSLayoutConstraint?
   private let stepper: UIStepper = UIStepper(frame: .zero)
   private let stepperStackView = UIStackView(frame: .zero)
+  private let rewardLocationStackView = UIStackView(frame: .zero)
+  private let rewardLocationTitleLabel = UILabel(frame: .zero)
+  private let rewardLocationPickupLabel = UILabel(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let titleAmountStackView = UIStackView(frame: .zero)
 
@@ -84,7 +87,8 @@ public final class RewardAddOnCardView: UIView {
     _ = [
       self.rootStackView,
       self.titleAmountStackView,
-      self.includedItemsStackView
+      self.includedItemsStackView,
+      self.rewardLocationStackView
     ]
       ||> { stackView in
         stackView
@@ -145,6 +149,30 @@ public final class RewardAddOnCardView: UIView {
 
     _ = self.stepperStackView
       |> \.alignment .~ .center
+
+    _ = ([self.rewardLocationTitleLabel, self.rewardLocationPickupLabel], self.rewardLocationStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = self.rewardLocationStackView
+      |> includedItemsStackViewStyle
+
+    _ = self.rewardLocationTitleLabel
+      |> baseRewardLabelStyle
+      |> sectionTitleLabelStyle
+
+    _ = self.rewardLocationTitleLabel
+      |> \.text %~ { _ in Strings.Reward_location() }
+      |> \.textColor .~ UIColor.ksr_support_400
+
+    _ = self.rewardLocationPickupLabel
+      |> baseRewardLabelStyle
+      |> sectionBodyLabelStyle
+
+    _ = self.rewardLocationStackView.subviews
+      .dropFirst()
+      .compactMap { $0 as? UILabel }
+      ||> baseRewardLabelStyle
+      ||> sectionBodyLabelStyle
   }
 
   public override func bindViewModel() {
@@ -159,6 +187,8 @@ public final class RewardAddOnCardView: UIView {
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.pillsView.rac.hidden = self.viewModel.outputs.pillsViewHidden
     self.quantityLabel.rac.text = self.viewModel.outputs.quantityLabelText
+    self.rewardLocationStackView.rac.hidden = self.viewModel.outputs.rewardLocationStackViewHidden
+    self.rewardLocationPickupLabel.rac.text = self.viewModel.outputs.rewardLocationPickupLabelText
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
     self.stepperStackView.rac.hidden = self.viewModel.outputs.stepperStackViewHidden
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
@@ -198,6 +228,7 @@ public final class RewardAddOnCardView: UIView {
       self.titleAmountStackView,
       self.descriptionLabel,
       self.includedItemsStackView,
+      self.rewardLocationStackView,
       self.pillsView,
       self.addButton,
       self.stepperStackView
@@ -313,6 +344,12 @@ private let convertedAmountLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
 }
 
+private let descriptionLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ .ksr_support_700
+    |> \.font .~ UIFont.ksr_body()
+}
+
 private let titleAmountStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
@@ -331,8 +368,13 @@ private let sectionStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(1)
 }
 
-private let descriptionLabelStyle: LabelStyle = { label in
+private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_body()
+}
+
+private let sectionTitleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ .ksr_headline()
 }

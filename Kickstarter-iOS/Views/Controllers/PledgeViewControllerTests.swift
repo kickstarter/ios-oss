@@ -350,6 +350,46 @@ final class PledgeViewControllerTests: TestCase {
     }
   }
 
+  func testView_UpdateContext_withRewardIsLocalPickup() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.localPickup .~ .losAngeles
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Currency.HKD.rawValue
+      |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+      |> Project.lens.country .~ .hk
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(currentUser: .template, language: language) {
+        let controller = PledgeViewController.instantiate()
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .update
+        )
+        controller.configure(with: data)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testView_UpdateContext_NeedsConversion_IsTrue() {
     let reward = Reward.template
       |> Reward.lens.minimum .~ 10.0
@@ -530,6 +570,72 @@ final class PledgeViewControllerTests: TestCase {
             project: .template,
             rewards: [reward],
             selectedQuantities: [reward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          self.scheduler.advance(by: .seconds(1))
+
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
+      }
+  }
+
+  func testView_ShowsShippingSummaryViewSection() {
+    let reward = Reward.template
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: .template,
+            rewards: [reward, .noReward],
+            selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+          self.scheduler.advance(by: .seconds(1))
+
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
+      }
+  }
+
+  func testView_ShowsRewardLocationSection() {
+    let reward = Reward.template
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ false
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.preference) .~ .local
+      |> Reward.lens.localPickup .~ Location.losAngeles
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          let data = PledgeViewData(
+            project: .template,
+            rewards: [reward, .noReward],
+            selectedQuantities: [reward.id: 1, Reward.noReward.id: 1],
             selectedLocationId: nil,
             refTag: nil,
             context: .pledge

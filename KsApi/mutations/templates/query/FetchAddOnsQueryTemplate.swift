@@ -70,6 +70,13 @@ public enum FetchAddsOnsQueryTemplate {
                   "currency": "CAD",
                   "symbol": "$"
                 },
+                "localReceiptLocation": {
+                  "country": "US",
+                  "countryName": "United States",
+                  "displayableName": "San Jose, CA",
+                  "id": "TG9jYXRpb24tMjQ4ODA0Mg==",
+                  "name": "San Jose"
+                },
                 "description": "Translucent Sticker Sheet",
                 "displayName": "Paper Sticker Sheet (AU$ 4)",
                 "endsAt": null,
@@ -99,6 +106,7 @@ public enum FetchAddsOnsQueryTemplate {
                 },
                 "remainingQuantity": null,
                 "shippingPreference": "unrestricted",
+                "shippingSummary": "Ships worldwide",
                 "shippingRules": [
                   {
                     "__typename": "ShippingRule",
@@ -148,6 +156,7 @@ public enum FetchAddsOnsQueryTemplate {
                     "startCursor": null
                   }
                 },
+                "localReceiptLocation": null,
                 "shippingRulesExpanded": {
                   "__typename": "RewardShippingRulesConnection",
                   "nodes": [
@@ -213,6 +222,7 @@ public enum FetchAddsOnsQueryTemplate {
                 },
                 "remainingQuantity": null,
                 "shippingPreference": "restricted",
+                "shippingSummary": "Ships worldwide",
                 "shippingRules": [
                   {
                     "__typename": "ShippingRule",

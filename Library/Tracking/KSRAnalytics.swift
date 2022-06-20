@@ -1575,6 +1575,7 @@ extension KSRAnalytics {
 extension Reward.Shipping.Preference {
   fileprivate var trackingString: String {
     switch self {
+    case .local: return "local"
     case .none: return "none"
     case .restricted: return "restricted"
     case .unrestricted: return "unrestricted"

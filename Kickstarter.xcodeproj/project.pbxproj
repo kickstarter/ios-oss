@@ -113,6 +113,8 @@
 		0634C2F727CFEE40003A6D6E /* ExternalSourceViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0634C2F627CFEE40003A6D6E /* ExternalSourceViewElementCell.swift */; };
 		0634C2F927CFEEC2003A6D6E /* ExternalSourceViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0634C2F827CFEEC2003A6D6E /* ExternalSourceViewElementCellViewModel.swift */; };
 		063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */; };
+		063D2D0A2846767F00CEDE33 /* PledgeLocalPickupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063D2D092846767F00CEDE33 /* PledgeLocalPickupView.swift */; };
+		063D2D0C2846779100CEDE33 /* PledgeLocalPickupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063D2D0B2846779100CEDE33 /* PledgeLocalPickupViewModel.swift */; };
 		064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */; };
 		064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */; };
 		064B007627A462AA007B21FE /* ImageViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16F62773AD36009E4354 /* ImageViewElementCell.swift */; };
@@ -158,6 +160,7 @@
 		06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */; };
 		069C07E62767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */; };
 		069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */; };
+		069FA8CC284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */; };
 		06AF78762710C970009587F1 /* ProjectPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */; };
 		06AF78782710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		06AF787A2710E5E1009587F1 /* ProjectPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */; };
@@ -1837,6 +1840,8 @@
 		0634C2F627CFEE40003A6D6E /* ExternalSourceViewElementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalSourceViewElementCell.swift; sourceTree = "<group>"; };
 		0634C2F827CFEEC2003A6D6E /* ExternalSourceViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalSourceViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		063BBA802799C7BA00659198 /* TextViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
+		063D2D092846767F00CEDE33 /* PledgeLocalPickupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeLocalPickupView.swift; sourceTree = "<group>"; };
+		063D2D0B2846779100CEDE33 /* PledgeLocalPickupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeLocalPickupViewModel.swift; sourceTree = "<group>"; };
 		064AEF0E270CECF0006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project+FetchProjectRewardsByIdQueryDataTests.swift"; sourceTree = "<group>"; };
 		064AEF10270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProjectRewardsByIdQueryTemplate.swift; sourceTree = "<group>"; };
 		064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewElementCellViewModel.swift; sourceTree = "<group>"; };
@@ -1875,6 +1880,7 @@
 		06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.PostCommentInput+PostCommentInputTests.swift"; sourceTree = "<group>"; };
 		069C07E52767BD79009B7534 /* FetchCommentRepliesQueryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommentRepliesQueryTemplate.swift; sourceTree = "<group>"; };
 		069CD29626B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift"; sourceTree = "<group>"; };
+		069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeLocalPickupViewModelTests.swift; sourceTree = "<group>"; };
 		06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerTests.swift; sourceTree = "<group>"; };
 		06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageNavigationBarViewTests.swift; sourceTree = "<group>"; };
 		06AF78792710E5E1009587F1 /* ProjectPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewModelTests.swift; sourceTree = "<group>"; };
@@ -3965,6 +3971,7 @@
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
 				8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */,
+				063D2D092846767F00CEDE33 /* PledgeLocalPickupView.swift */,
 				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */,
@@ -4859,6 +4866,8 @@
 				3706408722A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift */,
 				8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */,
 				8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */,
+				063D2D0B2846779100CEDE33 /* PledgeLocalPickupViewModel.swift */,
+				069FA8CB284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift */,
 				8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */,
 				8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */,
 				D0237C2522BD7B540092C792 /* PledgeSummaryViewModel.swift */,
@@ -6173,6 +6182,7 @@
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
+				063D2D0C2846779100CEDE33 /* PledgeLocalPickupViewModel.swift in Sources */,
 				8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */,
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
 				777C60A82420154100820C59 /* PersonalizationCellViewModel.swift in Sources */,
@@ -6316,6 +6326,7 @@
 				D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */,
 				062BE3BA27B3224A006B5251 /* ImageViewElementCellViewModelTests.swift in Sources */,
 				47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */,
+				069FA8CC284987FD006ADC92 /* PledgeLocalPickupViewModelTests.swift in Sources */,
 				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
 				77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */,
 				77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */,
@@ -6632,6 +6643,7 @@
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
+				063D2D0A2846767F00CEDE33 /* PledgeLocalPickupView.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */,

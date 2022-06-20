@@ -83,18 +83,15 @@ public final class ManagePledgeViewModel:
       projectParam.takeWhen(shouldBeginRefresh)
     )
 
-    /**
-     FIXME: This should be refactored so that the VM is configured with a `Project` or `Param` and `Backing?`
-     so that it behaves similarly to previously existing `ProjectPamphletViewModel` i.e it's initially configured with the objects
-     that are passed to it and then those objects are refreshed via these calls with more up-to-date
-     information.
-     */
     let fetchProjectEvent = shouldFetchProjectWithParam
       // Only fetch the project if it hasn't yet succeeded, to avoid this call occurring with each refresh.
       .filter { [projectLoaded] _ in projectLoaded.value == false }
       .switchMap { param in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .switchMap { project in
+            fetchProjectRewards(project: project)
+          }
           .materialize()
       }
 
@@ -421,6 +418,25 @@ public final class ManagePledgeViewModel:
 
 // MARK: - Functions
 
+private func fetchProjectRewards(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+  return AppEnvironment.current.apiService
+    .fetchProjectRewards(projectId: project.id)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .switchMap { projectRewards -> SignalProducer<Project, ErrorEnvelope> in
+
+      var allRewards = projectRewards
+
+      if let noRewardReward = project.rewardData.rewards.first {
+        allRewards.insert(noRewardReward, at: 0)
+      }
+
+      let projectWithBackingAndRewards = project
+        |> Project.lens.rewardData.rewards .~ allRewards
+
+      return SignalProducer(value: projectWithBackingAndRewards)
+    }
+}
+
 private func pledgeViewData(
   project: Project,
   backing: Backing,
@@ -512,6 +528,9 @@ private func managePledgeSummaryViewData(
   backing: Backing
 ) -> ManagePledgeSummaryViewData? {
   guard let backer = backing.backer else { return nil }
+
+  let isRewardLocalPickup = isRewardLocalPickup(backing.reward)
+
   return ManagePledgeSummaryViewData(
     backerId: backer.id,
     backerName: backer.name,
@@ -530,7 +549,8 @@ private func managePledgeSummaryViewData(
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: backing.reward?.shipping.enabled == false
+    shippingAmountHidden: backing.reward?.shipping.enabled == false,
+    rewardIsLocalPickup: isRewardLocalPickup
   )
 }
 

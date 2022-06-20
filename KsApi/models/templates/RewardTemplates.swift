@@ -20,14 +20,15 @@ extension Reward {
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
-      preference: nil,
+      preference: Reward.Shipping.Preference.none,
       summary: nil,
       type: nil
     ),
     shippingRules: nil,
     shippingRulesExpanded: nil,
     startsAt: nil,
-    title: "My Reward"
+    title: "My Reward",
+    localPickup: nil
   )
 
   public static let noReward = Reward(
@@ -46,14 +47,15 @@ extension Reward {
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
-      preference: nil,
+      preference: Reward.Shipping.Preference.none,
       summary: nil,
       type: nil
     ),
     shippingRules: nil,
     shippingRulesExpanded: nil,
     startsAt: nil,
-    title: nil
+    title: nil,
+    localPickup: nil
   )
 
   public static let otherReward = Reward(
@@ -72,14 +74,15 @@ extension Reward {
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
-      preference: nil,
+      preference: Reward.Shipping.Preference.none,
       summary: nil,
       type: nil
     ),
     shippingRules: nil,
     shippingRulesExpanded: nil,
     startsAt: nil,
-    title: nil
+    title: nil,
+    localPickup: nil
   )
 
   public static let postcards = Reward.template
@@ -90,6 +93,7 @@ extension Reward {
     |> Reward.lens.backersCount .~ 23
     |> Reward.lens.title .~ "Postcards"
     |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series."
+    |> Reward.lens.localPickup .~ nil
     |> Reward.lens.rewardsItems .~ Array(1...5)
     .map { number in
       RewardsItem.template

@@ -32,6 +32,8 @@ public protocol RewardAddOnCardViewModelOutputs {
   var pillsViewHidden: Signal<Bool, Never> { get }
   var quantityLabelText: Signal<String, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
+  var rewardLocationPickupLabelText: Signal<String, Never> { get }
+  var rewardLocationStackViewHidden: Signal<Bool, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
@@ -128,6 +130,11 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     self.notifiyDelegateDidSelectQuantity = updatedSelectedQuantity
       .withLatest(from: reward.map(\.id))
 
+    self.rewardLocationStackViewHidden = reward
+      .map { !isRewardLocalPickup($0) }
+
+    self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
+
     self.stepperMaxValue = projectAndReward
       .map { project, reward in
         rewardLimitPerBackerRemainingForBacker(project: project, reward: reward) ?? 0
@@ -186,6 +193,8 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
   public let reloadPills: Signal<[String], Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelText: Signal<String, Never>
+  public let rewardLocationPickupLabelText: Signal<String, Never>
+  public let rewardLocationStackViewHidden: Signal<Bool, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperStackViewHidden: Signal<Bool, Never>
   public let stepperValue: Signal<Double, Never>

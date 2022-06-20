@@ -41,14 +41,15 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
     XCTAssertEqual(addOn.minimum, 4.0)
     XCTAssertEqual(addOn.shipping.enabled, false)
     XCTAssertEqual(addOn.shipping.preference!, .none)
+    XCTAssertEqual(addOn.shipping.summary, "Ships worldwide")
     XCTAssertNil(addOn.limit)
     XCTAssertNil(addOn.remaining)
     XCTAssertNil(addOn.startsAt)
     XCTAssertNil(addOn.shipping.location)
-    XCTAssertNil(addOn.shipping.summary)
     XCTAssertNil(addOn.shipping.type)
 
-    guard let hasAnExpandedShippingRule = envelope.addOns?.first?.shippingRulesExpanded?.first else {
+    guard let hasAnExpandedShippingRule = envelope.addOns?.first?.shippingRulesExpanded?.first,
+      let hasALocalPickup = envelope.addOns?.first?.localPickup else {
       XCTFail()
 
       return
@@ -56,5 +57,11 @@ final class Project_FetchAddOnsQueryDataTests: XCTestCase {
 
     XCTAssertEqual(hasAnExpandedShippingRule.cost, 2.0)
     XCTAssertNotNil(hasAnExpandedShippingRule.location)
+    XCTAssertEqual(hasALocalPickup.localizedName, "San Jose")
+    XCTAssertEqual(hasALocalPickup.id, decompose(id: "TG9jYXRpb24tMjQ4ODA0Mg=="))
+    XCTAssertEqual(hasALocalPickup.name, "San Jose")
+    XCTAssertEqual(hasALocalPickup.country, "US")
+    XCTAssertEqual(hasALocalPickup.displayableName, "San Jose, CA")
+    XCTAssertNil(envelope.addOns?.last?.localPickup)
   }
 }

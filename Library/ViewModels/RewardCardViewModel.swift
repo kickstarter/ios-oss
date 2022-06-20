@@ -36,6 +36,8 @@ public protocol RewardCardViewModelOutputs {
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
   var reloadPills: Signal<[RewardCardPillData], Never> { get }
+  var rewardLocationPickupLabelText: Signal<String, Never> { get }
+  var rewardLocationStackViewHidden: Signal<Bool, Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
@@ -115,7 +117,12 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map { context, reward in
         context == .manage || reward.estimatedDeliveryOn == nil
       }
+
+    self.rewardLocationStackViewHidden = reward
+      .map { !isRewardLocalPickup($0) }
+
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
+    self.rewardLocationPickupLabelText = reward.map { $0.localPickup?.displayableName }.skipNil()
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -138,6 +145,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
   public let reloadPills: Signal<[RewardCardPillData], Never>
+  public let rewardLocationPickupLabelText: Signal<String, Never>
+  public let rewardLocationStackViewHidden: Signal<Bool, Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
@@ -294,32 +303,19 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
 }
 
 private func shippingSummaryString(project: Project, reward: Reward) -> RewardCardPillData? {
-  if project.state == .live, reward.shipping.enabled, let type = reward.shipping.type {
-    switch type {
-    case .anywhere:
-      return RewardCardPillData(
-        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
-        text: Strings.Ships_worldwide(),
-        textColor: UIColor.ksr_create_700
-      )
-    case .multipleLocations:
-      return RewardCardPillData(
-        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
-        text: Strings.Limited_shipping(),
-        textColor: UIColor.ksr_create_700
-      )
-    case .noShipping: return nil
-    case .singleLocation:
-      if let name = reward.shipping.location?.localizedName {
-        return RewardCardPillData(
-          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
-          text: Strings.location_name_only(location_name: name),
-          textColor: UIColor.ksr_create_700
-        )
-      }
-
-      return nil
-    }
+  if project.state == .live,
+    reward.shipping.enabled,
+    let shippingSummaryText = reward.shipping.summary {
+    return RewardCardPillData(
+      backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
+      text: shippingSummaryText,
+      textColor: UIColor.ksr_create_700
+    )
+    /** FIXME: No longer used on iOS. Might still be needed on Android/Web before removing from: `Kickstarter` `config/locales/native/en.yml`
+     Strings.Ships_worldwide()
+     Strings.Limited_shipping()
+     Strings.location_name_only(location_name: name)(location_name: name)
+     */
   }
 
   return nil

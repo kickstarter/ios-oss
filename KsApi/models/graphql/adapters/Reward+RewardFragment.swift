@@ -28,6 +28,12 @@ extension Reward {
 
     let rewardHasAddons = rewardFragment.allowedAddons.pageInfo.startCursor != nil
 
+    var location: Location?
+
+    if let locationFragment = rewardFragment.localReceiptLocation?.fragments.locationFragment {
+      location = Location.location(from: locationFragment)
+    }
+
     return Reward(
       backersCount: rewardFragment.backersCount,
       convertedMinimum: rewardFragment.convertedAmount.fragments.moneyFragment.amount
@@ -46,7 +52,8 @@ extension Reward {
       shippingRules: shippingRulesData(from: rewardFragment),
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
-      title: rewardFragment.name
+      title: rewardFragment.name,
+      localPickup: location
     )
   }
 }
@@ -86,7 +93,7 @@ private func shippingData(
     enabled: [.restricted, .unrestricted].contains(rewardFragment.shippingPreference),
     location: nil,
     preference: shippingPreference(from: rewardFragment),
-    summary: nil,
+    summary: rewardFragment.shippingSummary,
     type: nil
   )
 }
@@ -96,6 +103,7 @@ private func shippingPreference(from rewardFragment: GraphAPI.RewardFragment) ->
 
   switch preference {
   case .none: return Reward.Shipping.Preference.none
+  case .local: return .local
   case .restricted: return .restricted
   case .unrestricted: return .unrestricted
   default: return .none

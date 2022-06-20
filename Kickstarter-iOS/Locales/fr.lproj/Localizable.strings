@@ -193,7 +193,7 @@
 "Ending_in_last_four" = "Finissant par %{last_four}";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Enter_an_amount_less_than_max_pledge" = "Veuillez saisir un montant inférieur à %{max_pledge}.";
-"Environmental_Commitments" = "Engagements pour l'environnement";
+"Environmental_commitments" = "Engagements pour l'environnement";
 "Environmentally_friendly_factories" = "Usines respectueuses de l'environnement";
 "Estimated_delivery" = "Livraison prévue :";
 "Estimated_delivery_colon" = "Livraison prévue :";
@@ -510,6 +510,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} questionnaires";
 "Reward_delivered" = "Récompense livrée ?";
 "Reward_estimated_for_delivery_in_date" = "<b>Récompense</b> prévue pour %{delivery_date}";
+"Reward_location" = "Lieu de la récompense";
 "Reward_received" = "Récompense reçue";
 "Reward_selected" = "Récompense sélectionnée";
 "Reward_surveys" = "Questionnaires des récompenses";

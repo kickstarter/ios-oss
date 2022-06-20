@@ -5,7 +5,7 @@ import XCTest
 final class Reward_RewardFragmentTests: XCTestCase {
   func test() {
     do {
-      let variables = ["includeShippingRules": true]
+      let variables = ["includeShippingRules": true, "includeLocalPickup": true]
       let fragment = try GraphAPI.RewardFragment(jsonObject: rewardDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
 
@@ -31,6 +31,11 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.limit, nil)
       XCTAssertEqual(v1Reward.limitPerBacker, 1)
       XCTAssertEqual(v1Reward.minimum, 25.0)
+      XCTAssertEqual(v1Reward.localPickup?.country, "US")
+      XCTAssertEqual(v1Reward.localPickup?.localizedName, "San Jose")
+      XCTAssertEqual(v1Reward.localPickup?.displayableName, "San Jose, CA")
+      XCTAssertEqual(v1Reward.localPickup?.id, decompose(id: "TG9jYXRpb24tMjQ4ODA0Mg=="))
+      XCTAssertEqual(v1Reward.localPickup?.name, "San Jose")
       XCTAssertTrue(v1Reward.hasAddOns)
       XCTAssertEqual(v1Reward.remaining, nil)
       XCTAssertEqual(v1Reward.rewardsItems[0].item.id, 1_170_799)
@@ -42,6 +47,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
 
       XCTAssertEqual(v1Reward.shipping.enabled, true)
       XCTAssertEqual(v1Reward.shipping.preference, .unrestricted)
+      XCTAssertEqual(v1Reward.shipping.summary, "Ships worldwide")
       XCTAssertEqual(v1Reward.shippingRules?.count, 2)
       XCTAssertEqual(v1Reward.startsAt, nil)
       XCTAssertEqual(v1Reward.title, "Soft Cover Book (Signed)")
@@ -64,6 +70,14 @@ private func rewardDictionary() -> [String: Any] {
         "__typename": "PageInfo",
         "startCursor": "WzIsODMzNzczN10="
       }
+    },
+    "localReceiptLocation": {
+      "__typename": "Location",
+      "country": "US",
+      "countryName": "United States",
+      "displayableName": "San Jose, CA",
+      "id": "TG9jYXRpb24tMjQ4ODA0Mg==",
+      "name": "San Jose"
     },
     "amount": {
       "__typename": "Money",
@@ -115,6 +129,7 @@ private func rewardDictionary() -> [String: Any] {
       "id": "UHJvamVjdC0xNTk2NTk0NDYz"
     },
     "remainingQuantity": null,
+    "shippingSummary": "Ships worldwide",
     "shippingPreference": "unrestricted",
     "shippingRules": [{
         "__typename": "ShippingRule",

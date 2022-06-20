@@ -31,6 +31,9 @@ public final class RewardCardView: UIView {
   private let pillsView: PillsView = PillsView(frame: .zero)
   private var pillsViewHeightConstraint: NSLayoutConstraint?
   private let priceStackView = UIStackView(frame: .zero)
+  private let rewardLocationStackView = UIStackView(frame: .zero)
+  private let rewardLocationTitleLabel = UILabel(frame: .zero)
+  private let rewardLocationPickupLabel = UILabel(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let titleStackView = UIStackView(frame: .zero)
 
@@ -63,7 +66,8 @@ public final class RewardCardView: UIView {
       self.priceStackView,
       self.descriptionStackView,
       self.includedItemsStackView,
-      self.estimatedDeliveryStackView
+      self.estimatedDeliveryStackView,
+      self.rewardLocationStackView
     ]
       ||> { stackView in
         stackView
@@ -118,6 +122,27 @@ public final class RewardCardView: UIView {
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
 
+    _ = self.rewardLocationStackView
+      |> includedItemsStackViewStyle
+
+    _ = self.rewardLocationTitleLabel
+      |> baseRewardLabelStyle
+      |> sectionTitleLabelStyle
+
+    _ = self.rewardLocationTitleLabel
+      |> \.text %~ { _ in Strings.Reward_location() }
+      |> \.textColor .~ UIColor.ksr_support_400
+
+    _ = self.rewardLocationPickupLabel
+      |> baseRewardLabelStyle
+      |> sectionBodyLabelStyle
+
+    _ = self.rewardLocationStackView.subviews
+      .dropFirst()
+      .compactMap { $0 as? UILabel }
+      ||> baseRewardLabelStyle
+      ||> sectionBodyLabelStyle
+
     _ = self.rewardTitleLabel
       |> baseRewardLabelStyle
       |> rewardTitleLabelStyle
@@ -142,6 +167,8 @@ public final class RewardCardView: UIView {
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
+    self.rewardLocationStackView.rac.hidden = self.viewModel.outputs.rewardLocationStackViewHidden
+    self.rewardLocationPickupLabel.rac.text = self.viewModel.outputs.rewardLocationPickupLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
     self.pillsView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
@@ -187,6 +214,7 @@ public final class RewardCardView: UIView {
       self.descriptionStackView,
       self.includedItemsStackView,
       self.estimatedDeliveryStackView,
+      self.rewardLocationStackView,
       self.pillsView
     ]
 
@@ -200,6 +228,9 @@ public final class RewardCardView: UIView {
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.estimatedDeliveryTitleLabel, self.estimatedDeliveryDateLabel], self.estimatedDeliveryStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.rewardLocationTitleLabel, self.rewardLocationPickupLabel], self.rewardLocationStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.descriptionLabel], self.descriptionStackView)

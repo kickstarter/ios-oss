@@ -24,6 +24,8 @@ final class RewardCardViewModelTests: TestCase {
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelHidden = TestObserver<Bool, Never>()
   private let rewardTitleLabelAttributedText = TestObserver<NSAttributedString, Never>()
+  private let rewardLocationPickupLabelText = TestObserver<String, Never>()
+  private let rewardLocationStackViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -42,6 +44,8 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelHidden.observe(self.rewardTitleLabelHidden.observer)
     self.vm.outputs.rewardTitleLabelAttributedText.observe(self.rewardTitleLabelAttributedText.observer)
+    self.vm.outputs.rewardLocationStackViewHidden.observe(self.rewardLocationStackViewHidden.observer)
+    self.vm.outputs.rewardLocationPickupLabelText.observe(self.rewardLocationPickupLabelText.observer)
   }
 
   // MARK: - Reward Title
@@ -680,7 +684,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
       )
 
     self.vm.inputs.configure(with: (.template, reward, .pledge))
@@ -722,7 +726,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.type .~ .singleLocation
-          |> Reward.Shipping.lens.location .~ .init(id: 123, localizedName: "United States")
+          |> Reward.Shipping.lens.summary .~ "United States only"
       )
 
     self.vm.inputs.configure(with: (.template, reward, .pledge))
@@ -763,7 +767,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .multipleLocations
+          |> Reward.Shipping.lens.summary .~ "Limited shipping"
       )
 
     self.vm.inputs.configure(with: (.template, reward, .pledge))
@@ -804,7 +808,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
       )
 
     let project = Project.template
@@ -848,7 +852,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.type .~ .anywhere
+          |> Reward.Shipping.lens.summary .~ "Ships worldwide"
       )
 
     let project = Project.template
@@ -1050,5 +1054,44 @@ final class RewardCardViewModelTests: TestCase {
 
     self.estimatedDeliveryDateLabelText.assertValues([])
     self.estimatedDeliveryDateLabelHidden.assertValues([true])
+  }
+
+  func testRewardLocalPickup_WithNoLocation() {
+    self.rewardLocationStackViewHidden.assertDidNotEmitValue()
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 50
+      |> Reward.lens.backersCount .~ 50
+      |> Reward.lens.localPickup .~ nil
+
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configure(with: (project, reward, .manage))
+
+    self.rewardLocationStackViewHidden.assertValues([true])
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+  }
+
+  func testRewardLocalPickup_WithLocation() {
+    self.rewardLocationStackViewHidden.assertDidNotEmitValue()
+    self.rewardLocationPickupLabelText.assertDidNotEmitValue()
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 50
+      |> Reward.lens.backersCount .~ 50
+      |> Reward.lens.localPickup .~ .losAngeles
+      |> Reward.lens.shipping.preference .~ .local
+
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configure(with: (project, reward, .manage))
+
+    self.rewardLocationStackViewHidden.assertValues([false])
+    self.rewardLocationPickupLabelText.assertValue("Los Angeles, CA")
   }
 }

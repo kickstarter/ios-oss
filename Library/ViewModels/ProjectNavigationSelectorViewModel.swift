@@ -12,7 +12,7 @@ public enum NavigationSection: Int, CaseIterable {
   public var displayString: String {
     switch self {
     case .campaign: return Strings.Campaign()
-    case .environmentalCommitments: return Strings.Environmental_Commitments()
+    case .environmentalCommitments: return Strings.Environmental_commitments()
     case .faq: return Strings.Faq()
     case .overview: return Strings.Overview()
     case .risks: return Strings.Risks()

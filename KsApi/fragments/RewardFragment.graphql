@@ -28,12 +28,16 @@ fragment RewardFragment on Reward {
   }
   limit
   limitPerBacker
+  localReceiptLocation @include(if: $includeLocalPickup) {
+    ...LocationFragment
+  }
   name
   project {
     id
   }
   remainingQuantity
   shippingPreference
+  shippingSummary
   shippingRules @include(if: $includeShippingRules) {
     ...ShippingRuleFragment
   }

@@ -181,6 +181,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       self.shippingLocationViewDidFailToLoadProperty.signal.mapConst(true),
       fetchShippingLocations.mapConst(false)
     )
+    .combineLatest(with: baseReward)
+    .switchMap { flag, baseReward -> SignalProducer<Bool, Never> in
+      let shippingLocationViewHidden = isRewardLocalPickup(baseReward) ? true : flag
+
+      return SignalProducer(value: shippingLocationViewHidden)
+    }
     .skipRepeats()
 
     let dataSourceItems = Signal.merge(
@@ -480,18 +486,40 @@ private func filteredAddOns(
   filteredBy shippingRule: ShippingRule?,
   baseReward: Reward
 ) -> [Reward] {
+  let isBaseRewardDigital = isRewardDigital(baseReward)
+  let isBaseRewardLocalPickup = isRewardLocalPickup(baseReward)
+
   return addOns.filter { addOn in
+    var isValidAddonToDisplay = false
+    let isAddOnDigital = isRewardDigital(addOn)
+    let isAddOnLocalPickup = isRewardLocalPickup(addOn)
+    let isAddOnLocalOrDigital = isAddOnDigital || isAddOnLocalPickup
     // For digital-only base rewards only return add-ons that are also digital-only.
-    if baseReward.shipping.enabled == false {
-      return addOn.shipping.enabled == false
+    if isBaseRewardDigital, isAddOnDigital {
+      isValidAddonToDisplay = true
+    } else if isBaseRewardLocalPickup, isAddOnLocalOrDigital {
+      isValidAddonToDisplay = true // return all addons that are digital for local base reward
+
+      if isAddOnLocalPickup {
+        if let addOnLocationId = addOn.localPickup?.id,
+          let baseRewardLocationId = baseReward.localPickup?.id,
+          addOnLocationId ==
+          baseRewardLocationId {
+          // if add on is local for local base, ensure locations are equal before displaying
+          isValidAddonToDisplay = true
+        } else {
+          isValidAddonToDisplay = false
+        }
+      }
+    } else if !isBaseRewardDigital, !isBaseRewardLocalPickup {
+      /**
+       For restricted or unrestricted shipping base rewards, unrestricted shipping
+       or digital-only add-ons are available.
+       */
+      isValidAddonToDisplay = isAddOnDigital || addOnReward(addOn, shipsTo: shippingRule?.location.id)
     }
 
-    /**
-     For restricted or unrestricted shipping base rewards, unrestricted shipping
-     or digital-only add-ons are available.
-     */
-    return addOn.shipping.preference
-      .isAny(of: Reward.Shipping.Preference.none) || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+    return isValidAddonToDisplay
   }
 }
 

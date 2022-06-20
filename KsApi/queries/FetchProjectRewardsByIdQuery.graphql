@@ -1,4 +1,4 @@
-query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!) {
+query FetchProjectRewardsById($projectId: Int!, $includeShippingRules: Boolean!, $includeLocalPickup: Boolean!) {
   project(pid: $projectId) {
     rewards {
       nodes {

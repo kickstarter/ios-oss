@@ -7,7 +7,8 @@ final class Backing_BackingFragmentTests: XCTestCase {
     do {
       let variables = [
         "withStoredCards": true,
-        "includeShippingRules": true
+        "includeShippingRules": true,
+        "includeLocalPickup": true
       ]
       let fragment = try GraphAPI.BackingFragment(jsonObject: backingDictionary(), variables: variables)
       XCTAssertNotNil(fragment)
@@ -123,11 +124,13 @@ private func backingDictionary() -> [String: Any] {
               }
             ]
           },
+          "localReceiptLocation": null,
           "limit": null,
           "limitPerBacker": 10,
           "name": "Art of the Quietly Quixotic",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -183,6 +186,7 @@ private func backingDictionary() -> [String: Any] {
                "startCursor": null
              }
           },
+          "localReceiptLocation": null,
           "backersCount": 23,
           "convertedAmount": {
             "__typename": "Money",
@@ -205,6 +209,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Wee William Journal & Coloring Book",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -253,6 +258,7 @@ private func backingDictionary() -> [String: Any] {
             "currency": "USD",
             "symbol": "$"
           },
+          "localReceiptLocation": null,
           "allowedAddons": {
             "__typename": "RewardConnection",
             "pageInfo": {
@@ -282,6 +288,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Wee William Journal & Coloring Book",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -330,6 +337,7 @@ private func backingDictionary() -> [String: Any] {
             "currency": "USD",
             "symbol": "$"
           },
+          "localReceiptLocation": null,
           "allowedAddons": {
             "__typename": "RewardConnection",
             "pageInfo": {
@@ -359,6 +367,7 @@ private func backingDictionary() -> [String: Any] {
           "name": "Wee William Journal & Coloring Book",
           "remainingQuantity": null,
           "shippingPreference": "unrestricted",
+          "shippingSummary": "Ships worldwide",
           "shippingRules": [
             {
               "__typename": "ShippingRule",
@@ -736,6 +745,7 @@ private func backingDictionary() -> [String: Any] {
         "currency": "USD",
         "symbol": "$"
       },
+      "localReceiptLocation": null,
       "allowedAddons": {
         "__typename": "RewardConnection",
         "pageInfo": {
@@ -793,6 +803,7 @@ private func backingDictionary() -> [String: Any] {
       },
       "remainingQuantity": null,
       "shippingPreference": "unrestricted",
+      "shippingSummary": "Ships worldwide",
       "shippingRules": [
         {
           "__typename": "ShippingRule",

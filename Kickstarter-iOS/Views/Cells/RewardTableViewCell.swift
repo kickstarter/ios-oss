@@ -52,6 +52,8 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
   internal func configureWith(value: RewardCardViewData) {
     self.rewardCardView.configure(with: value)
 
+    self.rewardCardView.setNeedsLayout()
+    self.rewardCardView.layoutIfNeeded()
     self.contentView.setNeedsLayout()
     self.contentView.layoutIfNeeded()
   }

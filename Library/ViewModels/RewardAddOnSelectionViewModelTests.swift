@@ -161,6 +161,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
 
@@ -202,6 +203,44 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  func testLoadAddOnRewards_NotLoadedIntoDataSource_IfLocalPickupLocationsNotMatching_Success() {
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.local
+      |> Reward.lens.localPickup .~ .brooklyn
+
+    let addOn = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.local
+      |> Reward.lens.localPickup .~ .australia
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [addOn]
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [:],
+        selectedLocationId: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([])
+    }
+  }
+
   func testLoadAddOnRewardsIntoDataSource_Error() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
@@ -234,6 +273,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
 
@@ -300,18 +340,22 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.id .~ 99
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]

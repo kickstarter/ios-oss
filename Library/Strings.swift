@@ -3210,18 +3210,18 @@ Cliquez pour réessayer."
     )
   }
   /**
-   "Environmental Commitments"
+   "Environmental commitments"
 
-   - **en**: "Environmental Commitments"
+   - **en**: "Environmental commitments"
    - **de**: "Verpflichtung zum Umweltschutz"
    - **es**: "Compromisos medioambientales"
    - **fr**: "Engagements pour l'environnement"
    - **ja**: "環境への取り組み"
   */
-  public static func Environmental_Commitments() -> String {
+  public static func Environmental_commitments() -> String {
     return localizedString(
-      key: "Environmental_Commitments",
-      defaultValue: "Environmental Commitments",
+      key: "Environmental_commitments",
+      defaultValue: "Environmental commitments",
       count: nil,
       substitutions: [:]
     )
@@ -8401,6 +8401,23 @@ daring ideas."
       defaultValue: "<b>Reward</b> estimated for delivery in %{delivery_date}",
       count: nil,
       substitutions: ["delivery_date": delivery_date]
+    )
+  }
+  /**
+   "Reward location"
+
+   - **en**: "Reward location"
+   - **de**: "Standort der Belohnung"
+   - **es**: "Lugar de la recompensa"
+   - **fr**: "Lieu de la récompense"
+   - **ja**: "リワードの場所"
+  */
+  public static func Reward_location() -> String {
+    return localizedString(
+      key: "Reward_location",
+      defaultValue: "Reward location",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -18193,7 +18210,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -18241,7 +18258,7 @@ Veuillez réessayer ultérieurement."
    "Converted from %{pledged} pledged of %{goal} goal."
 
    - **en**: "Converted from %{pledged} pledged of %{goal} goal."
-   - **de**: "Umgerechneter Betrag: %{pledged} von %{goal} (Fianzierungsziel)."
+   - **de**: "Umgerechneter Betrag: %{pledged} von %{goal} (Finanzierungsziel)."
    - **es**: "Conversión: %{pledged} de la meta de %{goal}."
    - **fr**: "Conversion de %{pledged} engagés pour un objectif de %{goal}"
    - **ja**: "%{goal}のゴールに対し%{pledged}達成"
@@ -21570,7 +21587,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -24681,7 +24698,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -25633,7 +25650,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

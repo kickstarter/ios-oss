@@ -450,8 +450,10 @@ public func getBaseRewardShippingTotal(
   baseReward: Reward,
   shippingRule: ShippingRule?
 ) -> Double {
-  // If digital, there is no shipping
-  guard baseReward.shipping.enabled else { return 0.0 }
+  // If digital or local pickup there is no shipping
+  guard !isRewardDigital(baseReward),
+    !isRewardLocalPickup(baseReward),
+    baseReward != .noReward else { return 0.0 }
   let backing = project.personalization.backing
 
   // If there is no `Backing` (new pledge), return the rewards shipping rule
@@ -475,7 +477,7 @@ func calculateShippingTotal(
   quantities: SelectedRewardQuantities
 ) -> Double {
   let calculatedShippingTotal = addOnRewards.reduce(0.0) { total, reward in
-    guard reward.shipping.enabled else { return total }
+    guard !isRewardDigital(reward), !isRewardLocalPickup(reward), reward != .noReward else { return total }
 
     let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
 
@@ -613,4 +615,41 @@ public func checkoutProperties(
     shippingAmountUsd: shippingAmountUsd,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
+}
+
+/**
+ Indicates `Reward` is locally picked up/not.
+
+ - parameter reward: A `Reward` object
+
+ - returns: A `Bool` for if a reward is locally picked up/not
+ */
+
+public func isRewardLocalPickup(_ reward: Reward?) -> Bool {
+  guard let existingReward = reward else {
+    return false
+  }
+
+  return !existingReward.shipping.enabled &&
+    existingReward.localPickup != nil &&
+    existingReward.shipping
+    .preference.isAny(of: Reward.Shipping.Preference.local)
+}
+
+/**
+ Indicates `Reward` is digital or not.
+
+ - parameter reward: A `Reward` object
+
+ - returns: A `Bool` for if a reward is digital or not
+ */
+
+public func isRewardDigital(_ reward: Reward?) -> Bool {
+  guard let existingReward = reward else {
+    return false
+  }
+
+  return !existingReward.shipping.enabled &&
+    existingReward.shipping.preference
+    .isAny(of: Reward.Shipping.Preference.none)
 }

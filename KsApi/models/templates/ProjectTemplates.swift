@@ -116,7 +116,8 @@ private let cosmicSurgeryRewards: [Reward] = [
     |> Reward.lens.limit .~ nil
     |> Reward.lens.backersCount .~ 23
     |> Reward.lens.title .~ "Postcards"
-    |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series.",
+    |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series."
+    |> Reward.lens.localPickup .~ nil,
 
   .template
     |> Reward.lens.id .~ 1
@@ -126,7 +127,8 @@ private let cosmicSurgeryRewards: [Reward] = [
     |> Reward.lens.backersCount .~ 100
     |> Reward.lens.remaining .~ 0
     |> Reward.lens.title .~ "‘EARLYBIRD’ COSMIC SURGERY BOOK"
-    |> Reward.lens.description .~ "You will be the first to receive a copy of the book at this special ‘earlybird’ price. Limited to the first 100 copies.",
+    |> Reward.lens.description .~ "You will be the first to receive a copy of the book at this special ‘earlybird’ price. Limited to the first 100 copies."
+    |> Reward.lens.localPickup .~ nil,
 
   .template
     |> Reward.lens.id .~ 2
@@ -134,7 +136,8 @@ private let cosmicSurgeryRewards: [Reward] = [
     |> Reward.lens.convertedMinimum .~ 39.0
     |> Reward.lens.backersCount .~ 83
     |> Reward.lens.title .~ "COSMIC SURGERY BOOK"
-    |> Reward.lens.description .~ "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.",
+    |> Reward.lens.description .~ "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July."
+    |> Reward.lens.localPickup .~ nil,
 
   .template
     |> Reward.lens.id .~ 3
@@ -175,4 +178,5 @@ private let cosmicSurgeryRewards: [Reward] = [
         |> RewardsItem.lens.quantity .~ 1
         |> RewardsItem.lens.rewardId .~ 3
     ]
+    |> Reward.lens.localPickup .~ nil
 ]

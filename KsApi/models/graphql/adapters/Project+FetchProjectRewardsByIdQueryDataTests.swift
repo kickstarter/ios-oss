@@ -66,9 +66,22 @@ final class Project_FetchProjectRewardsByIdQueryDataTests: XCTestCase {
     XCTAssertEqual(lastReward.shippingRules?[1].location.id, decompose(id: "TG9jYXRpb24tMjM0MjQ5NTc="))
     XCTAssertFalse(lastReward.shipping.enabled)
     XCTAssertEqual(lastReward.shipping.preference!, .none)
+    XCTAssertEqual(lastReward.shipping.summary, "Ships worldwide")
     XCTAssertNil(lastReward.shippingRulesExpanded)
     XCTAssertNil(lastReward.shipping.location)
-    XCTAssertNil(lastReward.shipping.summary)
     XCTAssertNil(lastReward.shipping.type)
+
+    guard let localPickup = rewards.last?.localPickup else {
+      XCTFail("project should contain at least 1 local pickup location.")
+
+      return
+    }
+
+    XCTAssertEqual(localPickup.localizedName, "San Jose")
+    XCTAssertEqual(localPickup.id, decompose(id: "TG9jYXRpb24tMjQ4ODA0Mg=="))
+    XCTAssertEqual(localPickup.name, "San Jose")
+    XCTAssertEqual(localPickup.country, "US")
+    XCTAssertEqual(localPickup.displayableName, "San Jose, CA")
+    XCTAssertNil(rewards.first?.localPickup)
   }
 }
