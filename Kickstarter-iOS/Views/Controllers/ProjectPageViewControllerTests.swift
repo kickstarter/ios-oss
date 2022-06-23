@@ -606,7 +606,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(self.project),
+          projectOrParam: .left(projectWithNoUserImageURL),
           refTag: nil
         )
 
