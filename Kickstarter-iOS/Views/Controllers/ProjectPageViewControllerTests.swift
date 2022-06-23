@@ -480,6 +480,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let config = Config.template
 
     let liveProject = self.project
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
@@ -513,6 +515,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     let config = Config.template
 
     let liveProject = self.project
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.emptyProjectProperties
@@ -592,12 +596,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
     // This test was previously flakey on CI because it relied on Alamofire to download an image url to populate the user image, which may/may not be ready in time.
     let projectWithNoUserImageURL = self.project
-      |> Project.lens.creator .~ (
-        User.template
-          |> \.avatar.large .~ ""
-          |> \.avatar.medium .~ ""
-          |> \.avatar.small .~ ""
-      )
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
 
     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
