@@ -42,7 +42,7 @@ final class UIViewControllerURLTests: TestCase {
       XCTAssertFalse(mockApplication.openUrlWasCalled)
     }
   }
-  
+
   func testGoToHttpScheme() {
     guard let url = URL(string: "http://www.kickstarter.com") else {
       XCTFail("URL cannot be nil")
