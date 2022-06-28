@@ -131,7 +131,6 @@ distribute_job: &distribute_job
 all_jobs: &all_jobs
   - build-and-cache
   - kickstarter-tests
-  - kickstarter-ui-tests
   - library-tests
   - ksapi-tests
 
@@ -218,34 +217,6 @@ jobs:
       - *default_environment
       - SCHEME=KsApi
 
-  # Kickstarter UI Tests
-  kickstarter-ui-tests:
-    <<: *base_job
-    environment:
-      - *default_environment
-    steps:
-      - checkout
-      - run:
-          name: SPM SSH Workaround
-          command: *spm_ssh_workaround
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-v3-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-      - run:
-          name: Kickstarter UI Tests
-          command: SCHEME=KickstarterUITests make test
-          no_output_timeout: "20m" # 20 minutes
-
   deploy_alpha:
     <<: *base_job
     environment:
@@ -330,7 +301,6 @@ workflows:
     jobs:
       - build-and-cache
       - kickstarter-tests
-      - kickstarter-ui-tests
       - library-tests
       - ksapi-tests
 # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
