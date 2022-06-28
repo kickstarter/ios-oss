@@ -3538,6 +3538,51 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		06679D4F286BA758006552D2 /* CategorySelection */ = {
+			isa = PBXGroup;
+			children = (
+				06679D52286BA8D5006552D2 /* Views */,
+				06679D51286BA7EB006552D2 /* Controllers */,
+				06679D50286BA772006552D2 /* DataSources */,
+			);
+			path = CategorySelection;
+			sourceTree = "<group>";
+		};
+		06679D50286BA772006552D2 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */,
+				776B1A122419407700B03098 /* CategorySelectionDataSourceTests.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		06679D51286BA7EB006552D2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7727494323F34FF90065E9F2 /* CategorySelectionViewController.swift */,
+				776B1A14241945E000B03098 /* CategorySelectionViewControllerTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		06679D52286BA8D5006552D2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77D19FFC24085A170058FC8E /* CategoryCollectionViewSectionHeaderView.swift */,
+				06679D53286BAA44006552D2 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		06679D53286BAA44006552D2 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		066C0ADF26CB114A0048F4D8 /* templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -3714,7 +3759,7 @@
 		77D19FFB240859F20058FC8E /* HeaderFooterViews */ = {
 			isa = PBXGroup;
 			children = (
-				77D19FFC24085A170058FC8E /* CategoryCollectionViewSectionHeaderView.swift */,
+				7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */,
 				77320F8924411459004C631E /* SettingsAccountHeaderView.swift */,
 			);
 			path = HeaderFooterViews;
@@ -4025,7 +4070,6 @@
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
-				7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
@@ -4086,7 +4130,6 @@
 				014D62981E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift */,
 				014D63001E721D500033D2BD /* BackerDashboardProjectCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
-				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
 				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
@@ -4183,8 +4226,6 @@
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
 				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
 				771E630F23426F03005967E8 /* CancelPledgeViewControllerTests.swift */,
-				7727494323F34FF90065E9F2 /* CategorySelectionViewController.swift */,
-				776B1A14241945E000B03098 /* CategorySelectionViewControllerTests.swift */,
 				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
 				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
 				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
@@ -4531,6 +4572,7 @@
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
 				06679D47286B9DF3006552D2 /* Activities */,
+				06679D4F286BA758006552D2 /* CategorySelection */,
 				06679D41286B9460006552D2 /* Comments */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
@@ -4626,8 +4668,6 @@
 				01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */,
 				014D625A1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift */,
 				A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */,
-				7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */,
-				776B1A122419407700B03098 /* CategorySelectionDataSourceTests.swift */,
 				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
 				A7ED20071E83229E00BFFA01 /* DashboardDataSourceTests.swift */,
 				018422C31D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift */,
