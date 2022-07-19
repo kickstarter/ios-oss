@@ -360,7 +360,7 @@ extension AddNewCardViewController {
     let stpCardBrand = STPCardValidator.brand(forNumber: cardnumber)
     let expirationMonth = NSNumber(integerLiteral: textField.expirationMonth)
     let expirationYear = NSNumber(integerLiteral: textField.expirationYear)
-    
+
     self.viewModel.inputs.creditCardChanged(cardDetails: (
       cardnumber, expirationMonth, expirationYear, textField.cvc, stpCardBrand.creditCardType
     ))
