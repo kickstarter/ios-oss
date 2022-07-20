@@ -1,3 +1,3 @@
 import Stripe
 
-public final class PaymentCardTextField: STPPaymentCardTextField { }
+public final class PaymentCardTextField: STPPaymentCardTextField {}

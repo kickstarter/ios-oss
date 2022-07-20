@@ -228,8 +228,8 @@
 		1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6623B2752A0051CDCC /* UUIDType.swift */; };
 		1611EF6923B275700051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
 		1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
-		194520C32888542100CA9B88 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 194520C22888542100CA9B88 /* Stripe */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
+		194520CD28888F8900CA9B88 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 194520CC28888F8900CA9B88 /* Stripe */; };
 		203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
 		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
@@ -1623,13 +1623,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
 			remoteInfo = KsApi;
-		};
-		D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
-			remoteInfo = "Kickstarter-iOS";
 		};
 		D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3288,7 +3281,7 @@
 				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
 				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
 				774D98D223A818A800FC81C2 /* Optimizely.framework in Frameworks */,
-				194520C32888542100CA9B88 /* Stripe in Frameworks */,
+				194520CD28888F8900CA9B88 /* Stripe in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5375,7 +5368,7 @@
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
-				194520C22888542100CA9B88 /* Stripe */,
+				194520CC28888F8900CA9B88 /* Stripe */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -5420,9 +5413,10 @@
 			);
 			dependencies = (
 				A724BA631D2BFCC10041863C /* PBXTargetDependency */,
-				D09362AE225D7E8C00E1411A /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-Framework-iOSTests";
+			packageProductDependencies = (
+			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -7299,11 +7293,6 @@
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
 			targetProxy = D015875A1EEB2DE4006E7684 /* PBXContainerItemProxy */;
 		};
-		D09362AE225D7E8C00E1411A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
-			targetProxy = D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */;
-		};
 		D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
@@ -8512,7 +8501,7 @@
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
 		};
-		194520C22888542100CA9B88 /* Stripe */ = {
+		194520CC28888F8900CA9B88 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
