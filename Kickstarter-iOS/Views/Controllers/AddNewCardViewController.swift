@@ -181,7 +181,7 @@ internal final class AddNewCardViewController: UIViewController,
     self.viewModel.outputs.setStripePublishableKey
       .observeForUI()
       .observeValues {
-        STPAPIClient.shared.configuration.publishableKey = $0
+        STPAPIClient.shared.publishableKey = $0
       }
 
     self.viewModel.outputs.newCardAddedWithMessage
