@@ -85,6 +85,8 @@ internal final class AddNewCardViewController: UIViewController,
     )
 
     self.creditCardTextField.delegate = self
+    // FIXME: Stripe should handle zip codes for us, but we will be deprecating this view controller in the near future so this setting is a shortcut to use with our existing zip code view.
+    self.creditCardTextField.postalCodeEntryEnabled = false
 
     self.configureRememberThisCardToggleViewController()
 
