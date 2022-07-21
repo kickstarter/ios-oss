@@ -1,0 +1,5 @@
+mutation CreateSetupIntent($input: CreateSetupIntentInput!) {
+  createSetupIntent(input: $input) {
+    clientSecret
+  }
+}

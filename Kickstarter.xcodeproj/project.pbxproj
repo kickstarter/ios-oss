@@ -228,6 +228,12 @@
 		1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6623B2752A0051CDCC /* UUIDType.swift */; };
 		1611EF6923B275700051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
 		1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
+		19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 19047FBA2889A16300BDD1A8 /* CreateSetupIntent.graphql */; };
+		19047FBD2889AA6400BDD1A8 /* CreateSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FBC2889AA6400BDD1A8 /* CreateSetupIntentInput.swift */; };
+		19047FBF2889B05B00BDD1A8 /* CreateSetupIntentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FBE2889B05B00BDD1A8 /* CreateSetupIntentMutation.swift */; };
+		19047FC12889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FC02889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift */; };
+		19047FC32889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FC22889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift */; };
+		19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FC42889B52100BDD1A8 /* CreateSetupIntentInputTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
 		194520CD28888F8900CA9B88 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 194520CC28888F8900CA9B88 /* Stripe */; };
 		203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
@@ -1896,6 +1902,12 @@
 		1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultTypeTests.swift; sourceTree = "<group>"; };
 		1611EF6623B2752A0051CDCC /* UUIDType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDType.swift; sourceTree = "<group>"; };
 		1611EF6823B275700051CDCC /* MockUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUUID.swift; sourceTree = "<group>"; };
+		19047FBA2889A16300BDD1A8 /* CreateSetupIntent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateSetupIntent.graphql; sourceTree = "<group>"; };
+		19047FBC2889AA6400BDD1A8 /* CreateSetupIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentInput.swift; sourceTree = "<group>"; };
+		19047FBE2889B05B00BDD1A8 /* CreateSetupIntentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentMutation.swift; sourceTree = "<group>"; };
+		19047FC02889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentMutationTests.swift; sourceTree = "<group>"; };
+		19047FC22889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentMutationTemplate.swift; sourceTree = "<group>"; };
+		19047FC42889B52100BDD1A8 /* CreateSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSetupIntentInputTests.swift; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsErrorCell.swift; sourceTree = "<group>"; };
 		209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewTests.swift; sourceTree = "<group>"; };
@@ -3478,6 +3490,7 @@
 			children = (
 				066C0ADD26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift */,
 				066C0AE026CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift */,
+				19047FC22889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift */,
 				066C0AE226CC0E410048F4D8 /* CreateBackingMutationTemplate.swift */,
 				066C0AE426CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift */,
 				06962F8C273B36A700FB0B3D /* PostCommentMutationTemplate.swift */,
@@ -3514,6 +3527,7 @@
 				475DEC0026B07BB9001B961B /* CancelBacking.graphql */,
 				8AC3E0C1269E2ADC00168BF8 /* CreateBacking.graphql */,
 				47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */,
+				19047FBA2889A16300BDD1A8 /* CreateSetupIntent.graphql */,
 				06261602273B0E1500389981 /* PostComment.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */,
@@ -3527,6 +3541,8 @@
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
 				D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */,
+				19047FBE2889B05B00BDD1A8 /* CreateSetupIntentMutation.swift */,
+				19047FC02889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift */,
 				D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */,
 				4753C773264DC17900BB10B6 /* PostCommentMutation.swift */,
 				47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */,
@@ -5269,6 +5285,8 @@
 				D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */,
 				D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */,
 				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
+				19047FBC2889AA6400BDD1A8 /* CreateSetupIntentInput.swift */,
+				19047FC42889B52100BDD1A8 /* CreateSetupIntentInputTests.swift */,
 				D6B686E82191FE5E005F5DA7 /* EmptyInput.swift */,
 				D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */,
 				8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */,
@@ -5661,6 +5679,7 @@
 				06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */,
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
 				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
+				19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
 				47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */,
@@ -6921,6 +6940,7 @@
 				47D8619B26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift in Sources */,
 				D01588F11EEB2ED7006E7684 /* MessageThreadEnvelope.swift in Sources */,
 				D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */,
+				19047FBD2889AA6400BDD1A8 /* CreateSetupIntentInput.swift in Sources */,
 				D015886F1EEB2ED7006E7684 /* ErrorEnvelope.swift in Sources */,
 				D01588E11EEB2ED7006E7684 /* UserLenses.swift in Sources */,
 				D01588B91EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsLenses.swift in Sources */,
@@ -6938,6 +6958,7 @@
 				D01588931EEB2ED7006E7684 /* DiscoveryParamsLenses.swift in Sources */,
 				D01588AB1EEB2ED7006E7684 /* Project.PhotoLenses.swift in Sources */,
 				D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */,
+				19047FBF2889B05B00BDD1A8 /* CreateSetupIntentMutation.swift in Sources */,
 				8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
 				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
@@ -7148,10 +7169,12 @@
 				0622C92E27349A0E0039AAC9 /* FetchRootCategoriesQueryTemplate.swift in Sources */,
 				06032A9626CEF6D20013AAB9 /* FetchAddOnsQueryTemplate.swift in Sources */,
 				8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */,
+				19047FC32889B2F900BDD1A8 /* CreateSetupIntentMutationTemplate.swift in Sources */,
 				47D7D09C26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift in Sources */,
 				06F7BE1C26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift in Sources */,
 				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
 				0622C92827347F980039AAC9 /* FetchCategoryQueryTemplate.swift in Sources */,
+				19047FC52889B52100BDD1A8 /* CreateSetupIntentInputTests.swift in Sources */,
 				47A662FB26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
@@ -7171,6 +7194,7 @@
 				8AC3E0592697ABD900168BF8 /* Project.Category+CategoryFragmentTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
 				8AC3E128269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift in Sources */,
+				19047FC12889B11F00BDD1A8 /* CreateSetupIntentMutationTests.swift in Sources */,
 				06232D472795EC4F00A81755 /* HTMLParserTemplates.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
 				0622C9242734778D0039AAC9 /* Category+CategoryFragmentTests.swift in Sources */,
