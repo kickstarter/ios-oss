@@ -2,7 +2,7 @@ import Foundation
 import Library
 import Stripe
 
-extension STPPaymentHandler.ActionStatus: StripePaymentHandlerActionStatusType {
+extension STPPaymentHandlerActionStatus: StripePaymentHandlerActionStatusType {
   public var status: StripePaymentHandlerActionStatus {
     switch self {
     case .canceled: return .canceled

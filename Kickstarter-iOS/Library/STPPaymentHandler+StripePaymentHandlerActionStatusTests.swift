@@ -5,17 +5,17 @@ import XCTest
 final class STPPaymentHandler_StripePaymentHandlerActionStatusTests: TestCase {
   func testTypeMapping() {
     XCTAssertEqual(
-      STPPaymentHandler.ActionStatus.succeeded.status,
+      STPPaymentHandlerActionStatus.succeeded.status,
       StripePaymentHandlerActionStatus.succeeded
     )
 
     XCTAssertEqual(
-      STPPaymentHandler.ActionStatus.canceled.status,
+      STPPaymentHandlerActionStatus.canceled.status,
       StripePaymentHandlerActionStatus.canceled
     )
 
     XCTAssertEqual(
-      STPPaymentHandler.ActionStatus.failed.status,
+      STPPaymentHandlerActionStatus.failed.status,
       StripePaymentHandlerActionStatus.failed
     )
   }

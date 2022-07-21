@@ -228,6 +228,8 @@
 		1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6623B2752A0051CDCC /* UUIDType.swift */; };
 		1611EF6923B275700051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
 		1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
+		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
+		194520CD28888F8900CA9B88 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 194520CC28888F8900CA9B88 /* Stripe */; };
 		203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
 		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
@@ -1342,7 +1344,6 @@
 		D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D09362A9225D693000E1411A /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09362A8225D693000E1411A /* Stripe.framework */; };
 		D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
 		D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B46221A86F7E00910962 /* PushRegistrationType.swift */; };
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
@@ -1547,7 +1548,6 @@
 		D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */; };
 		D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DDE7217D729300B5319A /* GraphUserTemplates.swift */; };
 		D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE3D217E339500B5319A /* AddNewCardViewController.swift */; };
-		D770DE78217E876000B5319A /* AddNewCardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */; };
 		D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */; };
 		D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */; };
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
@@ -1623,13 +1623,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
 			remoteInfo = KsApi;
-		};
-		D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
-			remoteInfo = "Kickstarter-iOS";
 		};
 		D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1903,6 +1896,7 @@
 		1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultTypeTests.swift; sourceTree = "<group>"; };
 		1611EF6623B2752A0051CDCC /* UUIDType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDType.swift; sourceTree = "<group>"; };
 		1611EF6823B275700051CDCC /* MockUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUUID.swift; sourceTree = "<group>"; };
+		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsErrorCell.swift; sourceTree = "<group>"; };
 		209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewTests.swift; sourceTree = "<group>"; };
 		20A093852666575F00DEC258 /* CommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTests.swift; sourceTree = "<group>"; };
@@ -3025,7 +3019,6 @@
 		D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModel.swift; sourceTree = "<group>"; };
 		D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModelTests.swift; sourceTree = "<group>"; };
 		D08CD20221922025009F89F0 /* WatchProjectResponseEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectResponseEnvelopeTemplates.swift; sourceTree = "<group>"; };
-		D09362A8225D693000E1411A /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = Carthage/Build/iOS/Stripe.framework; sourceTree = "<group>"; };
 		D093B46221A86F7E00910962 /* PushRegistrationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistrationType.swift; sourceTree = "<group>"; };
 		D093B49B21A86FD800910962 /* PushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistration.swift; sourceTree = "<group>"; };
 		D093B4B721A8B0E000910962 /* MockPushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPushRegistration.swift; sourceTree = "<group>"; };
@@ -3288,7 +3281,7 @@
 				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
 				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
 				774D98D223A818A800FC81C2 /* Optimizely.framework in Frameworks */,
-				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
+				194520CD28888F8900CA9B88 /* Stripe in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3919,6 +3912,7 @@
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
 				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
+				194520C4288859A600CA9B88 /* PaymentCardTextField.swift */,
 				8ADF4D7524BCCFD60018AD4B /* PillsView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
@@ -4514,7 +4508,6 @@
 				8A04FE25262781240056F413 /* SDWebImage.framework */,
 				8A04FE24262781240056F413 /* Segment_Appboy.framework */,
 				8A417DE625AE2F8600A2C406 /* Segment.framework */,
-				D09362A8225D693000E1411A /* Stripe.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -5375,6 +5368,7 @@
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
+				194520CC28888F8900CA9B88 /* Stripe */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -5419,9 +5413,10 @@
 			);
 			dependencies = (
 				A724BA631D2BFCC10041863C /* PBXTargetDependency */,
-				D09362AE225D7E8C00E1411A /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-Framework-iOSTests";
+			packageProductDependencies = (
+			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -5546,6 +5541,7 @@
 			packageReferences = (
 				06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
+				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -6479,6 +6475,7 @@
 				3742036F22DD45A2007AA86E /* PillCell.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,
+				194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				37CA16B123304DCA006044F9 /* ToggleViewController.swift in Sources */,
@@ -6719,7 +6716,6 @@
 			files = (
 				1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */,
 				77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */,
-				D770DE78217E876000B5319A /* AddNewCardViewControllerTests.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */,
@@ -7296,11 +7292,6 @@
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
 			targetProxy = D015875A1EEB2DE4006E7684 /* PBXContainerItemProxy */;
-		};
-		D09362AE225D7E8C00E1411A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
-			targetProxy = D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */;
 		};
 		D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -8469,6 +8460,14 @@
 				kind = branch;
 			};
 		};
+		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 22.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -8501,6 +8500,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
+		};
+		194520CC28888F8900CA9B88 /* Stripe */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			productName = Stripe;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

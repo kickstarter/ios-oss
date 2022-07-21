@@ -85,6 +85,8 @@ internal final class AddNewCardViewController: UIViewController,
     )
 
     self.creditCardTextField.delegate = self
+    // FIXME: Stripe should handle zip codes for us, but we will be deprecating this view controller in the near future so this setting is a shortcut to use with our existing zip code view.
+    self.creditCardTextField.postalCodeEntryEnabled = false
 
     self.configureRememberThisCardToggleViewController()
 
@@ -181,7 +183,7 @@ internal final class AddNewCardViewController: UIViewController,
     self.viewModel.outputs.setStripePublishableKey
       .observeForUI()
       .observeValues {
-        STPPaymentConfiguration.shared().publishableKey = $0
+        STPAPIClient.shared.publishableKey = $0
       }
 
     self.viewModel.outputs.newCardAddedWithMessage
@@ -298,12 +300,12 @@ internal final class AddNewCardViewController: UIViewController,
     let cardParams = STPCardParams()
     cardParams.name = paymentDetails.cardholderName
     cardParams.number = paymentDetails.cardNumber
-    cardParams.expMonth = paymentDetails.expMonth
-    cardParams.expYear = paymentDetails.expYear
+    cardParams.expMonth = UInt(truncating: paymentDetails.expMonth)
+    cardParams.expYear = UInt(truncating: paymentDetails.expYear)
     cardParams.cvc = paymentDetails.cvc
     cardParams.address.postalCode = paymentDetails.postalCode
 
-    STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
+    STPAPIClient.shared.createToken(withCard: cardParams) { token, error in
       if let token = token {
         self.viewModel.inputs.stripeCreated(token.tokenId, stripeID: token.stripeID)
       } else {
@@ -358,10 +360,11 @@ extension AddNewCardViewController {
     }
 
     let stpCardBrand = STPCardValidator.brand(forNumber: cardnumber)
+    let expirationMonth = NSNumber(integerLiteral: textField.expirationMonth)
+    let expirationYear = NSNumber(integerLiteral: textField.expirationYear)
 
     self.viewModel.inputs.creditCardChanged(cardDetails: (
-      cardnumber, textField.expirationMonth,
-      textField.expirationYear, textField.cvc, stpCardBrand.creditCardType
+      cardnumber, expirationMonth, expirationYear, textField.cvc, stpCardBrand.creditCardType
     ))
   }
 }
