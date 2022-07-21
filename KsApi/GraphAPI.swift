@@ -83,11 +83,12 @@ public enum GraphAPI {
     ///   - paymentType
     ///   - refParam
     ///   - paymentSourceId
+    ///   - setupIntentClientSecret
     ///   - applePay
     ///   - googlePay
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, amount: Swift.Optional<String?> = nil, locationId: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, paymentType: Swift.Optional<String?> = nil, refParam: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, googlePay: Swift.Optional<GooglePayInput?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "amount": amount, "locationId": locationId, "rewardId": rewardId, "rewardIds": rewardIds, "paymentType": paymentType, "refParam": refParam, "paymentSourceId": paymentSourceId, "applePay": applePay, "googlePay": googlePay, "clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, amount: Swift.Optional<String?> = nil, locationId: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, paymentType: Swift.Optional<String?> = nil, refParam: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, setupIntentClientSecret: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, googlePay: Swift.Optional<GooglePayInput?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "amount": amount, "locationId": locationId, "rewardId": rewardId, "rewardIds": rewardIds, "paymentType": paymentType, "refParam": refParam, "paymentSourceId": paymentSourceId, "setupIntentClientSecret": setupIntentClientSecret, "applePay": applePay, "googlePay": googlePay, "clientMutationId": clientMutationId]
     }
 
     public var projectId: GraphQLID {
@@ -162,6 +163,15 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "paymentSourceId")
+      }
+    }
+
+    public var setupIntentClientSecret: Swift.Optional<String?> {
+      get {
+        return graphQLMap["setupIntentClientSecret"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "setupIntentClientSecret")
       }
     }
 
@@ -398,9 +408,19 @@ public enum GraphAPI {
     public var graphQLMap: GraphQLMap
 
     /// - Parameters:
+    ///   - projectId
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "clientMutationId": clientMutationId]
+    }
+
+    public var projectId: GraphQLID {
+      get {
+        return graphQLMap["projectId"] as! GraphQLID
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "projectId")
+      }
     }
 
     /// A unique identifier for the client performing the mutation.

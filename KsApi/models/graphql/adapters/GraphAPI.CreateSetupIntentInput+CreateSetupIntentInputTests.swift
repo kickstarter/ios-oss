@@ -7,6 +7,6 @@ class GraphAPI_CreateSetupIntentInput_CreateSetupIntentInputTests: XCTestCase {
 
     let graphInput = GraphAPI.CreateSetupIntentInput.from(input)
 
-    XCTAssertEqual(graphInput.clientMutationId, input.projectId)
+    XCTAssertEqual(graphInput.projectId, input.projectId)
   }
 }
