@@ -28,6 +28,8 @@
 
     fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
+    fileprivate let createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>?
+
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
     fileprivate let clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>?
@@ -209,6 +211,7 @@
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>? = nil,
@@ -321,6 +324,8 @@
       self.createBackingResult = createBackingResult
 
       self.createPasswordResult = createPasswordResult
+
+      self.createStripeSetupIntentResult = createStripeSetupIntentResult
 
       self.changePaymentMethodResult = changePaymentMethodResult
       self.deletePaymentMethodResult = deletePaymentMethodResult
@@ -569,6 +574,18 @@
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createPasswordResult)
+    }
+
+    internal func createStripeSetupIntent(input: CreateSetupIntentInput)
+      -> SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .CreateSetupIntentMutation(input: GraphAPI.CreateSetupIntentInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createStripeSetupIntentResult)
     }
 
     internal func changeCurrency(input: ChangeCurrencyInput)

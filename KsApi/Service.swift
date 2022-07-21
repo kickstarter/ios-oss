@@ -145,6 +145,14 @@ public struct Service: ServiceType {
       }
   }
 
+  public func createStripeSetupIntent(input: CreateSetupIntentInput) ->
+    SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreateSetupIntentMutation(input: GraphAPI.CreateSetupIntentInput.from(input)))
+      .flatMap(ClientSecretEnvelope.envelopeProducer(from:))
+  }
+
   public func clearUserUnseenActivity(input _: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
