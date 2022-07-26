@@ -124,13 +124,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.delegate .~ self
     addNewCardViewController.configure(with: intent, project: project)
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
-    let offset = navigationController.navigationBar.bounds.height
 
-    if #available(iOS 13.0, *) {
-      self.present(navigationController, animated: true)
-    } else {
-      self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
-    }
+    self.present(navigationController, animated: true)
   }
 }
 
