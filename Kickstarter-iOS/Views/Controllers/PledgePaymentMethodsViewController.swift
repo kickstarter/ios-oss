@@ -2,6 +2,7 @@ import KsApi
 import Library
 import PassKit
 import Prelude
+import Stripe
 import UIKit
 
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
@@ -106,8 +107,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.goToAddCardScreen
       .observeForUI()
-      .observeValues { [weak self] intent, project in
-        self?.goToAddNewCard(intent: intent, project: project)
+      .observeValues { [weak self] _, _ in
+        // self?.goToAddNewCard(intent: intent, project: project)
+      }
+
+    self.viewModel.outputs.goToAddCardViaStripeScreen
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.goToPaymentSheet(data: data)
       }
   }
 
@@ -126,6 +133,24 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
 
     self.present(navigationController, animated: true)
+  }
+
+  private func goToPaymentSheet(data: PaymentSheetSetupData) {
+    PaymentSheet.FlowController
+      .create(
+        setupIntentClientSecret: data.clientSecret,
+        configuration: data.configuration
+      ) { [weak self] result in
+        guard let strongSelf = self else { return }
+
+        switch result {
+        case let .failure(error):
+          strongSelf.messageDisplayingDelegate?
+            .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+        case let .success(paymentSheetFlowController):
+          paymentSheetFlowController.presentPaymentOptions(from: strongSelf)
+        }
+      }
   }
 }
 
