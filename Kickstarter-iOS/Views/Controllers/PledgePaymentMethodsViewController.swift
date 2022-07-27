@@ -30,6 +30,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
+  private var paymentSheetFlowController: PaymentSheet.FlowController?
 
   // MARK: - Lifecycle
 
@@ -108,7 +109,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.goToAddCardScreen
       .observeForUI()
       .observeValues { [weak self] _, _ in
-        // self?.goToAddNewCard(intent: intent, project: project)
+        /** FIXME: In https://kickstarter.atlassian.net/browse/PAY-1766 with Optimizely flags.
+         self?.goToAddNewCard(intent: intent, project: project)
+         */
       }
 
     self.viewModel.outputs.goToAddCardViaStripeScreen
@@ -148,7 +151,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
           strongSelf.messageDisplayingDelegate?
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
-          paymentSheetFlowController.presentPaymentOptions(from: strongSelf)
+          strongSelf.paymentSheetFlowController = paymentSheetFlowController
+          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf)
         }
       }
   }
