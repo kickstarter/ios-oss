@@ -10,6 +10,11 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
   )
+
+  func pledgePaymentMethodsViewController(
+    _ viewController: PledgePaymentMethodsViewController,
+    loading flag: Bool
+  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -117,7 +122,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.goToAddCardViaStripeScreen
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.goToPaymentSheet(data: data)
+        guard let strongSelf = self else { return }
+
+        strongSelf.goToPaymentSheet(data: data)
+      }
+
+    self.viewModel.outputs.showLoadingIndicatorView
+      .observeForUI()
+      .observeValues { [weak self] showLoadingIndicator in
+        guard let strongSelf = self else { return }
+
+        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: showLoadingIndicator)
       }
   }
 
@@ -145,6 +160,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         configuration: data.configuration
       ) { [weak self] result in
         guard let strongSelf = self else { return }
+        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: false)
 
         switch result {
         case let .failure(error):

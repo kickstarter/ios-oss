@@ -45,6 +45,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
+  var showLoadingIndicatorView: Signal<Bool, Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -191,6 +192,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
       .map { $0.localizedDescription }
 
+    self.showLoadingIndicatorView = Signal.merge(
+      project.takeWhen(didTapToAddNewCard).mapConst(true),
+      createSetupIntentEvent.errors().mapConst(false)
+    )
+
     self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
       .map { $0.paymentMethodsCellData }
       .takePairWhen(self.willSelectRowAtIndexPathProperty.signal.skipNil())
@@ -244,6 +250,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>
+  public let showLoadingIndicatorView: Signal<Bool, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
