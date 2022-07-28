@@ -13,7 +13,7 @@ final class AddNewCardViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    UIView.setAnimationsEnabl ed(false)
+    UIView.setAnimationsEnabled(false)
   }
 
   func testAddNewCard() {
