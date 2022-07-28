@@ -34,7 +34,7 @@ final class AddNewCardViewControllerTests: TestCase {
         let controller = AddNewCardViewController.instantiate()
         controller.configure(with: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        O
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
