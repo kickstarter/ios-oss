@@ -4,6 +4,7 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import Stripe
 import XCTest
 
 final class PledgePaymentMethodsViewModelTests: TestCase {
@@ -11,6 +12,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
 
   private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
+  private let goToAddStripeCardIntent = TestObserver<PaymentSheetSetupData, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
@@ -22,6 +24,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
   private let reloadPaymentMethodsSelectedCard = TestObserver<UserCreditCards.CreditCard?, Never>()
   private let reloadPaymentMethodsShouldReload = TestObserver<Bool, Never>()
+  private let showLoadingIndicatorView = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -45,6 +48,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.reloadPaymentMethods.map { $0.1 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsShouldReload.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsIsLoading.observer)
+    self.vm.outputs.showLoadingIndicatorView.map { $0 }.observe(self.showLoadingIndicatorView.observer)
+    self.vm.outputs.goToAddCardViaStripeScreen.map { $0 }.observe(self.goToAddStripeCardIntent.observer)
     // swiftlint:enable line_length
   }
 
@@ -472,6 +477,62 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
       self.goToAddCardIntent.assertValues([.pledge])
       self.goToProject.assertValues([project])
+    }
+  }
+
+  func testLoadingingIndicatorView_ShowAndHide_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseErrorEnvelopeJSON))
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.showLoadingIndicatorView.assertValues([true, false])
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.lastValue?.clientSecret, "test")
+      XCTAssertEqual(
+        self.goToAddStripeCardIntent.lastValue?.configuration.merchantDisplayName,
+        Strings.general_accessibility_kickstarter()
+      )
+
+      guard let allowedDelayedPaymentMethods = self.goToAddStripeCardIntent.lastValue?.configuration
+        .allowsDelayedPaymentMethods else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertTrue(allowedDelayedPaymentMethods)
     }
   }
 }

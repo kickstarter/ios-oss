@@ -171,6 +171,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         AppEnvironment.current.apiService
           .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
           .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
             var configuration = PaymentSheet.Configuration()
             configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()

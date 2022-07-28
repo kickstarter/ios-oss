@@ -4,11 +4,16 @@
 import Prelude
 import UIKit
 
+/** FIXME: There is a problem with testing the payment sheet. Somehow SPM is incorrectly linking the SDK resources explained here:
+ https://kickstarter.atlassian.net/browse/NTV-589
+ When that issue is resolved, we can include this file back into `Kickstarter-Framework-iOSTests`
+ */
+
 final class AddNewCardViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    UIView.setAnimationsEnabled(false)
+    UIView.setAnimationsEnabl ed(false)
   }
 
   func testAddNewCard() {
@@ -29,7 +34,7 @@ final class AddNewCardViewControllerTests: TestCase {
         let controller = AddNewCardViewController.instantiate()
         controller.configure(with: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
+        O
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
