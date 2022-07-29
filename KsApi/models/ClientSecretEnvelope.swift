@@ -11,7 +11,7 @@ extension ClientSecretEnvelope {
   static func envelopeProducer(from data: GraphAPI.CreateSetupIntentMutation.Data)
     -> SignalProducer<ClientSecretEnvelope, ErrorEnvelope> {
     guard let envelope = ClientSecretEnvelope.clientSecretEnvelope(from: data) else {
-      return .empty
+      return SignalProducer(error: .couldNotParseJSON)
     }
     return SignalProducer(value: envelope)
   }

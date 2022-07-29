@@ -2,12 +2,18 @@ import KsApi
 import Library
 import PassKit
 import Prelude
+import Stripe
 import UIKit
 
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   func pledgePaymentMethodsViewController(
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
+  )
+
+  func pledgePaymentMethodsViewController(
+    _ viewController: PledgePaymentMethodsViewController,
+    loading flag: Bool
   )
 }
 
@@ -29,6 +35,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
+  private var paymentSheetFlowController: PaymentSheet.FlowController?
 
   // MARK: - Lifecycle
 
@@ -106,8 +113,26 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.goToAddCardScreen
       .observeForUI()
-      .observeValues { [weak self] intent, project in
-        self?.goToAddNewCard(intent: intent, project: project)
+      .observeValues { [weak self] _, _ in
+        /** FIXME: In https://kickstarter.atlassian.net/browse/PAY-1766 with Optimizely flags.
+         self?.goToAddNewCard(intent: intent, project: project)
+         */
+      }
+
+    self.viewModel.outputs.goToAddCardViaStripeScreen
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let strongSelf = self else { return }
+
+        strongSelf.goToPaymentSheet(data: data)
+      }
+
+    self.viewModel.outputs.showLoadingIndicatorView
+      .observeForUI()
+      .observeValues { [weak self] showLoadingIndicator in
+        guard let strongSelf = self else { return }
+
+        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: showLoadingIndicator)
       }
   }
 
@@ -124,13 +149,28 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.delegate .~ self
     addNewCardViewController.configure(with: intent, project: project)
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
-    let offset = navigationController.navigationBar.bounds.height
 
-    if #available(iOS 13.0, *) {
-      self.present(navigationController, animated: true)
-    } else {
-      self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
-    }
+    self.present(navigationController, animated: true)
+  }
+
+  private func goToPaymentSheet(data: PaymentSheetSetupData) {
+    PaymentSheet.FlowController
+      .create(
+        setupIntentClientSecret: data.clientSecret,
+        configuration: data.configuration
+      ) { [weak self] result in
+        guard let strongSelf = self else { return }
+        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: false)
+
+        switch result {
+        case let .failure(error):
+          strongSelf.messageDisplayingDelegate?
+            .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+        case let .success(paymentSheetFlowController):
+          strongSelf.paymentSheetFlowController = paymentSheetFlowController
+          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf)
+        }
+      }
   }
 }
 

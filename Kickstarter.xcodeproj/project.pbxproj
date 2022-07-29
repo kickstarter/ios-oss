@@ -241,6 +241,7 @@
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
 		194520CD28888F8900CA9B88 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 194520CC28888F8900CA9B88 /* Stripe */; };
+		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
 		203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
 		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
@@ -3271,6 +3272,7 @@
 				D08C68A922AF105A001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
+				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
 				0653738D27AC5B2D00C7D160 /* Kingfisher.framework in Frameworks */,
 				8A04FE31262781570056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
@@ -5360,6 +5362,7 @@
 			name = "Library-iOS";
 			packageProductDependencies = (
 				06634FC62807A4EB00950F60 /* Prelude_UIKit */,
+				1981AC8F289075D900BB4897 /* Stripe */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8509,7 +8512,7 @@
 			repositoryURL = "https://github.com/stripe/stripe-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 22.0.0;
+				minimumVersion = 22.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -8546,6 +8549,11 @@
 			productName = Prelude;
 		};
 		194520CC28888F8900CA9B88 /* Stripe */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
+			productName = Stripe;
+		};
+		1981AC8F289075D900BB4897 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;

@@ -652,17 +652,19 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
-  func pledgePaymentMethodsViewControllerDidTapApplePayButton(
-    _: PledgePaymentMethodsViewController
-  ) {
-    self.viewModel.inputs.applePayButtonTapped()
-  }
-
   func pledgePaymentMethodsViewController(
     _: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
   ) {
     self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
+  }
+
+  func pledgePaymentMethodsViewController(_: PledgePaymentMethodsViewController, loading flag: Bool) {
+    if flag {
+      self.showProcessingView()
+    } else {
+      self.hideProcessingView()
+    }
   }
 }
 

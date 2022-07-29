@@ -2,6 +2,7 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
+import Stripe
 import UIKit
 
 public enum PaymentMethodsTableViewSection: Int {
@@ -16,6 +17,11 @@ public typealias PledgePaymentMethodsValue = (
   reward: Reward,
   context: PledgeViewContext,
   refTag: RefTag?
+)
+
+public typealias PaymentSheetSetupData = (
+  clientSecret: String,
+  configuration: PaymentSheet.Configuration
 )
 
 public typealias PledgePaymentMethodsAndSelectionData = (
@@ -35,9 +41,11 @@ public protocol PledgePaymentMethodsViewModelInputs {
 
 public protocol PledgePaymentMethodsViewModelOutputs {
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
+  var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
+  var showLoadingIndicatorView: Signal<Bool, Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -143,10 +151,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       updatedCards
     )
 
-    self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
-      .errors()
-      .map { $0.localizedDescription }
-
     self.notifyDelegateCreditCardSelected = self.reloadPaymentMethods
       .map { $0.selectedCard?.id }
       .skipNil()
@@ -155,9 +159,44 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
       .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
+    // TODO: Hook into Optimizely flag here (either go the `goToAddCardScreen` or `goToAddCardViaStripeScreen` route.). Ie. Only create a setup intent when the add new card button is tapped and the optimizely flag allows showing the payment sheet.
+
     self.goToAddCardScreen = project
       .takeWhen(didTapToAddNewCard)
       .map { project in (.pledge, project) }
+
+    let createSetupIntentEvent = project
+      .takeWhen(didTapToAddNewCard)
+      .switchMap { project in
+        AppEnvironment.current.apiService
+          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+            var configuration = PaymentSheet.Configuration()
+            configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+            configuration.allowsDelayedPaymentMethods = true
+
+            let data = PaymentSheetSetupData(
+              clientSecret: envelope.clientSecret,
+              configuration: configuration
+            )
+
+            return SignalProducer(value: data)
+          }
+          .materialize()
+      }
+
+    self.goToAddCardViaStripeScreen = createSetupIntentEvent.values()
+
+    self.notifyDelegateLoadPaymentMethodsError = Signal
+      .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
+      .map { $0.localizedDescription }
+
+    self.showLoadingIndicatorView = Signal.merge(
+      project.takeWhen(didTapToAddNewCard).mapConst(true),
+      createSetupIntentEvent.errors().mapConst(false)
+    )
 
     self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
       .map { $0.paymentMethodsCellData }
@@ -208,9 +247,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   }
 
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
+  public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>
+  public let showLoadingIndicatorView: Signal<Bool, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
