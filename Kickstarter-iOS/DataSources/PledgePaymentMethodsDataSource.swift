@@ -4,7 +4,11 @@ import Prelude
 import UIKit
 
 internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
-  internal func load(_ cards: [PledgePaymentMethodCellData], isLoading: Bool = false) {
+  internal func load(
+    _ cards: [PledgePaymentMethodCellData],
+    paymentSheetCard: PaymentSheetPaymentMethodCellData?,
+    isLoading: Bool = false
+  ) {
     self.clearValues()
 
     guard isLoading == false else {
@@ -15,8 +19,12 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       )
     }
 
+    let updatedCardsWithPaymentSheetCard = cards.map {
+      ($0, paymentSheetCard)
+    }
+
     self.set(
-      values: cards,
+      values: updatedCardsWithPaymentSheetCard,
       cellClass: PledgePaymentMethodCell.self,
       inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
     )
@@ -30,7 +38,10 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgePaymentMethodCell, value as PledgePaymentMethodCellData):
+    case let (
+      cell as PledgePaymentMethodCell,
+      value as (PledgePaymentMethodCellData, PaymentSheetPaymentMethodCellData?)
+    ):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodAddCell, value as Void):
       cell.configureWith(value: value)

@@ -26,6 +26,7 @@ public typealias PaymentSheetSetupData = (
 
 public typealias PledgePaymentMethodsAndSelectionData = (
   paymentMethodsCellData: [PledgePaymentMethodCellData],
+  paymentSheetPaymentMethodsCellData: PaymentSheetPaymentMethodCellData?,
   selectedCard: UserCreditCards.CreditCard?,
   shouldReload: Bool,
   isLoading: Bool
@@ -35,6 +36,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
+  func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
@@ -94,6 +96,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .map { ($0.0, $0.1, $0.2, false) }
 
+    let newSetupIntentCard = self.newSetupIntentCreditCardProperty.signal.skipNil()
+      .map { (image: $0.image, redactedCardNumber: $0.label) }
+
     let newCard = self.newCreditCardProperty.signal.skipNil()
 
     let allCards = Signal.merge(
@@ -130,6 +135,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         return (
           paymentMethodsCellData: cellData(data, selecting: card),
+          paymentSheetPaymentMethodsCellData: nil,
           selectedCard: card,
           shouldReload: false,
           isLoading: false
@@ -137,17 +143,30 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
       .skipNil()
 
-    let configuredCards = cards.map { cellData, selectedCard in
-      (paymentMethodsCellData: cellData, selectedCard: selectedCard, shouldReload: true, isLoading: false)
-    }
+    let configuredCards: Signal<PledgePaymentMethodsAndSelectionData, Never> = cards
+      .map { cellData, selectedCard -> PledgePaymentMethodsAndSelectionData in
+        PledgePaymentMethodsAndSelectionData(
+          paymentMethodsCellData: cellData,
+          paymentSheetPaymentMethodsCellData: nil,
+          selectedCard: selectedCard,
+          shouldReload: true,
+          isLoading: false
+        )
+      }
 
     let reloadWithLoadingCell: Signal<PledgePaymentMethodsAndSelectionData, Never> = storedCardsEvent.values()
       .filter(second >>> isTrue)
-      .map { _ in (paymentMethodsCellData: [], selectedCard: nil, shouldReload: true, isLoading: true) }
+      .map { _ in (
+        paymentMethodsCellData: [],
+        paymentSheetPaymentMethodsCellData: nil,
+        selectedCard: nil,
+        shouldReload: true,
+        isLoading: true
+      ) }
 
     self.reloadPaymentMethods = Signal.merge(
       reloadWithLoadingCell,
-      configuredCards.map { $0 as PledgePaymentMethodsAndSelectionData },
+      configuredCards,
       updatedCards
     )
 
@@ -227,6 +246,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let newCreditCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
   public func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard) {
     self.newCreditCardProperty.value = card
+  }
+
+  private let newSetupIntentCreditCardProperty =
+    MutableProperty<PaymentSheet.FlowController.PaymentOptionDisplayData?>(nil)
+  public func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData) {
+    self.newSetupIntentCreditCardProperty.value = card
   }
 
   private let viewDidLoadProperty = MutableProperty(())

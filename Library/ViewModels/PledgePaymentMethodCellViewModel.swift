@@ -12,9 +12,14 @@ public typealias PledgePaymentMethodCellData = (
   isErroredPaymentMethod: Bool
 )
 
+public typealias PaymentSheetPaymentMethodCellData = (image: UIImage, redactedCardNumber: String)
+
 public protocol PledgePaymentMethodCellViewModelInputs {
   /// Call to configure cell with card and selected card values.
   func configureWith(value: PledgePaymentMethodCellData)
+
+  /// Call to configure cell with payment sheet card values (temporary Stripe enabled cards)
+  func configureWithPaymentSheetCard(value: PaymentSheetPaymentMethodCellData)
 
   /// Call with the currently selected card.
   func setSelectedCard(_ creditCard: UserCreditCards.CreditCard)
@@ -26,6 +31,9 @@ public protocol PledgePaymentMethodCellViewModelOutputs {
 
   /// Emits the card's image name.
   var cardImageName: Signal<String, Never> { get }
+
+  /// Emits the card's image.
+  var cardImage: Signal<UIImage, Never> { get }
 
   /// Emits a formatted accessibility string containing the card type, number and last four digits
   var cardNumberAccessibilityLabel: Signal<String, Never> { get }
@@ -63,26 +71,46 @@ public protocol PledgePaymentMethodCellViewModelType {
 public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellViewModelInputs,
   PledgePaymentMethodCellViewModelOutputs, PledgePaymentMethodCellViewModelType {
   public init() {
+    let paymentSheetCreditCardImage = self.configurePaymentSheetCardValueProperty.signal.skipNil()
+      .map(\.image)
+    let paymentSheetCreditCardRedactedNumber = self.configurePaymentSheetCardValueProperty.signal.skipNil()
+      .map(\.redactedCardNumber)
     let creditCard = self.configureValueProperty.signal.skipNil().map(\.card)
     let selectedCard = self.selectedCardProperty.signal.skipNil()
     let cardTypeIsAvailable = self.configureValueProperty.signal.skipNil().map(\.isEnabled)
     let configuredAsSelected = self.configureValueProperty.signal.skipNil().map(\.isSelected)
 
+    self.cardImage = paymentSheetCreditCardImage
+
     self.cardImageName = creditCard
       .map { $0.imageName }
 
-    self.cardNumberAccessibilityLabel = creditCard
+    let creditCardAccessibilityLabel = creditCard
       .map {
         [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
           .compact()
           .joined(separator: ", ")
       }
 
-    self.cardNumberTextShortStyle = creditCard
+    let paymentSheetCreditCardAccessibilityLabel = paymentSheetCreditCardRedactedNumber.map {
+      Strings.Card_ending_in_last_four(last_four: $0)
+    }
+
+    self.cardNumberAccessibilityLabel = Signal
+      .merge(creditCardAccessibilityLabel, paymentSheetCreditCardAccessibilityLabel)
+
+    let redactedCardNumber = creditCard
       .map { "•••• \($0.lastFour)" }
 
-    self.expirationDateText = creditCard
+    self.cardNumberTextShortStyle = Signal.merge(redactedCardNumber, paymentSheetCreditCardRedactedNumber)
+
+    let creditCardExpiryDate = creditCard
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
+
+    let paymentSheetCreditCardExpiryDate = paymentSheetCreditCardRedactedNumber
+      .map(String.init)
+
+    self.expirationDateText = Signal.merge(creditCardExpiryDate, paymentSheetCreditCardExpiryDate)
 
     let cardAndSelectedCard = Signal.combineLatest(
       creditCard,
@@ -91,16 +119,26 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
 
     let setAsSelected = cardAndSelectedCard.map(==)
 
-    self.checkmarkImageName = Signal.merge(configuredAsSelected, setAsSelected)
+    let creditCardCheckImageName = Signal.merge(configuredAsSelected, setAsSelected)
       .map { $0 ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
 
-    self.unavailableCardLabelHidden = self.configureValueProperty.signal.skipNil()
-      .map { card in !card.isEnabled || card.isErroredPaymentMethod }
-      .negate()
+    // FIXME: All payment sheet cards are mapping to unselected temporarily. Revisit this once displaying multiple payment sheet cards is working.
+    let paymentSheetCheckImageName = paymentSheetCreditCardExpiryDate
+      .map { _ in "icon-payment-method-unselected" }
 
-    self.unavailableCardText = self.configureValueProperty.signal.skipNil()
+    self.checkmarkImageName = Signal.merge(creditCardCheckImageName, paymentSheetCheckImageName)
+
+    let creditCardLabelUnavailable = self.configureValueProperty.signal.skipNil()
+      .map { card in !card.isEnabled || card.isErroredPaymentMethod }
+
+    let paymentSheetCreditCardUnavailable = paymentSheetCreditCardRedactedNumber.mapConst(false)
+
+    self.unavailableCardLabelHidden = Signal
+      .merge(creditCardLabelUnavailable.negate(), paymentSheetCreditCardUnavailable.negate())
+
+    let cardText = self.configureValueProperty.signal.skipNil()
       .filter { card in !card.isEnabled || card.isErroredPaymentMethod }
-      .map { card in
+      .map { card -> String in
         if !card.isEnabled {
           return Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
             project_country: card.projectCountry
@@ -110,24 +148,52 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
         return Strings.Retry_or_select_another_method()
       }
 
-    self.selectionStyle = cardTypeIsAvailable.map {
-      $0 ? .default : .none
+    let paymentSheetCardText = paymentSheetCreditCardRedactedNumber.map { _ in Strings.general_error_oops() }
+
+    self.unavailableCardText = Signal.merge(cardText, paymentSheetCardText)
+
+    let creditCardIsAvailableForSelectionStyle = cardTypeIsAvailable.map {
+      $0 ? UITableViewCell.SelectionStyle.default : .none
     }
 
-    self.cardImageAlpha = cardTypeIsAvailable.map {
-      $0 ? 1.0 : 0.5
+    let paymentSheetCreditCardIsAvailableForSelectionStyle = paymentSheetCreditCardRedactedNumber
+      .map { _ in UITableViewCell.SelectionStyle.default }
+
+    self.selectionStyle = Signal
+      .merge(creditCardIsAvailableForSelectionStyle, paymentSheetCreditCardIsAvailableForSelectionStyle)
+
+    let creditCardIsAvailable = cardTypeIsAvailable.map {
+      CGFloat($0 ? 1.0 : 0.5)
     }
 
-    self.checkmarkImageHidden = cardTypeIsAvailable.negate()
+    let paymentSheetCreditCardIsAvailable = paymentSheetCreditCardRedactedNumber.map { _ in CGFloat(1.0) }
 
-    self.lastFourLabelTextColor = cardTypeIsAvailable.map {
-      $0 ? .ksr_support_700 : .ksr_support_400
+    self.cardImageAlpha = Signal.merge(creditCardIsAvailable, paymentSheetCreditCardIsAvailable)
+
+    let creditCardImageHidden = cardTypeIsAvailable.negate()
+
+    let paymentSheetCreditCardImageHidden = paymentSheetCreditCardRedactedNumber.mapConst(false)
+
+    self.checkmarkImageHidden = Signal.merge(creditCardImageHidden, paymentSheetCreditCardImageHidden)
+
+    let creditCardTextColor = cardTypeIsAvailable.map { cardTypeIsAvailable in
+      cardTypeIsAvailable ? UIColor.ksr_support_700 : UIColor.ksr_support_400
     }
+
+    let paymentSheetTextColor = paymentSheetCreditCardRedactedNumber.mapConst(UIColor.ksr_support_700)
+
+    self.lastFourLabelTextColor = Signal.merge(creditCardTextColor, paymentSheetTextColor)
   }
 
   fileprivate let configureValueProperty = MutableProperty<PledgePaymentMethodCellData?>(nil)
   public func configureWith(value: PledgePaymentMethodCellData) {
     self.configureValueProperty.value = value
+  }
+
+  fileprivate let configurePaymentSheetCardValueProperty =
+    MutableProperty<PaymentSheetPaymentMethodCellData?>(nil)
+  public func configureWithPaymentSheetCard(value: PaymentSheetPaymentMethodCellData) {
+    self.configurePaymentSheetCardValueProperty.value = value
   }
 
   private let selectedCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
@@ -137,6 +203,7 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
 
   public let cardImageAlpha: Signal<CGFloat, Never>
   public let cardImageName: Signal<String, Never>
+  public let cardImage: Signal<UIImage, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let checkmarkImageHidden: Signal<Bool, Never>

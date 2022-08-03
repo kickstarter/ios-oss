@@ -136,6 +136,13 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
         self?.checkmarkImageView.alpha = hidden ? 0 : 1
       }
 
+    self.viewModel.outputs.cardImage
+      .observeForUI()
+      .observeValues { [weak self] image in
+        _ = self?.cardImageView
+          ?|> \.image .~ image
+      }
+
     self.viewModel.outputs.cardImageName
       .observeForUI()
       .observeValues { [weak self] imageName in
@@ -157,8 +164,14 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       }
   }
 
-  func configureWith(value: PledgePaymentMethodCellData) {
-    self.viewModel.inputs.configureWith(value: value)
+  func configureWith(value: (PledgePaymentMethodCellData, PaymentSheetPaymentMethodCellData?)) {
+    guard let paymentSheetCardData = value.1 else {
+      self.viewModel.inputs.configureWith(value: value.0)
+
+      return
+    }
+
+    self.viewModel.inputs.configureWithPaymentSheetCard(value: paymentSheetCardData)
   }
 
   // MARK: - Accessors

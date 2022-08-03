@@ -80,10 +80,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, selectedCard, shouldReload, isLoading in
+      .observeValues { [weak self] cards, paymentSheetCard, selectedCard, shouldReload, isLoading in
         guard let self = self else { return }
 
-        self.dataSource.load(cards, isLoading: isLoading)
+        self.dataSource.load(
+          cards,
+          paymentSheetCard: paymentSheetCard,
+          isLoading: isLoading
+        )
 
         if shouldReload {
           self.tableView.reloadData()
@@ -168,7 +172,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
           strongSelf.paymentSheetFlowController = paymentSheetFlowController
-          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf)
+          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+            guard let strongSelf = self,
+              let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
+            strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption)
+          }
         }
       }
   }
