@@ -137,6 +137,13 @@ final class PledgePaymentSheetPaymentMethodCell: UITableViewCell, ValueCell {
         self?.checkmarkImageView.alpha = hidden ? 0 : 1
       }
 
+    self.viewModel.outputs.cardImage
+      .observeForUI()
+      .observeValues { [weak self] image in
+        _ = self?.cardImageView
+          ?|> \.image .~ image
+      }
+
     self.viewModel.outputs.checkmarkImageName
       .observeForUI()
       .observeValues { [weak self] imageName in

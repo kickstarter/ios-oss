@@ -26,7 +26,7 @@ public typealias PaymentSheetSetupData = (
 
 public typealias PledgePaymentMethodsAndSelectionData = (
   paymentMethodsCellData: [PledgePaymentMethodCellData],
-  paymentSheetPaymentMethodsCellData: PaymentSheetPaymentMethodCellData?,
+  paymentSheetPaymentMethodsCellData: [PaymentSheetPaymentMethodCellData],
   selectedCard: UserCreditCards.CreditCard?,
   shouldReload: Bool,
   isLoading: Bool
@@ -96,8 +96,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .map { ($0.0, $0.1, $0.2, false) }
 
-    let newSetupIntentCard = self.newSetupIntentCreditCardProperty.signal.skipNil()
-      .map { (image: $0.image, redactedCardNumber: $0.label) }
+    let newSetupIntentCards = self.newSetupIntentCreditCardProperty.signal.skipNil()
+      .map { [(image: $0.image, redactedCardNumber: $0.label)] }
+      .scan([]) { current, new in new + current }
 
     let newCard = self.newCreditCardProperty.signal.skipNil()
 
@@ -135,7 +136,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         return (
           paymentMethodsCellData: cellData(data, selecting: card),
-          paymentSheetPaymentMethodsCellData: nil,
+          paymentSheetPaymentMethodsCellData: [],
           selectedCard: card,
           shouldReload: false,
           isLoading: false
@@ -147,7 +148,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map { cellData, selectedCard -> PledgePaymentMethodsAndSelectionData in
         PledgePaymentMethodsAndSelectionData(
           paymentMethodsCellData: cellData,
-          paymentSheetPaymentMethodsCellData: nil,
+          paymentSheetPaymentMethodsCellData: [],
           selectedCard: selectedCard,
           shouldReload: true,
           isLoading: false
@@ -158,17 +159,17 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .filter(second >>> isTrue)
       .map { _ in (
         paymentMethodsCellData: [],
-        paymentSheetPaymentMethodsCellData: nil,
+        paymentSheetPaymentMethodsCellData: [],
         selectedCard: nil,
         shouldReload: true,
         isLoading: true
       ) }
 
     let configuredCardsWithNewSetupIntentCards = configuredCards
-      .takePairWhen(newSetupIntentCard)
-      .map { cardData, setupIntentCardData -> PledgePaymentMethodsAndSelectionData in
-        let updatedCardData = cardData
-          |> \.paymentSheetPaymentMethodsCellData .~ setupIntentCardData
+      .takePairWhen(newSetupIntentCards)
+      .map { cards, setupIntentCards -> PledgePaymentMethodsAndSelectionData in
+        let updatedCardData = cards
+          |> \.paymentSheetPaymentMethodsCellData .~ setupIntentCards
 
         return updatedCardData
       }

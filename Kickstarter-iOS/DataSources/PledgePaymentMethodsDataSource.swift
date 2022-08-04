@@ -6,7 +6,7 @@ import UIKit
 internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
   internal func load(
     _ cards: [PledgePaymentMethodCellData],
-    paymentSheetCard: PaymentSheetPaymentMethodCellData?,
+    paymentSheetCards: [PaymentSheetPaymentMethodCellData],
     isLoading: Bool = false
   ) {
     self.clearValues()
@@ -19,19 +19,30 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       )
     }
 
-    self.set(
-      values: cards,
-      cellClass: PledgePaymentMethodCell.self,
-      inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
-    )
+    let paymentSheetCardsAvailable = paymentSheetCards.count > 0
 
-    if let paymentSheetCard = paymentSheetCard {
-      self
-        .appendRow(
-          value: paymentSheetCard,
-          cellClass: PledgePaymentSheetPaymentMethodCell.self,
-          toSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
-        )
+    switch paymentSheetCardsAvailable {
+    case true:
+      self.set(
+        values: paymentSheetCards,
+        cellClass: PledgePaymentSheetPaymentMethodCell.self,
+        inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
+
+      cards.forEach { cardData in
+        self
+          .appendRow(
+            value: cardData,
+            cellClass: PledgePaymentMethodCell.self,
+            toSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+          )
+      }
+    case false:
+      self.set(
+        values: cards,
+        cellClass: PledgePaymentMethodCell.self,
+        inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
     }
 
     self.set(

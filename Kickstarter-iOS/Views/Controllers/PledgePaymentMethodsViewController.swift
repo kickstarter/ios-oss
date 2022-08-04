@@ -81,12 +81,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, paymentSheetCard, selectedCard, shouldReload, isLoading in
+      .observeValues { [weak self] cards, paymentSheetCards, selectedCard, shouldReload, isLoading in
         guard let self = self else { return }
 
         self.dataSource.load(
           cards,
-          paymentSheetCard: paymentSheetCard,
+          paymentSheetCards: paymentSheetCards,
           isLoading: isLoading
         )
 
@@ -95,6 +95,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         } else {
           guard let selectedCard = selectedCard else { return }
 
+          /** FIXME: Revisit this for card selection */
           self.tableView.visibleCells
             .compactMap { $0 as? PledgePaymentMethodCell }
             .forEach { $0.setSelectedCard(selectedCard) }
