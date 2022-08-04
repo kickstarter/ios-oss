@@ -4,7 +4,11 @@ import Prelude
 import UIKit
 
 internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
-  internal func load(_ cards: [PledgePaymentMethodCellData], isLoading: Bool = false) {
+  internal func load(
+    _ cards: [PledgePaymentMethodCellData],
+    paymentSheetCards: [PaymentSheetPaymentMethodCellData],
+    isLoading: Bool = false
+  ) {
     self.clearValues()
 
     guard isLoading == false else {
@@ -15,11 +19,31 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       )
     }
 
-    self.set(
-      values: cards,
-      cellClass: PledgePaymentMethodCell.self,
-      inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
-    )
+    let paymentSheetCardsAvailable = paymentSheetCards.count > 0
+
+    switch paymentSheetCardsAvailable {
+    case true:
+      self.set(
+        values: paymentSheetCards,
+        cellClass: PledgePaymentSheetPaymentMethodCell.self,
+        inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
+
+      cards.forEach { cardData in
+        self
+          .appendRow(
+            value: cardData,
+            cellClass: PledgePaymentMethodCell.self,
+            toSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+          )
+      }
+    case false:
+      self.set(
+        values: cards,
+        cellClass: PledgePaymentMethodCell.self,
+        inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
+    }
 
     self.set(
       values: [()],
@@ -30,7 +54,15 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgePaymentMethodCell, value as PledgePaymentMethodCellData):
+    case let (
+      cell as PledgePaymentMethodCell,
+      value as PledgePaymentMethodCellData
+    ):
+      cell.configureWith(value: value)
+    case let (
+      cell as PledgePaymentSheetPaymentMethodCell,
+      value as PaymentSheetPaymentMethodCellData
+    ):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodAddCell, value as Void):
       cell.configureWith(value: value)

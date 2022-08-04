@@ -4,7 +4,7 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Stripe
+@testable import Stripe
 import XCTest
 
 final class PledgePaymentMethodsViewModelTests: TestCase {
@@ -24,6 +24,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
   private let reloadPaymentMethodsSelectedCard = TestObserver<UserCreditCards.CreditCard?, Never>()
   private let reloadPaymentMethodsShouldReload = TestObserver<Bool, Never>()
+  private let reloadPaymentSheetPaymentMethodsCards = TestObserver<
+    [PaymentSheetPaymentMethodCellData],
+    Never
+  >()
   private let showLoadingIndicatorView = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -45,9 +49,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsIsSelected.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.projectCountry } }
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.1 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsShouldReload.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsIsLoading.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.1 }
+      .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsShouldReload.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.4 }.observe(self.reloadPaymentMethodsIsLoading.observer)
     self.vm.outputs.showLoadingIndicatorView.map { $0 }.observe(self.showLoadingIndicatorView.observer)
     self.vm.outputs.goToAddCardViaStripeScreen.map { $0 }.observe(self.goToAddStripeCardIntent.observer)
     // swiftlint:enable line_length
@@ -477,6 +483,84 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
       self.goToAddCardIntent.assertValues([.pledge])
       self.goToProject.assertValues([project])
+    }
+  }
+
+  func testGoToAddNewStripeCard_NoStoredCards() {
+    let project = Project.template
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+
+      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
+        "id": "_randomID123",
+        "card": [
+          "brand": "visa",
+          "last4": "1234"
+        ],
+        "type": "card"
+      ]) else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
+      let paymentOptionsDisplayData = PaymentSheet.FlowController
+        .PaymentOptionDisplayData(paymentOption: paymentOption)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs.paymentSheetDidAdd(newCard: paymentOptionsDisplayData)
+
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertEqual(
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
+        "••••1234"
+      )
+    }
+  }
+
+  func testGoToAddNewStripeCard_WithStoredCards() {
+    let project = Project.template
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+
+      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
+        "id": "_randomID123",
+        "card": [
+          "brand": "amex",
+          "last4": "1234"
+        ],
+        "type": "card"
+      ]) else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
+      let paymentOptionsDisplayData = PaymentSheet.FlowController
+        .PaymentOptionDisplayData(paymentOption: paymentOption)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs.paymentSheetDidAdd(newCard: paymentOptionsDisplayData)
+
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [UserCreditCards.visa])
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertEqual(
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
+        "••••1234"
+      )
     }
   }
 
