@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
+final class PledgePaymentSheetPaymentMethodCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var cardImageAndLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -18,7 +18,8 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
   private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_support_100 }()
   private lazy var unavailableCardTypeLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel: PledgePaymentMethodCellViewModelType = PledgePaymentMethodCellViewModel()
+  private let viewModel: PledgePaymentSheetPaymentMethodCellViewModelType =
+    PledgePaymentSheetPaymentMethodCellViewModel()
 
   // MARK: - Lifecycle
 
@@ -136,13 +137,6 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
         self?.checkmarkImageView.alpha = hidden ? 0 : 1
       }
 
-    self.viewModel.outputs.cardImageName
-      .observeForUI()
-      .observeValues { [weak self] imageName in
-        _ = self?.cardImageView
-          ?|> \.image .~ Library.image(named: imageName)
-      }
-
     self.viewModel.outputs.checkmarkImageName
       .observeForUI()
       .observeValues { [weak self] imageName in
@@ -157,7 +151,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       }
   }
 
-  func configureWith(value: PledgePaymentMethodCellData) {
+  func configureWith(value: PaymentSheetPaymentMethodCellData) {
     self.viewModel.inputs.configureWith(value: value)
   }
 

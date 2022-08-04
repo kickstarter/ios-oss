@@ -164,9 +164,23 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         isLoading: true
       ) }
 
+    let configuredCardsWithNewSetupIntentCards = configuredCards
+      .takePairWhen(newSetupIntentCard)
+      .map { cardData, setupIntentCardData -> PledgePaymentMethodsAndSelectionData in
+        let updatedCardData = cardData
+          |> \.paymentSheetPaymentMethodsCellData .~ setupIntentCardData
+
+        return updatedCardData
+      }
+
+    let configuredPaymentMethodsIncludingSetupIntentCards = Signal.merge(
+      configuredCards,
+      configuredCardsWithNewSetupIntentCards
+    )
+
     self.reloadPaymentMethods = Signal.merge(
       reloadWithLoadingCell,
-      configuredCards,
+      configuredPaymentMethodsIncludingSetupIntentCards,
       updatedCards
     )
 

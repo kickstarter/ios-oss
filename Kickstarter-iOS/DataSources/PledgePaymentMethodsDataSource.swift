@@ -19,15 +19,20 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       )
     }
 
-    let updatedCardsWithPaymentSheetCard = cards.map {
-      ($0, paymentSheetCard)
-    }
-
     self.set(
-      values: updatedCardsWithPaymentSheetCard,
+      values: cards,
       cellClass: PledgePaymentMethodCell.self,
       inSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
     )
+
+    if let paymentSheetCard = paymentSheetCard {
+      self
+        .appendRow(
+          value: paymentSheetCard,
+          cellClass: PledgePaymentSheetPaymentMethodCell.self,
+          toSection: PaymentMethodsTableViewSection.paymentMethods.rawValue
+        )
+    }
 
     self.set(
       values: [()],
@@ -40,7 +45,12 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (
       cell as PledgePaymentMethodCell,
-      value as (PledgePaymentMethodCellData, PaymentSheetPaymentMethodCellData?)
+      value as PledgePaymentMethodCellData
+    ):
+      cell.configureWith(value: value)
+    case let (
+      cell as PledgePaymentSheetPaymentMethodCell,
+      value as PaymentSheetPaymentMethodCellData
     ):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodAddCell, value as Void):
