@@ -95,7 +95,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
         } else {
           guard let selectedCard = selectedCard else { return }
 
-          /** FIXME: Revisit this for card selection */
           self.tableView.visibleCells
             .compactMap { $0 as? PledgePaymentMethodCell }
             .forEach { $0.setSelectedCard(selectedCard) }
