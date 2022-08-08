@@ -118,10 +118,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.goToAddCardScreen
       .observeForUI()
-      .observeValues { [weak self] _, _ in
-        /** FIXME: In https://kickstarter.atlassian.net/browse/PAY-1766 with Optimizely flags.
-         self?.goToAddNewCard(intent: intent, project: project)
-         */
+      .observeValues { [weak self] intent, project in
+        self?.goToAddNewCard(intent: intent, project: project)
       }
 
     self.viewModel.outputs.goToAddCardViaStripeScreen

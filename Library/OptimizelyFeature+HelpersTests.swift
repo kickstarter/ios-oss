@@ -56,4 +56,22 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureRewardLocalPickupEnabled())
     }
   }
+
+  func testPaymentSheet_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: true]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertTrue(featurePaymentSheetEnabled())
+    }
+  }
+
+  func testPaymentSheet_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featurePaymentSheetEnabled())
+    }
+  }
 }
