@@ -465,13 +465,21 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.goToProject.assertValues([project])
   }
 
-  func testGoToAddNewCard_NoStoredCards() {
+  func testGoToAddNewCard_WithPaymentSheetDisabled_NoStoredCards_Success() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
     let response = UserEnvelope<GraphUser>(me: graphUser)
     let mockService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
@@ -486,13 +494,21 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCard_NoStoredCards() {
+  func testGoToAddNewStripeCard_WithPaymentSheetEnabled_NoStoredCards_Success() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
     let response = UserEnvelope<GraphUser>(me: graphUser)
     let mockService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
@@ -525,13 +541,21 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCard_WithStoredCards() {
+  func testGoToAddNewStripeCard_WhenPaymentSheetEnabled_WithStoredCards_Sucess() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: graphUser)
     let mockService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
@@ -564,15 +588,24 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testLoadingingIndicatorView_ShowAndHide_Success() {
+  func testLoadingingIndicatorView_ShowAndHide_WhenPaymentSheetFlagEnabled_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
       row: 0,
       section: PaymentMethodsTableViewSection.addNewCard.rawValue
     )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+
     let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseErrorEnvelopeJSON))
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
@@ -583,19 +616,55 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCardScreen_Success() {
+  func testLoadingingIndicatorView_NoEmissions_WhenPaymentSheetFlagDisabled_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+
+    let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseErrorEnvelopeJSON))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.showLoadingIndicatorView.assertValues([])
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
       row: 0,
       section: PaymentMethodsTableViewSection.addNewCard.rawValue
     )
     let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
     let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
     var configuration = PaymentSheet.Configuration()
     configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
     configuration.allowsDelayedPaymentMethods = true
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)

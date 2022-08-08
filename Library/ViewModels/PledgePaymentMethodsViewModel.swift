@@ -193,16 +193,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
       .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    let stripePaymentSheetFlag = MutableProperty<Bool>(featurePaymentSheetEnabled())
-
     self.goToAddCardScreen = project
       .takeWhen(didTapToAddNewCard)
-      .filter { [stripePaymentSheetFlag] _ in !stripePaymentSheetFlag.value }
+      .filter { _ in !featurePaymentSheetEnabled() }
       .map { project in (.pledge, project) }
 
     let createSetupIntentEvent = project
       .takeWhen(didTapToAddNewCard)
-      .filter { [stripePaymentSheetFlag] _ in stripePaymentSheetFlag.value }
+      .filter { _ in featurePaymentSheetEnabled() }
       .switchMap { project in
         AppEnvironment.current.apiService
           .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
@@ -231,9 +229,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let showLoadingIndicator = project
       .takeWhen(didTapToAddNewCard)
-      .filter { [stripePaymentSheetFlag] _ in
-        stripePaymentSheetFlag.value
-      }
+      .filter { _ in featurePaymentSheetEnabled() }
       .mapConst(true)
 
     self.showLoadingIndicatorView = Signal.merge(
