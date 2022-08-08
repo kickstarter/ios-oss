@@ -193,14 +193,16 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
       .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    // TODO: Hook into Optimizely flag here (either go the `goToAddCardScreen` or `goToAddCardViaStripeScreen` route.). Ie. Only create a setup intent when the add new card button is tapped and the optimizely flag allows showing the payment sheet.
+    let stripePaymentSheetFlag = MutableProperty<Bool>(featurePaymentSheetEnabled())
 
     self.goToAddCardScreen = project
       .takeWhen(didTapToAddNewCard)
+      .filter { [stripePaymentSheetFlag] _ in !stripePaymentSheetFlag.value }
       .map { project in (.pledge, project) }
 
     let createSetupIntentEvent = project
       .takeWhen(didTapToAddNewCard)
+      .filter { [stripePaymentSheetFlag] _ in stripePaymentSheetFlag.value }
       .switchMap { project in
         AppEnvironment.current.apiService
           .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
@@ -227,8 +229,15 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
       .map { $0.localizedDescription }
 
+    let showLoadingIndicator = project
+      .takeWhen(didTapToAddNewCard)
+      .filter { [stripePaymentSheetFlag] _ in
+        stripePaymentSheetFlag.value
+      }
+      .mapConst(true)
+
     self.showLoadingIndicatorView = Signal.merge(
-      project.takeWhen(didTapToAddNewCard).mapConst(true),
+      showLoadingIndicator,
       createSetupIntentEvent.errors().mapConst(false)
     )
 
