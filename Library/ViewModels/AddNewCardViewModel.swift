@@ -3,8 +3,8 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public typealias Month = UInt
-public typealias Year = UInt
+public typealias Month = NSNumber
+public typealias Year = NSNumber
 public typealias CardDetails = (
   cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
   cardBrand: CreditCardType?
@@ -56,7 +56,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let cardholderName = self.cardholderNameChangedProperty.signal.skipNil()
     let creditCardDetails = self.creditCardChangedProperty.signal
       .skipNil()
-      .compactMap { cardDetails -> (String, UInt, UInt, String)? in
+      .compactMap { cardDetails -> (String, NSNumber, NSNumber, String)? in
         guard let expMonth = cardDetails.expMonth, let expYear = cardDetails.expYear,
           let cvc = cardDetails.cvc else {
           return nil

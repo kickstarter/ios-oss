@@ -2,12 +2,18 @@ import KsApi
 import Library
 import PassKit
 import Prelude
+import Stripe
 import UIKit
 
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   func pledgePaymentMethodsViewController(
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
+  )
+
+  func pledgePaymentMethodsViewController(
+    _ viewController: PledgePaymentMethodsViewController,
+    loading flag: Bool
   )
 }
 
@@ -29,6 +35,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
+  private var paymentSheetFlowController: PaymentSheet.FlowController?
 
   // MARK: - Lifecycle
 
@@ -46,6 +53,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
 
     self.tableView.registerCellClass(PledgePaymentMethodCell.self)
+    self.tableView.registerCellClass(PledgePaymentSheetPaymentMethodCell.self)
     self.tableView.registerCellClass(PledgePaymentMethodAddCell.self)
     self.tableView.registerCellClass(PledgePaymentMethodLoadingCell.self)
   }
@@ -73,10 +81,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, selectedCard, shouldReload, isLoading in
+      .observeValues { [weak self] cards, paymentSheetCards, selectedCard, shouldReload, isLoading in
         guard let self = self else { return }
 
-        self.dataSource.load(cards, isLoading: isLoading)
+        self.dataSource.load(
+          cards,
+          paymentSheetCards: paymentSheetCards,
+          isLoading: isLoading
+        )
 
         if shouldReload {
           self.tableView.reloadData()
@@ -109,6 +121,22 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] intent, project in
         self?.goToAddNewCard(intent: intent, project: project)
       }
+
+    self.viewModel.outputs.goToAddCardViaStripeScreen
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let strongSelf = self else { return }
+
+        strongSelf.goToPaymentSheet(data: data)
+      }
+
+    self.viewModel.outputs.showLoadingIndicatorView
+      .observeForUI()
+      .observeValues { [weak self] showLoadingIndicator in
+        guard let strongSelf = self else { return }
+
+        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: showLoadingIndicator)
+      }
   }
 
   // MARK: - Configuration
@@ -124,13 +152,32 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.delegate .~ self
     addNewCardViewController.configure(with: intent, project: project)
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
-    let offset = navigationController.navigationBar.bounds.height
 
-    if #available(iOS 13.0, *) {
-      self.present(navigationController, animated: true)
-    } else {
-      self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
-    }
+    self.present(navigationController, animated: true)
+  }
+
+  private func goToPaymentSheet(data: PaymentSheetSetupData) {
+    PaymentSheet.FlowController
+      .create(
+        setupIntentClientSecret: data.clientSecret,
+        configuration: data.configuration
+      ) { [weak self] result in
+        guard let strongSelf = self else { return }
+        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: false)
+
+        switch result {
+        case let .failure(error):
+          strongSelf.messageDisplayingDelegate?
+            .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+        case let .success(paymentSheetFlowController):
+          strongSelf.paymentSheetFlowController = paymentSheetFlowController
+          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+            guard let strongSelf = self,
+              let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
+            strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption)
+          }
+        }
+      }
   }
 }
 

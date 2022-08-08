@@ -4,6 +4,7 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+@testable import Stripe
 import XCTest
 
 final class PledgePaymentMethodsViewModelTests: TestCase {
@@ -11,6 +12,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
 
   private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
+  private let goToAddStripeCardIntent = TestObserver<PaymentSheetSetupData, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
@@ -22,6 +24,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
   private let reloadPaymentMethodsSelectedCard = TestObserver<UserCreditCards.CreditCard?, Never>()
   private let reloadPaymentMethodsShouldReload = TestObserver<Bool, Never>()
+  private let reloadPaymentSheetPaymentMethodsCards = TestObserver<
+    [PaymentSheetPaymentMethodCellData],
+    Never
+  >()
+  private let showLoadingIndicatorView = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -42,9 +49,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsIsSelected.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.projectCountry } }
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.1 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsShouldReload.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsIsLoading.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.1 }
+      .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsShouldReload.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.4 }.observe(self.reloadPaymentMethodsIsLoading.observer)
+    self.vm.outputs.showLoadingIndicatorView.map { $0 }.observe(self.showLoadingIndicatorView.observer)
+    self.vm.outputs.goToAddCardViaStripeScreen.map { $0 }.observe(self.goToAddStripeCardIntent.observer)
     // swiftlint:enable line_length
   }
 
@@ -454,13 +465,21 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.goToProject.assertValues([project])
   }
 
-  func testGoToAddNewCard_NoStoredCards() {
+  func testGoToAddNewCard_WithPaymentSheetDisabled_NoStoredCards_Success() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
     let response = UserEnvelope<GraphUser>(me: graphUser)
     let mockService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
@@ -472,6 +491,201 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
       self.goToAddCardIntent.assertValues([.pledge])
       self.goToProject.assertValues([project])
+    }
+  }
+
+  func testGoToAddNewStripeCard_WithPaymentSheetEnabled_NoStoredCards_Success() {
+    let project = Project.template
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+
+      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
+        "id": "_randomID123",
+        "card": [
+          "brand": "visa",
+          "last4": "1234"
+        ],
+        "type": "card"
+      ]) else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
+      let paymentOptionsDisplayData = PaymentSheet.FlowController
+        .PaymentOptionDisplayData(paymentOption: paymentOption)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs.paymentSheetDidAdd(newCard: paymentOptionsDisplayData)
+
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertEqual(
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
+        "••••1234"
+      )
+    }
+  }
+
+  func testGoToAddNewStripeCard_WhenPaymentSheetEnabled_WithStoredCards_Sucess() {
+    let project = Project.template
+    let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+
+      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
+        "id": "_randomID123",
+        "card": [
+          "brand": "amex",
+          "last4": "1234"
+        ],
+        "type": "card"
+      ]) else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
+      let paymentOptionsDisplayData = PaymentSheet.FlowController
+        .PaymentOptionDisplayData(paymentOption: paymentOption)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.vm.inputs.paymentSheetDidAdd(newCard: paymentOptionsDisplayData)
+
+      XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [UserCreditCards.visa])
+      XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
+      XCTAssertEqual(
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.redactedCardNumber,
+        "••••1234"
+      )
+    }
+  }
+
+  func testLoadingingIndicatorView_ShowAndHide_WhenPaymentSheetFlagEnabled_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+
+    let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseErrorEnvelopeJSON))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.showLoadingIndicatorView.assertValues([true, false])
+    }
+  }
+
+  func testLoadingingIndicatorView_NoEmissions_WhenPaymentSheetFlagDisabled_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+
+    let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseErrorEnvelopeJSON))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.showLoadingIndicatorView.assertValues([])
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_Success() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.lastValue?.clientSecret, "test")
+      XCTAssertEqual(
+        self.goToAddStripeCardIntent.lastValue?.configuration.merchantDisplayName,
+        Strings.general_accessibility_kickstarter()
+      )
+
+      guard let allowedDelayedPaymentMethods = self.goToAddStripeCardIntent.lastValue?.configuration
+        .allowsDelayedPaymentMethods else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertTrue(allowedDelayedPaymentMethods)
     }
   }
 }

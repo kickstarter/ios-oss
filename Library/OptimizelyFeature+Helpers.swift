@@ -20,3 +20,10 @@ public func featureRewardLocalPickupEnabled() -> Bool {
     (AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.rewardLocalPickupEnabled.rawValue) ?? false)
 }
+
+public func featurePaymentSheetEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.paymentSheetEnabled.rawValue) ?? false)
+}

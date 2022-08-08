@@ -78,11 +78,15 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
           .joined(separator: ", ")
       }
 
-    self.cardNumberTextShortStyle = creditCard
+    let redactedCardNumber = creditCard
       .map { "•••• \($0.lastFour)" }
 
-    self.expirationDateText = creditCard
+    self.cardNumberTextShortStyle = redactedCardNumber
+
+    let creditCardExpiryDate = creditCard
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
+
+    self.expirationDateText = creditCardExpiryDate
 
     let cardAndSelectedCard = Signal.combineLatest(
       creditCard,
@@ -91,16 +95,17 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
 
     let setAsSelected = cardAndSelectedCard.map(==)
 
-    self.checkmarkImageName = Signal.merge(configuredAsSelected, setAsSelected)
+    let creditCardCheckImageName = Signal.merge(configuredAsSelected, setAsSelected)
       .map { $0 ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
 
+    self.checkmarkImageName = creditCardCheckImageName
+
     self.unavailableCardLabelHidden = self.configureValueProperty.signal.skipNil()
-      .map { card in !card.isEnabled || card.isErroredPaymentMethod }
-      .negate()
+      .map { card in !card.isEnabled || card.isErroredPaymentMethod }.negate()
 
     self.unavailableCardText = self.configureValueProperty.signal.skipNil()
       .filter { card in !card.isEnabled || card.isErroredPaymentMethod }
-      .map { card in
+      .map { card -> String in
         if !card.isEnabled {
           return Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
             project_country: card.projectCountry
@@ -111,7 +116,7 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
       }
 
     self.selectionStyle = cardTypeIsAvailable.map {
-      $0 ? .default : .none
+      $0 ? UITableViewCell.SelectionStyle.default : .none
     }
 
     self.cardImageAlpha = cardTypeIsAvailable.map {
@@ -120,8 +125,8 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
 
     self.checkmarkImageHidden = cardTypeIsAvailable.negate()
 
-    self.lastFourLabelTextColor = cardTypeIsAvailable.map {
-      $0 ? .ksr_support_700 : .ksr_support_400
+    self.lastFourLabelTextColor = cardTypeIsAvailable.map { cardTypeIsAvailable in
+      cardTypeIsAvailable ? UIColor.ksr_support_700 : UIColor.ksr_support_400
     }
   }
 

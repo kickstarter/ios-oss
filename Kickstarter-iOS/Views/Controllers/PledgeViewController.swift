@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import PassKit
 import Prelude
 import Stripe
 import UIKit
@@ -301,8 +302,8 @@ final class PledgeViewController: UIViewController,
     self.viewModel.outputs.configureStripeIntegration
       .observeForUI()
       .observeValues { merchantIdentifier, publishableKey in
-        STPPaymentConfiguration.shared().publishableKey = publishableKey
-        STPPaymentConfiguration.shared().appleMerchantIdentifier = merchantIdentifier
+        STPAPIClient.shared.publishableKey = publishableKey
+        STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
       }
 
     self.viewModel.outputs.configureShippingLocationViewWithData
@@ -538,12 +539,12 @@ final class PledgeViewController: UIViewController,
   }
 
   private func beginSCAFlow(withClientSecret secret: String) {
-    STPPaymentHandler.shared().confirmSetupIntent(
-      withParams: .init(clientSecret: secret),
-      authenticationContext: self
-    ) { [weak self] status, _, error in
-      self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
-    }
+    let setupIntentConfirmParams = STPSetupIntentConfirmParams(clientSecret: secret)
+
+    STPPaymentHandler.shared()
+      .confirmSetupIntent(setupIntentConfirmParams, with: self) { [weak self] status, _, error in
+        self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
+      }
   }
 }
 
@@ -574,7 +575,7 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
       transactionId
     ))
 
-    STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
+    STPAPIClient.shared.createToken(with: payment) { [weak self] token, error in
       guard let self = self else { return }
 
       let status = self.viewModel.inputs.stripeTokenCreated(token: token?.tokenId, error: error)
@@ -651,17 +652,19 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
-  func pledgePaymentMethodsViewControllerDidTapApplePayButton(
-    _: PledgePaymentMethodsViewController
-  ) {
-    self.viewModel.inputs.applePayButtonTapped()
-  }
-
   func pledgePaymentMethodsViewController(
     _: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
   ) {
     self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
+  }
+
+  func pledgePaymentMethodsViewController(_: PledgePaymentMethodsViewController, loading flag: Bool) {
+    if flag {
+      self.showProcessingView()
+    } else {
+      self.hideProcessingView()
+    }
   }
 }
 

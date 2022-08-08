@@ -101,6 +101,9 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .rewardLocalPickupEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue]
+  case .paymentSheetEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue]
   }
 }
 
@@ -117,5 +120,8 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .rewardLocalPickupEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue] = value
+  case .paymentSheetEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] = value
   }
 }

@@ -4,6 +4,11 @@
 import Prelude
 import UIKit
 
+/** FIXME: There is a problem with testing the payment sheet. Somehow SPM is incorrectly linking the SDK resources explained here:
+ https://kickstarter.atlassian.net/browse/NTV-589
+ When that issue is resolved, we can include this file back into `Kickstarter-Framework-iOSTests`
+ */
+
 final class AddNewCardViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()

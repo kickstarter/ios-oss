@@ -74,6 +74,10 @@ public protocol ServiceType {
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Create Stripe setup intent for use with Stripe payment sheet
+  func createStripeSetupIntent(input: CreateSetupIntentInput) ->
+    SignalProducer<ClientSecretEnvelope, ErrorEnvelope>
+
   /// Adds a new credit card to users' payment methods
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope>
