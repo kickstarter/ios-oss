@@ -4790,6 +4790,18 @@
             "deprecationReason": null
           },
           {
+            "name": "metaPixelId",
+            "description": "The unique identifier for the project's Meta Pixel ID",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "milestoneCategories",
             "description": "List of milestones available to project, empty array if project has no possible milestones",
             "args": [],
@@ -6164,6 +6176,22 @@
               "kind": "SCALAR",
               "name": "ISO8601DateTime",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removedPerGuidelines",
+            "description": "Whether the comment author has been removed by kickstarter",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -11497,6 +11525,12 @@
             "deprecationReason": null
           },
           {
+            "name": "facebook_pixel_2022",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "stripe_connect_onboarding_only_for_kyc",
             "description": null,
             "isDeprecated": false,
@@ -11534,12 +11568,6 @@
           },
           {
             "name": "hk_bank_account_holder_name",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "comment_pinning",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -33599,16 +33627,6 @@
             "defaultValue": null
           },
           {
-            "name": "googlePay",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "GooglePayInput",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -33673,69 +33691,6 @@
           },
           {
             "name": "transactionIdentifier",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "GooglePayInput",
-        "description": "Necessary fields for Google Pay",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "token",
-            "description": "Stripe token",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "googleTransactionId",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "instrumentDetails",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "instrumentType",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -41466,6 +41421,69 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "GooglePayInput",
+        "description": "Necessary fields for Google Pay",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "token",
+            "description": "Stripe token",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "googleTransactionId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "instrumentDetails",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "instrumentType",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "UpdateBackingPayload",
         "description": "Autogenerated return type of UpdateBacking",
@@ -41975,6 +41993,16 @@
           },
           {
             "name": "googleAnalyticsTrackingId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "metaPixelId",
             "description": null,
             "type": {
               "kind": "SCALAR",

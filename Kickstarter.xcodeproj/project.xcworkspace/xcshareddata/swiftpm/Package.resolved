@@ -1,0 +1,86 @@
+{
+  "pins" : [
+    {
+      "identity" : "apollo-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apollographql/apollo-ios.git",
+      "state" : {
+        "revision" : "5db23797be9211db2e5b67068a600eb2842360b3",
+        "version" : "0.44.0"
+      }
+    },
+    {
+      "identity" : "inflectorkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apollographql/InflectorKit",
+      "state" : {
+        "revision" : "b1d0099abe36facd198113633f502889842906af",
+        "version" : "0.0.2"
+      }
+    },
+    {
+      "identity" : "kickstarter-prelude",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
+      "state" : {
+        "branch" : "feature/swift-package",
+        "revision" : "b0cec69c19a13088864b52ad1745397f587daec7"
+      }
+    },
+    {
+      "identity" : "pathkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylef/PathKit.git",
+      "state" : {
+        "revision" : "3bfd2737b700b9a36565a8c94f4ad2b050a5e574",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "spectre",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylef/Spectre.git",
+      "state" : {
+        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
+        "version" : "0.10.1"
+      }
+    },
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "0a9893ec030501a3956bee572d6b4fdd3ae158a1",
+        "version" : "0.12.2"
+      }
+    },
+    {
+      "identity" : "starscream",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/daltoniam/Starscream",
+      "state" : {
+        "revision" : "df8d82047f6654d8e4b655d1b1525c64e1059d21",
+        "version" : "4.0.4"
+      }
+    },
+    {
+      "identity" : "stencil",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stencilproject/Stencil.git",
+      "state" : {
+        "revision" : "ccd9402682f4c07dac9561befd207c8156e80e20",
+        "version" : "0.14.2"
+      }
+    },
+    {
+      "identity" : "stripe-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stripe/stripe-ios",
+      "state" : {
+        "revision" : "ef0c465f84402af07565d637ffb5952d3d2cc37b",
+        "version" : "22.6.0"
+      }
+    }
+  ],
+  "version" : 2
+}
