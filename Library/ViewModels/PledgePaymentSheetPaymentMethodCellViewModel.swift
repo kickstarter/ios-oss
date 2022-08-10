@@ -8,7 +8,8 @@ public typealias PaymentSheetPaymentMethodCellData = (
   image: UIImage,
   redactedCardNumber: String,
   setupIntent: String,
-  isSelected: Bool
+  isSelected: Bool,
+  isEnabled: Bool // FIXME: These cards are always enabled, so this flag isn't used in the cvm, but if there is a scenario where they are disabled in the future, use `PledgePaymentMethodCellViewModel` as a reference of how to update the signals.
 )
 
 public protocol PledgePaymentSheetPaymentMethodCellViewModelInputs {
