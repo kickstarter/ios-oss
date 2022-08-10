@@ -164,7 +164,7 @@ final class PledgePaymentSheetPaymentMethodCell: UITableViewCell, ValueCell {
 
   // MARK: - Accessors
 
-  func setSelectedCard(_ card: UserCreditCards.CreditCard) {
+  func setSelectedCard(_ card: String) {
     self.viewModel.inputs.setSelectedCard(card)
   }
 }

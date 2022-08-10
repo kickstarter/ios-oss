@@ -81,7 +81,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, paymentSheetCards, selectedCard, shouldReload, isLoading in
+      .observeValues { [weak self] cards, paymentSheetCards, selectedCard, selectedPaymentSheetCardId, shouldReload, isLoading in
         guard let self = self else { return }
 
         self.dataSource.load(
@@ -93,11 +93,18 @@ final class PledgePaymentMethodsViewController: UIViewController {
         if shouldReload {
           self.tableView.reloadData()
         } else {
-          guard let selectedCard = selectedCard else { return }
-
-          self.tableView.visibleCells
-            .compactMap { $0 as? PledgePaymentMethodCell }
-            .forEach { $0.setSelectedCard(selectedCard) }
+          switch (selectedCard, selectedPaymentSheetCardId) {
+          case let (.none, .some(selectedPaymentSheetCardId)):
+            self.tableView.visibleCells
+              .compactMap { $0 as? PledgePaymentSheetPaymentMethodCell }
+              .forEach { $0.setSelectedCard(selectedPaymentSheetCardId) }
+          case let (.some(selectedCard), .none):
+            self.tableView.visibleCells
+              .compactMap { $0 as? PledgePaymentMethodCell }
+              .forEach { $0.setSelectedCard(selectedCard) }
+          default:
+            break
+          }
         }
       }
 
@@ -174,7 +181,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
           strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
             guard let strongSelf = self,
               let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
-            strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption)
+            strongSelf.viewModel.inputs
+              .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: data.clientSecret)
           }
         }
       }

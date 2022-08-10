@@ -4,15 +4,19 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-public typealias PaymentSheetPaymentMethodCellData = (image: UIImage, redactedCardNumber: String)
+public typealias PaymentSheetPaymentMethodCellData = (
+  image: UIImage,
+  redactedCardNumber: String,
+  setupIntent: String,
+  isSelected: Bool
+)
 
 public protocol PledgePaymentSheetPaymentMethodCellViewModelInputs {
   /// Call to configure cell with payment sheet card and selected payment sheet card values.
   func configureWith(value: PaymentSheetPaymentMethodCellData)
 
-  // FIXME: All payment sheet cards are mapping to unselected temporarily. Revisit this once displaying multiple payment sheet cards is working.
-  /// Call with the currently selected card.
-  func setSelectedCard(_ creditCard: UserCreditCards.CreditCard)
+  /// Call with the currently selected payment sheet card.
+  func setSelectedCard(_ creditCard: String)
 }
 
 public protocol PledgePaymentSheetPaymentMethodCellViewModelOutputs {
@@ -62,6 +66,11 @@ public final class PledgePaymentSheetPaymentMethodCellViewModel: PledgePaymentSh
       .map(\.image)
     let paymentSheetCreditCardRedactedNumber = self.configureValueProperty.signal.skipNil()
       .map(\.redactedCardNumber)
+    let paymentSheetCreditCardSetupIntent = self.configureValueProperty.signal.skipNil()
+      .map(\.setupIntent)
+    let paymentSheetCreditCardAsSelected = self.configureValueProperty.signal.skipNil()
+      .map(\.isSelected)
+    let selectedCardSetupIntent = self.selectedCardProperty.signal.skipNil()
 
     self.cardImage = paymentSheetCreditCardImage
 
@@ -76,9 +85,15 @@ public final class PledgePaymentSheetPaymentMethodCellViewModel: PledgePaymentSh
 
     self.expirationDateText = paymentSheetCreditCardExpiryDate
 
-    // FIXME: All payment sheet cards are mapping to unselected temporarily. Revisit this once displaying multiple payment sheet cards is working.
-    let paymentSheetCheckImageName = paymentSheetCreditCardExpiryDate
-      .map { _ in "icon-payment-method-unselected" }
+    let cardAndSelectedCard = Signal.combineLatest(
+      paymentSheetCreditCardSetupIntent,
+      selectedCardSetupIntent
+    )
+
+    let setAsSelected = cardAndSelectedCard.map(==)
+
+    let paymentSheetCheckImageName = Signal.merge(paymentSheetCreditCardAsSelected, setAsSelected)
+      .map { $0 ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
 
     self.checkmarkImageName = paymentSheetCheckImageName
 
@@ -111,8 +126,8 @@ public final class PledgePaymentSheetPaymentMethodCellViewModel: PledgePaymentSh
     self.configureValueProperty.value = value
   }
 
-  private let selectedCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
-  public func setSelectedCard(_ creditCard: UserCreditCards.CreditCard) {
+  private let selectedCardProperty = MutableProperty<String?>(nil)
+  public func setSelectedCard(_ creditCard: String) {
     self.selectedCardProperty.value = creditCard
   }
 
