@@ -67,6 +67,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .map(second)
 
     let project = configureWithValue.map { $0.project }
+    let context = configureWithValue.map { $0.context }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     lazy var paymentSheetEnabled: Bool = {
@@ -283,33 +284,48 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
       .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    self.goToAddCardScreen = project
-      .takeWhen(didTapToAddNewCard)
-      .filter { _ in !paymentSheetEnabled }
-      .map { project in (.pledge, project) }
+    let paymentSheetOnPledgeContext = context
+      .map { context -> Bool in
+        guard context == .pledge else {
+          return false
+        }
 
-    let createSetupIntentEvent = project
-      .takeWhen(didTapToAddNewCard)
-      .filter { _ in paymentSheetEnabled }
-      .switchMap { project in
-        AppEnvironment.current.apiService
-          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
-          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
-            var configuration = PaymentSheet.Configuration()
-            configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-            configuration.allowsDelayedPaymentMethods = true
-
-            let data = PaymentSheetSetupData(
-              clientSecret: envelope.clientSecret,
-              configuration: configuration
-            )
-
-            return SignalProducer(value: data)
-          }
-          .materialize()
+        return paymentSheetEnabled
       }
+
+    self.goToAddCardScreen = Signal.combineLatest(
+      project,
+      paymentSheetOnPledgeContext.filter(isFalse)
+    )
+    .takeWhen(didTapToAddNewCard)
+    .map { project, _ in
+      (.pledge, project)
+    }
+
+    let createSetupIntentEvent = Signal.combineLatest(
+      project,
+      paymentSheetOnPledgeContext.filter(isTrue)
+    )
+    .takeWhen(didTapToAddNewCard)
+    .switchMap { (project, _) -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
+      AppEnvironment.current.apiService
+        .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
+        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+          var configuration = PaymentSheet.Configuration()
+          configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+          configuration.allowsDelayedPaymentMethods = true
+
+          let data = PaymentSheetSetupData(
+            clientSecret: envelope.clientSecret,
+            configuration: configuration
+          )
+
+          return SignalProducer(value: data)
+        }
+        .materialize()
+    }
 
     self.goToAddCardViaStripeScreen = createSetupIntentEvent.values()
 
@@ -317,9 +333,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
       .map { $0.localizedDescription }
 
-    let showLoadingIndicator = project
+    let showLoadingIndicator = Signal.combineLatest(project, paymentSheetOnPledgeContext.filter(isTrue))
       .takeWhen(didTapToAddNewCard)
-      .filter { _ in paymentSheetEnabled }
       .mapConst(true)
 
     self.showLoadingIndicatorView = Signal.merge(
