@@ -52,8 +52,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.reloadPaymentMethods.map { $0.1 }
       .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsShouldReload.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.4 }.observe(self.reloadPaymentMethodsIsLoading.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.4 }.observe(self.reloadPaymentMethodsShouldReload.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.5 }.observe(self.reloadPaymentMethodsIsLoading.observer)
     self.vm.outputs.showLoadingIndicatorView.map { $0 }.observe(self.showLoadingIndicatorView.observer)
     self.vm.outputs.goToAddCardViaStripeScreen.map { $0 }.observe(self.goToAddStripeCardIntent.observer)
     // swiftlint:enable line_length
@@ -530,7 +530,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(1))
 
-      self.vm.inputs.paymentSheetDidAdd(newCard: paymentOptionsDisplayData)
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        )
 
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
       XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
@@ -577,7 +581,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(1))
 
-      self.vm.inputs.paymentSheetDidAdd(newCard: paymentOptionsDisplayData)
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        )
 
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [UserCreditCards.visa])
       XCTAssertNotNil(self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.image)
