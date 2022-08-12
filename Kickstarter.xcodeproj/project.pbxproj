@@ -240,6 +240,7 @@
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
+		196AC75A28A5D7CD00C6F015 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196AC75928A5D7CD00C6F015 /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
 		19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */; };
@@ -1922,6 +1923,7 @@
 		19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift"; sourceTree = "<group>"; };
 		19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift"; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
+		196AC75928A5D7CD00C6F015 /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentSheetPaymentMethodCell.swift; sourceTree = "<group>"; };
 		19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentSheetPaymentMethodCellViewModel.swift; sourceTree = "<group>"; };
 		20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsErrorCell.swift; sourceTree = "<group>"; };
@@ -4177,6 +4179,7 @@
 				3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */,
 				8A13D15E249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift */,
 				D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */,
+				196AC75928A5D7CD00C6F015 /* PledgePaymentMethodsViewControllerTests.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */,
 				8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */,
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
@@ -6770,6 +6773,7 @@
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
+				196AC75A28A5D7CD00C6F015 /* PledgePaymentMethodsViewControllerTests.swift in Sources */,
 				A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A7ED201B1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 				3767EDAF22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift in Sources */,
