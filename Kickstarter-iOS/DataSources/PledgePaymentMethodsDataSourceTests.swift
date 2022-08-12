@@ -41,8 +41,20 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
 
   func testLoad_PaymentSheetCardValues() {
     let paymentSheetData = [
-      (image: UIImage(), redactedCardNumber: "test1"),
-      (image: UIImage(), redactedCardNumber: "test2")
+      (
+        image: UIImage(),
+        redactedCardNumber: "test1",
+        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        isSelected: true,
+        isEnabled: true
+      ),
+      (
+        image: UIImage(),
+        redactedCardNumber: "test2",
+        setupIntent: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
+        isSelected: false,
+        isEnabled: true
+      )
     ]
 
     self.dataSource.load([], paymentSheetCards: paymentSheetData)
@@ -77,8 +89,20 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
     ]
 
     let paymentSheetData = [
-      (image: UIImage(), redactedCardNumber: "test1"),
-      (image: UIImage(), redactedCardNumber: "test2")
+      (
+        image: UIImage(),
+        redactedCardNumber: "test1",
+        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        isSelected: true,
+        isEnabled: true
+      ),
+      (
+        image: UIImage(),
+        redactedCardNumber: "test2",
+        setupIntent: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
+        isSelected: false,
+        isEnabled: true
+      )
     ]
 
     self.dataSource.load(cellData, paymentSheetCards: paymentSheetData)

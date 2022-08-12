@@ -16,7 +16,8 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
       refParam: "activity",
-      rewardIds: ["rewardId"]
+      rewardIds: ["rewardId"],
+      setupIntentClientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -32,6 +33,10 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertEqual(input["refParam"] as? String, "activity")
+    XCTAssertEqual(
+      input["setupIntentClientSecret"] as? String,
+      "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+    )
   }
 
   func testCreateBackingInputDictionary_NoApplePay() {
@@ -42,7 +47,8 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
       refParam: "activity",
-      rewardIds: ["rewardId"]
+      rewardIds: ["rewardId"],
+      setupIntentClientSecret: nil
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -55,6 +61,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertEqual(input["refParam"] as? String, "activity")
+    XCTAssertNil(input["setupIntentClientSecret"])
   }
 
   func testCreateBackingInputDictionary_Location_IsNil() {
@@ -70,7 +77,8 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
       refParam: nil,
-      rewardIds: ["rewardId"]
+      rewardIds: ["rewardId"],
+      setupIntentClientSecret: nil
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -81,5 +89,6 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertNil(input["refParam"])
+    XCTAssertNil(input["setupIntentClientSecret"])
   }
 }

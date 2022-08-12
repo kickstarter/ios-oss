@@ -10,7 +10,8 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
       paymentSourceId: "1111",
       projectId: "5555",
       refParam: "ref-param",
-      rewardIds: ["reward-1", "reward-2"]
+      rewardIds: ["reward-1", "reward-2"],
+      setupIntentClientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
     )
 
     let graphInput = GraphAPI.CreateBackingInput.from(input)
@@ -22,6 +23,7 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(graphInput.projectId, input.projectId)
     XCTAssertEqual(graphInput.refParam, input.refParam)
     XCTAssertEqual(graphInput.rewardIds, input.rewardIds)
+    XCTAssertNil(graphInput.setupIntentClientSecret!)
   }
 
   func test_ApplePay() {
@@ -37,7 +39,8 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
       paymentSourceId: "1111",
       projectId: "5555",
       refParam: "ref-param",
-      rewardIds: ["reward-1", "reward-2"]
+      rewardIds: ["reward-1", "reward-2"],
+      setupIntentClientSecret: nil
     )
 
     let graphInput = GraphAPI.CreateBackingInput.from(input)
@@ -52,5 +55,6 @@ final class GraphAPI_CreateBackingInput_CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(graphInput.projectId, input.projectId)
     XCTAssertEqual(graphInput.refParam, input.refParam)
     XCTAssertEqual(graphInput.rewardIds, input.rewardIds)
+    XCTAssertNil(graphInput.setupIntentClientSecret!)
   }
 }
