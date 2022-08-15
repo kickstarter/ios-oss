@@ -8,7 +8,7 @@ import UIKit
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   func pledgePaymentMethodsViewController(
     _ viewController: PledgePaymentMethodsViewController,
-    didSelectCreditCard paymentSourceId: String
+    didSelectCreditCard paymentSource: PaymentSourceSelected
   )
 
   func pledgePaymentMethodsViewController(

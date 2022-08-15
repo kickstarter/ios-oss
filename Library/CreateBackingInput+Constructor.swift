@@ -21,7 +21,7 @@ extension CreateBackingInput {
       projectId: createBackingData.project.graphID,
       refParam: createBackingData.refTag?.description,
       rewardIds: pledgeParams.rewardIds,
-      setupIntentClientSecret: nil
+      setupIntentClientSecret: isApplePay ? nil : createBackingData.setupIntentClientSecret
     )
   }
 }
