@@ -179,13 +179,31 @@ final class PledgePaymentMethodsViewController: UIViewController {
         case let .success(paymentSheetFlowController):
           strongSelf.paymentSheetFlowController = paymentSheetFlowController
           strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
-            guard let strongSelf = self,
-              let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
-            strongSelf.viewModel.inputs
-              .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: data.clientSecret)
+            guard let strongSelf = self else { return }
+
+            strongSelf.confirmPaymentResult(with: data.clientSecret)
           }
         }
       }
+  }
+
+  private func confirmPaymentResult(with clientSecret: String) {
+    self.paymentSheetFlowController?.confirm(from: self) { [weak self] paymentResult in
+      guard let strongSelf = self,
+        let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
+
+      switch paymentResult {
+      case .completed:
+        strongSelf.viewModel.inputs
+          .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
+      case .canceled:
+        strongSelf.messageDisplayingDelegate?
+          .pledgeViewController(strongSelf, didErrorWith: Strings.general_error_something_wrong())
+      case let .failed(error):
+        strongSelf.messageDisplayingDelegate?
+          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+      }
+    }
   }
 }
 
