@@ -654,9 +654,9 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
   func pledgePaymentMethodsViewController(
     _: PledgePaymentMethodsViewController,
-    didSelectCreditCard paymentSourceId: String
+    didSelectCreditCard paymentSource: PaymentSourceSelected
   ) {
-    self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
+    self.viewModel.inputs.creditCardSelected(with: paymentSource)
   }
 
   func pledgePaymentMethodsViewController(_: PledgePaymentMethodsViewController, loading flag: Bool) {

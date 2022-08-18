@@ -14,7 +14,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToAddStripeCardIntent = TestObserver<PaymentSheetSetupData, Never>()
   private let goToProject = TestObserver<Project, Never>()
-  private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
+  private let notifyDelegateCreditCardSelected = TestObserver<PaymentSourceSelected, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
 
   private let reloadPaymentMethodsCards = TestObserver<[UserCreditCards.CreditCard], Never>()
@@ -671,7 +671,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [UserCreditCards.amex.id], "First card selected by default"
+        [PaymentSourceSelected(paymentSourceId: UserCreditCards.amex.id, isSetupIntentClientSecret: false)],
+        "First card selected by default"
       )
 
       let discoverIndexPath = IndexPath(
@@ -682,7 +683,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(discoverIndexPath)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        UserCreditCards.amex.id, UserCreditCards.discover.id
+        PaymentSourceSelected(paymentSourceId: UserCreditCards.amex.id, isSetupIntentClientSecret: false),
+        PaymentSourceSelected(
+          paymentSourceId: UserCreditCards.discover.id,
+          isSetupIntentClientSecret: false
+        )
       ])
     }
   }
@@ -700,7 +705,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [UserCreditCards.visa.id], "First card selected by default"
+        [PaymentSourceSelected(paymentSourceId: UserCreditCards.visa.id, isSetupIntentClientSecret: false)],
+        "First card selected by default"
       )
 
       guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
@@ -727,7 +733,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         )
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        UserCreditCards.visa.id, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        PaymentSourceSelected(paymentSourceId: UserCreditCards.visa.id, isSetupIntentClientSecret: false),
+        PaymentSourceSelected(
+          paymentSourceId: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          isSetupIntentClientSecret: true
+        )
       ])
     }
   }
@@ -981,7 +991,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_Success() {
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_PledgeContext_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
       row: 0,
@@ -1023,6 +1033,131 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       }
 
       XCTAssertTrue(allowedDelayedPaymentMethods)
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_UpdateContext_Failure() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_UpdateRewardContext_Failure() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .updateReward, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_ChangePaymentMethodContext_Failure() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_FixPaymentMethodContext_Failure() {
+    let project = Project.template
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+    var configuration = PaymentSheet.Configuration()
+    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+    configuration.allowsDelayedPaymentMethods = true
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .fixPaymentMethod, .discovery))
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.scheduler.run()
+
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
     }
   }
 }

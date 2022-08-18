@@ -46,7 +46,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 public protocol PledgePaymentMethodsViewModelOutputs {
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
-  var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
+  var notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
   var showLoadingIndicatorView: Signal<Bool, Never> { get }
@@ -265,15 +265,21 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
 
     self.notifyDelegateCreditCardSelected = self.reloadPaymentMethods
-      .map { paymentMethodData -> String? in
+      .map { paymentMethodData -> PaymentSourceSelected? in
         let selectedPaymentMethodCardId = paymentMethodData.selectedCard?.id
         let selectedPaymentSheetPaymentMethodCardId = paymentMethodData.selectedSetupIntent
 
         switch (selectedPaymentMethodCardId, selectedPaymentSheetPaymentMethodCardId) {
         case let (.none, .some(selectedPaymentSheetPaymentMethodCardId)):
-          return selectedPaymentSheetPaymentMethodCardId
+          return PaymentSourceSelected(
+            paymentSourceId: selectedPaymentSheetPaymentMethodCardId,
+            isSetupIntentClientSecret: true
+          )
         case let (.some(selectedPaymentMethodCardId), .none):
-          return selectedPaymentMethodCardId
+          return PaymentSourceSelected(
+            paymentSourceId: selectedPaymentMethodCardId,
+            isSetupIntentClientSecret: false
+          )
         default:
           return nil
         }
@@ -407,7 +413,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
-  public let notifyDelegateCreditCardSelected: Signal<String, Never>
+  public let notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>
   public let showLoadingIndicatorView: Signal<Bool, Never>

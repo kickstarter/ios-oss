@@ -21,6 +21,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       selectedQuantities: [reward.id: 1],
       shippingRule: ShippingRule.template,
       paymentSourceId: UserCreditCards.amex.id,
+      setupIntentClientSecret: nil,
       applePayParams: applePayParams
     )
 
@@ -51,6 +52,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       selectedQuantities: [reward.id: 1],
       shippingRule: ShippingRule.template,
       paymentSourceId: UserCreditCards.amex.id,
+      setupIntentClientSecret: nil,
       applePayParams: applePayParams
     )
 
@@ -89,6 +91,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       selectedQuantities: [reward.id: 1, addOn1.id: 2, addOn2.id: 3],
       shippingRule: shippingRule,
       paymentSourceId: "123",
+      setupIntentClientSecret: nil,
       applePayParams: applePayParams
     )
 
