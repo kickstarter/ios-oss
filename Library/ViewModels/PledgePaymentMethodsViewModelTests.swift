@@ -14,7 +14,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToAddStripeCardIntent = TestObserver<PaymentSheetSetupData, Never>()
   private let goToProject = TestObserver<Project, Never>()
-  private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
+  private let notifyDelegateCreditCardSelected = TestObserver<PaymentSourceSelected, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
 
   private let reloadPaymentMethodsCards = TestObserver<[UserCreditCards.CreditCard], Never>()
@@ -671,7 +671,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [UserCreditCards.amex.id], "First card selected by default"
+        [PaymentSourceSelected(paymentSourceId: UserCreditCards.amex.id, isSetupIntentClientSecret: false)],
+        "First card selected by default"
       )
 
       let discoverIndexPath = IndexPath(
@@ -682,7 +683,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(discoverIndexPath)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        UserCreditCards.amex.id, UserCreditCards.discover.id
+        PaymentSourceSelected(paymentSourceId: UserCreditCards.amex.id, isSetupIntentClientSecret: false),
+        PaymentSourceSelected(
+          paymentSourceId: UserCreditCards.discover.id,
+          isSetupIntentClientSecret: false
+        )
       ])
     }
   }
@@ -700,7 +705,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [UserCreditCards.visa.id], "First card selected by default"
+        [PaymentSourceSelected(paymentSourceId: UserCreditCards.visa.id, isSetupIntentClientSecret: false)],
+        "First card selected by default"
       )
 
       guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
@@ -727,7 +733,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         )
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        UserCreditCards.visa.id, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        PaymentSourceSelected(paymentSourceId: UserCreditCards.visa.id, isSetupIntentClientSecret: false),
+        PaymentSourceSelected(
+          paymentSourceId: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+          isSetupIntentClientSecret: true
+        )
       ])
     }
   }

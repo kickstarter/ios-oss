@@ -13,15 +13,20 @@ extension CreateBackingInput {
       shippingRule: createBackingData.shippingRule
     )
 
+    let setupIntentClientSecret = isApplePay ? nil : createBackingData
+      .paymentSourceId == nil ? createBackingData.setupIntentClientSecret : nil
+    let paymentSourceId = isApplePay ? nil : createBackingData
+      .setupIntentClientSecret == nil ? createBackingData.paymentSourceId : nil
+
     return CreateBackingInput(
       amount: pledgeParams.pledgeTotal,
       applePay: isApplePay ? createBackingData.applePayParams : nil,
       locationId: pledgeParams.locationId,
-      paymentSourceId: isApplePay ? nil : createBackingData.paymentSourceId,
+      paymentSourceId: paymentSourceId,
       projectId: createBackingData.project.graphID,
       refParam: createBackingData.refTag?.description,
       rewardIds: pledgeParams.rewardIds,
-      setupIntentClientSecret: isApplePay ? nil : createBackingData.setupIntentClientSecret
+      setupIntentClientSecret: setupIntentClientSecret
     )
   }
 }
