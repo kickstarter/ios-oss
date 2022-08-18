@@ -1035,7 +1035,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       XCTAssertTrue(allowedDelayedPaymentMethods)
     }
   }
-  
+
   func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_UpdateContext_Failure() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
@@ -1066,7 +1066,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
     }
   }
-  
+
   func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_UpdateRewardContext_Failure() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
@@ -1097,7 +1097,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
     }
   }
-  
+
   func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_ChangePaymentMethodContext_Failure() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
@@ -1120,7 +1120,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       optimizelyClient: mockOptimizelyClient
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
+      self.vm.inputs
+        .configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
       self.scheduler.run()
@@ -1128,7 +1129,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
     }
   }
-  
+
   func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_FixPaymentMethodContext_Failure() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
