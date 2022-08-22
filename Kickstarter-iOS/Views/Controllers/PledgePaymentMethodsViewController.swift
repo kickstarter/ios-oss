@@ -10,11 +10,6 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
   )
-
-  func pledgePaymentMethodsViewController(
-    _ viewController: PledgePaymentMethodsViewController,
-    loading flag: Bool
-  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -137,12 +132,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
         strongSelf.goToPaymentSheet(data: data)
       }
 
-    self.viewModel.outputs.showLoadingIndicatorView
+    self.viewModel.outputs.updateAddNewCardLoading
       .observeForUI()
       .observeValues { [weak self] showLoadingIndicator in
         guard let strongSelf = self else { return }
 
-        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: showLoadingIndicator)
+        strongSelf.updateAddNewPaymentMethodButtonLoading(state: showLoadingIndicator)
       }
   }
 
@@ -170,7 +165,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
         configuration: data.configuration
       ) { [weak self] result in
         guard let strongSelf = self else { return }
-        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: false)
+
+        strongSelf.updateAddNewPaymentMethodButtonLoading(state: false)
 
         switch result {
         case let .failure(error):
@@ -188,6 +184,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func confirmPaymentResult(with clientSecret: String) {
+    guard self.paymentSheetFlowController?.paymentOption != nil else { return }
+
     self.paymentSheetFlowController?.confirm(from: self) { [weak self] paymentResult in
       guard let strongSelf = self,
         let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
@@ -204,6 +202,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
           .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
       }
     }
+  }
+
+  private func updateAddNewPaymentMethodButtonLoading(state: Bool) {
+    self.dataSource.updateAddNewPaymentCardLoad(state: state)
+
+    let addNewCardButtonSection = self.tableView.numberOfSections - 1
+
+    self.tableView.reloadSections([addNewCardButtonSection], with: .none)
   }
 }
 

@@ -46,7 +46,15 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
     }
 
     self.set(
-      values: [()],
+      values: [false],
+      cellClass: PledgePaymentMethodAddCell.self,
+      inSection: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+  }
+
+  func updateAddNewPaymentCardLoad(state: Bool) {
+    self.set(
+      values: [state],
       cellClass: PledgePaymentMethodAddCell.self,
       inSection: PaymentMethodsTableViewSection.addNewCard.rawValue
     )
@@ -64,7 +72,7 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       value as PaymentSheetPaymentMethodCellData
     ):
       cell.configureWith(value: value)
-    case let (cell as PledgePaymentMethodAddCell, value as Void):
+    case let (cell as PledgePaymentMethodAddCell, value as Bool):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodLoadingCell, value as Void):
       cell.configureWith(value: value)
