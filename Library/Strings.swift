@@ -5745,6 +5745,20 @@ with friends."
       substitutions: [:]
     )
   }
+  
+  /**
+   "Set Your New Password context"
+
+   - **en**: ""We’re simplifying our login process. To log into your account with the email 'email' please set a password.\n\nPlease enter a password that is at least 6 characters long.""
+  */
+  public static func Set_your_new_password_context(with userEmail: String) -> String {
+    return localizedString(
+      key: "Set_your_new_password_context",
+      defaultValue: "We’re simplifying our login process. To log into your account with the email \(userEmail) please set a password.\n\nPlease enter a password that is at least 6 characters long.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
   /**
    "Long-lasting design"
 
@@ -21191,6 +21205,20 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
       substitutions: [:]
     )
   }
+  
+  /**
+   "Set your password"
+
+   - **en**: "Set your password"
+  */
+  public static func set_your_password_screen_title() -> String {
+    return localizedString(
+      key: "set_your_password_screen_title",
+      defaultValue: "Set your password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
   /**
    "Couldn't load messages"
 
@@ -25299,6 +25327,34 @@ projets enregistrés"
     return localizedString(
       key: "signup.input_fields.password_min_characters",
       defaultValue: "Password (minimum 6 characters)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  
+  /**
+   "Enter new password"
+
+   - **en**: "Enter new password"
+  */
+  public static func enter_new_password_text_field_label() -> String {
+    return localizedString(
+      key: "enter_new_password_text_field_label",
+      defaultValue: "Enter new password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  
+  /**
+   "Re enter new password"
+
+   - **en**: "Re enter new password"
+  */
+  public static func reenter_new_password_text_field_label() -> String {
+    return localizedString(
+      key: "reenter_new_password_text_field_label",
+      defaultValue: "Re enter new password",
       count: nil,
       substitutions: [:]
     )
