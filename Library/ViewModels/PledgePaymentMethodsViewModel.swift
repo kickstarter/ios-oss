@@ -35,6 +35,7 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
+  func addNewCardLoadingUpdated(state: Bool)
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
@@ -308,6 +309,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       (.pledge, project)
     }
 
+    let showLoadingIndicator = Signal.combineLatest(project, paymentSheetOnPledgeContext.filter(isTrue))
+      .takeWhen(didTapToAddNewCard)
+      .mapConst(true)
+
     let createSetupIntentEvent = Signal.combineLatest(
       project,
       paymentSheetOnPledgeContext.filter(isTrue)
@@ -339,13 +344,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
       .map { $0.localizedDescription }
 
-    let showLoadingIndicator = Signal.combineLatest(project, paymentSheetOnPledgeContext.filter(isTrue))
-      .takeWhen(didTapToAddNewCard)
-      .mapConst(true)
-
     self.updateAddNewCardLoading = Signal.merge(
       showLoadingIndicator,
-      createSetupIntentEvent.errors().mapConst(false)
+      createSetupIntentEvent.errors().mapConst(false),
+      self.addNewCardLoadingUpdatedProperty.signal
     )
 
     self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
@@ -392,6 +394,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     setupIntent: String
   ) {
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
+  }
+
+  private let addNewCardLoadingUpdatedProperty =
+    MutableProperty<Bool>(false)
+  public func addNewCardLoadingUpdated(state: Bool) {
+    self.addNewCardLoadingUpdatedProperty.value = state
   }
 
   private let viewDidLoadProperty = MutableProperty(())

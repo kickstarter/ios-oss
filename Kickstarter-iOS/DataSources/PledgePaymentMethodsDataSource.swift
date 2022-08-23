@@ -60,6 +60,15 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
     )
   }
 
+  func isLoadingStateCell(indexPath: IndexPath) -> Bool {
+    guard let value = self[indexPath] as? Bool,
+      value else {
+      return false
+    }
+
+    return true
+  }
+
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (

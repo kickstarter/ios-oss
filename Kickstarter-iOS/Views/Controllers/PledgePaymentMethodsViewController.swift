@@ -168,7 +168,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         switch result {
         case let .failure(error):
-          strongSelf.updateAddNewPaymentMethodButtonLoading(state: false)
+          strongSelf.viewModel.inputs.addNewCardLoadingUpdated(state: false)
           strongSelf.messageDisplayingDelegate?
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
@@ -184,7 +184,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
-      self.updateAddNewPaymentMethodButtonLoading(state: false)
+      self.viewModel.inputs.addNewCardLoadingUpdated(state: false)
 
       return
     }
@@ -193,7 +193,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       guard let strongSelf = self else { return }
 
-      strongSelf.updateAddNewPaymentMethodButtonLoading(state: false)
+      strongSelf.viewModel.inputs.addNewCardLoadingUpdated(state: false)
 
       guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
 
@@ -242,6 +242,9 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
 
 extension PledgePaymentMethodsViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    guard !self.dataSource.isLoadingStateCell(indexPath: indexPath) else {
+      return nil
+    }
     return self.viewModel.inputs.willSelectRowAtIndexPath(indexPath)
   }
 
