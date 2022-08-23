@@ -166,10 +166,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
       ) { [weak self] result in
         guard let strongSelf = self else { return }
 
-        strongSelf.updateAddNewPaymentMethodButtonLoading(state: false)
-
         switch result {
         case let .failure(error):
+          strongSelf.updateAddNewPaymentMethodButtonLoading(state: false)
           strongSelf.messageDisplayingDelegate?
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
@@ -184,11 +183,19 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func confirmPaymentResult(with clientSecret: String) {
-    guard self.paymentSheetFlowController?.paymentOption != nil else { return }
+    guard self.paymentSheetFlowController?.paymentOption != nil else {
+      self.updateAddNewPaymentMethodButtonLoading(state: false)
+
+      return
+    }
 
     self.paymentSheetFlowController?.confirm(from: self) { [weak self] paymentResult in
-      guard let strongSelf = self,
-        let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
+
+      guard let strongSelf = self else { return }
+
+      strongSelf.updateAddNewPaymentMethodButtonLoading(state: false)
+
+      guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
 
       switch paymentResult {
       case .completed:
