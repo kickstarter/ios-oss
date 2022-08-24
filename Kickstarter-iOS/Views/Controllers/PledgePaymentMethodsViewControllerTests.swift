@@ -105,7 +105,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
         self.allowLayoutPass()
-        
+
         controller.pledgeViewControllerPaymentSheet(PledgeViewController(), hidden: false)
 
         self.scheduler.advance(by: .seconds(1))
