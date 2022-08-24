@@ -36,6 +36,7 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
   func addNewCardLoadingUpdated(state: Bool)
+  func cancelPaymentSheetAppearance()
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
@@ -313,6 +314,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takeWhen(didTapToAddNewCard)
       .mapConst(true)
 
+    self.shouldCancelPaymentSheetAppearance <~ showLoadingIndicator.mapConst(false)
+
+    self.shouldCancelPaymentSheetAppearance <~ self.cancelPaymentSheetAppearanceProperty.signal.skipNil()
+      .mapConst(true)
+
     let createSetupIntentEvent = Signal.combineLatest(
       project,
       paymentSheetOnPledgeContext.filter(isTrue)
@@ -324,6 +330,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+
           var configuration = PaymentSheet.Configuration()
           configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
           configuration.allowsDelayedPaymentMethods = true
@@ -339,6 +346,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     }
 
     self.goToAddCardViaStripeScreen = createSetupIntentEvent.values()
+      .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)
+      .map { (data, shouldCancel) -> PaymentSheetSetupData? in
+        shouldCancel ? nil : data
+      }
+      .skipNil()
 
     self.notifyDelegateLoadPaymentMethodsError = Signal
       .merge(storedCardsEvent.errors(), createSetupIntentEvent.errors())
@@ -347,7 +359,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.updateAddNewCardLoading = Signal.merge(
       showLoadingIndicator,
       createSetupIntentEvent.errors().mapConst(false),
-      self.addNewCardLoadingUpdatedProperty.signal
+      self.addNewCardLoadingUpdatedProperty.signal,
+      self.shouldCancelPaymentSheetAppearance.signal.filter(isTrue).negate()
     )
 
     self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
@@ -375,6 +388,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         return indexPath
       }
+  }
+
+  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)
+
+  private let cancelPaymentSheetAppearanceProperty = MutableProperty<Void?>(nil)
+  public func cancelPaymentSheetAppearance() {
+    self.cancelPaymentSheetAppearanceProperty.value = ()
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)

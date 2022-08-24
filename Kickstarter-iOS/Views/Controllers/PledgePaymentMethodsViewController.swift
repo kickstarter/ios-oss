@@ -254,3 +254,11 @@ extension PledgePaymentMethodsViewController: UITableViewDelegate {
     self.viewModel.inputs.didSelectRowAtIndexPath(indexPath)
   }
 }
+
+// MARK: - PaymentSheetAppearanceDelegate
+
+extension PledgePaymentMethodsViewController: PaymentSheetAppearanceDelegate {
+  func pledgeViewControllerWillHidePaymentSheet(_: PledgeViewController) {
+    self.viewModel.inputs.cancelPaymentSheetAppearance()
+  }
+}
