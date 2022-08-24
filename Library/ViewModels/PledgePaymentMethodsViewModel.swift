@@ -318,6 +318,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.shouldCancelPaymentSheetAppearance <~ self.cancelPaymentSheetAppearanceProperty.signal.skipNil()
       .mapConst(true)
+    
+    self.shouldCancelPaymentSheetAppearance <~ updatedCards.signal
+      .mapConst(true)
 
     let createSetupIntentEvent = Signal.combineLatest(
       project,
