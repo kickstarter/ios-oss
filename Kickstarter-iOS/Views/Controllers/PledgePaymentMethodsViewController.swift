@@ -168,7 +168,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         switch result {
         case let .failure(error):
-          strongSelf.viewModel.inputs.addNewCardLoadingUpdated(state: false)
+          strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
           strongSelf.messageDisplayingDelegate?
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
@@ -184,7 +184,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
-      self.viewModel.inputs.addNewCardLoadingUpdated(state: false)
+      self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
       return
     }
@@ -193,7 +193,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       guard let strongSelf = self else { return }
 
-      strongSelf.viewModel.inputs.addNewCardLoadingUpdated(state: false)
+      strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
       guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
 

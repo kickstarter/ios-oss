@@ -35,8 +35,7 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
-  func addNewCardLoadingUpdated(state: Bool)
-  func cancelPaymentSheetAppearance()
+  func shouldCancelPaymentSheetAppearance(state: Bool)
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
@@ -316,9 +315,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.shouldCancelPaymentSheetAppearance <~ showLoadingIndicator.mapConst(false)
 
-    self.shouldCancelPaymentSheetAppearance <~ self.cancelPaymentSheetAppearanceProperty.signal.skipNil()
-      .mapConst(true)
-    
     self.shouldCancelPaymentSheetAppearance <~ updatedCards.signal
       .mapConst(true)
 
@@ -362,7 +358,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.updateAddNewCardLoading = Signal.merge(
       showLoadingIndicator,
       createSetupIntentEvent.errors().mapConst(false),
-      self.addNewCardLoadingUpdatedProperty.signal,
       self.shouldCancelPaymentSheetAppearance.signal.filter(isTrue).negate()
     )
 
@@ -393,13 +388,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
   }
 
-  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)
-
-  private let cancelPaymentSheetAppearanceProperty = MutableProperty<Void?>(nil)
-  public func cancelPaymentSheetAppearance() {
-    self.cancelPaymentSheetAppearanceProperty.value = ()
-  }
-
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
   public func configure(with value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
@@ -419,10 +407,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
   }
 
-  private let addNewCardLoadingUpdatedProperty =
-    MutableProperty<Bool>(false)
-  public func addNewCardLoadingUpdated(state: Bool) {
-    self.addNewCardLoadingUpdatedProperty.value = state
+  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)
+  public func shouldCancelPaymentSheetAppearance(state: Bool) {
+    self.shouldCancelPaymentSheetAppearance.value = state
   }
 
   private let viewDidLoadProperty = MutableProperty(())
