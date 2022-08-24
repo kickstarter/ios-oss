@@ -135,4 +135,17 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
       self.dataSource.numberOfItems(in: PaymentMethodsTableViewSection.addNewCard.rawValue)
     )
   }
+
+  func testLoadingState_AddNewCardButton() {
+    self.dataSource.load([], paymentSheetCards: [], isLoading: true)
+    self.dataSource.updateAddNewPaymentCardLoad(state: true)
+
+    let addNewCardIndexPath = IndexPath(row: 0, section: 1)
+
+    XCTAssertTrue(self.dataSource.isLoadingStateCell(indexPath: addNewCardIndexPath))
+
+    self.dataSource.updateAddNewPaymentCardLoad(state: false)
+
+    XCTAssertFalse(self.dataSource.isLoadingStateCell(indexPath: addNewCardIndexPath))
+  }
 }

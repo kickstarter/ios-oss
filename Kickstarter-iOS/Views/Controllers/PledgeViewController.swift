@@ -22,7 +22,7 @@ protocol PledgeViewControllerDelegate: AnyObject {
 }
 
 protocol PaymentSheetAppearanceDelegate: AnyObject {
-  func pledgeViewControllerWillHidePaymentSheet(_ viewController: PledgeViewController)
+  func pledgeViewControllerPaymentSheet(_ viewController: PledgeViewController, hidden: Bool)
 }
 
 final class PledgeViewController: UIViewController,
@@ -460,7 +460,7 @@ final class PledgeViewController: UIViewController,
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
-        self.paymentSheetAppearanceDelegate?.pledgeViewControllerWillHidePaymentSheet(self)
+        self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
@@ -603,22 +603,22 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
 extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerWillHidePaymentSheet(self)
+    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
     self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerWillHidePaymentSheet(self)
+    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
     self.viewModel.inputs.applePayButtonTapped()
   }
 
   func submitButtonTapped() {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerWillHidePaymentSheet(self)
+    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
     self.viewModel.inputs.submitButtonTapped()
   }
 
   func termsOfUseTapped(with helpType: HelpType) {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerWillHidePaymentSheet(self)
+    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }

@@ -258,7 +258,7 @@ extension PledgePaymentMethodsViewController: UITableViewDelegate {
 // MARK: - PaymentSheetAppearanceDelegate
 
 extension PledgePaymentMethodsViewController: PaymentSheetAppearanceDelegate {
-  func pledgeViewControllerWillHidePaymentSheet(_: PledgeViewController) {
-    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+  func pledgeViewControllerPaymentSheet(_: PledgeViewController, hidden: Bool) {
+    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: hidden)
   }
 }

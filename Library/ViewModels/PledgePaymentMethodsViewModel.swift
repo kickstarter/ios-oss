@@ -356,9 +356,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map { $0.localizedDescription }
 
     self.updateAddNewCardLoading = Signal.merge(
-      showLoadingIndicator,
       createSetupIntentEvent.errors().mapConst(false),
-      self.shouldCancelPaymentSheetAppearance.signal.filter(isTrue).negate()
+      self.shouldCancelPaymentSheetAppearance.signal.negate()
     )
 
     self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
@@ -407,7 +406,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
   }
 
-  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)
+  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(true)
   public func shouldCancelPaymentSheetAppearance(state: Bool) {
     self.shouldCancelPaymentSheetAppearance.value = state
   }
