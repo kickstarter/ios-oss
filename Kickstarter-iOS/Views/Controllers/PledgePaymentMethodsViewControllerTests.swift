@@ -104,12 +104,10 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
         parent.view.frame.size.height = 400
 
         self.scheduler.advance(by: .seconds(1))
-        self.allowLayoutPass()
 
         controller.pledgeViewControllerPaymentSheet(PledgeViewController(), hidden: false)
 
         self.scheduler.advance(by: .seconds(1))
-        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
