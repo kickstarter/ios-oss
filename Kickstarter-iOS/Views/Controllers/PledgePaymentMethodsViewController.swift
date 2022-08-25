@@ -10,11 +10,6 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
   )
-
-  func pledgePaymentMethodsViewController(
-    _ viewController: PledgePaymentMethodsViewController,
-    loading flag: Bool
-  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -137,12 +132,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
         strongSelf.goToPaymentSheet(data: data)
       }
 
-    self.viewModel.outputs.showLoadingIndicatorView
+    self.viewModel.outputs.updateAddNewCardLoading
       .observeForUI()
       .observeValues { [weak self] showLoadingIndicator in
         guard let strongSelf = self else { return }
 
-        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: showLoadingIndicator)
+        strongSelf.updateAddNewPaymentMethodButtonLoading(state: showLoadingIndicator)
       }
   }
 
@@ -170,10 +165,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
         configuration: data.configuration
       ) { [weak self] result in
         guard let strongSelf = self else { return }
-        strongSelf.delegate?.pledgePaymentMethodsViewController(strongSelf, loading: false)
 
         switch result {
         case let .failure(error):
+          strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
           strongSelf.messageDisplayingDelegate?
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
@@ -188,9 +183,19 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func confirmPaymentResult(with clientSecret: String) {
+    guard self.paymentSheetFlowController?.paymentOption != nil else {
+      self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+
+      return
+    }
+
     self.paymentSheetFlowController?.confirm(from: self) { [weak self] paymentResult in
-      guard let strongSelf = self,
-        let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
+
+      guard let strongSelf = self else { return }
+
+      strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+
+      guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
 
       switch paymentResult {
       case .completed:
@@ -204,6 +209,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
           .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
       }
     }
+  }
+
+  private func updateAddNewPaymentMethodButtonLoading(state: Bool) {
+    self.dataSource.updateAddNewPaymentCardLoad(state: state)
+
+    let addNewCardButtonSection = self.tableView.numberOfSections - 1
+
+    self.tableView.reloadSections([addNewCardButtonSection], with: .none)
   }
 }
 
@@ -229,6 +242,9 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
 
 extension PledgePaymentMethodsViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    guard !self.dataSource.isLoadingStateCell(indexPath: indexPath) else {
+      return nil
+    }
     return self.viewModel.inputs.willSelectRowAtIndexPath(indexPath)
   }
 
@@ -236,5 +252,13 @@ extension PledgePaymentMethodsViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
 
     self.viewModel.inputs.didSelectRowAtIndexPath(indexPath)
+  }
+}
+
+// MARK: - PaymentSheetAppearanceDelegate
+
+extension PledgePaymentMethodsViewController: PaymentSheetAppearanceDelegate {
+  func pledgeViewControllerPaymentSheet(_: PledgeViewController, hidden: Bool) {
+    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: hidden)
   }
 }

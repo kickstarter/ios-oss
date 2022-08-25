@@ -9,6 +9,20 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
   private lazy var selectionView: UIView = { UIView(frame: .zero) }()
   private lazy var addButton: UIButton = { UIButton(type: .custom) }()
 
+  private lazy var containerView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var activityIndicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    indicator.startAnimating()
+    return indicator
+  }()
+
+  private let viewModel: PledgePaymentMethodAddCellViewModelType = PledgePaymentMethodAddCellViewModel()
+
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -23,21 +37,32 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - View model
+
+  override func bindViewModel() {
+    self.activityIndicator.rac.animating = self.viewModel.outputs.showLoading
+    self.addButton.rac.hidden = self.viewModel.outputs.showLoading
+  }
+
   // MARK: - Configuration
 
   private func configureSubviews() {
-    _ = (self.addButton, self.contentView)
+    _ = (self.containerView, self.contentView)
       |> ksr_addSubviewToParent()
   }
 
   private func setupConstraints() {
-    _ = (self.addButton, self.contentView)
+    _ = ([self.activityIndicator, self.addButton], self.containerView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.containerView, self.contentView)
       |> ksr_constrainViewToEdgesInParent()
       |> ksr_constrainViewToCenterInParent()
 
-    _ = self.addButton.heightAnchor.constraint(equalToConstant: Styles.grid(9))
-      |> \.priority .~ .defaultHigh
-      |> \.isActive .~ true
+    NSLayoutConstraint.activate([
+      self.activityIndicator.widthAnchor.constraint(equalToConstant: Styles.grid(9)),
+      self.containerView.heightAnchor.constraint(equalToConstant: Styles.grid(9))
+    ])
   }
 
   // MARK: - Styles
@@ -53,18 +78,26 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
 
     _ = self.addButton
       |> addButtonStyle
+
+    _ = self.activityIndicator
+      |> activityIndicatorStyle
+
+    _ = self.containerView
+      |> stackViewStyle
   }
 
-  func configureWith(value _: Void) {}
+  func configureWith(value flag: Bool) {
+    self.viewModel.inputs.configureWith(value: flag)
+  }
 }
 
 // MARK: - Styles
 
 private let addButtonStyle: ButtonStyle = { button in
   button
-    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.New_payment_method() }
     |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 15)
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.New_payment_method() }
     |> UIButton.lens.isUserInteractionEnabled .~ false
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     |> UIButton.lens.tintColor .~ .ksr_create_700
@@ -74,4 +107,18 @@ private let addButtonStyle: ButtonStyle = { button in
 private let selectionViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_support_100
+}
+
+private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
+  activityIndicator
+    |> \.color .~ UIColor.ksr_support_400
+    |> \.hidesWhenStopped .~ true
+}
+
+private let stackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.alignment .~ .center
+    |> \.spacing .~ Styles.grid(0)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
 }

@@ -29,7 +29,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
   private let reloadPaymentMethodsSelectedCard = TestObserver<UserCreditCards.CreditCard?, Never>()
   private let reloadPaymentMethodsShouldReload = TestObserver<Bool, Never>()
-  private let showLoadingIndicatorView = TestObserver<Bool, Never>()
+  private let addNewCardLoadingState = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -57,7 +57,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsSelectedSetupIntent.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.4 }.observe(self.reloadPaymentMethodsShouldReload.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.5 }.observe(self.reloadPaymentMethodsIsLoading.observer)
-    self.vm.outputs.showLoadingIndicatorView.map { $0 }.observe(self.showLoadingIndicatorView.observer)
+    self.vm.outputs.updateAddNewCardLoading.map { $0 }.observe(self.addNewCardLoadingState.observer)
     self.vm.outputs.goToAddCardViaStripeScreen.map { $0 }.observe(self.goToAddStripeCardIntent.observer)
     // swiftlint:enable line_length
   }
@@ -935,7 +935,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testLoadingingIndicatorView_ShowAndHide_WhenPaymentSheetFlagEnabled_Success() {
+  func testLoadingStateAddNewCard_ShowAndHide_WhenPaymentSheetFlagEnabled_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
       row: 0,
@@ -959,11 +959,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.showLoadingIndicatorView.assertValues([true, false])
+      self.addNewCardLoadingState.assertValues([true, false])
     }
   }
 
-  func testLoadingingIndicatorView_NoEmissions_WhenPaymentSheetFlagDisabled_Success() {
+  func testLoadingStateAddNewCard_NoEmissions_WhenPaymentSheetFlagDisabled_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
       row: 0,
@@ -987,7 +987,73 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.showLoadingIndicatorView.assertValues([])
+      self.addNewCardLoadingState.assertValues([])
+    }
+  }
+
+  func testLoadingStateAddNewCard_ShowAndHide_NonCardSelectionNonAddNewCardContext_WhenPaymentSheetFlagEnabled_Success() {
+    let project = Project.template
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+
+    let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseErrorEnvelopeJSON))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.shouldCancelPaymentSheetAppearance(state: true)
+      self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
+      self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
+      self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
+
+      self.scheduler.run()
+
+      self.addNewCardLoadingState.assertValues([false, true, true, true])
+    }
+  }
+
+  func testLoadingStateAddNewCard_ShowAndHide_CardSelectionContext_WhenPaymentSheetFlagEnabled_Success() {
+    let cards = UserCreditCards.withCards([
+      UserCreditCards.visa,
+      UserCreditCards.masterCard,
+      UserCreditCards.amex
+    ])
+    let graphUser = GraphUser.template |> \.storedCards .~ cards
+    let response = UserEnvelope<GraphUser>(me: graphUser)
+    let mockService = MockService(fetchGraphUserResult: .success(response))
+    let project = Project.template
+      |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let paymentMethodSelectionIndexPath = IndexPath(
+      row: 1,
+      section: PaymentMethodsTableViewSection.paymentMethods.rawValue
+    )
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
+
+      self.scheduler.advance(by: .seconds(1))
+      self.vm.inputs.didSelectRowAtIndexPath(paymentMethodSelectionIndexPath)
+
+      self.scheduler.run()
+
+      self.addNewCardLoadingState.assertValues([true, false])
     }
   }
 
