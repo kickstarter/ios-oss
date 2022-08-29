@@ -67,7 +67,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   public func configureWith(_ userEmail: String) {
     self.contextLabelProperty
       .value =
-      "We’re simplifying our login process. To log into your account with the email \(userEmail), please set a password.\n\nPlease enter a password that is at least 6 characters long."
+      "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email \(userEmail), please set a password that’s at least 6 characters long."
     self.newPasswordLabelProperty.value = "Enter new password"
     self.confirmPasswordLabelProperty.value = "Re-enter new password"
   }
