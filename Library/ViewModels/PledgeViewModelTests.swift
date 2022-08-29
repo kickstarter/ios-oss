@@ -588,7 +588,12 @@ final class PledgeViewModelTests: TestCase {
       self.summarySectionSeparatorHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
 
-      self.vm.inputs.creditCardSelected(with: backing.paymentSource?.id ?? "")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: backing.paymentSource?.id ?? "",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false, true])
 
@@ -2182,7 +2187,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
 
@@ -2301,7 +2311,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
 
@@ -2399,7 +2414,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
 
@@ -2478,7 +2498,12 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.processingViewIsHidden.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
 
@@ -3183,14 +3208,24 @@ final class PledgeViewModelTests: TestCase {
       "Amount and shipping rule unchanged"
     )
 
-    self.vm.inputs.creditCardSelected(with: "12345")
+    var paymentSourceSelected = PaymentSourceSelected(
+      paymentSourceId: "12345",
+      isSetupIntentClientSecret: false
+    )
+
+    self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
       [false, true, false, true, false, true],
       "Payment method changed"
     )
 
-    self.vm.inputs.creditCardSelected(with: Backing.PaymentSource.template.id ?? "")
+    paymentSourceSelected = PaymentSourceSelected(
+      paymentSourceId: Backing.PaymentSource.template.id ?? "",
+      isSetupIntentClientSecret: false
+    )
+
+    self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
       [false, true, false, true, false, true, false],
@@ -4644,7 +4679,12 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService2) {
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
@@ -4749,7 +4789,12 @@ final class PledgeViewModelTests: TestCase {
       let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
@@ -4958,7 +5003,12 @@ final class PledgeViewModelTests: TestCase {
       let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
@@ -5141,7 +5191,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -5259,7 +5314,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -5358,7 +5418,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.vm.inputs.creditCardSelected(with: "123")
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -6083,6 +6148,212 @@ final class PledgeViewModelTests: TestCase {
     self.pledgeAmountSummaryViewHidden.assertValues([false])
   }
 
+  func testCreateBacking_WithNewPaymentSheetCard_TappedPledgeButton_Success() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.id .~ 99
+      let addOnReward1 = Reward.template
+        |> Reward.lens.id .~ 1
+      let addOnReward2 = Reward.template
+        |> Reward.lens.id .~ 2
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
+        selectedLocationId: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: true
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      self.processingViewIsHidden.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.processingViewIsHidden.assertValues([false])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: 0.00,
+        bonusAmountInUsd: 25.00,
+        checkoutId: "1",
+        estimatedDelivery: reward.estimatedDeliveryOn,
+        paymentType: "credit_card",
+        revenueInUsd: 35.00,
+        rewardId: String(reward.id),
+        rewardMinimumUsd: 10.00,
+        rewardTitle: reward.title,
+        shippingEnabled: reward.shipping.enabled,
+        shippingAmountUsd: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([.template])
+      self.goToThanksReward.assertValues([reward])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
+      XCTAssertEqual(
+        ["Page Viewed", "CTA Clicked"],
+        self.segmentTrackingClient.events
+      )
+    }
+  }
+
+  func testCreateBacking_WithNewPaymentSheetCard_TappedApplePayButton_Success() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.id .~ 99
+      let addOnReward1 = Reward.template
+        |> Reward.lens.id .~ 1
+      let addOnReward2 = Reward.template
+        |> Reward.lens.id .~ 2
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1, addOnReward1.id: 1, addOnReward2.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: true
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
+
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+
+      self.processingViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: 0.00,
+        bonusAmountInUsd: 25.00,
+        checkoutId: "1",
+        estimatedDelivery: reward.estimatedDeliveryOn,
+        paymentType: "apple_pay",
+        revenueInUsd: 35.00,
+        rewardId: String(reward.id),
+        rewardMinimumUsd: 10.00,
+        rewardTitle: reward.title,
+        shippingEnabled: reward.shipping.enabled,
+        shippingAmountUsd: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
+      XCTAssertEqual(
+        ["Page Viewed", "CTA Clicked"],
+        self.segmentTrackingClient.events
+      )
+    }
+  }
+
   // MARK: - Tracking
 
   func testTrackingEvents_CheckoutPaymentPageViewed() {
@@ -6363,7 +6634,13 @@ final class PledgeViewModelTests: TestCase {
       isValid: true
     ))
     self.vm.inputs.shippingRuleSelected(.template)
-    self.vm.inputs.creditCardSelected(with: "123")
+
+    let paymentSourceSelected = PaymentSourceSelected(
+      paymentSourceId: "123",
+      isSetupIntentClientSecret: false
+    )
+
+    self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
     self.vm.inputs.submitButtonTapped()
 
@@ -6439,7 +6716,13 @@ final class PledgeViewModelTests: TestCase {
         isValid: true
       ))
       self.vm.inputs.shippingRuleSelected(.template)
-      self.vm.inputs.creditCardSelected(with: "123")
+
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "123",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       self.vm.inputs.submitButtonTapped()
 
@@ -6515,7 +6798,13 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.creditCardSelected(with: "12345")
+
+      let paymentSourceSelected = PaymentSourceSelected(
+        paymentSourceId: "12345",
+        isSetupIntentClientSecret: false
+      )
+
+      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
 
       XCTAssertEqual([], self.segmentTrackingClient.events)
 

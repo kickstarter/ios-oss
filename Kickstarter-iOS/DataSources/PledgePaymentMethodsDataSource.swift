@@ -46,10 +46,27 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
     }
 
     self.set(
-      values: [()],
+      values: [false],
       cellClass: PledgePaymentMethodAddCell.self,
       inSection: PaymentMethodsTableViewSection.addNewCard.rawValue
     )
+  }
+
+  func updateAddNewPaymentCardLoad(state: Bool) {
+    self.set(
+      values: [state],
+      cellClass: PledgePaymentMethodAddCell.self,
+      inSection: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+  }
+
+  func isLoadingStateCell(indexPath: IndexPath) -> Bool {
+    guard let value = self[indexPath] as? Bool,
+      value else {
+      return false
+    }
+
+    return true
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -64,7 +81,7 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
       value as PaymentSheetPaymentMethodCellData
     ):
       cell.configureWith(value: value)
-    case let (cell as PledgePaymentMethodAddCell, value as Void):
+    case let (cell as PledgePaymentMethodAddCell, value as Bool):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodLoadingCell, value as Void):
       cell.configureWith(value: value)
