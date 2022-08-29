@@ -13,14 +13,10 @@ public protocol SetYourPasswordViewModelInputs {
 }
 
 public protocol SetYourPasswordViewModelOutputs {
-  var isLoading: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var contextLabelText: Signal<String, Never> { get }
   var newPasswordLabel: Signal<String, Never> { get }
   var confirmPasswordLabel: Signal<String, Never> { get }
-  var newPasswordBecomeFirstResponder: Signal<Void, Never> { get }
-  var confirmNewPasswordBecomeFirstResponder: Signal<Void, Never> { get }
-  var dismissKeyboard: Signal<Void, Never> { get }
 }
 
 public protocol SetYourPasswordViewModelType {
@@ -32,23 +28,12 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
                                              SetYourPasswordViewModelOutputs {
   
   public init() {
-    let isLoading: MutableProperty<Bool> = MutableProperty(false)
-    self.isLoading = isLoading.signal.skipRepeats()
-    
     self.contextLabelText = self.contextLabelProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
     self.newPasswordLabel = self.newPasswordLabelProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
     self.confirmPasswordLabel = self.confirmPasswordLabelProperty.signal
       . takeWhen(self.viewDidLoadProperty.signal)
-    
-    self.newPasswordBecomeFirstResponder = self.confirmPasswordDoneEditingProperty.signal
-    self.confirmNewPasswordBecomeFirstResponder = self.newPasswordDoneEditingProperty.signal
-    
-    self.dismissKeyboard = Signal.merge(
-      self.saveButtonTappedProperty.signal,
-      self.confirmPasswordDoneEditingProperty.signal
-    )
     
     // MARK: Field Validations
     
@@ -81,9 +66,9 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   private let newPasswordLabelProperty = MutableProperty("")
   private let confirmPasswordLabelProperty = MutableProperty("")
   public func configureWith(_ userEmail: String) {
-    self.contextLabelProperty.value = Strings.Set_your_new_password_context(with: userEmail)
-    self.newPasswordLabelProperty.value = Strings.enter_new_password_text_field_label()
-    self.confirmPasswordLabelProperty.value = Strings.reenter_new_password_text_field_label()
+    self.contextLabelProperty.value = "We’re simplifying our login process. To log into your account with the email \(userEmail), please set a password.\n\nPlease enter a password that is at least 6 characters long."
+    self.newPasswordLabelProperty.value = "Enter new password"
+    self.confirmPasswordLabelProperty.value = "Re-enter new password"
   }
   
   
@@ -122,14 +107,10 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   
   // MARK: - Output Properties
   
-  public var isLoading: Signal<Bool, Never>
   public var saveButtonIsEnabled: Signal<Bool, Never>
   public var contextLabelText: Signal<String, Never>
   public var newPasswordLabel: Signal<String, Never>
   public var confirmPasswordLabel: Signal<String, Never>
-  public var newPasswordBecomeFirstResponder: Signal<Void, Never>
-  public var confirmNewPasswordBecomeFirstResponder: Signal<Void, Never>
-  public var dismissKeyboard: Signal<Void, Never>
 }
 
 // MARK: - Helpers

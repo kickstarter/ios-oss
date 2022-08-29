@@ -4,8 +4,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public final class SetYourPasswordViewController: UIViewController,
-  ProcessingViewPresenting {
+public final class SetYourPasswordViewController: UIViewController {
   // MARK: - Properties
   
   private lazy var contextLabel = { UILabel(frame: .zero) }()
@@ -13,8 +12,7 @@ public final class SetYourPasswordViewController: UIViewController,
   private lazy var newPasswordTextField: UITextField = { UITextField(frame: .zero) |> \.tag .~ 0 }()
   private lazy var confirmPasswordLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmPasswordTextField: UITextField = { UITextField(frame: .zero) |> \.tag .~ 1 }()
-
-  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
+  
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
@@ -24,6 +22,14 @@ public final class SetYourPasswordViewController: UIViewController,
 
   private lazy var saveButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  
+  fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
+    UITapGestureRecognizer(
+      target: self,
+      action: #selector(SetYourPasswordViewController.dismissKeyboard)
+    )
+      |> \.cancelsTouchesInView .~ false
   }()
 
   private let viewModel: SetYourPasswordViewModelType = SetYourPasswordViewModel()
@@ -43,20 +49,17 @@ public final class SetYourPasswordViewController: UIViewController,
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.title = Strings.set_your_password_screen_title()
+    self.title = "Set your password"
     
     self.navigationController?.configureTransparentNavigationBar()
-    self.tabBarController?.tabBar.isHidden = true
+    
+    self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.configureViews()
     self.setupConstraints()
     self.configureTargets()
     
     self.viewModel.inputs.viewDidLoad()
-  }
-  
-  public override func viewWillDisappear(_ animated: Bool) {
-    self.tabBarController?.tabBar.isHidden = false
   }
 
   // MARK: - Styles
@@ -65,10 +68,7 @@ public final class SetYourPasswordViewController: UIViewController,
     super.bindStyles()
 
     _ = self.contextLabel
-      |> baseLabelStyle
-      |> UILabel.lens.font %~ { _ in
-        UIFont.ksr_title3()
-      }
+      |> contextLabelStyle
 
     _ = self.rootStackView
       |> baseStackViewStyle
@@ -122,22 +122,6 @@ public final class SetYourPasswordViewController: UIViewController,
       .observeValues { [weak self] isEnabled in
         self?.saveButton.isEnabled = isEnabled
       }
-    
-    self.viewModel.outputs.dismissKeyboard
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.dismissKeyboard()
-      }
-    
-    self.viewModel.outputs.isLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        if isLoading {
-          self?.showProcessingView()
-        } else {
-          self?.hideProcessingView()
-        }
-      }
   }
 
   // MARK: - Functions
@@ -166,31 +150,30 @@ public final class SetYourPasswordViewController: UIViewController,
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
     
-    self.rootStackView.setCustomSpacing(Styles.grid(5), after: self.confirmPasswordTextField)
+    self.rootStackView.setCustomSpacing(Styles.grid(7), after: self.contextLabel)
+    self.rootStackView.setCustomSpacing(Styles.grid(3), after: self.confirmPasswordTextField)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.newPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.confirmPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.newPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+      self.confirmPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+      self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
     ])
   }
 
   private func configureTargets() {
     self.newPasswordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     self.confirmPasswordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-    
     self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
-  }
-  
-  private func dismissKeyboard() {
-    [self.newPasswordTextField, self.confirmPasswordTextField]
-      .forEach { $0?.resignFirstResponder() }
   }
 
   // MARK: - Accessors
+  
+  @objc private func dismissKeyboard() {
+    self.view.endEditing(true)
+  }
   
   @objc private func textFieldDidChange(_ textField: UITextField) {
     guard let password = textField.text else { return }
@@ -226,21 +209,6 @@ extension SetYourPasswordViewController: UITextFieldDelegate {
       return
     }
   }
-  
-  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    guard let password = textField.text else { return true }
-    
-    switch textField.tag {
-    case 0:
-      self.viewModel.inputs.newPasswordFieldDidReturn(newPassword: password)
-    case 1:
-      self.viewModel.inputs.confirmPasswordFieldDidReturn(confirmPassword: password)
-    default:
-      return true
-    }
-    
-    return true
-  }
 }
 
 // MARK: - Styles
@@ -250,14 +218,15 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
     |> \.distribution .~ .fill
     |> \.alignment .~ .fill
     |> \.axis .~ .vertical
-    |> UIStackView.lens.spacing .~ Styles.grid(3)
+    |> UIStackView.lens.spacing .~ Styles.grid(2)
 }
 
-private let baseLabelStyle: LabelStyle = { label in
+private let contextLabelStyle: LabelStyle = { label in
   label
     |> \.textAlignment .~ NSTextAlignment.left
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
+    |> UILabel.lens.font %~ { _ in UIFont.ksr_body(size: 17) }
 }
 
 private let textFieldLabelStyle: LabelStyle = { label in
@@ -267,7 +236,7 @@ private let textFieldLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
     |> \.backgroundColor .~ .ksr_white
     |> \.textColor .~ UIColor.ksr_support_700
-    |> \.font %~ { _ in .ksr_body() }
+    |> \.font %~ { _ in .ksr_callout() }
 }
 
 private let textFieldStyle: TextFieldStyle = { textField in
@@ -284,6 +253,7 @@ private let textFieldStyle: TextFieldStyle = { textField in
 private let savePasswordButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
+    |> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_support_300.mixLighter(0.12)
     |> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.Save()
     }
