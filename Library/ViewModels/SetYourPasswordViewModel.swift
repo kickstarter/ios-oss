@@ -25,18 +25,17 @@ public protocol SetYourPasswordViewModelType {
 }
 
 public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYourPasswordViewModelInputs,
-                                             SetYourPasswordViewModelOutputs {
-  
+  SetYourPasswordViewModelOutputs {
   public init() {
     self.contextLabelText = self.contextLabelProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
     self.newPasswordLabel = self.newPasswordLabelProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
     self.confirmPasswordLabel = self.confirmPasswordLabelProperty.signal
-      . takeWhen(self.viewDidLoadProperty.signal)
-    
+      .takeWhen(self.viewDidLoadProperty.signal)
+
     // MARK: Field Validations
-    
+
     let combinedPasswords = Signal.combineLatest(
       self.newPasswordProperty.signal,
       self.confirmPasswordProperty.signal
@@ -48,7 +47,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
     let formIsValid = Signal.combineLatest(fieldsMatch, fieldLengthIsValid)
       .map { fieldsMatch, fieldLengthIsValid in fieldsMatch && fieldLengthIsValid }
       .skipRepeats()
-    
+
     self.saveButtonIsEnabled = formIsValid
   }
 
@@ -56,32 +55,33 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   public var outputs: SetYourPasswordViewModelOutputs { return self }
 
   // MARK: - Input Methods
-  
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  
+
   private let contextLabelProperty = MutableProperty("")
   private let newPasswordLabelProperty = MutableProperty("")
   private let confirmPasswordLabelProperty = MutableProperty("")
   public func configureWith(_ userEmail: String) {
-    self.contextLabelProperty.value = "We’re simplifying our login process. To log into your account with the email \(userEmail), please set a password.\n\nPlease enter a password that is at least 6 characters long."
+    self.contextLabelProperty
+      .value =
+      "We’re simplifying our login process. To log into your account with the email \(userEmail), please set a password.\n\nPlease enter a password that is at least 6 characters long."
     self.newPasswordLabelProperty.value = "Enter new password"
     self.confirmPasswordLabelProperty.value = "Re-enter new password"
   }
-  
-  
+
   private let newPasswordProperty = MutableProperty<String>("")
   public func newPasswordFieldDidChange(_ text: String) {
     self.newPasswordProperty.value = text
   }
-  
+
   private let confirmPasswordProperty = MutableProperty<String>("")
   public func confirmPasswordFieldDidChange(_ text: String) {
     self.confirmPasswordProperty.value = text
   }
-  
+
   private var newPasswordDoneEditingProperty = MutableProperty(())
   public func newPasswordFieldDidReturn(newPassword: String) {
     self.newPasswordLabelProperty.value = newPassword
@@ -94,19 +94,18 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
     self.confirmPasswordDoneEditingProperty.value = ()
   }
 
-
   private var saveButtonTappedProperty = MutableProperty(())
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
   }
-  
+
   private let saveButtonPressedProperty = MutableProperty(())
   public func saveButtonPressed() {
     self.saveButtonPressedProperty.value = ()
   }
-  
+
   // MARK: - Output Properties
-  
+
   public var saveButtonIsEnabled: Signal<Bool, Never>
   public var contextLabelText: Signal<String, Never>
   public var newPasswordLabel: Signal<String, Never>
@@ -114,6 +113,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
 }
 
 // MARK: - Helpers
+
 private func formFieldsNotEmpty(_ pwds: (first: String, second: String, third: String)) -> Bool {
   return !pwds.first.isEmpty && !pwds.second.isEmpty && !pwds.third.isEmpty
 }
