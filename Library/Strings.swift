@@ -5745,7 +5745,6 @@ with friends."
       substitutions: [:]
     )
   }
-  
   /**
    "Long-lasting design"
 
@@ -21192,7 +21191,6 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
       substitutions: [:]
     )
   }
-  
   /**
    "Couldn't load messages"
 
@@ -25305,7 +25303,6 @@ projets enregistrés"
       substitutions: [:]
     )
   }
-  
   /**
    "Sign up"
 
