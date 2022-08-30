@@ -4,53 +4,49 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 
 final class SetYourPasswordViewModelTests: TestCase {
+  private let viewModel = SetYourPasswordViewModel()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let contextLabelText = TestObserver<String, Never>()
   private let newPasswordLabel = TestObserver<String, Never>()
   private let confirmPasswordLabel = TestObserver<String, Never>()
 
-  func test_init() {
-    _ = self.makeSUT(with: "test@email.com")
+  override func setUp() {
+    super.setUp()
 
+    self.viewModel.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
+    self.viewModel.outputs.contextLabelText.observe(self.contextLabelText.observer)
+    self.viewModel.outputs.newPasswordLabel.observe(self.newPasswordLabel.observer)
+    self.viewModel.outputs.confirmPasswordLabel.observe(self.confirmPasswordLabel.observer)
+
+    self.viewModel.inputs.configureWith("test@email.com")
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  func test_init() {
+    self.contextLabelText
+      .assertValue("We will be discontinuing the ability to log in via Facebook. To log in to your account using the email test@email.com, please set a password that’s at least 6 characters long.")
+    self.newPasswordLabel.assertValue("Enter new password")
+    self.confirmPasswordLabel.assertValue("Re-enter new password")
     XCTAssertNil(self.saveButtonIsEnabled.lastValue)
   }
 
   func test_saveButtonIsEnabledWhenFormIsValid() {
-    let sut = self.makeSUT()
-
-    sut.inputs.newPasswordFieldDidChange("")
-    sut.inputs.confirmPasswordFieldDidChange("")
+    self.viewModel.inputs.newPasswordFieldDidChange("")
+    self.viewModel.inputs.confirmPasswordFieldDidChange("")
 
     self.saveButtonIsEnabled.assertLastValue(false)
 
-    sut.inputs.newPasswordFieldDidChange("somepassword")
+    self.viewModel.inputs.newPasswordFieldDidChange("somepassword")
 
     self.saveButtonIsEnabled.assertLastValue(false)
 
-    sut.inputs.confirmPasswordFieldDidChange("somepass")
+    self.viewModel.inputs.confirmPasswordFieldDidChange("somepass")
 
     self.saveButtonIsEnabled.assertLastValue(false)
 
-    sut.inputs.newPasswordFieldDidChange("asdfasdf")
-    sut.inputs.confirmPasswordFieldDidChange("asdfasdf")
+    self.viewModel.inputs.newPasswordFieldDidChange("asdfasdf")
+    self.viewModel.inputs.confirmPasswordFieldDidChange("asdfasdf")
 
     self.saveButtonIsEnabled.assertLastValue(true)
-  }
-
-  // MARK: - Helpers
-
-  private func makeSUT(with email: String = "", file _: StaticString = #filePath,
-                       line _: UInt = #line) -> SetYourPasswordViewModel {
-    let sut = SetYourPasswordViewModel()
-
-    sut.inputs.configureWith(email)
-    sut.inputs.viewDidLoad()
-
-    sut.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
-    sut.outputs.contextLabelText.observe(self.contextLabelText.observer)
-    sut.outputs.newPasswordLabel.observe(self.newPasswordLabel.observer)
-    sut.outputs.confirmPasswordLabel.observe(self.confirmPasswordLabel.observer)
-
-    return sut
   }
 }

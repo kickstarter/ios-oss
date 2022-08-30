@@ -13,10 +13,10 @@ final class SetYourPasswordViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos([Language.en], [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos([Language.en], [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        let controller = SetYourPasswordViewController.instantiate()
+        let controller = SetYourPasswordViewController.configuredWith(userEmail: "abc******@gmail.com")
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()

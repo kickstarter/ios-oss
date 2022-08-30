@@ -96,29 +96,10 @@ public final class SetYourPasswordViewController: UIViewController {
   // MARK: - Bind View Model
 
   public override func bindViewModel() {
-    self.viewModel.outputs.contextLabelText
-      .observeForUI()
-      .observeValues { [weak self] text in
-        self?.contextLabel.text = text
-      }
-
-    self.viewModel.outputs.newPasswordLabel
-      .observeForUI()
-      .observeValues { [weak self] text in
-        self?.newPasswordLabel.text = text
-      }
-
-    self.viewModel.outputs.confirmPasswordLabel
-      .observeForUI()
-      .observeValues { [weak self] text in
-        self?.confirmPasswordLabel.text = text
-      }
-
-    self.viewModel.outputs.saveButtonIsEnabled
-      .observeForUI()
-      .observeValues { [weak self] isEnabled in
-        self?.saveButton.isEnabled = isEnabled
-      }
+    self.contextLabel.rac.text = self.viewModel.outputs.contextLabelText
+    self.newPasswordLabel.rac.text = self.viewModel.outputs.newPasswordLabel
+    self.confirmPasswordLabel.rac.text = self.viewModel.outputs.confirmPasswordLabel
+    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
   }
 
   // MARK: - Functions
@@ -224,7 +205,7 @@ private let contextLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ NSTextAlignment.left
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
-    |> UILabel.lens.font %~ { _ in UIFont.ksr_body(size: 17) }
+    |> UILabel.lens.font %~ { _ in UIFont.ksr_body(size: 16) }
 }
 
 private let textFieldLabelStyle: LabelStyle = { label in
@@ -234,7 +215,7 @@ private let textFieldLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
     |> \.backgroundColor .~ .ksr_white
     |> \.textColor .~ UIColor.ksr_support_700
-    |> \.font %~ { _ in .ksr_callout() }
+    |> \.font %~ { _ in .ksr_callout(size: 13) }
 }
 
 private let textFieldStyle: TextFieldStyle = { textField in
@@ -242,6 +223,7 @@ private let textFieldStyle: TextFieldStyle = { textField in
     |> settingsNewPasswordFormFieldAutoFillStyle
     |> roundedStyle(cornerRadius: Styles.grid(2))
     |> UITextField.lens.textColor .~ .ksr_black
+    |> UITextField.lens.font %~ { _ in UIFont.ksr_body(size: 13) }
     |> \.textAlignment .~ .left
     |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
     |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
