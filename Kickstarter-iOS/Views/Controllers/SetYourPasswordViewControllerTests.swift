@@ -25,7 +25,7 @@ final class SetYourPasswordViewControllerTests: TestCase {
       }
     }
   }
-  
+
   override func tearDown() {
     AppEnvironment.popEnvironment()
     UIView.setAnimationsEnabled(true)

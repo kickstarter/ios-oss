@@ -11,7 +11,7 @@ final class SetYourPasswordViewModelTests: TestCase {
 
   func test_init() {
     _ = self.makeSUT(with: "test@email.com")
-    
+
     XCTAssertNil(self.saveButtonIsEnabled.lastValue)
   }
 
@@ -29,7 +29,7 @@ final class SetYourPasswordViewModelTests: TestCase {
 
     sut.inputs.confirmPasswordFieldDidChange("somepass")
 
-    self.saveButtonIsEnabled.assertLastValue  (false)
+    self.saveButtonIsEnabled.assertLastValue(false)
 
     sut.inputs.newPasswordFieldDidChange("asdfasdf")
     sut.inputs.confirmPasswordFieldDidChange("asdfasdf")
@@ -39,8 +39,8 @@ final class SetYourPasswordViewModelTests: TestCase {
 
   // MARK: - Helpers
 
-  private func makeSUT(with email: String = "", file: StaticString = #filePath,
-                       line: UInt = #line) -> SetYourPasswordViewModel {
+  private func makeSUT(with email: String = "", file _: StaticString = #filePath,
+                       line _: UInt = #line) -> SetYourPasswordViewModel {
     let sut = SetYourPasswordViewModel()
 
     sut.inputs.configureWith(email)

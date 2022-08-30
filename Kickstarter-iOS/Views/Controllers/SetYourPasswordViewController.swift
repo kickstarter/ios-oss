@@ -51,8 +51,6 @@ public final class SetYourPasswordViewController: UIViewController {
 
     self.title = "Set your password"
 
-    self.navigationController?.configureTransparentNavigationBar()
-
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.configureViews()
