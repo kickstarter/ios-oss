@@ -25,7 +25,8 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true,
-        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true,
+        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true
       ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
@@ -47,7 +48,8 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
-        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
       ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {

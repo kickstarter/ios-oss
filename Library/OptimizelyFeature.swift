@@ -5,6 +5,7 @@ public enum OptimizelyFeature: String, CaseIterable {
   case projectPageStoryTabEnabled = "project_page_v2_story"
   case rewardLocalPickupEnabled = "ios_local_pickup"
   case paymentSheetEnabled = "ios_payment_sheet"
+  case facebookLoginDeprecationEnabled = "ios_facebook_deprecation"
 }
 
 extension OptimizelyFeature: CustomStringConvertible {
@@ -14,6 +15,7 @@ extension OptimizelyFeature: CustomStringConvertible {
     case .projectPageStoryTabEnabled: return "Project Page Story Tab"
     case .rewardLocalPickupEnabled: return "Local Pickup Rewards"
     case .paymentSheetEnabled: return "Payment Sheet"
+    case .facebookLoginDeprecationEnabled: return "Facebook Login Deprecation"
     }
   }
 }
