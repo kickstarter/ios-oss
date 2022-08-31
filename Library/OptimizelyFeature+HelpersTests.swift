@@ -74,4 +74,13 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featurePaymentSheetEnabled())
     }
   }
+
+  func testFacebookDeprecation_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(facebookLoginDeprecationEnabled())
+    }
+  }
 }
