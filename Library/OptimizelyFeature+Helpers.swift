@@ -34,3 +34,10 @@ public func featureSettingsPaymentSheetEnabled() -> Bool {
     (AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.settingsPaymentSheetEnabled.rawValue) ?? false)
 }
+
+public func featureFacebookLoginDeprecationEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue) ?? false)
+}

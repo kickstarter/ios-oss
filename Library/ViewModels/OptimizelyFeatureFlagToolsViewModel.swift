@@ -107,6 +107,9 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .settingsPaymentSheetEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue]
+  case .facebookLoginDeprecationEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue]
   }
 }
 
@@ -129,5 +132,8 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .settingsPaymentSheetEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue] = value
+  case .facebookLoginDeprecationEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue] = value
   }
 }

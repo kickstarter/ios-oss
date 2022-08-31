@@ -25,7 +25,8 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
       ]
 
     withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
