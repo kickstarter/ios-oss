@@ -74,4 +74,13 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featurePaymentSheetEnabled())
     }
   }
+
+  func testSettingsPaymentSheet_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featureSettingsPaymentSheetEnabled())
+    }
+  }
 }

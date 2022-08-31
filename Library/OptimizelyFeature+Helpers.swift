@@ -27,3 +27,10 @@ public func featurePaymentSheetEnabled() -> Bool {
     (AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.paymentSheetEnabled.rawValue) ?? false)
 }
+
+public func featureSettingsPaymentSheetEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.settingsPaymentSheetEnabled.rawValue) ?? false)
+}

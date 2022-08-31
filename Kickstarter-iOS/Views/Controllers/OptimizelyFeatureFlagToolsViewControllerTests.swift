@@ -23,7 +23,9 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
-        OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false
+        OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false
       ]
 
     withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
