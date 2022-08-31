@@ -26,6 +26,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true,
         OptimizelyFeature.paymentSheetEnabled.rawValue: true,
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true
       ]
 
@@ -49,6 +50,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
       ]
 

@@ -75,12 +75,21 @@ final class OptimizelyFeatureHelpersTests: TestCase {
     }
   }
 
+  func testSettingsPaymentSheet_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featureSettingsPaymentSheetEnabled())
+    }
+  }
+
   func testFacebookDeprecation_Optimizely_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(facebookLoginDeprecationEnabled())
+      XCTAssertFalse(featureFacebookLoginDeprecationEnabled())
     }
   }
 }
