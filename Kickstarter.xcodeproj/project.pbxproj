@@ -454,6 +454,10 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
+		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
+		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
+		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -2149,6 +2153,10 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
+		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
+		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
@@ -4241,6 +4249,8 @@
 				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
+				608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */,
+				60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4985,6 +4995,8 @@
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
+				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
+				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5994,6 +6006,7 @@
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				77A64E5A24647C55003BF98E /* DiscoveryProjectCardViewModel.swift in Sources */,
 				06B0FDBA2702579A00147E3E /* ProjectPageViewModel.swift in Sources */,
+				608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */,
 				94114D83265451FF0063E8F6 /* CommentCellViewModel.swift in Sources */,
@@ -6422,6 +6435,7 @@
 				A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */,
 				D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */,
 				A7ED1FCB1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift in Sources */,
+				60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */,
 				A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */,
 				776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */,
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
@@ -6602,6 +6616,7 @@
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
+				608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				063D2D0A2846767F00CEDE33 /* PledgeLocalPickupView.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
@@ -6864,6 +6879,7 @@
 				A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
+				60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */,
 				8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */,
 				94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,

@@ -75,8 +75,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationController?.configureTransparentNavigationBar()
-
     self.configureViews()
     self.setupConstraints()
     self.configureTargets()
