@@ -8560,7 +8560,7 @@
 			repositoryURL = "https://github.com/stripe/stripe-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 22.6.0;
+				minimumVersion = 22.7.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
