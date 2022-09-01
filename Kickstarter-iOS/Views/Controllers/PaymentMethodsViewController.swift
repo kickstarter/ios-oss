@@ -95,6 +95,14 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         self?.goToAddCardScreen(with: intent)
       }
 
+    self.viewModel.outputs.goToPaymentSheet
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let strongSelf = self else { return }
+
+        strongSelf.goToPaymentSheet(data: data)
+      }
+
     self.viewModel.outputs.errorLoadingPaymentMethods
       .observeForUI()
       .observeValues { [weak self] message in
