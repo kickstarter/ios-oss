@@ -1,11 +1,13 @@
 import KsApi
 import Library
 import Prelude
+import Stripe
 import UIKit
 
 internal final class PaymentMethodsViewController: UIViewController, MessageBannerViewControllerPresenting {
   private let dataSource = PaymentMethodsDataSource()
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
+  private var paymentSheetFlowController: PaymentSheet.FlowController?
 
   @IBOutlet private var tableView: UITableView!
 
@@ -142,6 +144,66 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   }
 
   // MARK: - Private Helpers
+
+  private func goToPaymentSheet(data: PaymentSheetSetupData) {
+    PaymentSheet.FlowController
+      .create(
+        setupIntentClientSecret: data.clientSecret,
+        configuration: data.configuration
+      ) { [weak self] result in
+        guard let strongSelf = self else { return }
+
+        switch result {
+        case let .failure(error):
+          // strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+          strongSelf.messageBannerViewController?
+            .showBanner(with: .error, message: error.localizedDescription)
+        case let .success(paymentSheetFlowController):
+          strongSelf.paymentSheetFlowController = paymentSheetFlowController
+          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+            guard let strongSelf = self else { return }
+
+            /** Handle updating payment methods with new card/errors
+             strongSelf.confirmPaymentResult(with: data.clientSecret)
+             */
+          }
+        }
+      }
+  }
+
+  private func confirmPaymentResult(with _: String) {
+    guard self.paymentSheetFlowController?.paymentOption != nil else {
+      /** Handle errors
+       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+       */
+
+      return
+    }
+
+    self.paymentSheetFlowController?.confirm(from: self) { [weak self] paymentResult in
+
+      guard let strongSelf = self else { return }
+
+      /** Handle errors
+       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+       */
+
+      guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
+
+      switch paymentResult {
+      case .completed:
+        /** Handle updating payment methods
+         strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
+         */
+        fatalError()
+      case .canceled:
+        strongSelf.messageBannerViewController?
+          .showBanner(with: .error, message: Strings.general_error_something_wrong())
+      case let .failed(error):
+        strongSelf.messageBannerViewController?.showBanner(with: .error, message: error.localizedDescription)
+      }
+    }
+  }
 
   private func configureHeaderFooterViews() {
     if let header = SettingsTableViewHeader.fromNib(nib: Nib.SettingsTableViewHeader) {
