@@ -1,7 +1,5 @@
 # Carthage input files
 
-$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
-$(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework
 $(SRCROOT)/Carthage/Build/iOS/Appboy_iOS_SDK.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
