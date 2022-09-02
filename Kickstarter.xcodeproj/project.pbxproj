@@ -242,6 +242,7 @@
 		192016C928B6779B0046919B /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
+		19EC6E3528C1B96500AC8EC4 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 19EC6E3428C1B96500AC8EC4 /* AlamofireImage */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
 		19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */; };
@@ -3280,6 +3281,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19EC6E3528C1B96500AC8EC4 /* AlamofireImage in Frameworks */,
 				8A0C3D1125AE6F4900310034 /* Segment.framework in Frameworks */,
 				D0B7124822AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A922AF105A001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -5381,6 +5383,7 @@
 			packageProductDependencies = (
 				06634FC62807A4EB00950F60 /* Prelude_UIKit */,
 				1981AC8F289075D900BB4897 /* Stripe */,
+				19EC6E3428C1B96500AC8EC4 /* AlamofireImage */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8604,6 +8607,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
+		};
+		19EC6E3428C1B96500AC8EC4 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7014407F28C1B28900848735 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
 		};
 		19F91B13289C8097000AEC6A /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
