@@ -460,6 +460,7 @@
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50F528BFA03C002E2DF1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50F428BFA03C002E2DF1 /* Alamofire */; };
 		60DA50F828BFA331002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50F728BFA331002E2DF1 /* AlamofireImage */; };
+		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -3281,6 +3282,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				8A0C3D1125AE6F4900310034 /* Segment.framework in Frameworks */,
 				D0B7124822AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A922AF105A001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -5383,6 +5385,7 @@
 			packageProductDependencies = (
 				06634FC62807A4EB00950F60 /* Prelude_UIKit */,
 				1981AC8F289075D900BB4897 /* Stripe */,
+				60DA50FD28C38DDB002E2DF1 /* AlamofireImage */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -8628,6 +8631,11 @@
 			productName = Alamofire;
 		};
 		60DA50F728BFA331002E2DF1 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+		60DA50FD28C38DDB002E2DF1 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
