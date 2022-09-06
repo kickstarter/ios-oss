@@ -4181,6 +4181,60 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		19A97D2728C7FDF50031B857 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D2928C7FEDC0031B857 /* Storyboard */,
+				19A97D2C28C7FEF20031B857 /* Views */,
+				19A97D2A28C7FEE20031B857 /* Controller */,
+				19A97D2828C7FED30031B857 /* Datasource */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
+		19A97D2828C7FED30031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D2928C7FEDC0031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923B41D272242004524C3 /* Messages.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97D2A28C7FEE20031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D2B28C7FEEA0031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
+				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
+				0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */,
+				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D2C28C7FEF20031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D2B28C7FEEA0031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4515,7 +4569,6 @@
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				A73923B41D272242004524C3 /* Messages.storyboard */,
 				D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */,
 				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
 				471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */,
@@ -4623,11 +4676,8 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
-				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
-				0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
 				01515F8A1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift */,
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
@@ -4648,7 +4698,6 @@
 				9D9F57CE1D131AF200CE81DE /* ProjectActivityNegativeStateChangeCell.swift */,
 				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
 				9D9F57D11D131AF200CE81DE /* ProjectActivityUpdateCell.swift */,
-				A75A29291CE0B7EA00D35E5C /* ProjectBannerCell.swift */,
 				4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */,
 				4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */,
 				4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */,
@@ -4724,7 +4773,6 @@
 				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
 				77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */,
 				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
-				A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */,
 				A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */,
 				A7ED203E1E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift */,
 				47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */,
@@ -5036,6 +5084,7 @@
 				19A97D1128C7ED500031B857 /* FindFriends */,
 				19A97D1828C7EF190031B857 /* Help */,
 				19A97D2028C7FBBC0031B857 /* ManagePledge */,
+				19A97D2728C7FDF50031B857 /* Messages */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5124,7 +5173,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
 				A71003DB1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift */,
 				015102741F1943D60006C0FC /* MessageThreadsDataSourceTests.swift */,
 				D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */,
