@@ -3609,7 +3609,7 @@
 		19A97CDC28C7D77D0031B857 /* Activities */ = {
 			isa = PBXGroup;
 			children = (
-				A73923AB1D272242004524C3 /* Activity.storyboard */,
+				19A97CE328C7DBCF0031B857 /* Storyboard */,
 				19A97CE028C7D99B0031B857 /* Views */,
 				19A97CDE28C7D7EF0031B857 /* Controller */,
 				19A97CDD28C7D79C0031B857 /* Datasource */,
@@ -3654,6 +3654,93 @@
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
 				A7CC14371D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift */,
 				A7CC14391D00E74F00035C52 /* FindFriendsHeaderCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97CE328C7DBCF0031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923AB1D272242004524C3 /* Activity.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97CE428C7DC1C0031B857 /* BackerDashboardPages */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CE528C7DD260031B857 /* Controller */,
+				19A97CE628C7DD2F0031B857 /* Storyboard */,
+				19A97CE728C7DD360031B857 /* Datasource */,
+			);
+			path = BackerDashboardPages;
+			sourceTree = "<group>";
+		};
+		19A97CE528C7DD260031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				015706141E649DEE0087DD68 /* BackerDashboardViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97CE628C7DD2F0031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				015706511E64A6C70087DD68 /* BackerDashboard.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97CE728C7DD360031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CEB28C7DE2A0031B857 /* Views */,
+				19A97CE928C7DDC90031B857 /* Controller */,
+				19A97CEA28C7DDDA0031B857 /* Datasource */,
+			);
+			path = BackerDashboardProjects;
+			sourceTree = "<group>";
+		};
+		19A97CE928C7DDC90031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0157067C1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift */,
+				A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97CEA28C7DDDA0031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				014D625A1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift */,
+				A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97CEB28C7DE2A0031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CEC28C7DE310031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97CEC28C7DE310031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				014D62981E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift */,
+				014D63001E721D500033D2BD /* BackerDashboardProjectCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3979,7 +4066,6 @@
 		A73923AA1D272242004524C3 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				015706511E64A6C70087DD68 /* BackerDashboard.storyboard */,
 				014D629C1E6E5B070033D2BD /* BackerDashboardEmptyStateCell.xib */,
 				014D62FE1E7211220033D2BD /* BackerDashboardProjectCell.xib */,
 				80EAEF031D243C4E008C2353 /* Backing.storyboard */,
@@ -4115,8 +4201,6 @@
 				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
 				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
 				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
-				014D62981E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift */,
-				014D63001E721D500033D2BD /* BackerDashboardProjectCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
@@ -4208,9 +4292,6 @@
 			children = (
 				D770DE3D217E339500B5319A /* AddNewCardViewController.swift */,
 				D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */,
-				0157067C1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift */,
-				A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */,
-				015706141E649DEE0087DD68 /* BackerDashboardViewController.swift */,
 				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
 				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
@@ -4567,6 +4648,8 @@
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
 				19A97CD428C79BF60031B857 /* Comments */,
 				19A97CDC28C7D77D0031B857 /* Activities */,
+				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
+				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -4655,9 +4738,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				01B3B02F1E78890800B8BF46 /* BackerDashboardPagesDataSource.swift */,
-				014D625A1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift */,
-				A78356071E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift */,
 				7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */,
 				776B1A122419407700B03098 /* CategorySelectionDataSourceTests.swift */,
 				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
