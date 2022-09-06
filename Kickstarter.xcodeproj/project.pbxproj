@@ -246,6 +246,7 @@
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
 		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
 		19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
+		19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
 		19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */; };
@@ -1447,7 +1448,6 @@
 		D63BBD37217FC224007E01F0 /* CreditCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */; };
 		D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */; };
 		D63BBD3B2180BEA4007E01F0 /* PaymentMethodsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */; };
-		D643E7C82346426E00C02C15 /* ManagePledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D64DDCDD235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DDCDC235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift */; };
 		D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DDCDE235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift */; };
@@ -4133,6 +4133,54 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
+		19A97D2028C7FBBC0031B857 /* ManagePledge */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D2528C7FD890031B857 /* Controllers */,
+				19A97D2428C7FD7B0031B857 /* Views */,
+				19A97D2128C7FBC60031B857 /* Datasource */,
+			);
+			path = ManagePledge;
+			sourceTree = "<group>";
+		};
+		19A97D2128C7FBC60031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				8A4841B12487147200246223 /* ManagePledgeDataSource.swift */,
+				8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D2428C7FD7B0031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */,
+				19A97D2628C7FD950031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D2528C7FD890031B857 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */,
+				37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */,
+				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift */,
+				D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */,
+				D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		19A97D2628C7FD950031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8A4841B324871B9500246223 /* RewardTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4616,7 +4664,6 @@
 				473DE00F273C4BA90033331D /* ProjectRisksCell.swift */,
 				8A45169424B3E8FB00D8CAEF /* RewardAddOnCell.swift */,
 				77EFBAE42268E01400DA5C3C /* RewardCell.swift */,
-				8A4841B324871B9500246223 /* RewardTableViewCell.swift */,
 				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
 				D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */,
@@ -4674,12 +4721,6 @@
 				A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */,
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */,
-				D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */,
-				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift */,
-				D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */,
-				D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */,
-				37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */,
-				37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */,
 				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
 				77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */,
 				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
@@ -4994,6 +5035,7 @@
 				19A97D0928C7EA450031B857 /* Discovery */,
 				19A97D1128C7ED500031B857 /* FindFriends */,
 				19A97D1828C7EF190031B857 /* Help */,
+				19A97D2028C7FBBC0031B857 /* ManagePledge */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5082,8 +5124,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				8A4841B12487147200246223 /* ManagePledgeDataSource.swift */,
-				8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
 				A71003DB1CDD068F00B4F4D7 /* MessageThreadsDataSource.swift */,
 				015102741F1943D60006C0FC /* MessageThreadsDataSourceTests.swift */,
@@ -7316,6 +7356,7 @@
 				209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */,
 				3767EDA922CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift in Sources */,
 				8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
+				19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */,
 				A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */,
 				37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */,
 				A7ED20401E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
@@ -7332,7 +7373,6 @@
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
-				D643E7C82346426E00C02C15 /* ManagePledgeViewControllerTests.swift in Sources */,
 				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,
 				D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */,
 				A7ED201E1E83231C00BFFA01 /* MockBundle.swift in Sources */,
