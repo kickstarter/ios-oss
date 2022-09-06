@@ -241,6 +241,7 @@
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
+		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
@@ -595,7 +596,6 @@
 		77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73421222E7C005A5C55 /* EmailFrequency.swift */; };
 		77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73621222E97005A5C55 /* SettingsCellType.swift */; };
 		77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */; };
-		77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */; };
 		77F9A9B22135FC9B0082A11E /* FindFriendsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */; };
 		77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA1AF22445FB810035D659 /* GraphUserTests.swift */; };
@@ -3536,6 +3536,50 @@
 			path = "HTML Parser";
 			sourceTree = "<group>";
 		};
+		1965436E28C810CC00457EC6 /* ProjectNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				1965437028C8117800457EC6 /* Controller */,
+				1965437128C8117E00457EC6 /* Views */,
+				1965437328C8118900457EC6 /* Datasource */,
+			);
+			name = ProjectNotifications;
+			path = DataSources/ProjectNotifications;
+			sourceTree = "<group>";
+		};
+		1965437028C8117800457EC6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				597073981D06346700B00444 /* ProjectNotificationsViewController.swift */,
+				77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1965437128C8117E00457EC6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1965437228C8118400457EC6 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1965437228C8118400457EC6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				597073B01D07281800B00444 /* ProjectNotificationCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		1965437328C8118900457EC6 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
 		19A97CD428C79BF60031B857 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
@@ -4904,7 +4948,6 @@
 				47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */,
 				4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */,
 				4791BDE127174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift */,
-				597073B01D07281800B00444 /* ProjectNotificationCell.swift */,
 				D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */,
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
 				A71199F81DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift */,
@@ -4985,8 +5028,6 @@
 				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
-				597073981D06346700B00444 /* ProjectNotificationsViewController.swift */,
-				77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */,
 				06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */,
 				06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */,
 				77CD8980217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift */,
@@ -5281,6 +5322,7 @@
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2020 */,
 				19A97D3928C802230031B857 /* PledgePaymentMethods */,
 				19A97D3F28C8049E0031B857 /* ProjectActivities */,
+				1965436E28C810CC00457EC6 /* ProjectNotifications */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5369,7 +5411,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
 				A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */,
 				A7ED20101E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift */,
 				477239722710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift */,
@@ -7548,7 +7589,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */,
-				77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */,
@@ -7568,6 +7608,7 @@
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
 				8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
+				1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
