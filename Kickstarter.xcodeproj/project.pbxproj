@@ -4083,10 +4083,54 @@
 		19A97D1828C7EF190031B857 /* Help */ = {
 			isa = PBXGroup;
 			children = (
+				19A97D1F28C7FB060031B857 /* Storyboard */,
+				19A97D1C28C7FAC70031B857 /* Views */,
+				19A97D1B28C7FAC20031B857 /* Controller */,
+				19A97D1E28C7FAD20031B857 /* Datasource */,
+			);
+			path = Help;
+			sourceTree = "<group>";
+		};
+		19A97D1B28C7FAC20031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				77E6440220F65074005F6B38 /* HelpViewController.swift */,
+				778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D1C28C7FAC70031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D1D28C7FACC0031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D1D28C7FACC0031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D1E28C7FAD20031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
 				77E6440020F64F0B005F6B38 /* HelpDataSource.swift */,
 				778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */,
 			);
-			path = Help;
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D1F28C7FB060031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
+			);
+			path = Storyboard;
 			sourceTree = "<group>";
 		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
@@ -4418,7 +4462,6 @@
 				7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */,
 				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
 				77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */,
-				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
 				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
 				77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */,
 				A73923B21D272242004524C3 /* Login.storyboard */,
@@ -4588,7 +4631,6 @@
 				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
 				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
 				77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */,
-				77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */,
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
 				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
@@ -4623,8 +4665,6 @@
 				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
 				A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */,
 				774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */,
-				77E6440220F65074005F6B38 /* HelpViewController.swift */,
-				778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */,
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
 				D6050F49240424FC00E029D2 /* LandingPageViewController.swift */,
 				77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */,
@@ -4953,6 +4993,7 @@
 				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
 				19A97D0928C7EA450031B857 /* Discovery */,
 				19A97D1128C7ED500031B857 /* FindFriends */,
+				19A97D1828C7EF190031B857 /* Help */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5041,7 +5082,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				19A97D1828C7EF190031B857 /* Help */,
 				8A4841B12487147200246223 /* ManagePledgeDataSource.swift */,
 				8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
