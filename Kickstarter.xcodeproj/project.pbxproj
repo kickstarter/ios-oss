@@ -4396,6 +4396,66 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		19A97D3F28C8049E0031B857 /* ProjectActivities */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D4428C8059F0031B857 /* Controller */,
+				19A97D4328C805970031B857 /* Storyboard */,
+				19A97D4228C8058E0031B857 /* Views */,
+				19A97D4028C8057E0031B857 /* Datasource */,
+			);
+			path = ProjectActivities;
+			sourceTree = "<group>";
+		};
+		19A97D4028C8057E0031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
+				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D4128C805870031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
+				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
+				9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */,
+				9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */,
+				9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */,
+				9D9F57CE1D131AF200CE81DE /* ProjectActivityNegativeStateChangeCell.swift */,
+				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
+				9D9F57D11D131AF200CE81DE /* ProjectActivityUpdateCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D4228C8058E0031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D4128C805870031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D4328C805970031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97D4428C8059F0031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */,
+				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4729,7 +4789,6 @@
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
 				471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */,
 				471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */,
 				A73923B81D272242004524C3 /* Search.storyboard */,
@@ -4839,14 +4898,6 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
-				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
-				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
-				9D525F0E1D4158AC003CAE04 /* ProjectActivityDateCell.swift */,
-				9D9F57CC1D131AF200CE81DE /* ProjectActivityEmptyStateCell.swift */,
-				9D9F57CD1D131AF200CE81DE /* ProjectActivityLaunchCell.swift */,
-				9D9F57CE1D131AF200CE81DE /* ProjectActivityNegativeStateChangeCell.swift */,
-				9D9F57D01D131AF200CE81DE /* ProjectActivitySuccessCell.swift */,
-				9D9F57D11D131AF200CE81DE /* ProjectActivityUpdateCell.swift */,
 				4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */,
 				4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */,
 				4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */,
@@ -4932,8 +4983,6 @@
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
 				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
 				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
-				9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */,
-				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
 				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
 				597073981D06346700B00444 /* ProjectNotificationsViewController.swift */,
@@ -5231,6 +5280,7 @@
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2020 */,
 				19A97D3928C802230031B857 /* PledgePaymentMethods */,
+				19A97D3F28C8049E0031B857 /* ProjectActivities */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5319,8 +5369,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
-				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				5970739E1D07277100B00444 /* ProjectNotificationsDataSource.swift */,
 				A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */,
 				A7ED20101E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift */,
