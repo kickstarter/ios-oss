@@ -244,6 +244,8 @@
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
+		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
+		19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
 		19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */; };
@@ -1130,8 +1132,6 @@
 		A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */; };
 		A7ED20451E8323E900BFFA01 /* DashboardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */; };
 		A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */; };
-		A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
-		A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
 		A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */; };
 		A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */; };
 		A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */; };
@@ -3550,6 +3550,7 @@
 		19A97CD528C79C7D0031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				47F95ECF2672C587001365B2 /* ViewRepliesView.swift */,
 				20BCBEA2264D83C600510EDF /* CommentComposerView.swift */,
 				209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */,
 				94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */,
@@ -3638,6 +3639,7 @@
 		19A97CE028C7D99B0031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */,
 				19A97CE128C7D9A50031B857 /* Cells */,
 			);
 			path = Views;
@@ -3814,8 +3816,9 @@
 		19A97CF828C7E5570031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				19A97CF928C7E5650031B857 /* Cells */,
+				59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
+				19A97CF928C7E5650031B857 /* Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3914,7 +3917,6 @@
 		19A97D0328C7E7350031B857 /* DiscoveryFilters */ = {
 			isa = PBXGroup;
 			children = (
-				19A97D0828C7E8400031B857 /* Storyboard */,
 				19A97D0628C7E7FB0031B857 /* Controller */,
 				19A97D0428C7E7B00031B857 /* Views */,
 				19A97D0728C7E8050031B857 /* Datasource */,
@@ -3966,6 +3968,125 @@
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97D0928C7EA450031B857 /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D1028C7ECCE0031B857 /* Views */,
+				19A97D0828C7E8400031B857 /* Storyboard */,
+				19A97D0A28C7EB1D0031B857 /* Controller */,
+				19A97D0B28C7EB250031B857 /* Datasource */,
+			);
+			path = Discovery;
+			sourceTree = "<group>";
+		};
+		19A97D0A28C7EB1D0031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
+				A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */,
+				017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */,
+				A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */,
+				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D0B28C7EB250031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
+				A7ED200B1E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift */,
+				A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */,
+				A7ED200A1E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D0F28C7ECC60031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
+				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
+				77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */,
+				777C60A5241FECD800820C59 /* PersonalizationCell.swift */,
+				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
+				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
+				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D1028C7ECCE0031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D0F28C7ECC60031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D1128C7ED500031B857 /* FindFriends */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D1628C7EED20031B857 /* Views */,
+				19A97D1528C7EEC60031B857 /* Storyboard */,
+				19A97D1328C7ED980031B857 /* Controller */,
+				19A97D1228C7ED5A0031B857 /* Datasource */,
+			);
+			path = FindFriends;
+			sourceTree = "<group>";
+		};
+		19A97D1228C7ED5A0031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
+				A7ED200C1E83229E00BFFA01 /* FindFriendsDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D1328C7ED980031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A7CC14341D00E73D00035C52 /* FindFriendsViewController.swift */,
+				A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D1528C7EEC60031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923B01D272242004524C3 /* Friends.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97D1628C7EED20031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D1728C7EED90031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D1728C7EED90031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A7CC14381D00E74F00035C52 /* FindFriendsFriendFollowCell.swift */,
+				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D1828C7EF190031B857 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				77E6440020F64F0B005F6B38 /* HelpDataSource.swift */,
+				778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */,
+			);
+			path = Help;
 			sourceTree = "<group>";
 		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
@@ -4297,7 +4418,6 @@
 				7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */,
 				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
 				77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */,
-				A73923B01D272242004524C3 /* Friends.storyboard */,
 				01940B2D1D46A9AD0074FCE3 /* Help.storyboard */,
 				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
 				77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */,
@@ -4356,7 +4476,6 @@
 		A751A51B1C85EAD8009C5DEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */,
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
@@ -4399,7 +4518,6 @@
 				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
 				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
 				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
-				47F95ECF2672C587001365B2 /* ViewRepliesView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				77D19FFB240859F20058FC8E /* HeaderFooterViews */,
@@ -4414,18 +4532,9 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */,
-				598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */,
-				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
-				59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */,
-				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
-				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
-				77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */,
 				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
-				A7CC14381D00E74F00035C52 /* FindFriendsFriendFollowCell.swift */,
-				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
 				A71003E11CDD077200B4F4D7 /* MessageCell.swift */,
 				0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */,
 				A71003DE1CDD06E600B4F4D7 /* MessageThreadCell.swift */,
@@ -4433,7 +4542,6 @@
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
-				777C60A5241FECD800820C59 /* PersonalizationCell.swift */,
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				8A13D168249817BF007E2C0B /* PledgeExpandableHeaderRewardCell.swift */,
 				8A13D162249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift */,
@@ -4510,18 +4618,11 @@
 				D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */,
 				776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */,
 				A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */,
-				017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */,
-				A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */,
-				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
-				A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */,
-				A751A51E1C85EC0B009C5DEA /* DiscoveryViewController.swift */,
 				013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */,
 				A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */,
 				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
 				A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */,
 				774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */,
-				A7CC14341D00E73D00035C52 /* FindFriendsViewController.swift */,
-				A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */,
 				77E6440220F65074005F6B38 /* HelpViewController.swift */,
 				778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */,
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
@@ -4850,6 +4951,8 @@
 				19A97CF728C7E40C0031B857 /* Dashboard */,
 				19A97CFD28C7E6460031B857 /* DashboardProjects */,
 				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
+				19A97D0928C7EA450031B857 /* Discovery */,
+				19A97D1128C7ED500031B857 /* FindFriends */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -4938,14 +5041,7 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */,
-				A7ED200A1E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift */,
-				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
-				A7ED200B1E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift */,
-				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
-				A7ED200C1E83229E00BFFA01 /* FindFriendsDataSourceTests.swift */,
-				77E6440020F64F0B005F6B38 /* HelpDataSource.swift */,
-				778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */,
+				19A97D1828C7EF190031B857 /* Help */,
 				8A4841B12487147200246223 /* ManagePledgeDataSource.swift */,
 				8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */,
 				A75A292C1CE0B95300D35E5C /* MessagesDataSource.swift */,
@@ -7161,7 +7257,6 @@
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
 				8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
-				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
@@ -7172,6 +7267,7 @@
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
+				19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
 				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
@@ -7215,6 +7311,7 @@
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */,
 				776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */,
+				19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */,
 				A7ED20451E8323E900BFFA01 /* DashboardViewControllerTests.swift in Sources */,
 				D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */,
@@ -7232,7 +7329,6 @@
 				8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */,
 				774D98E023B162CA00FC81C2 /* MockOptimizelyClient.swift in Sources */,
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
-				A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
 				60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */,
