@@ -458,7 +458,6 @@
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
-		60DA50F528BFA03C002E2DF1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50F428BFA03C002E2DF1 /* Alamofire */; };
 		60DA50F828BFA331002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50F728BFA331002E2DF1 /* AlamofireImage */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
@@ -3328,7 +3327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
-				60DA50F528BFA03C002E2DF1 /* Alamofire in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
 				60DA50F828BFA331002E2DF1 /* AlamofireImage in Frameworks */,
@@ -5455,7 +5453,6 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				60DA50F428BFA03C002E2DF1 /* Alamofire */,
 				60DA50F728BFA331002E2DF1 /* AlamofireImage */,
 			);
 			productName = Kickstarter;
@@ -5605,7 +5602,6 @@
 				06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
 				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
-				60DA50F328BFA03C002E2DF1 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
@@ -8566,14 +8562,6 @@
 				minimumVersion = 22.7.1;
 			};
 		};
-		60DA50F328BFA03C002E2DF1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 		60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
@@ -8624,11 +8612,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
-		};
-		60DA50F428BFA03C002E2DF1 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60DA50F328BFA03C002E2DF1 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 		60DA50F728BFA331002E2DF1 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
