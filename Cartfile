@@ -12,7 +12,6 @@ github "uber/ios-snapshot-test-case" == 6.2.0
 github "segmentio/analytics-ios" == 4.1.2
 github "appboy/appboy-segment-ios" == 4.0.0
 github "scinfu/SwiftSoup" == 2.3.8
-github "onevcat/Kingfisher" == 7.0.0
 
 
 ### Binaries
