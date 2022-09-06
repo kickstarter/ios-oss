@@ -3859,6 +3859,115 @@
 			path = Datasource;
 			sourceTree = "<group>";
 		};
+		19A97CFD28C7E6460031B857 /* DashboardProjects */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CFE28C7E6E30031B857 /* Storyboard */,
+				19A97CFF28C7E6EA0031B857 /* Views */,
+				19A97D0128C7E6F60031B857 /* Datasource */,
+				19A97D0228C7E6FE0031B857 /* Controller */,
+			);
+			path = DashboardProjects;
+			sourceTree = "<group>";
+		};
+		19A97CFE28C7E6E30031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97CFF28C7E6EA0031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D0028C7E6F00031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D0028C7E6F00031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				018422B61D2C47D600CA7566 /* DashboardProjectsDrawerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D0128C7E6F60031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				018422C31D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift */,
+				A7ED20081E83229E00BFFA01 /* DashboardProjectsDrawerDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D0228C7E6FE0031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D0328C7E7350031B857 /* DiscoveryFilters */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D0828C7E8400031B857 /* Storyboard */,
+				19A97D0628C7E7FB0031B857 /* Controller */,
+				19A97D0428C7E7B00031B857 /* Views */,
+				19A97D0728C7E8050031B857 /* Datasource */,
+			);
+			path = DiscoveryFilters;
+			sourceTree = "<group>";
+		};
+		19A97D0428C7E7B00031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D0528C7E7B80031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D0528C7E7B80031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
+				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
+				013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */,
+				0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */,
+				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D0628C7E7FB0031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */,
+				A7ED20251E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D0728C7E8050031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */,
+				A7ED20091E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D0828C7E8400031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923AF1D272242004524C3 /* Discovery.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4182,9 +4291,7 @@
 			children = (
 				80EAEF031D243C4E008C2353 /* Backing.storyboard */,
 				D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */,
-				01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */,
 				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
-				A73923AF1D272242004524C3 /* Discovery.storyboard */,
 				59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */,
 				D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */,
 				7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */,
@@ -4312,16 +4419,10 @@
 				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
-				018422B61D2C47D600CA7566 /* DashboardProjectsDrawerCell.swift */,
 				59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */,
-				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
-				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
-				013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */,
-				0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */,
 				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
 				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
 				77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */,
-				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
 				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
 				A7CC14381D00E74F00035C52 /* FindFriendsFriendFollowCell.swift */,
 				A7CC143A1D00E74F00035C52 /* FindFriendsStatsCell.swift */,
@@ -4408,10 +4509,7 @@
 				3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */,
 				D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */,
 				776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */,
-				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
 				A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */,
-				0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */,
-				A7ED20251E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift */,
 				017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */,
 				A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */,
 				A72C3AA81D00F96C0075227E /* DiscoveryPageViewController.swift */,
@@ -4750,6 +4848,8 @@
 				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
 				19A97CED28C7DF4E0031B857 /* CategorySelection */,
 				19A97CF728C7E40C0031B857 /* Dashboard */,
+				19A97CFD28C7E6460031B857 /* DashboardProjects */,
+				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -4838,10 +4938,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				018422C31D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift */,
-				A7ED20081E83229E00BFFA01 /* DashboardProjectsDrawerDataSourceTests.swift */,
-				A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */,
-				A7ED20091E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift */,
 				A72C3AA21D00F7170075227E /* DiscoveryPagesDataSource.swift */,
 				A7ED200A1E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift */,
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
