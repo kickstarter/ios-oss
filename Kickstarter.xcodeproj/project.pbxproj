@@ -458,7 +458,6 @@
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
-		60DA50F828BFA331002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50F728BFA331002E2DF1 /* AlamofireImage */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
@@ -3329,7 +3328,6 @@
 				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
-				60DA50F828BFA331002E2DF1 /* AlamofireImage in Frameworks */,
 				8A417DE725AE2F8600A2C406 /* Segment.framework in Frameworks */,
 				8A04FE27262781240056F413 /* Segment_Appboy.framework in Frameworks */,
 				8A04FE28262781240056F413 /* SDWebImage.framework in Frameworks */,
@@ -5453,7 +5451,6 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				60DA50F728BFA331002E2DF1 /* AlamofireImage */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -8612,11 +8609,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
-		};
-		60DA50F728BFA331002E2DF1 /* AlamofireImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
-			productName = AlamofireImage;
 		};
 		60DA50FD28C38DDB002E2DF1 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
