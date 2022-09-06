@@ -4280,6 +4280,59 @@
 			path = Datasource;
 			sourceTree = "<group>";
 		};
+		19A97D3228C8001C0031B857 /* PaymentMethods */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D3728C801320031B857 /* Storyboard */,
+				19A97D3628C8012B0031B857 /* Controller */,
+				19A97D3428C801200031B857 /* Views */,
+				19A97D3328C801170031B857 /* Datasource */,
+			);
+			path = PaymentMethods;
+			sourceTree = "<group>";
+		};
+		19A97D3328C801170031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */,
+				D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19A97D3428C801200031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97D3528C801250031B857 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97D3528C801250031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97D3628C8012B0031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */,
+				D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97D3728C801320031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4614,7 +4667,6 @@
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */,
 				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
 				471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */,
 				471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */,
@@ -4721,7 +4773,6 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
@@ -4818,8 +4869,6 @@
 				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
 				47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */,
 				47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */,
-				D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */,
-				D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */,
 				8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */,
 				3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */,
@@ -5127,6 +5176,7 @@
 				19A97D2028C7FBBC0031B857 /* ManagePledge */,
 				19A97D2728C7FDF50031B857 /* Messages */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
+				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5215,8 +5265,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */,
-				D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */,
 				3742037222DEB67A007AA86E /* PillCollectionViewDataSource.swift */,
 				3742037422DEB691007AA86E /* PillCollectionViewDataSourceTests.swift */,
 				8A13D1662495687E007E2C0B /* PledgeExpandableRewardsHeaderDataSource.swift */,
