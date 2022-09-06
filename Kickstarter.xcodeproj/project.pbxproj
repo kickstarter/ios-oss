@@ -3800,6 +3800,65 @@
 			path = Datasource;
 			sourceTree = "<group>";
 		};
+		19A97CF728C7E40C0031B857 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CF828C7E5570031B857 /* Views */,
+				19A97CFA28C7E56F0031B857 /* Controller */,
+				19A97CFB28C7E5780031B857 /* Storyboard */,
+				19A97CFC28C7E5810031B857 /* Datasource */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		19A97CF828C7E5570031B857 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CF928C7E5650031B857 /* Cells */,
+				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19A97CF928C7E5650031B857 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */,
+				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
+				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
+				5955E64D1D21800300B4153D /* DashboardReferrersCell.swift */,
+				015A06F51D219513007AE210 /* DashboardRewardsCell.swift */,
+				593AC5CE1D33F4BF002613F4 /* DashboardFundingCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19A97CFA28C7E56F0031B857 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
+				A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19A97CFB28C7E5780031B857 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923AE1D272242004524C3 /* Dashboard.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19A97CFC28C7E5810031B857 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
+				A7ED20071E83229E00BFFA01 /* DashboardDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4123,7 +4182,6 @@
 			children = (
 				80EAEF031D243C4E008C2353 /* Backing.storyboard */,
 				D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */,
-				A73923AE1D272242004524C3 /* Dashboard.storyboard */,
 				01A120D01D2D646300B42F73 /* DashboardProjectsDrawer.storyboard */,
 				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
@@ -4196,7 +4254,6 @@
 				06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
-				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				8A08B520249C3352009CF74E /* EasyButton.swift */,
 				8A32FE0324D2336E00F79C72 /* EmpyStateView.swift */,
@@ -4255,14 +4312,8 @@
 				598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
-				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
-				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
-				593AC5CE1D33F4BF002613F4 /* DashboardFundingCell.swift */,
 				018422B61D2C47D600CA7566 /* DashboardProjectsDrawerCell.swift */,
 				59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */,
-				5955E64D1D21800300B4153D /* DashboardReferrersCell.swift */,
-				015A06F51D219513007AE210 /* DashboardRewardsCell.swift */,
-				59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */,
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
 				013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */,
@@ -4358,8 +4409,6 @@
 				D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */,
 				776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */,
 				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
-				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
-				A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */,
 				A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */,
 				0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */,
 				A7ED20251E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift */,
@@ -4700,6 +4749,7 @@
 				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
 				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
 				19A97CED28C7DF4E0031B857 /* CategorySelection */,
+				19A97CF728C7E40C0031B857 /* Dashboard */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -4788,8 +4838,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
-				A7ED20071E83229E00BFFA01 /* DashboardDataSourceTests.swift */,
 				018422C31D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift */,
 				A7ED20081E83229E00BFFA01 /* DashboardProjectsDrawerDataSourceTests.swift */,
 				A72C3AAE1D00F9C10075227E /* DiscoveryFiltersDataSource.swift */,
