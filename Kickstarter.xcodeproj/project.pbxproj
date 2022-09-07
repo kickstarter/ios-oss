@@ -3937,6 +3937,65 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		19450C4C28C8298A00C60F97 /* SettingsPrivacy */ = {
+			isa = PBXGroup;
+			children = (
+				19450C4F28C82A2500C60F97 /* Storyboard */,
+				19450C4D28C82A1200C60F97 /* Views */,
+				19450C5028C82A3100C60F97 /* Controller */,
+				19450C5128C82A3700C60F97 /* Datasource */,
+			);
+			path = SettingsPrivacy;
+			sourceTree = "<group>";
+		};
+		19450C4D28C82A1200C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C4E28C82A1900C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C4E28C82A1900C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D7237097211A3925001EA4CA /* SettingsFollowCell.swift */,
+				D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift */,
+				D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */,
+				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
+				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
+				77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C4F28C82A2500C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */,
+				77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C5028C82A3100C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
+				D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C5128C82A3700C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */,
+				D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
 		1965436E28C810CC00457EC6 /* ProjectNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -5320,8 +5379,6 @@
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */,
-				77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
@@ -5398,12 +5455,6 @@
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
-				D7237097211A3925001EA4CA /* SettingsFollowCell.swift */,
-				D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift */,
-				D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */,
-				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
-				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
-				77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */,
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
 				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
@@ -5469,8 +5520,6 @@
 				473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */,
 				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
-				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
-				D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */,
 				771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */,
 				3767EDAC22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift */,
 				3767EDAE22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift */,
@@ -5747,6 +5796,7 @@
 				19450C3A28C8251400C60F97 /* Settings */,
 				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
 				19450C4628C8271D00C60F97 /* SettingsNotifications */,
+				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5835,8 +5885,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */,
-				D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */,
 				3767EDA522CFFE5F0088E8E4 /* ShippingRulesDataSource.swift */,
 				3767EDA822CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
