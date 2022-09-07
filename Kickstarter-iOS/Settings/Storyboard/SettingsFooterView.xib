@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +23,6 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="eMe-yX-XLb"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="fnW-tg-iSJ" secondAttribute="bottom" constant="12" id="CUo-3i-EFj"/>
@@ -29,6 +30,7 @@
                 <constraint firstItem="fnW-tg-iSJ" firstAttribute="top" secondItem="Vl0-YN-TOM" secondAttribute="top" constant="12" id="dbl-Z2-glJ"/>
                 <constraint firstAttribute="trailing" secondItem="fnW-tg-iSJ" secondAttribute="trailing" constant="12" id="wDK-9b-7U1"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="eMe-yX-XLb"/>
             <connections>
                 <outlet property="titleLabel" destination="fnW-tg-iSJ" id="QTh-wK-FpO"/>
             </connections>
