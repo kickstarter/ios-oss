@@ -238,6 +238,8 @@
 		19047FCB2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */; };
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
+		19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */; };
+		19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
@@ -1131,7 +1133,6 @@
 		A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */; };
 		A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */; };
 		A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */; };
-		A7ED20531E8323E900BFFA01 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */; };
 		A7ED20551E8323E900BFFA01 /* LoginToutViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */; };
 		A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203C1E8323E900BFFA01 /* ActivitiesViewControllerTests.swift */; };
 		A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203D1E8323E900BFFA01 /* SignupViewControllerTests.swift */; };
@@ -1427,7 +1428,6 @@
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
 		D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */; };
 		D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */; };
-		D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		D612A21922F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */; };
 		D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */; };
 		D625AA0C23DA34EA009E6F2C /* BetaToolsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */; };
@@ -3588,6 +3588,7 @@
 		19450C2128C8213500C60F97 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7717805922F9ED130064A32F /* RewardsCollectionViewFooter.swift */,
 				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
 				8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */,
 				8A8099E922E213F100373E66 /* RewardCardView.swift */,
@@ -3611,6 +3612,329 @@
 				77EFBAE42268E01400DA5C3C /* RewardCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C2428C821D000C60F97 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				19450C2728C822B700C60F97 /* Storyboard */,
+				19450C2828C822C100C60F97 /* Datasource */,
+				19450C2928C822C800C60F97 /* Controller */,
+				19450C2A28C822CF00C60F97 /* Views */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		19450C2728C822B700C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923B81D272242004524C3 /* Search.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C2828C822C100C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C2928C822C800C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
+				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C2A28C822CF00C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C2B28C822D500C60F97 /* Cell */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C2B28C822D500C60F97 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
+				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
+				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		19450C2C28C822F600C60F97 /* SearchMessages */ = {
+			isa = PBXGroup;
+			children = (
+				A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */,
+				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
+			);
+			path = SearchMessages;
+			sourceTree = "<group>";
+		};
+		19450C2D28C8237F00C60F97 /* SelectCurrency */ = {
+			isa = PBXGroup;
+			children = (
+				19450C3028C823C600C60F97 /* Controller */,
+				19450C3128C823CC00C60F97 /* Datasource */,
+				19450C3228C823D200C60F97 /* Views */,
+			);
+			path = SelectCurrency;
+			sourceTree = "<group>";
+		};
+		19450C3028C823C600C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */,
+				D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C3128C823CC00C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C3228C823D200C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C3328C823D800C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C3328C823D800C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C3428C823F900C60F97 /* SettingsAccount */ = {
+			isa = PBXGroup;
+			children = (
+				19450C3728C824BF00C60F97 /* Storyboard */,
+				19450C3628C824B800C60F97 /* Datasource */,
+				19450C3828C824C900C60F97 /* Views */,
+				19450C3528C824A800C60F97 /* Controller */,
+			);
+			path = SettingsAccount;
+			sourceTree = "<group>";
+		};
+		19450C3528C824A800C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */,
+				D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C3628C824B800C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */,
+				77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C3728C824BF00C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C3828C824C900C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C3928C824CE00C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C3928C824CE00C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C3A28C8251400C60F97 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				19450C3C28C825C400C60F97 /* Storyboard */,
+				19450C3D28C825D300C60F97 /* Views */,
+				19450C3F28C825E200C60F97 /* Datasource */,
+				19450C3E28C825D900C60F97 /* Controller */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		19450C3C28C825C400C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				37D67230221E656500B6D415 /* SettingsFooterView.xib */,
+				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
+				77216D5F20F3D27C0061BE82 /* Settings.storyboard */,
+				77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */,
+				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C3D28C825D300C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				37D671F6221E61B600B6D415 /* SettingsFooterView.swift */,
+				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
+				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C3E28C825D900C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				77216D9720F3D2E40061BE82 /* SettingsViewController.swift */,
+				D6E7DAFB22089F9800689BD6 /* SettingsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C3F28C825E200C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */,
+				77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */,
+			);
+			name = Datasource;
+			path = Datasource/Datasource;
+			sourceTree = "<group>";
+		};
+		19450C4028C8265C00C60F97 /* SettingsNewsletters */ = {
+			isa = PBXGroup;
+			children = (
+				19450C4128C826EB00C60F97 /* Storyboard */,
+				19450C4228C826F700C60F97 /* Views */,
+				19450C4428C8270500C60F97 /* Datasource */,
+				19450C4528C8270E00C60F97 /* Controller */,
+			);
+			path = SettingsNewsletters;
+			sourceTree = "<group>";
+		};
+		19450C4128C826EB00C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				D6B6766120FE849F0082717D /* SettingsNewsletters.storyboard */,
+				D6B6762A20FE849B0082717D /* SettingsNewslettersCell.xib */,
+				D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C4228C826F700C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C4328C826FD00C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C4328C826FD00C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D6B6766A20FF8F890082717D /* SettingsNewslettersCell.swift */,
+				D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C4428C8270500C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				D6B6766820FF8D850082717D /* SettingsNewslettersDataSource.swift */,
+				D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C4528C8270E00C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D6B6766620FF8D3C0082717D /* SettingsNewslettersViewController.swift */,
+				D6B4F0012107B3D00079159D /* SettingsNewslettersViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C4628C8271D00C60F97 /* SettingsNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				19450C4728C828CF00C60F97 /* Storyboard */,
+				19450C4828C828DB00C60F97 /* Views */,
+				19450C4A28C828E900C60F97 /* Datasource */,
+				19450C4B28C828F100C60F97 /* Controller */,
+			);
+			path = SettingsNotifications;
+			sourceTree = "<group>";
+		};
+		19450C4728C828CF00C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */,
+				770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */,
+				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C4828C828DB00C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C4928C828E000C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C4928C828E000C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */,
+				770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C4A28C828E900C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				770DF3292106210900A6D0F1 /* SettingsNotificationsDataSource.swift */,
+				771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C4B28C828F100C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D6AD9A7F20EA720F0015A18B /* SettingsNotificationsViewController.swift */,
+				D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		1965436E28C810CC00457EC6 /* ProjectNotifications */ = {
@@ -4509,6 +4833,7 @@
 		19A97D3428C801200031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
 				19A97D3528C801250031B857 /* Cells */,
 			);
 			path = Views;
@@ -4536,6 +4861,7 @@
 			children = (
 				D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */,
 				D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */,
+				777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -4989,32 +5315,18 @@
 				D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */,
 				7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */,
 				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
-				77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */,
 				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
 				77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */,
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				A73923B81D272242004524C3 /* Search.storyboard */,
-				77216D5F20F3D27C0061BE82 /* Settings.storyboard */,
-				77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */,
-				37D67230221E656500B6D415 /* SettingsFooterView.xib */,
-				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
-				D6B6766120FE849F0082717D /* SettingsNewsletters.storyboard */,
-				D6B6762A20FE849B0082717D /* SettingsNewslettersCell.xib */,
-				D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */,
-				77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */,
-				770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */,
-				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */,
 				77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */,
-				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
-				777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */,
 				7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */,
 			);
 			path = Storyboards;
@@ -5065,12 +5377,9 @@
 				06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
-				37D671F6221E61B600B6D415 /* SettingsFooterView.swift */,
 				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
 				3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */,
 				37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */,
-				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
-				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
 				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
@@ -5086,20 +5395,10 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
-				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
-				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
-				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
-				D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */,
-				77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */,
 				D7237097211A3925001EA4CA /* SettingsFollowCell.swift */,
-				D6B6766A20FF8F890082717D /* SettingsNewslettersCell.swift */,
-				D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */,
-				77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */,
-				770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */,
 				D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift */,
 				D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */,
 				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
@@ -5167,25 +5466,11 @@
 				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
 				A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */,
 				8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */,
-				7717805922F9ED130064A32F /* RewardsCollectionViewFooter.swift */,
 				473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */,
 				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
-				A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */,
-				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
-				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
-				D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */,
-				D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */,
-				D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */,
-				D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */,
-				D6B6766620FF8D3C0082717D /* SettingsNewslettersViewController.swift */,
-				D6B4F0012107B3D00079159D /* SettingsNewslettersViewControllerTests.swift */,
-				D6AD9A7F20EA720F0015A18B /* SettingsNotificationsViewController.swift */,
-				D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */,
 				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
 				D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */,
-				77216D9720F3D2E40061BE82 /* SettingsViewController.swift */,
-				D6E7DAFB22089F9800689BD6 /* SettingsViewControllerTests.swift */,
 				771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */,
 				3767EDAC22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift */,
 				3767EDAE22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift */,
@@ -5455,6 +5740,13 @@
 				1965437628C8141700457EC6 /* ProjectPage */,
 				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
 				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
+				19450C2428C821D000C60F97 /* Search */,
+				19450C2C28C822F600C60F97 /* SearchMessages */,
+				19450C2D28C8237F00C60F97 /* SelectCurrency */,
+				19450C3428C823F900C60F97 /* SettingsAccount */,
+				19450C3A28C8251400C60F97 /* Settings */,
+				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
+				19450C4628C8271D00C60F97 /* SettingsNotifications */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5543,17 +5835,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
-				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
-				D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */,
-				D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */,
-				77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */,
-				77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */,
-				77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */,
-				D6B6766820FF8D850082717D /* SettingsNewslettersDataSource.swift */,
-				D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */,
-				770DF3292106210900A6D0F1 /* SettingsNotificationsDataSource.swift */,
-				771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */,
 				D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */,
 				D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */,
 				3767EDA522CFFE5F0088E8E4 /* ShippingRulesDataSource.swift */,
@@ -7731,7 +8012,6 @@
 				1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
-				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */,
 				8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */,
@@ -7745,6 +8025,7 @@
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
+				19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */,
 				209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */,
 				3767EDA922CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift in Sources */,
 				8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
@@ -7776,6 +8057,7 @@
 				3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */,
 				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,
 				776B1A15241945E000B03098 /* CategorySelectionViewControllerTests.swift in Sources */,
+				19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
@@ -7795,7 +8077,6 @@
 				94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */,
 				A7ED20181E83229E00BFFA01 /* FindFriendsDataSourceTests.swift in Sources */,
 				47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */,
-				A7ED20531E8323E900BFFA01 /* SearchViewControllerTests.swift in Sources */,
 				778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */,
 				37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */,
 				8AA3DB34250AE410009AC8EA /* SettingsViewModelTests.swift in Sources */,
