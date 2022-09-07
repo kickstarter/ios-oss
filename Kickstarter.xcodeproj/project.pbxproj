@@ -121,7 +121,6 @@
 		064B007827A463D2007B21FE /* ImageViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */; };
 		064B007A27A469C8007B21FE /* HTMLViewElementStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */; };
 		064E10BF27CF038300A9A75F /* AudioVideoViewElementCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064E10BE27CF038300A9A75F /* AudioVideoViewElementCellViewModelTests.swift */; };
-		0653738D27AC5B2D00C7D160 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0653738C27AC5B2D00C7D160 /* Kingfisher.framework */; };
 		0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7272732FDA30087281F /* FetchRootCategories.graphql */; };
 		0655C72A2732FDE00087281F /* FetchCategory.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0655C7292732FDE00087281F /* FetchCategory.graphql */; };
 		0655C72C273321B20087281F /* Category+CategoryFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0655C72B273321B20087281F /* Category+CategoryFragment.swift */; };
@@ -459,6 +458,7 @@
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
+		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -1824,7 +1824,6 @@
 		064B007727A463D2007B21FE /* ImageViewElementCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewElementCellViewModel.swift; sourceTree = "<group>"; };
 		064B007927A469C8007B21FE /* HTMLViewElementStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLViewElementStyles.swift; sourceTree = "<group>"; };
 		064E10BE27CF038300A9A75F /* AudioVideoViewElementCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVideoViewElementCellViewModelTests.swift; sourceTree = "<group>"; };
-		0653738C27AC5B2D00C7D160 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		0655C7272732FDA30087281F /* FetchRootCategories.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchRootCategories.graphql; sourceTree = "<group>"; };
 		0655C7292732FDE00087281F /* FetchCategory.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchCategory.graphql; sourceTree = "<group>"; };
 		0655C72B273321B20087281F /* Category+CategoryFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CategoryFragment.swift"; sourceTree = "<group>"; };
@@ -3287,8 +3286,8 @@
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
-				0653738D27AC5B2D00C7D160 /* Kingfisher.framework in Frameworks */,
 				8A04FE31262781570056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
+				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				8A04FE2F262781570056F413 /* SDWebImage.framework in Frameworks */,
 				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
@@ -4525,7 +4524,6 @@
 			isa = PBXGroup;
 			children = (
 				06EA2D36280F1F1900F4DE2E /* XCTest.framework */,
-				0653738C27AC5B2D00C7D160 /* Kingfisher.framework */,
 				06EF13DC27A1B2770044841C /* SwiftSoup.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
@@ -5382,6 +5380,7 @@
 				06634FC62807A4EB00950F60 /* Prelude_UIKit */,
 				1981AC8F289075D900BB4897 /* Stripe */,
 				60DA50FD28C38DDB002E2DF1 /* AlamofireImage */,
+				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -5600,6 +5599,7 @@
 				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
 				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -8567,6 +8567,14 @@
 				minimumVersion = 4.2.0;
 			};
 		};
+		60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -8614,6 +8622,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
+		};
+		60DA510E28C7E04B002E2DF1 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
