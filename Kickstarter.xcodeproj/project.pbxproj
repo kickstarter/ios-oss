@@ -458,7 +458,6 @@
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
-		60DA510B28C7DC0E002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510A28C7DC0E002E2DF1 /* Kingfisher */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
@@ -3341,7 +3340,6 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				8A86D7EE24FDC84400037A7B /* GoogleAppMeasurement.framework in Frameworks */,
 				774D98DA23A9795100FC81C2 /* Optimizely.framework in Frameworks */,
-				60DA510B28C7DC0E002E2DF1 /* Kingfisher in Frameworks */,
 				4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */,
@@ -5452,7 +5450,6 @@
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
-				60DA510A28C7DC0E002E2DF1 /* Kingfisher */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -8625,11 +8622,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
-		};
-		60DA510A28C7DC0E002E2DF1 /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
 		};
 		60DA510E28C7E04B002E2DF1 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
