@@ -3996,6 +3996,104 @@
 			path = Datasource;
 			sourceTree = "<group>";
 		};
+		19450C5228C82CEF00C60F97 /* ShippingRules */ = {
+			isa = PBXGroup;
+			children = (
+				19450C5328C82D6500C60F97 /* Views */,
+				19450C5528C82D7100C60F97 /* Datasource */,
+				19450C5628C82D7900C60F97 /* Controller */,
+			);
+			path = ShippingRules;
+			sourceTree = "<group>";
+		};
+		19450C5328C82D6500C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C5428C82D6A00C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C5428C82D6A00C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C5528C82D7100C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				3767EDA522CFFE5F0088E8E4 /* ShippingRulesDataSource.swift */,
+				3767EDA822CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C5628C82D7900C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3767EDAC22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift */,
+				3767EDAE22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C5728C82D9800C60F97 /* ThanksProjects */ = {
+			isa = PBXGroup;
+			children = (
+				19450C5A28C82E2A00C60F97 /* Views */,
+				19450C5928C82E2400C60F97 /* Controller */,
+				19450C5828C82E1C00C60F97 /* Storyboard */,
+				19450C5C28C82E3400C60F97 /* Datasource */,
+			);
+			path = ThanksProjects;
+			sourceTree = "<group>";
+		};
+		19450C5828C82E1C00C60F97 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923AC1D272242004524C3 /* Thanks.storyboard */,
+				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19450C5928C82E2400C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
+				77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C5A28C82E2A00C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19450C5B28C82E2F00C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C5B28C82E2F00C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		19450C5C28C82E3400C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
+				77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
 		1965436E28C810CC00457EC6 /* ProjectNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -5379,8 +5477,6 @@
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				A73923AC1D272242004524C3 /* Thanks.storyboard */,
-				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
@@ -5456,8 +5552,6 @@
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
-				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
-				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */,
 			);
 			path = Cells;
@@ -5521,15 +5615,11 @@
 				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
 				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
 				771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */,
-				3767EDAC22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift */,
-				3767EDAE22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift */,
 				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
 				A7ED203D1E8323E900BFFA01 /* SignupViewControllerTests.swift */,
 				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
 				A7ED20271E8323E900BFFA01 /* SortPagerViewControllerTests.swift */,
 				9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */,
-				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
-				77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */,
 				37CA16B023304DCA006044F9 /* ToggleViewController.swift */,
 				37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */,
 				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
@@ -5797,7 +5887,8 @@
 				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
 				19450C4628C8271D00C60F97 /* SettingsNotifications */,
 				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
-				A7E315BD1C88AA56000DD85A /* DataSources */,
+				19450C5228C82CEF00C60F97 /* ShippingRules */,
+				19450C5728C82D9800C60F97 /* ThanksProjects */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
 				A7ED20201E83237F00BFFA01 /* TestHelpers */,
@@ -5880,17 +5971,6 @@
 				8A417DE625AE2F8600A2C406 /* Segment.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A7E315BD1C88AA56000DD85A /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				3767EDA522CFFE5F0088E8E4 /* ShippingRulesDataSource.swift */,
-				3767EDA822CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift */,
-				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
-				77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */,
-			);
-			path = DataSources;
 			sourceTree = "<group>";
 		};
 		A7ED1F421E831BA200BFFA01 /* TestHelpers */ = {
