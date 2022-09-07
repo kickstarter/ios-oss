@@ -4101,8 +4101,7 @@
 				1965437128C8117E00457EC6 /* Views */,
 				1965437328C8118900457EC6 /* Datasource */,
 			);
-			name = ProjectNotifications;
-			path = DataSources/ProjectNotifications;
+			path = ProjectNotifications;
 			sourceTree = "<group>";
 		};
 		1965437028C8117800457EC6 /* Controller */ = {
@@ -4219,6 +4218,46 @@
 				471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		19838AAE28C82F75003DD5BB /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				19A97CD428C79BF60031B857 /* Comments */,
+				19A97CDC28C7D77D0031B857 /* Activities */,
+				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
+				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
+				19A97CED28C7DF4E0031B857 /* CategorySelection */,
+				19A97CF728C7E40C0031B857 /* Dashboard */,
+				19A97CFD28C7E6460031B857 /* DashboardProjects */,
+				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
+				19A97D0928C7EA450031B857 /* Discovery */,
+				19A97D1128C7ED500031B857 /* FindFriends */,
+				19A97D1828C7EF190031B857 /* Help */,
+				19A97D2028C7FBBC0031B857 /* ManagePledge */,
+				19A97D2728C7FDF50031B857 /* Messages */,
+				19A97D2D28C7FF330031B857 /* MessageThreads */,
+				19A97D3228C8001C0031B857 /* PaymentMethods */,
+				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
+				19A97D3928C802230031B857 /* PledgePaymentMethods */,
+				19A97D3F28C8049E0031B857 /* ProjectActivities */,
+				1965436E28C810CC00457EC6 /* ProjectNotifications */,
+				1965437528C812F100457EC6 /* ProjectPamphletContentDataSource_DEPRECATED_09_06_2022 */,
+				1965437628C8141700457EC6 /* ProjectPage */,
+				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
+				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
+				19450C2428C821D000C60F97 /* Search */,
+				19450C2C28C822F600C60F97 /* SearchMessages */,
+				19450C2D28C8237F00C60F97 /* SelectCurrency */,
+				19450C3428C823F900C60F97 /* SettingsAccount */,
+				19450C3A28C8251400C60F97 /* Settings */,
+				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
+				19450C4628C8271D00C60F97 /* SettingsNotifications */,
+				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
+				19450C5228C82CEF00C60F97 /* ShippingRules */,
+				19450C5728C82D9800C60F97 /* ThanksProjects */,
+			);
+			path = Features;
 			sourceTree = "<group>";
 		};
 		19A97CD428C79BF60031B857 /* Comments */ = {
@@ -5856,39 +5895,7 @@
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
-				19A97CD428C79BF60031B857 /* Comments */,
-				19A97CDC28C7D77D0031B857 /* Activities */,
-				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
-				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
-				19A97CED28C7DF4E0031B857 /* CategorySelection */,
-				19A97CF728C7E40C0031B857 /* Dashboard */,
-				19A97CFD28C7E6460031B857 /* DashboardProjects */,
-				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
-				19A97D0928C7EA450031B857 /* Discovery */,
-				19A97D1128C7ED500031B857 /* FindFriends */,
-				19A97D1828C7EF190031B857 /* Help */,
-				19A97D2028C7FBBC0031B857 /* ManagePledge */,
-				19A97D2728C7FDF50031B857 /* Messages */,
-				19A97D2D28C7FF330031B857 /* MessageThreads */,
-				19A97D3228C8001C0031B857 /* PaymentMethods */,
-				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
-				19A97D3928C802230031B857 /* PledgePaymentMethods */,
-				19A97D3F28C8049E0031B857 /* ProjectActivities */,
-				1965436E28C810CC00457EC6 /* ProjectNotifications */,
-				1965437528C812F100457EC6 /* ProjectPamphletContentDataSource_DEPRECATED_09_06_2022 */,
-				1965437628C8141700457EC6 /* ProjectPage */,
-				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
-				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
-				19450C2428C821D000C60F97 /* Search */,
-				19450C2C28C822F600C60F97 /* SearchMessages */,
-				19450C2D28C8237F00C60F97 /* SelectCurrency */,
-				19450C3428C823F900C60F97 /* SettingsAccount */,
-				19450C3A28C8251400C60F97 /* Settings */,
-				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
-				19450C4628C8271D00C60F97 /* SettingsNotifications */,
-				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
-				19450C5228C82CEF00C60F97 /* ShippingRules */,
-				19450C5728C82D9800C60F97 /* ThanksProjects */,
+				19838AAE28C82F75003DD5BB /* Features */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
 				A7ED20201E83237F00BFFA01 /* TestHelpers */,
