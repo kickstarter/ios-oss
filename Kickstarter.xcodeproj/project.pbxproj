@@ -3566,6 +3566,53 @@
 			path = Datasource;
 			sourceTree = "<group>";
 		};
+		19450C1F28C81FEF00C60F97 /* RewardsCollection */ = {
+			isa = PBXGroup;
+			children = (
+				19450C2028C8212C00C60F97 /* Controller */,
+				19450C2128C8213500C60F97 /* Views */,
+				19450C2228C8215200C60F97 /* Datasource */,
+			);
+			path = RewardsCollection;
+			sourceTree = "<group>";
+		};
+		19450C2028C8212C00C60F97 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */,
+				77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		19450C2128C8213500C60F97 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
+				8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */,
+				8A8099E922E213F100373E66 /* RewardCardView.swift */,
+				19450C2328C8216400C60F97 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		19450C2228C8215200C60F97 /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */,
+				77EFBAE82268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		19450C2328C8216400C60F97 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77EFBAE42268E01400DA5C3C /* RewardCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		1965436E28C810CC00457EC6 /* ProjectNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -3973,7 +4020,9 @@
 		19A97CF828C7E5570031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */,
+				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				19A97CF928C7E5650031B857 /* Cells */,
 			);
@@ -4995,7 +5044,6 @@
 			children = (
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
-				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				8A32FE0324D2336E00F79C72 /* EmpyStateView.swift */,
 				D69C553223A2C30200B0987A /* ErroredBackingView.swift */,
@@ -5016,10 +5064,6 @@
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
-				A78012641D2EEA620027396E /* ReferralChartView.swift */,
-				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
-				8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */,
-				8A8099E922E213F100373E66 /* RewardCardView.swift */,
 				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
 				37D671F6221E61B600B6D415 /* SettingsFooterView.swift */,
 				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
@@ -5047,7 +5091,6 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
-				77EFBAE42268E01400DA5C3C /* RewardCell.swift */,
 				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
 				D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */,
@@ -5124,8 +5167,6 @@
 				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
 				A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */,
 				8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */,
-				77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */,
-				77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */,
 				7717805922F9ED130064A32F /* RewardsCollectionViewFooter.swift */,
 				473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */,
 				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
@@ -5413,6 +5454,7 @@
 				1965437528C812F100457EC6 /* ProjectPamphletContentDataSource_DEPRECATED_09_06_2022 */,
 				1965437628C8141700457EC6 /* ProjectPage */,
 				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
+				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -5501,8 +5543,6 @@
 		A7E315BD1C88AA56000DD85A /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				77EFBAE62268E37200DA5C3C /* RewardsCollectionViewDataSource.swift */,
-				77EFBAE82268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift */,
 				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
 				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
 				D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */,
