@@ -237,6 +237,9 @@
 		19047FCB2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */; };
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
+		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
+		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
+		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
 		19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */; };
 		19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
@@ -296,7 +299,6 @@
 		3742036F22DD45A2007AA86E /* PillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742036E22DD45A2007AA86E /* PillCell.swift */; };
 		374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB94E22C17D4E00B84219 /* CharacterSet.swift */; };
 		374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB95022C17D6700B84219 /* CharacterSetTests.swift */; };
-		374F507922614A1000DE6746 /* PledgeFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F507822614A1000DE6746 /* PledgeFooterView.swift */; };
 		3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */; };
 		3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E42A2335E7CE00047E9A /* TraitCollection.swift */; };
 		3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D0CD228E51F800241AE6 /* UIFont.swift */; };
@@ -543,7 +545,6 @@
 		778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778F891B22D3E37300D095C5 /* Feature+Helpers.swift */; };
 		778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778F891D22D5414F00D095C5 /* Feature+HelpersTests.swift */; };
 		7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */; };
-		7790DF892200D3BD005DBB11 /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
 		77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */; };
 		7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5622174F494008BC50D /* UserEnvelope.swift */; };
@@ -614,7 +615,6 @@
 		809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */; };
 		80D73AF61D50F1A60099231F /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E26A121D500C6A007B3022 /* Navigation.swift */; };
 		80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8EAC71D3EC65A007BDA4B /* Image.swift */; };
-		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
 		84264EEC25387B0500D8DF81 /* Param.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587D41EEB2ED7006E7684 /* Param.swift */; };
 		8479CF2C2530A5D700FD13F1 /* Service+DecodeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479CF2B2530A5D700FD13F1 /* Service+DecodeHelpers.swift */; };
 		84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */; };
@@ -1138,7 +1138,6 @@
 		A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203D1E8323E900BFFA01 /* SignupViewControllerTests.swift */; };
 		A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203E1E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift */; };
 		A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED203F1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift */; };
-		A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
 		A7ED20621E83256700BFFA01 /* AppDelegateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */; };
 		A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */; };
 		A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */; };
@@ -1479,7 +1478,6 @@
 		D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */; };
 		D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */; };
 		D69C553123A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */; };
-		D69C553323A2C30300B0987A /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553223A2C30200B0987A /* ErroredBackingView.swift */; };
 		D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
 		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
@@ -1921,6 +1919,7 @@
 		19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift"; sourceTree = "<group>"; };
 		19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift"; sourceTree = "<group>"; };
 		192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
+		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
 		19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCellViewModel.swift; sourceTree = "<group>"; };
@@ -3138,7 +3137,6 @@
 		D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModelTests.swift; sourceTree = "<group>"; };
 		D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModelTests.swift; sourceTree = "<group>"; };
 		D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellHeader.swift; sourceTree = "<group>"; };
-		D69C553223A2C30200B0987A /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErroredBackingView.swift; path = Cells/ErroredBackingView.swift; sourceTree = "<group>"; };
 		D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewController.swift; sourceTree = "<group>"; };
 		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
 		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
@@ -3392,6 +3390,7 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */,
 				8A788F14263B770100A89DAE /* BrazeMockTypes.swift */,
 				8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */,
 				8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */,
@@ -3519,6 +3518,697 @@
 			path = mutation;
 			sourceTree = "<group>";
 		};
+		1937A6D828C92A6800DD732D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				01940B2A1D46814E0074FCE3 /* HelpWebViewModel.swift */,
+				A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1937A6D928C92A7400DD732D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
+				D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1937A6DA28C92A8000DD732D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D04AAC17218BB70B00CF713E /* SettingsViewModel.swift */,
+				D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1937A6DB28C92AD100DD732D /* AddNewCard */ = {
+			isa = PBXGroup;
+			children = (
+				1937A72D28C95C8C00DD732D /* Views */,
+				1937A72028C9507200DD732D /* Storyboard */,
+				1937A6F228C92FA000DD732D /* Controller */,
+			);
+			path = AddNewCard;
+			sourceTree = "<group>";
+		};
+		1937A6DC28C92AE000DD732D /* BetaTools */ = {
+			isa = PBXGroup;
+			children = (
+				1937A72428C9581A00DD732D /* Views */,
+				1937A6EC28C92E2100DD732D /* Controller */,
+			);
+			path = BetaTools;
+			sourceTree = "<group>";
+		};
+		1937A6DD28C92AE900DD732D /* CancelPledge */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6F328C92FDF00DD732D /* Controller */,
+			);
+			path = CancelPledge;
+			sourceTree = "<group>";
+		};
+		1937A6DE28C92AF500DD732D /* ChangeEmail */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6F428C92FE700DD732D /* Controller */,
+			);
+			path = ChangeEmail;
+			sourceTree = "<group>";
+		};
+		1937A6DF28C92AFE00DD732D /* ChangePassword */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6F528C92FF400DD732D /* Controller */,
+			);
+			path = ChangePassword;
+			sourceTree = "<group>";
+		};
+		1937A6E028C92B1D00DD732D /* CreatePassword */ = {
+			isa = PBXGroup;
+			children = (
+				1937A72128C954C000DD732D /* Views */,
+				1937A6F628C92FFE00DD732D /* Controllers */,
+			);
+			path = CreatePassword;
+			sourceTree = "<group>";
+		};
+		1937A6E128C92BBD00DD732D /* CuratedProjects */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6F728C9300B00DD732D /* Controller */,
+			);
+			path = CuratedProjects;
+			sourceTree = "<group>";
+		};
+		1937A6E228C92BD400DD732D /* DebugPushNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6EB28C92E1800DD732D /* Storyboard */,
+				1937A6F828C9303B00DD732D /* Controller */,
+			);
+			path = DebugPushNotifications;
+			sourceTree = "<group>";
+		};
+		1937A6E328C92C0100DD732D /* EmptyStates */ = {
+			isa = PBXGroup;
+			children = (
+				1937A71C28C9431B00DD732D /* Storyboard */,
+				1937A6F928C9304400DD732D /* Controller */,
+			);
+			path = EmptyStates;
+			sourceTree = "<group>";
+		};
+		1937A6E428C92C1800DD732D /* FacebookConfirmation */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6FA28C9304E00DD732D /* Controller */,
+			);
+			path = FacebookConfirmation;
+			sourceTree = "<group>";
+		};
+		1937A6E528C92C8500DD732D /* FeatureFlagTools */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6FB28C9305700DD732D /* Controller */,
+			);
+			path = FeatureFlagTools;
+			sourceTree = "<group>";
+		};
+		1937A6E628C92C8E00DD732D /* HelpWeb */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6FC28C9305E00DD732D /* Controller */,
+			);
+			path = HelpWeb;
+			sourceTree = "<group>";
+		};
+		1937A6E728C92DB300DD732D /* LandingPage */ = {
+			isa = PBXGroup;
+			children = (
+				1937A72728C95A0700DD732D /* Views */,
+				1937A6FD28C9306600DD732D /* Controller */,
+			);
+			path = LandingPage;
+			sourceTree = "<group>";
+		};
+		1937A6E828C92DBD00DD732D /* Landing */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6FE28C9306E00DD732D /* Controller */,
+			);
+			path = Landing;
+			sourceTree = "<group>";
+		};
+		1937A6E928C92DC700DD732D /* LoginTout */ = {
+			isa = PBXGroup;
+			children = (
+				1937A6FF28C9307600DD732D /* Controller */,
+			);
+			path = LoginTout;
+			sourceTree = "<group>";
+		};
+		1937A6EA28C92DD000DD732D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1937A70028C9307E00DD732D /* Controller */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		1937A6EB28C92E1800DD732D /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		1937A6EC28C92E2100DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
+				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6ED28C92EC700DD732D /* MessageBanner */ = {
+			isa = PBXGroup;
+			children = (
+				1937A71D28C9443700DD732D /* Storyboard */,
+				1937A70128C9308600DD732D /* Controller */,
+			);
+			path = MessageBanner;
+			sourceTree = "<group>";
+		};
+		1937A6EE28C92ED400DD732D /* MessageDialog */ = {
+			isa = PBXGroup;
+			children = (
+				1937A70228C9309700DD732D /* Controller */,
+			);
+			path = MessageDialog;
+			sourceTree = "<group>";
+		};
+		1937A6EF28C92EDC00DD732D /* OptimizelyFeatureFlagTools */ = {
+			isa = PBXGroup;
+			children = (
+				1937A70328C9309F00DD732D /* Controller */,
+			);
+			path = OptimizelyFeatureFlagTools;
+			sourceTree = "<group>";
+		};
+		1937A6F028C92F0000DD732D /* PledgeAmountSummary */ = {
+			isa = PBXGroup;
+			children = (
+				8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */,
+			);
+			path = PledgeAmountSummary;
+			sourceTree = "<group>";
+		};
+		1937A6F128C92F0C00DD732D /* PledgeAmount */ = {
+			isa = PBXGroup;
+			children = (
+				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
+				370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */,
+				3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */,
+			);
+			path = PledgeAmount;
+			sourceTree = "<group>";
+		};
+		1937A6F228C92FA000DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D770DE3D217E339500B5319A /* AddNewCardViewController.swift */,
+				D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6F328C92FDF00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
+				771E630F23426F03005967E8 /* CancelPledgeViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6F428C92FE700DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
+				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6F528C92FF400DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
+				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6F628C92FFE00DD732D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */,
+				3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */,
+				37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */,
+				3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		1937A6F728C9300B00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */,
+				776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6F828C9303B00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6F928C9304400DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */,
+				A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6FA28C9304E00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
+				A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6FB28C9305700DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6FC28C9305E00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6FD28C9306600DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D6050F49240424FC00E029D2 /* LandingPageViewController.swift */,
+				77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6FE28C9306E00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				773BFCAF241013D60078A79A /* LandingViewController.swift */,
+				778AA781241060FC00E67293 /* LandingViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A6FF28C9307600DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
+				A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A70028C9307E00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				018F1F821C8E182200643DAA /* LoginViewController.swift */,
+				A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A70128C9308600DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
+				77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A70228C9309700DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A70328C9309F00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */,
+				47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A70428C9392600DD732D /* PledgeShippingLocation */ = {
+			isa = PBXGroup;
+			children = (
+				37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */,
+			);
+			path = PledgeShippingLocation;
+			sourceTree = "<group>";
+		};
+		1937A70528C9399D00DD732D /* PledgeView */ = {
+			isa = PBXGroup;
+			children = (
+				1937A72A28C95B0700DD732D /* Views */,
+				1937A70628C939B400DD732D /* Controllers */,
+			);
+			path = PledgeView;
+			sourceTree = "<group>";
+		};
+		1937A70628C939B400DD732D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
+				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
+				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		1937A70728C939D100DD732D /* ResetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				1937A70828C939D900DD732D /* Controller */,
+			);
+			path = ResetPassword;
+			sourceTree = "<group>";
+		};
+		1937A70828C939D900DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
+				A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A70928C93BC800DD732D /* RewardPledgeNavigation */ = {
+			isa = PBXGroup;
+			children = (
+				8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */,
+			);
+			path = RewardPledgeNavigation;
+			sourceTree = "<group>";
+		};
+		1937A70A28C93BD100DD732D /* RiskMessaging */ = {
+			isa = PBXGroup;
+			children = (
+				473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */,
+				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
+			);
+			path = RiskMessaging;
+			sourceTree = "<group>";
+		};
+		1937A70B28C93C6900DD732D /* TwoFactorAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				1937A71428C93D9500DD732D /* Controller */,
+			);
+			path = TwoFactorAuthentication;
+			sourceTree = "<group>";
+		};
+		1937A70C28C93C7B00DD732D /* Toggle */ = {
+			isa = PBXGroup;
+			children = (
+				1937A71328C93D8D00DD732D /* Controller */,
+			);
+			path = Toggle;
+			sourceTree = "<group>";
+		};
+		1937A70D28C93C9B00DD732D /* SortPager */ = {
+			isa = PBXGroup;
+			children = (
+				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
+				A7ED20271E8323E900BFFA01 /* SortPagerViewControllerTests.swift */,
+			);
+			path = SortPager;
+			sourceTree = "<group>";
+		};
+		1937A70E28C93CAF00DD732D /* Signup */ = {
+			isa = PBXGroup;
+			children = (
+				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
+				A7ED203D1E8323E900BFFA01 /* SignupViewControllerTests.swift */,
+			);
+			path = Signup;
+			sourceTree = "<group>";
+		};
+		1937A70F28C93CD800DD732D /* SheetOverlay */ = {
+			isa = PBXGroup;
+			children = (
+				771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */,
+			);
+			path = SheetOverlay;
+			sourceTree = "<group>";
+		};
+		1937A71028C93CE000DD732D /* RootTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
+			);
+			path = RootTabBar;
+			sourceTree = "<group>";
+		};
+		1937A71128C93D7900DD732D /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				1937A72E28C95DAB00DD732D /* ViewModel */,
+				1937A71728C93DC600DD732D /* Storyboard */,
+				1937A71228C93D8500DD732D /* Controller */,
+			);
+			path = Update;
+			sourceTree = "<group>";
+		};
+		1937A71228C93D8500DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A71328C93D8D00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				37CA16B023304DCA006044F9 /* ToggleViewController.swift */,
+				37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A71428C93D9500DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
+				A7ED203F1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A71528C93D9B00DD732D /* SurveyResponse */ = {
+			isa = PBXGroup;
+			children = (
+				1937A71628C93DA800DD732D /* Controller */,
+			);
+			path = SurveyResponse;
+			sourceTree = "<group>";
+		};
+		1937A71628C93DA800DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A71728C93DC600DD732D /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A73923BA1D272242004524C3 /* Update.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		1937A71828C93DE500DD732D /* SetYourPassword */ = {
+			isa = PBXGroup;
+			children = (
+				1937A71928C93DEF00DD732D /* Controller */,
+			);
+			path = SetYourPassword;
+			sourceTree = "<group>";
+		};
+		1937A71928C93DEF00DD732D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */,
+				60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1937A71A28C9407200DD732D /* Storyboards_DEPRECATED_09_07_2022 */ = {
+			isa = PBXGroup;
+			children = (
+				80EAEF031D243C4E008C2353 /* Backing.storyboard */,
+			);
+			path = Storyboards_DEPRECATED_09_07_2022;
+			sourceTree = "<group>";
+		};
+		1937A71B28C9412800DD732D /* SharedStoryboards */ = {
+			isa = PBXGroup;
+			children = (
+				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
+				77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */,
+				A73923B21D272242004524C3 /* Login.storyboard */,
+				D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */,
+				A73923B31D272242004524C3 /* Main.storyboard */,
+			);
+			path = SharedStoryboards;
+			sourceTree = "<group>";
+		};
+		1937A71C28C9431B00DD732D /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		1937A71D28C9443700DD732D /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		1937A72028C9507200DD732D /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		1937A72128C954C000DD732D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */,
+				1937A72228C9570900DD732D /* ErroredBackingView.swift */,
+				A751A51C1C85EAD8009C5DEA /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1937A72428C9581A00DD732D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1937A72728C95A0700DD732D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1937A72828C95A6B00DD732D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		1937A72928C95ABF00DD732D /* SharedViews_DEPRECATED_09_07_2022 */ = {
+			isa = PBXGroup;
+			children = (
+				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
+			);
+			path = SharedViews_DEPRECATED_09_07_2022;
+			sourceTree = "<group>";
+		};
+		1937A72A28C95B0700DD732D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				063D2D092846767F00CEDE33 /* PledgeLocalPickupView.swift */,
+				8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */,
+				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1937A72B28C95C2D00DD732D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1937A72D28C95C8C00DD732D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1937A72E28C95DAB00DD732D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A731BF8E1D1EE4CD00A734AC /* UpdateViewModel.swift */,
+				A7ED20611E83256700BFFA01 /* UpdateViewModelTests.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */ = {
 			isa = PBXGroup;
 			children = (
@@ -3543,6 +4233,7 @@
 			children = (
 				8A6C978D24BFCAEE00C4FA71 /* RewardAddOnSelectionContinueCTAView.swift */,
 				8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */,
+				8A32FE0324D2336E00F79C72 /* EmpyStateView.swift */,
 				19450C1D28C81F6000C60F97 /* Cells */,
 			);
 			path = Views;
@@ -3608,6 +4299,7 @@
 		19450C2328C8216400C60F97 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				77EFBAE42268E01400DA5C3C /* RewardCell.swift */,
 			);
 			path = Cells;
@@ -3706,6 +4398,7 @@
 		19450C3228C823D200C60F97 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
 				19450C3328C823D800C60F97 /* Cells */,
 			);
 			path = Views;
@@ -3722,6 +4415,7 @@
 		19450C3428C823F900C60F97 /* SettingsAccount */ = {
 			isa = PBXGroup;
 			children = (
+				1937A6D928C92A7400DD732D /* ViewModel */,
 				19450C3728C824BF00C60F97 /* Storyboard */,
 				19450C3628C824B800C60F97 /* Datasource */,
 				19450C3828C824C900C60F97 /* Views */,
@@ -3775,6 +4469,7 @@
 		19450C3A28C8251400C60F97 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				1937A6DA28C92A8000DD732D /* ViewModel */,
 				19450C3C28C825C400C60F97 /* Storyboard */,
 				19450C3D28C825D300C60F97 /* Views */,
 				19450C3F28C825E200C60F97 /* Datasource */,
@@ -3800,7 +4495,8 @@
 			children = (
 				37D671F6221E61B600B6D415 /* SettingsFooterView.swift */,
 				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
-				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
+				194520C4288859A600CA9B88 /* PaymentCardTextField.swift */,
+				1937A72828C95A6B00DD732D /* Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4160,10 +4856,10 @@
 		1965437828C814CB00457EC6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */,
 				06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */,
 				06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */,
 				477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */,
-				06FFE98627C67C5600E3A929 /* GIFAnimatedImageView.swift */,
 				1965437928C814D300457EC6 /* Cells */,
 			);
 			path = Views;
@@ -4206,6 +4902,11 @@
 			children = (
 				06B0FDAA27021CD200147E3E /* ProjectPageViewController.swift */,
 				06AF78752710C970009587F1 /* ProjectPageViewControllerTests.swift */,
+				77CD8980217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift */,
+				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
+				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
+				59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */,
+				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4215,6 +4916,7 @@
 			children = (
 				471235F6274450AC0035527F /* ProjectPamphletMainCell.xib */,
 				471235F8274457460035527F /* ProjectPamphletSubpageCell.xib */,
+				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -4222,29 +4924,56 @@
 		19838AAE28C82F75003DD5BB /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				19A97CD428C79BF60031B857 /* Comments */,
 				19A97CDC28C7D77D0031B857 /* Activities */,
+				1937A6DB28C92AD100DD732D /* AddNewCard */,
 				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
 				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
+				1937A6DC28C92AE000DD732D /* BetaTools */,
+				1937A6DD28C92AE900DD732D /* CancelPledge */,
 				19A97CED28C7DF4E0031B857 /* CategorySelection */,
+				1937A6DE28C92AF500DD732D /* ChangeEmail */,
+				1937A6DF28C92AFE00DD732D /* ChangePassword */,
+				1937A6E028C92B1D00DD732D /* CreatePassword */,
+				19A97CD428C79BF60031B857 /* Comments */,
+				1937A6E128C92BBD00DD732D /* CuratedProjects */,
 				19A97CF728C7E40C0031B857 /* Dashboard */,
 				19A97CFD28C7E6460031B857 /* DashboardProjects */,
+				1937A6E228C92BD400DD732D /* DebugPushNotifications */,
 				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
 				19A97D0928C7EA450031B857 /* Discovery */,
+				1937A6E328C92C0100DD732D /* EmptyStates */,
+				1937A6E428C92C1800DD732D /* FacebookConfirmation */,
+				1937A6E528C92C8500DD732D /* FeatureFlagTools */,
 				19A97D1128C7ED500031B857 /* FindFriends */,
 				19A97D1828C7EF190031B857 /* Help */,
+				1937A6E628C92C8E00DD732D /* HelpWeb */,
+				1937A6E828C92DBD00DD732D /* Landing */,
+				1937A6E728C92DB300DD732D /* LandingPage */,
+				1937A6EA28C92DD000DD732D /* Login */,
+				1937A6E928C92DC700DD732D /* LoginTout */,
 				19A97D2028C7FBBC0031B857 /* ManagePledge */,
 				19A97D2728C7FDF50031B857 /* Messages */,
+				1937A6ED28C92EC700DD732D /* MessageBanner */,
+				1937A6EE28C92ED400DD732D /* MessageDialog */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
+				1937A6EF28C92EDC00DD732D /* OptimizelyFeatureFlagTools */,
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
+				1937A6F128C92F0C00DD732D /* PledgeAmount */,
+				1937A6F028C92F0000DD732D /* PledgeAmountSummary */,
 				19A97D3928C802230031B857 /* PledgePaymentMethods */,
+				1937A70428C9392600DD732D /* PledgeShippingLocation */,
+				1937A70528C9399D00DD732D /* PledgeView */,
 				19A97D3F28C8049E0031B857 /* ProjectActivities */,
 				1965436E28C810CC00457EC6 /* ProjectNotifications */,
 				1965437528C812F100457EC6 /* ProjectPamphletContentDataSource_DEPRECATED_09_06_2022 */,
 				1965437628C8141700457EC6 /* ProjectPage */,
+				1937A70728C939D100DD732D /* ResetPassword */,
 				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
 				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
+				1937A70928C93BC800DD732D /* RewardPledgeNavigation */,
+				1937A70A28C93BD100DD732D /* RiskMessaging */,
+				1937A71028C93CE000DD732D /* RootTabBar */,
 				19450C2428C821D000C60F97 /* Search */,
 				19450C2C28C822F600C60F97 /* SearchMessages */,
 				19450C2D28C8237F00C60F97 /* SelectCurrency */,
@@ -4253,8 +4982,16 @@
 				19450C4028C8265C00C60F97 /* SettingsNewsletters */,
 				19450C4628C8271D00C60F97 /* SettingsNotifications */,
 				19450C4C28C8298A00C60F97 /* SettingsPrivacy */,
+				1937A71828C93DE500DD732D /* SetYourPassword */,
+				1937A70F28C93CD800DD732D /* SheetOverlay */,
+				1937A70E28C93CAF00DD732D /* Signup */,
 				19450C5228C82CEF00C60F97 /* ShippingRules */,
+				1937A70D28C93C9B00DD732D /* SortPager */,
+				1937A71528C93D9B00DD732D /* SurveyResponse */,
 				19450C5728C82D9800C60F97 /* ThanksProjects */,
+				1937A70C28C93C7B00DD732D /* Toggle */,
+				1937A70B28C93C6900DD732D /* TwoFactorAuthentication */,
+				1937A71128C93D7900DD732D /* Update */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -4306,6 +5043,8 @@
 				94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */,
 				20455E6626712A6A00F55EDC /* CommentsErrorCell.swift */,
 				06B02B90266569D300903A83 /* EmptyCommentsCell.swift */,
+				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
+				4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4379,6 +5118,7 @@
 				A75AB2211C8A85D1002FC3E6 /* ActivityUpdateCell.swift */,
 				A7CC14371D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift */,
 				A7CC14391D00E74F00035C52 /* FindFriendsHeaderCell.swift */,
+				A74382041D3458C900040A95 /* PaddingCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4394,6 +5134,7 @@
 		19A97CE428C7DC1C0031B857 /* BackerDashboardPages */ = {
 			isa = PBXGroup;
 			children = (
+				1937A72B28C95C2D00DD732D /* Views */,
 				19A97CE528C7DD260031B857 /* Controller */,
 				19A97CE628C7DD2F0031B857 /* Storyboard */,
 				19A97CE728C7DD360031B857 /* Datasource */,
@@ -4529,6 +5270,7 @@
 			isa = PBXGroup;
 			children = (
 				19A97CF828C7E5570031B857 /* Views */,
+				A751A51A1C85EAD8009C5DEA /* ViewModel */,
 				19A97CFA28C7E56F0031B857 /* Controller */,
 				19A97CFB28C7E5780031B857 /* Storyboard */,
 				19A97CFC28C7E5810031B857 /* Datasource */,
@@ -4566,6 +5308,8 @@
 			children = (
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
 				A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */,
+				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
+				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4573,6 +5317,7 @@
 		19A97CFB28C7E5780031B857 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				A73923AE1D272242004524C3 /* Dashboard.storyboard */,
 			);
 			path = Storyboard;
@@ -4609,6 +5354,8 @@
 		19A97CFF28C7E6EA0031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
+				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
 				19A97D0028C7E6F00031B857 /* Cells */,
 			);
 			path = Views;
@@ -4690,6 +5437,7 @@
 		19A97D0828C7E8400031B857 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */,
 				A73923AF1D272242004524C3 /* Discovery.storyboard */,
 			);
 			path = Storyboard;
@@ -4746,6 +5494,8 @@
 		19A97D1028C7ECCE0031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
+				7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */,
 				19A97D0F28C7ECC60031B857 /* Cells */,
 			);
 			path = Views;
@@ -4808,6 +5558,7 @@
 		19A97D1828C7EF190031B857 /* Help */ = {
 			isa = PBXGroup;
 			children = (
+				1937A6D828C92A6800DD732D /* ViewModel */,
 				19A97D1F28C7FB060031B857 /* Storyboard */,
 				19A97D1C28C7FAC70031B857 /* Views */,
 				19A97D1B28C7FAC20031B857 /* Controller */,
@@ -4880,6 +5631,7 @@
 		19A97D2428C7FD7B0031B857 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */,
 				D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */,
 				19A97D2628C7FD950031B857 /* Cells */,
 			);
@@ -5029,6 +5781,7 @@
 			isa = PBXGroup;
 			children = (
 				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
+				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
 				19A97D3528C801250031B857 /* Cells */,
 			);
 			path = Views;
@@ -5297,14 +6050,6 @@
 			path = graphql;
 			sourceTree = "<group>";
 		};
-		8A14E09523971BD000387824 /* ShimmerLoadingViews */ = {
-			isa = PBXGroup;
-			children = (
-				8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */,
-			);
-			path = ShimmerLoadingViews;
-			sourceTree = "<group>";
-		};
 		8A1F660D26273B6300A28E74 /* px */ = {
 			isa = PBXGroup;
 			children = (
@@ -5501,175 +6246,42 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
-		A73923AA1D272242004524C3 /* Storyboards */ = {
+		A751A51A1C85EAD8009C5DEA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				80EAEF031D243C4E008C2353 /* Backing.storyboard */,
-				A75798C21D6A24CD0063CEEC /* DebugPushNotifications.storyboard */,
-				59AE35AF1D67631B00A310E6 /* DiscoveryPage.storyboard */,
-				D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */,
-				7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */,
-				013744C01D999BE200E50C78 /* EmptyStates.storyboard */,
-				01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */,
-				77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */,
-				A73923B21D272242004524C3 /* Login.storyboard */,
-				A73923B31D272242004524C3 /* Main.storyboard */,
-				774527DD21B1E0480072E590 /* MessageBannerViewController.xib */,
-				A73923BA1D272242004524C3 /* Update.storyboard */,
-				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
-				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
-				7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */,
-			);
-			path = Storyboards;
-			sourceTree = "<group>";
-		};
-		A751A51A1C85EAD8009C5DEA /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
-				A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */,
-				01940B2A1D46814E0074FCE3 /* HelpWebViewModel.swift */,
-				A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */,
-				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
-				D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */,
-				D04AAC17218BB70B00CF713E /* SettingsViewModel.swift */,
-				D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */,
 				8072F44E1D46BAA400999EF1 /* UpdatePreviewViewModel.swift */,
 				A7ED20601E83256700BFFA01 /* UpdatePreviewViewModelTests.swift */,
-				A731BF8E1D1EE4CD00A734AC /* UpdateViewModel.swift */,
-				A7ED20611E83256700BFFA01 /* UpdateViewModelTests.swift */,
 			);
-			path = ViewModels;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		A751A51B1C85EAD8009C5DEA /* Views */ = {
+		A751A51B1C85EAD8009C5DEA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
-				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
-				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
-				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
-				8A32FE0324D2336E00F79C72 /* EmpyStateView.swift */,
-				D69C553223A2C30200B0987A /* ErroredBackingView.swift */,
-				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
-				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
-				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
-				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
-				194520C4288859A600CA9B88 /* PaymentCardTextField.swift */,
 				8ADF4D7524BCCFD60018AD4B /* PillsView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
-				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
-				8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */,
-				063D2D092846767F00CEDE33 /* PledgeLocalPickupView.swift */,
-				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
-				06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */,
-				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
-				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
-				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
 				3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */,
-				37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */,
 				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
-				A751A51C1C85EAD8009C5DEA /* Cells */,
-				A751A51D1C85EAD8009C5DEA /* Controllers */,
+				8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */,
 				77D19FFB240859F20058FC8E /* HeaderFooterViews */,
 				3742036B22DD41A0007AA86E /* Layouts */,
-				8A14E09523971BD000387824 /* ShimmerLoadingViews */,
-				A73923AA1D272242004524C3 /* Storyboards */,
+				1937A71A28C9407200DD732D /* Storyboards_DEPRECATED_09_07_2022 */,
+				1937A71B28C9412800DD732D /* SharedStoryboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
 			);
-			path = Views;
+			path = SharedViews;
 			sourceTree = "<group>";
 		};
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A74382041D3458C900040A95 /* PaddingCell.swift */,
-				3742036E22DD45A2007AA86E /* PillCell.swift */,
-				06DC413C266FF179005205F7 /* RootCommentCell.swift */,
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
-				4724A09F268F6100000EB7A9 /* ViewMoreRepliesCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		A751A51D1C85EAD8009C5DEA /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				D770DE3D217E339500B5319A /* AddNewCardViewController.swift */,
-				D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */,
-				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
-				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
-				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
-				771E630F23426F03005967E8 /* CancelPledgeViewControllerTests.swift */,
-				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
-				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
-				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
-				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
-				3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */,
-				37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */,
-				37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */,
-				3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */,
-				D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */,
-				776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */,
-				A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */,
-				013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */,
-				A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */,
-				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
-				A7ED20371E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift */,
-				774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */,
-				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
-				D6050F49240424FC00E029D2 /* LandingPageViewController.swift */,
-				77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */,
-				773BFCAF241013D60078A79A /* LandingViewController.swift */,
-				778AA781241060FC00E67293 /* LandingViewControllerTests.swift */,
-				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
-				A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */,
-				018F1F821C8E182200643DAA /* LoginViewController.swift */,
-				A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */,
-				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
-				77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */,
-				A74FFDEE1CE3E33300C7BCB9 /* MessageDialogViewController.swift */,
-				47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */,
-				47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */,
-				8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */,
-				370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */,
-				3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */,
-				37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */,
-				8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */,
-				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
-				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
-				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
-				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
-				A7561A3A1D3144210028DEA1 /* ProjectDescriptionViewController.swift */,
-				77CD8980217FA01B003066DA /* ProjectPageViewControllerConversionTests.swift */,
-				59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */,
-				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
-				A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */,
-				8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */,
-				473632A326EBAC6A001B0D39 /* RiskMessagingViewController.swift */,
-				4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */,
-				A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */,
-				771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */,
-				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
-				A7ED203D1E8323E900BFFA01 /* SignupViewControllerTests.swift */,
-				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
-				A7ED20271E8323E900BFFA01 /* SortPagerViewControllerTests.swift */,
-				9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */,
-				37CA16B023304DCA006044F9 /* ToggleViewController.swift */,
-				37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */,
-				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
-				A7ED203F1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift */,
-				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
-				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
-				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
-				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
-				608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */,
-				60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		A7A5F8221D11ECF60036139A /* Locales */ = {
@@ -5893,13 +6505,15 @@
 				A71FB0651E3FF347006C286E /* Release.entitlements */,
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
+				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
+				A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
 				19838AAE28C82F75003DD5BB /* Features */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
 				A7ED20201E83237F00BFFA01 /* TestHelpers */,
-				A751A51A1C85EAD8009C5DEA /* ViewModels */,
-				A751A51B1C85EAD8009C5DEA /* Views */,
+				1937A72928C95ABF00DD732D /* SharedViews_DEPRECATED_09_07_2022 */,
+				A751A51B1C85EAD8009C5DEA /* SharedViews */,
 			);
 			path = "Kickstarter-iOS";
 			sourceTree = "<group>";
@@ -6996,12 +7610,10 @@
 				01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */,
 				013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */,
 				D703FC3120F7E280004A272D /* SettingsPrivacy.storyboard in Resources */,
-				7790DF892200D3BD005DBB11 /* SettingsFormFieldView.xib in Resources */,
 				7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */,
 				37D67231221E656500B6D415 /* SettingsFooterView.xib in Resources */,
 				777C67F4220A22FD009F8D42 /* SettingsTableViewHeader.xib in Resources */,
 				D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */,
-				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
 				770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */,
@@ -7033,6 +7645,7 @@
 				01940B2E1D46A9AD0074FCE3 /* Help.storyboard in Resources */,
 				014D62FF1E7211220033D2BD /* BackerDashboardProjectCell.xib in Resources */,
 				77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */,
+				1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */,
 				A73923C81D272242004524C3 /* ProjectActivity.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7990,14 +8603,12 @@
 				D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */,
 				37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */,
 				0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
-				374F507922614A1000DE6746 /* PledgeFooterView.swift in Sources */,
 				77D19FFD24085A170058FC8E /* CategoryCollectionViewSectionHeaderView.swift in Sources */,
 				D65BF34F232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift in Sources */,
 				8A4841B22487147200246223 /* ManagePledgeDataSource.swift in Sources */,
 				8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */,
 				015706161E649DEE0087DD68 /* BackerDashboardViewController.swift in Sources */,
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
-				D69C553323A2C30300B0987A /* ErroredBackingView.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				0634C2F727CFEE40003A6D6E /* ExternalSourceViewElementCell.swift in Sources */,
 				47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */,
@@ -8093,6 +8704,7 @@
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
 				A7CC143E1D00E74F00035C52 /* FindFriendsFriendFollowCell.swift in Sources */,
 				77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */,
+				1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */,
 				77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */,
 				014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */,
 				A74FFECA1CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift in Sources */,
@@ -8160,6 +8772,7 @@
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
+				1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */,
 				19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */,
 				209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */,
 				3767EDA922CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift in Sources */,
@@ -8224,7 +8837,6 @@
 				8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */,
 				94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
-				A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */,
 				77C9122C23C5082800F3D2C9 /* MockApplePayCapable.swift in Sources */,
 				D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */,
 				776B1A132419407700B03098 /* CategorySelectionDataSourceTests.swift in Sources */,
