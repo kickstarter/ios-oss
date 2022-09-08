@@ -8566,7 +8566,7 @@
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
+				minimumVersion = 7.3.2;
 			};
 		};
 		60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
@@ -8574,7 +8574,7 @@
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 2.4.3;
 			};
 		};
 		60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */ = {
