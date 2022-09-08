@@ -209,7 +209,6 @@
 		06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */; };
 		06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */; };
 		06ED88D727BFF02200893A24 /* AudioVideoViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16FA2773B0DE009E4354 /* AudioVideoViewElementCell.swift */; };
-		06EF13DD27A1B2770044841C /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06EF13DC27A1B2770044841C /* SwiftSoup.framework */; };
 		06F2CA312762707B00056F35 /* Comment+CommentWithRepliesFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F2CA302762707B00056F35 /* Comment+CommentWithRepliesFragment.swift */; };
 		06F7BE1826B31A020094BF37 /* UserCreditCards+UserFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0432126A609C30011728E /* UserCreditCards+UserFragment.swift */; };
 		06F7BE1A26B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */; };
@@ -467,6 +466,7 @@
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
+		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -1892,7 +1892,6 @@
 		06EA2D36280F1F1900F4DE2E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchToZoom.swift; sourceTree = "<group>"; };
-		06EF13DC27A1B2770044841C /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/iOS/SwiftSoup.framework; sourceTree = "<group>"; };
 		06F2CA302762707B00056F35 /* Comment+CommentWithRepliesFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+CommentWithRepliesFragment.swift"; sourceTree = "<group>"; };
 		06F7BE1926B334DB0094BF37 /* CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceEnvelope+CreatePaymentSourceMutation.DataTests.swift"; sourceTree = "<group>"; };
 		06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift"; sourceTree = "<group>"; };
@@ -3369,10 +3368,10 @@
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
-				06EF13DD27A1B2770044841C /* SwiftSoup.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
 				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
+				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6560,7 +6559,6 @@
 			isa = PBXGroup;
 			children = (
 				06EA2D36280F1F1900F4DE2E /* XCTest.framework */,
-				06EF13DC27A1B2770044841C /* SwiftSoup.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
@@ -7461,6 +7459,7 @@
 				06634FBF2807A4C300950F60 /* ApolloAPI */,
 				06634FC12807A4C300950F60 /* ApolloUtils */,
 				06634FC42807A4EB00950F60 /* Prelude */,
+				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -7563,6 +7562,7 @@
 				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -10531,6 +10531,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -10583,6 +10591,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		60DA511328C96A65002E2DF1 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
