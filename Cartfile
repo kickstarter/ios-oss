@@ -4,11 +4,6 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd3133
 
 ### 3rd Party
 
-<<<<<<< HEAD
-github "facebook/facebook-objc-sdk" == 6.5.2
-=======
-github "optimizely/swift-sdk" == 3.6.1
->>>>>>> 718540590 (Migrates FBSDKLoginKit and FBSDKCoreKit to SPM via facebook-ios-sdk)
 github "microsoft/appcenter-sdk-apple" == 4.0.0
 github "ReactiveCocoa/ReactiveSwift" == 6.5.0
 github "uber/ios-snapshot-test-case" == 6.2.0
