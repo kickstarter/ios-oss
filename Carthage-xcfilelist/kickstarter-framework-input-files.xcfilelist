@@ -2,6 +2,5 @@
 
 $(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
-$(SRCROOT)/Carthage/Build/iOS/Optimizely.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
