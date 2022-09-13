@@ -1,3 +1,4 @@
+@testable import FBSDKCoreKit
 @testable import FBSDKLoginKit
 @testable import KsApi
 @testable import Library
