@@ -458,6 +458,8 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
+		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -1339,14 +1341,6 @@
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */; };
 		D08510122195015F00BC418B /* PaymentSourceDeleteInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */; };
-		D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */; };
-		D08C68A922AF105A001ED5E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */; };
-		D08C68AA22AF105B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */; };
-		D08C68AB22AF105C001ED5E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */; };
-		D08C68AC22AF129D001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D08C68AD22AF129D001ED5E8 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D08C68AE22AF12E0001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D08C68AF22AF12E0001ED5E8 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D08C71DC22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */; };
 		D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */; };
 		D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */; };
@@ -1370,10 +1364,6 @@
 		D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */; };
-		D0B7124822AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */; };
-		D0B7124922AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */; };
-		D0B7124A22AEEDFA00317BAF /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */; };
 		D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
 		D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
@@ -1676,8 +1666,6 @@
 				8A04FE382627839A0056F413 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				8A04FE392627839A0056F413 /* SDWebImage.framework in CopyFiles */,
 				8A0C3D1525AE6F8C00310034 /* Segment.framework in CopyFiles */,
-				D08C68AC22AF129D001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */,
-				D08C68AD22AF129D001ED5E8 /* FBSDKLoginKit.framework in CopyFiles */,
 				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
 				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
@@ -1697,6 +1685,7 @@
 				8A0C3D3A25AE8B1400310034 /* Segment.framework in CopyFiles */,
 				D08C68AE22AF12E0001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */,
 				D08C68AF22AF12E0001ED5E8 /* FBSDKLoginKit.framework in CopyFiles */,
+				1611EF6423ABDB3D0051CDCC /* Optimizely.framework in CopyFiles */,
 				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
 				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
 				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
@@ -3036,7 +3025,6 @@
 		D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCellViewModel.swift; sourceTree = "<group>"; };
 		D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceDeleteMutation.swift; sourceTree = "<group>"; };
 		D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceDeleteInput.swift; sourceTree = "<group>"; };
-		D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Carthage/Build/iOS/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityMutation.swift; sourceTree = "<group>"; };
 		D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphIDBridging.swift; sourceTree = "<group>"; };
 		D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectMutation.swift; sourceTree = "<group>"; };
@@ -3053,7 +3041,6 @@
 		D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyTableViewHeader.swift; sourceTree = "<group>"; };
 		D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+AutoLayoutHeaderView.swift"; sourceTree = "<group>"; };
 		D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModelTests.swift; sourceTree = "<group>"; };
-		D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Carthage/Build/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
 		D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions.framework; path = Carthage/Build/iOS/ReactiveExtensions.framework; sourceTree = "<group>"; };
@@ -3276,6 +3263,8 @@
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
 				8A04FE31262781570056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
+				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
+				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				8A04FE2F262781570056F413 /* SDWebImage.framework in Frameworks */,
 				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
@@ -3299,8 +3288,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0B7124922AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
-				D08C68AA22AF105B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
 				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
@@ -3319,8 +3306,6 @@
 				8A04FE28262781240056F413 /* SDWebImage.framework in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */,
-				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
-				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
 				8A86D7B624FDAE6500037A7B /* FirebaseCrashlytics.framework in Frameworks */,
 				8A86D7DC24FDC7CA00037A7B /* PromisesObjC.framework in Frameworks */,
 				8A86D7DF24FDC7DF00037A7B /* FirebaseAnalytics.framework in Frameworks */,
@@ -3347,8 +3332,6 @@
 				8A04FE2A262781550056F413 /* Segment_Appboy.framework in Frameworks */,
 				8A04FE2B262781550056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
-				D0B7124A22AEEDFA00317BAF /* FBSDKCoreKit.framework in Frameworks */,
-				D08C68AB22AF105C001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
 				8A04FE29262781550056F413 /* SDWebImage.framework in Frameworks */,
 				D00A371922580E9D00F46F47 /* FBSnapshotTestCase.framework in Frameworks */,
 			);
@@ -6556,8 +6539,6 @@
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
 				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,
-				D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */,
-				D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */,
 				D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */,
 				4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */,
 				4748C14425B1021D0098E89E /* FirebaseABTesting.framework */,
@@ -7335,6 +7316,8 @@
 				60DA50FD28C38DDB002E2DF1 /* AlamofireImage */,
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 				60DA512828CA580B002E2DF1 /* Optimizely */,
+				606754BC28CF91D60033CD5E /* FacebookCore */,
+				606754BE28CF91DD0033CD5E /* FacebookLogin */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7557,6 +7540,7 @@
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */,
+				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -10509,6 +10493,14 @@
 				minimumVersion = 22.7.1;
 			};
 		};
+		606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
@@ -10583,6 +10575,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
+		};
+		606754BC28CF91D60033CD5E /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		606754BE28CF91DD0033CD5E /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 		60DA50FD28C38DDB002E2DF1 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;

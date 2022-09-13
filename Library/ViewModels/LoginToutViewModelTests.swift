@@ -1,4 +1,3 @@
-@testable import FBSDKCoreKit
 @testable import FBSDKLoginKit
 @testable import KsApi
 @testable import Library
@@ -155,6 +154,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let result = LoginManagerLoginResult(
       token: token,
+      authenticationToken: nil,
       isCancelled: false,
       grantedPermissions: [],
       declinedPermissions: []
@@ -270,6 +270,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let result = LoginManagerLoginResult(
       token: token,
+      authenticationToken: nil,
       isCancelled: false,
       grantedPermissions: [],
       declinedPermissions: []
@@ -315,6 +316,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let result = LoginManagerLoginResult(
       token: token,
+      authenticationToken: nil,
       isCancelled: false,
       grantedPermissions: [],
       declinedPermissions: []
@@ -361,6 +363,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let result = LoginManagerLoginResult(
       token: token,
+      authenticationToken: nil,
       isCancelled: false,
       grantedPermissions: [],
       declinedPermissions: []
@@ -407,6 +410,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let result = LoginManagerLoginResult(
       token: token,
+      authenticationToken: nil,
       isCancelled: false,
       grantedPermissions: [],
       declinedPermissions: []
@@ -455,6 +459,7 @@ final class LoginToutViewModelTests: TestCase {
 
     let result = LoginManagerLoginResult(
       token: token,
+      authenticationToken: nil,
       isCancelled: false,
       grantedPermissions: [],
       declinedPermissions: []

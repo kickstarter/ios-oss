@@ -7,7 +7,6 @@ binary "https://raw.githubusercontent.com/Appboy/appboy-ios-sdk/master/appboy_io
 binary "https://raw.githubusercontent.com/PerimeterX/px-iOS-Framework/master/PerimeterX.json" "1.13.9"
 github "ReactiveCocoa/ReactiveSwift" "6.5.0"
 github "appboy/appboy-segment-ios" "4.0.0"
-github "facebook/facebook-objc-sdk" "v6.5.2"
 github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd313302bb59d9c3fe9"
 github "microsoft/appcenter-sdk-apple" "4.0.0"
 github "segmentio/analytics-ios" "4.1.2"
