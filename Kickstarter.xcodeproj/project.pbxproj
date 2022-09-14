@@ -244,6 +244,9 @@
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
+		198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; };
+		198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; };
+		198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
 		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
@@ -464,6 +467,7 @@
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
 		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
+		60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -1155,12 +1159,9 @@
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
 		D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */; };
-		D00698DD225C320500EB58BD /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00698E0225CF54B00EB58BD /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A371922580E9D00F46F47 /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
 		D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
@@ -1629,6 +1630,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1654,12 +1656,12 @@
 			files = (
 				8A04FE3D262783A10056F413 /* Segment_Appboy.framework in CopyFiles */,
 				8A04FE382627839A0056F413 /* Appboy_iOS_SDK.framework in CopyFiles */,
+				198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */,
 				8A04FE392627839A0056F413 /* SDWebImage.framework in CopyFiles */,
 				8A0C3D1525AE6F8C00310034 /* Segment.framework in CopyFiles */,
 				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
 				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
-				D00698DD225C320500EB58BD /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1676,7 +1678,6 @@
 				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
 				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
 				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
-				D00698E0225CF54B00EB58BD /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3018,7 +3019,6 @@
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
 		D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions.framework; path = Carthage/Build/iOS/ReactiveExtensions.framework; sourceTree = "<group>"; };
-		D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSnapshotTestCase.framework; path = Carthage/Build/iOS/FBSnapshotTestCase.framework; sourceTree = "<group>"; };
 		D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = "<group>"; };
 		D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions_TestHelpers.framework; path = Carthage/Build/iOS/ReactiveExtensions_TestHelpers.framework; sourceTree = "<group>"; };
 		D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+ThreadSafety.swift"; sourceTree = "<group>"; };
@@ -3252,6 +3252,7 @@
 				8A04FE2C262781560056F413 /* SDWebImage.framework in Frameworks */,
 				8A04FE2D262781560056F413 /* Segment_Appboy.framework in Frameworks */,
 				8A04FE2E262781560056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
+				198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3291,11 +3292,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				8A04FE2A262781550056F413 /* Segment_Appboy.framework in Frameworks */,
 				8A04FE2B262781550056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				8A04FE29262781550056F413 /* SDWebImage.framework in Frameworks */,
-				D00A371922580E9D00F46F47 /* FBSnapshotTestCase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6501,7 +6502,6 @@
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
 				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,
-				D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */,
 				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
 				D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */,
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
@@ -7289,6 +7289,7 @@
 			name = "Library-iOSTests";
 			packageProductDependencies = (
 				19F91B13289C8097000AEC6A /* Stripe */,
+				198ED06128D229560008CB98 /* iOSSnapshotTestCase */,
 			);
 			productName = "Library-iOSTests";
 			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
@@ -7361,6 +7362,7 @@
 			);
 			name = "Kickstarter-Framework-iOSTests";
 			packageProductDependencies = (
+				60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */,
 			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
@@ -7494,6 +7496,7 @@
 				60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */,
 				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -10494,6 +10497,14 @@
 				minimumVersion = 3.6.1;
 			};
 		};
+		60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uber/ios-snapshot-test-case/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -10531,6 +10542,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
+		};
+		198ED06128D229560008CB98 /* iOSSnapshotTestCase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
+			productName = iOSSnapshotTestCase;
 		};
 		19BF226028D10497007F4197 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -10581,6 +10597,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */;
 			productName = Optimizely;
+		};
+		60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
+			productName = iOSSnapshotTestCase;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

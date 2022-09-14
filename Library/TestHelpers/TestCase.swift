@@ -1,5 +1,5 @@
 import AVFoundation
-import FBSnapshotTestCase
+import iOSSnapshotTestCase
 @testable import KsApi
 @testable import Library
 import Prelude
