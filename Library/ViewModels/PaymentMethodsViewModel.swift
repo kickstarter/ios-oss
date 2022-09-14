@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Stripe
 
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
@@ -129,35 +130,21 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       .map(value: paymentSheetEnabled)
       .filter(isTrue)
       .switchMap { _ -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
-        /** FIXME: We need a version of    `createStripeSetupIntent` that doesn't require a project id.
-         AppEnvironment.current.apiService
-           .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
-           .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-           .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
-             var configuration = PaymentSheet.Configuration()
-             configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-             configuration.allowsDelayedPaymentMethods = true
-             let data = PaymentSheetSetupData(
-               clientSecret: envelope.clientSecret,
-               configuration: configuration
-             )
-             return SignalProducer(value: data)
-           }
-           .materialize()
-         */
-
-        let error = ErrorEnvelope
-          .init(
-            errorMessages: [""],
-            ksrCode: nil,
-            httpCode: 402,
-            exception: nil,
-            facebookUser: nil,
-            graphError: nil
-          )
-
-        return SignalProducer(error: error).materialize()
+        AppEnvironment.current.apiService
+          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: nil))
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+            var configuration = PaymentSheet.Configuration()
+            configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+            configuration.allowsDelayedPaymentMethods = true
+            let data = PaymentSheetSetupData(
+              clientSecret: envelope.clientSecret,
+              configuration: configuration
+            )
+            return SignalProducer(value: data)
+          }
+          .materialize()
       }
 
     /** FIXME: Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel` */
