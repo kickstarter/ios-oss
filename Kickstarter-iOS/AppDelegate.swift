@@ -192,11 +192,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
       .observeValues { data in
-        let customProperties = CustomProperties()
-        customProperties.set(data.userName, forKey: "userName")
-
         AppCenter.userId = data.userId
-        AppCenter.setCustomProperties(customProperties)
 
         AppCenter.start(
           withAppSecret: data.appSecret,
