@@ -17,7 +17,7 @@ public protocol PaymentMethodsViewModelInputs {
 public protocol PaymentMethodsViewModelOutputs {
   var editButtonIsEnabled: Signal<Bool, Never> { get }
   var editButtonTitle: Signal<String, Never> { get }
-  var errorLoadingPaymentMethods: Signal<String, Never> { get }
+  var errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never> { get }
   var goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never> { get }
   var goToPaymentSheet: Signal<PaymentSheetSetupData, Never> { get }
   var paymentMethods: Signal<[UserCreditCards.CreditCard], Never> { get }
@@ -35,10 +35,6 @@ public protocol PaymentMethodsViewModelType {
 public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   public init() {
-    lazy var paymentSheetEnabled: Bool = {
-      featureSettingsPaymentSheetEnabled()
-    }()
-
     self.reloadData = self.viewDidLoadProperty.signal
 
     let paymentMethodsEvent = Signal.merge(
@@ -51,6 +47,10 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
+
+    lazy var paymentSheetEnabled: Bool = {
+      featureSettingsPaymentSheetEnabled()
+    }()
 
     let deletePaymentMethodEvents = self.didDeleteCreditCardSignal
       .map(first)
@@ -102,7 +102,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     .skipRepeats()
 
     self.goToAddCardScreenWithIntent = self.didTapAddCardButtonProperty.signal
-      .map(value: paymentSheetEnabled)
+      .switchMap { SignalProducer(value: paymentSheetEnabled) }
       .filter(isFalse)
       .mapConst(.settings)
 
@@ -127,7 +127,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       .map { $0 ? Strings.Done() : Strings.discovery_favorite_categories_buttons_edit() }
 
     let createSetupIntentEvent = self.didTapAddCardButtonProperty.signal
-      .map(value: paymentSheetEnabled)
+      .switchMap { SignalProducer(value: paymentSheetEnabled) }
       .filter(isTrue)
       .switchMap { _ -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
         AppEnvironment.current.apiService
@@ -150,7 +150,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     /** FIXME: Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel` */
     self.goToPaymentSheet = createSetupIntentEvent.values()
 
-    self.errorLoadingPaymentMethods = Signal.merge(
+    self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
       paymentMethodsEvent.errors(),
       createSetupIntentEvent.errors()
     )
@@ -201,7 +201,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
   public let editButtonIsEnabled: Signal<Bool, Never>
   public let editButtonTitle: Signal<String, Never>
-  public let errorLoadingPaymentMethods: Signal<String, Never>
+  public let errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never>
   public let goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never>
   public let goToPaymentSheet: Signal<PaymentSheetSetupData, Never>
   public let paymentMethods: Signal<[UserCreditCards.CreditCard], Never>

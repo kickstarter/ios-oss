@@ -103,7 +103,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         strongSelf.goToPaymentSheet(data: data)
       }
 
-    self.viewModel.outputs.errorLoadingPaymentMethods
+    self.viewModel.outputs.errorLoadingPaymentMethodsOrSetupIntent
       .observeForUI()
       .observeValues { [weak self] message in
         self?.messageBannerViewController?.showBanner(with: .error, message: message)
