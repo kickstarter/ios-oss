@@ -1,7 +1,7 @@
 import Appboy_iOS_SDK
 import KsApi
 import Segment
-import Segment_Appboy
+import AppboySegment
 
 public extension Analytics {
   /**

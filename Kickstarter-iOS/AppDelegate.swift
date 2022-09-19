@@ -17,7 +17,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
-import Segment_Appboy
+import AppboySegment
 import UIKit
 import UserNotifications
 
@@ -267,6 +267,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureSegment
       .observeValues { writeKey in
+        let config = AnalyticsConfiguration(writeKey: writeKey)
+        config.use(SEGAppboyIntegrationFactory.instance())
+        
+        Analytics.setup(with: config)
+        
         let client = Analytics.configuredClient(withWriteKey: writeKey)
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(client)
       }
