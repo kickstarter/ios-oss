@@ -163,7 +163,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
         switch result {
         case let .failure(error):
-          // strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+          /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
+           * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+           */
+
           strongSelf.messageBannerViewController?
             .showBanner(with: .error, message: error.localizedDescription)
         case let .success(paymentSheetFlowController):
@@ -171,8 +174,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
           strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
             guard let strongSelf = self else { return }
 
-            /** Handle updating payment methods with new card/errors
-             strongSelf.confirmPaymentResult(with: data.clientSecret)
+            /** TODO: https://kickstarter.atlassian.net/browse/PAY-1900
+             * strongSelf.confirmPaymentResult(with: data.clientSecret)
              */
           }
         }
@@ -181,8 +184,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
   private func confirmPaymentResult(with _: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
-      /** Handle errors
-       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+      /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
+       * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
        */
 
       return
@@ -192,16 +195,16 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
       guard let strongSelf = self else { return }
 
-      /** Handle errors
-       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+      /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
+       * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
        */
 
       guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
 
       switch paymentResult {
       case .completed:
-        /** Handle updating payment methods
-         strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
+        /** TODO: https://kickstarter.atlassian.net/browse/PAY-1898
+         * strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
          */
         fatalError()
       case .canceled:

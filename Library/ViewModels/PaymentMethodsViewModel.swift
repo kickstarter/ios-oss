@@ -147,7 +147,9 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
           .materialize()
       }
 
-    /** FIXME: Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel` */
+    /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
+     * Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel`
+     */
     self.goToPaymentSheet = createSetupIntentEvent.values()
 
     self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
