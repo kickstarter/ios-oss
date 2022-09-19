@@ -2,6 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Stripe
 
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
@@ -16,8 +17,9 @@ public protocol PaymentMethodsViewModelInputs {
 public protocol PaymentMethodsViewModelOutputs {
   var editButtonIsEnabled: Signal<Bool, Never> { get }
   var editButtonTitle: Signal<String, Never> { get }
-  var errorLoadingPaymentMethods: Signal<String, Never> { get }
+  var errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never> { get }
   var goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never> { get }
+  var goToPaymentSheet: Signal<PaymentSheetSetupData, Never> { get }
   var paymentMethods: Signal<[UserCreditCards.CreditCard], Never> { get }
   var presentBanner: Signal<String, Never> { get }
   var reloadData: Signal<Void, Never> { get }
@@ -46,6 +48,10 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         .materialize()
     }
 
+    lazy var paymentSheetEnabled: Bool = {
+      featureSettingsPaymentSheetEnabled()
+    }()
+
     let deletePaymentMethodEvents = self.didDeleteCreditCardSignal
       .map(first)
       .switchMap { creditCard in
@@ -73,8 +79,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       deletePaymentMethodValues
     )
 
-    self.errorLoadingPaymentMethods = paymentMethodsEvent.errors().map { $0.localizedDescription }
-
     self.paymentMethods = Signal.merge(
       initialPaymentMethodsValues,
       deletePaymentMethodEventsErrors
@@ -98,6 +102,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     .skipRepeats()
 
     self.goToAddCardScreenWithIntent = self.didTapAddCardButtonProperty.signal
+      .switchMap { SignalProducer(value: paymentSheetEnabled) }
+      .filter(isFalse)
       .mapConst(.settings)
 
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
@@ -119,6 +125,38 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
     self.editButtonTitle = self.tableViewIsEditing
       .map { $0 ? Strings.Done() : Strings.discovery_favorite_categories_buttons_edit() }
+
+    let createSetupIntentEvent = self.didTapAddCardButtonProperty.signal
+      .switchMap { SignalProducer(value: paymentSheetEnabled) }
+      .filter(isTrue)
+      .switchMap { _ -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
+        AppEnvironment.current.apiService
+          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: nil))
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+            var configuration = PaymentSheet.Configuration()
+            configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+            configuration.allowsDelayedPaymentMethods = true
+            let data = PaymentSheetSetupData(
+              clientSecret: envelope.clientSecret,
+              configuration: configuration
+            )
+            return SignalProducer(value: data)
+          }
+          .materialize()
+      }
+
+    /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
+     * Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel`
+     */
+    self.goToPaymentSheet = createSetupIntentEvent.values()
+
+    self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
+      paymentMethodsEvent.errors(),
+      createSetupIntentEvent.errors()
+    )
+    .map { $0.localizedDescription }
   }
 
   // Stores the table view's editing state as it is affected by multiple signals
@@ -165,8 +203,9 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
   public let editButtonIsEnabled: Signal<Bool, Never>
   public let editButtonTitle: Signal<String, Never>
-  public let errorLoadingPaymentMethods: Signal<String, Never>
+  public let errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never>
   public let goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never>
+  public let goToPaymentSheet: Signal<PaymentSheetSetupData, Never>
   public let paymentMethods: Signal<[UserCreditCards.CreditCard], Never>
   public let presentBanner: Signal<String, Never>
   public let reloadData: Signal<Void, Never>
