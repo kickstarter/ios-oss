@@ -254,23 +254,24 @@ public enum GraphAPI {
     ///   - stripeToken
     ///   - stripeCardId
     ///   - reusable
+    ///   - intentClientSecret
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(paymentType: PaymentTypes, stripeToken: String, stripeCardId: Swift.Optional<String?> = nil, reusable: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["paymentType": paymentType, "stripeToken": stripeToken, "stripeCardId": stripeCardId, "reusable": reusable, "clientMutationId": clientMutationId]
+    public init(paymentType: Swift.Optional<PaymentTypes?> = nil, stripeToken: Swift.Optional<String?> = nil, stripeCardId: Swift.Optional<String?> = nil, reusable: Swift.Optional<Bool?> = nil, intentClientSecret: Swift.Optional<String?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["paymentType": paymentType, "stripeToken": stripeToken, "stripeCardId": stripeCardId, "reusable": reusable, "intentClientSecret": intentClientSecret, "clientMutationId": clientMutationId]
     }
 
-    public var paymentType: PaymentTypes {
+    public var paymentType: Swift.Optional<PaymentTypes?> {
       get {
-        return graphQLMap["paymentType"] as! PaymentTypes
+        return graphQLMap["paymentType"] as? Swift.Optional<PaymentTypes?> ?? Swift.Optional<PaymentTypes?>.none
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "paymentType")
       }
     }
 
-    public var stripeToken: String {
+    public var stripeToken: Swift.Optional<String?> {
       get {
-        return graphQLMap["stripeToken"] as! String
+        return graphQLMap["stripeToken"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "stripeToken")
@@ -292,6 +293,15 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "reusable")
+      }
+    }
+
+    public var intentClientSecret: Swift.Optional<String?> {
+      get {
+        return graphQLMap["intentClientSecret"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "intentClientSecret")
       }
     }
 
@@ -349,13 +359,13 @@ public enum GraphAPI {
     /// - Parameters:
     ///   - projectId
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, clientMutationId: Swift.Optional<String?> = nil) {
+    public init(projectId: Swift.Optional<GraphQLID?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
       graphQLMap = ["projectId": projectId, "clientMutationId": clientMutationId]
     }
 
-    public var projectId: GraphQLID {
+    public var projectId: Swift.Optional<GraphQLID?> {
       get {
-        return graphQLMap["projectId"] as! GraphQLID
+        return graphQLMap["projectId"] as? Swift.Optional<GraphQLID?> ?? Swift.Optional<GraphQLID?>.none
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "projectId")
