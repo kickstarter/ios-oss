@@ -11,6 +11,9 @@ extension GraphAPI.CreatePaymentSourceInput {
   }
 
   static func from(_ input: CreatePaymentSourceSetupIntentInput) -> GraphAPI.CreatePaymentSourceInput {
-    return GraphAPI.CreatePaymentSourceInput(intentClientSecret: input.intentClientSecret)
+    return GraphAPI.CreatePaymentSourceInput(
+      reusable: input.reuseable,
+      intentClientSecret: input.intentClientSecret
+    )
   }
 }

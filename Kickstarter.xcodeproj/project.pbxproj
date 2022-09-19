@@ -239,6 +239,8 @@
 		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
 		194154CE28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */; };
 		194154D128D8FBAA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */; };
+		194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */; };
+		194154D628D931AA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */; };
 		19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */; };
 		19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
@@ -1894,6 +1896,8 @@
 		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
 		194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceSetupIntentInput.swift; sourceTree = "<group>"; };
 		194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+Constructor.swift"; sourceTree = "<group>"; };
+		194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceSetupIntentInputTests.swift; sourceTree = "<group>"; };
+		194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
 		19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCellViewModel.swift; sourceTree = "<group>"; };
@@ -6248,8 +6252,9 @@
 				77AA2B3C233D10D3008BBCB8 /* CreateBackingConstructorTests.swift */,
 				77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */,
 				8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */,
-				194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */,
 				8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */,
+				194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */,
+				194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */,
 				D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */,
 				D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */,
 				8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */,
@@ -7198,6 +7203,7 @@
 				D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */,
 				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
 				194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */,
+				194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */,
 				19047FBC2889AA6400BDD1A8 /* CreateSetupIntentInput.swift */,
 				19047FC42889B52100BDD1A8 /* CreateSetupIntentInputTests.swift */,
 				D6B686E82191FE5E005F5DA7 /* EmptyInput.swift */,
@@ -8317,6 +8323,7 @@
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
 				A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */,
 				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
+				194154D628D931AA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift in Sources */,
 				D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
 				94114D8826547F620063E8F6 /* CommentCellViewModelTests.swift in Sources */,
 				D6B4D9BF209B88F3002C7B68 /* PushNotificationDialogTests.swift in Sources */,
@@ -9176,6 +9183,7 @@
 				8AC3E05E2697ABEF00168BF8 /* Project.Country+CountryFragmentTests.swift in Sources */,
 				066C0AE126CB11BD0048F4D8 /* ClearUserUnseenActivityMutationTemplate.swift in Sources */,
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
+				194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,

@@ -17,4 +17,13 @@ class GraphAPI_CreatePaymentSourceInput_CreatePaymentSourceInputTests: XCTestCas
     XCTAssertEqual(graphInput.stripeToken, input.stripeToken)
     XCTAssertEqual(graphInput.stripeCardId, input.stripeCardId)
   }
+
+  func testPaymentSheetPaymentSourceInputCreation_WithValidData_Success() {
+    let input = CreatePaymentSourceSetupIntentInput(intentClientSecret: "xyz", reuseable: true)
+
+    let graphInput = GraphAPI.CreatePaymentSourceInput.from(input)
+
+    XCTAssertEqual(graphInput.intentClientSecret, input.intentClientSecret)
+    XCTAssertEqual(graphInput.reusable, input.reuseable)
+  }
 }
