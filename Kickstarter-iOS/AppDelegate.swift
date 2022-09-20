@@ -9,6 +9,7 @@ import Foundation
 #else
   import KsApi
 #endif
+import AppboySegment
 import Kickstarter_Framework
 import Library
 import Optimizely
@@ -17,7 +18,6 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
-import Segment_Appboy
 import UIKit
 import UserNotifications
 
