@@ -1,6 +1,6 @@
 import Appboy_iOS_SDK
-import Foundation
 import AppboySegment
+import Foundation
 
 // MARK: - BrazeInAppMessageType
 

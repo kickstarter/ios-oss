@@ -9,6 +9,7 @@ import Foundation
 #else
   import KsApi
 #endif
+import AppboySegment
 import Kickstarter_Framework
 import Library
 import Optimizely
@@ -17,7 +18,6 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
-import AppboySegment
 import UIKit
 import UserNotifications
 
@@ -269,9 +269,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { writeKey in
         let config = AnalyticsConfiguration(writeKey: writeKey)
         config.use(SEGAppboyIntegrationFactory.instance())
-        
+
         Analytics.setup(with: config)
-        
+
         let client = Analytics.configuredClient(withWriteKey: writeKey)
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(client)
       }
