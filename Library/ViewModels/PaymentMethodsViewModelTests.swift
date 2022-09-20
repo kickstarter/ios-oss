@@ -4,6 +4,7 @@ import Foundation
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
+@testable import Stripe
 import XCTest
 
 internal final class PaymentMethodsViewModelTests: TestCase {
@@ -17,6 +18,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   private let paymentMethods = TestObserver<[UserCreditCards.CreditCard], Never>()
   private let presentBanner = TestObserver<String, Never>()
   private let reloadData = TestObserver<Void, Never>()
+  private let setStripePublishableKey = TestObserver<String, Never>()
   private let showAlert = TestObserver<String, Never>()
   private let tableViewIsEditing = TestObserver<Bool, Never>()
 
@@ -32,6 +34,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
+    self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.tableViewIsEditing.observe(self.tableViewIsEditing.observer)
   }
@@ -48,6 +51,18 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
+    }
+  }
+
+  func testSetStripePublishableKey_OnViewDidLoad_Success() {
+    withEnvironment {
+      self.setStripePublishableKey.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.setStripePublishableKey.assertDidEmitValue()
     }
   }
 
@@ -90,11 +105,18 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
+  func testPaymentMethodsFetch_WhenSettingsPaymentSheetIsEnabled_OnAddNewCardSucceeded() {
     let response = UserEnvelope<GraphUser>(me: userTemplate)
     let apiService = MockService(fetchGraphUserResult: .success(response))
+    let mockOptimizely = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false
+      ]
 
-    withEnvironment(apiService: apiService) {
+    withEnvironment(
+      apiService: apiService,
+      optimizelyClient: mockOptimizely
+    ) {
       self.paymentMethods.assertValues([])
 
       self.vm.inputs.addNewCardSucceeded(with: "First card added successfully")
@@ -110,6 +132,85 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
         self.paymentMethods.assertValueCount(2)
       }
+    }
+  }
+
+  func testPaymentSheetDidAdd_WhenSettingsPaymentSheetIsEnabled_OnAddNewCardSucceeded() {
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      addPaymentSheetPaymentSourceResult: .success(.paymentSourceSuccessTemplate),
+      fetchGraphUserResult: .success(response)
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
+      ]
+
+    withEnvironment(apiService: apiService, optimizelyClient: mockOptimizelyClient) {
+      self.paymentMethods.assertValues([])
+
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
+
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        )
+
+      self.paymentMethods.assertValueCount(0)
+      self.errorLoadingPaymentMethodsOrSetupIntent.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.paymentMethods.assertValueCount(1)
+      self.errorLoadingPaymentMethodsOrSetupIntent.assertDidNotEmitValue()
+    }
+  }
+
+  func testPaymentSheetDidAdd_WhenSettingsPaymentSheetIsDisabled_OnAddNewCardFailed_ErrorShown() {
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      addPaymentSheetPaymentSourceResult: .failure(.couldNotParseJSON),
+      fetchGraphUserResult: .success(response)
+    )
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
+      ]
+
+    withEnvironment(apiService: apiService, optimizelyClient: mockOptimizelyClient) {
+      self.paymentMethods.assertValues([])
+
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
+        XCTFail("Should've created payment method.")
+
+        return
+      }
+
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
+
+      self.errorLoadingPaymentMethodsOrSetupIntent.assertDidNotEmitValue()
+
+      self.vm.inputs
+        .paymentSheetDidAdd(
+          newCard: paymentOptionsDisplayData,
+          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+        )
+
+      self.paymentMethods.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.paymentMethods.assertValueCount(0)
+      self.errorLoadingPaymentMethodsOrSetupIntent.assertDidEmitValue()
     }
   }
 

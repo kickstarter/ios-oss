@@ -515,7 +515,7 @@
       let mutation = GraphAPI
         .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
 
-      return client.performWithResult(mutation: mutation, result: self.addNewCreditCardResult)
+      return client.performWithResult(mutation: mutation, result: self.addPaymentSheetPaymentSourceResult)
     }
 
     public func cancelBacking(input: CancelBackingInput)
