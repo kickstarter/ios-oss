@@ -13,6 +13,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 ## Getting Started
 
 1. Install Xcode.
+1. Install [Carthage](https://github.com/Carthage/Carthage).
 1. Clone this repository.
 1. Run `make bootstrap` to install tools and dependencies.
 
