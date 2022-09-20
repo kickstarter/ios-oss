@@ -267,13 +267,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureSegment
       .observeValues { writeKey in
-        let config = AnalyticsConfiguration(writeKey: writeKey)
-        config.use(SEGAppboyIntegrationFactory.instance())
+        let configuration = Analytics.configuredClient(withWriteKey: writeKey)
 
-        Analytics.setup(with: config)
-        
-        let client = Analytics.configuredClient(withWriteKey: writeKey)
-        AppEnvironment.current.ksrAnalytics.configureSegmentClient(client)
+        Analytics.setup(with: configuration)
+
+        AppEnvironment.current.ksrAnalytics.configureSegmentClient(Analytics.shared())
       }
 
     self.viewModel.outputs.segmentIsEnabled

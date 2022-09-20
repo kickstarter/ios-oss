@@ -5,7 +5,7 @@ public extension Analytics {
   /**
    Returns an `Analytics` instance, with Segment, using an `AnalyticsConfiguration`.
    */
-  static func configuredClient(withWriteKey writeKey: String) -> Analytics {
+  static func configuredClient(withWriteKey writeKey: String) -> AnalyticsConfiguration {
     let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
       .trackApplicationLifecycleEvents = true
@@ -16,9 +16,7 @@ public extension Analytics {
 
     configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
 
-    Analytics.setup(with: configuration)
-
-    return Analytics.shared()
+    return configuration
   }
 }
 
