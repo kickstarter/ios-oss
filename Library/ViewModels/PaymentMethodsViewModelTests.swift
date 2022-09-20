@@ -105,7 +105,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testPaymentMethodsFetch_WhenSettingsPaymentSheetIsEnabled_OnAddNewCardSucceeded() {
+  func testPaymentMethodsFetch_WhenSettingsPaymentSheetIsDisabled_OnAddNewCardSucceeded() {
     let response = UserEnvelope<GraphUser>(me: userTemplate)
     let apiService = MockService(fetchGraphUserResult: .success(response))
     let mockOptimizely = MockOptimizelyClient()
