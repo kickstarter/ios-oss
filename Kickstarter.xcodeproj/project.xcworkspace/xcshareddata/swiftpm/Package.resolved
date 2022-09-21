@@ -12,7 +12,7 @@
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Alamofire/Alamofire",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
         "revision" : "8dd85aee02e39dd280c75eef88ffdb86eed4b07b",
         "version" : "5.6.2"
@@ -28,12 +28,30 @@
       }
     },
     {
+      "identity" : "analytics-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/segmentio/analytics-ios.git",
+      "state" : {
+        "revision" : "fc64997865619f73bbab196c164f7845a13da110",
+        "version" : "4.1.6"
+      }
+    },
+    {
       "identity" : "apollo-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apollographql/apollo-ios.git",
       "state" : {
         "revision" : "5db23797be9211db2e5b67068a600eb2842360b3",
         "version" : "0.44.0"
+      }
+    },
+    {
+      "identity" : "appboy-segment-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Appboy/appboy-segment-ios",
+      "state" : {
+        "revision" : "a7a58bf045140ac5d4303e38851993cefb07c53b",
+        "version" : "4.5.0"
       }
     },
     {
@@ -52,6 +70,15 @@
       "state" : {
         "revision" : "dd3eda2b05a3f459fc3073695ad1b28659066eab",
         "version" : "0.9.1"
+      }
+    },
+    {
+      "identity" : "braze-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
+      "state" : {
+        "revision" : "836548b7b82137a3c04157854919b892ae8e6981",
+        "version" : "4.5.0"
       }
     },
     {
@@ -199,6 +226,15 @@
       }
     },
     {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "484bc774e1091f622c4856e576ff957b29403676",
+        "version" : "5.13.3"
+      }
+    },
+    {
       "identity" : "spectre",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kylef/Spectre.git",
@@ -239,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stripe/stripe-ios",
       "state" : {
-        "revision" : "c22fc896813bae342bac64d17ddfe4da017f14cb",
-        "version" : "22.7.1"
+        "revision" : "6592658749c951244d44d7ffd3c989596110c2a5",
+        "version" : "22.8.2"
       }
     },
     {
