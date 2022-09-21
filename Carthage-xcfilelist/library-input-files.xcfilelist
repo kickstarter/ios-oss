@@ -1,6 +1,3 @@
 # Carthage input files
-
-$(SRCROOT)/Carthage/Build/iOS/Appboy_iOS_SDK.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
-$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework

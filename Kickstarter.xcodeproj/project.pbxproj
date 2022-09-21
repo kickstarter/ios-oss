@@ -470,6 +470,7 @@
 		602C97DA28DB78A600919CA8 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 602C97D928DB78A600919CA8 /* PerimeterX */; };
 		602C97D828DB787A00919CA8 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 602C97D728DB787A00919CA8 /* PerimeterX */; };
 		602C97DA28DB78A600919CA8 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 602C97D928DB78A600919CA8 /* PerimeterX */; };
+		602C97E428DB93CD00919CA8 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 602C97E328DB93CD00919CA8 /* SDWebImage */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
@@ -632,16 +633,6 @@
 		8479CF2C2530A5D700FD13F1 /* Service+DecodeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479CF2B2530A5D700FD13F1 /* Service+DecodeHelpers.swift */; };
 		84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */; };
 		8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */; };
-		8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; };
-		8A04FE28262781240056F413 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; };
-		8A04FE29262781550056F413 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; };
-		8A04FE2B262781550056F413 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; };
-		8A04FE2C262781560056F413 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; };
-		8A04FE2E262781560056F413 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; };
-		8A04FE2F262781570056F413 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; };
-		8A04FE31262781570056F413 /* Appboy_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; };
-		8A04FE382627839A0056F413 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A04FE392627839A0056F413 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */; };
@@ -724,8 +715,6 @@
 		8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */; };
 		8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */; };
 		8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */; };
-		8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */; };
 		8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F14263B770100A89DAE /* BrazeMockTypes.swift */; };
 		8A788F27263C80D600A89DAE /* BrazeDebounceMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F26263C80D600A89DAE /* BrazeDebounceMiddleware.swift */; };
@@ -1655,9 +1644,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8A04FE382627839A0056F413 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */,
-				8A04FE392627839A0056F413 /* SDWebImage.framework in CopyFiles */,
 				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
 				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
@@ -1670,8 +1657,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */,
-				8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
 				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
 				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
@@ -2266,8 +2251,6 @@
 		8479CF2B2530A5D700FD13F1 /* Service+DecodeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+DecodeHelpers.swift"; sourceTree = "<group>"; };
 		84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
-		8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Appboy_iOS_SDK.framework; path = Carthage/Build/iOS/Appboy_iOS_SDK.framework; sourceTree = "<group>"; };
-		8A04FE25262781240056F413 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewController.swift; sourceTree = "<group>"; };
@@ -3231,12 +3214,10 @@
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
-				8A04FE31262781570056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
-				8A04FE2F262781570056F413 /* SDWebImage.framework in Frameworks */,
 				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3246,8 +3227,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F91B14289C8097000AEC6A /* Stripe in Frameworks */,
-				8A04FE2C262781560056F413 /* SDWebImage.framework in Frameworks */,
-				8A04FE2E262781560056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
 			);
@@ -3268,14 +3247,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */,
-				8A04FE26262781240056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */,
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
-				8A04FE28262781240056F413 /* SDWebImage.framework in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
+				602C97D828DB787A00919CA8 /* PerimeterX in Frameworks */,
+				602C97E428DB93CD00919CA8 /* SDWebImage in Frameworks */,
 				602C97D828DB787A00919CA8 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
@@ -3289,9 +3268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */,
-				8A04FE2B262781550056F413 /* Appboy_iOS_SDK.framework in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
-				8A04FE29262781550056F413 /* SDWebImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6496,11 +6473,9 @@
 			isa = PBXGroup;
 			children = (
 				06EA2D36280F1F1900F4DE2E /* XCTest.framework */,
-				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
 				D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */,
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
-				8A04FE25262781240056F413 /* SDWebImage.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -7342,6 +7317,8 @@
 				19A824AD28DA54ED00325124 /* AppboySegment */,
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
 				602C97D728DB787A00919CA8 /* PerimeterX */,
+				602C97D728DB787A00919CA8 /* PerimeterX */,
+				602C97E328DB93CD00919CA8 /* SDWebImage */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7503,6 +7480,7 @@
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
+				602C97E228DB93CD00919CA8 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -10483,6 +10461,14 @@
 				minimumVersion = 1.13.9;
 			};
 		};
+		602C97E228DB93CD00919CA8 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
@@ -10641,6 +10627,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
+		};
+		602C97E328DB93CD00919CA8 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602C97E228DB93CD00919CA8 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
 		};
 		606754BC28CF91D60033CD5E /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;

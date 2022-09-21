@@ -6,6 +6,3 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd3133
 
 github "ReactiveCocoa/ReactiveSwift" == 6.5.0
 
-### Binaries
-
-binary "https://raw.githubusercontent.com/Appboy/appboy-ios-sdk/master/appboy_ios_sdk_full.json" == 4.3.2
