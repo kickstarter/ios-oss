@@ -133,6 +133,12 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         _ = self?.editButton
           ?|> \.title %~ { _ in title }
       }
+
+    self.viewModel.outputs.setStripePublishableKey
+      .observeForUI()
+      .observeValues {
+        STPAPIClient.shared.publishableKey = $0
+      }
   }
 
   // MARK: - Actions
@@ -174,15 +180,13 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
           strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
             guard let strongSelf = self else { return }
 
-            /** TODO: https://kickstarter.atlassian.net/browse/PAY-1900
-             * strongSelf.confirmPaymentResult(with: data.clientSecret)
-             */
+            strongSelf.confirmPaymentResult(with: data.clientSecret)
           }
         }
       }
   }
 
-  private func confirmPaymentResult(with _: String) {
+  private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
       /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
        * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
@@ -203,10 +207,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
       switch paymentResult {
       case .completed:
-        /** TODO: https://kickstarter.atlassian.net/browse/PAY-1898
-         * strongSelf.viewModel.inputs.paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
-         */
-        fatalError()
+        strongSelf.viewModel.inputs
+          .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
       case .canceled:
         strongSelf.messageBannerViewController?
           .showBanner(with: .error, message: Strings.general_error_something_wrong())

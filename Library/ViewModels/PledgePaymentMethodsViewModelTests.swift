@@ -337,21 +337,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsShouldReload.assertValues([true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false])
 
-      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
-        "id": "_randomID123",
-        "card": [
-          "brand": "visa",
-          "last4": "1234"
-        ],
-        "type": "card"
-      ]) else {
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
 
         return
       }
-      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
-      let paymentOptionsDisplayData = PaymentSheet.FlowController
-        .PaymentOptionDisplayData(paymentOption: paymentOption)
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
         image: UIImage(),
@@ -433,21 +425,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsShouldReload.assertValues([true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false])
 
-      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
-        "id": "_randomID123",
-        "card": [
-          "brand": "visa",
-          "last4": "1234"
-        ],
-        "type": "card"
-      ]) else {
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
 
         return
       }
-      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
-      let paymentOptionsDisplayData = PaymentSheet.FlowController
-        .PaymentOptionDisplayData(paymentOption: paymentOption)
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
         image: UIImage(),
@@ -525,22 +509,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           "Previous card selected before new payment sheet card added."
         )
 
-      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
-        "id": "_randomID123",
-        "card": [
-          "brand": "visa",
-          "last4": "1234"
-        ],
-        "type": "card"
-      ]) else {
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
 
         return
       }
-
-      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
-      let paymentOptionsDisplayData = PaymentSheet.FlowController
-        .PaymentOptionDisplayData(paymentOption: paymentOption)
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       self.vm.inputs
         .paymentSheetDidAdd(
@@ -709,22 +684,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         "First card selected by default"
       )
 
-      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
-        "id": "_randomID123",
-        "card": [
-          "brand": "visa",
-          "last4": "1234"
-        ],
-        "type": "card"
-      ]) else {
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
 
         return
       }
-
-      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
-      let paymentOptionsDisplayData = PaymentSheet.FlowController
-        .PaymentOptionDisplayData(paymentOption: paymentOption)
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       self.vm.inputs
         .paymentSheetDidAdd(
@@ -851,21 +817,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
-      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
-        "id": "_randomID123",
-        "card": [
-          "brand": "visa",
-          "last4": "1234"
-        ],
-        "type": "card"
-      ]) else {
+      guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
 
         return
       }
-      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
-      let paymentOptionsDisplayData = PaymentSheet.FlowController
-        .PaymentOptionDisplayData(paymentOption: paymentOption)
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       self.scheduler.advance(by: .seconds(1))
 
@@ -902,21 +860,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
-      guard let paymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
-        "id": "_randomID123",
-        "card": [
-          "brand": "amex",
-          "last4": "1234"
-        ],
-        "type": "card"
-      ]) else {
+      guard let paymentMethod = STPPaymentMethod.amexStripePaymentMethod else {
         XCTFail("Should've created payment method.")
 
         return
       }
-      let paymentOption = PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
-      let paymentOptionsDisplayData = PaymentSheet.FlowController
-        .PaymentOptionDisplayData(paymentOption: paymentOption)
+
+      let paymentOption = STPPaymentMethod.sampleStringPaymentOption(paymentMethod)
+      let paymentOptionsDisplayData = STPPaymentMethod.samplePaymentOptionsDisplayData(paymentOption)
 
       self.scheduler.advance(by: .seconds(1))
 

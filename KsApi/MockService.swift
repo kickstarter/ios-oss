@@ -16,6 +16,8 @@
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
+    fileprivate let addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
+
     fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -205,6 +207,7 @@
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
+      addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       apolloClient: ApolloClientType? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -308,6 +311,8 @@
       self.deviceIdentifier = deviceIdentifier
 
       self.addNewCreditCardResult = addNewCreditCardResult
+
+      self.addPaymentSheetPaymentSourceResult = addPaymentSheetPaymentSourceResult
 
       self.apolloClient = apolloClient ?? MockGraphQLClient.shared.client
 
@@ -499,6 +504,18 @@
         .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.addNewCreditCardResult)
+    }
+
+    public func addPaymentSheetPaymentSource(input: CreatePaymentSourceSetupIntentInput)
+      -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.addPaymentSheetPaymentSourceResult)
     }
 
     public func cancelBacking(input: CancelBackingInput)

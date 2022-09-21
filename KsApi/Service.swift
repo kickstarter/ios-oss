@@ -98,6 +98,14 @@ public struct Service: ServiceType {
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
+  public func addPaymentSheetPaymentSource(input: CreatePaymentSourceSetupIntentInput)
+    -> SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input)))
+      .flatMap(CreatePaymentSourceEnvelope.producer(from:))
+  }
+
   public func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

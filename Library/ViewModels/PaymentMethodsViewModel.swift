@@ -11,6 +11,8 @@ public protocol PaymentMethodsViewModelInputs {
   func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
+  func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
+                          setupIntent: String)
   func viewDidLoad()
 }
 
@@ -23,6 +25,7 @@ public protocol PaymentMethodsViewModelOutputs {
   var paymentMethods: Signal<[UserCreditCards.CreditCard], Never> { get }
   var presentBanner: Signal<String, Never> { get }
   var reloadData: Signal<Void, Never> { get }
+  var setStripePublishableKey: Signal<String, Never> { get }
   var showAlert: Signal<String, Never> { get }
   var tableViewIsEditing: Signal<Bool, Never> { get }
 }
@@ -78,6 +81,39 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       initialPaymentMethodsValues,
       deletePaymentMethodValues
     )
+
+    let newSetupIntentCards = self.newSetupIntentCreditCardProperty.signal.skipNil()
+      .map { data -> PaymentSheetPaymentMethodCellData? in
+        let (displayData, setupIntent) = data
+
+        return (
+          image: displayData.image,
+          redactedCardNumber: displayData.label,
+          setupIntent: setupIntent,
+          isSelected: false,
+          isEnabled: true
+        )
+      }
+      .map { paymentMethodData -> String? in
+        guard let selectedPaymentSheetPaymentMethodCardId = paymentMethodData?.setupIntent else {
+          return nil
+        }
+
+        return selectedPaymentSheetPaymentMethodCardId
+      }
+      .skipNil()
+      .map { setupIntent in
+        CreatePaymentSourceSetupIntentInput.init(intentClientSecret: setupIntent, reuseable: true)
+      }
+      .switchMap { inputValue in
+        AppEnvironment.current.apiService.addPaymentSheetPaymentSource(input: inputValue)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
+          .materialize()
+      }
+
+    self.addNewCardSucceededProperty <~ newSetupIntentCards.values()
+      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
 
     self.paymentMethods = Signal.merge(
       initialPaymentMethodsValues,
@@ -154,9 +190,13 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
     self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
       paymentMethodsEvent.errors(),
-      createSetupIntentEvent.errors()
+      createSetupIntentEvent.errors(),
+      newSetupIntentCards.errors()
     )
     .map { $0.localizedDescription }
+
+    self.setStripePublishableKey = self.viewDidLoadProperty.signal
+      .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
   }
 
   // Stores the table view's editing state as it is affected by multiple signals
@@ -201,6 +241,15 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     self.addNewCardPresentedObserver.send(value: ())
   }
 
+  private let newSetupIntentCreditCardProperty =
+    MutableProperty<(PaymentSheet.FlowController.PaymentOptionDisplayData, String)?>(nil)
+  public func paymentSheetDidAdd(
+    newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
+    setupIntent: String
+  ) {
+    self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
+  }
+
   public let editButtonIsEnabled: Signal<Bool, Never>
   public let editButtonTitle: Signal<String, Never>
   public let errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never>
@@ -209,6 +258,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   public let paymentMethods: Signal<[UserCreditCards.CreditCard], Never>
   public let presentBanner: Signal<String, Never>
   public let reloadData: Signal<Void, Never>
+  public let setStripePublishableKey: Signal<String, Never>
   public let showAlert: Signal<String, Never>
   public let tableViewIsEditing: Signal<Bool, Never>
 
