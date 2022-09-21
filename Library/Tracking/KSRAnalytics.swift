@@ -1,7 +1,7 @@
+import AppboySegment
 import KsApi
 import PassKit
 import Prelude
-import Segment
 import UIKit
 
 public final class KSRAnalytics {

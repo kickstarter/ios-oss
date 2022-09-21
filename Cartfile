@@ -5,9 +5,6 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "e3f7786b5bcc7b99c14b9fd3133
 ### 3rd Party
 
 github "ReactiveCocoa/ReactiveSwift" == 6.5.0
-github "segmentio/analytics-ios" == 4.1.2
-github "appboy/appboy-segment-ios" == 4.0.0
-
 
 ### Binaries
 
