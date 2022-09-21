@@ -4,11 +4,16 @@ import Prelude
 import Stripe
 import UIKit
 
+protocol PaymentMethodsViewControllerDelegate: AnyObject {
+  func cancelLoadingPaymentMethodsViewController(
+    _ viewController: PaymentMethodsViewController)
+}
+
 internal final class PaymentMethodsViewController: UIViewController, MessageBannerViewControllerPresenting {
   private let dataSource = PaymentMethodsDataSource()
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
   private var paymentSheetFlowController: PaymentSheet.FlowController?
-
+  private weak var cancellationDelegate: PaymentMethodsViewControllerDelegate?
   @IBOutlet private var tableView: UITableView!
 
   fileprivate lazy var editButton: UIBarButtonItem = {
@@ -45,8 +50,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     ]
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
-      self?.viewModel.inputs.didDelete(creditCard, visibleCellCount: self?.tableView.visibleCells.count ?? 0)
       self?.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+      self?.viewModel.inputs.didDelete(creditCard, visibleCellCount: self?.tableView.visibleCells.count ?? 0)
     }
 
     self.viewModel.inputs.viewDidLoad()
@@ -56,12 +61,6 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     super.viewDidLayoutSubviews()
 
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-
-    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
   }
 
   override func bindStyles() {
@@ -82,6 +81,13 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     super.bindViewModel()
 
     self.editButton.rac.enabled = self.viewModel.outputs.editButtonIsEnabled
+
+    self.viewModel.outputs.cancelAddNewCardLoadingState
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let strongSelf = self else { return }
+        strongSelf.cancellationDelegate?.cancelLoadingPaymentMethodsViewController(strongSelf)
+      }
 
     self.viewModel.outputs.paymentMethods
       .observeForUI()
@@ -237,6 +243,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
     if let footer = PaymentMethodsFooterView.fromNib(nib: Nib.PaymentMethodsFooterView) {
       footer.delegate = self
+      self.cancellationDelegate = footer
 
       let footerContainer = UIView(frame: .zero)
       _ = (footer, footerContainer) |> ksr_addSubviewToParent()

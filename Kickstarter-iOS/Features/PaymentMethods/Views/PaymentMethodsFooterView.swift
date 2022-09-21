@@ -11,6 +11,7 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
 
   @IBOutlet private var addCardButton: UIButton!
   @IBOutlet private var separatorView: UIView!
+  @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
 
   public override func bindStyles() {
     super.bindViewModel()
@@ -27,13 +28,25 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
       ?|> \.tintColor .~ .ksr_create_700
 
     _ = self
-      |> \.backgroundColor .~ .ksr_support_100
+      |> \.backgroundColor .~ .ksr_white
 
     _ = self.separatorView
       |> separatorStyle
   }
 
   @IBAction func addNewCardButtonTapped(_: Any) {
+    self.loadingIndicator.startAnimating()
+    self.addCardButton.isHidden = true
+    self.addCardButton.isUserInteractionEnabled = false
     self.delegate?.paymentMethodsFooterViewDidTapAddNewCardButton(self)
+  }
+}
+
+extension PaymentMethodsFooterView: PaymentMethodsViewControllerDelegate {
+  func cancelLoadingPaymentMethodsViewController(
+    _: PaymentMethodsViewController) {
+    self.addCardButton.isHidden = false
+    self.addCardButton.isUserInteractionEnabled = true
+    self.loadingIndicator.stopAnimating()
   }
 }
