@@ -82,6 +82,10 @@ public protocol ServiceType {
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope>
 
+  /// Adds a new Stripe payment source to users' payment methods
+  func addPaymentSheetPaymentSource(input: CreatePaymentSourceSetupIntentInput) ->
+    SignalProducer<CreatePaymentSourceEnvelope, ErrorEnvelope>
+
   /// Deletes a payment method
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
     SignalProducer<DeletePaymentMethodEnvelope, ErrorEnvelope>
