@@ -46,6 +46,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
       self?.viewModel.inputs.didDelete(creditCard, visibleCellCount: self?.tableView.visibleCells.count ?? 0)
+      self?.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
     }
 
     self.viewModel.inputs.viewDidLoad()
@@ -55,6 +56,12 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     super.viewDidLayoutSubviews()
 
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
   }
 
   override func bindStyles() {
@@ -145,6 +152,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
   @objc private func edit() {
     self.viewModel.inputs.editButtonTapped()
+    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
   }
 
   private func goToAddCardScreen(with intent: AddNewCardIntent) {
@@ -169,10 +177,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
         switch result {
         case let .failure(error):
-          /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
-           * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-           */
-
+          strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
           strongSelf.messageBannerViewController?
             .showBanner(with: .error, message: error.localizedDescription)
         case let .success(paymentSheetFlowController):
@@ -188,9 +193,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
   private func confirmPaymentResult(with clientSecret: String) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
-      /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
-       * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-       */
+      self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
       return
     }
@@ -199,9 +202,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
       guard let strongSelf = self else { return }
 
-      /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
-       * strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-       */
+      strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
       guard let existingPaymentOption = strongSelf.paymentSheetFlowController?.paymentOption else { return }
 

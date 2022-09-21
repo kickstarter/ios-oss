@@ -13,6 +13,7 @@ public protocol PaymentMethodsViewModelInputs {
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
                           setupIntent: String)
+  func shouldCancelPaymentSheetAppearance(state: Bool)
   func viewDidLoad()
 }
 
@@ -183,10 +184,12 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
           .materialize()
       }
 
-    /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
-     * Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel`
-     */
     self.goToPaymentSheet = createSetupIntentEvent.values()
+      .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)
+      .map { (data, shouldCancel) -> PaymentSheetSetupData? in
+        shouldCancel ? nil : data
+      }
+      .skipNil()
 
     self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
       paymentMethodsEvent.errors(),
@@ -248,6 +251,11 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     setupIntent: String
   ) {
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
+  }
+
+  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(true)
+  public func shouldCancelPaymentSheetAppearance(state: Bool) {
+    self.shouldCancelPaymentSheetAppearance.value = state
   }
 
   public let editButtonIsEnabled: Signal<Bool, Never>
