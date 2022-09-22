@@ -35,8 +35,11 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
   }
 
   @IBAction func addNewCardButtonTapped(_: Any) {
-    self.loadingIndicator.startAnimating()
-    self.addCardButton.isHidden = true
+    if featureSettingsPaymentSheetEnabled() {
+      self.loadingIndicator.startAnimating()
+      self.addCardButton.isHidden = true
+    }
+
     self.addCardButton.isUserInteractionEnabled = false
     self.delegate?.paymentMethodsFooterViewDidTapAddNewCardButton(self)
   }
