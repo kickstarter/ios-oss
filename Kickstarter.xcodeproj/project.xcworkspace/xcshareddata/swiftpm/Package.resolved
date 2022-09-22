@@ -226,6 +226,15 @@
       }
     },
     {
+      "identity" : "px-ios-framework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PerimeterX/px-iOS-Framework",
+      "state" : {
+        "revision" : "50eec61be35fcece00b4b6580367f16cc8a4f96d",
+        "version" : "1.16.3"
+      }
+    },
+    {
       "identity" : "sdwebimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
