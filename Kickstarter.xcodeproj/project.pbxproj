@@ -464,7 +464,6 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
-		602C97D828DB787A00919CA8 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 602C97D728DB787A00919CA8 /* PerimeterX */; };
 		602C97DA28DB78A600919CA8 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 602C97D928DB78A600919CA8 /* PerimeterX */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
@@ -3270,7 +3269,6 @@
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */,
-				602C97D828DB787A00919CA8 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
@@ -7333,7 +7331,6 @@
 				19BF226428D10497007F4197 /* FirebasePerformance */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				19A824AD28DA54ED00325124 /* AppboySegment */,
-				602C97D728DB787A00919CA8 /* PerimeterX */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -10603,11 +10600,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
-		};
-		602C97D728DB787A00919CA8 /* PerimeterX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX;
 		};
 		602C97D928DB78A600919CA8 /* PerimeterX */ = {
 			isa = XCSwiftPackageProductDependency;
