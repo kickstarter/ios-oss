@@ -119,6 +119,8 @@ distribute_job: &distribute_job
         name: Fastlane
         command: bundle exec fastlane $LANE --verbose
         no_output_timeout: "30m" # 30 minutes
+        environment:
+          FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 180
     - run:
         name: Upload dSYMs
         command: bin/upload-dysms-firebase.sh $FIREBASE_DIR $DSYMS_FILE
