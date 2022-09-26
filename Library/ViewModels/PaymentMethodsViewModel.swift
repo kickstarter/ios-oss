@@ -185,13 +185,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
           .materialize()
       }
 
-    self.shouldCancelPaymentSheetAppearance <~ self.didTapAddCardButtonProperty.signal.ignoreValues()
-      .mapConst(false)
-
     self.cancelAddNewCardLoadingState = self.shouldCancelPaymentSheetAppearance.signal.filter(isTrue)
       .ignoreValues()
-    self.shouldCancelPaymentSheetAppearance <~ self.addNewCardSucceededProperty.signal.ignoreValues()
-      .mapConst(true)
 
     self.goToPaymentSheet = createSetupIntentEvent.values()
       .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)
@@ -207,8 +202,18 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     )
     .map { $0.localizedDescription }
 
-    self.shouldCancelPaymentSheetAppearance <~ self.errorLoadingPaymentMethodsOrSetupIntent.signal
-      .ignoreValues().mapConst(true)
+    self.shouldCancelPaymentSheetAppearance <~ Signal
+      .merge(
+        self.didTapAddCardButtonProperty.signal
+          .ignoreValues()
+          .mapConst(false),
+        self.addNewCardSucceededProperty.signal
+          .ignoreValues()
+          .mapConst(true),
+        self.errorLoadingPaymentMethodsOrSetupIntent.signal
+          .ignoreValues()
+          .mapConst(true)
+      )
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
