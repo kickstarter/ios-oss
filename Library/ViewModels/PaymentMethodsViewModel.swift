@@ -13,10 +13,12 @@ public protocol PaymentMethodsViewModelInputs {
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
                           setupIntent: String)
+  func shouldCancelPaymentSheetAppearance(state: Bool)
   func viewDidLoad()
 }
 
 public protocol PaymentMethodsViewModelOutputs {
+  var cancelAddNewCardLoadingState: Signal<Void, Never> { get }
   var editButtonIsEnabled: Signal<Bool, Never> { get }
   var editButtonTitle: Signal<String, Never> { get }
   var errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never> { get }
@@ -183,10 +185,15 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
           .materialize()
       }
 
-    /** TODO: https://kickstarter.atlassian.net/browse/PAY-1954
-     * Add cancellation signal similiar to `shouldCancelPaymentSheetAppearance` in `PledgePaymentMethodsViewModel`
-     */
+    self.cancelAddNewCardLoadingState = self.shouldCancelPaymentSheetAppearance.signal.filter(isTrue)
+      .ignoreValues()
+
     self.goToPaymentSheet = createSetupIntentEvent.values()
+      .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)
+      .map { (data, shouldCancel) -> PaymentSheetSetupData? in
+        shouldCancel ? nil : data
+      }
+      .skipNil()
 
     self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
       paymentMethodsEvent.errors(),
@@ -194,6 +201,19 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
       newSetupIntentCards.errors()
     )
     .map { $0.localizedDescription }
+
+    self.shouldCancelPaymentSheetAppearance <~ Signal
+      .merge(
+        self.didTapAddCardButtonProperty.signal
+          .ignoreValues()
+          .mapConst(false),
+        self.addNewCardSucceededProperty.signal
+          .ignoreValues()
+          .mapConst(true),
+        self.errorLoadingPaymentMethodsOrSetupIntent.signal
+          .ignoreValues()
+          .mapConst(true)
+      )
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
@@ -250,6 +270,12 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
   }
 
+  private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)
+  public func shouldCancelPaymentSheetAppearance(state: Bool) {
+    self.shouldCancelPaymentSheetAppearance.value = state
+  }
+
+  public let cancelAddNewCardLoadingState: Signal<Void, Never>
   public let editButtonIsEnabled: Signal<Bool, Never>
   public let editButtonTitle: Signal<String, Never>
   public let errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never>

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +14,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="NYB-xa-rq9">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="750" constant="44" id="r2r-QJ-TBt"/>
+                    </constraints>
+                </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" priority="750" constant="44" id="UK4-hM-zKF"/>
@@ -34,22 +38,28 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="SB4-Lk-Ajb" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="3ZU-mb-b3a"/>
                 <constraint firstItem="SB4-Lk-Ajb" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="AFm-OP-jdz"/>
                 <constraint firstItem="ZVF-Hv-L8e" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Jgf-jz-MGs"/>
                 <constraint firstItem="SB4-Lk-Ajb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Tcv-X7-qhe"/>
+                <constraint firstItem="SB4-Lk-Ajb" firstAttribute="top" secondItem="NYB-xa-rq9" secondAttribute="bottom" id="ZTG-NB-oQ9"/>
                 <constraint firstItem="ZVF-Hv-L8e" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ZmG-1O-aKF"/>
+                <constraint firstItem="NYB-xa-rq9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="dg4-Jh-MZ3"/>
+                <constraint firstAttribute="trailing" secondItem="NYB-xa-rq9" secondAttribute="trailing" id="kTK-t3-wKg"/>
                 <constraint firstItem="SB4-Lk-Ajb" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="r8U-Cm-ivH"/>
+                <constraint firstItem="NYB-xa-rq9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="smE-1j-5ZE"/>
+                <constraint firstItem="NYB-xa-rq9" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="vVF-M0-WFt"/>
                 <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xwQ-EY-95A"/>
                 <constraint firstItem="ZVF-Hv-L8e" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="yCu-B8-SVL"/>
                 <constraint firstItem="ZVF-Hv-L8e" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="ynk-qM-yO6"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="addCardButton" destination="ZVF-Hv-L8e" id="DTW-cN-pEC"/>
+                <outlet property="loadingIndicator" destination="NYB-xa-rq9" id="B9G-2D-IDa"/>
                 <outlet property="separatorView" destination="SB4-Lk-Ajb" id="khu-HH-QZj"/>
             </connections>
             <point key="canvasLocation" x="138.40000000000001" y="-129.53523238380811"/>

@@ -10,6 +10,7 @@ import XCTest
 internal final class PaymentMethodsViewModelTests: TestCase {
   private let vm = PaymentMethodsViewModel()
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
+  private let cancelLoadingState = TestObserver<Void, Never>()
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
   private let editButtonTitle = TestObserver<String, Never>()
   private let errorLoadingPaymentMethodsOrSetupIntent = TestObserver<String, Never>()
@@ -25,6 +26,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.cancelAddNewCardLoadingState.observe(self.cancelLoadingState.observer)
     self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
     self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
     self.vm.outputs.errorLoadingPaymentMethodsOrSetupIntent
@@ -171,6 +173,31 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.paymentMethods.assertValueCount(1)
       self.errorLoadingPaymentMethodsOrSetupIntent.assertDidNotEmitValue()
+    }
+  }
+
+  func testCancelLoadingState_Success() {
+    let response = UserEnvelope<GraphUser>(me: userTemplate)
+    let apiService = MockService(
+      fetchGraphUserResult: .success(response)
+    )
+
+    withEnvironment(apiService: apiService) {
+      self.cancelLoadingState.assertDidNotEmitValue()
+
+      self.vm.inputs
+        .shouldCancelPaymentSheetAppearance(state: false)
+
+      self.scheduler.advance()
+
+      self.cancelLoadingState.assertDidNotEmitValue()
+
+      self.vm.inputs
+        .shouldCancelPaymentSheetAppearance(state: true)
+
+      self.scheduler.advance()
+
+      self.cancelLoadingState.assertDidEmitValue()
     }
   }
 
