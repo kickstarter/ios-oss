@@ -234,6 +234,7 @@
 		19047FCB2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */; };
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
+		191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 191EDC6628E29BB9009B41B2 /* PerimeterX */; };
 		1923770A28DA2AE300F68635 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
 		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
@@ -3271,6 +3272,7 @@
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */,
+				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
@@ -7334,6 +7336,7 @@
 				19BF226428D10497007F4197 /* FirebasePerformance */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				19A824AD28DA54ED00325124 /* AppboySegment */,
+				191EDC6628E29BB9009B41B2 /* PerimeterX */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -10563,6 +10566,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
 			productName = Prelude;
+		};
+		191EDC6628E29BB9009B41B2 /* PerimeterX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
+			productName = PerimeterX;
 		};
 		1981AC8F289075D900BB4897 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
