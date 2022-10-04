@@ -1,9 +1,9 @@
+import AppboyKit
 import KsApi
 import Library
 import Prelude
 import ReactiveSwift
 import UserNotifications
-import AppboyKit
 
 public struct AppCenterConfigData: Equatable {
   public let appSecret: String
