@@ -1,5 +1,4 @@
 import AppboyKit
-import AppboyUI
 import AppboySegment
 import Foundation
 

@@ -249,8 +249,8 @@
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
-		197C398928EC7D6C006A3C6B /* BrazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 197C398828EC7D6C006A3C6B /* BrazeKit */; };
-		197C398B28EC7D6C006A3C6B /* BrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 197C398A28EC7D6C006A3C6B /* BrazeUI */; };
+		197C398E28ECB3E2006A3C6B /* BrazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 197C398D28ECB3E2006A3C6B /* BrazeKit */; };
+		197C399028ECB3E2006A3C6B /* BrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 197C398F28ECB3E2006A3C6B /* BrazeUI */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
 		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
 		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
@@ -3245,8 +3245,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */,
-				197C398928EC7D6C006A3C6B /* BrazeKit in Frameworks */,
-				197C398B28EC7D6C006A3C6B /* BrazeUI in Frameworks */,
 				19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */,
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
@@ -3254,6 +3252,8 @@
 				19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
+				197C398E28ECB3E2006A3C6B /* BrazeKit in Frameworks */,
+				197C399028ECB3E2006A3C6B /* BrazeUI in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
 				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
@@ -7313,8 +7313,8 @@
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				19A824AD28DA54ED00325124 /* AppboySegment */,
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
-				197C398828EC7D6C006A3C6B /* BrazeKit */,
-				197C398A28EC7D6C006A3C6B /* BrazeUI */,
+				197C398D28ECB3E2006A3C6B /* BrazeKit */,
+				197C398F28ECB3E2006A3C6B /* BrazeUI */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7476,7 +7476,7 @@
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
-				197C398728EC7D6C006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
+				197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -9345,6 +9345,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Beta.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -9358,7 +9360,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
-				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.beta";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
 			};
@@ -10433,7 +10435,7 @@
 				minimumVersion = 22.7.1;
 			};
 		};
-		197C398728EC7D6C006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */ = {
+		197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braze-inc/braze-swift-sdk";
 			requirement = {
@@ -10559,14 +10561,14 @@
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
 		};
-		197C398828EC7D6C006A3C6B /* BrazeKit */ = {
+		197C398D28ECB3E2006A3C6B /* BrazeKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 197C398728EC7D6C006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			package = 197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
 			productName = BrazeKit;
 		};
-		197C398A28EC7D6C006A3C6B /* BrazeUI */ = {
+		197C398F28ECB3E2006A3C6B /* BrazeUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 197C398728EC7D6C006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			package = 197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
 			productName = BrazeUI;
 		};
 		1981AC8F289075D900BB4897 /* Stripe */ = {
