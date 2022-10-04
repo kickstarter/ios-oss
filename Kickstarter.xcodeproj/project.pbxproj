@@ -9345,8 +9345,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Beta.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -9634,10 +9632,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Debug.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9649,7 +9647,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.debug";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_WORKSPACE = NO;
