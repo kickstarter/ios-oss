@@ -1,4 +1,4 @@
-import Appboy_iOS_SDK
+import AppboyKit
 import KsApi
 import Library
 import Prelude
