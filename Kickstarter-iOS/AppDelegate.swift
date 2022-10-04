@@ -1,4 +1,4 @@
-import Appboy_iOS_SDK
+import AppboyKit
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit

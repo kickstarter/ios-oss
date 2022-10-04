@@ -1,4 +1,5 @@
-import Appboy_iOS_SDK
+import AppboyKit
+import AppboyUI
 import AppboySegment
 import Foundation
 
