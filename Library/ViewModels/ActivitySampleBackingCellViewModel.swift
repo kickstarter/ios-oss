@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import UIKit
 
 public protocol ActivitySampleBackingCellViewModelInputs {
   /// Call to configure cell with activity value.

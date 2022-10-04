@@ -469,6 +469,14 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		60204AF028ECA3AF004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AEF28ECA3AF004C4D34 /* ReactiveSwift */; };
+		60204AF228ECA42D004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AF128ECA42D004C4D34 /* ReactiveSwift */; };
+		60204AF428ECA434004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AF328ECA434004C4D34 /* ReactiveSwift */; };
+		60204AF628ECA445004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AF528ECA445004C4D34 /* ReactiveSwift */; };
+		60204AF928ECB6D8004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AF828ECB6D8004C4D34 /* ReactiveExtensions */; };
+		60204AFB28ECB6F6004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AFA28ECB6F6004C4D34 /* ReactiveExtensions */; };
+		60204AFD28ECB702004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AFC28ECB702004C4D34 /* ReactiveExtensions */; };
+		60204AFF28ECB713004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AFE28ECB713004C4D34 /* ReactiveExtensions */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
@@ -1147,12 +1155,6 @@
 		D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */; };
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
 		D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */; };
-		D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
 		D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */; };
 		D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015876A1EEB2ED6006E7684 /* NSURLSession.swift */; };
@@ -1326,16 +1328,11 @@
 		D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */; };
 		D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */; };
 		D08CD20321922025009F89F0 /* WatchProjectResponseEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD20221922025009F89F0 /* WatchProjectResponseEnvelopeTemplates.swift */; };
-		D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
 		D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B46221A86F7E00910962 /* PushRegistrationType.swift */; };
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
 		D0971E14221E070800DFEF9B /* SelectCurrencyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */; };
 		D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */; };
-		D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
-		D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
 		D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */; };
 		D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */; };
 		D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */; };
@@ -1343,9 +1340,6 @@
 		D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
-		D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
-		D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
 		D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877D1EEB2ED6006E7684 /* BackingTests.swift */; };
@@ -1376,8 +1370,6 @@
 		D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */; };
 		D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588241EEB2ED7006E7684 /* UserTests.swift */; };
 		D0D19BCA22BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */; };
-		D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
-		D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
 		D0D77C1E22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */; };
 		D0E78C3622A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */; };
 		D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */; };
@@ -1646,6 +1638,7 @@
 				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
 				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
+				8A04FE392627839A0056F413 /* SDWebImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1658,6 +1651,8 @@
 				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
 				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
 				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
+				8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */,
+				8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1667,8 +1662,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */,
-				D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2996,9 +2989,6 @@
 		D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModelTests.swift; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
 		D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryViewModelTests.swift; sourceTree = "<group>"; };
-		D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions.framework; path = Carthage/Build/iOS/ReactiveExtensions.framework; sourceTree = "<group>"; };
-		D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = "<group>"; };
-		D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions_TestHelpers.framework; path = Carthage/Build/iOS/ReactiveExtensions_TestHelpers.framework; sourceTree = "<group>"; };
 		D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+ThreadSafety.swift"; sourceTree = "<group>"; };
 		D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelope.swift; sourceTree = "<group>"; };
 		D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -3206,9 +3196,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
+				60204AF228ECA42D004C4D34 /* ReactiveSwift in Frameworks */,
 				60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				19A824B028DA562800325124 /* AppboySegment in Frameworks */,
+				60204AFB28ECB6F6004C4D34 /* ReactiveExtensions in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
@@ -3217,6 +3209,7 @@
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
+				8A04FE2F262781570056F413 /* SDWebImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3234,9 +3227,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60204AFD28ECB702004C4D34 /* ReactiveExtensions in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
-				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
-				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
+				60204AF428ECA434004C4D34 /* ReactiveSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3251,12 +3244,12 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
+				60204AF028ECA3AF004C4D34 /* ReactiveSwift in Frameworks */,
+				60204AF928ECB6D8004C4D34 /* ReactiveExtensions in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
 				197C398E28ECB3E2006A3C6B /* BrazeKit in Frameworks */,
 				197C399028ECB3E2006A3C6B /* BrazeUI in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
-				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
-				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3273,12 +3266,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
-				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
 				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
+				60204AF628ECA445004C4D34 /* ReactiveSwift in Frameworks */,
+				60204AFF28ECB713004C4D34 /* ReactiveExtensions in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
 				198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */,
 			);
@@ -6473,6 +6466,8 @@
 				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
 				D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */,
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
+				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
+				8A04FE25262781240056F413 /* SDWebImage.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -7237,6 +7232,8 @@
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
 				19A824AF28DA562800325124 /* AppboySegment */,
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
+				60204AF128ECA42D004C4D34 /* ReactiveSwift */,
+				60204AFA28ECB6F6004C4D34 /* ReactiveExtensions */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7282,6 +7279,8 @@
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
+				60204AF328ECA434004C4D34 /* ReactiveSwift */,
+				60204AFC28ECB702004C4D34 /* ReactiveExtensions */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -7315,6 +7314,12 @@
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
 				197C398D28ECB3E2006A3C6B /* BrazeKit */,
 				197C398F28ECB3E2006A3C6B /* BrazeUI */,
+				197C398828EC7D6C006A3C6B /* BrazeKit */,
+				197C398A28EC7D6C006A3C6B /* BrazeUI */,
+				197C398D28ECB3E2006A3C6B /* BrazeKit */,
+				197C398F28ECB3E2006A3C6B /* BrazeUI */,
+				60204AEF28ECA3AF004C4D34 /* ReactiveSwift */,
+				60204AF828ECB6D8004C4D34 /* ReactiveExtensions */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7366,6 +7371,8 @@
 				06634FC42807A4EB00950F60 /* Prelude */,
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				198E574C28E2705E00D5B8A9 /* PerimeterX */,
+				60204AF528ECA445004C4D34 /* ReactiveSwift */,
+				60204AFE28ECB713004C4D34 /* ReactiveExtensions */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -7477,6 +7484,10 @@
 				19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
 				197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
+				197C398728EC7D6C006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
+				197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
+				60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
+				60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -10457,6 +10468,22 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveCocoa/ReactiveSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.5.0;
+			};
+		};
+		60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kickstarter/Kickstarter-ReactiveExtensions";
+			requirement = {
+				branch = "feature/swift-package-manager";
+				kind = branch;
+			};
+		};
 		602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/PerimeterX/px-iOS-Framework";
@@ -10618,6 +10645,46 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
+		};
+		60204AEF28ECA3AF004C4D34 /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		60204AF128ECA42D004C4D34 /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		60204AF328ECA434004C4D34 /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		60204AF528ECA445004C4D34 /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		60204AF828ECB6D8004C4D34 /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
+		};
+		60204AFA28ECB6F6004C4D34 /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
+		};
+		60204AFC28ECB702004C4D34 /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
+		};
+		60204AFE28ECB713004C4D34 /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
 		};
 		606754BC28CF91D60033CD5E /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;

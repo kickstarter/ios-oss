@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import UIKit
 
 public protocol ProjectActivitySuccessCellViewModelInputs {
   /// Call to set the activity and project.

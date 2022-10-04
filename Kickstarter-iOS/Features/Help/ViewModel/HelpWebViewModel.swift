@@ -1,3 +1,4 @@
+import Foundation
 import Library
 import Prelude
 import ReactiveSwift

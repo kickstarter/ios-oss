@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import UIKit
 
 public protocol DiscoveryPageViewModelInputs {
   /// Call when the Config has been updated in the AppEnvironment

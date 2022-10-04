@@ -181,6 +181,15 @@
       }
     },
     {
+      "identity" : "kickstarter-reactiveextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kickstarter/Kickstarter-ReactiveExtensions",
+      "state" : {
+        "branch" : "feature/swift-package-manager",
+        "revision" : "bf5afac9b8906bb31a6c6d941045f61f58aab60d"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
@@ -241,6 +250,15 @@
       "state" : {
         "revision" : "50eec61be35fcece00b4b6580367f16cc8a4f96d",
         "version" : "1.16.3"
+      }
+    },
+    {
+      "identity" : "reactiveswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
+      "state" : {
+        "revision" : "c43bae3dac73fdd3cb906bd5a1914686ca71ed3c",
+        "version" : "6.7.0"
       }
     },
     {

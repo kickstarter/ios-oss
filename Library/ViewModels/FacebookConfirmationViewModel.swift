@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import ReactiveExtensions
 import ReactiveSwift
