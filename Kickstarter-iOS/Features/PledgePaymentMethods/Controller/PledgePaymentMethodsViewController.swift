@@ -214,9 +214,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func updateAddNewPaymentMethodButtonLoading(state: Bool) {
     self.dataSource.updateAddNewPaymentCardLoad(state: state)
 
-    let addNewCardButtonSection = self.tableView.numberOfSections - 1
-
-    self.tableView.reloadSections([addNewCardButtonSection], with: .none)
+    if self.dataSource.numberOfItems(in: PaymentMethodsTableViewSection.addNewCard.rawValue) > 0 {
+      self.tableView.reloadSections([PaymentMethodsTableViewSection.addNewCard.rawValue], with: .none)
+    }
   }
 }
 
