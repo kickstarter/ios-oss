@@ -483,6 +483,7 @@
 		60204B0628EDC2CC004C4D34 /* Event-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60204B0528EDC2CB004C4D34 /* Event-Extensions.swift */; };
 		60204B0728EDC2CC004C4D34 /* Event-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60204B0528EDC2CB004C4D34 /* Event-Extensions.swift */; };
 		60204B0928EDC3B1004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204B0828EDC3B1004C4D34 /* ReactiveSwift */; };
+		60204B0B28EDC68C004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204B0A28EDC68C004C4D34 /* ReactiveSwift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
@@ -3256,6 +3257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */,
+				60204B0B28EDC68C004C4D34 /* ReactiveSwift in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7340,6 +7342,7 @@
 			name = "Kickstarter-Framework-iOSTests";
 			packageProductDependencies = (
 				60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */,
+				60204B0A28EDC68C004C4D34 /* ReactiveSwift */,
 			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
@@ -10693,6 +10696,11 @@
 			productName = ReactiveExtensions;
 		};
 		60204B0828EDC3B1004C4D34 /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		60204B0A28EDC68C004C4D34 /* ReactiveSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
 			productName = ReactiveSwift;
