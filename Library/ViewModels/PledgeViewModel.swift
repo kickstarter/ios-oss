@@ -934,6 +934,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
+    /** TODO: Look here for PAY-1980 - handling errored backing pledge flow with setup intent client secret. */
     let willRetryPaymentMethod = Signal.combineLatest(
       context,
       project,

@@ -293,7 +293,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let paymentSheetOnPledgeContext = context
       .map { context -> Bool in
-        guard context == .pledge else {
+        guard context.isCreating || context.isUpdating,
+          context != .fixPaymentMethod else {
           return false
         }
 
