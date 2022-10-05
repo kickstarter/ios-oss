@@ -3,7 +3,7 @@ import Foundation
 @testable import Library
 import Prelude
 import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
+
 import XCTest
 
 final class PledgeStatusLabelViewModelTests: TestCase {

@@ -3,7 +3,7 @@ import Foundation
 import Library
 import Prelude
 import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
+
 
 final class RewardCellViewModelTests: TestCase {
   private let vm = RewardCellViewModel()

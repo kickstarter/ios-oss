@@ -4,7 +4,6 @@
 @testable import Library
 import Prelude
 import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import UIKit.UIActivity
 import XCTest

@@ -2,7 +2,6 @@
 import Library
 import Prelude
 import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 

@@ -1,7 +1,7 @@
 @testable import KsApi
 import Library
-import ReactiveExtensions_TestHelpers
 import ReactiveSwift
+import UIKit
 
 internal final class MessageCellViewModelTests: TestCase {
   fileprivate let vm: MessageCellViewModelType = MessageCellViewModel()

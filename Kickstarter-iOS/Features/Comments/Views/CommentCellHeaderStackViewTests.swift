@@ -2,7 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
-import ReactiveExtensions_TestHelpers
+
 import XCTest
 
 internal final class CommentCellHeaderStackViewTests: TestCase {

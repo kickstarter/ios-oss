@@ -3,7 +3,7 @@ import XCTest
 
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
+
 
 final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()

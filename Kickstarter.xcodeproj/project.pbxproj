@@ -477,6 +477,12 @@
 		60204AFB28ECB6F6004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AFA28ECB6F6004C4D34 /* ReactiveExtensions */; };
 		60204AFD28ECB702004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AFC28ECB702004C4D34 /* ReactiveExtensions */; };
 		60204AFF28ECB713004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204AFE28ECB713004C4D34 /* ReactiveExtensions */; };
+		60204B0128EDC07B004C4D34 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 60204B0028EDC07B004C4D34 /* ReactiveExtensions */; };
+		60204B0328EDC234004C4D34 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60204B0228EDC232004C4D34 /* TestObserver.swift */; };
+		60204B0428EDC234004C4D34 /* TestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60204B0228EDC232004C4D34 /* TestObserver.swift */; };
+		60204B0628EDC2CC004C4D34 /* Event-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60204B0528EDC2CB004C4D34 /* Event-Extensions.swift */; };
+		60204B0728EDC2CC004C4D34 /* Event-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60204B0528EDC2CB004C4D34 /* Event-Extensions.swift */; };
+		60204B0928EDC3B1004C4D34 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60204B0828EDC3B1004C4D34 /* ReactiveSwift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
@@ -1635,10 +1641,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */,
-				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
-				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
-				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
-				8A04FE392627839A0056F413 /* SDWebImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1648,11 +1650,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
-				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
-				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
-				8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */,
-				8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2089,6 +2086,8 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		60204B0228EDC232004C4D34 /* TestObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestObserver.swift; sourceTree = "<group>"; };
+		60204B0528EDC2CB004C4D34 /* Event-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Event-Extensions.swift"; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -3207,9 +3206,6 @@
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
-				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
-				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
-				8A04FE2F262781570056F413 /* SDWebImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3218,6 +3214,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F91B14289C8097000AEC6A /* Stripe in Frameworks */,
+				60204B0928EDC3B1004C4D34 /* ReactiveSwift in Frameworks */,
+				60204B0128EDC07B004C4D34 /* ReactiveExtensions in Frameworks */,
 				198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
 			);
@@ -6463,11 +6461,6 @@
 			isa = PBXGroup;
 			children = (
 				06EA2D36280F1F1900F4DE2E /* XCTest.framework */,
-				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
-				D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */,
-				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
-				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
-				8A04FE25262781240056F413 /* SDWebImage.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -6477,6 +6470,7 @@
 			children = (
 				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
+				60204B0528EDC2CB004C4D34 /* Event-Extensions.swift */,
 				77C9122A23C5079200F3D2C9 /* MockApplePayCapable.swift */,
 				D033E2C122A05B4800464E43 /* MockApplication.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
@@ -6484,6 +6478,7 @@
 				1611EF6823B275700051CDCC /* MockUUID.swift */,
 				1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
+				60204B0228EDC232004C4D34 /* TestObserver.swift */,
 				A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */,
 			);
 			path = TestHelpers;
@@ -7257,6 +7252,8 @@
 			packageProductDependencies = (
 				19F91B13289C8097000AEC6A /* Stripe */,
 				198ED06128D229560008CB98 /* iOSSnapshotTestCase */,
+				60204B0028EDC07B004C4D34 /* ReactiveExtensions */,
+				60204B0828EDC3B1004C4D34 /* ReactiveSwift */,
 			);
 			productName = "Library-iOSTests";
 			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
@@ -8219,6 +8216,7 @@
 				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
 				A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */,
 				8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */,
+				60204B0328EDC234004C4D34 /* TestObserver.swift in Sources */,
 				3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */,
 				D79CF40521B0840E00ECB73A /* AddNewCardViewModelTests.swift in Sources */,
 				D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
@@ -8328,6 +8326,7 @@
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
 				D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
+				60204B0628EDC2CC004C4D34 /* Event-Extensions.swift in Sources */,
 				370C8B6823590CC200DE75DD /* LoadingButtonViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
 				778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */,
@@ -8665,6 +8664,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */,
+				60204B0428EDC234004C4D34 /* TestObserver.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */,
@@ -8672,6 +8672,7 @@
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
+				60204B0728EDC2CC004C4D34 /* Event-Extensions.swift in Sources */,
 				A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A7ED201B1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 				3767EDAF22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift in Sources */,
@@ -10685,6 +10686,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = ReactiveExtensions;
+		};
+		60204B0028EDC07B004C4D34 /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AF728ECB6D8004C4D34 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
+		};
+		60204B0828EDC3B1004C4D34 /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60204AEE28ECA3AE004C4D34 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
 		};
 		606754BC28CF91D60033CD5E /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;

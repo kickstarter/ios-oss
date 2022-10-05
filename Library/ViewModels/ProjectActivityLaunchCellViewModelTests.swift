@@ -1,7 +1,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-import ReactiveExtensions_TestHelpers
+
 import XCTest
 
 internal final class ProjectActivityLaunchCellViewModelTests: TestCase {

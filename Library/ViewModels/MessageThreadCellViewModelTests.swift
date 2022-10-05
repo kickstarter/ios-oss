@@ -1,8 +1,8 @@
 @testable import KsApi
 import Library
 import Prelude
-import ReactiveExtensions_TestHelpers
 import ReactiveSwift
+import UIKit
 
 final class MessageThreadCellViewModelTests: TestCase {
   fileprivate let vm: MessageThreadCellViewModelType = MessageThreadCellViewModel()

@@ -1,7 +1,7 @@
 @testable import KsApi
 import Library
 import Prelude
-import ReactiveExtensions_TestHelpers
+
 import XCTest
 
 class DiscoveryProjectCategoryViewModelTests: XCTestCase {

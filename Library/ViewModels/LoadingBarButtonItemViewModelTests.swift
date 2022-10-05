@@ -1,6 +1,6 @@
 @testable import Library
 import Prelude
-import ReactiveExtensions_TestHelpers
+
 import XCTest
 
 final class LoadingBarButtonItemViewModelTests: TestCase {

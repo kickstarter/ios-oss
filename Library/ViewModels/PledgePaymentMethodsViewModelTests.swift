@@ -3,7 +3,7 @@ import Foundation
 @testable import Library
 import Prelude
 import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
+
 @testable import Stripe
 import XCTest
 
