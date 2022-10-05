@@ -4,7 +4,6 @@ import XCTest
 @testable import KsApi
 @testable import Library
 
-
 final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()
   private let failureService =

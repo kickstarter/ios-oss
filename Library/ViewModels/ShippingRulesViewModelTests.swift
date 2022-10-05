@@ -3,7 +3,6 @@ import Foundation
 @testable import Library
 import Prelude
 
-
 private let shippingRules = [
   ShippingRule.template
     |> ShippingRule.lens.location .~ .australia,

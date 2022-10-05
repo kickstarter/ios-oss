@@ -2,7 +2,6 @@ import XCTest
 
 @testable import Library
 
-
 final class SetYourPasswordViewModelTests: TestCase {
   private let viewModel = SetYourPasswordViewModel()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()

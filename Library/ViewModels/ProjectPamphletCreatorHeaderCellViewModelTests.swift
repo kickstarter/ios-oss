@@ -3,7 +3,6 @@ import Foundation
 @testable import Library
 import Prelude
 
-
 final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
   private let vm: ProjectPamphletCreatorHeaderCellViewModelType = ProjectPamphletCreatorHeaderCellViewModel()
 

@@ -3,7 +3,6 @@ import Foundation
 @testable import Library
 import Prelude
 
-
 final class ShippingRuleCellViewModelTests: TestCase {
   private let vm: ShippingRuleCellViewModelType = ShippingRuleCellViewModel()
 

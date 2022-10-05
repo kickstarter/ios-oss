@@ -4,7 +4,6 @@ import Library
 import Prelude
 import ReactiveExtensions
 
-
 final class RewardCellViewModelTests: TestCase {
   private let vm = RewardCellViewModel()
 

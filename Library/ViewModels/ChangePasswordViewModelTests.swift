@@ -5,7 +5,6 @@ import XCTest
 @testable import KsApi
 @testable import Library
 
-
 final class ChangePasswordViewModelTests: TestCase {
   private let vm: ChangePasswordViewModelType = ChangePasswordViewModel()
 

@@ -1,5 +1,5 @@
-import XCTest
 import ReactiveSwift
+import XCTest
 
 /**
  A `TestObserver` is a wrapper around an `Observer` that saves all events to an public array so that
@@ -16,13 +16,12 @@ import ReactiveSwift
  test.assertValues([1, 2, 3])
  ```
  */
-public final class TestObserver <Value, Error: Swift.Error> {
-
+public final class TestObserver<Value, Error: Swift.Error> {
   public private(set) var events: [Signal<Value, Error>.Event] = []
   public private(set) var observer: Signal<Value, Error>.Observer!
 
   public init() {
-    self.observer = Signal<Value, Error>.Observer(action)
+    self.observer = Signal<Value, Error>.Observer(self.action)
   }
 
   private func action(_ event: Signal<Value, Error>.Event) {
@@ -106,20 +105,27 @@ public final class TestObserver <Value, Error: Swift.Error> {
 
   public func assertDidTerminate(
     _ message: String = "Should have terminated, i.e. completed/failed/interrupted.",
-    file: StaticString = #file, line: UInt = #line) {
+    file: StaticString = #file, line: UInt = #line
+  ) {
     XCTAssertTrue(self.didFail || self.didComplete || self.didInterrupt, message, file: file, line: line)
   }
 
   public func assertDidNotTerminate(
     _ message: String = "Should not have terminated, i.e. completed/failed/interrupted.",
-    file: StaticString = #file, line: UInt = #line) {
+    file: StaticString = #file, line: UInt = #line
+  ) {
     XCTAssertTrue(!self.didFail && !self.didComplete && !self.didInterrupt, message, file: file, line: line)
   }
 
   public func assertValueCount(_ count: Int, _ message: String? = nil,
                                file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(count, self.values.count, message ?? "Should have emitted \(count) values",
-      file: file, line: line)
+    XCTAssertEqual(
+      count,
+      self.values.count,
+      message ?? "Should have emitted \(count) values",
+      file: file,
+      line: line
+    )
   }
 }
 
@@ -127,14 +133,24 @@ extension TestObserver where Value: Equatable {
   public func assertValue(_ value: Value, _ message: String? = nil,
                           file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(1, self.values.count, "A single item should have been emitted.", file: file, line: line)
-    XCTAssertEqual(value, self.lastValue, message ?? "A single value of \(value) should have been emitted",
-      file: file, line: line)
+    XCTAssertEqual(
+      value,
+      self.lastValue,
+      message ?? "A single value of \(value) should have been emitted",
+      file: file,
+      line: line
+    )
   }
 
   public func assertLastValue(_ value: Value, _ message: String? = nil,
                               file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(value, self.lastValue, message ?? "Last emitted value is equal to \(value).",
-      file: file, line: line)
+    XCTAssertEqual(
+      value,
+      self.lastValue,
+      message ?? "Last emitted value is equal to \(value).",
+      file: file,
+      line: line
+    )
   }
 
   public func assertValues(_ values: [Value], _ message: String = "",
