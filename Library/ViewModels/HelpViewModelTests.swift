@@ -1,6 +1,7 @@
 @testable import Library
 import MessageUI
 import Prelude
+import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 import XCTest

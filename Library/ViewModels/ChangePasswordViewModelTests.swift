@@ -1,9 +1,9 @@
 import Foundation
-import Prelude
-import XCTest
-
 @testable import KsApi
 @testable import Library
+import Prelude
+import ReactiveExtensions
+import XCTest
 
 final class ChangePasswordViewModelTests: TestCase {
   private let vm: ChangePasswordViewModelType = ChangePasswordViewModel()

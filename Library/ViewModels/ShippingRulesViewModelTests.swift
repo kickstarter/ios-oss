@@ -2,6 +2,7 @@ import Foundation
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
 
 private let shippingRules = [
   ShippingRule.template

@@ -1,9 +1,9 @@
+import Foundation
 @testable import KsApi
 @testable import Library
+import ReactiveExtensions
 import ReactiveSwift
 import XCTest
-
-import Foundation
 
 final class BetaToolsViewModelTests: TestCase {
   let vm: BetaToolsViewModelType = BetaToolsViewModel()

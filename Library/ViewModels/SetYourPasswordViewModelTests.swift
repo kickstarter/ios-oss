@@ -1,6 +1,6 @@
-import XCTest
-
 @testable import Library
+import ReactiveExtensions
+import XCTest
 
 final class SetYourPasswordViewModelTests: TestCase {
   private let viewModel = SetYourPasswordViewModel()

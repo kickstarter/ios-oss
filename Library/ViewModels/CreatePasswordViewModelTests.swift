@@ -1,4 +1,5 @@
 import Foundation
+import ReactiveExtensions
 import XCTest
 
 @testable import KsApi

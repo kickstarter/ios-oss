@@ -2,6 +2,7 @@ import AVFoundation
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
 import ReactiveSwift
 import XCTest
 

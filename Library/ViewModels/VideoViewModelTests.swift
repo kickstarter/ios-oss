@@ -2,7 +2,7 @@ import AVFoundation
 @testable import KsApi
 @testable import Library
 import Prelude
-
+import ReactiveExtensions
 import XCTest
 
 internal final class VideoViewModelTests: TestCase {

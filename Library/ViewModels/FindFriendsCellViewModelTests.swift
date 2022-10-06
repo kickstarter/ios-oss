@@ -1,10 +1,10 @@
+import Foundation
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
 import ReactiveSwift
 import XCTest
-
-import Foundation
 
 internal final class FindFriendsCellViewModelTests: TestCase {
   private let vm = FindFriendsCellViewModel()

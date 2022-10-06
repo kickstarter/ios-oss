@@ -1,7 +1,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-
+import ReactiveExtensions
 import XCTest
 
 /* swiftlint:disable force_unwrapping */

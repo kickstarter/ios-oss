@@ -1,6 +1,6 @@
 @testable import Library
 import Prelude
-
+import ReactiveExtensions
 import XCTest
 
 final class CommentTableViewFooterViewModelTests: TestCase {

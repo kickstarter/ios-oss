@@ -2,6 +2,7 @@ import Foundation
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
 
 final class ShippingRuleCellViewModelTests: TestCase {
   private let vm: ShippingRuleCellViewModelType = ShippingRuleCellViewModel()
