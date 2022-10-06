@@ -2,7 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-
+import ReactiveExtensions
 import XCTest
 
 internal final class SettingsViewModelTests: TestCase {

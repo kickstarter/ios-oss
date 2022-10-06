@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
 import ReactiveSwift
 import WebKit
 import XCTest

@@ -2,7 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
-
+import ReactiveExtensions
 import XCTest
 
 internal final class FundingGraphViewTests: TestCase {
