@@ -8,6 +8,7 @@ extension GraphAPI.UpdateBackingInput {
       rewardIds: input.rewardIds,
       locationId: input.locationId,
       paymentSourceId: input.paymentSourceId,
+      intentClientSecret: input.setupIntentClientSecret,
       applePay: GraphAPI.ApplePayInput.from(input.applePay)
     )
   }
