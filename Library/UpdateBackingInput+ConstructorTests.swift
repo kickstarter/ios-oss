@@ -4,6 +4,34 @@ import Prelude
 import XCTest
 
 final class UpdateBackingInput_ConstructorTests: TestCase {
+  func testUpdateBackingInput_UpdateBackingData_NotApplePay_NotPaymentSource() {
+    let reward = Reward.template
+
+    let data: UpdateBackingData = (
+      backing: Backing.template,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
+      shippingRule: ShippingRule.template,
+      paymentSourceId: nil,
+      setupIntentClientSecret: "seti_1Lq2At4VvJ2PtfhKRtPWTnKh_secret_MZAVRP2SXO5bvZzZ2bi1W7o5Wsz4BuN",
+      applePayParams: nil
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: false)
+
+    XCTAssertEqual(input.amount, "105.00")
+    XCTAssertNil(input.applePay)
+    XCTAssertNil(input.paymentSourceId)
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertEqual(input.locationId, "42")
+    XCTAssertEqual(
+      input.setupIntentClientSecret,
+      "seti_1Lq2At4VvJ2PtfhKRtPWTnKh_secret_MZAVRP2SXO5bvZzZ2bi1W7o5Wsz4BuN"
+    )
+    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
+  }
+
   func testUpdateBackingInput_UpdateBackingData_NotApplePay() {
     let applePayParams = ApplePayParams(
       paymentInstrumentName: "paymentInstrumentName",

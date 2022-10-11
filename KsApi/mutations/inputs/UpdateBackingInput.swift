@@ -7,6 +7,7 @@ public struct UpdateBackingInput: GraphMutationInput, Encodable {
   let locationId: String?
   let paymentSourceId: String?
   let rewardIds: [String]?
+  let setupIntentClientSecret: String?
 
   /**
    Initializes an UpdateBackingInput.
@@ -17,6 +18,7 @@ public struct UpdateBackingInput: GraphMutationInput, Encodable {
    - parameter locationId: The optional ID of the ShippingRule's Location.
    - parameter paymentSourceId: The optional ID of the PaymentSource.
    - parameter rewardIds: The optional GraphIDs of the backed Rewards.
+   - parameter setupIntentClientSecret: The optional ID of the Stripe provided payment sheet card.
    */
   public init(
     amount: String?,
@@ -24,7 +26,8 @@ public struct UpdateBackingInput: GraphMutationInput, Encodable {
     id: String,
     locationId: String?,
     paymentSourceId: String?,
-    rewardIds: [String]?
+    rewardIds: [String]?,
+    setupIntentClientSecret: String?
   ) {
     self.amount = amount
     self.applePay = applePay
@@ -32,5 +35,6 @@ public struct UpdateBackingInput: GraphMutationInput, Encodable {
     self.locationId = locationId
     self.paymentSourceId = paymentSourceId
     self.rewardIds = rewardIds
+    self.setupIntentClientSecret = setupIntentClientSecret
   }
 }

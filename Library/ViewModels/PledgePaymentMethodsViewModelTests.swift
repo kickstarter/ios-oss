@@ -754,20 +754,343 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard() {
+  func testGoToAddNewCard_PledgeContext_PaymentSheetDisabled_Success() {
     let project = Project.template
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
 
-    let addNewCardIndexPath = IndexPath(
-      row: 0,
-      section: PaymentMethodsTableViewSection.addNewCard.rawValue
-    )
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
-    self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
-    self.goToAddCardIntent.assertValues([.pledge])
-    self.goToProject.assertValues([project])
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.goToProject.assertValues([project])
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+    }
+  }
+
+  func testGoToAddNewCard_UpdatePledgeContext_PaymentSheetDisabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.goToProject.assertValues([project])
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+    }
+  }
+
+  func testGoToAddNewCard_UpdateRewardContexts_PaymentSheetDisabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .updateReward, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+      self.goToProject.assertValues([project])
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+    }
+  }
+
+  func testGoToAddNewCard_ChangePaymentMethodContext_PaymentSheetDisabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+      self.goToProject.assertValues([project])
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+    }
+  }
+
+  func testGoToAddNewCard_FixPaymentMethodContext_PaymentSheetDisabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .fixPaymentMethod, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+      self.goToProject.assertValues([project])
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+    }
+  }
+
+  func testGoToAddNewCard_PledgeContext_PaymentSheetEnabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.goToAddCardIntent.assertDidNotEmitValue()
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+    }
+  }
+
+  func testGoToAddNewCard_UpdatePledgeContext_PaymentSheetEnabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.goToAddCardIntent.assertDidNotEmitValue()
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+    }
+  }
+
+  func testGoToAddNewCard_UpdateRewardContexts_PaymentSheetEnabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .updateReward, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.goToAddCardIntent.assertDidNotEmitValue()
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+    }
+  }
+
+  func testGoToAddNewCard_ChangePaymentMethodContext_PaymentSheetEnabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs
+        .configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      self.goToAddCardIntent.assertDidNotEmitValue()
+      self.goToAddStripeCardIntent.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
+    }
+  }
+
+  func testGoToAddNewCard_FixPaymentMethodContext_PaymentSheetEnabled_Success() {
+    let project = Project.template
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.paymentSheetEnabled.rawValue: true
+      ]
+    let envelope = ClientSecretEnvelope(clientSecret: "test")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
+
+    withEnvironment(
+      apiService: mockService,
+      currentUser: User.template,
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .fixPaymentMethod, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+
+      self.scheduler.run()
+
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+    }
   }
 
   func testGoToAddNewCard_WithPaymentSheetDisabled_NoStoredCards_Success() {
@@ -1050,131 +1373,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       }
 
       XCTAssertTrue(allowedDelayedPaymentMethods)
-    }
-  }
-
-  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_UpdateContext_Failure() {
-    let project = Project.template
-    let addNewCardIndexPath = IndexPath(
-      row: 0,
-      section: PaymentMethodsTableViewSection.addNewCard.rawValue
-    )
-    let envelope = ClientSecretEnvelope(clientSecret: "test")
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.paymentSheetEnabled.rawValue: true
-      ]
-    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
-    var configuration = PaymentSheet.Configuration()
-    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-    configuration.allowsDelayedPaymentMethods = true
-
-    withEnvironment(
-      apiService: mockService,
-      currentUser: User.template,
-      optimizelyClient: mockOptimizelyClient
-    ) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
-      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
-
-      self.scheduler.run()
-
-      self.goToAddStripeCardIntent.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_UpdateRewardContext_Failure() {
-    let project = Project.template
-    let addNewCardIndexPath = IndexPath(
-      row: 0,
-      section: PaymentMethodsTableViewSection.addNewCard.rawValue
-    )
-    let envelope = ClientSecretEnvelope(clientSecret: "test")
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.paymentSheetEnabled.rawValue: true
-      ]
-    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
-    var configuration = PaymentSheet.Configuration()
-    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-    configuration.allowsDelayedPaymentMethods = true
-
-    withEnvironment(
-      apiService: mockService,
-      currentUser: User.template,
-      optimizelyClient: mockOptimizelyClient
-    ) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .updateReward, .discovery))
-      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
-
-      self.scheduler.run()
-
-      self.goToAddStripeCardIntent.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_ChangePaymentMethodContext_Failure() {
-    let project = Project.template
-    let addNewCardIndexPath = IndexPath(
-      row: 0,
-      section: PaymentMethodsTableViewSection.addNewCard.rawValue
-    )
-    let envelope = ClientSecretEnvelope(clientSecret: "test")
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.paymentSheetEnabled.rawValue: true
-      ]
-    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
-    var configuration = PaymentSheet.Configuration()
-    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-    configuration.allowsDelayedPaymentMethods = true
-
-    withEnvironment(
-      apiService: mockService,
-      currentUser: User.template,
-      optimizelyClient: mockOptimizelyClient
-    ) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs
-        .configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
-      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
-
-      self.scheduler.run()
-
-      self.goToAddStripeCardIntent.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_FixPaymentMethodContext_Failure() {
-    let project = Project.template
-    let addNewCardIndexPath = IndexPath(
-      row: 0,
-      section: PaymentMethodsTableViewSection.addNewCard.rawValue
-    )
-    let envelope = ClientSecretEnvelope(clientSecret: "test")
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.paymentSheetEnabled.rawValue: true
-      ]
-    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
-    var configuration = PaymentSheet.Configuration()
-    configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-    configuration.allowsDelayedPaymentMethods = true
-
-    withEnvironment(
-      apiService: mockService,
-      currentUser: User.template,
-      optimizelyClient: mockOptimizelyClient
-    ) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .fixPaymentMethod, .discovery))
-      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
-
-      self.scheduler.run()
-
-      self.goToAddStripeCardIntent.assertDidNotEmitValue()
     }
   }
 }

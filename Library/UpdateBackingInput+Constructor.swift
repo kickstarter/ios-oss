@@ -20,7 +20,8 @@ extension UpdateBackingInput {
       id: backingId,
       locationId: locationId,
       paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
-      rewardIds: rewardIds // FIXME: Update with `setupIntentClientSecret` when available on GQL schema.
+      rewardIds: rewardIds,
+      setupIntentClientSecret: updateBackingData.setupIntentClientSecret
     )
   }
 }

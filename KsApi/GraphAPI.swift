@@ -630,11 +630,11 @@ public enum GraphAPI {
     ///   - rewardIds: List of Relay encoded Reward/Add-on IDs
     ///   - locationId
     ///   - paymentSourceId: new payment source id
+    ///   - intentClientSecret: Stripe SetupIntent client secret
     ///   - applePay
-    ///   - googlePay
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(id: GraphQLID, amount: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, locationId: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, googlePay: Swift.Optional<GooglePayInput?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["id": id, "amount": amount, "rewardId": rewardId, "rewardIds": rewardIds, "locationId": locationId, "paymentSourceId": paymentSourceId, "applePay": applePay, "googlePay": googlePay, "clientMutationId": clientMutationId]
+    public init(id: GraphQLID, amount: Swift.Optional<String?> = nil, rewardId: Swift.Optional<GraphQLID?> = nil, rewardIds: Swift.Optional<[GraphQLID]?> = nil, locationId: Swift.Optional<String?> = nil, paymentSourceId: Swift.Optional<String?> = nil, intentClientSecret: Swift.Optional<String?> = nil, applePay: Swift.Optional<ApplePayInput?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["id": id, "amount": amount, "rewardId": rewardId, "rewardIds": rewardIds, "locationId": locationId, "paymentSourceId": paymentSourceId, "intentClientSecret": intentClientSecret, "applePay": applePay, "clientMutationId": clientMutationId]
     }
 
     public var id: GraphQLID {
@@ -694,21 +694,22 @@ public enum GraphAPI {
       }
     }
 
+    /// Stripe SetupIntent client secret
+    public var intentClientSecret: Swift.Optional<String?> {
+      get {
+        return graphQLMap["intentClientSecret"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "intentClientSecret")
+      }
+    }
+
     public var applePay: Swift.Optional<ApplePayInput?> {
       get {
         return graphQLMap["applePay"] as? Swift.Optional<ApplePayInput?> ?? Swift.Optional<ApplePayInput?>.none
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "applePay")
-      }
-    }
-
-    public var googlePay: Swift.Optional<GooglePayInput?> {
-      get {
-        return graphQLMap["googlePay"] as? Swift.Optional<GooglePayInput?> ?? Swift.Optional<GooglePayInput?>.none
-      }
-      set {
-        graphQLMap.updateValue(newValue, forKey: "googlePay")
       }
     }
 
@@ -719,57 +720,6 @@ public enum GraphAPI {
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "clientMutationId")
-      }
-    }
-  }
-
-  /// Necessary fields for Google Pay
-  public struct GooglePayInput: GraphQLMapConvertible {
-    public var graphQLMap: GraphQLMap
-
-    /// - Parameters:
-    ///   - token: Stripe token
-    ///   - googleTransactionId
-    ///   - instrumentDetails
-    ///   - instrumentType
-    public init(token: String, googleTransactionId: Swift.Optional<String?> = nil, instrumentDetails: String, instrumentType: String) {
-      graphQLMap = ["token": token, "googleTransactionId": googleTransactionId, "instrumentDetails": instrumentDetails, "instrumentType": instrumentType]
-    }
-
-    /// Stripe token
-    public var token: String {
-      get {
-        return graphQLMap["token"] as! String
-      }
-      set {
-        graphQLMap.updateValue(newValue, forKey: "token")
-      }
-    }
-
-    public var googleTransactionId: Swift.Optional<String?> {
-      get {
-        return graphQLMap["googleTransactionId"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
-      }
-      set {
-        graphQLMap.updateValue(newValue, forKey: "googleTransactionId")
-      }
-    }
-
-    public var instrumentDetails: String {
-      get {
-        return graphQLMap["instrumentDetails"] as! String
-      }
-      set {
-        graphQLMap.updateValue(newValue, forKey: "instrumentDetails")
-      }
-    }
-
-    public var instrumentType: String {
-      get {
-        return graphQLMap["instrumentType"] as! String
-      }
-      set {
-        graphQLMap.updateValue(newValue, forKey: "instrumentType")
       }
     }
   }
