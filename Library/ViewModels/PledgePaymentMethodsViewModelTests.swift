@@ -437,7 +437,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         image: UIImage(),
         redactedCardNumber: "••••1234",
         setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
-        isSelected: false,
+        isSelected: true,
         isEnabled: true
       )
 
@@ -463,7 +463,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
-        !expectedPaymentSheetPaymentMethodCard.isSelected
+        expectedPaymentSheetPaymentMethodCard.isSelected
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isEnabled,
