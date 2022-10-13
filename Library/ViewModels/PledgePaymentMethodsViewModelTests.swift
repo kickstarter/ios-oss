@@ -923,7 +923,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard_PledgeContext_PaymentSheetEnabled_Success() {
+  func testGoToAddNewCard_PledgeContext_PaymentSheetEnabled_Failure() {
     let project = Project.template
 
     let mockOptimizelyClient = MockOptimizelyClient()
@@ -957,7 +957,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard_UpdatePledgeContext_PaymentSheetEnabled_Success() {
+  func testGoToAddNewCard_UpdatePledgeContext_PaymentSheetEnabled_Failure() {
     let project = Project.template
 
     let mockOptimizelyClient = MockOptimizelyClient()
@@ -991,7 +991,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard_UpdateRewardContexts_PaymentSheetEnabled_Success() {
+  func testGoToAddNewCard_UpdateRewardContexts_PaymentSheetEnabled_Failure() {
     let project = Project.template
 
     let mockOptimizelyClient = MockOptimizelyClient()
@@ -1025,7 +1025,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard_ChangePaymentMethodContext_PaymentSheetEnabled_Success() {
+  func testGoToAddNewCard_ChangePaymentMethodContext_PaymentSheetEnabled_Failure() {
     let project = Project.template
 
     let mockOptimizelyClient = MockOptimizelyClient()
@@ -1060,7 +1060,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard_FixPaymentMethodContext_PaymentSheetEnabled_Success() {
+  func testGoToAddNewCard_FixPaymentMethodContext_PaymentSheetEnabled_Failure() {
     let project = Project.template
 
     let mockOptimizelyClient = MockOptimizelyClient()
@@ -1088,8 +1088,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      XCTAssertEqual(self.goToAddCardIntent.values.count, 1)
-      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 0)
+      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
+      XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
     }
   }
 
