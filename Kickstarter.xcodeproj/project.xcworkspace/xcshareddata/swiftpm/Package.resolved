@@ -186,7 +186,7 @@
       "location" : "https://github.com/kickstarter/Kickstarter-ReactiveExtensions",
       "state" : {
         "branch" : "feature/swift-package",
-        "revision" : "d5eebfaa728a09a736c9fa1d526e5e4d8aa7bccb"
+        "revision" : "34276be97fa5acae36e714ad65f8ecb733c0566b"
       }
     },
     {
@@ -257,8 +257,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
       "state" : {
-        "revision" : "c43bae3dac73fdd3cb906bd5a1914686ca71ed3c",
-        "version" : "6.7.0"
+        "revision" : "e03cda84105ba707de039b757e2b2de868c65a3e",
+        "version" : "6.5.0"
       }
     },
     {

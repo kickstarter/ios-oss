@@ -1,8 +1,8 @@
-import Foundation
 import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import UIKit
 
 public enum BetaToolsRow: Int, CaseIterable {
   case debugConfigFeatureFlags
