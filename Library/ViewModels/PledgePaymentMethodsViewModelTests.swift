@@ -476,8 +476,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         )
       self.reloadPaymentMethodsSelectedCard
         .assertValues(
-          [nil, nil, nil],
-          "No card to select after payment sheet card added because of errored backing."
+          [nil, nil, nil]
         )
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false, false])
