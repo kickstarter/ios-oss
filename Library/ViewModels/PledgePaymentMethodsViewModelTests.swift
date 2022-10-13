@@ -467,12 +467,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isEnabled,
-        expectedPaymentSheetPaymentMethodCard.isEnabled
+        !expectedPaymentSheetPaymentMethodCard.isEnabled
       )
       self.reloadPaymentMethodsSelectedSetupIntent
         .assertValues(
-          [nil, nil, nil],
-          "Newly added payment sheet card not selected because of errored backing."
+          [expectedPaymentSheetPaymentMethodCard.setupIntent, nil, nil],
+          "Newly added payment sheet card still selected even on errored backing."
         )
       self.reloadPaymentMethodsSelectedCard
         .assertValues(
