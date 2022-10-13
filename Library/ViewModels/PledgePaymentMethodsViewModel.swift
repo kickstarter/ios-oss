@@ -291,15 +291,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
       .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    let paymentSheetOnPledgeContext = context
-      .map { context -> Bool in
-        guard context.isCreating || context.isUpdating,
-          context != .fixPaymentMethod else {
-          return false
-        }
-
-        return paymentSheetEnabled
-      }
+    let paymentSheetOnPledgeContext = context.map { _ in paymentSheetEnabled }
 
     self.goToAddCardScreen = Signal.combineLatest(
       project,
