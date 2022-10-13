@@ -434,7 +434,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
 private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
   with paymentMethodData: PledgePaymentMethodsAndSelectionData,
-  project: Project
+  project _: Project
 ) -> PledgePaymentMethodsAndSelectionData {
   // We know we have a new payment sheet card, so de-select all existing non-payment sheet cards.
   let preexistingCardDataUnselected: [PledgePaymentMethodCellData] = {
@@ -491,28 +491,11 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
     return updatePaymentMethodData
   }()
 
-  // If there is no backing, simply select the first payment sheet card in the list
-  guard let backing = project.personalization.backing else {
-    return updatedDataWithSelection
-  }
+  return updatedDataWithSelection
 
-  /*
-   In keeping with existing logic inside `pledgePaymentMethodCellDataAndSelectedCard` , if newly added payment intent card is on an errored backing, then do not select any new/existing cards.
+  /**
+   Unlike the existing logic inside `pledgePaymentMethodCellDataAndSelectedCard`, we don't know the card id after its' been added, because new payment sheet cards only contain an image and a redacted card number. If we did we can ensure that an errored backing does not highlight the new card if it matches the payment source id on the backing. Right now this flow only handles the latest cards from the payment sheet, so we can simply select the first one added. If this code path is taken the method above is not called again for the same instance of this view controller, the flag is lazy initialized and doesn't change while this page is displayed.
    */
-  if backing.status == .errored {
-    let updatePaymentMethodData = paymentMethodData
-      |> \.paymentMethodsCellData .~ preexistingCardDataUnselected
-      |> \.paymentSheetPaymentMethodsCellData .~ preexistingPaymentSheetCardDataUnselected
-      |> \.selectedCard .~ nil
-      |> \.selectedSetupIntent .~ nil
-
-    return updatePaymentMethodData
-  } else {
-    /*
-     If we're working with a backing, select the first payment sheet card added
-     */
-    return updatedDataWithSelection
-  }
 }
 
 private func pledgePaymentMethodCellDataAndSelectedCard(
