@@ -437,7 +437,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         image: UIImage(),
         redactedCardNumber: "••••1234",
         setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
-        isSelected: false,
+        isSelected: true,
         isEnabled: true
       )
 
@@ -471,13 +471,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.reloadPaymentMethodsSelectedSetupIntent
         .assertValues(
-          [nil, nil, nil],
-          "Newly added payment sheet card not selected because of errored backing."
+          [nil, nil, expectedPaymentSheetPaymentMethodCard.setupIntent],
+          "Newly added payment sheet card still selected even on errored backing."
         )
       self.reloadPaymentMethodsSelectedCard
         .assertValues(
-          [nil, nil, nil],
-          "No card to select after payment sheet card added because of errored backing."
+          [nil, nil, nil]
         )
       self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
       self.reloadPaymentMethodsIsLoading.assertValues([true, false, false])
