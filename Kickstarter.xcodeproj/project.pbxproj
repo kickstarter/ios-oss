@@ -235,8 +235,6 @@
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		1905787B28F8CD2500428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905787A28F8CD2500428375 /* ReactiveSwift */; };
-		1905787D28F8CD4D00428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905787C28F8CD4D00428375 /* ReactiveSwift */; };
-		1905787F28F8CD5E00428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905787E28F8CD5E00428375 /* ReactiveSwift */; };
 		1905788128F8CD7000428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905788028F8CD7000428375 /* ReactiveSwift */; };
 		191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 191EDC6628E29BB9009B41B2 /* PerimeterX */; };
 		1923770A28DA2AE300F68635 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
@@ -262,9 +260,7 @@
 		198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; };
 		198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1998BCA828F60E8900D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCA728F60E8900D04077 /* ReactiveExtensions */; };
-		1998BCAA28F60E9600D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCA928F60E9600D04077 /* ReactiveExtensions */; };
 		1998BCAC28F60EA700D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAB28F60EA700D04077 /* ReactiveExtensions-TestHelpers */; };
-		1998BCAE28F60EB700D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAD28F60EB700D04077 /* ReactiveExtensions */; };
 		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
 		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
 		1998BCB428F60EE800D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB328F60EE800D04077 /* ReactiveExtensions-TestHelpers */; };
@@ -3172,7 +3168,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
-				1905787D28F8CD4D00428375 /* ReactiveSwift in Frameworks */,
 				60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				19A824B028DA562800325124 /* AppboySegment in Frameworks */,
@@ -3181,7 +3176,6 @@
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
-				1998BCAA28F60E9600D04077 /* ReactiveExtensions in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3201,8 +3195,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1998BCAE28F60EB700D04077 /* ReactiveExtensions in Frameworks */,
-				1905787F28F8CD5E00428375 /* ReactiveSwift in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7202,8 +7194,6 @@
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
 				19A824AF28DA562800325124 /* AppboySegment */,
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
-				1998BCA928F60E9600D04077 /* ReactiveExtensions */,
-				1905787C28F8CD4D00428375 /* ReactiveSwift */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7249,8 +7239,6 @@
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
-				1998BCAD28F60EB700D04077 /* ReactiveExtensions */,
-				1905787E28F8CD5E00428375 /* ReactiveSwift */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -10470,16 +10458,6 @@
 			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
 			productName = ReactiveSwift;
 		};
-		1905787C28F8CD4D00428375 /* ReactiveSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
-			productName = ReactiveSwift;
-		};
-		1905787E28F8CD5E00428375 /* ReactiveSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
-			productName = ReactiveSwift;
-		};
 		1905788028F8CD7000428375 /* ReactiveSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
@@ -10525,20 +10503,10 @@
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = ReactiveExtensions;
 		};
-		1998BCA928F60E9600D04077 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
-		};
 		1998BCAB28F60EA700D04077 /* ReactiveExtensions-TestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = "ReactiveExtensions-TestHelpers";
-		};
-		1998BCAD28F60EB700D04077 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
 		};
 		1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
