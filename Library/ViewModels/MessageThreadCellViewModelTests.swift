@@ -1,3 +1,4 @@
+import Foundation
 @testable import KsApi
 import Library
 import Prelude

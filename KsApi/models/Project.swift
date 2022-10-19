@@ -1,4 +1,4 @@
-
+import Foundation
 import Prelude
 import ReactiveSwift
 
