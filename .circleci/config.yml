@@ -43,10 +43,6 @@ test_job: &test_job
     - run:
         name: Bootstrap SPM
         command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
-    - restore_cache:
-        name: Restore Carthage Cache
-        keys:
-          - carthage-cache-v3-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap
         command: make bootstrap
@@ -92,10 +88,6 @@ distribute_job: &distribute_job
     - run:
         name: Bootstrap SPM
         command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
-    - restore_cache:
-        name: Restore Carthage Cache
-        keys:
-          - carthage-cache-v3-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap
         command: make bootstrap
@@ -156,18 +148,9 @@ jobs:
       - run:
           name: Bootstrap SPM
           command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-v3-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
       - run:
           name: Bootstrap
           command: make bootstrap
-      - save_cache:
-          name: Cache Carthage
-          key: carthage-cache-v3-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-          paths:
-            - Carthage
       - save_cache:
           name: Cache SPM
           key: spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}

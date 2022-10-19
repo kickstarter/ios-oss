@@ -37,12 +37,9 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: carthage-bootstrap configs secrets
+dependencies: configs secrets
 
 bootstrap: hooks dependencies
-
-carthage-bootstrap:
-	bin/carthage.sh bootstrap --platform iOS || exit 1
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
