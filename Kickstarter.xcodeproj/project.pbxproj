@@ -236,6 +236,7 @@
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		1905787B28F8CD2500428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905787A28F8CD2500428375 /* ReactiveSwift */; };
 		1905788128F8CD7000428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905788028F8CD7000428375 /* ReactiveSwift */; };
+		191A2C712907350A0093B6E1 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191A2C702907350A0093B6E1 /* ChangeEmailView.swift */; };
 		191A4B4028FF386C009D62A5 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B3F28FF386C009D62A5 /* ReactiveSwift */; };
 		191A4B4228FF3897009D62A5 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4128FF3897009D62A5 /* ReactiveExtensions */; };
 		191A4B4428FF395E009D62A5 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4328FF395E009D62A5 /* ReactiveExtensions */; };
@@ -1839,6 +1840,7 @@
 		19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift"; sourceTree = "<group>"; };
 		19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift"; sourceTree = "<group>"; };
 		19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift"; sourceTree = "<group>"; };
+		191A2C702907350A0093B6E1 /* ChangeEmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeEmailView.swift; path = Controller/ChangeEmailView.swift; sourceTree = "<group>"; };
 		192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stripe+PaymentMethod.swift"; sourceTree = "<group>"; };
 		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
@@ -3452,6 +3454,7 @@
 		1937A6DE28C92AF500DD732D /* ChangeEmail */ = {
 			isa = PBXGroup;
 			children = (
+				191A2C702907350A0093B6E1 /* ChangeEmailView.swift */,
 				1937A6F428C92FE700DD732D /* Controller */,
 			);
 			path = ChangeEmail;
@@ -8381,6 +8384,7 @@
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */,
+				191A2C712907350A0093B6E1 /* ChangeEmailView.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
