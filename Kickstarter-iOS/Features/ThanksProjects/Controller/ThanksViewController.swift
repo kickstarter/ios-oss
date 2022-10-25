@@ -220,7 +220,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   fileprivate func showRatingAlert() {
-    SKStoreReviewController.requestReview()
+    if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+      SKStoreReviewController.requestReview(in: scene)
+    }
   }
 
   fileprivate func showGamesNewsletterAlert() {

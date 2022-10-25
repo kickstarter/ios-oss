@@ -79,7 +79,6 @@ extension User {
     var followerNotification: Bool?
     var friendActivityNotification: Bool?
     var messagesNotification: Bool?
-    var postLikesNotification: Bool?
     var updatesNotification: Bool?
     var mobileBackingsNotification: Bool?
     var mobileCommentsNotification: Bool?
