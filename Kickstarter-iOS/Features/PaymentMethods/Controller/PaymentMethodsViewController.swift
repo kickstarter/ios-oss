@@ -188,9 +188,9 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
             .showBanner(with: .error, message: error.localizedDescription)
         case let .success(paymentSheetFlowController):
           let topViewController = strongSelf.navigationController?.topViewController
-          let paymentSheetShownWithinPledgeContext = topViewController is PaymentMethodsViewController
+          let paymentSheetShownWithinPaymentMethodsContext = topViewController is PaymentMethodsViewController
 
-          if paymentSheetShownWithinPledgeContext {
+          if paymentSheetShownWithinPaymentMethodsContext {
             strongSelf.paymentSheetFlowController = paymentSheetFlowController
             strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
               guard let strongSelf = self else { return }
