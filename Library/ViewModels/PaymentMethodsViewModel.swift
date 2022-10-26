@@ -14,6 +14,7 @@ public protocol PaymentMethodsViewModelInputs {
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
                           setupIntent: String)
   func shouldCancelPaymentSheetAppearance(state: Bool)
+  func trackPaymentSheetDisplayContext(value: String?)
   func viewDidLoad()
 }
 
@@ -217,6 +218,12 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
+    
+    self.trackPaymentSheetDisplayContext.signal.skipNil()
+      .observeValues { value in
+        AppEnvironment.current.ksrAnalytics
+          .trackPaymentSheetDisplayed(displayContext: value)
+      }
   }
 
   // Stores the table view's editing state as it is affected by multiple signals
@@ -273,6 +280,11 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(false)
   public func shouldCancelPaymentSheetAppearance(state: Bool) {
     self.shouldCancelPaymentSheetAppearance.value = state
+  }
+  
+  private let trackPaymentSheetDisplayContext = MutableProperty<String?>(nil)
+  public func trackPaymentSheetDisplayContext(value: String?) {
+    self.trackPaymentSheetDisplayContext.value = value
   }
 
   public let cancelAddNewCardLoadingState: Signal<Void, Never>

@@ -40,6 +40,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
                           setupIntent: String)
+  func trackPaymentSheetDisplayContext(value: String?)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
@@ -378,6 +379,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         return indexPath
       }
+    
+    self.trackPaymentSheetDisplayContextProperty.signal.skipNil()
+      .observeValues { value in
+        AppEnvironment.current.ksrAnalytics
+          .trackPaymentSheetDisplayed(displayContext: value)
+      }
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
@@ -412,6 +419,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let didSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
   public func didSelectRowAtIndexPath(_ indexPath: IndexPath) {
     self.didSelectRowAtIndexPathProperty.value = indexPath
+  }
+  
+  private let trackPaymentSheetDisplayContextProperty = MutableProperty<String?>(nil)
+  public func trackPaymentSheetDisplayContext(value: String?) {
+    self.trackPaymentSheetDisplayContextProperty.value = value
   }
 
   private let willSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)

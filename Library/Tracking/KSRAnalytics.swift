@@ -1161,6 +1161,19 @@ public final class KSRAnalytics {
       properties: props
     )
   }
+  
+  /**
+   Call when the Stripe payment sheet is shown on an unintended page.
+   */
+  public func trackPaymentSheetDisplayed(displayContext: String) {
+    let props = userProperties(for: self.loggedInUser)
+      .withAllValuesFrom(["stripe_payment_sheet_appears_incorrectly": displayContext])
+    
+    self.track(
+      event: SegmentEvent.pageViewed.rawValue,
+      properties: props
+    )
+  }
 
   // MARK: - Empty State Events
 

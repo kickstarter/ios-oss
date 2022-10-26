@@ -172,6 +172,15 @@ final class PledgePaymentMethodsViewController: UIViewController {
           strongSelf.messageDisplayingDelegate?
             .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
         case let .success(paymentSheetFlowController):
+          let topViewController = strongSelf.navigationController?.topViewController
+          let paymentSheetShownWithinPledgeContext = topViewController is PledgeViewController
+          
+          if !paymentSheetShownWithinPledgeContext {
+            let displayValue = String(describing: type(of: topViewController))
+            
+            strongSelf.viewModel.inputs.trackPaymentSheetDisplayContext(value: displayValue)
+          }
+          
           strongSelf.paymentSheetFlowController = paymentSheetFlowController
           strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
             guard let strongSelf = self else { return }
