@@ -124,7 +124,7 @@ private func shippingRulesData(
 
       return ShippingRule.shippingRule(from: fragment)
     }
-    .compactMap { $0 }
+    .flatMap { $0 }
 
   return shippingRules
 }
