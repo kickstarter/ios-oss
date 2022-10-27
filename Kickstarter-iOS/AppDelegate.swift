@@ -496,7 +496,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
     self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
-    completionHandler(.alert)
+    completionHandler([.banner, .list])
   }
 
   func userNotificationCenter(
