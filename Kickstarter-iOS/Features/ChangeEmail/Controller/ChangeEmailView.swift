@@ -13,40 +13,39 @@ struct ChangeEmailView: View {
 
   var body: some View {
     List {
-      Group {
-        VStack(spacing: 0) {
-          Color(.ksr_support_100)
-            .frame(width: .infinity, height: minListRow, alignment: .center)
+      Color(.ksr_support_100)
+        .frame(width: .infinity, height: minListRow, alignment: .center)
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets())
 
-          ZStack(alignment: .center) {
-            entryField(
-              textLabelText: "Current email",
-              textFieldText: $emailText,
-              placeholder: "Current email"
-            )
-            Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
-              .offset(x: 0, y: minListRow / 2)
-              .alignmentGuide(HorizontalAlignment.center) { dimensions in
-                dimensions[HorizontalAlignment.center]
-              }
-          }
+      VStack(alignment: .center, spacing: 0) {
+        entryField(
+          textLabelText: "Current email",
+          textFieldText: $emailText,
+          placeholder: "Current email"
+        )
+        Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
+      }
+      .listRowSeparator(.hidden)
+      .listRowInsets(EdgeInsets())
 
-          Color(.ksr_support_100)
-            .frame(width: .infinity, height: minListRow, alignment: .center)
+      Color(.ksr_support_100)
+        .frame(width: .infinity, height: minListRow, alignment: .center)
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets())
 
-          ZStack(alignment: .center) {
-            entryField(textLabelText: "New email", textFieldText: $newEmailText, placeholder: "Email address")
-          }
-
-          ZStack(alignment: .center) {
-            entryField(textLabelText: "Current password", textFieldText: $password, placeholder: "Password")
-            Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
-              .offset(x: 0, y: minListRow / 2)
-              .alignmentGuide(HorizontalAlignment.center) { dimensions in
-                dimensions[HorizontalAlignment.center]
-              }
-          }
-        }
+      VStack(alignment: .center, spacing: 0) {
+        entryField(
+          textLabelText: "New email",
+          textFieldText: $newEmailText,
+          placeholder: "Email address"
+        )
+        entryField(
+          textLabelText: "Current password",
+          textFieldText: $password,
+          placeholder: "Password"
+        )
+        Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
