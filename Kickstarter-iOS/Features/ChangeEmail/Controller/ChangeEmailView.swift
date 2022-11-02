@@ -1,12 +1,18 @@
 import Library
 import SwiftUI
 
+enum FocusField {
+  case newEmail
+  case currentPassword
+}
+
 @available(iOS 15.0, *)
 struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
+  @FocusState private var focusField: FocusField?
 
   init(emailText: String) {
     self.emailText = emailText
@@ -15,7 +21,7 @@ struct ChangeEmailView: View {
   var body: some View {
     List {
       Color(.ksr_support_100)
-        .frame(width: .infinity, height: minListRow, alignment: .center)
+        .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
@@ -27,13 +33,14 @@ struct ChangeEmailView: View {
           valueText: $emailText
         )
         .currentEmail()
-        Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
+
+        Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
 
       Color(.ksr_support_100)
-        .frame(width: .infinity, height: minListRow, alignment: .center)
+        .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
@@ -45,6 +52,11 @@ struct ChangeEmailView: View {
           valueText: $newEmailText
         )
         .newEmail()
+        .focused($focusField, equals: .newEmail)
+        .onSubmit {
+          focusField = .currentPassword
+        }
+
         entryField(
           titleText: Strings.Current_password(),
           placeholderText: Strings.login_placeholder_password(),
@@ -52,7 +64,13 @@ struct ChangeEmailView: View {
           valueText: $passwordText
         )
         .currentPassword()
-        Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
+        .focused($focusField, equals: .currentPassword)
+        .submitScope(passwordText.isEmpty)
+        .onSubmit {
+          focusField = nil
+        }
+
+        Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
@@ -149,7 +167,7 @@ extension View {
 
   func newEmail(keyboardType: UIKeyboardType = .emailAddress,
                 textColor: Color = Color(.ksr_support_400),
-                submitLabel: SubmitLabel = .return,
+                submitLabel: SubmitLabel = .next,
                 editable: Bool = true,
                 titleText: String = Strings.New_email()) -> some View {
     modifier(EntryFieldModifier(
