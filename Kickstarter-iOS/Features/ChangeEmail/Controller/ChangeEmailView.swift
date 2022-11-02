@@ -2,69 +2,6 @@ import Library
 import SwiftUI
 
 @available(iOS 15.0, *)
-enum FieldType {
-  case email
-  case newEmail
-  case newPassword
-
-  var titleText: String {
-    switch self {
-    case .email: return Strings.Current_email()
-    case .newEmail: return Strings.New_email()
-    case .newPassword: return Strings.Current_password()
-    }
-  }
-
-  var placeholderText: String {
-    switch self {
-    case .email: return ""
-    case .newEmail: return Strings.login_placeholder_email()
-    case .newPassword: return Strings.login_placeholder_password()
-    }
-  }
-
-  var editable: Bool {
-    switch self {
-    case .email: return false
-    case .newEmail: return true
-    case .newPassword: return true
-    }
-  }
-
-  var submitLabel: SubmitLabel {
-    switch self {
-    case .email: return .return
-    case .newEmail: return .return
-    case .newPassword: return .done
-    }
-  }
-
-  var keyboardType: UIKeyboardType {
-    switch self {
-    case .email: return .default
-    case .newEmail: return .emailAddress
-    case .newPassword: return .default
-    }
-  }
-
-  var secureField: Bool {
-    switch self {
-    case .email: return false
-    case .newEmail: return false
-    case .newPassword: return true
-    }
-  }
-
-  var textColor: Color {
-    switch self {
-    case .email: return Color(.ksr_support_700)
-    case .newEmail: return Color(.ksr_support_400)
-    case .newPassword: return Color(.ksr_support_400)
-    }
-  }
-}
-
-@available(iOS 15.0, *)
 struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
@@ -84,9 +21,12 @@ struct ChangeEmailView: View {
 
       VStack(alignment: .center, spacing: 0) {
         entryField(
-          type: .email,
+          titleText: Strings.Current_email(),
+          placeholderText: "",
+          secureField: false,
           valueText: $emailText
         )
+        .currentEmail()
         Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
       }
       .listRowSeparator(.hidden)
@@ -99,13 +39,19 @@ struct ChangeEmailView: View {
 
       VStack(alignment: .center, spacing: 0) {
         entryField(
-          type: .newEmail,
+          titleText: Strings.New_email(),
+          placeholderText: Strings.login_placeholder_email(),
+          secureField: false,
           valueText: $newEmailText
         )
+        .newEmail()
         entryField(
-          type: .newPassword,
+          titleText: Strings.Current_password(),
+          placeholderText: Strings.login_placeholder_password(),
+          secureField: true,
           valueText: $passwordText
         )
+        .currentPassword()
         Color(.ksr_cell_separator).frame(width: .infinity, height: 1)
       }
       .listRowSeparator(.hidden)
@@ -117,10 +63,12 @@ struct ChangeEmailView: View {
   }
 
   @ViewBuilder
-  private func entryField(type: FieldType,
+  private func entryField(titleText: String,
+                          placeholderText: String,
+                          secureField: Bool,
                           valueText: Binding<String>) -> some View {
     HStack {
-      Text(type.titleText)
+      Text(titleText)
         .frame(
           maxWidth: .infinity,
           alignment: .leading
@@ -129,41 +77,101 @@ struct ChangeEmailView: View {
         .foregroundColor(Color(.ksr_support_700))
       Spacer()
 
-      newEntryField(type: type, valueText: valueText)
-        .frame(
-          maxWidth: .infinity,
-          alignment: .trailing
-        )
-        .keyboardType(type.keyboardType)
-        .font(Font(UIFont.ksr_body()))
-        .foregroundColor(type.textColor)
-        .lineLimit(1)
-        .multilineTextAlignment(.trailing)
-        .submitLabel(type.submitLabel)
-        .disabled(!type.editable)
-        .accessibilityElement()
-        .accessibilityLabel(type.titleText)
+      newEntryField(secureField: secureField, placeholderText: placeholderText, valueText: valueText)
     }
     .padding(12)
     .accessibilityElement(children: .combine)
-    .accessibilityLabel(type.titleText)
+    .accessibilityLabel(titleText)
   }
 
   @ViewBuilder
-  private func newEntryField(type: FieldType, valueText: Binding<String>) -> some View {
-    if type.secureField {
+  private func newEntryField(secureField: Bool,
+                             placeholderText: String,
+                             valueText: Binding<String>) -> some View {
+    if secureField {
       SecureField(
         "",
         text: valueText,
-        prompt: Text(type.placeholderText).foregroundColor(Color(.ksr_support_400))
+        prompt: Text(placeholderText).foregroundColor(Color(.ksr_support_400))
       )
     } else {
       TextField(
         "",
         text: valueText,
         prompt:
-        Text(type.placeholderText).foregroundColor(Color(.ksr_support_400))
+        Text(placeholderText).foregroundColor(Color(.ksr_support_400))
       )
     }
+  }
+}
+
+@available(iOS 15.0, *)
+struct EntryFieldModifier: ViewModifier {
+  let keyboardType: UIKeyboardType
+  let textColor: Color
+  let submitLabel: SubmitLabel
+  let editable: Bool
+  let titleText: String
+
+  func body(content: Content) -> some View {
+    content
+      .frame(
+        maxWidth: .infinity,
+        alignment: .trailing
+      )
+      .keyboardType(self.keyboardType)
+      .font(Font(UIFont.ksr_body()))
+      .foregroundColor(self.textColor)
+      .lineLimit(1)
+      .multilineTextAlignment(.trailing)
+      .submitLabel(self.submitLabel)
+      .disabled(!self.editable)
+      .accessibilityElement()
+      .accessibilityLabel(self.titleText)
+  }
+}
+
+@available(iOS 15.0, *)
+extension View {
+  func currentEmail(keyboardType: UIKeyboardType = .default,
+                    textColor: Color = Color(.ksr_support_700),
+                    submitLabel: SubmitLabel = .return,
+                    editable: Bool = false,
+                    titleText: String = Strings.Current_email()) -> some View {
+    modifier(EntryFieldModifier(
+      keyboardType: keyboardType,
+      textColor: textColor,
+      submitLabel: submitLabel,
+      editable: editable,
+      titleText: titleText
+    ))
+  }
+
+  func newEmail(keyboardType: UIKeyboardType = .emailAddress,
+                textColor: Color = Color(.ksr_support_400),
+                submitLabel: SubmitLabel = .return,
+                editable: Bool = true,
+                titleText: String = Strings.New_email()) -> some View {
+    modifier(EntryFieldModifier(
+      keyboardType: keyboardType,
+      textColor: textColor,
+      submitLabel: submitLabel,
+      editable: editable,
+      titleText: titleText
+    ))
+  }
+
+  func currentPassword(keyboardType: UIKeyboardType = .default,
+                       textColor: Color = Color(.ksr_support_400),
+                       submitLabel: SubmitLabel = .done,
+                       editable: Bool = true,
+                       titleText: String = Strings.Current_password()) -> some View {
+    modifier(EntryFieldModifier(
+      keyboardType: keyboardType,
+      textColor: textColor,
+      submitLabel: submitLabel,
+      editable: editable,
+      titleText: titleText
+    ))
   }
 }
