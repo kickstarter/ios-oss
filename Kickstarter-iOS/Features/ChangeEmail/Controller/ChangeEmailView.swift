@@ -11,6 +11,7 @@ struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
+  @State private var warningMessage: String? = Strings.We_ve_been_unable_to_send_email()
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
@@ -38,6 +39,10 @@ struct ChangeEmailView: View {
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
+
+      if let warningText = warningMessage {
+        warningLabel(text: warningText)
+      }
 
       Color(.ksr_support_100)
         .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
@@ -120,6 +125,13 @@ struct ChangeEmailView: View {
         Text(placeholderText).foregroundColor(Color(.ksr_support_400))
       )
     }
+  }
+
+  @ViewBuilder
+  private func warningLabel(text: String) -> some View {
+    Label(text, systemImage: "exclamationmark.triangle.fill")
+      .labelStyle(.titleOnly)
+      .font(Font(UIFont.ksr_body(size: 13)))
   }
 }
 
