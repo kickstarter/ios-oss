@@ -40,6 +40,8 @@ extension Project {
 
     let availableCardTypes = projectFragment.availableCardTypes.compactMap { $0.rawValue }
 
+    let currency = projectFragment.currency.rawValue
+
     let displayPrelaunch = !projectFragment.isLaunched
 
     let discoverTags: [String] = projectFragment.tags
@@ -72,6 +74,7 @@ extension Project {
       category: category,
       country: country,
       creator: creator,
+      currency: currency,
       extendedProjectProperties: extendedProjectProperties,
       memberData: memberData,
       dates: dates,

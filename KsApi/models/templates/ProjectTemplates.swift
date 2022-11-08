@@ -17,6 +17,7 @@ extension Project {
     category: .template,
     country: .us,
     creator: User.template |> \.stats.createdProjectsCount .~ 2,
+    currency: Country.us.currencyCode,
     memberData: Project.MemberData(
       lastUpdatePublishedAt: nil,
       permissions: [],

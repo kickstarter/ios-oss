@@ -156,6 +156,26 @@ public func currencySymbol(
   }
 }
 
+/**
+ Returns the full country for a currency symbol.
+
+ - parameter symbol: The currency symbol.
+ - parameter env: Current Environment.
+
+ - returns: The first matching country for currency symbol
+ */
+public func projectCountry(
+  forCurrency symbol: String?,
+  env: Environment = AppEnvironment.current
+) -> Project.Country? {
+  guard let existingSymbol = symbol,
+    let country = env.launchedCountries.countries.filter({ $0.currencySymbol == existingSymbol }).first else {
+    return nil
+  }
+  // return a hardcoded Country if it matches the country code
+  return country
+}
+
 public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
   return AppEnvironment.current.apiService.clearUserUnseenActivity(input: .init())
     .filter { _ in AppEnvironment.current.currentUser != nil }

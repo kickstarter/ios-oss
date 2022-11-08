@@ -8,6 +8,7 @@ public struct Project {
   public var category: Category
   public var country: Country
   public var creator: User
+  public var currency: String
   public var extendedProjectProperties: ExtendedProjectProperties?
   public var memberData: MemberData
   public var dates: Dates
@@ -256,6 +257,7 @@ extension Project: Decodable {
     case blurb
     case category
     case creator
+    case currency
     case displayPrelaunch = "display_prelaunch"
     case id
     case location
@@ -277,6 +279,7 @@ extension Project: Decodable {
     self.category = try values.decode(Category.self, forKey: .category)
     self.country = try Project.Country(from: decoder)
     self.creator = try values.decode(User.self, forKey: .creator)
+    self.currency = try values.decode(String.self, forKey: .currency)
     self.memberData = try Project.MemberData(from: decoder)
     self.dates = try Project.Dates(from: decoder)
     self.displayPrelaunch = try values.decodeIfPresent(Bool.self, forKey: .displayPrelaunch)
