@@ -201,6 +201,7 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
 
 public func formattedAmountForRewardOrBacking(
   project: Project,
+  projectCurrencyCountry: Project.Country,
   rewardOrBacking: Either<Reward, Backing>
 ) -> String {
   switch rewardOrBacking {
@@ -208,13 +209,13 @@ public func formattedAmountForRewardOrBacking(
     let min = minPledgeAmount(forProject: project, reward: reward)
     return Format.currency(
       min,
-      country: project.country,
+      country: projectCurrencyCountry,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
   case let .right(backing):
     return Format.formattedCurrency(
       backing.amount,
-      country: project.country,
+      country: projectCurrencyCountry,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
   }

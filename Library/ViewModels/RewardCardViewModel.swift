@@ -76,8 +76,14 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map(Strings.About_reward_amount(reward_amount:))
 
     self.rewardMinimumLabelText = projectAndReward
-      .map { project, reward in (project, Either<Reward, Backing>.left(reward)) }
-      .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
+      .map { project, reward in
+        guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
+          return (project, project.country, Either<Reward, Backing>.left(reward))
+        }
+
+        return (project, projectCurrencyCountry, Either<Reward, Backing>.left(reward))
+      }
+      .map(formattedAmountForRewardOrBacking(project:projectCurrencyCountry:rewardOrBacking:))
 
     self.descriptionLabelText = projectAndReward
       .map(localizedDescription(project:reward:))
