@@ -157,19 +157,19 @@ public func currencySymbol(
 }
 
 /**
- Returns the full country for a currency symbol.
+ Returns the full country for a currency code.
 
- - parameter symbol: The currency symbol.
+ - parameter code: The currency code.
  - parameter env: Current Environment.
 
  - returns: The first matching country for currency symbol
  */
 public func projectCountry(
-  forCurrency symbol: String?,
+  forCurrency code: String?,
   env: Environment = AppEnvironment.current
 ) -> Project.Country? {
-  guard let existingSymbol = symbol,
-    let country = env.launchedCountries.countries.filter({ $0.currencySymbol == existingSymbol }).first else {
+  guard let currencyCode = code,
+    let country = env.launchedCountries.countries.filter({ $0.currencyCode == currencyCode }).first else {
     return nil
   }
   // return a hardcoded Country if it matches the country code

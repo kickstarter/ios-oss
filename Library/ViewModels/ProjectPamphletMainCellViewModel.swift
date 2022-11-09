@@ -430,10 +430,10 @@ private func pledgedText(for project: Project, _ needsConversion: Bool) -> Strin
 }
 
 private func conversionText(for project: Project) -> String {
-  let pledgedCurrencyCountry = projectCountry(forCurrency: project.currency) ?? project
+  let pledgedCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project
     .country
 
-  let goalCurrencyCountry = projectCountry(forCurrency: project.currency) ??
+  let goalCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ??
     pledgedCurrencyCountry
 
   return Strings.discovery_baseball_card_stats_convert_from_pledged_of_goal(
