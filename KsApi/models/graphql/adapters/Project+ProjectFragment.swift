@@ -74,7 +74,6 @@ extension Project {
       category: category,
       country: country,
       creator: creator,
-      currency: currency,
       extendedProjectProperties: extendedProjectProperties,
       memberData: memberData,
       dates: dates,
