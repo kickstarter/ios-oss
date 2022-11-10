@@ -47,8 +47,7 @@ extension Project {
       view: { $0.staffPick },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization,
         photo: $1.photo, prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -112,8 +111,7 @@ extension Project {
       view: { $0.displayPrelaunch },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $0, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -127,8 +125,7 @@ extension Project {
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
         country: $1.country,
-        creator: $1.creator, extendedProjectProperties: $0, memberData: $1.memberData,
-        dates: $1.dates,
+        creator: $1.creator, extendedProjectProperties: $0, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -141,8 +138,7 @@ extension Project {
       view: { $0.id },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $0,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -155,8 +151,7 @@ extension Project {
       view: { $0.location },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $0, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -182,8 +177,7 @@ extension Project {
       view: { $0.name },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $0, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -196,8 +190,7 @@ extension Project {
       view: { $0.personalization },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $0, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -210,8 +203,7 @@ extension Project {
       view: { $0.photo },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $0,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -224,8 +216,7 @@ extension Project {
       view: { $0.prelaunchActivated },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $0, rewardData: $1.rewardData, slug: $1.slug,
@@ -251,8 +242,7 @@ extension Project {
       view: { $0.slug },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $0,
@@ -265,8 +255,7 @@ extension Project {
       view: { $0.state },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -278,8 +267,7 @@ extension Project {
       view: { $0.stats },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -304,8 +292,7 @@ extension Project {
       view: { $0.urls },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
@@ -317,8 +304,7 @@ extension Project {
       view: { $0.video },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
