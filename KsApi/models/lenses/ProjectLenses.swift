@@ -229,8 +229,7 @@ extension Project {
       view: { $0.rewardData },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $0, slug: $1.slug, staffPick: $1.staffPick,
@@ -279,8 +278,7 @@ extension Project {
       view: { $0.tags },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
-        country: $1.country, creator: $1.creator, memberData: $1.memberData,
-        dates: $1.dates,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
