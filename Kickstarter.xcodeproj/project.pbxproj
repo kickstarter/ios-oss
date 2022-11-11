@@ -493,6 +493,8 @@
 		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
 		60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
+		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
+		701160D7291EED5C0095BF24 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D5291EED3F0095BF24 /* MessageBannerView.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -2071,6 +2073,8 @@
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
+		701160D5291EED3F0095BF24 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
@@ -3759,6 +3763,7 @@
 			children = (
 				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
 				77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */,
+				701160D5291EED3F0095BF24 /* MessageBannerView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -6139,6 +6144,7 @@
 			isa = PBXGroup;
 			children = (
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
+				701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
 				8ADF4D7524BCCFD60018AD4B /* PillsView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
@@ -8285,6 +8291,7 @@
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
 				06E3296B270E39B300216306 /* ProjectPageNavigationBarView.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
+				701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
@@ -8310,6 +8317,7 @@
 				8A45169324B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift in Sources */,
 				015102AD1F1947C50006C0FC /* MessageThreadsDataSource.swift in Sources */,
 				379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */,
+				701160D7291EED5C0095BF24 /* MessageBannerView.swift in Sources */,
 				3742036F22DD45A2007AA86E /* PillCell.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,

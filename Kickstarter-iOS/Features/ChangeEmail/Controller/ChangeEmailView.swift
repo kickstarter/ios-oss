@@ -1,3 +1,4 @@
+import Kingfisher
 import Library
 import SwiftUI
 
@@ -11,15 +12,19 @@ struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
-  /// FIXME: In the view model output, alternate text is `Email_unverified`
+  // FIXME: In the view model output, alternate text is `Email_unverified`
   @State private var warningMessage: (String, Bool)? = (Strings.We_ve_been_unable_to_send_email(), true)
-  /// FIXME: In the view model output, alternate text is `Strings.Send_verfication_email()`
+  // FIXME: In the view model output, alternate text is `Send_verfication_email`
   @State private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
+  @State private var saveEnabled = true
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
-  private var contentPadding = 12.0
-  
+  private let contentPadding = 12.0
+  /** FIXME: Causes the compilation of init to fail
+   private var viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
+   */
+
   init(emailText: String) {
     self.emailText = emailText
   }
@@ -52,7 +57,7 @@ struct ChangeEmailView: View {
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
       }
-      
+
       if let _ = warningMessage {
         VStack(alignment: .leading, spacing: 0) {
           Button(resendVerificationEmailButtonTitle) {
@@ -107,6 +112,14 @@ struct ChangeEmailView: View {
     .navigationTitle(Strings.Change_email())
     .background(Color(.ksr_support_100))
     .listStyle(.plain)
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        LoadingBarButtonItem(
+          titleText: Strings.Save(),
+          saveEnabled: saveEnabled
+        )
+      }
+    }
   }
 
   @ViewBuilder
@@ -126,7 +139,7 @@ struct ChangeEmailView: View {
 
       newEntryField(secureField: secureField, placeholderText: placeholderText, valueText: valueText)
     }
-    .padding(contentPadding)
+    .padding(self.contentPadding)
     .accessibilityElement(children: .combine)
     .accessibilityLabel(titleText)
   }
@@ -159,7 +172,7 @@ struct ChangeEmailView: View {
       .labelStyle(.titleOnly)
       .font(Font(UIFont.ksr_body(size: 13)))
       .lineLimit(nil)
-      .padding([.leading, .trailing], contentPadding)
+      .padding([.leading, .trailing], self.contentPadding)
       .foregroundColor(textColor)
   }
 }
@@ -236,11 +249,11 @@ extension View {
 }
 
 /** Current not working - pauses
-struct CircleImage_Previews: PreviewProvider {
-  static var previews: some View {
-    if #available(iOS 15, *) {
-      ChangeEmailView(emailText: "sample@email.com")
-    }
-  }
-}
+ struct CircleImage_Previews: PreviewProvider {
+ static var previews: some View {
+   if #available(iOS 15, *) {
+     ChangeEmailView(emailText: "sample@email.com")
+   }
+ }
+ }
  */
