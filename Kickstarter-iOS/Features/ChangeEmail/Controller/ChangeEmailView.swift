@@ -11,7 +11,8 @@ struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
-  @State private var warningMessage: String? = Strings.We_ve_been_unable_to_send_email()
+  // FIXME: Alternate text is `Email_unverified`
+  @State private var warningMessage: (String, Bool)? = (Strings.We_ve_been_unable_to_send_email(), true)
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
@@ -40,8 +41,12 @@ struct ChangeEmailView: View {
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
 
-      if let warningText = warningMessage {
-        warningLabel(text: warningText)
+      if let (warningText, alert) = warningMessage {
+        warningLabel(text: warningText, alert)
+          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
+          .background(Color(.ksr_support_100))
+          .listRowSeparator(.hidden)
+          .listRowInsets(EdgeInsets())
       }
 
       Color(.ksr_support_100)
@@ -128,10 +133,15 @@ struct ChangeEmailView: View {
   }
 
   @ViewBuilder
-  private func warningLabel(text: String) -> some View {
+  private func warningLabel(text: String, _ alert: Bool) -> some View {
+    let textColor = alert ? Color(.ksr_alert) : Color(.ksr_support_400)
+
     Label(text, systemImage: "exclamationmark.triangle.fill")
       .labelStyle(.titleOnly)
       .font(Font(UIFont.ksr_body(size: 13)))
+      .lineLimit(nil)
+      .padding([.leading, .trailing])
+      .foregroundColor(textColor)
   }
 }
 
@@ -205,3 +215,13 @@ extension View {
     ))
   }
 }
+
+/** Current not working - pauses
+struct CircleImage_Previews: PreviewProvider {
+  static var previews: some View {
+    if #available(iOS 15, *) {
+      ChangeEmailView(emailText: "sample@email.com")
+    }
+  }
+}
+ */
