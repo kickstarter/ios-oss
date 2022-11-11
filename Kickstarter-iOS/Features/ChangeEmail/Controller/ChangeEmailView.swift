@@ -11,11 +11,15 @@ struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
-  // FIXME: Alternate text is `Email_unverified`
+  /// FIXME: In the view model output, alternate text is `Email_unverified`
   @State private var warningMessage: (String, Bool)? = (Strings.We_ve_been_unable_to_send_email(), true)
+  /// FIXME: In the view model output, alternate text is `Strings.Send_verfication_email()`
+  @State private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
+  private var contentPadding = 12.0
+  
   init(emailText: String) {
     self.emailText = emailText
   }
@@ -47,6 +51,21 @@ struct ChangeEmailView: View {
           .background(Color(.ksr_support_100))
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
+      }
+      
+      if let _ = warningMessage {
+        VStack(alignment: .leading, spacing: 0) {
+          Button(resendVerificationEmailButtonTitle) {
+            print("Button tapped \(resendVerificationEmailButtonTitle)")
+          }
+          .font(Font(UIFont.ksr_body()))
+          .foregroundColor(Color(.ksr_create_700))
+          .padding(contentPadding)
+
+          Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
+        }
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets())
       }
 
       Color(.ksr_support_100)
@@ -107,7 +126,7 @@ struct ChangeEmailView: View {
 
       newEntryField(secureField: secureField, placeholderText: placeholderText, valueText: valueText)
     }
-    .padding(12)
+    .padding(contentPadding)
     .accessibilityElement(children: .combine)
     .accessibilityLabel(titleText)
   }
@@ -140,7 +159,7 @@ struct ChangeEmailView: View {
       .labelStyle(.titleOnly)
       .font(Font(UIFont.ksr_body(size: 13)))
       .lineLimit(nil)
-      .padding([.leading, .trailing])
+      .padding([.leading, .trailing], contentPadding)
       .foregroundColor(textColor)
   }
 }
