@@ -96,9 +96,11 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   -> (min: Double, max: Double) {
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
+  // project currency is more accurate to find the country to base the min/max values off of.
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
   let country = AppEnvironment.current.launchedCountries.countries
-    .first { $0 == project.country }
-    .coalesceWith(project.country)
+    .first { $0 == projectCurrencyCountry }
+    .coalesceWith(projectCurrencyCountry)
 
   switch reward {
   case .none, .some(Reward.noReward):
@@ -201,9 +203,10 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
 
 public func formattedAmountForRewardOrBacking(
   project: Project,
-  projectCurrencyCountry: Project.Country,
   rewardOrBacking: Either<Reward, Backing>
 ) -> String {
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)

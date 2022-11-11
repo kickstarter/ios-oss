@@ -77,13 +77,9 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.rewardMinimumLabelText = projectAndReward
       .map { project, reward in
-        guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
-          return (project, project.country, Either<Reward, Backing>.left(reward))
-        }
-
-        return (project, projectCurrencyCountry, Either<Reward, Backing>.left(reward))
+        (project, Either<Reward, Backing>.left(reward))
       }
-      .map(formattedAmountForRewardOrBacking(project:projectCurrencyCountry:rewardOrBacking:))
+      .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
     self.descriptionLabelText = projectAndReward
       .map(localizedDescription(project:reward:))
