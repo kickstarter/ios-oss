@@ -127,7 +127,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.currency = project
       .map {
         let projectCurrencyCountry = projectCountry(forCurrency: $0.stats.currency) ?? $0.country
-        
+
         return currencySymbol(forCountry: projectCurrencyCountry).trimmed()
       }
 
