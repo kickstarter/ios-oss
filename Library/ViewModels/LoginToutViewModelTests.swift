@@ -37,7 +37,7 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
-    self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
+    self.vm.outputs.logIntoEnvironmentWithApple.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
     self.vm.outputs.showAppleErrorAlert.observe(self.showAppleErrorAlert.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)

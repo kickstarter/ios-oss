@@ -187,7 +187,13 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         self?.pushSignupViewController()
       }
 
-    self.viewModel.outputs.logIntoEnvironment
+    self.viewModel.outputs.logIntoEnvironmentWithApple
+      .observeValues { [weak self] accessTokenEnv in
+        AppEnvironment.login(accessTokenEnv)
+        self?.viewModel.inputs.environmentLoggedIn()
+      }
+    
+    self.viewModel.outputs.logIntoEnvironmentWithFacebook
       .observeValues { [weak self] accessTokenEnv in
         AppEnvironment.login(accessTokenEnv)
         self?.viewModel.inputs.environmentLoggedIn()
