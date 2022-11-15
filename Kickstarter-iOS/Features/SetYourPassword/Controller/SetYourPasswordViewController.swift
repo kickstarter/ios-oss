@@ -91,7 +91,9 @@ public final class SetYourPasswordViewController: UIViewController {
   // MARK: - Bind View Model
 
   public override func bindViewModel() {
-    self.contextLabel.rac.text = self.viewModel.outputs.contextLabelText
+    super.bindViewModel()
+    
+    self.contextLabel.rac.text = self.viewModel.outputs.emailText
     self.newPasswordLabel.rac.text = self.viewModel.outputs.newPasswordLabel
     self.confirmPasswordLabel.rac.text = self.viewModel.outputs.confirmPasswordLabel
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled

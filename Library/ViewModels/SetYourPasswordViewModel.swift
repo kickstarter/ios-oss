@@ -17,6 +17,7 @@ public protocol SetYourPasswordViewModelOutputs {
   var contextLabelText: Signal<String, Never> { get }
   var newPasswordLabel: Signal<String, Never> { get }
   var confirmPasswordLabel: Signal<String, Never> { get }
+  var emailText: Signal<String, Never> { get }
 }
 
 public protocol SetYourPasswordViewModelType {
@@ -33,6 +34,19 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
       .takeWhen(self.viewDidLoadProperty.signal)
     self.confirmPasswordLabel = self.confirmPasswordLabelProperty.signal
       .takeWhen(self.viewDidLoadProperty.signal)
+    
+    let fetchUserEmailEvent = self.viewDidLoadProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current
+          .apiService
+          .fetchGraphUser(withStoredCards: false)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+    
+    self.emailText = fetchUserEmailEvent.values().map {
+      Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: $0.me.email ?? "")
+    }
 
     // MARK: Field Validations
 
@@ -94,11 +108,6 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
     self.confirmPasswordDoneEditingProperty.value = ()
   }
 
-  private var saveButtonTappedProperty = MutableProperty(())
-  public func saveButtonTapped() {
-    self.saveButtonTappedProperty.value = ()
-  }
-
   private let saveButtonPressedProperty = MutableProperty(())
   public func saveButtonPressed() {
     self.saveButtonPressedProperty.value = ()
@@ -110,6 +119,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   public var contextLabelText: Signal<String, Never>
   public var newPasswordLabel: Signal<String, Never>
   public var confirmPasswordLabel: Signal<String, Never>
+  public let emailText: Signal<String, Never>
 }
 
 // MARK: - Helpers
