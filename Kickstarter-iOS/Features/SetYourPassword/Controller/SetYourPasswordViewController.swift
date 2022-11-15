@@ -4,6 +4,10 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+protocol SetYourPasswordViewControllerDelegate: AnyObject {
+  func postEnvironmentLoggedInNotification()
+}
+
 public final class SetYourPasswordViewController: UIViewController {
   // MARK: - Properties
 
@@ -33,16 +37,7 @@ public final class SetYourPasswordViewController: UIViewController {
   }()
 
   private let viewModel: SetYourPasswordViewModelType = SetYourPasswordViewModel()
-
-  // MARK: - Configuration
-
-  public static func configuredWith(
-    userEmail: String
-  ) -> SetYourPasswordViewController {
-    let vc = SetYourPasswordViewController.instantiate()
-    vc.viewModel.inputs.configureWith(userEmail)
-    return vc
-  }
+  weak var delegate: SetYourPasswordViewControllerDelegate?
 
   // MARK: - Lifecycle
 
