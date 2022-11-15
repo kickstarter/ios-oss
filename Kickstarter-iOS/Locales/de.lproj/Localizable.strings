@@ -52,7 +52,7 @@
 "Back_this_project" = "Projekt unterstützen";
 "Back_this_project_below" = "Folgendes Projekt unterstützen";
 "Backed_by_Friends" = "Von Freunden unterstützt";
-"Backed_by_people_you_follow" = "Unterstützt von deinen Freunden";
+"Backed_by_people_you_follow" = "Unterstützt von Personen, denen du folgst";
 "Backed_projects_projects_count" = "Unterstützte Projekte: %{project_count}";
 "Backer_has_pledged_to_this_project" = "Hat dieses Projekt unterstützt.";
 "Backers_count_separator_backers.few" = "%{backers_count}\nUnterstützer";
@@ -243,9 +243,9 @@
 "Follow_more_friends" = "Folge noch mehr Freunden";
 "Follow_your_Facebook_friends_and_get_notified" = "Folge deinen Freunden und wir werden dich benachrichtigen, sobald sie ein Projekt unterstützen oder veröffentlichen.";
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen.";
-"Followed" = "Abonniert";
-"Following" = "Abonniert";
-"Following_Disabled_Info" = "Die Funktion \"Abonnieren\" muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz.";
+"Followed" = "Gefolgt";
+"Following" = "Gefolgt";
+"Following_Disabled_Info" = "Die Funktion „Folgen“ muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz.";
 "Following_More_Info" = "Mehr Info zu Folgen";
 "Follows_friend_name" = "%{friend_name} folgen.";
 "Frequently_asked_questions" = "Häufige Fragen";
@@ -323,6 +323,7 @@
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen. <br/><a href=\"%{trust_link}\">Hier findest du mehr Info zur Rechenschftspflicht</a>";
 "Kickstarter_on_Film" = "Kickstarter on Film";
+"Kickstarters_community_guidelines" = "Kickstarter’s Community Guidelines.";
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
 "Learn_about_accountability_on_Kickstarter" = "Näheres zur Rechenschaftspflicht auf Kickstarter";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
@@ -392,7 +393,7 @@
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
 "Not_available" = "Nicht verfügbar";
 "Not_delivered" = "Nicht verschickt";
-"Not_followed" = "Nicht abonniert";
+"Not_followed" = "Nicht gefolgt";
 "Not_now" = "Nicht jetzt";
 "Notification_email_notification_off" = "%{notification}, Benachrichtigung per E-Mail, Aus";
 "Notification_email_notification_on" = "%{notification}, Benachrichtigung per E-Mail, An";
@@ -499,6 +500,7 @@
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
 "Resend_email" = "Erneut senden";
 "Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
+"Reset_your_password" = "Passwort zurücksetzen";
 "Retry" = "Erneut versuchen";
 "Retry_or_select_another_method" = "Versuche es erneut oder wähle eine andere Karte.";
 "Reusability_and_recyclability" = "Wiederverwertung und Recyclingfähigkeit";
@@ -555,6 +557,8 @@
 "Selected_reward" = "Gewählte Belohnung";
 "Send" = "Senden";
 "Send_verfication_email" = "Verifizeirungs-E-Mail senden";
+"Set_new_password" = "Neues Passwort festlegen";
+"Set_your_password" = "Passwort festlegen";
 "Share" = "Teilen";
 "Share_an_update_about_your_project" = "Teile einen Update zu deinem Projekt …";
 "Share_this_live_stream" = "Live-Stream teilen.";
@@ -633,6 +637,9 @@
 "These_projects_could_use_your_support" = "Diese Projekte könnten mit deiner Unterstützung verwirklicht werden.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Hier kannst du das Finanzierungsziel und die Finanzierungsbeiträge in deiner bevorzugten Währung ansehen.";
 "This_comment_has_been_removed_by_Kickstarter" = "Dieser Kommentar wurde von Kickstarter entfernt.";
+"This_comment_is_under_review" = "Dieser Kommentar wird gerade überprüft.";
+"This_comment_is_under_review_for_potentially_violating" = "This comment is under review for potentially violating";
+"This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "Dieser Kommentar wird gerade geprüft, weil er möglicherweise gegen die <a href=\"%{community_guidelines}\">Community-Richtlinien von Kickstarter</a> verstößt.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_holiday_season_support_a_project_for_no_reward" = "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht.";
 "This_person_canceled_their_pledge" = "Diese Person hat ihren Finanzierungsbeitrag zurückgezogen.";
@@ -690,6 +697,7 @@
 "Visit_our_Environmental_Resources_Center" = "Ressourcen für den Umweltschutz";
 "Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Ressourcen für den Umweltschutz</a>";
 "Watch_live" = "Live ansehen";
+"We_can_no_longer_log_you_in_through_Facebook" = "Wir können dich nicht mehr über Facebook anmelden. Bitte melde dich mit deinem Kickstarter-Passwort an oder leg für deine Facebook-E-Mail-Adresse ein neues Passwort fest.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden.";
 "We_cant_process_your_pledge" = "Wir können deine Zahlung leider nicht bearbeiten.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode.";
@@ -701,11 +709,13 @@
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "Es ist nicht gestattet, innerhalb der letzten 24 Stunden vor Beendigung eines Projekts einen Finanzierungsbeitrag zurückzuziehen, wenn dadurch das Finanzierungsziel nicht mehr erreicht werden würde.";
 "We_re_processing_this_pledge_pull_to_refresh" = "Der Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen.";
 "We_re_processing_your_pledge_pull_to_refresh" = "Dein Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen.";
+"We_re_simplifying_our_login_process_To_log_in" = "Wir vereinfachen unseren Anmeldeprozess. Wenn du auf dein Kickstarter-Konto zugreifen möchtest, gib die E-Mail-Adresse ein, die mit deinem Facebook-Konto verknüpft ist. Wir senden dir dann einen Link, über den du ein Passwort festlegen kannst";
 "We_think_youll_like_these_too" = "Wir denken, diese Projekte könnten dir auch gefallen";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
 "We_ve_been_unable_to_send_email" = "Wir konnten keine E-Mails an diese Adresse senden. Bitte prüfe, ob sie richtig eingegeben wurde.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
+"We_will_be_discontinuing_the_ability_to_log_in_via_Facebook" = "Wir werden die Anmeldung über Facebook einstellen. Um dich mit der E-Mail-Adresse %{email} in deinem Konto anzumelden, leg bitte ein Passwort fest, das mindestens 6 Zeichen lang ist.";
 "We_wont_share_this_with_the_creator" = "Diese Information wird nicht mit dem Projektgründer geteilt.";
 "Websites" = "Webseiten";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Willkommen in unserer Bibliothek. Viel Spaß beim Stöbern.";
@@ -713,7 +723,7 @@
 "Well_help_you_find_a_project_to_back" = "Wir helfen dir dabei, Projekte nach deinem Geschmack zu finden.";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Wir importieren deinen Namen und dein Profilfoto und können auf die Liste deiner Freunde zugreifen. Wir werden jedoch niemals etwas ohne deine Zustimmung posten.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
-"When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
+"When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen aktiviert wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion deaktiviert wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "Which_categories_interest_you" = "Welche Kategorien interessieren dich?";
 "Working_on_it" = "Working on it";
@@ -822,7 +832,7 @@
 "activity.empty_state.logged_out.button" = "Projekte entdecken";
 "activity.empty_state.logged_out.message" = "Wenn du ein Projekt unterstützt oder einem Freund folgst, werden diese Aktivitäten hier angezeigt.";
 "activity.empty_state.logged_out.title" = "Noch keine Aktivitäten";
-"activity.follow_back" = "Ihm/ihr auch folgen?";
+"activity.follow_back" = "Auch folgen?";
 "activity.friend_backed_art_project" = "%{friend_name} hat ein Kunst-Projekt unterstützt.";
 "activity.friend_backed_comics_project" = "%{friend_name} hat ein Comics-Projekt unterstützt.";
 "activity.friend_backed_crafts_project" = "%{friend_name} hat ein Kunsthandwerk-Projekt unterstützt.";
@@ -840,7 +850,7 @@
 "activity.friend_backed_tech_project" = "%{friend_name} hat ein Technologie-Projekt unterstützt.";
 "activity.friend_backed_theater_project" = "%{friend_name} hat ein Theater-Projekt unterstützt.";
 "activity.friend_follow.buttons.follow" = "Folgen";
-"activity.friend_follow.buttons.following" = "Abonniert";
+"activity.friend_follow.buttons.following" = "Gefolgt";
 "activity.friend_follow.is_following_you" = "folgt dir!";
 "activity.funding_canceled" = "Finanzierung abgebrochen.";
 "activity.navigation.title.activity" = "Aktivität";
@@ -1313,6 +1323,7 @@
 "forgot_password.placeholder_email" = "E-Mail-Adresse";
 "forgot_password.title" = "Passwort vergessen?";
 "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password" = "Wir haben eine E-Mail mit einer Anleitung zum Zurücksetzen deines Passworts an %{email} geschickt.";
+"forgot_password.we_sent_an_email_to_email_address_with_instructions_to_set_your_password" = "Wir haben eine E-Mail mit einer Anleitung zum Festlegen deines Passworts an %{email} geschickt.";
 "general.accessibility.kickstarter" = "Kickstarter";
 "general.alert.buttons.ok" = "OK";
 "general.backer_count_backers.few" = "%{backer_count} Unterstützer";
@@ -1715,7 +1726,7 @@
 "social.update_sequence_and_title" = "Aktualisierung %{update_number}: %{update_title}";
 "social_following.button.check_out_some_projects" = "Schau dir diese Projekte an!";
 "social_following.friend.buttons.follow" = "Folgen";
-"social_following.friend.buttons.following" = "Abonniert";
+"social_following.friend.buttons.following" = "Gefolgt";
 "social_following.friend.projects_count_backed.few" = "%{backed_count} unterstützt";
 "social_following.friend.projects_count_backed.many" = "%{backed_count} unterstützt";
 "social_following.friend.projects_count_backed.one" = "1 unterstützt";
