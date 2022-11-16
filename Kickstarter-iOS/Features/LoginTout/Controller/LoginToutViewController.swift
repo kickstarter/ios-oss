@@ -425,6 +425,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     let vc = SetYourPasswordViewController.instantiate()
     vc.delegate = self
     self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
   }
 
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
