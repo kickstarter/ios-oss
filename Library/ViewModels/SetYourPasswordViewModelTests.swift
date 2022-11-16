@@ -1,5 +1,5 @@
 import XCTest
-
+@testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
 
@@ -9,6 +9,8 @@ final class SetYourPasswordViewModelTests: TestCase {
   private let contextLabelText = TestObserver<String, Never>()
   private let newPasswordLabel = TestObserver<String, Never>()
   private let confirmPasswordLabel = TestObserver<String, Never>()
+  private var setPasswordFailure = TestObserver<String, Never>()
+  private var setPasswordSuccess = TestObserver<Void, Never>()
 
   override func setUp() {
     super.setUp()
@@ -17,17 +19,23 @@ final class SetYourPasswordViewModelTests: TestCase {
     self.viewModel.outputs.contextLabelText.observe(self.contextLabelText.observer)
     self.viewModel.outputs.newPasswordLabel.observe(self.newPasswordLabel.observer)
     self.viewModel.outputs.confirmPasswordLabel.observe(self.confirmPasswordLabel.observer)
+    self.viewModel.outputs.setPasswordSuccess.observe(self.setPasswordSuccess.observer)
+    self.viewModel.outputs.setPasswordFailure.observe(self.setPasswordFailure.observer)
 
-    self.viewModel.inputs.configureWith("test@email.com")
     self.viewModel.inputs.viewDidLoad()
   }
 
   func test_init() {
-    self.contextLabelText
-      .assertValue("We will be discontinuing the ability to log in via Facebook. To log in to your account using the email test@email.com, please set a password that’s at least 6 characters long.")
-    self.newPasswordLabel.assertValue("Enter new password")
-    self.confirmPasswordLabel.assertValue("Re-enter new password")
-    XCTAssertNil(self.saveButtonIsEnabled.lastValue)
+    let userEnvelope = UserEnvelope(me: GraphUser.template)
+    
+    withEnvironment(apiService: MockService(fetchGraphUserResult: .success(userEnvelope))) {
+      self.contextLabelText
+        .assertValue(Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? ""))
+      self.newPasswordLabel.assertValue("Enter new password")
+      self.confirmPasswordLabel.assertValue("Re-enter new password")
+      
+      XCTAssertNil(self.saveButtonIsEnabled.lastValue)
+    }
   }
 
   func test_saveButtonIsEnabledWhenFormIsValid() {
