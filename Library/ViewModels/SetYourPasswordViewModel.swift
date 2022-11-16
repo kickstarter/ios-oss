@@ -1,10 +1,10 @@
 import Foundation
 import KsApi
+import Prelude
 import ReactiveSwift
 
 public protocol SetYourPasswordViewModelInputs {
   func viewDidLoad()
-  func configureWith(_ userEmail: String)
   func newPasswordFieldDidChange(_ text: String)
   func confirmPasswordFieldDidChange(_ text: String)
   func newPasswordFieldDidReturn(newPassword: String)
@@ -17,7 +17,8 @@ public protocol SetYourPasswordViewModelOutputs {
   var contextLabelText: Signal<String, Never> { get }
   var newPasswordLabel: Signal<String, Never> { get }
   var confirmPasswordLabel: Signal<String, Never> { get }
-  var emailText: Signal<String, Never> { get }
+  var setPasswordFailure: Signal<String, Never> { get }
+  var setPasswordSuccess: Signal<Void, Never> { get }
 }
 
 public protocol SetYourPasswordViewModelType {
@@ -28,13 +29,6 @@ public protocol SetYourPasswordViewModelType {
 public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYourPasswordViewModelInputs,
   SetYourPasswordViewModelOutputs {
   public init() {
-    self.contextLabelText = self.contextLabelProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-    self.newPasswordLabel = self.newPasswordLabelProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-    self.confirmPasswordLabel = self.confirmPasswordLabelProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-    
     let fetchUserEmailEvent = self.viewDidLoadProperty.signal
       .switchMap { _ in
         AppEnvironment.current
@@ -43,10 +37,14 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
-    
-    self.emailText = fetchUserEmailEvent.values().map {
+
+    self.contextLabelText = fetchUserEmailEvent.values().map {
       Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: $0.me.email ?? "")
     }
+    self.newPasswordLabel = self.viewDidLoadProperty.signal
+      .map { "Enter new password" }
+    self.confirmPasswordLabel = self.viewDidLoadProperty.signal
+      .map { "Re-enter new password" }
 
     // MARK: Field Validations
 
@@ -63,6 +61,25 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
       .skipRepeats()
 
     self.saveButtonIsEnabled = formIsValid
+
+    let submitFormEvent = self.saveButtonPressedProperty.signal
+
+    let saveAction = formIsValid
+      .takeWhen(submitFormEvent)
+      .filter(isTrue)
+      .ignoreValues()
+
+    let setPasswordEvent = combinedPasswords
+      .takeWhen(saveAction)
+      .map { CreatePasswordInput(password: $0.0, passwordConfirmation: $0.1) }
+      .switchMap { input in
+        AppEnvironment.current.apiService.createPassword(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.setPasswordFailure = setPasswordEvent.errors().map { $0.localizedDescription }
+    self.setPasswordSuccess = setPasswordEvent.values().ignoreValues()
   }
 
   public var inputs: SetYourPasswordViewModelInputs { return self }
@@ -73,17 +90,6 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  private let contextLabelProperty = MutableProperty("")
-  private let newPasswordLabelProperty = MutableProperty("")
-  private let confirmPasswordLabelProperty = MutableProperty("")
-  public func configureWith(_ userEmail: String) {
-    self.contextLabelProperty
-      .value =
-      "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email \(userEmail), please set a password that’s at least 6 characters long."
-    self.newPasswordLabelProperty.value = "Enter new password"
-    self.confirmPasswordLabelProperty.value = "Re-enter new password"
   }
 
   private let newPasswordProperty = MutableProperty<String>("")
@@ -97,14 +103,12 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   }
 
   private var newPasswordDoneEditingProperty = MutableProperty(())
-  public func newPasswordFieldDidReturn(newPassword: String) {
-    self.newPasswordLabelProperty.value = newPassword
+  public func newPasswordFieldDidReturn(newPassword _: String) {
     self.newPasswordDoneEditingProperty.value = ()
   }
 
   private let confirmPasswordDoneEditingProperty = MutableProperty(())
-  public func confirmPasswordFieldDidReturn(confirmPassword: String) {
-    self.confirmPasswordLabelProperty.value = confirmPassword
+  public func confirmPasswordFieldDidReturn(confirmPassword _: String) {
     self.confirmPasswordDoneEditingProperty.value = ()
   }
 
@@ -119,7 +123,8 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   public var contextLabelText: Signal<String, Never>
   public var newPasswordLabel: Signal<String, Never>
   public var confirmPasswordLabel: Signal<String, Never>
-  public let emailText: Signal<String, Never>
+  public let setPasswordFailure: Signal<String, Never>
+  public let setPasswordSuccess: Signal<Void, Never>
 }
 
 // MARK: - Helpers

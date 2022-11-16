@@ -73,7 +73,7 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironmentWithApple: Signal<AccessTokenEnvelope, Never> { get }
-  
+
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never> { get }
 

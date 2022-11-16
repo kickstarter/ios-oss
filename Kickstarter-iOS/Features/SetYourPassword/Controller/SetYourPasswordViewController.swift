@@ -92,11 +92,23 @@ public final class SetYourPasswordViewController: UIViewController {
 
   public override func bindViewModel() {
     super.bindViewModel()
-    
-    self.contextLabel.rac.text = self.viewModel.outputs.emailText
+
+    self.contextLabel.rac.text = self.viewModel.outputs.contextLabelText
     self.newPasswordLabel.rac.text = self.viewModel.outputs.newPasswordLabel
     self.confirmPasswordLabel.rac.text = self.viewModel.outputs.confirmPasswordLabel
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+
+    self.viewModel.outputs.setPasswordFailure
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.present(UIAlertController.genericError(errorMessage), animated: true, completion: nil)
+      }
+
+    self.viewModel.outputs.setPasswordSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.delegate?.postEnvironmentLoggedInNotification()
+      }
   }
 
   // MARK: - Functions

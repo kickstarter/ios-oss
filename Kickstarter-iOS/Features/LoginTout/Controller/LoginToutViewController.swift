@@ -192,15 +192,15 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         AppEnvironment.login(accessTokenEnv)
         self?.viewModel.inputs.environmentLoggedIn()
       }
-    
+
     self.viewModel.outputs.logIntoEnvironmentWithFacebook
       .observeValues { [weak self] accessTokenEnv in
         guard let _self = self else { return }
-        
+
         AppEnvironment.login(accessTokenEnv)
-        
+
         let user = accessTokenEnv.user
-        if (user.needsPassword == nil || user.needsPassword == true) {
+        if user.needsPassword == nil || user.needsPassword == true {
           _self.pushSetYourPasswordViewController()
         } else {
           _self.viewModel.inputs.environmentLoggedIn()
@@ -420,7 +420,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
-  
+
   private func pushSetYourPasswordViewController() {
     let vc = SetYourPasswordViewController.instantiate()
     vc.delegate = self
