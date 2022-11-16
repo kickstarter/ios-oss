@@ -199,9 +199,12 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
         AppEnvironment.login(accessTokenEnv)
 
-        let user = accessTokenEnv.user
-        if user.needsPassword == nil || user.needsPassword == true {
-          _self.pushSetYourPasswordViewController()
+        if featureFacebookLoginDeprecationEnabled() {
+          let user = accessTokenEnv.user
+
+          user.needsPassword == nil
+            ? _self.pushSetYourPasswordViewController()
+            : _self.viewModel.inputs.environmentLoggedIn()
         } else {
           _self.viewModel.inputs.environmentLoggedIn()
         }
@@ -425,7 +428,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     let vc = SetYourPasswordViewController.instantiate()
     vc.delegate = self
     self.navigationController?.pushViewController(vc, animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
+    self.navigationItem
+      .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
   }
 
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
