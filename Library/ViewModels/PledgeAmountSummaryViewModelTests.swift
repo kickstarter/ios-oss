@@ -32,14 +32,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.vm.outputs.shippingLocationText.observe(self.shippingLocationText.observer)
   }
 
-  func testTextOutputsEmitTheCorrectValue() {
+  func testTextOutputsEmitTheCorrectValue_US_ProjectCountryCode() {
     let data = PledgeAmountSummaryViewData(
       bonusAmount: 5,
       bonusAmountHidden: false,
       isNoReward: false,
       locationName: "United States",
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 23,
       shippingAmount: 7.0,
@@ -56,6 +56,30 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.shippingLocationText.assertValue("Shipping: United States")
   }
 
+  func testTextOutputsEmitTheCorrectValue_NonUS_ProjectCountryCode() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 5,
+      bonusAmountHidden: false,
+      isNoReward: false,
+      locationName: "Mexico",
+      omitUSCurrencyCode: true,
+      projectCurrencyCountry: Project.Country.mx,
+      pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 23,
+      shippingAmount: 7.0,
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.bonusAmountText.assertValue("+ MX$ 5.00")
+    self.pledgeAmountText.assertValue(" MX$ 23.00")
+    self.shippingAmountText.assertValue("+ MX$ 7.00")
+    self.shippingLocationText.assertValue("Shipping: Mexico")
+  }
+
   func testTextOutputsEmitTheCorrectValue_ZeroShippingAmount() {
     let data = PledgeAmountSummaryViewData(
       bonusAmount: 0,
@@ -63,7 +87,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: "United States",
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 0,
@@ -86,7 +110,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: nil,
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
@@ -107,7 +131,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: "United States",
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
@@ -128,7 +152,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: "United States",
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
@@ -149,7 +173,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: "United States",
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
@@ -170,7 +194,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: "United States",
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
@@ -191,7 +215,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: true,
       locationName: nil,
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
@@ -212,7 +236,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: false,
       locationName: nil,
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 30,
       shippingAmount: 7.0,
@@ -233,7 +257,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       isNoReward: true,
       locationName: nil,
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,
@@ -247,14 +271,35 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.bonusAmountStackViewIsHidden.assertValue(true)
   }
 
-  func testPledgeAmountText_NoReward() {
+  func testPledgeAmountText_NoReward_NonUS_ProjectCurrencyCode() {
     let data = PledgeAmountSummaryViewData(
       bonusAmount: 2,
       bonusAmountHidden: false,
       isNoReward: true,
       locationName: nil,
       omitUSCurrencyCode: true,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.es,
+      pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 0,
+      shippingAmount: 0,
+      shippingAmountHidden: false,
+      rewardIsLocalPickup: false
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeAmountText.assertValues(["€2.00"], "Bonus amount is used as pledge total for No Reward type")
+  }
+
+  func testPledgeAmountText_NoReward_US_ProjectCurrencyCode() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 2,
+      bonusAmountHidden: false,
+      isNoReward: true,
+      locationName: nil,
+      omitUSCurrencyCode: true,
+      projectCurrencyCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
       rewardMinimum: 0,
       shippingAmount: 0,

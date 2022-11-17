@@ -502,7 +502,6 @@ private func cancelPledgeViewData(
 ) -> CancelPledgeViewData {
   return .init(
     project: project,
-    projectCountry: project.country,
     projectName: project.name,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     backingId: backing.graphID,

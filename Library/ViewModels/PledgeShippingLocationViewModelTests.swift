@@ -47,7 +47,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
 
-  func testDefaultShippingRule() {
+  func testDefaultShippingRule_ProjectCountryEqualsProjectCurrencyCountry_US() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
     let reward = Reward.template
@@ -85,8 +85,51 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
+  
+  func testDefaultShippingRule_US_ProjectCountry_NonUSProjectCurrencyCountry_US_UserLocation() {
+    let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
-  func testDefaultShippingRule_DefaultsToPreselected() {
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+    
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    withEnvironment(apiService: mockService, countryCode: "US") {
+      self.vm.inputs.configureWith(data: (project: project, reward: reward, true, nil))
+      self.vm.inputs.viewDidLoad()
+
+      self.amountText.assertValues(["+ MX$ 0.00"])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
+      self.shippingLocationButtonTitle.assertValues([])
+      self.amountLabelIsHidden.assertValues([false])
+
+      self.scheduler.advance()
+
+      guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
+        XCTFail("Default shipping rule should exist")
+        return
+      }
+
+      self.amountText.assertValues(["+ MX$ 0.00", "+ MX$ 5.00"])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
+      self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
+      self.shippingRulesError.assertDidNotEmitValue()
+      self.amountLabelIsHidden.assertValues([false])
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.adaptableStackViewIsHidden.assertValues([true, false])
+      self.shimmerLoadingViewIsHidden.assertValues([false, true])
+    }
+  }
+
+  func testDefaultShippingRule_ProjectCountryEqualsProjectCurrencyCountry_US_DefaultsToPreselected() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
     let reward = Reward.template
@@ -216,7 +259,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 
-  func testShippingRulesError() {
+  func testShippingRulesError_ProjectCountryEqualsProjectCurrencyCountry_US() {
     let error = ErrorEnvelope(errorMessages: [], ksrCode: nil, httpCode: 404, exception: nil)
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -243,7 +286,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 
-  func testShippingLocationFromBackingIsDefault() {
+  func testShippingLocationFromBackingIsDefault_ProjectCountryEqualsProjectCurrencyCountry_US() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
     let project = Project.template
@@ -292,7 +335,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 
-  func testShippingLocationFromBackingIsDefault_NewRewardDoesNotHaveSelectedRule() {
+  func testShippingLocationFromBackingIsDefault_ProjectCountryEqualsProjectCurrencyCountry_US_NewRewardDoesNotHaveSelectedRule() {
     let shippingRulesWithoutCanada = shippingRules.filter { $0.location != .canada }
 
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRulesWithoutCanada))
