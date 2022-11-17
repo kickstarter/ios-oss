@@ -16,6 +16,11 @@ public final class SetYourPasswordViewController: UIViewController {
   private lazy var newPasswordTextField: UITextField = { UITextField(frame: .zero) |> \.tag .~ 0 }()
   private lazy var confirmPasswordLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmPasswordTextField: UITextField = { UITextField(frame: .zero) |> \.tag .~ 1 }()
+  
+  private lazy var loadingIndicator: UIActivityIndicatorView = {
+    UIActivityIndicatorView()
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
@@ -92,7 +97,8 @@ public final class SetYourPasswordViewController: UIViewController {
 
   public override func bindViewModel() {
     super.bindViewModel()
-
+    
+    self.loadingIndicator.rac.animating = self.viewModel.outputs.shouldShowActivityIndicator
     self.contextLabel.rac.text = self.viewModel.outputs.contextLabelText
     self.newPasswordLabel.rac.text = self.viewModel.outputs.newPasswordLabel
     self.confirmPasswordLabel.rac.text = self.viewModel.outputs.confirmPasswordLabel
@@ -108,6 +114,12 @@ public final class SetYourPasswordViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.delegate?.postEnvironmentLoggedInNotification()
+      }
+    
+    self.viewModel.outputs.textFieldsAndSaveButtonAreEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.enableTextFieldsAndSaveButton(isEnabled)
       }
   }
 
@@ -139,14 +151,23 @@ public final class SetYourPasswordViewController: UIViewController {
 
     self.rootStackView.setCustomSpacing(Styles.grid(7), after: self.contextLabel)
     self.rootStackView.setCustomSpacing(Styles.grid(3), after: self.confirmPasswordTextField)
+    
+    _ = (self.loadingIndicator, self.view)
+      |> ksr_addSubviewToParent()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      
       self.newPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+      
       self.confirmPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
-      self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
+      
+      self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
+      
+      self.loadingIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      self.loadingIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 44),
     ])
   }
 
@@ -156,6 +177,11 @@ public final class SetYourPasswordViewController: UIViewController {
     self.confirmPasswordTextField
       .addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
     self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
+  }
+  
+  private func enableTextFieldsAndSaveButton(_ isEnabled: Bool) {
+    _ = [self.newPasswordTextField, self.confirmPasswordTextField, self.saveButton]
+      ||> \.isUserInteractionEnabled .~ isEnabled
   }
 
   // MARK: - Accessors

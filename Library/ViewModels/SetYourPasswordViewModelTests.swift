@@ -5,7 +5,9 @@ import XCTest
 
 final class SetYourPasswordViewModelTests: TestCase {
   private let viewModel = SetYourPasswordViewModel()
-
+  
+  private let isLoading = TestObserver<Bool, Never>()
+  private let shouldShowActivityIndicator = TestObserver<Bool, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let contextLabelText = TestObserver<String, Never>()
   private let newPasswordLabel = TestObserver<String, Never>()
@@ -15,7 +17,8 @@ final class SetYourPasswordViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
+    
+    self.viewModel.outputs.shouldShowActivityIndicator.observe(self.shouldShowActivityIndicator.observer)
     self.viewModel.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.viewModel.outputs.contextLabelText.observe(self.contextLabelText.observer)
     self.viewModel.outputs.newPasswordLabel.observe(self.newPasswordLabel.observer)

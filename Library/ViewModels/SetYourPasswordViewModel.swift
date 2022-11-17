@@ -13,12 +13,14 @@ public protocol SetYourPasswordViewModelInputs {
 }
 
 public protocol SetYourPasswordViewModelOutputs {
+  var shouldShowActivityIndicator: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var contextLabelText: Signal<String, Never> { get }
   var newPasswordLabel: Signal<String, Never> { get }
   var confirmPasswordLabel: Signal<String, Never> { get }
   var setPasswordFailure: Signal<String, Never> { get }
   var setPasswordSuccess: Signal<Void, Never> { get }
+  var textFieldsAndSaveButtonAreEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol SetYourPasswordViewModelType {
@@ -80,6 +82,13 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
 
     self.setPasswordFailure = setPasswordEvent.errors().map { $0.localizedDescription }
     self.setPasswordSuccess = setPasswordEvent.values().ignoreValues()
+    
+    self.shouldShowActivityIndicator = Signal.merge(
+      saveAction.signal.ignoreValues().mapConst(true),
+      setPasswordEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+    
+    self.textFieldsAndSaveButtonAreEnabled = self.shouldShowActivityIndicator.map { $0 }.negate()
   }
 
   public var inputs: SetYourPasswordViewModelInputs { return self }
@@ -118,13 +127,15 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   }
 
   // MARK: - Output Properties
-
+  
+  public let shouldShowActivityIndicator: Signal<Bool, Never>
   public var saveButtonIsEnabled: Signal<Bool, Never>
   public var contextLabelText: Signal<String, Never>
   public var newPasswordLabel: Signal<String, Never>
   public var confirmPasswordLabel: Signal<String, Never>
   public let setPasswordFailure: Signal<String, Never>
   public let setPasswordSuccess: Signal<Void, Never>
+  public let textFieldsAndSaveButtonAreEnabled: Signal<Bool, Never>
 }
 
 // MARK: - Helpers
