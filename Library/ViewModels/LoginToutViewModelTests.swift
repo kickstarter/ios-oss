@@ -17,7 +17,8 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
   fileprivate let isLoading = TestObserver<Bool, Never>()
   fileprivate let logInContextText = TestObserver<String, Never>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironmentWithApple = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironmentWithFacebook = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), Never>()
   fileprivate let showAppleErrorAlert = TestObserver<String, Never>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
@@ -37,7 +38,8 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
-    self.vm.outputs.logIntoEnvironmentWithApple.observe(self.logIntoEnvironment.observer)
+    self.vm.outputs.logIntoEnvironmentWithApple.observe(self.logIntoEnvironmentWithApple.observer)
+    self.vm.outputs.logIntoEnvironmentWithFacebook.observe(self.logIntoEnvironmentWithFacebook.observer)
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
     self.vm.outputs.showAppleErrorAlert.observe(self.showAppleErrorAlert.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
@@ -139,7 +141,7 @@ final class LoginToutViewModelTests: TestCase {
     )
   }
 
-  func testFacebookLoginFlow_Success() {
+  func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagDisabled() {
     let token = AccessToken(
       tokenString: "12344566",
       permissions: [],
@@ -177,7 +179,7 @@ final class LoginToutViewModelTests: TestCase {
     scheduler.advance()
 
     self.isLoading.assertValues([true, false])
-    self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
+    self.logIntoEnvironmentWithFacebook.assertValueCount(1, "Log into environment.")
 
     self.vm.inputs.environmentLoggedIn()
 
@@ -438,7 +440,8 @@ final class LoginToutViewModelTests: TestCase {
 
       self.isLoading.assertValues([true, false])
       self.startTwoFactorChallenge.assertValues(["12344566"], "TFA challenge emitted with token")
-      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.logIntoEnvironmentWithApple.assertValueCount(0, "Did not log into environment.")
+      self.logIntoEnvironmentWithFacebook.assertValueCount(0, "Did not log into environment.")
       self.showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
       self.startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
     }
@@ -488,7 +491,7 @@ final class LoginToutViewModelTests: TestCase {
         ["12344566"],
         "Start Facebook confirmation emitted with token"
       )
-      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.logIntoEnvironmentWithFacebook.assertValueCount(0, "Did not log into environment.")
       self.showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
 
       self.vm.inputs.viewWillAppear()
@@ -627,7 +630,7 @@ final class LoginToutViewModelTests: TestCase {
       )
 
       self.isLoading.assertDidNotEmitValue()
-      self.logIntoEnvironment.assertDidNotEmitValue()
+      self.logIntoEnvironmentWithApple.assertDidNotEmitValue()
 
       self.vm.inputs.appleAuthorizationDidSucceed(with: data)
 
@@ -635,9 +638,9 @@ final class LoginToutViewModelTests: TestCase {
       self.scheduler.run()
 
       self.isLoading.assertValues([true, false])
-      self.logIntoEnvironment.assertValueCount(1)
+      self.logIntoEnvironmentWithApple.assertValueCount(1)
 
-      let value = self.logIntoEnvironment.values.first
+      let value = self.logIntoEnvironmentWithApple.values.first
 
       XCTAssertEqual(user, value?.user)
       XCTAssertEqual("some_token", value?.accessToken)

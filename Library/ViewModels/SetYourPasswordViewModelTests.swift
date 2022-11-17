@@ -1,10 +1,11 @@
-import XCTest
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class SetYourPasswordViewModelTests: TestCase {
   private let viewModel = SetYourPasswordViewModel()
+
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let contextLabelText = TestObserver<String, Never>()
   private let newPasswordLabel = TestObserver<String, Never>()
@@ -27,13 +28,13 @@ final class SetYourPasswordViewModelTests: TestCase {
 
   func test_init() {
     let userEnvelope = UserEnvelope(me: GraphUser.template)
-    
+
     withEnvironment(apiService: MockService(fetchGraphUserResult: .success(userEnvelope))) {
-      self.contextLabelText
-        .assertValue(Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? ""))
       self.newPasswordLabel.assertValue("Enter new password")
       self.confirmPasswordLabel.assertValue("Re-enter new password")
-      
+//      self.contextLabelText
+//        .assertValue(Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? ""))
+
       XCTAssertNil(self.saveButtonIsEnabled.lastValue)
     }
   }

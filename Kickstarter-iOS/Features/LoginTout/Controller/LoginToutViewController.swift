@@ -202,7 +202,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         if featureFacebookLoginDeprecationEnabled() {
           let user = accessTokenEnv.user
 
-          user.needsPassword == nil
+          user.needsPassword == true || user.needsPassword == nil
             ? _self.pushSetYourPasswordViewController()
             : _self.viewModel.inputs.environmentLoggedIn()
         } else {
