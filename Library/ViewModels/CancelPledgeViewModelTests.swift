@@ -34,11 +34,10 @@ final class CancelPledgeViewModelTests: TestCase {
 
   func testConfigureCancelPledgeView() {
     let project = Project.cosmicSurgery
-      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: "backing-id",
@@ -108,7 +107,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: "backing-id",
@@ -131,7 +129,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: "backing-id",
@@ -154,7 +151,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: "backing-id",
@@ -181,7 +177,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
       let data = CancelPledgeViewData(
         project: project,
-        projectCountry: project.country,
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
@@ -223,7 +218,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
       let data = CancelPledgeViewData(
         project: project,
-        projectCountry: project.country,
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
@@ -275,7 +269,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
       let data = CancelPledgeViewData(
         project: project,
-        projectCountry: project.country,
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
@@ -310,7 +303,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
       let data = CancelPledgeViewData(
         project: project,
-        projectCountry: project.country,
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
@@ -336,7 +328,6 @@ final class CancelPledgeViewModelTests: TestCase {
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: String(project.personalization.backing?.id ?? 0),

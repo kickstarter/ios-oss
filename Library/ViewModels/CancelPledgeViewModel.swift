@@ -5,7 +5,6 @@ import UIKit
 
 public struct CancelPledgeViewData {
   public let project: Project // TODO: remove once tracking is updated.
-  public let projectCountry: Project.Country
   public let projectName: String
   public let omitUSCurrencyCode: Bool
   public let backingId: String

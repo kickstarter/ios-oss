@@ -162,7 +162,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .ignoreValues()
 
     self.generateNotificationWarningFeedback = stepperValueChanged
-      .filter { min, max, value in value <= min || max <= value }
+      .filter { min, max, value in
+        value <= min || max <= value
+      }
       .ignoreValues()
 
     self.notifyDelegateAmountUpdated = updatedValue

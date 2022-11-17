@@ -389,7 +389,9 @@ private func pledgeAmountAndGoalAndCountry(
   needsConversion: Bool
 ) -> ConvertedCurrrencyProjectData {
   guard needsConversion else {
-    return (project.stats.pledged, project.stats.goal, project.country)
+    let pledgedCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project
+      .country
+    return (project.stats.pledged, project.stats.goal, pledgedCurrencyCountry)
   }
 
   guard let goalCurrentCurrency = project.stats.goalCurrentCurrency,

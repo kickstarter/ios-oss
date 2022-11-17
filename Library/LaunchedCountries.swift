@@ -3,8 +3,8 @@ import struct KsApi.Project
 public struct LaunchedCountries {
   public let countries: [Project.Country]
 
-  public init() {
-    self.countries = Project.Country.all
+  public init(countries: [Project.Country] = Project.Country.all) {
+    self.countries = countries
   }
 
   /**
