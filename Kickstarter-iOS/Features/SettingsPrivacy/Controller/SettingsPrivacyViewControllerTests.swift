@@ -7,6 +7,7 @@ import XCTest
 internal final class SettingsPrivacyViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
