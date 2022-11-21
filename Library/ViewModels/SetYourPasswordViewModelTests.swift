@@ -5,7 +5,7 @@ import XCTest
 
 final class SetYourPasswordViewModelTests: TestCase {
   private let viewModel = SetYourPasswordViewModel()
-  
+
   private let isLoading = TestObserver<Bool, Never>()
   private let shouldShowActivityIndicator = TestObserver<Bool, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
@@ -14,7 +14,7 @@ final class SetYourPasswordViewModelTests: TestCase {
   private let confirmPasswordLabel = TestObserver<String, Never>()
   private var setPasswordFailure = TestObserver<String, Never>()
   private var setPasswordSuccess = TestObserver<Void, Never>()
-  
+
   private let setPasswordFailureService =
     MockService(createPasswordResult: .failure(ErrorEnvelope(
       errorMessages: ["Error creating password"],
@@ -27,7 +27,7 @@ final class SetYourPasswordViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    
+
     self.viewModel.outputs.shouldShowActivityIndicator.observe(self.shouldShowActivityIndicator.observer)
     self.viewModel.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.viewModel.outputs.contextLabelText.observe(self.contextLabelText.observer)
@@ -44,7 +44,7 @@ final class SetYourPasswordViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchGraphUserResult: .success(userEnvelope))) {
       self.scheduler.advance()
-      
+
       self.newPasswordLabel.assertValue(Strings.New_password())
       self.confirmPasswordLabel.assertValue(Strings.Confirm_password())
 
@@ -71,7 +71,7 @@ final class SetYourPasswordViewModelTests: TestCase {
 
     self.saveButtonIsEnabled.assertLastValue(true)
   }
-  
+
   func testChangePassword_Success() {
     withEnvironment(apiService: self.setPasswordSuccessService) {
       self.viewModel.inputs.newPasswordFieldDidChange("password")
@@ -83,12 +83,12 @@ final class SetYourPasswordViewModelTests: TestCase {
       self.shouldShowActivityIndicator.assertValues([true])
 
       self.scheduler.advance()
-      
+
       self.setPasswordSuccess.assertValueCount(1)
       self.shouldShowActivityIndicator.assertValues([true, false])
     }
   }
-  
+
   func testChangePassword_Failure() {
     withEnvironment(apiService: self.setPasswordFailureService) {
       self.viewModel.inputs.newPasswordFieldDidChange("password")
@@ -100,7 +100,7 @@ final class SetYourPasswordViewModelTests: TestCase {
       self.shouldShowActivityIndicator.assertValues([true])
 
       self.scheduler.advance()
-      
+
       self.setPasswordSuccess.assertValueCount(0)
       self.setPasswordFailure.assertValueCount(1)
       self.shouldShowActivityIndicator.assertValues([true, false])

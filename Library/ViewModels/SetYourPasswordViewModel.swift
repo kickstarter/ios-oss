@@ -82,12 +82,12 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
 
     self.setPasswordFailure = setPasswordEvent.errors().map { $0.localizedDescription }
     self.setPasswordSuccess = setPasswordEvent.values().ignoreValues()
-    
+
     self.shouldShowActivityIndicator = Signal.merge(
       saveAction.signal.ignoreValues().mapConst(true),
       setPasswordEvent.filter { $0.isTerminating }.mapConst(false)
     )
-    
+
     self.textFieldsAndSaveButtonAreEnabled = self.shouldShowActivityIndicator.map { $0 }.negate()
   }
 
@@ -127,7 +127,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   }
 
   // MARK: - Output Properties
-  
+
   public let shouldShowActivityIndicator: Signal<Bool, Never>
   public var saveButtonIsEnabled: Signal<Bool, Never>
   public var contextLabelText: Signal<String, Never>
