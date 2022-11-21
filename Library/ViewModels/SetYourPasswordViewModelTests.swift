@@ -14,6 +14,16 @@ final class SetYourPasswordViewModelTests: TestCase {
   private let confirmPasswordLabel = TestObserver<String, Never>()
   private var setPasswordFailure = TestObserver<String, Never>()
   private var setPasswordSuccess = TestObserver<Void, Never>()
+  
+  private let setPasswordFailureService =
+    MockService(createPasswordResult: .failure(ErrorEnvelope(
+      errorMessages: ["Error creating password"],
+      ksrCode: nil,
+      httpCode: 1,
+      exception: nil
+    )))
+  private let setPasswordSuccessService =
+    MockService(createPasswordResult: .success(EmptyResponseEnvelope()))
 
   override func setUp() {
     super.setUp()
@@ -33,10 +43,10 @@ final class SetYourPasswordViewModelTests: TestCase {
     let userEnvelope = UserEnvelope(me: GraphUser.template)
 
     withEnvironment(apiService: MockService(fetchGraphUserResult: .success(userEnvelope))) {
-      self.newPasswordLabel.assertValue("Enter new password")
-      self.confirmPasswordLabel.assertValue("Re-enter new password")
-//      self.contextLabelText
-//        .assertValue(Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? ""))
+      self.scheduler.advance()
+      
+      self.newPasswordLabel.assertValue(Strings.New_password())
+      self.confirmPasswordLabel.assertValue(Strings.Confirm_password())
 
       XCTAssertNil(self.saveButtonIsEnabled.lastValue)
     }
@@ -60,5 +70,40 @@ final class SetYourPasswordViewModelTests: TestCase {
     self.viewModel.inputs.confirmPasswordFieldDidChange("asdfasdf")
 
     self.saveButtonIsEnabled.assertLastValue(true)
+  }
+  
+  func testChangePassword_Success() {
+    withEnvironment(apiService: self.setPasswordSuccessService) {
+      self.viewModel.inputs.newPasswordFieldDidChange("password")
+
+      self.viewModel.inputs.confirmPasswordFieldDidChange("password")
+      self.saveButtonIsEnabled.assertValues([true])
+
+      self.viewModel.inputs.saveButtonPressed()
+      self.shouldShowActivityIndicator.assertValues([true])
+
+      self.scheduler.advance()
+      
+      self.setPasswordSuccess.assertValueCount(1)
+      self.shouldShowActivityIndicator.assertValues([true, false])
+    }
+  }
+  
+  func testChangePassword_Failure() {
+    withEnvironment(apiService: self.setPasswordFailureService) {
+      self.viewModel.inputs.newPasswordFieldDidChange("password")
+
+      self.viewModel.inputs.confirmPasswordFieldDidChange("password")
+      self.saveButtonIsEnabled.assertValues([true])
+
+      self.viewModel.inputs.saveButtonPressed()
+      self.shouldShowActivityIndicator.assertValues([true])
+
+      self.scheduler.advance()
+      
+      self.setPasswordSuccess.assertValueCount(0)
+      self.setPasswordFailure.assertValueCount(1)
+      self.shouldShowActivityIndicator.assertValues([true, false])
+    }
   }
 }
