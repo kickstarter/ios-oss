@@ -44,9 +44,9 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
       Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: $0.me.email ?? "")
     }
     self.newPasswordLabel = self.viewDidLoadProperty.signal
-      .map { "Enter new password" }
+      .map { Strings.New_password() }
     self.confirmPasswordLabel = self.viewDidLoadProperty.signal
-      .map { "Re-enter new password" }
+      .map { Strings.Confirm_password() }
 
     // MARK: Field Validations
 
