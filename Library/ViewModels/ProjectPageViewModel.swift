@@ -588,7 +588,7 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
             |> Project.lens.personalization.backing .~ projectWithBacking.backing
             |> Project.lens.personalization.isBacking .~ true
             |> Project.lens.extendedProjectProperties .~ projectWithBacking.project.extendedProjectProperties
-            // FIXME: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
+            // INFO: Seems like in the `fetchBacking` call we nil out the chosen currency set by `fetchProject` b/c the query for backing doesn't have `me { chosenCurrency }`, so its' being included here.
             |> Project.lens.stats.currentCurrency .~ projectPamphletData.project.stats.currentCurrency
 
           return fetchProjectRewards(project: updatedProjectWithBacking)

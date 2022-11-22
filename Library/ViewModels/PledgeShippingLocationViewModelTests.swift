@@ -85,14 +85,14 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
-  
+
   func testDefaultShippingRule_US_ProjectCountry_NonUSProjectCurrencyCountry_US_UserLocation() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
     let project = Project.template
       |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
       |> Project.lens.country .~ Project.Country.us
-    
+
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
