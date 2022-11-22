@@ -35,7 +35,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       .observe(self.totalAmountText.observer)
   }
 
-  func testTextOutputsEmitTheCorrectValue() {
+  func testTextOutputsEmitTheCorrectValue_US_ProjectCountryCurrency() {
     let data = ManagePledgeSummaryViewData(
       backerId: 1,
       backerName: "Backer McGee",
@@ -49,7 +49,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -64,6 +64,37 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     self.backerNumberText.assertValue("Backer #999")
     self.backingDateText.assertValue("As of September 16, 2019")
     self.totalAmountText.assertValue("$30.00")
+  }
+
+  func testTextOutputsEmitTheCorrectValue_NonUS_ProjectCountryCurrency() {
+    let data = ManagePledgeSummaryViewData(
+      backerId: 1,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
+      currentUserIsCreatorOfProject: false,
+      isNoReward: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCurrencyCountry: Project.Country.mx,
+      projectDeadline: 1_572_626_213.0,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
+      shippingAmount: nil,
+      shippingAmountHidden: true,
+      rewardIsLocalPickup: false
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.backerNumberText.assertValue("Backer #999")
+    self.backingDateText.assertValue("As of September 16, 2019")
+    self.totalAmountText.assertValue(" MX$ 30.00")
   }
 
   func testBackerUserInfo_UserIsBacker() {
@@ -84,7 +115,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -122,7 +153,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -157,7 +188,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 30,
       pledgedOn: 1_568_666_243.0,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
@@ -180,7 +211,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     XCTAssertFalse(pledgeAmountSummaryValue.isNoReward)
     XCTAssertNil(pledgeAmountSummaryValue.locationName)
     XCTAssertNil(pledgeAmountSummaryValue.shippingAmount)
-    XCTAssertEqual(pledgeAmountSummaryValue.projectCountry, .us)
+    XCTAssertEqual(pledgeAmountSummaryValue.projectCurrencyCountry, .us)
     XCTAssertEqual(pledgeAmountSummaryValue.pledgedOn, 1_568_666_243.0)
     XCTAssertEqual(pledgeAmountSummaryValue.rewardMinimum, 30)
     XCTAssertTrue(pledgeAmountSummaryValue.shippingAmountHidden)

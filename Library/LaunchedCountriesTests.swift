@@ -19,4 +19,10 @@ final class LaunchedCountriesTests: XCTestCase {
   func testAllCountriesSupported() {
     XCTAssertEqual(LaunchedCountries().countries, Project.Country.all)
   }
+
+  func testLaunchedCountriesCreated() {
+    let launchedCountries = LaunchedCountries(countries: [.us, .de])
+
+    XCTAssertEqual(launchedCountries.countries, [.us, .de])
+  }
 }

@@ -20,7 +20,10 @@ final class PledgeViewModelTests: TestCase {
   private let configureExpandableRewardsHeaderWithDataRewards = TestObserver<[Reward], Never>()
   private let configureExpandableRewardsHeaderWithDataSelectedQuantities
     = TestObserver<SelectedRewardQuantities, Never>()
-  private let configureExpandableRewardsHeaderWithDataProjectCountry = TestObserver<Project.Country, Never>()
+  private let configureExpandableRewardsHeaderWithDataProjectCurrencyCountry = TestObserver<
+    Project.Country,
+    Never
+  >()
   private let configureExpandableRewardsHeaderWithDataOmitCurrencyCode = TestObserver<Bool, Never>()
   private let configureLocalPickupViewWithData = TestObserver<PledgeLocalPickupViewData, Never>()
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
@@ -89,7 +92,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.selectedQuantities)
       .observe(self.configureExpandableRewardsHeaderWithDataSelectedQuantities.observer)
     self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.projectCountry)
-      .observe(self.configureExpandableRewardsHeaderWithDataProjectCountry.observer)
+      .observe(self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.observer)
     self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.omitCurrencyCode)
       .observe(self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.observer)
     self.vm.outputs.configureLocalPickupViewWithData.observe(self.configureLocalPickupViewWithData.observer)
@@ -219,7 +222,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Back this project"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertValues([.us])
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -256,6 +259,35 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testPledgeContext_NonUS_ProjectCurrency_US_ProjectCountry_LoggedIn() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+        |> Project.lens.country .~ .us
+        |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Back this project"])
+
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.mx])
+      self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
+    }
+  }
+
   func testPledgeContext_LoggedOut() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -279,7 +311,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Back this project"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertValues([.us])
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -339,7 +371,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Update pledge"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertValues([.us])
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -399,7 +431,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Update pledge"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertValues([.us])
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -469,7 +501,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Change payment method"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertValues([.us])
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -555,7 +587,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Fix payment method"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertValues([[reward]])
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertValues([.us])
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertValues([.us])
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertValues([true])
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -643,7 +675,7 @@ final class PledgeViewModelTests: TestCase {
       self.title.assertValues(["Change payment method"])
 
       self.configureExpandableRewardsHeaderWithDataRewards.assertDidNotEmitValue()
-      self.configureExpandableRewardsHeaderWithDataProjectCountry.assertDidNotEmitValue()
+      self.configureExpandableRewardsHeaderWithDataProjectCurrencyCountry.assertDidNotEmitValue()
       self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.assertDidNotEmitValue()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -1402,8 +1434,10 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax() {
+  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_US_ProjectCurrency_US_ProjectCountry() {
     let project = Project.template
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
     let reward = Reward.template
       |> Reward.lens.minimum .~ 25
     let pledgeAmountData = (amount: 20_000.0, min: 25.0, max: 10_000.0, isValid: false)
@@ -1428,6 +1462,39 @@ final class PledgeViewModelTests: TestCase {
 
     self.showApplePayAlertMessage.assertValues(
       ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
+    )
+    self.showApplePayAlertTitle.assertValues(["Almost there!"])
+  }
+
+  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax_NonUS_ProjectCurrency_US_ProjectCountry() {
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+    let pledgeAmountData = (amount: 20_000.0, min: 25.0, max: 10_000.0, isValid: false)
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+    self.vm.inputs.viewDidLoad()
+
+    self.showApplePayAlertMessage.assertDidNotEmitValue()
+    self.showApplePayAlertTitle.assertDidNotEmitValue()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.showApplePayAlertMessage.assertValues(
+      ["Please enter a pledge amount between MX$ 25 and MX$ 10,000."]
     )
     self.showApplePayAlertTitle.assertValues(["Almost there!"])
   }
@@ -6025,6 +6092,45 @@ final class PledgeViewModelTests: TestCase {
         locationName: "Brooklyn, NY",
         omitUSCurrencyCode: true,
         projectCountry: .us,
+        total: 10
+      )
+    ])
+  }
+
+  func testConfigureShippingSummaryViewWithData_HasAddOns_NonUS_ProjectCurrency_US_ProjectCountry() {
+    self.configureShippingSummaryViewWithData.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+    let addOnReward1 = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.shipping.enabled .~ true
+    let project = Project.template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let shippingRule = ShippingRule.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward, addOnReward1],
+      selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+      selectedLocationId: shippingRule.id,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.configureShippingSummaryViewWithData.assertValues([
+      PledgeShippingSummaryViewData(
+        locationName: "Brooklyn, NY",
+        omitUSCurrencyCode: true,
+        projectCountry: .mx,
         total: 10
       )
     ])
