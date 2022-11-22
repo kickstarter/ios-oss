@@ -16,7 +16,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let omitUSCurrencyCode: Bool
   public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
-  public let projectCountry: Project.Country
+  public let projectCurrencyCountry: Project.Country
   public let projectDeadline: TimeInterval
   public let projectState: Project.State
   public let rewardMinimum: Double
@@ -91,9 +91,13 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.backingDateText = data.map(\.pledgedOn)
       .map(formattedPledgeDate)
 
-    self.totalAmountText = data.map { ($0.projectCountry, $0.pledgeAmount, $0.omitUSCurrencyCode) }
-      .map { projectCountry, pledgeAmount, omitUSCurrencyCode in
-        attributedCurrency(with: projectCountry, amount: pledgeAmount, omitUSCurrencyCode: omitUSCurrencyCode)
+    self.totalAmountText = data.map { ($0.projectCurrencyCountry, $0.pledgeAmount, $0.omitUSCurrencyCode) }
+      .map { projectCurrencyCountry, pledgeAmount, omitUSCurrencyCode in
+        attributedCurrency(
+          with: projectCurrencyCountry,
+          amount: pledgeAmount,
+          omitUSCurrencyCode: omitUSCurrencyCode
+        )
       }
       .skipNil()
   }
@@ -136,7 +140,7 @@ private func pledgeAmountSummaryViewData(
     isNoReward: data.isNoReward,
     locationName: data.locationName,
     omitUSCurrencyCode: data.omitUSCurrencyCode,
-    projectCountry: data.projectCountry,
+    projectCurrencyCountry: data.projectCurrencyCountry,
     pledgedOn: data.pledgedOn,
     rewardMinimum: data.rewardMinimum,
     shippingAmount: data.shippingAmount,
@@ -150,7 +154,7 @@ private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -
     currentUserIsCreatorOfProject: data.currentUserIsCreatorOfProject,
     needsConversion: data.needsConversion,
     pledgeAmount: data.pledgeAmount,
-    projectCountry: data.projectCountry,
+    projectCurrencyCountry: data.projectCurrencyCountry,
     projectDeadline: data.projectDeadline,
     projectState: data.projectState,
     backingState: data.backingState
