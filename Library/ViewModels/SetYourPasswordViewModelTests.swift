@@ -6,14 +6,14 @@ import XCTest
 final class SetYourPasswordViewModelTests: TestCase {
   private let viewModel = SetYourPasswordViewModel()
 
-  private let isLoading = TestObserver<Bool, Never>()
   private let shouldShowActivityIndicator = TestObserver<Bool, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let contextLabelText = TestObserver<String, Never>()
   private let newPasswordLabel = TestObserver<String, Never>()
   private let confirmPasswordLabel = TestObserver<String, Never>()
-  private var setPasswordFailure = TestObserver<String, Never>()
-  private var setPasswordSuccess = TestObserver<Void, Never>()
+  private let textFieldsAndSaveButtonAreEnabled = TestObserver<Bool, Never>()
+  private let setPasswordFailure = TestObserver<String, Never>()
+  private let setPasswordSuccess = TestObserver<Void, Never>()
 
   private let setPasswordFailureService =
     MockService(createPasswordResult: .failure(ErrorEnvelope(
@@ -33,18 +33,23 @@ final class SetYourPasswordViewModelTests: TestCase {
     self.viewModel.outputs.contextLabelText.observe(self.contextLabelText.observer)
     self.viewModel.outputs.newPasswordLabel.observe(self.newPasswordLabel.observer)
     self.viewModel.outputs.confirmPasswordLabel.observe(self.confirmPasswordLabel.observer)
+    self.viewModel.outputs.textFieldsAndSaveButtonAreEnabled
+      .observe(self.textFieldsAndSaveButtonAreEnabled.observer)
     self.viewModel.outputs.setPasswordSuccess.observe(self.setPasswordSuccess.observer)
     self.viewModel.outputs.setPasswordFailure.observe(self.setPasswordFailure.observer)
-
-    self.viewModel.inputs.viewDidLoad()
   }
 
-  func test_init() {
+  func test_init_setsInitialTextLabelAndSaveButtonStates() {
     let userEnvelope = UserEnvelope(me: GraphUser.template)
 
     withEnvironment(apiService: MockService(fetchGraphUserResult: .success(userEnvelope))) {
+      self.viewModel.inputs.viewDidLoad()
+
       self.scheduler.advance()
 
+      self.contextLabelText
+        .assertValue(Strings
+          .We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? ""))
       self.newPasswordLabel.assertValue(Strings.New_password())
       self.confirmPasswordLabel.assertValue(Strings.Confirm_password())
 
@@ -74,36 +79,51 @@ final class SetYourPasswordViewModelTests: TestCase {
 
   func testChangePassword_Success() {
     withEnvironment(apiService: self.setPasswordSuccessService) {
-      self.viewModel.inputs.newPasswordFieldDidChange("password")
+      self.viewModel.inputs.viewDidLoad()
 
+      self.viewModel.inputs.newPasswordFieldDidChange("password")
       self.viewModel.inputs.confirmPasswordFieldDidChange("password")
+
       self.saveButtonIsEnabled.assertValues([true])
+      self.shouldShowActivityIndicator.assertValues([])
+      self.textFieldsAndSaveButtonAreEnabled.assertValues([])
 
       self.viewModel.inputs.saveButtonPressed()
       self.shouldShowActivityIndicator.assertValues([true])
+      self.textFieldsAndSaveButtonAreEnabled.assertValues([false])
 
       self.scheduler.advance()
 
       self.setPasswordSuccess.assertValueCount(1)
+      self.setPasswordFailure.assertValueCount(0)
+
       self.shouldShowActivityIndicator.assertValues([true, false])
+      self.textFieldsAndSaveButtonAreEnabled.assertValues([false, true])
     }
   }
 
   func testChangePassword_Failure() {
     withEnvironment(apiService: self.setPasswordFailureService) {
-      self.viewModel.inputs.newPasswordFieldDidChange("password")
+      self.viewModel.inputs.viewDidLoad()
 
+      self.viewModel.inputs.newPasswordFieldDidChange("password")
       self.viewModel.inputs.confirmPasswordFieldDidChange("password")
+
       self.saveButtonIsEnabled.assertValues([true])
+      self.shouldShowActivityIndicator.assertValues([])
+      self.textFieldsAndSaveButtonAreEnabled.assertValues([])
 
       self.viewModel.inputs.saveButtonPressed()
       self.shouldShowActivityIndicator.assertValues([true])
+      self.textFieldsAndSaveButtonAreEnabled.assertValues([false])
 
       self.scheduler.advance()
 
       self.setPasswordSuccess.assertValueCount(0)
       self.setPasswordFailure.assertValueCount(1)
+
       self.shouldShowActivityIndicator.assertValues([true, false])
+      self.textFieldsAndSaveButtonAreEnabled.assertValues([false, true])
     }
   }
 }
