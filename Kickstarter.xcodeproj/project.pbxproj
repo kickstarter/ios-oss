@@ -748,7 +748,6 @@
 		8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */; };
 		8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		8AA407C024DA43D8008C5FB0 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */; };
-		8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */; };
 		8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */; };
 		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
 		8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */; };
@@ -2328,7 +2327,6 @@
 		8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeTableView.swift; sourceTree = "<group>"; };
 		8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
-		8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+GraphUser.swift"; sourceTree = "<group>"; };
 		8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryTemplates.swift; sourceTree = "<group>"; };
 		8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift"; sourceTree = "<group>"; };
 		8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAndBackingEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -6085,7 +6083,6 @@
 				47D7D09D26C2FC4000D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.DataTests.swift */,
 				065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */,
 				8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */,
-				8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */,
 				8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */,
 				8A1557142693B28300017845 /* User+UserFragment.swift */,
 				8AC3E0652697AC0400168BF8 /* User+UserFragmentTests.swift */,
@@ -8805,7 +8802,6 @@
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
 				8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,
-				8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */,
 				8A4E95392450FBB500A578CF /* CreditCardType.swift in Sources */,
 				D0158A2F1EEB30A2006E7684 /* User.MemberDataTemplates.swift in Sources */,
 				D015883D1EEB2ED7006E7684 /* Route.swift in Sources */,
