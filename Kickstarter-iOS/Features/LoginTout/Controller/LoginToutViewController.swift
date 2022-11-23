@@ -601,7 +601,7 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
 // MARK: SetYourPasswordViewControllerDelegate
 
 extension LoginToutViewController: SetYourPasswordViewControllerDelegate {
-  func postEnvironmentLoggedInNotification() {
+  func setPasswordCompleteAndLogUserIn() {
     self.viewModel.inputs.environmentLoggedIn()
   }
 }

@@ -5,7 +5,7 @@ import ReactiveSwift
 import UIKit
 
 protocol SetYourPasswordViewControllerDelegate: AnyObject {
-  func postEnvironmentLoggedInNotification()
+  func setPasswordCompleteAndLogUserIn()
 }
 
 public final class SetYourPasswordViewController: UIViewController {
@@ -113,7 +113,7 @@ public final class SetYourPasswordViewController: UIViewController {
     self.viewModel.outputs.setPasswordSuccess
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.delegate?.postEnvironmentLoggedInNotification()
+        self?.delegate?.setPasswordCompleteAndLogUserIn()
       }
 
     self.viewModel.outputs.textFieldsAndSaveButtonAreEnabled
