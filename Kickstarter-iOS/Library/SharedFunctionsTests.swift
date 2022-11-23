@@ -473,4 +473,71 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(rewardLimitRemainingForBacker(project: project, reward: reward), nil)
     XCTAssertEqual(rewardLimitPerBackerRemainingForBacker(project: project, reward: reward), nil)
   }
+
+  func testProjectCountryForCurrency() {
+    let projectCountry = projectCountry(forCurrency: "MXN")
+
+    XCTAssertEqual(projectCountry, .mx)
+  }
+
+  func testFormattedAmountForRewardOrBacking() {
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let backing = Backing.template
+
+    var currencyText = formattedAmountForRewardOrBacking(
+      project: mexicanCurrencyProjectTemplate,
+      rewardOrBacking: .right(backing)
+    )
+
+    XCTAssertEqual(currencyText, "MX$ 10")
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 12.00
+
+    currencyText = formattedAmountForRewardOrBacking(
+      project: mexicanCurrencyProjectTemplate,
+      rewardOrBacking: .left(reward)
+    )
+
+    XCTAssertEqual(currencyText, "MX$ 12")
+  }
+
+  func testMinAndMaxPledgeAmount_NoReward_ProjectCurrencyCountry_MinMaxPledgeReturned_Success() {
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: nil)
+
+    XCTAssertEqual(min, 10)
+    XCTAssertEqual(max, 200_000)
+  }
+
+  func testMinAndMaxPledgeAmount_Reward_ProjectCurrencyCountry_MinMaxPledgeReturned_Success() {
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 12.00
+
+    let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: reward)
+
+    XCTAssertEqual(min, 12)
+    XCTAssertEqual(max, 200_000)
+  }
+
+  func testMinAndMaxPledgeAmount_NoReward_NoProjectCurrencyCountry_DefaultMinMaxPledgeReturned_Success() {
+    let mexicanCurrencyProjectTemplate = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let emptyLaunchedCountries = LaunchedCountries(countries: [])
+
+    withEnvironment(launchedCountries: emptyLaunchedCountries) {
+      let (min, max) = minAndMaxPledgeAmount(forProject: mexicanCurrencyProjectTemplate, reward: .noReward)
+
+      XCTAssertEqual(min, 1)
+      XCTAssertEqual(max, 10_000)
+    }
+  }
 }

@@ -23,7 +23,6 @@ final class CancelPledgeViewControllerTests: TestCase {
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: String(project.personalization.backing?.id ?? 0),

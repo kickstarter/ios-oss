@@ -5,7 +5,6 @@ import UIKit
 
 public struct CancelPledgeViewData {
   public let project: Project // TODO: remove once tracking is updated.
-  public let projectCountry: Project.Country
   public let projectName: String
   public let omitUSCurrencyCode: Bool
   public let backingId: String
@@ -52,9 +51,12 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       data.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
     .map { data in
+      let projectCurrencyCountry = projectCountry(forCurrency: data.project.stats.currency) ?? data.project
+        .country
+
       let formattedAmount = Format.currency(
         data.pledgeAmount,
-        country: data.projectCountry,
+        country: projectCurrencyCountry,
         omitCurrencyCode: data.omitUSCurrencyCode
       )
       return (formattedAmount, data.projectName)

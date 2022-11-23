@@ -46,13 +46,14 @@ final class ApplePayCapabilitiesTests: XCTestCase {
     XCTAssertEqual(supportedNetworks.count, 0)
   }
 
-  func test_supportedNetworksForProject_AvailableCardTypes_IsNil_US_Project() {
+  func test_supportedNetworksForProject_AvailableCardTypes_IsNil_US_ProjectCurrency() {
     let project = Project.template
       |> \.availableCardTypes .~ nil
-      |> \.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
 
     let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
+    XCTAssertEqual(supportedNetworks.count, 6)
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.discover))
     XCTAssertTrue(supportedNetworks.contains(.JCB))
@@ -61,13 +62,14 @@ final class ApplePayCapabilitiesTests: XCTestCase {
     XCTAssertTrue(supportedNetworks.contains(.chinaUnionPay))
   }
 
-  func test_supportedNetworksForProject_AvailableCardTypes_IsNil_NonUS_Project() {
+  func test_supportedNetworksForProject_AvailableCardTypes_IsNil_NonUS_ProjectCurrency() {
     let project = Project.template
       |> \.availableCardTypes .~ nil
-      |> \.country .~ .de
+      |> Project.lens.stats.currency .~ Project.Country.de.currencyCode
 
     let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
+    XCTAssertEqual(supportedNetworks.count, 4)
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.JCB))
     XCTAssertTrue(supportedNetworks.contains(.masterCard))

@@ -1266,7 +1266,7 @@ private func projectProperties(
   props["subcategory"] = project.category.analyticsName
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
-  props["currency"] = project.country.currencyCode
+  props["currency"] = project.stats.currency
   props["creator_uid"] = String(project.creator.id)
   props["deadline"] = project.dates.deadline.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns

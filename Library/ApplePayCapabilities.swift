@@ -68,7 +68,8 @@ public struct ApplePayCapabilities: ApplePayCapabilitiesType {
 
   public func supportedNetworks(for project: Project) -> [PKPaymentNetwork] {
     guard let availableCardTypes = project.availableCardTypes else {
-      return self.supportedNetworks(projectCountry: project.country)
+      let projectCountryCurrency = projectCountry(forCurrency: project.stats.currency) ?? project.country
+      return self.supportedNetworks(projectCountry: projectCountryCurrency)
     }
 
     return availableCardTypes

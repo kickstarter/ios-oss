@@ -166,11 +166,12 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldValue.assertValues(["1"])
   }
 
-  func testAmountCurrencyAndStepper_Country_HasMinMax_NoReward() {
+  func testAmountCurrencyAndStepper_Currency_Not_Country_HasMinMax_NoReward() {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 1
     let project = Project.template
-      |> Project.lens.country .~ Project.Country.mx
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: reward, 0))
 
@@ -186,26 +187,34 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testAmountCurrencyAndStepper_Country_DoesNotHaveMinMax_NoReward() {
-    let country = Project.Country.us
+    let countryWithNilMiniumPledge = Project.Country.us
       |> Project.Country.lens.minPledge .~ nil
 
-    let project = Project.template
-      |> Project.lens.country .~ country
+    let launchedCountries = LaunchedCountries(countries: [countryWithNilMiniumPledge])
 
-    let reward = Reward.noReward
-      |> Reward.lens.minimum .~ 1
+    withEnvironment(launchedCountries: launchedCountries) {
+      let country = Project.Country.us
+        |> Project.Country.lens.minPledge .~ nil
 
-    self.vm.inputs.configureWith(data: (project, reward: reward, 0))
+      let project = Project.template
+        |> Project.lens.stats.currency .~ country.currencyCode
+        |> Project.lens.country .~ country
 
-    self.amountIsValid.assertValues([true])
-    self.amountMin.assertValues([1])
-    self.amountMax.assertValues([10_000])
-    self.amountValue.assertValues([1])
-    self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(1)
-    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
-    self.stepperValue.assertValues([1])
-    self.textFieldValue.assertValues(["1"])
+      let reward = Reward.noReward
+        |> Reward.lens.minimum .~ 1
+
+      self.vm.inputs.configureWith(data: (project, reward: reward, 0))
+
+      self.amountIsValid.assertValues([true])
+      self.amountMin.assertValues([1])
+      self.amountMax.assertValues([10_000])
+      self.amountValue.assertValues([1])
+      self.currency.assertValues(["$"])
+      self.stepperMinValue.assertValue(1)
+      self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
+      self.stepperValue.assertValues([1])
+      self.textFieldValue.assertValues(["1"])
+    }
   }
 
   func testAmountCurrencyAndStepper_Reward_Minimum_Template() {
@@ -224,7 +233,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testAmountCurrencyAndStepper_Reward_Minimum_Custom() {
     let project = Project.template
-      |> Project.lens.country .~ .jp
+      |> Project.lens.stats.currency .~ Project.Country.jp.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
@@ -283,9 +292,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Stepper_Country_HasMinMax_NoReward() {
+  func testDoneButtonIsEnabled_Stepper_ProjectCurrency_HasMinMax_NoReward() {
     let project = Project.template
-      |> Project.lens.country .~ Project.Country.hk
+      |> Project.lens.stats.currency .~ Project.Country.hk.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
@@ -307,35 +316,39 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Stepper_Country_DoesNotHaveMinMax_NoReward() {
+  func testDoneButtonIsEnabled_Stepper_ProjectCurrencyCountry_DoesNotHaveMinMax_NoReward() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
-    self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
-    self.vm.inputs.stepperValueChanged(2)
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.stepperValueChanged(2)
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(100_000)
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, false, true, false])
+      self.vm.inputs.stepperValueChanged(10_000)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.stepperValueChanged(1)
-    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
+      self.vm.inputs.stepperValueChanged(0)
+      self.doneButtonIsEnabled.assertValues([true, false, true, false])
+
+      self.vm.inputs.stepperValueChanged(1)
+      self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
+    }
   }
 
-  func testDoneButtonIsEnabled_Stepper_Country_HasMinMax_Reward_Minimum_Template() {
+  func testDoneButtonIsEnabled_Stepper_ProjectCurrencyCountry_HasMinMax_Reward_Minimum_Template() {
     self.vm.inputs.configureWith(data: (.template, reward: .template, 0))
 
     self.doneButtonIsEnabled.assertValues([true])
@@ -349,14 +362,17 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(10_000)
     self.doneButtonIsEnabled.assertValues([true, false, true])
 
+    self.vm.inputs.stepperValueChanged(10_001)
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
+
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Stepper_Country_HasMinMax_Reward_Minimum_Custom() {
+  func testDoneButtonIsEnabled_Stepper_ProjectCurrencyCountry_HasMinMax_Reward_Minimum_Custom() {
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
 
@@ -380,63 +396,71 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Stepper_Country_DoesNotHaveMinMax_Reward_Minimum_Template() {
+  func testDoneButtonIsEnabled_Stepper_ProjectCountryCurrency_DoesNotHaveMinMax_Reward_Minimum_Template() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
-    self.vm.inputs.configureWith(data: (project, reward: .template, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: .template, 0))
 
-    self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.stepperValueChanged(11)
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(100_000)
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(10_000)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.stepperValueChanged(10)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(0)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+
+      self.vm.inputs.stepperValueChanged(10)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+    }
   }
 
-  func testDoneButtonIsEnabled_Stepper_Country_DoesNotHaveMinMax_Reward_Minimum_Custom() {
+  func testDoneButtonIsEnabled_Stepper_ProjectCountryCurrency_DoesNotHaveMinMax_Reward_Minimum_Custom() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
+
+    let launchedCountries = LaunchedCountries(countries: [country])
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
 
-    self.vm.inputs.configureWith(data: (project, reward: reward, 0))
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: reward, 0))
 
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(300)
-    self.doneButtonIsEnabled.assertValues([true])
+      self.vm.inputs.stepperValueChanged(300)
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.stepperValueChanged(100_000)
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(10_000)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(0)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.stepperValueChanged(200)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(200)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+    }
   }
 
   func testDoneButtonIsEnabled_TextField_NoReward() {
@@ -460,9 +484,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_TextField_Country_HasMinMax_NoReward() {
+  func testDoneButtonIsEnabled_TextField_ProjectCountryCurrency_HasMinMax_NoReward() {
     let project = Project.template
-      |> Project.lens.country .~ Project.Country.hk
+      |> Project.lens.stats.currency .~ Project.Country.hk.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
@@ -484,35 +508,39 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_TextField_Country_DoesNotHaveMinMax_NoReward() {
+  func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_DoesNotHaveMinMax_NoReward() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
-    self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
-    self.vm.inputs.textFieldValueChanged("2")
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.textFieldValueChanged("2")
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("100000")
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, false, true, false])
+      self.vm.inputs.textFieldValueChanged("10000")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.textFieldValueChanged("1")
-    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
+      self.vm.inputs.textFieldValueChanged("0")
+      self.doneButtonIsEnabled.assertValues([true, false, true, false])
+
+      self.vm.inputs.textFieldValueChanged("1")
+      self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
+    }
   }
 
-  func testDoneButtonIsEnabled_TextField_Country_HasMinMax_Reward_Minimum_Template() {
+  func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_HasMinMax_Reward_Minimum_Template() {
     self.vm.inputs.configureWith(data: (.template, reward: .template, 0))
 
     self.doneButtonIsEnabled.assertValues([true])
@@ -533,7 +561,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true])
   }
 
-  func testDoneButtonIsEnabled_TextField_Country_HasMinMax_Reward_Minimum_Custom() {
+  func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_HasMinMax_Reward_Minimum_Custom() {
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
 
@@ -557,63 +585,71 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true])
   }
 
-  func testDoneButtonIsEnabled_TextField_Country_DoesNotHaveMinMax_Reward_Minimum_Template() {
+  func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Template() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
-    self.vm.inputs.configureWith(data: (project, reward: .template, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: .template, 0))
 
-    self.vm.inputs.textFieldValueChanged("11")
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.textFieldValueChanged("11")
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("100000")
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("10000")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.textFieldValueChanged("10")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("0")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+
+      self.vm.inputs.textFieldValueChanged("10")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+    }
   }
 
-  func testDoneButtonIsEnabled_TextField_Country_DoesNotHaveMinMax_Reward_Minimum_Custom() {
+  func testDoneButtonIsEnabled_TextField_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Custom() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
 
-    self.vm.inputs.configureWith(data: (project, reward: reward, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: reward, 0))
 
-    self.vm.inputs.textFieldValueChanged("300")
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.textFieldValueChanged("300")
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("100000")
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("10000")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.textFieldValueChanged("200")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("0")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+
+      self.vm.inputs.textFieldValueChanged("200")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+    }
   }
 
   func testDoneButtonIsEnabled_Combined_NoReward() {
@@ -637,9 +673,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Combined_Country_HasMinMax_NoReward() {
+  func testDoneButtonIsEnabled_Combined_ProjectCountryCurrency_HasMinMax_NoReward() {
     let project = Project.template
-      |> Project.lens.country .~ Project.Country.hk
+      |> Project.lens.stats.currency .~ Project.Country.hk.currencyCode
 
     self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
@@ -661,35 +697,39 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Combined_Country_DoesNotHaveMinMax_NoReward() {
+  func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_DoesNotHaveMinMax_NoReward() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
-    self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: Reward.noReward, 0))
 
-    self.vm.inputs.textFieldValueChanged("2")
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.textFieldValueChanged("2")
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(100_000)
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, false, true, false])
+      self.vm.inputs.textFieldValueChanged("10000")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.textFieldValueChanged("1")
-    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
+      self.vm.inputs.stepperValueChanged(0)
+      self.doneButtonIsEnabled.assertValues([true, false, true, false])
+
+      self.vm.inputs.textFieldValueChanged("1")
+      self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
+    }
   }
 
-  func testDoneButtonIsEnabled_Combined_Country_HasMinMax_Reward_Minimum_Template() {
+  func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_HasMinMax_Reward_Minimum_Template() {
     self.vm.inputs.configureWith(data: (.template, reward: .template, 0))
 
     self.doneButtonIsEnabled.assertValues([true])
@@ -710,7 +750,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Combined_Country_HasMinMax_Reward_Minimum_Custom() {
+  func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_HasMinMax_Reward_Minimum_Custom() {
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
 
@@ -734,63 +774,71 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true, false, true])
   }
 
-  func testDoneButtonIsEnabled_Combined_Country_DoesNotHaveMinMax_Reward_Minimum_Template() {
+  func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Template() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
 
-    self.vm.inputs.configureWith(data: (project, reward: .template, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: .template, 0))
 
-    self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.stepperValueChanged(11)
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("100000")
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(10_000)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
 
-    self.vm.inputs.stepperValueChanged(10)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.textFieldValueChanged("0")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+
+      self.vm.inputs.stepperValueChanged(10)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+    }
   }
 
-  func testDoneButtonIsEnabled_Combined_Country_DoesNotHaveMinMax_Reward_Minimum_Custom() {
+  func testDoneButtonIsEnabled_Combined_ProjectCurrencyCountry_DoesNotHaveMinMax_Reward_Minimum_Custom() {
     let country = Project.Country.au
       |> Project.Country.lens.minPledge .~ nil
       |> Project.Country.lens.maxPledge .~ nil
 
     let project = Project.template
-      |> Project.lens.country .~ country
+      |> Project.lens.stats.currency .~ country.currencyCode
 
     let reward = Reward.template
       |> Reward.lens.minimum .~ 200
 
-    self.vm.inputs.configureWith(data: (project, reward: reward, 0))
+    let launchedCountries = LaunchedCountries(countries: [country])
 
-    self.doneButtonIsEnabled.assertValues([true])
+    withEnvironment(launchedCountries: launchedCountries) {
+      self.vm.inputs.configureWith(data: (project, reward: reward, 0))
 
-    self.vm.inputs.textFieldValueChanged("300")
-    self.doneButtonIsEnabled.assertValues([true])
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, false])
+      self.vm.inputs.textFieldValueChanged("300")
+      self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(100_000)
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(10_001)
+      self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.textFieldValueChanged("200")
-    self.doneButtonIsEnabled.assertValues([true, false, true])
+      self.vm.inputs.stepperValueChanged(0)
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+
+      self.vm.inputs.textFieldValueChanged("200")
+      self.doneButtonIsEnabled.assertValues([true, false, true])
+    }
   }
 
   func testGenerateSelectionFeedback() {
@@ -813,6 +861,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.generateSelectionFeedback.assertValueCount(5)
   }
 
+  // FIXME: Not sure why this notification is triggered when stepper value is inside the min/max bounds.
   func testGenerateNotificationWarningFeedback() {
     self.vm.inputs.configureWith(data: (.template, reward: .template, 0))
     self.generateNotificationWarningFeedback.assertDidNotEmitValue()
@@ -894,7 +943,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.maxPledgeAmountErrorLabelIsHidden.assertValues([true, false, true, false])
   }
 
-  func testMaxPledgeAmountErrorLabelText() {
+  func testMaxPledgeAmountErrorLabelText_WithUS_CountryCurrency_Success() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.minimum .~ 25
@@ -911,6 +960,27 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.maxPledgeAmountErrorLabelText.assertValues([
       "Enter an amount less than US$ 10,000.",
       "Enter an amount less than US$ 9,970."
+    ])
+  }
+
+  func testMaxPledgeAmountErrorLabelText_WithNonUS_CountryCurrency_Success() {
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+
+    self.vm.inputs.configureWith(data: (project, reward: reward, 0))
+    self.vm.inputs.stepperValueChanged(200_100)
+
+    self.maxPledgeAmountErrorLabelText.assertValues([
+      "Enter an amount less than MX$ 200,000."
+    ])
+
+    self.vm.inputs.unavailableAmountChanged(to: 30.0)
+
+    self.maxPledgeAmountErrorLabelText.assertValues([
+      "Enter an amount less than MX$ 200,000.",
+      "Enter an amount less than MX$ 199,970."
     ])
   }
 
@@ -1313,6 +1383,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
@@ -1354,6 +1425,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward

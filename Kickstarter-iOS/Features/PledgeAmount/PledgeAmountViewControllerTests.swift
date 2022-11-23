@@ -48,9 +48,26 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_ShowsCurrencySymbol() {
+  func testView_ShowsCurrencySymbol_NonUS_ProjectCurrency_US_ProjectCountry() {
     let project = Project.template
-      |> Project.lens.country .~ Project.Country.ca
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      let controller = PledgeAmountViewController.instantiate()
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+      parent.view.frame.size.height = regularHeight
+
+      controller.configureWith(value: (project: project, reward: .template, 0))
+
+      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+    }
+  }
+
+  func testView_ShowsCurrencySymbol_US_ProjectCurrency_US_ProjectCountry() {
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()

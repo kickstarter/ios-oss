@@ -22,7 +22,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.canceled,
       backingState: Backing.Status.pledged
@@ -40,7 +40,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.failed,
       backingState: Backing.Status.pledged
@@ -58,7 +58,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.canceled
@@ -76,7 +76,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.collected
@@ -94,7 +94,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.dropped
@@ -112,7 +112,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.errored
@@ -130,7 +130,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.preauth
@@ -148,7 +148,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.pledged
@@ -167,7 +167,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         currentUserIsCreatorOfProject: false,
         needsConversion: true,
         pledgeAmount: 10,
-        projectCountry: Project.Country.hk,
+        projectCurrencyCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: Backing.Status.pledged
@@ -190,7 +190,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         currentUserIsCreatorOfProject: false,
         needsConversion: false,
         pledgeAmount: 10,
-        projectCountry: Project.Country.hk,
+        projectCurrencyCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: backingState
@@ -207,7 +207,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.canceled,
       backingState: Backing.Status.pledged
@@ -225,7 +225,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.failed,
       backingState: Backing.Status.pledged
@@ -243,7 +243,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.canceled
@@ -261,7 +261,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.collected
@@ -279,7 +279,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.dropped
@@ -297,7 +297,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.errored
@@ -315,7 +315,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.live,
       backingState: Backing.Status.pledged
@@ -334,7 +334,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         currentUserIsCreatorOfProject: true,
         needsConversion: true,
         pledgeAmount: 10,
-        projectCountry: Project.Country.hk,
+        projectCurrencyCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: Backing.Status.pledged
@@ -353,7 +353,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
-      projectCountry: Project.Country.hk,
+      projectCurrencyCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
       projectState: Project.State.successful,
       backingState: Backing.Status.preauth
@@ -375,7 +375,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         currentUserIsCreatorOfProject: true,
         needsConversion: false,
         pledgeAmount: 10,
-        projectCountry: Project.Country.hk,
+        projectCurrencyCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
         projectState: Project.State.successful,
         backingState: backingState
