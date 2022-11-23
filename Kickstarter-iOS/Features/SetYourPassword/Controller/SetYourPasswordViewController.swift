@@ -145,15 +145,13 @@ public final class SetYourPasswordViewController: UIViewController {
       self.newPasswordTextField,
       self.confirmPasswordLabel,
       self.confirmPasswordTextField,
-      self.saveButton
+      self.saveButton,
+      self.loadingIndicator
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.rootStackView.setCustomSpacing(Styles.grid(7), after: self.contextLabel)
     self.rootStackView.setCustomSpacing(Styles.grid(3), after: self.confirmPasswordTextField)
-
-    _ = (self.loadingIndicator, self.view)
-      |> ksr_addSubviewToParent()
   }
 
   private func setupConstraints() {
@@ -164,10 +162,7 @@ public final class SetYourPasswordViewController: UIViewController {
 
       self.confirmPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
 
-      self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
-
-      self.loadingIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-      self.loadingIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 44)
+      self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
     ])
   }
 
@@ -181,7 +176,7 @@ public final class SetYourPasswordViewController: UIViewController {
 
   private func enableTextFieldsAndSaveButton(_ isEnabled: Bool) {
     _ = [self.newPasswordTextField, self.confirmPasswordTextField, self.saveButton]
-      |> \.isUserInteractionEnabled .~ isEnabled
+      ||> \.isUserInteractionEnabled .~ isEnabled
   }
 
   // MARK: - Accessors
@@ -204,6 +199,9 @@ public final class SetYourPasswordViewController: UIViewController {
   }
 
   @objc private func saveButtonPressed() {
+    self.loadingIndicator.startAnimating()
+    self.saveButton.isHidden = true
+
     self.viewModel.inputs.saveButtonPressed()
   }
 }

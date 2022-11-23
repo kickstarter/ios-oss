@@ -199,15 +199,15 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
         AppEnvironment.login(accessTokenEnv)
 
-        let allowSetNewPassword = featureFeacbookLoginDeprecationEnabled() && accessTokenEnv.user
+        let allowSetNewPassword = featureFacebookLoginDeprecationEnabled() && accessTokenEnv.user
           .needsPassword
 
         if allowSetNewPassword {
-          self.pushSetYourPasswordViewController
+          strongSelf.pushSetYourPasswordViewController()
           return
         }
 
-        self.viewModel.inputs.environmentLoggedIn()
+        strongSelf.viewModel.inputs.environmentLoggedIn()
       }
 
     self.viewModel.outputs.postNotification
