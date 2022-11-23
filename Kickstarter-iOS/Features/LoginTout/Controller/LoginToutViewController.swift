@@ -195,19 +195,19 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
     self.viewModel.outputs.logIntoEnvironmentWithFacebook
       .observeValues { [weak self] accessTokenEnv in
-        guard let _self = self else { return }
+        guard let strongSelf = self else { return }
 
         AppEnvironment.login(accessTokenEnv)
 
-        if featureFacebookLoginDeprecationEnabled() {
-          let user = accessTokenEnv.user
+        let allowSetNewPassword = featureFeacbookLoginDeprecationEnabled() && accessTokenEnv.user
+          .needsPassword
 
-          user.needsPassword == true || user.needsPassword == nil
-            ? _self.pushSetYourPasswordViewController()
-            : _self.viewModel.inputs.environmentLoggedIn()
-        } else {
-          _self.viewModel.inputs.environmentLoggedIn()
+        if allowSetNewPassword {
+          self.pushSetYourPasswordViewController
+          return
         }
+
+        self.viewModel.inputs.environmentLoggedIn()
       }
 
     self.viewModel.outputs.postNotification
@@ -258,10 +258,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
+        guard let strongSelf = self else { return }
         let controller = MFMailComposeViewController.support()
-        controller.mailComposeDelegate = _self
-        _self.present(controller, animated: true, completion: nil)
+        controller.mailComposeDelegate = strongSelf
+        strongSelf.present(controller, animated: true, completion: nil)
       }
 
     self.helpViewModel.outputs.showNoEmailError

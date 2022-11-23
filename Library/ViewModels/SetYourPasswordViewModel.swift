@@ -1,6 +1,5 @@
 import Foundation
 import KsApi
-import Prelude
 import ReactiveSwift
 
 public protocol SetYourPasswordViewModelInputs {
