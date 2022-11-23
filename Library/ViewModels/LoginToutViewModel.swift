@@ -71,10 +71,10 @@ public protocol LoginToutViewModelOutputs {
   /// Emits the login context to be displayed.
   var logInContextText: Signal<String, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
+  /// Emits an access token envelope that can be used to update the environment via Apple.
   var logIntoEnvironmentWithApple: Signal<AccessTokenEnvelope, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
+  /// Emits an access token envelope that can be used to update the environment via Facebook.
   var logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits when a login success notification should be posted.
