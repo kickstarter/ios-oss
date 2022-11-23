@@ -178,7 +178,7 @@ public final class SetYourPasswordViewController: UIViewController {
   private func enableTextFieldsAndSaveButton(_ isEnabled: Bool) {
     _ = [self.newPasswordTextField, self.confirmPasswordTextField, self.saveButton]
       ||> \.isUserInteractionEnabled .~ isEnabled
-    
+
     self.saveButton.isHidden = !isEnabled
   }
 

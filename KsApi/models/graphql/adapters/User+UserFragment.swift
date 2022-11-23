@@ -215,7 +215,7 @@ extension User {
 
     return isFacebookConnected
   }
-  
+
   private static func needsPassword(userFragment: GraphAPI.UserFragment) -> Bool {
     var needsPassword: Bool = true
 
