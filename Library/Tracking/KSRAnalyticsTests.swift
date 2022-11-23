@@ -1111,6 +1111,33 @@ final class KSRAnalyticsTests: TestCase {
     )
   }
 
+  func testTrackProjectCurrency_WhenDifferentFromCountry_ComesFromCountryCurrencyNotCountry_Success() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.de.currencyCode
+
+    ksrAnalytics.trackPledgeConfirmButtonClicked(
+      project: project,
+      reward: reward,
+      typeContext: .creditCard,
+      checkoutData: .template,
+      refTag: nil
+    )
+
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(
+      "EUR",
+      segmentClientProps?["project_currency"] as? String
+    )
+  }
+
   func testTrackPledgeSubmitButtonClicked_Pledge() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)

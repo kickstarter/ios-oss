@@ -279,7 +279,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureShippingSummaryViewWithData = Signal.combineLatest(
       selectedShippingRule.skipNil().map(\.location.localizedName),
       project.map(\.stats.omitUSCurrencyCode),
-      project.map(\.country),
+      project.map { project in
+        projectCountry(forCurrency: project.stats.currency) ?? project.country
+      },
       allRewardsShippingTotal
     )
     .map(PledgeShippingSummaryViewData.init)
@@ -745,8 +747,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       (
         Strings.Almost_there(),
         Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+          min: Format
+            .currency(
+              min,
+              country: projectCountry(forCurrency: project.stats.currency) ?? project.country,
+              omitCurrencyCode: false
+            ),
+          max: Format
+            .currency(
+              max,
+              country: projectCountry(forCurrency: project.stats.currency) ?? project.country,
+              omitCurrencyCode: false
+            )
         )
       )
     }
@@ -934,7 +946,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
-    /** TODO: Look here for PAY-1980 - handling errored backing pledge flow with setup intent client secret. */
     let willRetryPaymentMethod = Signal.combineLatest(
       context,
       project,
@@ -961,7 +972,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedQuantities
     )
     .map { _, project, rewards, selectedQuantities in
-      (rewards, selectedQuantities, project.country, project.stats.omitUSCurrencyCode)
+      guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
+        return (rewards, selectedQuantities, project.country, project.stats.omitUSCurrencyCode)
+      }
+
+      return (rewards, selectedQuantities, projectCurrencyCountry, project.stats.omitUSCurrencyCode)
     }
     .map(PledgeExpandableRewardsHeaderViewData.init)
 
@@ -1367,6 +1382,7 @@ private func pledgeAmountSummaryViewData(
   guard let backing = project.personalization.backing else { return nil }
 
   let rewardIsLocalPickup = isRewardLocalPickup(backing.reward)
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
 
   return .init(
     bonusAmount: additionalPledgeAmount,
@@ -1374,7 +1390,7 @@ private func pledgeAmountSummaryViewData(
     isNoReward: backing.reward?.isNoReward ?? false,
     locationName: backing.locationName,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    projectCountry: project.country,
+    projectCurrencyCountry: projectCurrencyCountry,
     pledgedOn: backing.pledgedAt,
     rewardMinimum: allRewardsTotal,
     shippingAmount: backing.shippingAmount.flatMap(Double.init),

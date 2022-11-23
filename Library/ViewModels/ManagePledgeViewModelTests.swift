@@ -165,8 +165,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
       )
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
 
     let envelope = ProjectAndBackingEnvelope.template
+      |> \.project .~ Project.template
       |> \.backing .~ (Backing.template |> Backing.lens.addOns .~ nil)
 
     let mockService = MockService(
@@ -184,11 +187,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       currentUserIsCreatorOfProject: false,
       isNoReward: false,
       locationName: "United States",
-      needsConversion: false,
+      needsConversion: true,
       omitUSCurrencyCode: true,
       pledgeAmount: envelope.backing.amount,
       pledgedOn: envelope.backing.pledgedAt,
-      projectCountry: Project.Country.us,
+      projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 10.0,
@@ -798,6 +801,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
       )
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
 
     let backing = Backing.template
       |> Backing.lens.locationId .~ nil
@@ -821,7 +826,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 25,
       pledgedOn: envelope.backing.pledgedAt,
-      projectCountry: project.country,
+      projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
@@ -844,7 +849,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       omitUSCurrencyCode: true,
       pledgeAmount: 50,
       pledgedOn: envelope.backing.pledgedAt,
-      projectCountry: project.country,
+      projectCurrencyCountry: Project.Country.mx,
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
