@@ -141,7 +141,10 @@ final class LoginToutViewModelTests: TestCase {
     )
   }
 
-  func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagDisabled() {
+  func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagEnabled() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true]
+    
     let token = AccessToken(
       tokenString: "12344566",
       permissions: [],
@@ -161,41 +164,99 @@ final class LoginToutViewModelTests: TestCase {
       grantedPermissions: [],
       declinedPermissions: []
     )
-
-    vm.inputs.configureWith(.generic, project: nil, reward: nil)
-    self.vm.inputs.viewWillAppear()
-
-    self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
-
-    self.vm.inputs.facebookLoginButtonPressed()
-
-    self.attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
-
-    self.vm.inputs.facebookLoginSuccess(result: result)
-
-    self.isLoading.assertValues([true])
-
-    // Wait enough time for API request to be made.
-    scheduler.advance()
-
-    self.isLoading.assertValues([true, false])
-    self.logIntoEnvironmentWithFacebook.assertValueCount(1, "Log into environment.")
-
-    self.vm.inputs.environmentLoggedIn()
-
-    self.postNotification.assertDidNotEmitValue()
-
-    self.scheduler.advance()
-
-    // Notifications are posted on the next run loop
-    XCTAssertEqual(self.postNotification.values.first?.0, .ksr_sessionStarted, "Login notification posted.")
-    XCTAssertEqual(
-      self.postNotification.values.first?.1, .ksr_showNotificationsDialog,
-      "Contextual Dialog notification posted."
+    
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+      
+      self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
+      
+      self.vm.inputs.facebookLoginButtonPressed()
+      
+      self.attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
+      
+      self.vm.inputs.facebookLoginSuccess(result: result)
+      
+      self.isLoading.assertValues([true])
+      
+      // Wait enough time for API request to be made.
+      scheduler.advance()
+      
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironmentWithFacebook.assertValueCount(1, "Log into environment.")
+      
+      self.postNotification.assertDidNotEmitValue()
+      
+      self.scheduler.advance()
+      
+      // Notifications are not posted on the next run loop
+      XCTAssert(self.postNotification.values.isEmpty)
+      
+      self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
+      self.startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
+    }
+  }
+  
+  func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagDisabled() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true]
+    
+    let token = AccessToken(
+      tokenString: "12344566",
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
+      appID: "834987809",
+      userID: "0000000001",
+      expirationDate: Date(),
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
-    self.startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
+    let result = LoginManagerLoginResult(
+      token: token,
+      authenticationToken: nil,
+      isCancelled: false,
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
+    
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+      
+      self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
+      
+      self.vm.inputs.facebookLoginButtonPressed()
+      
+      self.attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
+      
+      self.vm.inputs.facebookLoginSuccess(result: result)
+      
+      self.isLoading.assertValues([true])
+      
+      // Wait enough time for API request to be made.
+      scheduler.advance()
+      
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironmentWithFacebook.assertValueCount(1, "Log into environment.")
+      
+      self.vm.inputs.environmentLoggedIn()
+      
+      self.postNotification.assertDidNotEmitValue()
+      
+      self.scheduler.advance()
+      
+      // Notifications are posted on the next run loop
+      XCTAssertEqual(self.postNotification.values.first?.0, .ksr_sessionStarted, "Login notification posted.")
+      XCTAssertEqual(
+        self.postNotification.values.first?.1, .ksr_showNotificationsDialog,
+        "Contextual Dialog notification posted."
+      )
+      
+      self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
+      self.startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
+    }
   }
 
   func testLoginFacebookFlow_AttemptFail() {
@@ -610,15 +671,58 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  func testLogIntoEnvironment_SignInWithApple() {
+  func testLogIntoEnvironment_SignInWithApple_WhenFBLoginDeprecationFlagDisabled() {
     let user = User.template
 
     let envelope = SignInWithAppleEnvelope.template
       |> \.signInWithApple.apiAccessToken .~ "some_token"
-
+    
     let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
+    
+    let mockOptimizelyClient = MockOptimizelyClient()
+    |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false]
 
-    withEnvironment(apiService: service) {
+    withEnvironment(apiService: service, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
+      let data = SignInWithAppleData(
+        appId: "com.kickstarter.test",
+        firstName: "Nino",
+        lastName: "Teixeira",
+        token: "apple_auth_token"
+      )
+
+      self.isLoading.assertDidNotEmitValue()
+      self.logIntoEnvironmentWithApple.assertDidNotEmitValue()
+
+      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
+
+      self.isLoading.assertValues([true])
+      self.scheduler.run()
+
+      self.isLoading.assertValues([true, false])
+      self.logIntoEnvironmentWithApple.assertValueCount(1)
+
+      let value = self.logIntoEnvironmentWithApple.values.first
+
+      XCTAssertEqual(user, value?.user)
+      XCTAssertEqual("some_token", value?.accessToken)
+    }
+  }
+  
+  func testLogIntoEnvironment_SignInWithApple_WhenFBLoginDeprecationFlagEnabled() {
+    let user = User.template
+
+    let envelope = SignInWithAppleEnvelope.template
+      |> \.signInWithApple.apiAccessToken .~ "some_token"
+    
+    let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
+    
+    let mockOptimizelyClient = MockOptimizelyClient()
+    |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true]
+
+    withEnvironment(apiService: service, optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
