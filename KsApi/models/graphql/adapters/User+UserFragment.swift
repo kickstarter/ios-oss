@@ -27,6 +27,7 @@ extension User {
       location: self.location(userFragment: userFragment),
       name: userFragment.name,
       needsFreshFacebookToken: userFragment.needsFreshFacebookToken,
+      needsPassword: userFragment.hasPassword ?? false,
       newsletters: self.newsletterSubscriptions(userFragment: userFragment),
       notifications: self.notifications(userFragment: userFragment),
       optedOutOfRecommendations: userFragment.optedOutOfRecommendations,

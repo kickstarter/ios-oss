@@ -11,6 +11,7 @@ extension User {
     location: nil,
     name: "Blob",
     needsFreshFacebookToken: false,
+    needsPassword: false,
     newsletters: .template,
     notifications: .template,
     optedOutOfRecommendations: false,

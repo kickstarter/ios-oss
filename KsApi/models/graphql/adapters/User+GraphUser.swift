@@ -22,6 +22,7 @@ extension User {
       location: nil,
       name: graphUser.name,
       needsFreshFacebookToken: nil,
+      needsPassword: false,
       newsletters: NewsletterSubscriptions(),
       notifications: Notifications(),
       optedOutOfRecommendations: nil,
