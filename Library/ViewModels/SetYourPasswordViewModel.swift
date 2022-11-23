@@ -43,9 +43,6 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
     self.contextLabelText = fetchUserEmailEvent.values().map {
       Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: $0.me.email ?? "")
     }
-
-    self.contextLabelText = self.viewDidLoadProperty.signal
-      .map { Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: "") }
     self.newPasswordLabel = self.viewDidLoadProperty.signal
       .map { Strings.New_password() }
     self.confirmPasswordLabel = self.viewDidLoadProperty.signal

@@ -108,6 +108,7 @@ public final class SetYourPasswordViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
         self?.present(UIAlertController.genericError(errorMessage), animated: true, completion: nil)
+        self?.enableTextFieldsAndSaveButton(true)
       }
 
     self.viewModel.outputs.setPasswordSuccess
@@ -177,6 +178,8 @@ public final class SetYourPasswordViewController: UIViewController {
   private func enableTextFieldsAndSaveButton(_ isEnabled: Bool) {
     _ = [self.newPasswordTextField, self.confirmPasswordTextField, self.saveButton]
       ||> \.isUserInteractionEnabled .~ isEnabled
+    
+    self.saveButton.isHidden = !isEnabled
   }
 
   // MARK: - Accessors
@@ -199,9 +202,6 @@ public final class SetYourPasswordViewController: UIViewController {
   }
 
   @objc private func saveButtonPressed() {
-    self.loadingIndicator.startAnimating()
-    self.saveButton.isHidden = true
-
     self.viewModel.inputs.saveButtonPressed()
   }
 }
