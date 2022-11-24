@@ -44,6 +44,7 @@ final class SetYourPasswordViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchGraphUserResult: .success(userEnvelope))) {
       self.viewModel.inputs.viewDidLoad()
+      self.viewModel.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
