@@ -60,6 +60,12 @@ public final class SetYourPasswordViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   // MARK: - Styles
 
   public override func bindStyles() {
@@ -128,9 +134,7 @@ public final class SetYourPasswordViewController: UIViewController {
 
   private func configureViews() {
     _ = self.view
-      |> \.autoresizingMask .~ .flexibleHeight
       |> \.backgroundColor .~ .ksr_white
-      |> \.clipsToBounds .~ true
 
     _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()

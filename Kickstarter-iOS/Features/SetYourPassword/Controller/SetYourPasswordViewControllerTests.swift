@@ -11,10 +11,19 @@ final class SetYourPasswordViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(false)
   }
 
-  func testView() {
-    combos([Language.en], [Device.phone4_7inch, Device.pad]).forEach {
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    super.tearDown()
+  }
+
+  func testSetYourPasswordViewController_DisabledSave() {
+    let userTemplate = GraphUser.template |> \.isEmailVerified .~ true
+    let userEnvelope = UserEnvelope(me: userTemplate)
+    let service = MockService(fetchGraphUserResult: .success(userEnvelope))
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(language: language) {
+      withEnvironment(apiService: service, apiDelayInterval: .seconds(0), language: language) {
         let controller = SetYourPasswordViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -23,11 +32,5 @@ final class SetYourPasswordViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-  }
-
-  override func tearDown() {
-    AppEnvironment.popEnvironment()
-    UIView.setAnimationsEnabled(true)
-    super.tearDown()
   }
 }

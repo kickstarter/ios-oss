@@ -5,6 +5,7 @@ import ReactiveSwift
 
 public protocol SetYourPasswordViewModelInputs {
   func viewDidLoad()
+  func viewWillAppear()
   func newPasswordFieldDidChange(_ text: String)
   func confirmPasswordFieldDidChange(_ text: String)
   func newPasswordFieldDidReturn(newPassword: String)
@@ -36,16 +37,21 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
         AppEnvironment.current
           .apiService
           .fetchGraphUser(withStoredCards: false)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
-    self.contextLabelText = fetchUserEmailEvent.values().map {
-      Strings.We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: $0.me.email ?? "")
+    self.contextLabelText = Signal.combineLatest(
+      self.viewWillAppearProperty.signal,
+      fetchUserEmailEvent.values()
+    )
+    .map { _, userEnvelope in
+      Strings
+        .We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? "")
     }
-    self.newPasswordLabel = self.viewDidLoadProperty.signal
+
+    self.newPasswordLabel = self.viewWillAppearProperty.signal
       .map { Strings.New_password() }
-    self.confirmPasswordLabel = self.viewDidLoadProperty.signal
+    self.confirmPasswordLabel = self.viewWillAppearProperty.signal
       .map { Strings.Confirm_password() }
 
     // MARK: Field Validations
@@ -99,6 +105,11 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   private let newPasswordProperty = MutableProperty<String>("")

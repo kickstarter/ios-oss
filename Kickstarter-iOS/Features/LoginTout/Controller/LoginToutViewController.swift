@@ -178,7 +178,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
-        self?.pushLoginViewController()
+        // self?.pushLoginViewController()
+        self?.pushSetYourPasswordViewController()
       }
 
     self.viewModel.outputs.startSignup
@@ -199,11 +200,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
         AppEnvironment.login(accessTokenEnv)
 
-        let allowSetNewPassword = featureFacebookLoginDeprecationEnabled() && accessTokenEnv.user
-          .needsPassword
-
-        if allowSetNewPassword {
+        guard featureFacebookLoginDeprecationEnabled(),
+          accessTokenEnv.user.needsPassword else {
           strongSelf.pushSetYourPasswordViewController()
+
           return
         }
 
