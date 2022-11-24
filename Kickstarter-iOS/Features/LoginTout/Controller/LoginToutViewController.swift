@@ -178,8 +178,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
-        // self?.pushLoginViewController()
-        self?.pushSetYourPasswordViewController()
+        self?.pushLoginViewController()
       }
 
     self.viewModel.outputs.startSignup
