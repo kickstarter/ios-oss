@@ -50,7 +50,8 @@ internal final class UpdateTests: XCTestCase {
           "medium": "img.jpg",
           "small": "img.jpg",
           "large": "img.jpg"
-        ]
+        ],
+        "needs_password": false
       ],
       "visible": true,
       "urls": [

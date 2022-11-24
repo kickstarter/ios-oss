@@ -18,6 +18,7 @@ final class FindFriendsEnvelopeTests: XCTestCase {
             "medium": "http://www.kickstarter.com/medium.jpg",
             "small": "http://www.kickstarter.com/small.jpg"
           ],
+          "needs_password": false,
           "backed_projects_count": 2,
           "weekly_newsletter": false,
           "promo_newsletter": false,
@@ -38,6 +39,7 @@ final class FindFriendsEnvelopeTests: XCTestCase {
             "medium": "http://www.kickstarter.com/medium.jpg",
             "small": "http://www.kickstarter.com/small.jpg"
           ],
+          "needs_password": false,
           "backed_projects_count": 2,
           "weekly_newsletter": false,
           "promo_newsletter": false,

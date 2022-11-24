@@ -31,6 +31,7 @@ final class ProjectActivityEnvelopeTests: XCTestCase {
               "small": "https://ksr-ugc.imgix.net/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?ixlib=rb-2.1.0&w=80&h=80&fit=crop&v=1461511746&auto=format&frame=1&q=92&s=89ae627aba2c664d513ab93ebbc28753",
               "medium": "https://ksr-ugc.imgix.net/assets/008/236/721/d406e60ddcc2d3bd3ed541bb915ef53e_original.jpeg?ixlib=rb-2.1.0&w=160&h=160&fit=crop&v=1461511746&auto=format&frame=1&q=92&s=6b5d8f08ea5e27cf225bd65e85b7744a"
             ],
+            "needs_password": true,
             "urls": [
               "web": [
                 "user": "https://www.kickstarter.com/profile/katiem"

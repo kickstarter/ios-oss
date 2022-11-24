@@ -16,7 +16,8 @@ internal final class MessageThreadTests: XCTestCase {
           "avatar": [
             "medium": "img",
             "small": "img"
-          ]
+          ],
+          "needs_password": true
         ],
         "sender": [
           "id": 2,
@@ -24,7 +25,8 @@ internal final class MessageThreadTests: XCTestCase {
           "avatar": [
             "medium": "img",
             "small": "img"
-          ]
+          ],
+          "needs_password": true
         ]
       ],
       "unread_messages_count": 1,
@@ -34,7 +36,8 @@ internal final class MessageThreadTests: XCTestCase {
         "avatar": [
           "medium": "img",
           "small": "img"
-        ]
+        ],
+        "needs_password": true
       ],
       "project": [
         "id": 1,
@@ -55,7 +58,8 @@ internal final class MessageThreadTests: XCTestCase {
           "avatar": [
             "medium": "http://www.kickstarter.com/medium.jpg",
             "small": "http://www.kickstarter.com/small.jpg"
-          ]
+          ],
+          "needs_password": true
         ],
         "photo": [
           "full": "http://www.kickstarter.com/full.jpg",
