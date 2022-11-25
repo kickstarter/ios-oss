@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import SnapshotTesting
 import Prelude
 import XCTest
 
@@ -115,7 +116,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        // NEXT STEPS: get the filepath and name of file. --> check how IOSSnapshotTestCase creates these. Then pass then required params for a custom `assertSnapshot` function with `TestCase`. Remember precision...reference table: https://github.com/pointfreeco/swift-snapshot-testing/pull/628#issuecomment-1250151719
+        // NEXT STEPS STEPS: refactor out FBSnapshotVerifyView with its replaced in assertSnapshot
+        assertSnapshot(matching: parent.view, as: .image(precision: 0.99), named: "testLoggedIn_Backer_LiveProject_ShowEnvironmentalCommitments_Success.", file: "../../../Screenshots/_64/ProjectPageViewControllerTests/")
+        //FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

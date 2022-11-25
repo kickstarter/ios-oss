@@ -492,6 +492,7 @@
 		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
 		60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
+		707FB38829312EA000A81C4B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 707FB38729312EA000A81C4B /* SnapshotTesting */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -3233,6 +3234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */,
+				707FB38829312EA000A81C4B /* SnapshotTesting in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
@@ -7309,6 +7311,7 @@
 			packageProductDependencies = (
 				60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */,
 				1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */,
+				707FB38729312EA000A81C4B /* SnapshotTesting */,
 			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
@@ -7452,6 +7455,7 @@
 				197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
+				707FB38629312E9F00A81C4B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -10424,6 +10428,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		707FB38629312E9F00A81C4B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -10616,6 +10628,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
 			productName = AppCenterDistribute;
+		};
+		707FB38729312EA000A81C4B /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 707FB38629312E9F00A81C4B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
