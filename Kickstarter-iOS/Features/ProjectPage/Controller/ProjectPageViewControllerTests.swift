@@ -1,7 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-import SnapshotTesting
 import Prelude
 import XCTest
 
@@ -116,10 +115,19 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        // NEXT STEPS: get the filepath and name of file. --> check how IOSSnapshotTestCase creates these. Then pass then required params for a custom `assertSnapshot` function with `TestCase`. Remember precision...reference table: https://github.com/pointfreeco/swift-snapshot-testing/pull/628#issuecomment-1250151719
-        // NEXT STEPS STEPS: refactor out FBSnapshotVerifyView with its replaced in assertSnapshot
-        assertSnapshot(matching: parent.view, as: .image(precision: 0.99), named: "testLoggedIn_Backer_LiveProject_ShowEnvironmentalCommitments_Success.", file: "../../../Screenshots/_64/ProjectPageViewControllerTests/")
-        //FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        /**
+         1. Original FBSnapshotTestCase M1/Intel issue: https://github.com/uber/ios-snapshot-test-case/issues/174
+         2. M1/Intel issue PR: https://github.com/pointfreeco/swift-snapshot-testing/issues/424#issuecomment-1086862149
+         3. Context PR for subpixel precision: https://github.com/pointfreeco/swift-snapshot-testing/pull/571#issuecomment-1254326217
+         4. Explainer of perceptual precision: https://github.com/pointfreeco/swift-snapshot-testing/pull/628#issuecomment-1250151719,
+
+         Next Steps: The assert function below replaces: `FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")` which was an Intel recorded screenshot failing to verify on an M1.
+         */
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -173,7 +181,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -227,7 +239,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -272,7 +288,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -314,7 +334,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -354,7 +378,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -396,7 +424,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -433,7 +465,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -473,7 +509,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -521,7 +561,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -569,7 +613,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -617,7 +665,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -665,7 +717,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -702,7 +758,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -737,7 +797,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -775,7 +839,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -814,13 +882,18 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
 
   // MARK: - Tab Content Tests
 
+  // Required a perceptual precision <= 0.98.
   func testLoggedOut_NonBacker_LiveProjectSwitchedToCampaignTab_Success() {
     let config = Config.template
     let project = Project.cosmicSurgery
@@ -857,7 +930,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -898,7 +975,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -949,7 +1030,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -990,7 +1075,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertExistingSnapshot(
+          matching: parent.view,
+          as: .image(precision: 0.99),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

@@ -76,6 +76,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "TEST_TARGET_NAME"
+            value = "$(TARGET_NAME)Tests"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "IMAGE_DIFF_DIR"
             value = "$(SOURCE_ROOT)/Screenshots/FailureDiffs"
             isEnabled = "YES">
