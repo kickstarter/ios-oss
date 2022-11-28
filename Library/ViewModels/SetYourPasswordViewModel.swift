@@ -1,10 +1,11 @@
 import Foundation
 import KsApi
+import Prelude
 import ReactiveSwift
 
 public protocol SetYourPasswordViewModelInputs {
   func viewDidLoad()
-  func configureWith(_ userEmail: String)
+  func viewWillAppear()
   func newPasswordFieldDidChange(_ text: String)
   func confirmPasswordFieldDidChange(_ text: String)
   func newPasswordFieldDidReturn(newPassword: String)
@@ -13,10 +14,14 @@ public protocol SetYourPasswordViewModelInputs {
 }
 
 public protocol SetYourPasswordViewModelOutputs {
+  var shouldShowActivityIndicator: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var contextLabelText: Signal<String, Never> { get }
   var newPasswordLabel: Signal<String, Never> { get }
   var confirmPasswordLabel: Signal<String, Never> { get }
+  var setPasswordFailure: Signal<String, Never> { get }
+  var setPasswordSuccess: Signal<Void, Never> { get }
+  var textFieldsAndSaveButtonAreEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol SetYourPasswordViewModelType {
@@ -27,12 +32,27 @@ public protocol SetYourPasswordViewModelType {
 public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYourPasswordViewModelInputs,
   SetYourPasswordViewModelOutputs {
   public init() {
-    self.contextLabelText = self.contextLabelProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-    self.newPasswordLabel = self.newPasswordLabelProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-    self.confirmPasswordLabel = self.confirmPasswordLabelProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
+    let fetchUserEmailEvent = self.viewDidLoadProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current
+          .apiService
+          .fetchGraphUser(withStoredCards: false)
+          .materialize()
+      }
+
+    self.contextLabelText = Signal.combineLatest(
+      self.viewWillAppearProperty.signal,
+      fetchUserEmailEvent.values()
+    )
+    .map { _, userEnvelope in
+      Strings
+        .We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? "")
+    }
+
+    self.newPasswordLabel = self.viewWillAppearProperty.signal
+      .map { Strings.New_password() }
+    self.confirmPasswordLabel = self.viewWillAppearProperty.signal
+      .map { Strings.Confirm_password() }
 
     // MARK: Field Validations
 
@@ -49,6 +69,32 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
       .skipRepeats()
 
     self.saveButtonIsEnabled = formIsValid
+
+    let submitFormEvent = self.saveButtonPressedProperty.signal
+
+    let saveAction = formIsValid
+      .takeWhen(submitFormEvent)
+      .filter(isTrue)
+      .ignoreValues()
+
+    let setPasswordEvent = combinedPasswords
+      .takeWhen(saveAction)
+      .map { CreatePasswordInput(password: $0.0, passwordConfirmation: $0.1) }
+      .switchMap { input in
+        AppEnvironment.current.apiService.createPassword(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.setPasswordFailure = setPasswordEvent.errors().map { $0.localizedDescription }
+    self.setPasswordSuccess = setPasswordEvent.values().ignoreValues()
+
+    self.shouldShowActivityIndicator = Signal.merge(
+      saveAction.signal.ignoreValues().mapConst(true),
+      setPasswordEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    self.textFieldsAndSaveButtonAreEnabled = self.shouldShowActivityIndicator.map { $0 }.negate()
   }
 
   public var inputs: SetYourPasswordViewModelInputs { return self }
@@ -61,15 +107,9 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
     self.viewDidLoadProperty.value = ()
   }
 
-  private let contextLabelProperty = MutableProperty("")
-  private let newPasswordLabelProperty = MutableProperty("")
-  private let confirmPasswordLabelProperty = MutableProperty("")
-  public func configureWith(_ userEmail: String) {
-    self.contextLabelProperty
-      .value =
-      "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email \(userEmail), please set a password that’s at least 6 characters long."
-    self.newPasswordLabelProperty.value = "Enter new password"
-    self.confirmPasswordLabelProperty.value = "Re-enter new password"
+  private let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   private let newPasswordProperty = MutableProperty<String>("")
@@ -83,20 +123,13 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   }
 
   private var newPasswordDoneEditingProperty = MutableProperty(())
-  public func newPasswordFieldDidReturn(newPassword: String) {
-    self.newPasswordLabelProperty.value = newPassword
+  public func newPasswordFieldDidReturn(newPassword _: String) {
     self.newPasswordDoneEditingProperty.value = ()
   }
 
   private let confirmPasswordDoneEditingProperty = MutableProperty(())
-  public func confirmPasswordFieldDidReturn(confirmPassword: String) {
-    self.confirmPasswordLabelProperty.value = confirmPassword
+  public func confirmPasswordFieldDidReturn(confirmPassword _: String) {
     self.confirmPasswordDoneEditingProperty.value = ()
-  }
-
-  private var saveButtonTappedProperty = MutableProperty(())
-  public func saveButtonTapped() {
-    self.saveButtonTappedProperty.value = ()
   }
 
   private let saveButtonPressedProperty = MutableProperty(())
@@ -106,10 +139,14 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
 
   // MARK: - Output Properties
 
+  public var shouldShowActivityIndicator: Signal<Bool, Never>
   public var saveButtonIsEnabled: Signal<Bool, Never>
   public var contextLabelText: Signal<String, Never>
   public var newPasswordLabel: Signal<String, Never>
   public var confirmPasswordLabel: Signal<String, Never>
+  public var setPasswordFailure: Signal<String, Never>
+  public var setPasswordSuccess: Signal<Void, Never>
+  public var textFieldsAndSaveButtonAreEnabled: Signal<Bool, Never>
 }
 
 // MARK: - Helpers

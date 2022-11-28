@@ -65,6 +65,7 @@ internal final class ActivityTests: XCTestCase {
       "user": [
         "id": 2,
         "name": "User",
+        "needs_password": false,
         "avatar": [
           "medium": "img.jpg",
           "small": "img.jpg",

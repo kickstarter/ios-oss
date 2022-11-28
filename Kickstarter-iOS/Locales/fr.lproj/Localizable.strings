@@ -323,6 +323,7 @@
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs. </br><a href=\"%{trust_link}\">En savoir plus sur la notion de responsabilité</a>";
 "Kickstarter_on_Film" = "Kickstarter on Film";
+"Kickstarters_community_guidelines" = "Kickstarter’s Community Guidelines.";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
 "Learn_about_accountability_on_Kickstarter" = "En savoir plus sur la notion de responsabilité sur Kickstarter";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
@@ -499,6 +500,7 @@
 "Request_my_personal_data" = "Demander mes données personnelles";
 "Resend_email" = "Renvoyer";
 "Resend_verification_email" = "Renvoyer l'e-mail de vérification";
+"Reset_your_password" = "Réinitialiser votre mot de passe";
 "Retry" = "Réessayer";
 "Retry_or_select_another_method" = "Veuillez réessayer ou choisir un autre moyen de paiement.";
 "Reusability_and_recyclability" = "Recyclage et valorisation des déchets";
@@ -555,6 +557,8 @@
 "Selected_reward" = "Récompense sélectionnée";
 "Send" = "Envoyer";
 "Send_verfication_email" = "Envoyer un e-mail de vérification";
+"Set_new_password" = "Création d'un mot de passe";
+"Set_your_password" = "Veuillez créer un mot de passe";
 "Share" = "Partager";
 "Share_an_update_about_your_project" = "Parlez de votre projet dans une actu.";
 "Share_this_live_stream" = "Partager cette diffusion en direct.";
@@ -633,6 +637,9 @@
 "These_projects_could_use_your_support" = "Ces créateurs ont besoin de vous.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "L'objectif du projet et les montants des engagements s'afficheront ainsi dans la devise de votre choix.";
 "This_comment_has_been_removed_by_Kickstarter" = "Ce commentaire a été supprimé par Kickstarter.";
+"This_comment_is_under_review" = "Ce commentaire est en cours de vérification.";
+"This_comment_is_under_review_for_potentially_violating" = "This comment is under review for potentially violating";
+"This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines" = "Ce commentaire est en cours d'examen pour manquement possible aux <a href=\"%{community_guidelines}\">Règles de bonne conduite de Kickstarter.</a>";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Pour les fêtes, soutenez un projet simplement parce qu'il vous parle, sans choisir de récompense.";
 "This_person_canceled_their_pledge" = "Cette personne a annulé son engagement.";
@@ -690,6 +697,7 @@
 "Visit_our_Environmental_Resources_Center" = "Rendez-vous dans notre Centre de ressources pour l'environnement";
 "Visit_our_Environmental_Resources_Center_Alternative" = "<a href=\"%{environment_link}\">Consultez notre Centre de ressources pour l'environnement</a>";
 "Watch_live" = "Regarder en direct";
+"We_can_no_longer_log_you_in_through_Facebook" = "La connexion Facebook est désormais impossible. Veuillez vous connecter avec votre mot de passe Kickstarter, ou créer un autre mot de passe pour votre adresse Facebook.";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Impossible de traiter cet engagement en raison d'un problème survenu au niveau du moyen de paiement du contributeur.";
 "We_cant_process_your_pledge" = "Impossible de traiter votre engagement.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Impossible de traiter votre engagement. Veuillez mettre à jour votre moyen de paiement.";
@@ -701,11 +709,13 @@
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "Les annulations qui empêcheraient le créateur d'atteindre son objectif de financement sont interdits dans les dernières 24 heures de la campagne.";
 "We_re_processing_this_pledge_pull_to_refresh" = "Cet engagement est en cours de traitement, veuillez tirer sur la page pour actualiser.";
 "We_re_processing_your_pledge_pull_to_refresh" = "Votre engagement est en cours de traitement, veuillez tirer sur la page pour actualiser.";
+"We_re_simplifying_our_login_process_To_log_in" = "Notre procédure de connexion est en cours de simplification. Pour accéder à votre compte Kickstarter, saisissez l'adresse e-mail associée à votre compte Facebook et nous vous enverrons un lien de réinitialisation.";
 "We_think_youll_like_these_too" = "D'autres projets qui pourraient vous plaire";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations.";
 "We_ve_been_unable_to_send_email" = "Échec de l'envoi. Veuillez vérifier l'orthographe de votre adresse e-mail.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Connexion au chat en direct impossible.";
 "We_were_unable_to_load_the_shipping_destinations" = "Nous n'avons pas été en mesure de charger les destinations d'expédition.\nVeuillez réessayer ultérieurement.";
+"We_will_be_discontinuing_the_ability_to_log_in_via_Facebook" = "La fonctionnalité de connexion avec Facebook va être éliminée. Pour vous connecter à votre compte avec l'adresse %{email}, veuillez créer un mot de passe qui contient au moins 6 caractères.";
 "We_wont_share_this_with_the_creator" = "Le créateur ne verra pas votre réponse.";
 "Websites" = "Sites Web";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Bienvenue dans notre bibliothèque. Flânons ensemble parmi ses rayons.";
@@ -1313,6 +1323,7 @@
 "forgot_password.placeholder_email" = "Adresse e-mail";
 "forgot_password.title" = "Mot de passe oublié ?";
 "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password" = "Nous avons envoyé un e-mail à %{email} contenant les instructions nécessaires pour réinitialiser votre mot de passe.";
+"forgot_password.we_sent_an_email_to_email_address_with_instructions_to_set_your_password" = "Nous avons envoyé un e-mail à %{email} contenant les instructions nécessaires pour définir votre mot de passe.";
 "general.accessibility.kickstarter" = "Kickstarter";
 "general.alert.buttons.ok" = "OK";
 "general.backer_count_backers.few" = "%{backer_count} contributeurs";

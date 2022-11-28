@@ -11,6 +11,7 @@ public struct User {
   public var location: Location?
   public var name: String
   public var needsFreshFacebookToken: Bool?
+  public var needsPassword: Bool
   public var newsletters: NewsletterSubscriptions
   public var notifications: Notifications
   public var optedOutOfRecommendations: Bool?
@@ -121,6 +122,7 @@ extension User: Decodable {
     self.location = try? values.decodeIfPresent(Location.self, forKey: .location)
     self.name = try values.decode(String.self, forKey: .name)
     self.needsFreshFacebookToken = try values.decodeIfPresent(Bool.self, forKey: .needsFreshFacebookToken)
+    self.needsPassword = try values.decode(Bool.self, forKey: .needsPassword)
     self.newsletters = try User.NewsletterSubscriptions(from: decoder)
     self.notifications = try User.Notifications(from: decoder)
     self.optedOutOfRecommendations = try values.decodeIfPresent(Bool.self, forKey: .optedOutOfRecommendations)
@@ -141,6 +143,7 @@ extension User: Decodable {
     case location
     case name
     case needsFreshFacebookToken = "needs_fresh_facebook_token"
+    case needsPassword = "needs_password"
     case optedOutOfRecommendations = "opted_out_of_recommendations"
     case showPublicProfile = "show_public_profile"
     case social
@@ -159,6 +162,7 @@ extension User: EncodableType {
     result["is_friend"] = self.isFriend ?? false
     result["location"] = self.location?.encode()
     result["name"] = self.name
+    result["needs_password"] = self.needsPassword
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
     result["social"] = self.social ?? false
     result["show_public_profile"] = self.showPublicProfile ?? false
