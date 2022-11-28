@@ -200,7 +200,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         AppEnvironment.login(accessTokenEnv)
 
         guard featureFacebookLoginDeprecationEnabled(),
-          accessTokenEnv.user.needsPassword else {
+          let needsPassword = accessTokenEnv.user.needsPassword,
+          needsPassword else {
           strongSelf.pushSetYourPasswordViewController()
 
           return

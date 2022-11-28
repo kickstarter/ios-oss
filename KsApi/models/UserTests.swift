@@ -64,7 +64,7 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(true, user.notifications.mobileMarketingUpdate)
     XCTAssertEqual(false, user.facebookConnected)
     XCTAssertEqual(false, user.isEmailVerified)
-    XCTAssertTrue(user.needsPassword)
+    XCTAssertTrue(user.needsPassword!)
     XCTAssertEqual(false, user.isFriend)
     XCTAssertNotNil(user.location)
     XCTAssertEqual(json as NSDictionary?, user.encode() as NSDictionary?)
