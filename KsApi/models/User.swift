@@ -162,7 +162,7 @@ extension User: EncodableType {
     result["is_friend"] = self.isFriend ?? false
     result["location"] = self.location?.encode()
     result["name"] = self.name
-    result["needs_password"] = self.needsPassword
+    result["needs_password"] = self.needsPassword ?? false
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
     result["social"] = self.social ?? false
     result["show_public_profile"] = self.showPublicProfile ?? false
