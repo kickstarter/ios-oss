@@ -6794,6 +6794,8 @@
 				D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */,
 				D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */,
 				D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */,
+				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
+				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
 				37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */,
@@ -6818,8 +6820,6 @@
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
-				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
-				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
