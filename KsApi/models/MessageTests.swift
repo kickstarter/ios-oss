@@ -13,7 +13,8 @@ internal final class MessageTests: XCTestCase {
         "avatar": [
           "medium": "img",
           "small": "img"
-        ]
+        ],
+        "needs_password": true
       ],
       "sender": [
         "id": 2,
@@ -21,7 +22,8 @@ internal final class MessageTests: XCTestCase {
         "avatar": [
           "medium": "img",
           "small": "img"
-        ]
+        ],
+        "needs_password": true
       ]
     ])
 

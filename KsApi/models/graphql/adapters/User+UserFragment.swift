@@ -27,6 +27,7 @@ extension User {
       location: self.location(userFragment: userFragment),
       name: userFragment.name,
       needsFreshFacebookToken: userFragment.needsFreshFacebookToken,
+      needsPassword: self.needsPassword(userFragment: userFragment),
       newsletters: self.newsletterSubscriptions(userFragment: userFragment),
       notifications: self.notifications(userFragment: userFragment),
       optedOutOfRecommendations: userFragment.optedOutOfRecommendations,
@@ -213,6 +214,14 @@ extension User {
     }
 
     return isFacebookConnected
+  }
+
+  private static func needsPassword(userFragment: GraphAPI.UserFragment) -> Bool {
+    guard let userHasPassword = userFragment.hasPassword else {
+      return true
+    }
+
+    return !userHasPassword
   }
 
   private static func isAdmin(userFragment: GraphAPI.UserFragment) -> Bool? {

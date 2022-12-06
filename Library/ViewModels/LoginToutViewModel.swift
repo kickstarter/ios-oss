@@ -71,8 +71,11 @@ public protocol LoginToutViewModelOutputs {
   /// Emits the login context to be displayed.
   var logInContextText: Signal<String, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
+  /// Emits an access token envelope that can be used to update the environment via Apple.
+  var logIntoEnvironmentWithApple: Signal<AccessTokenEnvelope, Never> { get }
+
+  /// Emits an access token envelope that can be used to update the environment via Facebook.
+  var logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
@@ -260,7 +263,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.showAppleErrorAlert = Signal
       .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
 
-    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
+    self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
+    self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
@@ -341,7 +345,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>
   public let logInContextText: Signal<String, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironmentWithApple: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironmentWithFacebook: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>

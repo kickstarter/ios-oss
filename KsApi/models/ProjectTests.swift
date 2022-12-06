@@ -73,7 +73,8 @@ final class ProjectTests: XCTestCase {
         "avatar": [
           "medium": "http://www.kickstarter.com/medium.jpg",
           "small": "http://www.kickstarter.com/small.jpg"
-        ]
+        ],
+        "needs_password": false
       ],
       "photo": [
         "full": "http://www.kickstarter.com/full.jpg",
@@ -140,7 +141,8 @@ final class ProjectTests: XCTestCase {
         "avatar": [
           "medium": "http://www.kickstarter.com/medium.jpg",
           "small": "http://www.kickstarter.com/small.jpg"
-        ]
+        ],
+        "needs_password": false
       ],
       "photo": [
         "full": "http://www.kickstarter.com/full.jpg",
@@ -233,7 +235,8 @@ final class ProjectTests: XCTestCase {
         "avatar": [
           "medium": "http://www.kickstarter.com/medium.jpg",
           "small": "http://www.kickstarter.com/small.jpg"
-        ]
+        ],
+        "needs_password": false
       ],
       "photo": [
         "full": "http://www.kickstarter.com/full.jpg",

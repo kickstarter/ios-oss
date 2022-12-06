@@ -187,10 +187,27 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         self?.pushSignupViewController()
       }
 
-    self.viewModel.outputs.logIntoEnvironment
+    self.viewModel.outputs.logIntoEnvironmentWithApple
       .observeValues { [weak self] accessTokenEnv in
         AppEnvironment.login(accessTokenEnv)
         self?.viewModel.inputs.environmentLoggedIn()
+      }
+
+    self.viewModel.outputs.logIntoEnvironmentWithFacebook
+      .observeValues { [weak self] accessTokenEnv in
+        guard let strongSelf = self else { return }
+
+        AppEnvironment.login(accessTokenEnv)
+
+        guard featureFacebookLoginDeprecationEnabled(),
+          let needsPassword = accessTokenEnv.user.needsPassword,
+          needsPassword else {
+          strongSelf.pushSetYourPasswordViewController()
+
+          return
+        }
+
+        strongSelf.viewModel.inputs.environmentLoggedIn()
       }
 
     self.viewModel.outputs.postNotification
@@ -241,10 +258,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
+        guard let strongSelf = self else { return }
         let controller = MFMailComposeViewController.support()
-        controller.mailComposeDelegate = _self
-        _self.present(controller, animated: true, completion: nil)
+        controller.mailComposeDelegate = strongSelf
+        strongSelf.present(controller, animated: true, completion: nil)
       }
 
     self.helpViewModel.outputs.showNoEmailError
@@ -405,6 +422,14 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   fileprivate func pushSignupViewController() {
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+  }
+
+  private func pushSetYourPasswordViewController() {
+    let vc = SetYourPasswordViewController.instantiate()
+    vc.delegate = self
+    self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationItem
+      .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
   }
 
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {
@@ -570,6 +595,14 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
       }
       self.viewModel.inputs.appleAuthorizationDidFail(with: authError)
     }
+  }
+}
+
+// MARK: SetYourPasswordViewControllerDelegate
+
+extension LoginToutViewController: SetYourPasswordViewControllerDelegate {
+  func setPasswordCompleteAndLogUserIn() {
+    self.viewModel.inputs.environmentLoggedIn()
   }
 }
 
