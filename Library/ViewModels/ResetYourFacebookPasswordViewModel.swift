@@ -32,9 +32,7 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
   public init() {
     // TODO: Remove hardcoded string
     self.contextLabelText = self.viewWillAppearProperty.signal
-      .map {
-        "We’re simplifying our login process.  To access your Kickstarter account, enter the email associated to your Facebook account and we’ll send you a link to set a password."
-      }
+      .map { Strings.We_re_simplifying_our_login_process_To_log_in() }
     self.emailLabel = self.viewWillAppearProperty.signal
       .map { Strings.forgot_password_placeholder_email() }
 
@@ -48,7 +46,7 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
 
     let submitFormEvent = self.setPasswordButtonPressedProperty.signal
 
-    let saveAction = formIsValid
+    let submitAction = formIsValid
       .takeWhen(submitFormEvent)
       .filter(isTrue)
       .ignoreValues()
@@ -77,7 +75,7 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
     }
 
     self.shouldShowActivityIndicator = Signal.merge(
-      saveAction.signal.ignoreValues().mapConst(true),
+      submitAction.signal.ignoreValues().mapConst(true),
       setPasswordEvent.filter { $0.isTerminating }.mapConst(false)
     )
 

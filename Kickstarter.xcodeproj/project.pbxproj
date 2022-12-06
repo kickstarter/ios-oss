@@ -484,6 +484,7 @@
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* ResetYourFacebookPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* ResetYourFacebookPasswordViewController.swift */; };
 		6067BCEC293E49F00036ABB1 /* ResetYourFacebookPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* ResetYourFacebookPasswordViewModel.swift */; };
+		6067BCF2293FC3520036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -2067,6 +2068,7 @@
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* ResetYourFacebookPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* ResetYourFacebookPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewModel.swift; sourceTree = "<group>"; };
+		6067BCEF293FC10E0036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -6745,6 +6747,7 @@
 				A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */,
 				A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */,
 				6067BCEA293E49CB0036ABB1 /* ResetYourFacebookPasswordViewModel.swift */,
+				6067BCEF293FC10E0036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift */,
 				8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */,
 				8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */,
 				8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */,
@@ -8151,6 +8154,7 @@
 				77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */,
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
+				6067BCF2293FC3520036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
 				771F388A2422C961009036A0 /* PersonalizationCellViewModelTests.swift in Sources */,
 				94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */,
