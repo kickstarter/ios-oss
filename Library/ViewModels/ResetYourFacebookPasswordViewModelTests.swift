@@ -6,7 +6,7 @@ import XCTest
 
 final class ResetYourFacebookPasswordViewModelTests: TestCase {
   internal let vm: ResetYourFacebookPasswordViewModelType = ResetYourFacebookPasswordViewModel()
-  
+
   internal let emailLabel = TestObserver<String, Never>()
   internal let contextLabelText = TestObserver<String, Never>()
   internal let setPasswordButtonIsEnabled = TestObserver<Bool, Never>()
@@ -24,12 +24,13 @@ final class ResetYourFacebookPasswordViewModelTests: TestCase {
     self.vm.outputs.setPasswordSuccess.observe(self.setPasswordSuccess.observer)
     self.vm.outputs.setPasswordFailure.observe(self.setPasswordFailure.observer)
     self.vm.outputs.shouldShowActivityIndicator.observe(self.shouldShowActivityIndicator.observer)
-    self.vm.outputs.textFieldAndSetPasswordButtonAreEnabled.observe(self.textFieldAndSetPasswordButtonAreEnabled.observer)
+    self.vm.outputs.textFieldAndSetPasswordButtonAreEnabled
+      .observe(self.textFieldAndSetPasswordButtonAreEnabled.observer)
   }
-  
+
   func testtextLabelsSet_onSetUp() {
     self.vm.inputs.viewWillAppear()
-    
+
     self.contextLabelText.assertValue(Strings.We_re_simplifying_our_login_process_To_log_in())
     self.emailLabel.assertValue(Strings.forgot_password_placeholder_email())
   }
@@ -69,9 +70,9 @@ final class ResetYourFacebookPasswordViewModelTests: TestCase {
   func testResetSuccess() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.emailTextFieldFieldDidChange("lisa@kickstarter.com")
-    
+
     self.shouldShowActivityIndicator.assertValues([])
-    
+
     self.vm.inputs.setPasswordButtonPressed()
 
     self.setPasswordSuccess.assertValues(
@@ -81,10 +82,9 @@ final class ResetYourFacebookPasswordViewModelTests: TestCase {
         )
       ]
     )
-    
+
     self.shouldShowActivityIndicator.assertValues([true, false])
   }
-
 
   func testResetFail_WithUnknownEmail() {
     let error = ErrorEnvelope(
@@ -98,7 +98,7 @@ final class ResetYourFacebookPasswordViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.emailTextFieldFieldDidChange("bad@email")
       self.shouldShowActivityIndicator.assertValues([])
-      
+
       self.vm.inputs.setPasswordButtonPressed()
 
       self.setPasswordFailure.assertValues(
@@ -119,13 +119,13 @@ final class ResetYourFacebookPasswordViewModelTests: TestCase {
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.emailTextFieldFieldDidChange("unicorns@sparkles.tv")
-      
+
       self.shouldShowActivityIndicator.assertValues([])
-      
+
       self.vm.inputs.setPasswordButtonPressed()
 
       self.setPasswordFailure.assertValues(["Something went wrong."], "Error alert is shown on bad request")
-      
+
       self.shouldShowActivityIndicator.assertValues([true, false])
     }
   }
