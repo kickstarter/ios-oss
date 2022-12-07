@@ -236,7 +236,26 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.viewModel.outputs.showFacebookErrorAlert
       .observeForControllerAction()
       .observeValues { [weak self] error in
-        self?.present(
+        guard let strongSelf = self else { return }
+
+        if featureFacebookLoginDeprecationEnabled() {
+          strongSelf.present(
+            UIAlertController.facebookDeprecationNewPasswordOptionAlert(
+              loginHandler: { [weak self] _ in
+                self?.pushLoginViewController()
+              },
+              setNewPasswordHandler: { [weak self] _ in
+                self?.pushResetYourFacebookPasswordViewController()
+              }
+            ),
+            animated: true,
+            completion: nil
+          )
+
+          return
+        }
+
+        strongSelf.present(
           UIAlertController.alertController(forError: error),
           animated: true,
           completion: nil
@@ -422,6 +441,13 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   fileprivate func pushSignupViewController() {
     self.navigationController?.pushViewController(SignupViewController.instantiate(), animated: true)
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+  }
+
+  private func pushResetYourFacebookPasswordViewController() {
+    let vc = ResetYourFacebookPasswordViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationItem
+      .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)
   }
 
   private func pushSetYourPasswordViewController() {

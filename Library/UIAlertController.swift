@@ -87,6 +87,34 @@ public extension UIAlertController {
     return alertController
   }
 
+  static func facebookDeprecationNewPasswordOptionAlert(
+    loginHandler: @escaping ((UIAlertAction) -> Void),
+    setNewPasswordHandler: @escaping ((UIAlertAction) -> Void)
+  ) -> UIAlertController {
+    let alertController = UIAlertController(
+      title: nil,
+      message: Strings.We_can_no_longer_log_you_in_through_Facebook(),
+      preferredStyle: .alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.login_buttons_log_in(),
+        style: .default,
+        handler: loginHandler
+      )
+    )
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Set_new_password(),
+        style: .default,
+        handler: setNewPasswordHandler
+      )
+    )
+
+    return alertController
+  }
+
   static func games(subscribeHandler: @escaping ((UIAlertAction) -> Void))
     -> UIAlertController {
     let alertController = UIAlertController(
