@@ -30,7 +30,6 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
   ResetYourFacebookPasswordViewModelInputs,
   ResetYourFacebookPasswordViewModelOutputs {
   public init() {
-    // TODO: Remove hardcoded string
     self.contextLabelText = self.viewWillAppearProperty.signal
       .map { Strings.We_re_simplifying_our_login_process_To_log_in() }
     self.emailLabel = self.viewWillAppearProperty.signal
