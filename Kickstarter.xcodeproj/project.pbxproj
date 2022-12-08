@@ -485,7 +485,6 @@
 		6067BCE9293E49AC0036ABB1 /* ResetYourFacebookPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* ResetYourFacebookPasswordViewController.swift */; };
 		6067BCEC293E49F00036ABB1 /* ResetYourFacebookPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* ResetYourFacebookPasswordViewModel.swift */; };
 		6067BCF2293FC3520036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift */; };
-		6067BCF92940E5590036ABB1 /* ResetYourFacebookPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCF72940E53A0036ABB1 /* ResetYourFacebookPasswordViewControllerTests.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -2070,7 +2069,6 @@
 		6067BCE7293E48140036ABB1 /* ResetYourFacebookPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* ResetYourFacebookPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* ResetYourFacebookPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewModelTests.swift; sourceTree = "<group>"; };
-		6067BCF72940E53A0036ABB1 /* ResetYourFacebookPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetYourFacebookPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -5838,7 +5836,6 @@
 			isa = PBXGroup;
 			children = (
 				6067BCE7293E48140036ABB1 /* ResetYourFacebookPasswordViewController.swift */,
-				6067BCF72940E53A0036ABB1 /* ResetYourFacebookPasswordViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8659,7 +8656,6 @@
 				A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */,
 				D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */,
 				94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */,
-				6067BCF92940E5590036ABB1 /* ResetYourFacebookPasswordViewControllerTests.swift in Sources */,
 				A7ED20181E83229E00BFFA01 /* FindFriendsDataSourceTests.swift in Sources */,
 				47AC213E264AD7E00090AEDF /* CommentsViewControllerTests.swift in Sources */,
 				778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */,
