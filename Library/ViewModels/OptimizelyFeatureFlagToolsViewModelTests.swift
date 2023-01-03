@@ -23,6 +23,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+        OptimizelyFeature.consentManagementEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true,
         OptimizelyFeature.paymentSheetEnabled.rawValue: true,
@@ -47,6 +48,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.consentManagementEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
