@@ -9,7 +9,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
   private lazy var contextLabel = { UILabel(frame: .zero) }()
   private lazy var emailLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var emailTextField: UITextField = { UITextField(frame: .zero) |> \.tag .~ 0 }()
+  private lazy var emailTextField: UITextField = { UITextField(frame: .zero) }()
 
   private lazy var loadingIndicator: UIActivityIndicatorView = {
     UIActivityIndicatorView()
@@ -42,7 +42,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.title = "Set new password"
+    self.title = Strings.Set_new_password()
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 

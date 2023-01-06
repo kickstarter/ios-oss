@@ -35,11 +35,13 @@ public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewMode
     self.emailLabel = self.viewWillAppearProperty.signal
       .map { Strings.forgot_password_placeholder_email() }
 
-    let formIsValid = self.viewDidLoadProperty.signal
-      .flatMap { [email = emailTextFieldProperty.producer] _ in email }
-      .map { $0 ?? "" }
-      .map(isValidEmail)
-      .skipRepeats()
+    let formIsValid = Signal.combineLatest(
+      self.viewDidLoadProperty.signal,
+      self.emailTextFieldProperty.signal.skipNil()
+    )
+    .map(second)
+    .map(isValidEmail)
+    .skipRepeats()
 
     self.setPasswordButtonIsEnabled = formIsValid
 
@@ -51,7 +53,7 @@ public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewMode
       .ignoreValues()
 
     let setPasswordEvent = self.emailTextFieldProperty.signal.skipNil()
-      .takeWhen(self.setPasswordButtonPressedProperty.signal)
+      .takeWhen(submitAction)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
           .mapConst(email)
@@ -60,11 +62,7 @@ public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewMode
 
     self.setPasswordFailure = setPasswordEvent.errors()
       .map { envelope in
-        if envelope.httpCode == 404 {
-          return Strings.forgot_password_error()
-        } else {
-          return Strings.general_error_something_wrong()
-        }
+        envelope.errorMessages.last ?? Strings.general_error_something_wrong()
       }
 
     self.setPasswordSuccess = setPasswordEvent.values().map { email in
