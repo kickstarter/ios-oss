@@ -4,8 +4,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class ResetYourFacebookPasswordViewModelTests: TestCase {
-  internal let vm: ResetYourFacebookPasswordViewModelType = ResetYourFacebookPasswordViewModel()
+final class FacebookResetPasswordViewModelTests: TestCase {
+  internal let vm: FacebookResetPasswordViewModelType = FacebookResetPasswordViewModel()
 
   internal let emailLabel = TestObserver<String, Never>()
   internal let contextLabelText = TestObserver<String, Never>()

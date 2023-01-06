@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol ResetYourFacebookPasswordViewModelInputs {
+public protocol FacebookResetPasswordViewModelInputs {
   func viewDidLoad()
   func viewWillAppear()
   func emailTextFieldFieldDidChange(_ text: String)
@@ -11,7 +11,7 @@ public protocol ResetYourFacebookPasswordViewModelInputs {
   func setPasswordButtonPressed()
 }
 
-public protocol ResetYourFacebookPasswordViewModelOutputs {
+public protocol FacebookResetPasswordViewModelOutputs {
   var shouldShowActivityIndicator: Signal<Bool, Never> { get }
   var setPasswordButtonIsEnabled: Signal<Bool, Never> { get }
   var contextLabelText: Signal<String, Never> { get }
@@ -21,14 +21,14 @@ public protocol ResetYourFacebookPasswordViewModelOutputs {
   var textFieldAndSetPasswordButtonAreEnabled: Signal<Bool, Never> { get }
 }
 
-public protocol ResetYourFacebookPasswordViewModelType {
-  var inputs: ResetYourFacebookPasswordViewModelInputs { get }
-  var outputs: ResetYourFacebookPasswordViewModelOutputs { get }
+public protocol FacebookResetPasswordViewModelType {
+  var inputs: FacebookResetPasswordViewModelInputs { get }
+  var outputs: FacebookResetPasswordViewModelOutputs { get }
 }
 
-public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPasswordViewModelType,
-  ResetYourFacebookPasswordViewModelInputs,
-  ResetYourFacebookPasswordViewModelOutputs {
+public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewModelType,
+  FacebookResetPasswordViewModelInputs,
+  FacebookResetPasswordViewModelOutputs {
   public init() {
     self.contextLabelText = self.viewWillAppearProperty.signal
       .map { Strings.We_re_simplifying_our_login_process_To_log_in() }
@@ -81,8 +81,8 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
     self.textFieldAndSetPasswordButtonAreEnabled = self.shouldShowActivityIndicator.map { $0 }.negate()
   }
 
-  public var inputs: ResetYourFacebookPasswordViewModelInputs { return self }
-  public var outputs: ResetYourFacebookPasswordViewModelOutputs { return self }
+  public var inputs: FacebookResetPasswordViewModelInputs { return self }
+  public var outputs: FacebookResetPasswordViewModelOutputs { return self }
 
   // MARK: - Input Methods
 

@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public final class ResetYourFacebookPasswordViewController: UIViewController {
+public final class FacebookResetPasswordViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var contextLabel = { UILabel(frame: .zero) }()
@@ -30,12 +30,12 @@ public final class ResetYourFacebookPasswordViewController: UIViewController {
   fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
     UITapGestureRecognizer(
       target: self,
-      action: #selector(ResetYourFacebookPasswordViewController.dismissKeyboard)
+      action: #selector(FacebookResetPasswordViewController.dismissKeyboard)
     )
       |> \.cancelsTouchesInView .~ false
   }()
 
-  private let viewModel: ResetYourFacebookPasswordViewModelType = ResetYourFacebookPasswordViewModel()
+  private let viewModel: FacebookResetPasswordViewModelType = FacebookResetPasswordViewModel()
 
   // MARK: - Lifecycle
 
@@ -191,7 +191,7 @@ public final class ResetYourFacebookPasswordViewController: UIViewController {
 
 // MARK: - Extensions
 
-extension ResetYourFacebookPasswordViewController: UITextFieldDelegate {
+extension FacebookResetPasswordViewController: UITextFieldDelegate {
   public func textFieldDidEndEditing(_ textField: UITextField) {
     guard let email = textField.text else { return }
 
