@@ -120,6 +120,9 @@ public final class FacebookResetPasswordViewController: UIViewController {
       .observeValues { [weak self] isEnabled in
         self?.enableTextFieldsAndSaveButton(isEnabled)
       }
+    
+    Keyboard.change.observeForUI()
+      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
   // MARK: - Functions
@@ -170,6 +173,12 @@ public final class FacebookResetPasswordViewController: UIViewController {
       ||> \.isUserInteractionEnabled .~ isEnabled
 
     self.setPasswordButton.isHidden = !isEnabled
+  }
+  
+  private func animateTextViewConstraint(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
+      self.scrollView.contentInset.bottom = change.frame.height
+    }, completion: nil)
   }
 
   // MARK: - Accessors
