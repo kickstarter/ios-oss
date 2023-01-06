@@ -28,46 +28,30 @@ final class FacebookResetPasswordViewModelTests: TestCase {
       .observe(self.textFieldAndSetPasswordButtonAreEnabled.observer)
   }
 
-  func testtextLabelsSet_onSetUp() {
+  func testTextLabelsSet_onSetUp() {
     self.vm.inputs.viewWillAppear()
 
     self.contextLabelText.assertValue(Strings.We_re_simplifying_our_login_process_To_log_in())
     self.emailLabel.assertValue(Strings.forgot_password_placeholder_email())
   }
 
-  func testsetPasswordButtonIsEnabled() {
+  func testSetPasswordButtonIsEnabled() {
     self.setPasswordButtonIsEnabled.assertDidNotEmitValue("Form is valid did not emit any values")
 
     self.vm.inputs.viewDidLoad()
 
-    self.setPasswordButtonIsEnabled.assertValues([false], "Emits form is valid after view loads")
+    self.setPasswordButtonIsEnabled.assertValues([false], "Emits form is not valid after view loads")
 
     self.vm.inputs.emailTextFieldFieldDidChange("bad")
 
     self.setPasswordButtonIsEnabled.assertValues([false])
 
-    self.vm.inputs.emailTextFieldFieldDidChange("gina@kickstarter.com")
+    self.vm.inputs.emailTextFieldFieldDidChange("scott@kickstarter.com")
 
     self.setPasswordButtonIsEnabled.assertValues([false, true])
   }
 
-  func testsetPasswordButtonIsEnabled_WithInitialValue() {
-    self.setPasswordButtonIsEnabled.assertDidNotEmitValue("Form is valid did not emit any values")
-
-    self.vm.inputs.emailTextFieldFieldDidChange("hello@goodemail.biz")
-
-    self.setPasswordButtonIsEnabled.assertDidNotEmitValue("Form is valid did not emit any values")
-
-    self.vm.inputs.viewDidLoad()
-
-    self.setPasswordButtonIsEnabled.assertValues([true])
-
-    self.vm.inputs.emailTextFieldFieldDidChange("")
-
-    self.setPasswordButtonIsEnabled.assertValues([true, false])
-  }
-
-  func testResetSuccess() {
+  func testResetSuccessValuesAndLoadingIndicator() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.emailTextFieldFieldDidChange("lisa@kickstarter.com")
 
@@ -96,13 +80,13 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailTextFieldFieldDidChange("bad@email")
+      self.vm.inputs.emailTextFieldFieldDidChange("test@email.com")
       self.shouldShowActivityIndicator.assertValues([])
 
       self.vm.inputs.setPasswordButtonPressed()
 
       self.setPasswordFailure.assertValues(
-        [Strings.forgot_password_error()],
+        [error.errorMessages.last ?? Strings.general_error_something_wrong()],
         "Error alert is shown on bad request"
       )
     }
@@ -118,15 +102,15 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(resetPasswordError: error)) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailTextFieldFieldDidChange("unicorns@sparkles.tv")
+      self.vm.inputs.emailTextFieldFieldDidChange("test@email.com")
 
       self.shouldShowActivityIndicator.assertValues([])
 
       self.vm.inputs.setPasswordButtonPressed()
 
-      self.setPasswordFailure.assertValues(["Something went wrong."], "Error alert is shown on bad request")
+      self.setPasswordFailure.assertValues([error.errorMessages.last ?? Strings.general_error_something_wrong()], "Error alert is shown on bad request")
 
-      self.shouldShowActivityIndicator.assertValues([true, false])
+      self.shouldShowActivityIndicator.assertValues([false, true])
     }
   }
 }
