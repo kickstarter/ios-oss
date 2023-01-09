@@ -7,7 +7,7 @@ public protocol FacebookResetPasswordViewModelInputs {
   func viewDidLoad()
   func viewWillAppear()
   func emailTextFieldFieldDidChange(_ text: String)
-  func emailTextFieldDidReturn(email: String)
+  func emailTextFieldFieldDidReturn()
   func setPasswordButtonPressed()
 }
 
@@ -45,7 +45,10 @@ public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewMode
 
     self.setPasswordButtonIsEnabled = formIsValid
 
-    let submitFormEvent = self.setPasswordButtonPressedProperty.signal
+    let submitFormEvent = Signal.merge(
+      self.emailTextFieldReturnProperty.signal,
+      self.setPasswordButtonPressedProperty.signal
+    )
 
     let submitAction = formIsValid
       .takeWhen(submitFormEvent)
@@ -99,9 +102,9 @@ public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewMode
     self.emailTextFieldProperty.value = text
   }
 
-  private var emailTextFieldDoneEditingProperty = MutableProperty(())
-  public func emailTextFieldDidReturn(email _: String) {
-    self.emailTextFieldDoneEditingProperty.value = ()
+  private let emailTextFieldReturnProperty = MutableProperty(())
+  public func emailTextFieldFieldDidReturn() {
+    self.emailTextFieldReturnProperty.value = ()
   }
 
   private let setPasswordButtonPressedProperty = MutableProperty(())

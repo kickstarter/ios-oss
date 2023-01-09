@@ -36,11 +36,11 @@ final class FacebookResetPasswordViewModelTests: TestCase {
   }
 
   func testSetPasswordButtonIsEnabled() {
-    self.setPasswordButtonIsEnabled.assertDidNotEmitValue("Form is valid did not emit any values")
+    self.setPasswordButtonIsEnabled.assertDidNotEmitValue("Button is valid did not emit any values")
 
     self.vm.inputs.viewDidLoad()
 
-    self.setPasswordButtonIsEnabled.assertValues([false], "Emits form is not valid after view loads")
+    self.setPasswordButtonIsEnabled.assertValues([], "Button is valid did not emit any values")
 
     self.vm.inputs.emailTextFieldFieldDidChange("bad")
 
@@ -67,7 +67,39 @@ final class FacebookResetPasswordViewModelTests: TestCase {
       ]
     )
 
-    self.shouldShowActivityIndicator.assertValues([true, false])
+    self.shouldShowActivityIndicator.assertValues([false, true])
+  }
+
+  func testResetSuccessWhenTextFieldReturnsAndFormIsValid() {
+    let testEmail = "test@email.com"
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
+
+    self.shouldShowActivityIndicator.assertValues([])
+
+    self.vm.inputs.emailTextFieldFieldDidReturn()
+
+    self.shouldShowActivityIndicator.assertValues([false, true])
+
+    self.setPasswordSuccess.assertValues(
+      [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+        email: testEmail
+      )]
+    )
+  }
+
+  func testResetDoesNotEmitWhenTextFieldReturnsAndFormIsNotValid() {
+    let testEmail = "bad@email"
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
+
+    self.shouldShowActivityIndicator.assertValues([])
+
+    self.vm.inputs.emailTextFieldFieldDidReturn()
+
+    self.shouldShowActivityIndicator.assertValues([])
+
+    self.setPasswordSuccess.assertValues([])
   }
 
   func testResetFail_WithUnknownEmail() {
@@ -108,7 +140,11 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
       self.vm.inputs.setPasswordButtonPressed()
 
-      self.setPasswordFailure.assertValues([error.errorMessages.last ?? Strings.general_error_something_wrong()], "Error alert is shown on bad request")
+      self.setPasswordFailure
+        .assertValues(
+          [error.errorMessages.last ?? Strings.general_error_something_wrong()],
+          "Error alert is shown on bad request"
+        )
 
       self.shouldShowActivityIndicator.assertValues([false, true])
     }

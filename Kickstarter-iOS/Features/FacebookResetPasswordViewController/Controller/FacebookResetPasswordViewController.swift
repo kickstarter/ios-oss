@@ -76,6 +76,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
     _ = self.emailTextField
       |> emailFieldStyle
+      |> UITextField.lens.returnKeyType .~ .go
       |> roundedStyle(cornerRadius: Styles.grid(2))
       |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
       |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
@@ -120,7 +121,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
       .observeValues { [weak self] isEnabled in
         self?.enableTextFieldsAndSaveButton(isEnabled)
       }
-    
+
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
@@ -163,7 +164,10 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
   private func configureTargets() {
     self.emailTextField
-      .addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+      .addTarget(self, action: #selector(self.emailTextFieldDidChange(_:)), for: .editingChanged)
+    self.emailTextField
+      .addTarget(self, action: #selector(self.emailTextFieldReturn(_:)), for: .editingDidEndOnExit)
+
     self.setPasswordButton
       .addTarget(self, action: #selector(self.setPasswordButtonPressed), for: .touchUpInside)
   }
@@ -174,7 +178,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
     self.setPasswordButton.isHidden = !isEnabled
   }
-  
+
   private func animateTextViewConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
       self.scrollView.contentInset.bottom = change.frame.height
@@ -187,24 +191,18 @@ public final class FacebookResetPasswordViewController: UIViewController {
     self.view.endEditing(true)
   }
 
-  @objc private func textFieldDidChange(_ textField: UITextField) {
+  @objc private func emailTextFieldDidChange(_ textField: UITextField) {
     guard let email = textField.text else { return }
 
     self.viewModel.inputs.emailTextFieldFieldDidChange(email)
   }
 
+  @objc internal func emailTextFieldReturn(_: UITextField) {
+    self.viewModel.inputs.emailTextFieldFieldDidReturn()
+  }
+
   @objc private func setPasswordButtonPressed() {
     self.viewModel.inputs.setPasswordButtonPressed()
-  }
-}
-
-// MARK: - Extensions
-
-extension FacebookResetPasswordViewController: UITextFieldDelegate {
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let email = textField.text else { return }
-
-    self.viewModel.inputs.emailTextFieldDidReturn(email: email)
   }
 }
 
