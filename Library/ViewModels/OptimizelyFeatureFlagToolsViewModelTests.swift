@@ -28,6 +28,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true,
         OptimizelyFeature.paymentSheetEnabled.rawValue: true,
         OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
+        OptimizelyFeature.facebookConversionsAPI.rawValue: true,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true
       ]
 
@@ -53,6 +54,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
         OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.facebookConversionsAPI.rawValue: true,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
       ]
 
