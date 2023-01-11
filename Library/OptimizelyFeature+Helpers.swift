@@ -42,9 +42,9 @@ public func featureFacebookLoginDeprecationEnabled() -> Bool {
       .isFeatureEnabled(featureKey: OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue) ?? false)
 }
 
-public func featureconsentManagementEnabled() -> Bool {
+public func featureConsentManagementDialogEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
-    .optimizelyFeatureFlags[OptimizelyFeature.consentManagementEnabled.rawValue] ??
+    .optimizelyFeatureFlags[OptimizelyFeature.consentManagementDialogEnabled.rawValue] ??
     (AppEnvironment.current.optimizelyClient?
-      .isFeatureEnabled(featureKey: OptimizelyFeature.consentManagementEnabled.rawValue) ?? false)
+      .isFeatureEnabled(featureKey: OptimizelyFeature.consentManagementDialogEnabled.rawValue) ?? false)
 }
