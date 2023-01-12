@@ -92,7 +92,7 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureFacebookLoginDeprecationEnabled())
     }
   }
-  
+
   func testConsentManagementDialog_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
@@ -101,7 +101,7 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertTrue(featureConsentManagementDialogEnabled())
     }
   }
-  
+
   func testConsentManagementDialog_Optimizely_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: false]
