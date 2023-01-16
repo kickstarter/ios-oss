@@ -20,6 +20,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
       |> \.alwaysBounceVertical .~ true
+      |> \.showsVerticalScrollIndicator .~ false
 
   }()
 
@@ -164,7 +165,7 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
   private func configureTargets() {
     self.emailTextField
-      .addTarget(self, action: #selector(self.emailTextFieldDidChange(_:)), for: .editingChanged)
+      .addTarget(self, action: #selector(self.emailTextFieldDidChange(_:)), for: [.editingChanged, .editingDidEndOnExit])
     self.emailTextField
       .addTarget(self, action: #selector(self.emailTextFieldReturn(_:)), for: .editingDidEndOnExit)
 

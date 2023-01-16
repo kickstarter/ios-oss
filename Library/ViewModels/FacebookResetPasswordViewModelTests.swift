@@ -51,55 +51,66 @@ final class FacebookResetPasswordViewModelTests: TestCase {
     self.setPasswordButtonIsEnabled.assertValues([false, true])
   }
 
-  func testResetSuccessValuesAndLoadingIndicator() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.emailTextFieldFieldDidChange("lisa@kickstarter.com")
+  func testResetSuccessValues_EnabledTextFieldsAndLoadingIndicator() {
+    withEnvironment(apiService: MockService(resetPasswordResponse: .template)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailTextFieldFieldDidChange("lisa@kickstarter.com")
 
-    self.shouldShowActivityIndicator.assertValues([])
+      self.shouldShowActivityIndicator.assertValues([])
+      self.textFieldAndSetPasswordButtonAreEnabled.assertValues([])
+      
+      self.vm.inputs.setPasswordButtonPressed()
 
-    self.vm.inputs.setPasswordButtonPressed()
-
-    self.setPasswordSuccess.assertValues(
-      [
-        Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
-          email: "lisa@kickstarter.com"
-        )
-      ]
-    )
-
-    self.shouldShowActivityIndicator.assertValues([false, true])
+      self.setPasswordSuccess.assertValues(
+        [
+          Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+            email: "lisa@kickstarter.com"
+          )
+        ]
+      )
+      
+      self.textFieldAndSetPasswordButtonAreEnabled.assertValues([true, false])
+      self.shouldShowActivityIndicator.assertValues([false, true])
+    }
   }
 
   func testResetSuccessWhenTextFieldReturnsAndFormIsValid() {
     let testEmail = "test@email.com"
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
-
-    self.shouldShowActivityIndicator.assertValues([])
-
-    self.vm.inputs.emailTextFieldFieldDidReturn()
-
-    self.shouldShowActivityIndicator.assertValues([false, true])
-
-    self.setPasswordSuccess.assertValues(
-      [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
-        email: testEmail
-      )]
-    )
+    
+    withEnvironment(apiService: MockService(resetPasswordResponse: .template)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
+      
+      self.shouldShowActivityIndicator.assertValues([])
+      
+      self.vm.inputs.emailTextFieldFieldDidReturn()
+      
+      self.shouldShowActivityIndicator.assertValues([false, true])
+      
+      self.setPasswordSuccess.assertValues(
+        [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+          email: testEmail
+        )]
+      )
+    }
   }
 
   func testResetDoesNotEmitWhenTextFieldReturnsAndFormIsNotValid() {
     let testEmail = "bad@email"
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
-
-    self.shouldShowActivityIndicator.assertValues([])
-
-    self.vm.inputs.emailTextFieldFieldDidReturn()
-
-    self.shouldShowActivityIndicator.assertValues([])
-
-    self.setPasswordSuccess.assertValues([])
+    
+    withEnvironment(apiService: MockService(resetPasswordError: ErrorEnvelope.couldNotParseJSON)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
+      
+      self.shouldShowActivityIndicator.assertValues([])
+      
+      self.vm.inputs.emailTextFieldFieldDidReturn()
+      
+      self.shouldShowActivityIndicator.assertValues([])
+      
+      self.setPasswordSuccess.assertValues([])
+      self.setPasswordFailure.assertValues([])
+    }
   }
 
   func testResetFail_WithUnknownEmail() {
