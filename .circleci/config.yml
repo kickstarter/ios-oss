@@ -5,7 +5,7 @@ orbs:
   codecov: codecov/codecov@1.1.3
 
 aws_cli_setup: &aws_cli_setup
-  role-arn: arn:aws:iam::116278940861:role/circleci-oidc-ios-private
+  role-arn: $AWS_ROLE_ARN
 
 xcode_version: &xcode_version 13.3.1
 iphone_name: &iphone_name iPhone 8
