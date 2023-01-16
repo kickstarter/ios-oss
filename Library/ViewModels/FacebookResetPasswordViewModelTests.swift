@@ -58,7 +58,7 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
       self.shouldShowActivityIndicator.assertValues([])
       self.textFieldAndSetPasswordButtonAreEnabled.assertValues([])
-      
+
       self.vm.inputs.setPasswordButtonPressed()
 
       self.setPasswordSuccess.assertValues(
@@ -68,7 +68,7 @@ final class FacebookResetPasswordViewModelTests: TestCase {
           )
         ]
       )
-      
+
       self.textFieldAndSetPasswordButtonAreEnabled.assertValues([true, false])
       self.shouldShowActivityIndicator.assertValues([false, true])
     }
@@ -76,17 +76,17 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
   func testResetSuccessWhenTextFieldReturnsAndFormIsValid() {
     let testEmail = "test@email.com"
-    
+
     withEnvironment(apiService: MockService(resetPasswordResponse: .template)) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
-      
+
       self.shouldShowActivityIndicator.assertValues([])
-      
+
       self.vm.inputs.emailTextFieldFieldDidReturn()
-      
+
       self.shouldShowActivityIndicator.assertValues([false, true])
-      
+
       self.setPasswordSuccess.assertValues(
         [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
           email: testEmail
@@ -97,17 +97,17 @@ final class FacebookResetPasswordViewModelTests: TestCase {
 
   func testResetDoesNotEmitWhenTextFieldReturnsAndFormIsNotValid() {
     let testEmail = "bad@email"
-    
+
     withEnvironment(apiService: MockService(resetPasswordError: ErrorEnvelope.couldNotParseJSON)) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.emailTextFieldFieldDidChange(testEmail)
-      
+
       self.shouldShowActivityIndicator.assertValues([])
-      
+
       self.vm.inputs.emailTextFieldFieldDidReturn()
-      
+
       self.shouldShowActivityIndicator.assertValues([])
-      
+
       self.setPasswordSuccess.assertValues([])
       self.setPasswordFailure.assertValues([])
     }

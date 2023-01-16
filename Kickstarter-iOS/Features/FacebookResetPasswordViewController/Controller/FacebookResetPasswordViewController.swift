@@ -165,7 +165,11 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
   private func configureTargets() {
     self.emailTextField
-      .addTarget(self, action: #selector(self.emailTextFieldDidChange(_:)), for: [.editingChanged, .editingDidEndOnExit])
+      .addTarget(
+        self,
+        action: #selector(self.emailTextFieldDidChange(_:)),
+        for: [.editingChanged, .editingDidEndOnExit]
+      )
     self.emailTextField
       .addTarget(self, action: #selector(self.emailTextFieldReturn(_:)), for: .editingDidEndOnExit)
 
