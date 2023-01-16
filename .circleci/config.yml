@@ -321,12 +321,14 @@ workflows:
               only: main
           requires: *all_jobs
       - beta:
+          context: aws
           filters:
             branches:
               # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
           requires: *all_jobs
       - alpha:
+          context: aws
           filters:
             branches:
               # matches all branches that begin with 'alpha-dist'
