@@ -110,7 +110,7 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureConsentManagementDialogEnabled())
     }
   }
-  
+
   func testFacebookConversionsAPI_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.facebookConversionsAPI.rawValue: true]
