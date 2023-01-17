@@ -26,7 +26,7 @@ public final class SetYourPasswordViewController: UIViewController {
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
       |> \.alwaysBounceVertical .~ true
-
+      |> \.showsVerticalScrollIndicator .~ false
   }()
 
   private lazy var saveButton = { UIButton(type: .custom)
@@ -49,7 +49,7 @@ public final class SetYourPasswordViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.title = "Set your password"
+    self.title = Strings.Set_your_password()
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
@@ -88,11 +88,13 @@ public final class SetYourPasswordViewController: UIViewController {
       |> textFieldStyle
       |> \.accessibilityLabel .~ self.newPasswordLabel.text
       |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
+      |> UITextField.lens.returnKeyType .~ .next
 
     _ = self.confirmPasswordTextField
       |> textFieldStyle
       |> \.accessibilityLabel .~ self.confirmPasswordLabel.text
       |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
+      |> UITextField.lens.returnKeyType .~ .go
 
     _ = self.saveButton
       |> savePasswordButtonStyle
@@ -109,6 +111,8 @@ public final class SetYourPasswordViewController: UIViewController {
     self.newPasswordLabel.rac.text = self.viewModel.outputs.newPasswordLabel
     self.confirmPasswordLabel.rac.text = self.viewModel.outputs.confirmPasswordLabel
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+    self.confirmPasswordTextField.rac.becomeFirstResponder = self.viewModel.outputs
+      .nextPasswordFieldBecomeFirstResponder
 
     self.viewModel.outputs.setPasswordFailure
       .observeForControllerAction()
@@ -128,6 +132,9 @@ public final class SetYourPasswordViewController: UIViewController {
       .observeValues { [weak self] isEnabled in
         self?.enableTextFieldsAndSaveButton(isEnabled)
       }
+
+    Keyboard.change.observeForUI()
+      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
   // MARK: - Functions
@@ -173,9 +180,21 @@ public final class SetYourPasswordViewController: UIViewController {
 
   private func configureTargets() {
     self.newPasswordTextField
-      .addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+      .addTarget(self, action: #selector(self.textFieldReturn(_:)), for: .editingDidEndOnExit)
+    self.newPasswordTextField
+      .addTarget(
+        self,
+        action: #selector(self.textFieldDidChange(_:)),
+        for: [.editingDidEndOnExit, .editingChanged]
+      )
     self.confirmPasswordTextField
-      .addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+      .addTarget(self, action: #selector(self.textFieldReturn(_:)), for: .editingDidEndOnExit)
+    self.confirmPasswordTextField
+      .addTarget(
+        self,
+        action: #selector(self.textFieldDidChange(_:)),
+        for: [.editingDidEndOnExit, .editingChanged]
+      )
     self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
   }
 
@@ -205,6 +224,17 @@ public final class SetYourPasswordViewController: UIViewController {
     }
   }
 
+  @objc internal func textFieldReturn(_ textField: UITextField) {
+    switch textField.tag {
+    case 0:
+      self.viewModel.inputs.newPasswordFieldDidReturn()
+    case 1:
+      self.viewModel.inputs.confirmPasswordFieldDidReturn()
+    default:
+      return
+    }
+  }
+
   @objc private func saveButtonPressed() {
     self.viewModel.inputs.saveButtonPressed()
   }
@@ -213,17 +243,10 @@ public final class SetYourPasswordViewController: UIViewController {
 // MARK: - Extensions
 
 extension SetYourPasswordViewController: UITextFieldDelegate {
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let password = textField.text else { return }
-
-    switch textField.tag {
-    case 0:
-      self.viewModel.inputs.newPasswordFieldDidReturn(newPassword: password)
-    case 1:
-      self.viewModel.inputs.confirmPasswordFieldDidReturn(confirmPassword: password)
-    default:
-      return
-    }
+  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
+      self.scrollView.contentInset.bottom = change.frame.height
+    }, completion: nil)
   }
 }
 

@@ -8,12 +8,13 @@ public protocol SetYourPasswordViewModelInputs {
   func viewWillAppear()
   func newPasswordFieldDidChange(_ text: String)
   func confirmPasswordFieldDidChange(_ text: String)
-  func newPasswordFieldDidReturn(newPassword: String)
-  func confirmPasswordFieldDidReturn(confirmPassword: String)
+  func newPasswordFieldDidReturn()
+  func confirmPasswordFieldDidReturn()
   func saveButtonPressed()
 }
 
 public protocol SetYourPasswordViewModelOutputs {
+  var nextPasswordFieldBecomeFirstResponder: Signal<(), Never> { get }
   var shouldShowActivityIndicator: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var contextLabelText: Signal<String, Never> { get }
@@ -70,7 +71,8 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
 
     self.saveButtonIsEnabled = formIsValid
 
-    let submitFormEvent = self.saveButtonPressedProperty.signal
+    let submitFormEvent = Signal
+      .merge(self.saveButtonPressedProperty.signal, self.confirmPasswordDoneEditingProperty.signal)
 
     let saveAction = formIsValid
       .takeWhen(submitFormEvent)
@@ -95,6 +97,8 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
     )
 
     self.textFieldsAndSaveButtonAreEnabled = self.shouldShowActivityIndicator.map { $0 }.negate()
+
+    self.nextPasswordFieldBecomeFirstResponder = self.newPasswordDoneEditingProperty.signal
   }
 
   public var inputs: SetYourPasswordViewModelInputs { return self }
@@ -123,12 +127,12 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
   }
 
   private var newPasswordDoneEditingProperty = MutableProperty(())
-  public func newPasswordFieldDidReturn(newPassword _: String) {
+  public func newPasswordFieldDidReturn() {
     self.newPasswordDoneEditingProperty.value = ()
   }
 
-  private let confirmPasswordDoneEditingProperty = MutableProperty(())
-  public func confirmPasswordFieldDidReturn(confirmPassword _: String) {
+  private var confirmPasswordDoneEditingProperty = MutableProperty(())
+  public func confirmPasswordFieldDidReturn() {
     self.confirmPasswordDoneEditingProperty.value = ()
   }
 
@@ -139,6 +143,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
 
   // MARK: - Output Properties
 
+  public var nextPasswordFieldBecomeFirstResponder: Signal<(), Never>
   public var shouldShowActivityIndicator: Signal<Bool, Never>
   public var saveButtonIsEnabled: Signal<Bool, Never>
   public var contextLabelText: Signal<String, Never>
