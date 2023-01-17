@@ -54,7 +54,7 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
         OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.facebookConversionsAPI.rawValue: true,
+        OptimizelyFeature.facebookConversionsAPI.rawValue: false,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
       ]
 
