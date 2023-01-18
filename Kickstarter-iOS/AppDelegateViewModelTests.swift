@@ -97,7 +97,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.pushTokenRegistrationStarted.observe(self.pushRegistrationStarted.observer)
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
     self.vm.outputs.registerPushTokenInSegment.observe(self.registerPushTokenInSegment.observer)
-    self.vm.outputs.requestATTrackingAuthorizationStatus.observe(self.requestATTrackingAuthorizationStatus.observer)
+    self.vm.outputs.requestATTrackingAuthorizationStatus
+      .observe(self.requestATTrackingAuthorizationStatus.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.segmentIsEnabled.observe(self.segmentIsEnabled.observer)
@@ -3006,7 +3007,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.updateCurrentUserInEnvironment.assertValues([user, updatedUser])
     }
   }
-  
+
   func testRequestATTrackingAuthorizationStatus_CalledOnceOnDidFinishLaunching() {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 

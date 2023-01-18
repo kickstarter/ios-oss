@@ -186,7 +186,7 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when we should register the device push token in Segment Analytics.
   var registerPushTokenInSegment: Signal<Data, Never> { get }
-  
+
   /// Emits when  application didFinishLaunchingWithOptions.
   var requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never> { get }
 
@@ -795,7 +795,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.brazeWillDisplayInAppMessageReturnProperty <~ self.brazeWillDisplayInAppMessageProperty.signal
       .skipNil()
       .map { _ in .displayInAppMessageNow }
-    
+
     self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .map { _ in atTrackingAuthorizationStatus() }
@@ -982,7 +982,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
 private func atTrackingAuthorizationStatus() -> ATTrackingAuthorizationStatus {
   var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
-  
+
   DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
     ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
       switch status {
