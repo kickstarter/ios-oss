@@ -798,7 +798,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
       .skipNil()
-      .map { _ in atTrackingAuthorizationStatus() }
+      .map { _ -> ATTrackingAuthorizationStatus in
+        guard featureConsentManagementDialogEnabled() else { return .notDetermined }
+        return atTrackingAuthorizationStatus()
+      }
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -997,7 +1000,7 @@ private func atTrackingAuthorizationStatus() -> ATTrackingAuthorizationStatus {
       }
     })
   }
-  
+
   return authorizationStatus
 }
 
