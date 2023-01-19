@@ -792,7 +792,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
       .skipNil()
-      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+      .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       .map { _ -> ATTrackingAuthorizationStatus in
         guard featureConsentManagementDialogEnabled() else { return .notDetermined }
         return atTrackingAuthorizationStatus()
