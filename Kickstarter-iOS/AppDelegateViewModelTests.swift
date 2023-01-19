@@ -3009,7 +3009,11 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testRequestATTrackingAuthorizationStatus_CalledOnceOnDidFinishLaunching() {
+    self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+    self.scheduler.advance(by: .seconds(1))
 
     self.requestATTrackingAuthorizationStatus.assertValueCount(1)
   }

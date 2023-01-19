@@ -19,12 +19,6 @@ public enum NotificationAuthorizationStatus {
   case provisional
 }
 
-public enum ATTrackingAuthorizationStatus {
-  case authorized
-  case denied
-  case notDetermined
-}
-
 public protocol AppDelegateViewModelInputs {
   /// Call when the application is handed off to.
   func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
@@ -798,6 +792,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
       .skipNil()
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
       .map { _ -> ATTrackingAuthorizationStatus in
         guard featureConsentManagementDialogEnabled() else { return .notDetermined }
         return atTrackingAuthorizationStatus()
@@ -986,20 +981,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 private func atTrackingAuthorizationStatus() -> ATTrackingAuthorizationStatus {
   var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
 
-  DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-    ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-      switch status {
-      case .notDetermined:
-        authorizationStatus = .notDetermined
-      case .authorized:
-        authorizationStatus = .authorized
-      case .denied:
-        authorizationStatus = .denied
-      default:
-        authorizationStatus = .denied
-      }
-    })
-  }
+  ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+    switch status {
+    case .notDetermined:
+      authorizationStatus = .notDetermined
+    case .authorized:
+      authorizationStatus = .authorized
+    case .denied:
+      authorizationStatus = .denied
+    case .restricted:
+      authorizationStatus = .restricted
+    @unknown default:
+      authorizationStatus = .notDetermined
+    }
+  })
 
   return authorizationStatus
 }

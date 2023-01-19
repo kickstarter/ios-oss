@@ -485,6 +485,7 @@
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
 		6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */; };
 		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
+		606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -2069,6 +2070,7 @@
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTrackingAuthorizationStatus.swift; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -5971,6 +5973,7 @@
 				8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */,
 				94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */,
 				94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */,
+				606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -7733,6 +7736,7 @@
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
+				606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */,
 				473DE012273C502F0033331D /* ProjectRisksCellViewModel.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
