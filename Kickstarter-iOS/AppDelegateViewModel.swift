@@ -330,6 +330,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(PushEnvelope.decodeJSONDictionary)
       .skipNil()
       .map(navigation(fromPushEnvelope:))
+    
+    let deepLinkFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
+      .map(BrazePushEnvelope.decodeJSONDictionary)
+      .skipNil()
+      .map(navigation(fromPushEnvelope:))
+//      .map(URL.init(string:))
+//      .skipNil()
+ //     .map(Navigation.deepLinkMatch)
 
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
@@ -367,6 +375,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
+        deepLinkFromBrazeNotification,
         deepLinkFromShortcut
       )
       .skipNil()

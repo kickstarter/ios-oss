@@ -1,3 +1,4 @@
+import AppboyKit
 import AppboySegment
 import KsApi
 
@@ -5,16 +6,17 @@ public extension Analytics {
   /**
    Returns an `Analytics` instance, with Segment, using an `AnalyticsConfiguration`.
    */
-  static func configuredClient(withWriteKey writeKey: String) -> AnalyticsConfiguration {
+  static func configuredClient(withWriteKey writeKey: String, braze: SEGAppboyIntegrationFactory?) -> AnalyticsConfiguration {
     let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
       .trackApplicationLifecycleEvents = true
 
     // Braze is always configured but feature-flagged elsewhere.
     // Data sent to Braze is feature-flagged by the enabling/disabling Segment.
-    configuration.use(SEGAppboyIntegrationFactory.instance())
-
-    configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
+    if let availableBrazeInstance = braze {
+      configuration.use(availableBrazeInstance)
+      configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
+    }
 
     return configuration
   }

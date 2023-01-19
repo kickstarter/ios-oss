@@ -38,10 +38,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
 
-    // Braze initialization
-    SEGAppboyIntegrationFactory.instance()?.saveLaunchOptions(launchOptions)
-    SEGAppboyIntegrationFactory.instance()?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
-
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
@@ -267,7 +263,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureSegment
       .observeValues { writeKey in
-        let configuration = Analytics.configuredClient(withWriteKey: writeKey)
+        // Braze initialization in one place so multiple instances of singleton don't get created.
+        let appboyIntegrationFactory = SEGAppboyIntegrationFactory.instance()
+        
+        appboyIntegrationFactory?.saveLaunchOptions(launchOptions)
+        appboyIntegrationFactory?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
+
+        let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: appboyIntegrationFactory)
 
         Analytics.setup(with: configuration)
 
@@ -511,7 +513,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     // Braze
     let factory = SEGAppboyIntegrationFactory.instance()
-    userNotificationCenterDidReceiveResponse(appBoy: Appboy.sharedInstance()) {
+    /// NOTE: We haven't logged PN's from Braze because Appboy.sharedInstance was never initialized. Seems we don't need to because we route our own deeplinks through `viewModel.inputs.didReceive`.
+
+    userNotificationCenterDidReceiveResponse(appBoy: factory?.appboyHelper) {
       factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
     } isNil: {
       factory?.appboyHelper.save(center, notificationResponse: response)
