@@ -1,7 +1,11 @@
 version: 2.1
 
 orbs:
+  aws-cli: circleci/aws-cli@3.1
   codecov: codecov/codecov@1.1.3
+
+aws_cli_setup: &aws_cli_setup
+  role-arn: $AWS_ROLE_ARN
 
 xcode_version: &xcode_version 13.3.1
 iphone_name: &iphone_name iPhone 8
@@ -75,6 +79,8 @@ test_job: &test_job
 distribute_job: &distribute_job
   steps:
     - checkout
+    - aws-cli/setup:
+        <<: *aws_cli_setup
     - run:
         name: SPM SSH Workaround
         command: *spm_ssh_workaround
@@ -128,6 +134,8 @@ all_jobs: &all_jobs
   - library-tests
   - ksapi-tests
 
+# Jobs
+
 jobs:
   build-and-cache:
     <<: *base_job
@@ -175,8 +183,6 @@ jobs:
           name: Danger
           command: bin/danger.sh
 
-# Jobs
-
   # Kickstarter tests
   kickstarter-tests:
     <<: *base_job
@@ -208,6 +214,8 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - aws-cli/setup:
+          <<: *aws_cli_setup
       - run:
           name: Deploy Alpha
           command: make alpha
@@ -218,6 +226,8 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - aws-cli/setup:
+          <<: *aws_cli_setup
       - run:
           name: Deploy Beta
           command: make beta
@@ -298,29 +308,34 @@ workflows:
 #              # matches all branches that begin with 'beta-dist'
 #              only: /beta-dist-.*/
       - deploy_alpha:
+          context: aws
           filters:
             branches:
               # matches all branches that contain 'feature' but do not contain 'alpha-dist'
               only: /^((?!alpha\-dist).*feature.*)*$/
           requires: *all_jobs
       - deploy_beta:
+          context: aws
           filters:
             branches:
               only: main
           requires: *all_jobs
       - beta:
+          context: aws
           filters:
             branches:
               # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
           requires: *all_jobs
       - alpha:
+          context: aws
           filters:
             branches:
               # matches all branches that begin with 'alpha-dist'
               only: /alpha-dist.*/
           requires: *all_jobs
       - itunes:
+          context: aws
           filters:
             branches:
               # matches branch named exactly `itunes-dist`

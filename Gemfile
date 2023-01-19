@@ -2,12 +2,12 @@
 
 source 'https://rubygems.org'
 
+gem 'aws-sdk-s3'
 gem 'danger'
 gem 'danger-swiftformat'
 gem 'danger-swiftlint'
 gem 'fastlane'
 gem 'xcode-install'
-gem 'fog-aws'
 gem 'json'
 gem 'plist'
 gem 'slather'
