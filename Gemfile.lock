@@ -128,7 +128,7 @@ GEM
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-appcenter (1.11.0)
-    fastlane-plugin-aws_s3 (2.0.2)
+    fastlane-plugin-aws_s3 (2.1.0)
       apktools (~> 0.7)
       aws-sdk-s3 (~> 1)
       mime-types (~> 3.3)
