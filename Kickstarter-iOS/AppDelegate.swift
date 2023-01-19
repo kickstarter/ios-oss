@@ -265,11 +265,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { writeKey in
         // Braze initialization in one place so multiple instances of singleton don't get created.
         let appboyIntegrationFactory = SEGAppboyIntegrationFactory.instance()
-        
+
         appboyIntegrationFactory?.saveLaunchOptions(launchOptions)
         appboyIntegrationFactory?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
 
-        let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: appboyIntegrationFactory)
+        let configuration = Analytics
+          .configuredClient(withWriteKey: writeKey, braze: appboyIntegrationFactory)
 
         Analytics.setup(with: configuration)
 
@@ -511,15 +512,17 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       return
     }
 
-    // Braze
-    let factory = SEGAppboyIntegrationFactory.instance()
-    /// NOTE: We haven't logged PN's from Braze because Appboy.sharedInstance was never initialized. Seems we don't need to because we route our own deeplinks through `viewModel.inputs.didReceive`.
+    /** Braze
+      let factory = SEGAppboyIntegrationFactory.instance()
 
-    userNotificationCenterDidReceiveResponse(appBoy: factory?.appboyHelper) {
-      factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
-    } isNil: {
-      factory?.appboyHelper.save(center, notificationResponse: response)
-    }
+      /// We haven't logged PN's from Braze because Appboy.sharedInstance was never initialized. Seems we don't need to because we route our own deeplinks through `viewModel.inputs.didReceive`. Also this method when enabled routes the app to open safari for a deeplink, so it's defeating our own deeplink routing.
+
+     userNotificationCenterDidReceiveResponse(appBoy: factory?.appboyHelper) {
+       factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
+     } isNil: {
+       factory?.appboyHelper.save(center, notificationResponse: response)
+     }
+     */
 
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
