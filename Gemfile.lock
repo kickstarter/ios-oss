@@ -282,17 +282,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk-s3
   danger
   danger-swiftformat
   danger-swiftlint
   fastlane
   fastlane-plugin-appcenter
   fastlane-plugin-aws_s3
-  fog-aws
   json
   plist
   slather
   xcode-install
 
 BUNDLED WITH
-   2.1.4
+   2.3.6
