@@ -18,7 +18,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let configurePerimeterX = TestObserver<(), Never>()
-  private let configureSegment = TestObserver<String, Never>()
+  private let configureSegmentWithBraze = TestObserver<String, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let emailVerificationCompletedMessage = TestObserver<String, Never>()
   private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
@@ -71,7 +71,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
     self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
-    self.vm.outputs.configureSegment.observe(self.configureSegment.observer)
+    self.vm.outputs.configureSegmentWithBraze.observe(self.configureSegmentWithBraze.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
       .observe(self.emailVerificationCompletedMessage.observer)
     self.vm.outputs.emailVerificationCompleted.map(second)
@@ -2910,7 +2910,7 @@ final class AppDelegateViewModelTests: TestCase {
       bundleIdentifier: KickstarterBundleIdentifier.release.rawValue
     )
 
-    self.configureSegment.assertDidNotEmitValue()
+    self.configureSegmentWithBraze.assertDidNotEmitValue()
 
     withEnvironment(mainBundle: mockBundle) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -2918,7 +2918,7 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureSegment.assertValues([Secrets.Segment.production])
+      self.configureSegmentWithBraze.assertValues([Secrets.Segment.production])
     }
   }
 
@@ -2927,7 +2927,7 @@ final class AppDelegateViewModelTests: TestCase {
       bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue
     )
 
-    self.configureSegment.assertDidNotEmitValue()
+    self.configureSegmentWithBraze.assertDidNotEmitValue()
 
     withEnvironment(mainBundle: mockBundle) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -2935,7 +2935,7 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureSegment.assertValues([Secrets.Segment.staging])
+      self.configureSegmentWithBraze.assertValues([Secrets.Segment.staging])
     }
   }
 
