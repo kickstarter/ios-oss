@@ -1,4 +1,4 @@
-import AppboyKit
+import AppboyUI
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit
@@ -25,7 +25,6 @@ import UserNotifications
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
-
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
@@ -261,16 +260,18 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
       }
 
-    self.viewModel.outputs.configureSegment
-      .observeValues { writeKey in
-        // Braze initialization in one place so multiple instances of singleton don't get created.
-        let appboyIntegrationFactory = SEGAppboyIntegrationFactory.instance()
+    self.viewModel.outputs.configureSegmentWithBraze
+      .observeValues { [weak self] writeKey in
+        guard let strongSelf = self else { return }
 
-        appboyIntegrationFactory?.saveLaunchOptions(launchOptions)
-        appboyIntegrationFactory?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
+        let factoryInstance = SEGAppboyIntegrationFactory.instance()
+        factoryInstance?.saveLaunchOptions(launchOptions)
+        factoryInstance?.appboyOptions = [
+          ABKInAppMessageControllerDelegateKey: strongSelf,
+          ABKMinimumTriggerTimeIntervalKey: 5
+        ]
 
-        let configuration = Analytics
-          .configuredClient(withWriteKey: writeKey, braze: appboyIntegrationFactory)
+        let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: factoryInstance)
 
         Analytics.setup(with: configuration)
 
@@ -298,6 +299,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         queue: nil
       ) { [weak self] note in
         self?.viewModel.inputs.perimeterXCaptchaTriggeredWithUserInfo(note.userInfo)
+      }
+
+    NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_appboyCreated,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        guard let strongSelf = self else { return }
+
+        Appboy.sharedInstance()?.inAppMessageController.delegate = strongSelf
       }
 
     self.window?.tintColor = .ksr_create_700
@@ -511,17 +523,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       completion()
       return
     }
-
-    /** FIXME: Braze - we haven't logged PN's from Braze back to Braze because `Appboy.sharedInstance` was previously never initialized. We route our own deeplinks through `viewModel.inputs.didReceive` below anyway. Also `userNotificationCenterDidReceiveResponse` when commented in routes the app to open safari for a deeplink, so it's breaking the deeplink functionality. More investigation required to it's use required.
-
-     let factory = SEGAppboyIntegrationFactory.instance()
-
-     userNotificationCenterDidReceiveResponse(appBoy: factory?.appboyHelper) {
-       factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
-     } isNil: {
-       factory?.appboyHelper.save(center, notificationResponse: response)
-     }
-     */
 
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
