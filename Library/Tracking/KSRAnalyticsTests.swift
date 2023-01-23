@@ -499,6 +499,23 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
   }
 
+  // MARK: - Creator Dashboard Properties Tests
+
+  func testCreatorDashboardPageViewed() {
+    let segmentClient = MockTrackingClient()
+    let loggedInUser = User.template |> \.id .~ 23
+    let ksrAnalytics = KSRAnalytics(
+      loggedInUser: loggedInUser,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackCreatorDasboardPageViewed()
+
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
+  }
+
   // MARK: - Discovery Properties Tests
 
   func testDiscoveryProperties() {

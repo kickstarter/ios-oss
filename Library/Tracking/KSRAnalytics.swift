@@ -34,6 +34,7 @@ public final class KSRAnalytics {
     case campaign // ProjectDescriptionViewController
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
+    case creatorDashboard = "creator_dashboard"
     case discovery = "discover" // DiscoveryViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
@@ -267,6 +268,7 @@ public final class KSRAnalytics {
     case backed
     case campaign
     case comments
+    case dashboard
     case overview
     case updates
     case watched
@@ -277,6 +279,7 @@ public final class KSRAnalytics {
       case .backed: return "backed"
       case .campaign: return "campaign"
       case .comments: return "comments"
+      case .dashboard: return "dashboard"
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
@@ -754,6 +757,17 @@ public final class KSRAnalytics {
       event: SegmentEvent.videoPlaybackStarted.rawValue,
       properties: props
     )
+  }
+
+  // MARK: - Creator Dashboard Events
+
+  /**
+   Call when the creator dashboard page is viewed and the first page is loaded.
+   */
+
+  public func trackCreatorDasboardPageViewed() {
+    let props = contextProperties(page: .creatorDashboard, sectionContext: .dashboard)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
   // MARK: - Pledge Events

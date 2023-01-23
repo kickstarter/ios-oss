@@ -290,6 +290,10 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
       .filter { AppEnvironment.current.isVoiceOverRunning() }
+
+    self.viewDidLoadProperty.signal.observeValues {
+      AppEnvironment.current.ksrAnalytics.trackCreatorDasboardPageViewed()
+    }
   }
 
   fileprivate let showHideProjectsDrawerProperty = MutableProperty(())
