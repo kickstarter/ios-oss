@@ -298,15 +298,15 @@ workflows:
       - kickstarter-tests
       - library-tests
       - ksapi-tests
-# ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
-# or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.
-# See: https://docs.fastlane.tools/app-store-connect-api/
-# https://docs.fastlane.tools/best-practices/continuous-integration/
-#      - refresh_app_store_dsyms:
-#          filters:
-#            branches:
-#              # matches all branches that begin with 'beta-dist'
-#              only: /beta-dist-.*/
+      # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
+      # or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.
+      # See: https://docs.fastlane.tools/app-store-connect-api/
+      # https://docs.fastlane.tools/best-practices/continuous-integration/
+      # - refresh_app_store_dsyms:
+      #     filters:
+      #       branches:
+      #         # matches all branches that begin with 'beta-dist'
+      #         only: /beta-dist-.*/
       - deploy_alpha:
           context: aws
           filters:
