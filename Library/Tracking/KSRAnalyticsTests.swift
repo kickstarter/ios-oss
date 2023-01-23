@@ -516,6 +516,18 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
   }
 
+  func testCreatorDasboardSwitchProjectClicked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+
+    ksrAnalytics.trackCreatorDasboardSwitchProjectClicked(project: .template, refTag: RefTag.dashboard)
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual(["project_select"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
+  }
+
   // MARK: - Discovery Properties Tests
 
   func testDiscoveryProperties() {

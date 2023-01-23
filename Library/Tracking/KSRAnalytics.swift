@@ -152,6 +152,7 @@ public final class KSRAnalytics {
     case pledgeInitiate
     case pledgeSubmit
     case project
+    case projectSelect
     case rewardContinue
     case search
     case signUpInitiate
@@ -171,6 +172,7 @@ public final class KSRAnalytics {
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
       case .project: return "project"
+      case .projectSelect: return "project_select"
       case .logInInitiate: return "log_in_initiate"
       case .logInOrSignUp: return "log_in_or_sign_up"
       case .logInSubmit: return "log_in_submit"
@@ -768,6 +770,21 @@ public final class KSRAnalytics {
   public func trackCreatorDasboardPageViewed() {
     let props = contextProperties(page: .creatorDashboard, sectionContext: .dashboard)
     self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  public func trackCreatorDasboardSwitchProjectClicked(project: Project, refTag: RefTag) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .projectSelect,
+        page: .creatorDashboard,
+        sectionContext: .dashboard
+      ))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props,
+      refTag: refTag.stringTag
+    )
   }
 
   // MARK: - Pledge Events
