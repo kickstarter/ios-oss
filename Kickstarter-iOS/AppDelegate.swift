@@ -503,7 +503,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
+    _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
@@ -512,10 +512,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       return
     }
 
-    /** Braze
-      let factory = SEGAppboyIntegrationFactory.instance()
+    /** FIXME: Braze - we haven't logged PN's from Braze back to Braze because `Appboy.sharedInstance` was previously never initialized. We route our own deeplinks through `viewModel.inputs.didReceive` below anyway. Also `userNotificationCenterDidReceiveResponse` when commented in routes the app to open safari for a deeplink, so it's breaking the deeplink functionality. More investigation required to it's use required.
 
-      /// We haven't logged PN's from Braze because Appboy.sharedInstance was never initialized. Seems we don't need to because we route our own deeplinks through `viewModel.inputs.didReceive`. Also this method when enabled routes the app to open safari for a deeplink, so it's defeating our own deeplink routing.
+     let factory = SEGAppboyIntegrationFactory.instance()
 
      userNotificationCenterDidReceiveResponse(appBoy: factory?.appboyHelper) {
        factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)

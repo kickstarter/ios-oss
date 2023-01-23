@@ -330,7 +330,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map(PushEnvelope.decodeJSONDictionary)
       .skipNil()
       .map(navigation(fromPushEnvelope:))
-    
+
     let deepLinkFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
       .map(BrazePushEnvelope.decodeJSONDictionary)
       .skipNil()

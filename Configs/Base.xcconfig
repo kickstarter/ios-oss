@@ -1,2 +1,1 @@
 APPLICATION_EXTENSION_API_ONLY = NO
-EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
