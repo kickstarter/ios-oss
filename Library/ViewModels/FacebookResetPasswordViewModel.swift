@@ -3,15 +3,15 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol ResetYourFacebookPasswordViewModelInputs {
+public protocol FacebookResetPasswordViewModelInputs {
   func viewDidLoad()
   func viewWillAppear()
   func emailTextFieldFieldDidChange(_ text: String)
-  func emailTextFieldDidReturn(email: String)
+  func emailTextFieldFieldDidReturn()
   func setPasswordButtonPressed()
 }
 
-public protocol ResetYourFacebookPasswordViewModelOutputs {
+public protocol FacebookResetPasswordViewModelOutputs {
   var shouldShowActivityIndicator: Signal<Bool, Never> { get }
   var setPasswordButtonIsEnabled: Signal<Bool, Never> { get }
   var contextLabelText: Signal<String, Never> { get }
@@ -21,29 +21,34 @@ public protocol ResetYourFacebookPasswordViewModelOutputs {
   var textFieldAndSetPasswordButtonAreEnabled: Signal<Bool, Never> { get }
 }
 
-public protocol ResetYourFacebookPasswordViewModelType {
-  var inputs: ResetYourFacebookPasswordViewModelInputs { get }
-  var outputs: ResetYourFacebookPasswordViewModelOutputs { get }
+public protocol FacebookResetPasswordViewModelType {
+  var inputs: FacebookResetPasswordViewModelInputs { get }
+  var outputs: FacebookResetPasswordViewModelOutputs { get }
 }
 
-public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPasswordViewModelType,
-  ResetYourFacebookPasswordViewModelInputs,
-  ResetYourFacebookPasswordViewModelOutputs {
+public final class FacebookResetPasswordViewModel: FacebookResetPasswordViewModelType,
+  FacebookResetPasswordViewModelInputs,
+  FacebookResetPasswordViewModelOutputs {
   public init() {
     self.contextLabelText = self.viewWillAppearProperty.signal
       .map { Strings.We_re_simplifying_our_login_process_To_log_in() }
     self.emailLabel = self.viewWillAppearProperty.signal
       .map { Strings.forgot_password_placeholder_email() }
 
-    let formIsValid = self.viewDidLoadProperty.signal
-      .flatMap { [email = emailTextFieldProperty.producer] _ in email }
-      .map { $0 ?? "" }
-      .map(isValidEmail)
-      .skipRepeats()
+    let formIsValid = Signal.combineLatest(
+      self.viewDidLoadProperty.signal,
+      self.emailTextFieldProperty.signal.skipNil()
+    )
+    .map(second)
+    .map(isValidEmail)
+    .skipRepeats()
 
     self.setPasswordButtonIsEnabled = formIsValid
 
-    let submitFormEvent = self.setPasswordButtonPressedProperty.signal
+    let submitFormEvent = Signal.merge(
+      self.emailTextFieldReturnProperty.signal,
+      self.setPasswordButtonPressedProperty.signal
+    )
 
     let submitAction = formIsValid
       .takeWhen(submitFormEvent)
@@ -51,7 +56,7 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
       .ignoreValues()
 
     let setPasswordEvent = self.emailTextFieldProperty.signal.skipNil()
-      .takeWhen(self.setPasswordButtonPressedProperty.signal)
+      .takeWhen(submitAction)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
           .mapConst(email)
@@ -60,11 +65,7 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
 
     self.setPasswordFailure = setPasswordEvent.errors()
       .map { envelope in
-        if envelope.httpCode == 404 {
-          return Strings.forgot_password_error()
-        } else {
-          return Strings.general_error_something_wrong()
-        }
+        envelope.errorMessages.last ?? Strings.general_error_something_wrong()
       }
 
     self.setPasswordSuccess = setPasswordEvent.values().map { email in
@@ -81,8 +82,8 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
     self.textFieldAndSetPasswordButtonAreEnabled = self.shouldShowActivityIndicator.map { $0 }.negate()
   }
 
-  public var inputs: ResetYourFacebookPasswordViewModelInputs { return self }
-  public var outputs: ResetYourFacebookPasswordViewModelOutputs { return self }
+  public var inputs: FacebookResetPasswordViewModelInputs { return self }
+  public var outputs: FacebookResetPasswordViewModelOutputs { return self }
 
   // MARK: - Input Methods
 
@@ -101,9 +102,9 @@ public final class ResetYourFacebookPasswordViewModel: ResetYourFacebookPassword
     self.emailTextFieldProperty.value = text
   }
 
-  private var emailTextFieldDoneEditingProperty = MutableProperty(())
-  public func emailTextFieldDidReturn(email _: String) {
-    self.emailTextFieldDoneEditingProperty.value = ()
+  private let emailTextFieldReturnProperty = MutableProperty(())
+  public func emailTextFieldFieldDidReturn() {
+    self.emailTextFieldReturnProperty.value = ()
   }
 
   private let setPasswordButtonPressedProperty = MutableProperty(())

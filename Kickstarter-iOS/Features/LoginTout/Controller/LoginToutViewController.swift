@@ -245,7 +245,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
                 self?.pushLoginViewController()
               },
               setNewPasswordHandler: { [weak self] _ in
-                self?.pushResetYourFacebookPasswordViewController()
+                self?.pushFacebookResetPasswordViewController()
               }
             ),
             animated: true,
@@ -443,8 +443,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  private func pushResetYourFacebookPasswordViewController() {
-    let vc = ResetYourFacebookPasswordViewController.instantiate()
+  private func pushFacebookResetPasswordViewController() {
+    let vc = FacebookResetPasswordViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
     self.navigationItem
       .backBarButtonItem = UIBarButtonItem(title: "Log in", style: .plain, target: nil, action: nil)

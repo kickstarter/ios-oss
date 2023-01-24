@@ -1,4 +1,5 @@
 import AppboyKit
+import AppTrackingTransparency
 import KsApi
 import Library
 import Prelude
@@ -179,6 +180,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when we should register the device push token in Segment Analytics.
   var registerPushTokenInSegment: Signal<Data, Never> { get }
+
+  /// Emits when  application didFinishLaunchingWithOptions.
+  var requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never> { get }
 
   /// Emits when our config updates with the enabled state for Semgent Analytics.
   var segmentIsEnabled: Signal<Bool, Never> { get }
@@ -785,6 +789,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.brazeWillDisplayInAppMessageReturnProperty <~ self.brazeWillDisplayInAppMessageProperty.signal
       .skipNil()
       .map { _ in .displayInAppMessageNow }
+
+    self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
+      .skipNil()
+      .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+      .map { _ -> ATTrackingAuthorizationStatus in
+        guard featureConsentManagementDialogEnabled() else { return .notDetermined }
+        return atTrackingAuthorizationStatus()
+      }
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -956,6 +968,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
   public let registerPushTokenInSegment: Signal<Data, Never>
+  public let requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never>
   public let segmentIsEnabled: Signal<Bool, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
@@ -963,6 +976,27 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
+}
+
+private func atTrackingAuthorizationStatus() -> ATTrackingAuthorizationStatus {
+  var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
+
+  ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+    switch status {
+    case .notDetermined:
+      authorizationStatus = .notDetermined
+    case .authorized:
+      authorizationStatus = .authorized
+    case .denied:
+      authorizationStatus = .denied
+    case .restricted:
+      authorizationStatus = .restricted
+    @unknown default:
+      authorizationStatus = .notDetermined
+    }
+  })
+
+  return authorizationStatus
 }
 
 /// Handles the deeplink route with both an id and text based name for a deeplink to categories.

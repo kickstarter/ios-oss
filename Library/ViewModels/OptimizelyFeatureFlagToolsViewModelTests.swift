@@ -23,10 +23,12 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true,
         OptimizelyFeature.paymentSheetEnabled.rawValue: true,
         OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
+        OptimizelyFeature.facebookConversionsAPI.rawValue: true,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true
       ]
 
@@ -47,10 +49,12 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
         OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.facebookConversionsAPI.rawValue: false,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
       ]
 
