@@ -335,4 +335,48 @@ internal final class DashboardViewModelTests: TestCase {
       self.vm.inputs.showHideProjectsDrawer()
     }
   }
+
+  func testTrackingEvents_CreatorDashboardViewed() {
+    let projects = (0...4).map { .template |> Project.lens.id .~ $0 }
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.viewWillDisappear()
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      XCTAssertEqual(["Page Viewed", "Page Viewed"], self.segmentTrackingClient.events)
+    }
+  }
+
+  func testTrackingEvents_CreatorDashboardSwitchProjectClicked() {
+    let project1 = Project.template
+    let project2 = .template |> Project.lens.id .~ 4
+    let projects = [project1, project2]
+
+    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.switch(toProject: .id(project2.id))
+
+      XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.switch(toProject: .id(project2.id))
+
+      XCTAssertEqual(["Page Viewed", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    }
+  }
 }
