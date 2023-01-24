@@ -379,4 +379,24 @@ internal final class DashboardViewModelTests: TestCase {
       XCTAssertEqual(["Page Viewed", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     }
   }
+
+  func testTrackingEvents_CreatorDashboardPostUpdateClicked() {
+    withEnvironment(apiService: MockService(fetchProjectsResponse: [Project.template])) {
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.trackPostUpdateClicked()
+
+      XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+
+      self.vm.inputs.trackPostUpdateClicked()
+
+      XCTAssertEqual(["Page Viewed", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    }
+  }
 }

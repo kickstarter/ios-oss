@@ -46,6 +46,9 @@ public protocol DashboardViewModelInputs {
   /// Call when to show or hide the projects drawer.
   func showHideProjectsDrawer()
 
+  /// Call when Post Update is clicked
+  func trackPostUpdateClicked()
+
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -303,6 +306,15 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
         AppEnvironment.current.ksrAnalytics
           .trackCreatorDasboardSwitchProjectClicked(project: project, refTag: RefTag.dashboard)
       }
+
+    _ = self.project
+      .takeWhen(self.trackPostUpdateClickedProperty.signal)
+      .observeValues { project in
+        AppEnvironment.current.ksrAnalytics.trackCreatorDasboardPostUpdateClicked(
+          project: project,
+          refTag: RefTag.dashboard
+        )
+      }
   }
 
   fileprivate let showHideProjectsDrawerProperty = MutableProperty(())
@@ -333,6 +345,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty(())
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
+  }
+
+  fileprivate let trackPostUpdateClickedProperty = MutableProperty(())
+  public func trackPostUpdateClicked() {
+    self.trackPostUpdateClickedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
