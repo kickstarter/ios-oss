@@ -39,24 +39,6 @@ final class OptimizelyFeatureHelpersTests: TestCase {
     }
   }
 
-  func testRewardLocalPickupEnabled_Optimizely_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertTrue(featureRewardLocalPickupEnabled())
-    }
-  }
-
-  func testRewardLocalPickupEnabled_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featureRewardLocalPickupEnabled())
-    }
-  }
-
   func testPaymentSheet_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: true]

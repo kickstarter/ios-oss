@@ -14,13 +14,6 @@ public func featureProjectPageStoryTabEnabled() -> Bool {
       .isFeatureEnabled(featureKey: OptimizelyFeature.projectPageStoryTabEnabled.rawValue) ?? false)
 }
 
-public func featureRewardLocalPickupEnabled() -> Bool {
-  return AppEnvironment.current.userDefaults
-    .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue] ??
-    (AppEnvironment.current.optimizelyClient?
-      .isFeatureEnabled(featureKey: OptimizelyFeature.rewardLocalPickupEnabled.rawValue) ?? false)
-}
-
 public func featurePaymentSheetEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] ??
