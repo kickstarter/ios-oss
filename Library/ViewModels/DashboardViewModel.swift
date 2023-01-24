@@ -293,7 +293,7 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     // MARK: - Tracking
 
-    self.viewDidLoadProperty.signal.observeValues {
+    self.viewWillAppearAnimatedProperty.signal.observeValues { _ in
       AppEnvironment.current.ksrAnalytics.trackCreatorDasboardPageViewed()
     }
 
