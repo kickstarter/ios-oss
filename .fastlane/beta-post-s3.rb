@@ -26,10 +26,7 @@ end
 #
 
 def plist_path
-  @plist_path ||= begin
-    root = File.dirname(File.dirname(__FILE__))
-    File.join(root, 'Kickstarter-iOS', 'Info.plist')
-  end
+  @plist_path ||= File.join('./../', 'Kickstarter-iOS', 'Info.plist')
 end
 
 def plist
@@ -66,5 +63,4 @@ build = {
 bucket.put_object({
   key: 'builds.yaml',
   body: (current_builds.select {|b| b[:build] != plist_build} + [build]).to_yaml,
-  public: false
 })
