@@ -12,6 +12,7 @@ final class SetYourPasswordViewModelTests: TestCase {
   private let newPasswordLabel = TestObserver<String, Never>()
   private let confirmPasswordLabel = TestObserver<String, Never>()
   private let textFieldsAndSaveButtonAreEnabled = TestObserver<Bool, Never>()
+  private let nextPasswordFieldBecomesFirstResponder = TestObserver<Void, Never>()
   private let setPasswordFailure = TestObserver<String, Never>()
   private let setPasswordSuccess = TestObserver<Void, Never>()
 
@@ -35,6 +36,8 @@ final class SetYourPasswordViewModelTests: TestCase {
     self.viewModel.outputs.confirmPasswordLabel.observe(self.confirmPasswordLabel.observer)
     self.viewModel.outputs.textFieldsAndSaveButtonAreEnabled
       .observe(self.textFieldsAndSaveButtonAreEnabled.observer)
+    self.viewModel.outputs.nextPasswordFieldBecomeFirstResponder
+      .observe(self.nextPasswordFieldBecomesFirstResponder.observer)
     self.viewModel.outputs.setPasswordSuccess.observe(self.setPasswordSuccess.observer)
     self.viewModel.outputs.setPasswordFailure.observe(self.setPasswordFailure.observer)
   }
@@ -55,6 +58,31 @@ final class SetYourPasswordViewModelTests: TestCase {
       self.confirmPasswordLabel.assertValue(Strings.Confirm_password())
 
       XCTAssertNil(self.saveButtonIsEnabled.lastValue)
+    }
+  }
+
+  func testKeyboardResponderChain_UserMovesFromFieldToFieldThenSubmits_Success() {
+    withEnvironment(apiService: self.setPasswordSuccessService) {
+      self.viewModel.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.nextPasswordFieldBecomesFirstResponder.assertDidNotEmitValue()
+      self.viewModel.inputs.newPasswordFieldDidChange("password")
+      self.viewModel.inputs.newPasswordFieldDidReturn()
+      self.nextPasswordFieldBecomesFirstResponder.assertDidEmitValue()
+
+      self.setPasswordSuccess.assertDidNotEmitValue()
+
+      self.viewModel.inputs.confirmPasswordFieldDidChange("password")
+
+      self.saveButtonIsEnabled.assertValues([true])
+
+      self.viewModel.inputs.confirmPasswordFieldDidReturn()
+
+      self.scheduler.advance()
+
+      self.setPasswordSuccess.assertDidEmitValue()
     }
   }
 
