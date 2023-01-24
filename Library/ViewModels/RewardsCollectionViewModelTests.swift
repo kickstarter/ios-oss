@@ -160,7 +160,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       XCTAssertEqual(displayableRewards, updatedLocalRewards)
     }
   }
-  
+
   func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludiongNonLocalBackedReward_ShowsAllRewards_Success() {
     let rewards = Project.cosmicSurgery.rewards
 
