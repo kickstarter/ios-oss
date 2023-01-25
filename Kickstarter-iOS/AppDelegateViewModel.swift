@@ -112,8 +112,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Perimeter X
   var configurePerimeterX: Signal<(), Never> { get }
 
-  /// Emits when the application should configure Segment.
-  var configureSegment: Signal<String, Never> { get }
+  /// Emits when the application should configure Segment with an instance of Braze.
+  var configureSegmentWithBraze: Signal<String, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -335,6 +335,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map(navigation(fromPushEnvelope:))
 
+    let deepLinkFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
+      .map(BrazePushEnvelope.decodeJSONDictionary)
+      .skipNil()
+      .map { $0.abURI }
+      .skipNil()
+      .map(URL.init(string:))
+      .skipNil()
+      .map(Navigation.deepLinkMatch)
+
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
@@ -371,6 +380,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
+        deepLinkFromBrazeNotification,
         deepLinkFromShortcut
       )
       .skipNil()
@@ -771,7 +781,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    self.configureSegment = self.applicationLaunchOptionsProperty.signal
+    self.configureSegmentWithBraze = self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .map { _ in
         AppEnvironment.current.mainBundle.isRelease
@@ -945,7 +955,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let configurePerimeterX: Signal<(), Never>
-  public let configureSegment: Signal<String, Never>
+  public let configureSegmentWithBraze: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>

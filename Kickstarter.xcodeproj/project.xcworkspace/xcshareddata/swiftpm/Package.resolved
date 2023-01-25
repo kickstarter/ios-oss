@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Appboy/appboy-segment-ios",
       "state" : {
-        "revision" : "a7a58bf045140ac5d4303e38851993cefb07c53b",
-        "version" : "4.5.0"
+        "revision" : "08a061113e8a7e835e6bc9c0e1629d94e63aa29e",
+        "version" : "4.6.0"
       }
     },
     {
@@ -77,17 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
       "state" : {
-        "revision" : "836548b7b82137a3c04157854919b892ae8e6981",
-        "version" : "4.5.0"
-      }
-    },
-    {
-      "identity" : "braze-swift-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/braze-inc/braze-swift-sdk",
-      "state" : {
-        "revision" : "b8147a77d726f6c75e0ef7efcf0b26f9d1c7b4b5",
-        "version" : "5.5.0"
+        "revision" : "f9ebcd2442ee4ab986a609b90d1153ca556f6027",
+        "version" : "4.5.2"
       }
     },
     {
