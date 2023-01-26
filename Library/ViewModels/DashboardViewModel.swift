@@ -297,17 +297,21 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
     // MARK: - Tracking
 
     self.viewWillAppearAnimatedProperty.signal.observeValues { _ in
-      AppEnvironment.current.ksrAnalytics.trackCreatorDasboardPageViewed()
+      AppEnvironment.current.ksrAnalytics.trackCreatorDashboardPageViewed()
     }
 
-    self.project
+    _ = projects
       .takePairWhen(self.switchToProjectProperty.signal)
-      .observeValues { project, _ in
+      .map { allProjects, param -> Project? in
+        param.flatMap { find(projectForParam: $0, in: allProjects) }
+      }
+      .skipNil()
+      .observeValues { switchedToProject in
         AppEnvironment.current.ksrAnalytics
-          .trackCreatorDashboardSwitchProjectClicked(project: project, refTag: RefTag.dashboard)
+          .trackCreatorDashboardSwitchProjectClicked(project: switchedToProject, refTag: RefTag.dashboard)
       }
 
-    self.project
+    _ = self.project
       .takePairWhen(self.trackPostUpdateClickedProperty.signal)
       .observeValues { project, _ in
         AppEnvironment.current.ksrAnalytics.trackCreatorDashboardPostUpdateClicked(

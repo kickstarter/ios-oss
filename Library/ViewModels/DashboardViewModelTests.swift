@@ -368,21 +368,21 @@ internal final class DashboardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.project.assertValues([.template |> Project.lens.id .~ 1])
+      self.project.assertValues([project1])
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
       self.vm.inputs.switch(toProject: .id(project2.id))
 
-      self.project.assertValues([.template |> Project.lens.id .~ 1, .template |> Project.lens.id .~ 4])
+      self.project.assertValues([project1, project2])
       XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
       self.vm.inputs.switch(toProject: .id(project1.id))
 
       self.project
         .assertValues([
-          .template |> Project.lens.id .~ 1,
-          .template |> Project.lens.id .~ 4,
-          .template |> Project.lens.id .~ 1
+          project1,
+          project2,
+          project1
         ])
       XCTAssertEqual(["Page Viewed", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     }

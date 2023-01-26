@@ -771,7 +771,7 @@ public final class KSRAnalytics {
    Call when the creator dashboard page is viewed and the first page is loaded.
    */
 
-  public func trackCreatorDasboardPageViewed() {
+  public func trackCreatorDashboardPageViewed() {
     let props = contextProperties(
       ctaContext: .creatorDashboard,
       page: .creatorDashboard,
