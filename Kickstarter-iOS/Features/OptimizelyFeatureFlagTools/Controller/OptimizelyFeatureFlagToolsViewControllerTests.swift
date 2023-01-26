@@ -24,7 +24,6 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
        |> \.features .~ [
          OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
          OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
-         OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false,
          OptimizelyFeature.paymentSheetEnabled.rawValue: false,
          OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
          OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
@@ -34,9 +33,7 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
      withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
        let controller = OptimizelyFeatureFlagToolsViewController.instantiate()
        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-
        self.scheduler.run()
-
        FBSnapshotVerifyView(parent.view)
      }
    }
