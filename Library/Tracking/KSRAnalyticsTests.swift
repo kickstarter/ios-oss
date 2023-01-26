@@ -509,7 +509,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackCreatorDasboardPageViewed()
+    ksrAnalytics.trackCreatorDashboardPageViewed()
 
     XCTAssertEqual(["Page Viewed"], segmentClient.events)
     XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
