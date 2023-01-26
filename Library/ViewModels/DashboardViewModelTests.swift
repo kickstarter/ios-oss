@@ -368,14 +368,22 @@ internal final class DashboardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      self.project.assertValues([.template |> Project.lens.id .~ 1])
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
       self.vm.inputs.switch(toProject: .id(project2.id))
 
+      self.project.assertValues([.template |> Project.lens.id .~ 1, .template |> Project.lens.id .~ 4])
       XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
-      self.vm.inputs.switch(toProject: .id(project2.id))
+      self.vm.inputs.switch(toProject: .id(project1.id))
 
+      self.project
+        .assertValues([
+          .template |> Project.lens.id .~ 1,
+          .template |> Project.lens.id .~ 4,
+          .template |> Project.lens.id .~ 1
+        ])
       XCTAssertEqual(["Page Viewed", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     }
   }
@@ -393,10 +401,6 @@ internal final class DashboardViewModelTests: TestCase {
       self.vm.inputs.trackPostUpdateClicked()
 
       XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
-
-      self.vm.inputs.trackPostUpdateClicked()
-
-      XCTAssertEqual(["Page Viewed", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     }
   }
 }

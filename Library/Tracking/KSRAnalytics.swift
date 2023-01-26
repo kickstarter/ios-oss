@@ -34,7 +34,7 @@ public final class KSRAnalytics {
     case campaign // ProjectDescriptionViewController
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
-    case creatorDashboard = "creator_dashboard"
+    case creatorDashboard = "creator_dashboard" // DashboardViewController
     case discovery = "discover" // DiscoveryViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
@@ -175,8 +175,8 @@ public final class KSRAnalytics {
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
       case .project: return "project"
-      case .projectSelect: return "project_select"
-      case .projectUpdateCreateDraft: return "project_update_create_draft"
+      case .projectSelect: return "creator_project_select"
+      case .projectUpdateCreateDraft: return "creator_project_update_create_draft"
       case .logInInitiate: return "log_in_initiate"
       case .logInOrSignUp: return "log_in_or_sign_up"
       case .logInSubmit: return "log_in_submit"
@@ -783,11 +783,11 @@ public final class KSRAnalytics {
   /**
    Call when a project is switched via dropdown at the top of the creator dashboard
 
-   - parameter project: The `Project` corresponding to the video that started playing.
+   - parameter project: The `Project` that the creator switched to.
    - parameter refTag: The ref tag used when switching projects.
    */
 
-  public func trackCreatorDasboardSwitchProjectClicked(project: Project, refTag: RefTag) {
+  public func trackCreatorDashboardSwitchProjectClicked(project: Project, refTag: RefTag?) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .projectSelect,
@@ -798,18 +798,18 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
-      refTag: refTag.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
   /**
    Call when 'Post Update' is tapped in the creator dashboard
 
-   - parameter project: The `Project` corresponding to the video that started playing.
+   - parameter project: The `Project` corresponding to the update.
    - parameter refTag: The ref tag used when switching projects.
    */
 
-  public func trackCreatorDasboardPostUpdateClicked(project: Project, refTag: RefTag) {
+  public func trackCreatorDashboardPostUpdateClicked(project: Project, refTag: RefTag?) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .projectUpdateCreateDraft,
@@ -820,7 +820,7 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
-      refTag: refTag.stringTag
+      refTag: refTag?.stringTag
     )
   }
 

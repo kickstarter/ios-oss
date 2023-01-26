@@ -300,17 +300,17 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
       AppEnvironment.current.ksrAnalytics.trackCreatorDasboardPageViewed()
     }
 
-    _ = self.project
-      .takeWhen(self.switchToProjectProperty.signal)
-      .observeValues { project in
+    self.project
+      .takePairWhen(self.switchToProjectProperty.signal)
+      .observeValues { project, _ in
         AppEnvironment.current.ksrAnalytics
-          .trackCreatorDasboardSwitchProjectClicked(project: project, refTag: RefTag.dashboard)
+          .trackCreatorDashboardSwitchProjectClicked(project: project, refTag: RefTag.dashboard)
       }
 
-    _ = self.project
-      .takeWhen(self.trackPostUpdateClickedProperty.signal)
-      .observeValues { project in
-        AppEnvironment.current.ksrAnalytics.trackCreatorDasboardPostUpdateClicked(
+    self.project
+      .takePairWhen(self.trackPostUpdateClickedProperty.signal)
+      .observeValues { project, _ in
+        AppEnvironment.current.ksrAnalytics.trackCreatorDashboardPostUpdateClicked(
           project: project,
           refTag: RefTag.dashboard
         )

@@ -516,26 +516,27 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
   }
 
-  func testCreatorDasboardSwitchProjectClicked() {
+  func testCreatorDashboardSwitchProjectClicked() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
-    ksrAnalytics.trackCreatorDasboardSwitchProjectClicked(project: .template, refTag: RefTag.dashboard)
+    ksrAnalytics.trackCreatorDashboardSwitchProjectClicked(project: .template, refTag: RefTag.dashboard)
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-    XCTAssertEqual(["project_select"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["creator_project_select"], segmentClient.properties(forKey: "context_cta"))
     XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
     XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
+    XCTAssertEqual(["The Project"], segmentClient.properties(forKey: "project_name"))
   }
 
-  func testCreatorDasboardPostUpdateClicked() {
+  func testCreatorDashboardPostUpdateClicked() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
-    ksrAnalytics.trackCreatorDasboardPostUpdateClicked(project: .template, refTag: RefTag.dashboard)
+    ksrAnalytics.trackCreatorDashboardPostUpdateClicked(project: .template, refTag: RefTag.dashboard)
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-    XCTAssertEqual(["project_update_create_draft"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["creator_project_update_create_draft"], segmentClient.properties(forKey: "context_cta"))
     XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
     XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
   }
