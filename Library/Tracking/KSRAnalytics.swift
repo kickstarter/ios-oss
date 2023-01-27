@@ -34,6 +34,7 @@ public final class KSRAnalytics {
     case campaign // ProjectDescriptionViewController
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
+    case creatorDashboard = "creator_dashboard" // DashboardViewController
     case discovery = "discover" // DiscoveryViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
@@ -139,6 +140,7 @@ public final class KSRAnalytics {
   public enum CTAContext {
     case addOnsContinue
     case campaignDetails
+    case creatorDashboard
     case creatorDetails
     case discover
     case discoverFilter
@@ -151,6 +153,8 @@ public final class KSRAnalytics {
     case pledgeInitiate
     case pledgeSubmit
     case project
+    case projectSelect
+    case projectUpdateCreateDraft
     case rewardContinue
     case search
     case signUpInitiate
@@ -161,6 +165,7 @@ public final class KSRAnalytics {
       switch self {
       case .addOnsContinue: return "add_ons_continue"
       case .campaignDetails: return "campaign_details"
+      case .creatorDashboard: return "creator_dashboard"
       case .creatorDetails: return "creator_details"
       case .discover: return "discover"
       case .discoverFilter: return "discover_filter"
@@ -170,6 +175,8 @@ public final class KSRAnalytics {
       case .pledgeConfirm: return "pledge_confirm"
       case .pledgeSubmit: return "pledge_submit"
       case .project: return "project"
+      case .projectSelect: return "creator_project_select"
+      case .projectUpdateCreateDraft: return "creator_project_update_create_draft"
       case .logInInitiate: return "log_in_initiate"
       case .logInOrSignUp: return "log_in_or_sign_up"
       case .logInSubmit: return "log_in_submit"
@@ -267,6 +274,7 @@ public final class KSRAnalytics {
     case backed
     case campaign
     case comments
+    case dashboard
     case overview
     case updates
     case watched
@@ -277,6 +285,7 @@ public final class KSRAnalytics {
       case .backed: return "backed"
       case .campaign: return "campaign"
       case .comments: return "comments"
+      case .dashboard: return "dashboard"
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
@@ -753,6 +762,65 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.videoPlaybackStarted.rawValue,
       properties: props
+    )
+  }
+
+  // MARK: - Creator Dashboard Events
+
+  /**
+   Call when the creator dashboard page is viewed and the first page is loaded.
+   */
+
+  public func trackCreatorDashboardPageViewed() {
+    let props = contextProperties(
+      ctaContext: .creatorDashboard,
+      page: .creatorDashboard,
+      sectionContext: .dashboard
+    )
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /**
+   Call when a project is switched via dropdown at the top of the creator dashboard
+
+   - parameter project: The `Project` that the creator switched to.
+   - parameter refTag: The ref tag used when switching projects.
+   */
+
+  public func trackCreatorDashboardSwitchProjectClicked(project: Project, refTag: RefTag?) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .projectSelect,
+        page: .creatorDashboard,
+        sectionContext: .dashboard
+      ))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
+  /**
+   Call when 'Post Update' is tapped in the creator dashboard
+
+   - parameter project: The `Project` corresponding to the update.
+   - parameter refTag: The ref tag used when switching projects.
+   */
+
+  public func trackCreatorDashboardPostUpdateClicked(project: Project, refTag: RefTag?) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .projectUpdateCreateDraft,
+        page: .creatorDashboard,
+        sectionContext: .dashboard
+      ))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
     )
   }
 

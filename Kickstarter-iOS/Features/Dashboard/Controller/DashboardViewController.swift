@@ -218,6 +218,8 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   fileprivate func goToPostUpdate(_ project: Project) {
+    self.viewModel.inputs.trackPostUpdateClicked()
+
     let vc = UpdateDraftViewController.configuredWith(project: project)
     vc.delegate = self
 
