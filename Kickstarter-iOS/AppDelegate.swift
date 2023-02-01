@@ -37,9 +37,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
 
-    SEGAppboyIntegrationFactory.instance()?.saveLaunchOptions(launchOptions)
-    SEGAppboyIntegrationFactory.instance()?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
-
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
@@ -266,8 +263,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureSegmentWithBraze
       .observeValues { [weak self] writeKey in
         guard let strongSelf = self else { return }
-
-        let configuration = Analytics.configuredClient(withWriteKey: writeKey)
+        
+        let factoryInstance = SEGAppboyIntegrationFactory.instance()
+        
+        factoryInstance?.appboyOptions = [
+          ABKInAppMessageControllerDelegateKey: strongSelf,
+          ABKMinimumTriggerTimeIntervalKey: 5
+        ]
+        
+        let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: factoryInstance)
 
         Analytics.setup(with: configuration)
 
@@ -500,20 +504,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
+    _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
-    }
-
-    let factory = SEGAppboyIntegrationFactory.instance()
-    userNotificationCenterDidReceiveResponse(appBoy: Appboy.sharedInstance()) {
-      factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
-    } isNil: {
-      factory?.appboyHelper.save(center, notificationResponse: response)
     }
 
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
