@@ -263,14 +263,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureSegmentWithBraze
       .observeValues { [weak self] writeKey in
         guard let strongSelf = self else { return }
-        
+
         let factoryInstance = SEGAppboyIntegrationFactory.instance()
-        
+
         factoryInstance?.appboyOptions = [
           ABKInAppMessageControllerDelegateKey: strongSelf,
           ABKMinimumTriggerTimeIntervalKey: 5
         ]
-        
+
         let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: factoryInstance)
 
         Analytics.setup(with: configuration)

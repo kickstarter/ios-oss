@@ -6,7 +6,8 @@ public extension Analytics {
   /**
    Returns an `Analytics` instance, with Segment, using an `AnalyticsConfiguration`.
    */
-  static func configuredClient(withWriteKey writeKey: String, braze: SEGAppboyIntegrationFactory?) -> AnalyticsConfiguration {
+  static func configuredClient(withWriteKey writeKey: String,
+                               braze: SEGAppboyIntegrationFactory?) -> AnalyticsConfiguration {
     let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
       .trackApplicationLifecycleEvents = true
