@@ -12,4 +12,4 @@ extension ABKInAppMessage: BrazeInAppMessageType {}
 
 public protocol AppboyType {}
 
-extension SEGAppboyHelper: AppboyType {}
+extension Appboy: AppboyType {}

@@ -1,4 +1,4 @@
-import AppboyUI
+import AppboyKit
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit
@@ -36,6 +36,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
+
+    SEGAppboyIntegrationFactory.instance()?.saveLaunchOptions(launchOptions)
+    SEGAppboyIntegrationFactory.instance()?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -264,14 +267,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] writeKey in
         guard let strongSelf = self else { return }
 
-        let factoryInstance = SEGAppboyIntegrationFactory.instance()
-        factoryInstance?.saveLaunchOptions(launchOptions)
-        factoryInstance?.appboyOptions = [
-          ABKInAppMessageControllerDelegateKey: strongSelf,
-          ABKMinimumTriggerTimeIntervalKey: 5
-        ]
-
-        let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: factoryInstance)
+        let configuration = Analytics.configuredClient(withWriteKey: writeKey)
 
         Analytics.setup(with: configuration)
 
@@ -299,17 +295,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         queue: nil
       ) { [weak self] note in
         self?.viewModel.inputs.perimeterXCaptchaTriggeredWithUserInfo(note.userInfo)
-      }
-
-    NotificationCenter.default
-      .addObserver(
-        forName: Notification.Name.ksr_appboyCreated,
-        object: nil,
-        queue: nil
-      ) { [weak self] _ in
-        guard let strongSelf = self else { return }
-
-        Appboy.sharedInstance()?.inAppMessageController.delegate = strongSelf
       }
 
     self.window?.tintColor = .ksr_create_700
@@ -515,13 +500,20 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _: UNUserNotificationCenter,
+    _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
+    }
+
+    let factory = SEGAppboyIntegrationFactory.instance()
+    userNotificationCenterDidReceiveResponse(appBoy: Appboy.sharedInstance()) {
+      factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
+    } isNil: {
+      factory?.appboyHelper.save(center, notificationResponse: response)
     }
 
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
