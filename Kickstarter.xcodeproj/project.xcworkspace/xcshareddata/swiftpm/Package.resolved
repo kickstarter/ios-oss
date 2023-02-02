@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/segmentio/analytics-ios.git",
       "state" : {
-        "revision" : "fc64997865619f73bbab196c164f7845a13da110",
-        "version" : "4.1.6"
+        "revision" : "78423aaae2e48e32a07246850f37c76f3d34cb84",
+        "version" : "4.1.8"
       }
     },
     {
@@ -48,7 +48,7 @@
     {
       "identity" : "appboy-segment-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Appboy/appboy-segment-ios",
+      "location" : "https://github.com/Appboy/appboy-segment-ios.git",
       "state" : {
         "revision" : "08a061113e8a7e835e6bc9c0e1629d94e63aa29e",
         "version" : "4.6.0"
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
       "state" : {
-        "revision" : "f9ebcd2442ee4ab986a609b90d1153ca556f6027",
-        "version" : "4.5.2"
+        "revision" : "ddd02f32ab3f546f13582f8a2f7b0334c49382f3",
+        "version" : "4.5.1"
       }
     },
     {
@@ -257,8 +257,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "484bc774e1091f622c4856e576ff957b29403676",
-        "version" : "5.13.3"
+        "revision" : "6c6b951845a520fa7e8356e28adb5339c0f008d3",
+        "version" : "5.15.0"
       }
     },
     {
