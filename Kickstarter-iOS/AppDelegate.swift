@@ -265,7 +265,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let strongSelf = self else { return }
 
         let factoryInstance = SEGAppboyIntegrationFactory.instance()
-
+        factoryInstance?.saveLaunchOptions(launchOptions)
         factoryInstance?.appboyOptions = [
           ABKInAppMessageControllerDelegateKey: strongSelf,
           ABKMinimumTriggerTimeIntervalKey: 5
