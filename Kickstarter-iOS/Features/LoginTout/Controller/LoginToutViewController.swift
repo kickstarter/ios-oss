@@ -199,6 +199,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
         AppEnvironment.login(accessTokenEnv)
 
+        /** FIXME: Not releasing this yet - re-test functionality as it failed regression testing on release-5.6.1 (see confluence regression testing document)
         guard featureFacebookLoginDeprecationEnabled(),
           let needsPassword = accessTokenEnv.user.needsPassword,
           needsPassword else {
@@ -206,6 +207,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
           return
         }
+         */
 
         strongSelf.viewModel.inputs.environmentLoggedIn()
       }
