@@ -1,4 +1,4 @@
-import AppboyUI
+import AppboyKit
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit
@@ -299,17 +299,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         queue: nil
       ) { [weak self] note in
         self?.viewModel.inputs.perimeterXCaptchaTriggeredWithUserInfo(note.userInfo)
-      }
-
-    NotificationCenter.default
-      .addObserver(
-        forName: Notification.Name.ksr_appboyCreated,
-        object: nil,
-        queue: nil
-      ) { [weak self] _ in
-        guard let strongSelf = self else { return }
-
-        Appboy.sharedInstance()?.inAppMessageController.delegate = strongSelf
       }
 
     self.window?.tintColor = .ksr_create_700
