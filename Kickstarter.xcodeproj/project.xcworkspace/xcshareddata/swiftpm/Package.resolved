@@ -48,7 +48,7 @@
     {
       "identity" : "appboy-segment-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Appboy/appboy-segment-ios.git",
+      "location" : "https://github.com/Appboy/appboy-segment-ios",
       "state" : {
         "revision" : "08a061113e8a7e835e6bc9c0e1629d94e63aa29e",
         "version" : "4.6.0"
