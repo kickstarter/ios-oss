@@ -485,6 +485,9 @@
 		6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */; };
 		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
 		606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */; };
+		606F214C2994158500BA5CDF /* TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F214B2994158500BA5CDF /* TriggerCapiEventInput.swift */; };
+		606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */; };
+		606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -2071,6 +2074,9 @@
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTrackingAuthorizationStatus.swift; sourceTree = "<group>"; };
+		606F214B2994158500BA5CDF /* TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerCapiEventInput.swift; sourceTree = "<group>"; };
+		606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift"; sourceTree = "<group>"; };
+		606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift"; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -6064,6 +6070,8 @@
 				06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */,
 				47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */,
 				47D7D09B26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift */,
+				606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */,
+				606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */,
 				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
 				8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */,
 				06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */,
@@ -7147,6 +7155,7 @@
 				8AF34C8523440565000B211D /* ApplePayParamsTests.swift */,
 				77776BC7234BA76400A42388 /* CancelBackingInput.swift */,
 				77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */,
+				606F214B2994158500BA5CDF /* TriggerCapiEventInput.swift */,
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
@@ -8759,6 +8768,7 @@
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
 				8AC3E00726961E6400168BF8 /* Reward+RewardFragment.swift in Sources */,
 				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
+				606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */,
 				476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
@@ -8799,6 +8809,7 @@
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
 				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
 				D6B686E92191FE5E005F5DA7 /* EmptyInput.swift in Sources */,
+				606F214C2994158500BA5CDF /* TriggerCapiEventInput.swift in Sources */,
 				478E31C726C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift in Sources */,
 				D0158A2A1EEB30A2006E7684 /* SurveyResponseTemplates.swift in Sources */,
 				D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */,
@@ -9046,6 +9057,7 @@
 				06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */,
 				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
+				606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				06032A8E26CEB3E50013AAB9 /* CommentFragmentTemplate.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
