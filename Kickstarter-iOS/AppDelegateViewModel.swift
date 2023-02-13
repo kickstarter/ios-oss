@@ -347,7 +347,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map(Navigation.deepLinkMatch)
 
-    let deepLinkFromBrazeInAppNotification = self.brazeInAppNotificationURL.signal.skipNil()
+    let deepLinkFromBrazeInAppNotification = self.brazeInAppNotificationURLProperty.signal.skipNil()
       .map(Navigation.deepLinkMatch)
 
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
@@ -934,9 +934,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.userSessionStartedProperty.value = ()
   }
 
-  fileprivate let brazeInAppNotificationURL = MutableProperty<URL?>(nil)
+  fileprivate let brazeInAppNotificationURLProperty = MutableProperty<URL?>(nil)
   public func urlFromBrazeInAppNotification(_ url: URL?) {
-    self.brazeInAppNotificationURL.value = url
+    self.brazeInAppNotificationURLProperty.value = url
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
