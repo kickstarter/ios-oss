@@ -269,6 +269,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         appBoyInstance?.saveLaunchOptions(launchOptions)
         appBoyInstance?.appboyOptions = [
           ABKInAppMessageControllerDelegateKey: strongSelf,
+          ABKURLDelegateKey: strongSelf,
           ABKMinimumTriggerTimeIntervalKey: 5
         ]
 
@@ -523,5 +524,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: ABKInAppMessageControllerDelegate {
   func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
     return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
+  }
+}
+
+// MARK: - ABKURLDelegate
+
+extension AppDelegate: ABKURLDelegate {
+  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
+    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
+
+    return true
   }
 }

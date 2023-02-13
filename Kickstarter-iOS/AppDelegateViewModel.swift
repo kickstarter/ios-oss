@@ -86,6 +86,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
+  /// Call when Braze in-app notifications send a valid URL.
+  func urlFromBrazeInAppNotification(_ url: URL?)
+
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
@@ -344,6 +347,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map(Navigation.deepLinkMatch)
 
+    let deepLinkFromBrazeInAppNotification = self.brazeInAppNotificationURL.signal.skipNil()
+      .map(Navigation.deepLinkMatch)
+
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
@@ -381,6 +387,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         deepLinkFromUrl,
         deepLinkFromNotification,
         deepLinkFromBrazeNotification,
+        deepLinkFromBrazeInAppNotification,
         deepLinkFromShortcut
       )
       .skipNil()
@@ -925,6 +932,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
+  }
+
+  fileprivate let brazeInAppNotificationURL = MutableProperty<URL?>(nil)
+  public func urlFromBrazeInAppNotification(_ url: URL?) {
+    self.brazeInAppNotificationURL.value = url
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
