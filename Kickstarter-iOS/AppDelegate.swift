@@ -264,14 +264,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] writeKey in
         guard let strongSelf = self else { return }
 
-        let factoryInstance = SEGAppboyIntegrationFactory.instance()
-        factoryInstance?.saveLaunchOptions(launchOptions)
-        factoryInstance?.appboyOptions = [
+        let (configuration, appBoyInstance) = Analytics.configuredClient(withWriteKey: writeKey)
+
+        appBoyInstance?.saveLaunchOptions(launchOptions)
+        appBoyInstance?.appboyOptions = [
           ABKInAppMessageControllerDelegateKey: strongSelf,
+          ABKURLDelegateKey: strongSelf,
           ABKMinimumTriggerTimeIntervalKey: 5
         ]
-
-        let configuration = Analytics.configuredClient(withWriteKey: writeKey, braze: factoryInstance)
 
         Analytics.setup(with: configuration)
 
@@ -524,5 +524,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: ABKInAppMessageControllerDelegate {
   func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
     return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
+  }
+}
+
+// MARK: - ABKURLDelegate
+
+extension AppDelegate: ABKURLDelegate {
+  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
+    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
+
+    return true
   }
 }

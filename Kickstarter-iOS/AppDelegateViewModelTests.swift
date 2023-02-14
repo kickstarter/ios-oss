@@ -3017,6 +3017,25 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.requestATTrackingAuthorizationStatus.assertValueCount(1)
   }
+
+  func testPresentViewController_BrazeInAppNotificationDeeplink_ProjectCommentThread_Success() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/"
+
+      self.presentViewController.assertValues([])
+
+      self.vm.inputs.urlFromBrazeInAppNotification(URL(string: url)!)
+
+      self.presentViewController.assertValues([1])
+    }
+  }
 }
 
 private let backingForCreatorPushData: [String: Any] = [
