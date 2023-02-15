@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
       "state" : {
-        "revision" : "ddd02f32ab3f546f13582f8a2f7b0334c49382f3",
-        "version" : "4.5.1"
+        "revision" : "538e3729ec56f1c10e678c0e83266c57da17b5fa",
+        "version" : "4.5.4"
       }
     },
     {
