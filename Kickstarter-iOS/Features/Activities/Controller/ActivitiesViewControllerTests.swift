@@ -3,6 +3,7 @@
 @testable import Library
 import Prelude
 import XCTest
+import SnapshotTesting
 
 private let creator = User.template |> \.avatar.small .~ ""
 private let survey = .template |> SurveyResponse.lens.project .~
@@ -139,7 +140,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent, as: .image(perceptualPrecision: 0.98), named: "lang_\(language)_device_\(device)")
+        //FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
