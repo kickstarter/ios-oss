@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class BackerDashboardProjectsViewControllerTests: TestCase {
@@ -67,7 +68,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         )
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -90,7 +91,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         )
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -113,7 +114,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
         )
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

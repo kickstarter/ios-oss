@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import SnapshotTesting
 import XCTest
 
 internal final class CategorySelectionViewControllerTests: TestCase {
@@ -32,7 +33,7 @@ internal final class CategorySelectionViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

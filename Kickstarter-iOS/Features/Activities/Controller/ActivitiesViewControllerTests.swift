@@ -2,8 +2,8 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-import XCTest
 import SnapshotTesting
+import XCTest
 
 private let creator = User.template |> \.avatar.small .~ ""
 private let survey = .template |> SurveyResponse.lens.project .~
@@ -140,8 +140,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "lang_\(language)_device_\(device)")
-        //FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -178,7 +177,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -213,7 +212,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -245,7 +244,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

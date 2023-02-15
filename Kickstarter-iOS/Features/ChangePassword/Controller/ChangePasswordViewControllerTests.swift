@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 final class ChangePasswordViewControllerTests: TestCase {
@@ -23,7 +24,7 @@ final class ChangePasswordViewControllerTests: TestCase {
         let controller = ChangePasswordViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

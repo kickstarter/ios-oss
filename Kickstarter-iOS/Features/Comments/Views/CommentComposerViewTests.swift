@@ -3,6 +3,7 @@ import Foundation
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 import XCTest
 
@@ -37,9 +38,10 @@ final class CommentComposerViewTests: TestCase {
           device: device
         )
 
-        FBSnapshotVerifyView(
-          vc.view,
-          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: vc,
+          as: .image,
+          named: "CommentComposerView - lang_\(language)_device_\(device)"
         )
       }
     }
@@ -62,9 +64,10 @@ final class CommentComposerViewTests: TestCase {
           device: device
         )
 
-        FBSnapshotVerifyView(
-          vc.view,
-          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: vc,
+          as: .image,
+          named: "CommentComposerView - lang_\(language)_device_\(device)"
         )
       }
     }
@@ -88,9 +91,10 @@ final class CommentComposerViewTests: TestCase {
           device: device
         )
 
-        FBSnapshotVerifyView(
-          vc.view,
-          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: vc,
+          as: .image,
+          named: "CommentComposerView - lang_\(language)_device_\(device)"
         )
       }
     }
@@ -113,9 +117,10 @@ final class CommentComposerViewTests: TestCase {
           device: device
         )
 
-        FBSnapshotVerifyView(
-          vc.view,
-          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: vc,
+          as: .image,
+          named: "CommentComposerView - lang_\(language)_device_\(device)"
         )
       }
     }
@@ -138,9 +143,10 @@ final class CommentComposerViewTests: TestCase {
           device: device
         )
 
-        FBSnapshotVerifyView(
-          vc.view,
-          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: vc,
+          as: .image,
+          named: "CommentComposerView - lang_\(language)_device_\(device)"
         )
       }
     }

@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class DiscoveryFiltersViewControllerTests: TestCase {
@@ -83,7 +84,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_000
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
       }
     }
   }
@@ -98,7 +99,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_500
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
       }
     }
   }
@@ -113,7 +114,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_000
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
       }
     }
   }
@@ -128,7 +129,7 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_000
 
-        FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "Filters - lang_\(language)")
       }
     }
   }

@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class ProjectPageViewControllerConversionTests: TestCase {
@@ -46,7 +47,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_US_userLocation_US")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_UK_userCurrency_US_userLocation_US"
+      )
     }
   }
 
@@ -62,7 +67,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_US_userLocation_AU")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_UK_userCurrency_US_userLocation_AU"
+      )
     }
   }
 
@@ -83,7 +92,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_US")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_US_userCurrency_US_userLocation_US"
+      )
     }
   }
 
@@ -104,7 +117,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_US_userCurrency_US_userLocation_CA"
+      )
     }
   }
 
@@ -136,7 +153,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_US_userCurrency_US_userLocation_CA"
+      )
     }
   }
 
@@ -163,7 +184,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_SEK_userLocation_SE")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_US_userCurrency_SEK_userLocation_SE"
+      )
     }
   }
 
@@ -185,7 +210,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_US")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_UK_userCurrency_nil_userLocation_US"
+      )
     }
   }
 
@@ -207,7 +236,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_UK_userCurrency_nil_userLocation_SE"
+      )
     }
   }
 
@@ -229,7 +262,11 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image,
+        named: "projectLocation_UK_userCurrency_nil_userLocation_SE"
+      )
     }
   }
 }

@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
@@ -37,7 +38,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         controller.viewDidLoad()
         controller.configureWith(params: initialParams)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -52,7 +53,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         controller.viewDidLoad()
         controller.configureWith(params: cultureParams)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -67,7 +68,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         controller.viewDidLoad()
         controller.configureWith(params: cultureSubParams)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -82,7 +83,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         controller.viewDidLoad()
         controller.configureWith(params: initialParams)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -97,7 +98,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         controller.viewDidLoad()
         controller.configureWith(params: cultureParams)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -112,7 +113,7 @@ internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
         controller.viewDidLoad()
         controller.configureWith(params: cultureSubParams)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }

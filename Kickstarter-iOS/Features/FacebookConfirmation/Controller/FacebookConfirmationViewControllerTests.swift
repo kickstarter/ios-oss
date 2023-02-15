@@ -1,6 +1,7 @@
 import Foundation
 @testable import Kickstarter_Framework
 import Library
+import SnapshotTesting
 
 internal final class FacebookConfirmationViewControllerTests: TestCase {
   override func setUp() {
@@ -18,7 +19,7 @@ internal final class FacebookConfirmationViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

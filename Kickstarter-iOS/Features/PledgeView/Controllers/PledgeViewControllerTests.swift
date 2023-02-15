@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class PledgeViewControllerTests: TestCase {
@@ -64,7 +65,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -97,7 +98,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -139,7 +140,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -172,7 +173,11 @@ final class PledgeViewControllerTests: TestCase {
 
           self.allowLayoutPass()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+          )
         }
       }
   }
@@ -218,7 +223,11 @@ final class PledgeViewControllerTests: TestCase {
 
           self.allowLayoutPass()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+          )
         }
       }
   }
@@ -259,7 +268,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -305,7 +314,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -345,7 +354,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -385,7 +394,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -426,7 +435,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -470,7 +479,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -515,7 +524,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -553,7 +562,7 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -585,7 +594,11 @@ final class PledgeViewControllerTests: TestCase {
 
           self.allowLayoutPass()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+          )
         }
       }
   }
@@ -617,7 +630,11 @@ final class PledgeViewControllerTests: TestCase {
 
           self.allowLayoutPass()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+          )
         }
       }
   }
@@ -651,7 +668,11 @@ final class PledgeViewControllerTests: TestCase {
 
           self.allowLayoutPass()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+          )
         }
       }
   }
@@ -691,7 +712,11 @@ final class PledgeViewControllerTests: TestCase {
 
           self.allowLayoutPass()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "lang_\(language)_device_\(device)_\(loggedInString)"
+          )
         }
       }
   }

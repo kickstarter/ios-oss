@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 /** FIXME: There is a problem with testing the payment sheet. Somehow SPM is incorrectly linking the SDK resources explained here:
@@ -23,7 +24,7 @@ final class AddNewCardViewControllerTests: TestCase {
         controller.configure(with: .settings)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -35,7 +36,7 @@ final class AddNewCardViewControllerTests: TestCase {
         controller.configure(with: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -53,7 +54,7 @@ final class AddNewCardViewControllerTests: TestCase {
         controller.configure(with: .settings)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "locale_\(locale)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(locale)_device_\(device)")
       }
     }
   }

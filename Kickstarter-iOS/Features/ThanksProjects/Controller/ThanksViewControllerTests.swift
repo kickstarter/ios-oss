@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 class ThanksViewControllerTests: TestCase {
@@ -43,7 +44,7 @@ class ThanksViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -75,7 +76,7 @@ class ThanksViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

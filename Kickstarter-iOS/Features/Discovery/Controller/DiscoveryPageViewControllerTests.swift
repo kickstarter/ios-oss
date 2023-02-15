@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 internal final class DiscoveryPageViewControllerTests: TestCase {
@@ -39,7 +40,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -72,7 +73,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -105,7 +106,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           controller.tableView.layoutIfNeeded()
           controller.tableView.reloadData()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+          assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
         }
       }
   }
@@ -136,10 +137,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        FBSnapshotVerifyView(
-          parent.view,
-          identifier: "backed_lang_\(language)_device_\(device)"
-        )
+        assertSnapshot(matching: parent.view, as: .image, named: "backed_lang_\(language)_device_\(device)")
       }
     }
   }
@@ -177,9 +175,10 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           controller.tableView.layoutIfNeeded()
           controller.tableView.reloadData()
 
-          FBSnapshotVerifyView(
-            parent.view,
-            identifier: "\(labeledProj.0)_lang_\(language)_device_\(device)"
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "\(labeledProj.0)_lang_\(language)_device_\(device)"
           )
         }
       }
@@ -217,7 +216,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           controller.tableView.layoutIfNeeded()
           controller.tableView.reloadData()
 
-          FBSnapshotVerifyView(parent.view, identifier: "state_\(state)_lang_\(language)_device_\(device)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "state_\(state)_lang_\(language)_device_\(device)"
+          )
         }
       }
   }
@@ -233,9 +236,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.change(filter: magicParams)
         self.scheduler.run()
 
-        FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)"
-        )
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -269,7 +270,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        FBSnapshotVerifyView(parent.view, identifier: "state_\(state)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "state_\(state)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -301,7 +306,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -339,7 +344,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

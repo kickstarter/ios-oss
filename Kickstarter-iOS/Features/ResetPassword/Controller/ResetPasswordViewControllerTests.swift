@@ -1,6 +1,7 @@
 import Foundation
 @testable import Kickstarter_Framework
 import Library
+import SnapshotTesting
 
 internal final class ResetPasswordViewControllerTests: TestCase {
   override func setUp() {
@@ -17,7 +18,7 @@ internal final class ResetPasswordViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

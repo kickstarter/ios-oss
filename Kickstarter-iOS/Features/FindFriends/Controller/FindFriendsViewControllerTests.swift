@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 internal final class FindFriendsViewControllerTests: TestCase {
@@ -23,7 +24,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
         let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -38,7 +39,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
         let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -82,7 +83,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
