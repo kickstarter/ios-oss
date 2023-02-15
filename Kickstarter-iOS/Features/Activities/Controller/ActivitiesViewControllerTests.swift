@@ -140,7 +140,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        assertSnapshot(matching: parent, as: .image(perceptualPrecision: 0.98), named: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "lang_\(language)_device_\(device)")
         //FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
