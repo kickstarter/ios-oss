@@ -9,8 +9,7 @@ class GraphAPI_TriggerCapiEventInput_TriggerCapiEventInputTests: XCTestCase {
       externalId: "externalId",
       userEmail: "userEmail",
       appData: GraphAPI.AppDataInput(extinfo: ["appData"]),
-      customData: GraphAPI.CustomDataInput(currency: nil, value: nil),
-      waitForConsent: false
+      customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
     )
 
     let graphInput = GraphAPI.TriggerCapiEventInput.from(input)
@@ -19,7 +18,6 @@ class GraphAPI_TriggerCapiEventInput_TriggerCapiEventInputTests: XCTestCase {
     XCTAssertEqual(graphInput.eventName, input.eventName)
     XCTAssertEqual(graphInput.externalId, input.externalId)
     XCTAssertEqual(graphInput.userEmail, input.userEmail)
-    XCTAssertEqual(graphInput.waitForConsent, input.waitForConsent)
     XCTAssertNotNil(input.appData)
     XCTAssertNotNil(input.customData)
   }

@@ -1567,18 +1567,13 @@
     }
 
     internal func triggerCapiEventInput(input: TriggerCapiEventInput)
-    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
       }
 
       let mutation = GraphAPI
-        .TriggerCapiEventMutation(input: GraphAPI
-          .TriggerCapiEventInput(
-            projectId: input.projectId,
-            eventName: input.eventName,
-            externalId: input.externalId
-          ))
+        .TriggerCapiEventMutation(input: GraphAPI.TriggerCapiEventInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.triggerCapiEventResult)
     }

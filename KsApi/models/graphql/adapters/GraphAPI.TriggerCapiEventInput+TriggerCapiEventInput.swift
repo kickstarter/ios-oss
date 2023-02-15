@@ -6,8 +6,7 @@ extension GraphAPI.TriggerCapiEventInput {
       externalId: input.externalId,
       userEmail: input.userEmail,
       appData: input.appData,
-      customData: input.customData,
-      waitForConsent: input.waitForConsent
+      customData: input.customData
     )
   }
 }
