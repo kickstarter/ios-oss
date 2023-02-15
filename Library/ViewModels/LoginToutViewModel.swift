@@ -269,7 +269,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }
-  
+
   fileprivate let appleLoginButtonPressedProperty = MutableProperty(())
   public func appleLoginButtonPressed() {
     self.appleLoginButtonPressedProperty.value = ()
