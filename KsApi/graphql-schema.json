@@ -3420,6 +3420,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maxInventoryCount",
+            "description": "The max amount of this item that may have to be produced based on reward limits.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": "An item name.",
             "args": [],
@@ -3978,6 +3990,18 @@
                   "ofType": null
                 }
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "convertedWatchesCount",
+            "description": "Number of watchers who went on to back the project.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4705,6 +4729,18 @@
                 "name": "Int",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "metaCapiAccessToken",
+            "description": "Access token for Meta Conversion API",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7168,6 +7204,22 @@
             "deprecationReason": null
           },
           {
+            "name": "isRegistered",
+            "description": "Whether the user is registered",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "isSepaEligible",
             "description": "Whether the user can create SEPA account payment sources",
             "args": [],
@@ -7222,6 +7274,22 @@
               "kind": "SCALAR",
               "name": "Boolean",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isSuperbacker",
+            "description": "Whether the user is a superbacker",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -10989,6 +11057,12 @@
             "deprecationReason": null
           },
           {
+            "name": "meta_capi",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "ios_crashlytics",
             "description": null,
             "isDeprecated": false,
@@ -11134,18 +11208,6 @@
           },
           {
             "name": "native_creator_breakdown_chart",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "shipping_preference_local_pickup_2022",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "cat_physical_goods_2022",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11379,12 +11441,6 @@
             "deprecationReason": null
           },
           {
-            "name": "embedded_rewards",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projects_on_project_page",
             "description": null,
             "isDeprecated": false,
@@ -11469,18 +11525,6 @@
             "deprecationReason": null
           },
           {
-            "name": "payment_element_web_checkout_2022",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "payment_element_user_settings_2022",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "payment_element_project_build_2022",
             "description": null,
             "isDeprecated": false,
@@ -11488,6 +11532,12 @@
           },
           {
             "name": "payment_element_pledge_update_2022",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "payment_element_errored_pledge_2022",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11518,6 +11568,36 @@
           },
           {
             "name": "creator_nav_bar_2022",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "consent_management",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "uk_created_projects_accept_usd_currency",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "backer_report_header_rewrite_2022",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "chartjs_enabled",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fulfillment_report_onboarding_2023",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -25509,30 +25589,6 @@
             "deprecationReason": null
           },
           {
-            "name": "projectCollections",
-            "description": "Collections of projects based on common queries",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "ProjectCollection",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "projectId",
             "description": "The project id (pid) of the featured project",
             "args": [],
@@ -28622,6 +28678,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "stripePaymentSetupRedirectUrl",
+            "description": "The full URL to redirect to after payment setup via Stripe in refunds",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -31132,6 +31204,33 @@
             "deprecationReason": null
           },
           {
+            "name": "triggerCAPIEvent",
+            "description": "Triggers Meta's CAPI event for native",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "TriggerCapiEventInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TriggerCapiEventPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "undislikeProject",
             "description": "Removes a like for the passed in project from the user's taste profile",
             "args": [
@@ -31396,6 +31495,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "UpdateBackingPaymentSourcePayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateConsent",
+            "description": "Handle a user's updated consent for data collection purposes.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateConsentInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateConsentPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -32073,20 +32199,6 @@
             "defaultValue": null
           },
           {
-            "name": "location",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "ProjectFeedbackLocation",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -32099,29 +32211,6 @@
         ],
         "interfaces": null,
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ProjectFeedbackLocation",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "project_header",
-            "description": "Project Feedback from the backer bar in the project header",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "backed_projects",
-            "description": "Project Feedback from the Backed Projects user profile page",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -35390,6 +35479,16 @@
             "defaultValue": null
           },
           {
+            "name": "image",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "S3AssetInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "limitPerBacker",
             "description": null,
             "type": {
@@ -35471,9 +35570,13 @@
             "name": "contentsType",
             "description": null,
             "type": {
-              "kind": "ENUM",
-              "name": "ContentsType",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "ContentsType",
+                "ofType": null
+              }
             },
             "defaultValue": null
           },
@@ -35494,6 +35597,97 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "S3AssetInput",
+        "description": "S3 information for an asset.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "s3Key",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fileName",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "contentType",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fileSize",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
             },
             "defaultValue": null
           }
@@ -40131,6 +40325,212 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "TriggerCapiEventInput",
+        "description": "Autogenerated input type of TriggerCapiEvent",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "eventName",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "externalId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "userEmail",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "appData",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AppDataInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "customData",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "CustomDataInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "waitForConsent",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AppDataInput",
+        "description": "Parameters for sharing app data and device information with the Conversions API",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "extinfo",
+            "description": "Extended device information, such as screen width and height. Required only for native.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CustomDataInput",
+        "description": "A map that includes additional business data about the CAPI event.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "currency",
+            "description": "The currency for the value specified, if applicable. Currency must be a valid ISO 4217 three-digit currency code.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "description": "A numeric value associated with this event. This could be a monetary value or a value in some other metric.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TriggerCapiEventPayload",
+        "description": "Autogenerated return type of TriggerCapiEvent",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "UndislikeProjectInput",
         "description": "Autogenerated input type of UndislikeProject",
         "fields": null,
@@ -41035,6 +41435,90 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "UpdateConsentInput",
+        "description": "Autogenerated input type of UpdateConsent",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "consentJson",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "userIdentifier",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateConsentPayload",
+        "description": "Autogenerated return type of UpdateConsent",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "UpdateCreatorInterviewInput",
         "description": "Autogenerated input type of UpdateCreatorInterview",
         "fields": null,
@@ -41406,6 +41890,16 @@
           },
           {
             "name": "metaPixelId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "metaCapiAccessToken",
             "description": null,
             "type": {
               "kind": "SCALAR",
