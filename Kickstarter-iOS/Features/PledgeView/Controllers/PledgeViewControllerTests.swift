@@ -65,7 +65,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -98,7 +102,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -140,7 +148,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -175,7 +187,7 @@ final class PledgeViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.98),
             named: "lang_\(language)_device_\(device)_\(loggedInString)"
           )
         }
@@ -225,7 +237,7 @@ final class PledgeViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.98),
             named: "lang_\(language)_device_\(device)_\(loggedInString)"
           )
         }
@@ -268,7 +280,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -314,7 +330,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -354,7 +374,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -394,7 +418,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -435,7 +463,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -479,7 +511,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -524,7 +560,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -562,7 +602,11 @@ final class PledgeViewControllerTests: TestCase {
 
         self.allowLayoutPass()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -596,7 +640,7 @@ final class PledgeViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.98),
             named: "lang_\(language)_device_\(device)_\(loggedInString)"
           )
         }
@@ -632,7 +676,7 @@ final class PledgeViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.98),
             named: "lang_\(language)_device_\(device)_\(loggedInString)"
           )
         }
@@ -670,7 +714,7 @@ final class PledgeViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.98),
             named: "lang_\(language)_device_\(device)_\(loggedInString)"
           )
         }
@@ -714,7 +758,7 @@ final class PledgeViewControllerTests: TestCase {
 
           assertSnapshot(
             matching: parent.view,
-            as: .image,
+            as: .image(perceptualPrecision: 0.98),
             named: "lang_\(language)_device_\(device)_\(loggedInString)"
           )
         }

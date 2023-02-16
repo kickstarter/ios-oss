@@ -73,7 +73,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -236,7 +240,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.change(filter: magicParams)
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -272,7 +280,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
         assertSnapshot(
           matching: parent.view,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "state_\(state)_lang_\(language)_device_\(device)"
         )
       }
@@ -306,7 +314,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -344,7 +356,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

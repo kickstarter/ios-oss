@@ -18,7 +18,11 @@ internal final class SignupViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

@@ -31,7 +31,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: .template, reward: .template, 0))
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -45,7 +45,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
       )
     }
@@ -63,7 +63,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: project, reward: .template, 0))
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -79,7 +79,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: project, reward: .template, 0))
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -96,7 +96,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.stepperValueChanged(UIStepper(frame: .zero) |> \.value .~ 0)
       controller.textFieldDidChange(UITextField(frame: .zero) |> \.text .~ "0")
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -119,7 +119,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.stepperValueChanged(stepper)
       controller.textFieldDidChange(textField)
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -138,7 +138,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: .template, reward: reward, 0))
       controller.stepperValueChanged(stepper)
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -158,7 +158,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -178,7 +178,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
-      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 }

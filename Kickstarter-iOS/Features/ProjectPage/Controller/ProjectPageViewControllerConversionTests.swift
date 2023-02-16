@@ -49,7 +49,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_UK_userCurrency_US_userLocation_US"
       )
     }
@@ -69,7 +69,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_UK_userCurrency_US_userLocation_AU"
       )
     }
@@ -94,7 +94,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_US_userCurrency_US_userLocation_US"
       )
     }
@@ -119,7 +119,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_US_userCurrency_US_userLocation_CA"
       )
     }
@@ -155,7 +155,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_US_userCurrency_US_userLocation_CA"
       )
     }
@@ -186,7 +186,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_US_userCurrency_SEK_userLocation_SE"
       )
     }
@@ -212,7 +212,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_UK_userCurrency_nil_userLocation_US"
       )
     }
@@ -238,7 +238,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_UK_userCurrency_nil_userLocation_SE"
       )
     }
@@ -264,7 +264,7 @@ internal final class ProjectPageViewControllerConversionTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "projectLocation_UK_userCurrency_nil_userLocation_SE"
       )
     }

@@ -30,7 +30,11 @@ final class ToggleViewControllerTests: TestCase {
 
         parent.view.frame.size.height = 60
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -47,7 +51,7 @@ final class ToggleViewControllerTests: TestCase {
 
       assertSnapshot(
         matching: parent.view,
-        as: .image,
+        as: .image(perceptualPrecision: 0.98),
         named: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
       )
     }

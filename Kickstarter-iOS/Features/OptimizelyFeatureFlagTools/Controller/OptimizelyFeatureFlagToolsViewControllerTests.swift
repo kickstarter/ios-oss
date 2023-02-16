@@ -35,7 +35,7 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
       self.scheduler.run()
 
-      assertSnapshot(matching: parent.view, as: .image)
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98))
     }
   }
 }

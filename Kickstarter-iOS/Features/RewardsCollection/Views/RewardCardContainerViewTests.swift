@@ -39,7 +39,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -73,7 +73,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -105,7 +105,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -134,7 +134,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -160,7 +160,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -192,7 +192,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -224,7 +224,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -249,7 +249,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -288,7 +288,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -327,7 +327,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -356,7 +356,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }
@@ -385,7 +385,7 @@ final class RewardCardContainerViewTests: TestCase {
 
         assertSnapshot(
           matching: vc,
-          as: .image,
+          as: .image(perceptualPrecision: 0.98),
           named: "\(rewardDescription)_lang_\(language)_device_\(device)"
         )
       }

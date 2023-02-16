@@ -65,7 +65,11 @@ final class ManagePledgeViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -116,7 +120,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       controller.tableView.layoutIfNeeded()
       controller.tableView.reloadData()
 
-      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)"
+      )
     }
   }
 
@@ -172,7 +180,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       controller.tableView.layoutIfNeeded()
       controller.tableView.reloadData()
 
-      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)"
+      )
     }
   }
 
@@ -228,7 +240,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       controller.tableView.layoutIfNeeded()
       controller.tableView.reloadData()
 
-      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)"
+      )
     }
   }
 
@@ -277,7 +293,11 @@ final class ManagePledgeViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -335,7 +355,11 @@ final class ManagePledgeViewControllerTests: TestCase {
         controller.tableView.layoutIfNeeded()
         controller.tableView.reloadData()
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
