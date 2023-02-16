@@ -47,6 +47,10 @@ public protocol ServiceType {
   func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope>
 
+  /// Sends facebook ad data relevant to the user
+  func triggerCapiEventInput(input: TriggerCapiEventInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>

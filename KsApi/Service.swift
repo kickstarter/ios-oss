@@ -106,6 +106,16 @@ public struct Service: ServiceType {
       .flatMap(CreatePaymentSourceEnvelope.producer(from:))
   }
 
+  public func triggerCapiEventInput(input: TriggerCapiEventInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .TriggerCapiEventMutation(input: GraphAPI.TriggerCapiEventInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
+  }
+
   public func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

@@ -247,8 +247,6 @@
 		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
 		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
-		1938951B29959D6400FF1D16 /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 1938951A29959D6400FF1D16 /* AppboySegment */; };
-		1938951D29959D9800FF1D16 /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 1938951C29959D9800FF1D16 /* AppboySegment */; };
 		194154CE28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */; };
 		194154D128D8FBAA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */; };
 		194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */; };
@@ -260,6 +258,8 @@
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
+		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
+		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
 		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
 		198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; };
@@ -485,6 +485,11 @@
 		6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */; };
 		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
 		606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */; };
+		606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */; };
+		606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */; };
+		606F2166299D456D00BA5CDF /* TriggerCapiEvent.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 606F2165299D456D00BA5CDF /* TriggerCapiEvent.graphql */; };
+		606F2168299D45F900BA5CDF /* TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F2167299D45F900BA5CDF /* TriggerCapiEventInput.swift */; };
+		606F216B299E8D8500BA5CDF /* TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -2072,6 +2077,11 @@
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTrackingAuthorizationStatus.swift; sourceTree = "<group>"; };
+		606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift"; sourceTree = "<group>"; };
+		606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift"; sourceTree = "<group>"; };
+		606F2165299D456D00BA5CDF /* TriggerCapiEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerCapiEvent.graphql; sourceTree = "<group>"; };
+		606F2167299D45F900BA5CDF /* TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerCapiEventInput.swift; sourceTree = "<group>"; };
+		606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerCapiEventInputTests.swift; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -3183,7 +3193,7 @@
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
-				1938951D29959D9800FF1D16 /* AppboySegment in Frameworks */,
+				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				191A4B4228FF3897009D62A5 /* ReactiveExtensions in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
@@ -3222,7 +3232,7 @@
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
-				1938951B29959D6400FF1D16 /* AppboySegment in Frameworks */,
+				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
 				1905787B28F8CD2500428375 /* ReactiveSwift in Frameworks */,
@@ -5853,6 +5863,7 @@
 				06261602273B0E1500389981 /* PostComment.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */,
+				606F2165299D456D00BA5CDF /* TriggerCapiEvent.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
 				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */,
@@ -6066,6 +6077,8 @@
 				06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */,
 				47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */,
 				47D7D09B26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift */,
+				606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */,
+				606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */,
 				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
 				8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */,
 				06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */,
@@ -7168,6 +7181,8 @@
 				47A662F826AF7745001CE7B1 /* WatchProjectInputTests.swift */,
 				D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */,
 				77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */,
+				606F2167299D45F900BA5CDF /* TriggerCapiEventInput.swift */,
+				606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */,
 				4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */,
 				4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */,
 			);
@@ -7226,7 +7241,7 @@
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
 				191A4B3F28FF386C009D62A5 /* ReactiveSwift */,
 				191A4B4128FF3897009D62A5 /* ReactiveExtensions */,
-				1938951C29959D9800FF1D16 /* AppboySegment */,
+				19821C86299D3E8300EF312F /* AppboySegment */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7306,7 +7321,7 @@
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
 				1998BCA728F60E8900D04077 /* ReactiveExtensions */,
 				1905787A28F8CD2500428375 /* ReactiveSwift */,
-				1938951A29959D6400FF1D16 /* AppboySegment */,
+				19821C84299D392400EF312F /* AppboySegment */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7470,6 +7485,7 @@
 				1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
 				1938951929959D6400FF1D16 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -8763,6 +8779,7 @@
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
 				8AC3E00726961E6400168BF8 /* Reward+RewardFragment.swift in Sources */,
 				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
+				606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */,
 				476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
@@ -8880,6 +8897,7 @@
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
 				D01588E51EEB2ED7006E7684 /* Location.swift in Sources */,
 				8A15571D2693B29600017845 /* Comment+CommentFragment.swift in Sources */,
+				606F2168299D45F900BA5CDF /* TriggerCapiEventInput.swift in Sources */,
 				06232D442795EC4300A81755 /* ExternalSourceViewElement.swift in Sources */,
 				8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */,
 				D01588A11EEB2ED7006E7684 /* MessageThreadLenses.swift in Sources */,
@@ -8943,6 +8961,7 @@
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
 				06566375270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift in Sources */,
+				606F2166299D456D00BA5CDF /* TriggerCapiEvent.graphql in Sources */,
 				8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */,
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
 				06B3605F26E15A5E006CB9E4 /* Project+FetchProjectQueryData.swift in Sources */,
@@ -9050,6 +9069,7 @@
 				06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */,
 				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
+				606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				06032A8E26CEB3E50013AAB9 /* CommentFragmentTemplate.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
@@ -9118,6 +9138,7 @@
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				066C0AE926CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
+				606F216B299E8D8500BA5CDF /* TriggerCapiEventInputTests.swift in Sources */,
 				06032A9026CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
@@ -10398,14 +10419,6 @@
 				minimumVersion = 6.5.0;
 			};
 		};
-		1938951929959D6400FF1D16 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Appboy/appboy-segment-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stripe/stripe-ios";
@@ -10420,6 +10433,14 @@
 			requirement = {
 				branch = "feature/swift-package";
 				kind = branch;
+			};
+		};
+		19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Appboy/appboy-segment-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
 			};
 		};
 		19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -10580,20 +10601,20 @@
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
 		};
-		1938951A29959D6400FF1D16 /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1938951929959D6400FF1D16 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
-		1938951C29959D9800FF1D16 /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1938951929959D6400FF1D16 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
 		1981AC8F289075D900BB4897 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
+		};
+		19821C84299D392400EF312F /* AppboySegment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
+			productName = AppboySegment;
+		};
+		19821C86299D3E8300EF312F /* AppboySegment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
+			productName = AppboySegment;
 		};
 		198E574A28E2705100D5B8A9 /* PerimeterX */ = {
 			isa = XCSwiftPackageProductDependency;
