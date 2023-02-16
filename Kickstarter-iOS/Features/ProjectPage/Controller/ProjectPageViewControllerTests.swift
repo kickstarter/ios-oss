@@ -102,7 +102,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    combos([Language.en], [Device.phone4inch]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config, currentUser: .template, language: language
