@@ -154,15 +154,6 @@
       }
     },
     {
-      "identity" : "ios-snapshot-test-case",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/uber/ios-snapshot-test-case/",
-      "state" : {
-        "revision" : "7b10770333a961be6e5a41c9ce04b8c6d3990126",
-        "version" : "8.0.0"
-      }
-    },
-    {
       "identity" : "kickstarter-prelude",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",

@@ -1,12 +1,11 @@
 import AVFoundation
-import iOSSnapshotTestCase
 @testable import KsApi
 @testable import Library
 import Prelude
 import ReactiveSwift
 import XCTest
 
-internal class TestCase: FBSnapshotTestCase {
+internal class TestCase: XCTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()
@@ -23,14 +22,6 @@ internal class TestCase: FBSnapshotTestCase {
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
   internal let uuidType = MockUUID.self
-
-  override var recordMode: Bool {
-    willSet(newValue) {
-      if newValue {
-        preferredSimulatorCheck()
-      }
-    }
-  }
 
   override func setUp() {
     super.setUp()
@@ -89,14 +80,5 @@ internal class TestCase: FBSnapshotTestCase {
     }
 
     waitForExpectations(timeout: 0.01)
-  }
-}
-
-internal func preferredSimulatorCheck() {
-  let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
-  let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
-
-  guard #available(iOS 14.5, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
-    fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 14.5")
   }
 }

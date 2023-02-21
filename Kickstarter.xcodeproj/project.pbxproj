@@ -262,9 +262,6 @@
 		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
 		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
-		198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; };
-		198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; };
-		198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1998BCA828F60E8900D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCA728F60E8900D04077 /* ReactiveExtensions */; };
 		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
 		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
@@ -498,7 +495,6 @@
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
 		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
-		60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
 		70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */; };
@@ -1621,7 +1617,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1645,7 +1640,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3208,7 +3202,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F91B14289C8097000AEC6A /* Stripe in Frameworks */,
-				198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				191A4B5028FF44D8009D62A5 /* ReactiveExtensions in Frameworks */,
 				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
 				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
@@ -3247,7 +3240,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */,
@@ -7267,7 +7259,6 @@
 			name = "Library-iOSTests";
 			packageProductDependencies = (
 				19F91B13289C8097000AEC6A /* Stripe */,
-				198ED06128D229560008CB98 /* iOSSnapshotTestCase */,
 				191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */,
 				191A4B4F28FF44D8009D62A5 /* ReactiveExtensions */,
 			);
@@ -7346,7 +7337,6 @@
 			);
 			name = "Kickstarter-Framework-iOSTests";
 			packageProductDependencies = (
-				60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */,
 				1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */,
 				7049568F299D53ED00B273DF /* SnapshotTesting */,
 			);
@@ -7481,7 +7471,6 @@
 				60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */,
 				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */,
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
@@ -10502,14 +10491,6 @@
 				minimumVersion = 3.6.1;
 			};
 		};
-		60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/uber/ios-snapshot-test-case/";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
-			};
-		};
 		60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple";
@@ -10629,11 +10610,6 @@
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
 		};
-		198ED06128D229560008CB98 /* iOSSnapshotTestCase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
-			productName = iOSSnapshotTestCase;
-		};
 		1998BCA728F60E8900D04077 /* ReactiveExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
@@ -10698,11 +10674,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */;
 			productName = Optimizely;
-		};
-		60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
-			productName = iOSSnapshotTestCase;
 		};
 		60EAD1C628D25A36009F9474 /* AppCenterDistribute */ = {
 			isa = XCSwiftPackageProductDependency;
