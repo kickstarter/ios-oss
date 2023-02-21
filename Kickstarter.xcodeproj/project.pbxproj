@@ -501,6 +501,7 @@
 		60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
+		70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -2086,6 +2087,7 @@
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
@@ -5848,6 +5850,7 @@
 			isa = PBXGroup;
 			children = (
 				6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */,
+				70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -7483,7 +7486,6 @@
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
-				1938951929959D6400FF1D16 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 			);
@@ -8669,6 +8671,7 @@
 				D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */,
 				A7ED20141E83229E00BFFA01 /* DashboardProjectsDrawerDataSourceTests.swift in Sources */,
 				A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */,
+				70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */,
 				A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */,
 				D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */,
 				94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */,
