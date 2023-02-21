@@ -44,6 +44,7 @@ extension Project {
     photo: .template,
     prelaunchActivated: nil,
     rewardData: RewardData(addOns: nil, rewards: []),
+    sendMetaCapiEvents: false,
     slug: "a-fun-project",
     staffPick: false,
     state: .live,

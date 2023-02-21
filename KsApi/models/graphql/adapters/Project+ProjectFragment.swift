@@ -87,6 +87,7 @@ extension Project {
       photo: photo,
       prelaunchActivated: projectFragment.prelaunchActivated,
       rewardData: RewardData(addOns: addOns, rewards: rewards),
+      sendMetaCapiEvents: projectFragment.sendMetaCapiEvents,
       slug: generatedSlug ?? projectFragment.slug,
       staffPick: projectFragment.isProjectWeLove,
       state: state,
