@@ -576,6 +576,7 @@ private func backingDictionary() -> [String: Any] {
       },
       "risks": "As with any project of this nature, there are always some risks involved with manufacturing and shipping. That's why we're collaborating with the iam8bit team, they have many years of experience producing and delivering all manner of items to destinations all around the world. We do not expect any delays or hiccups with reward fulfillment. But if anything comes up, we will be clear and communicative about what is happening and how it might affect you.",
       "canComment": false,
+      "sendMetaCapiEvents": false,
       "commentsCount": 0,
       "country": {
         "__typename": "Country",

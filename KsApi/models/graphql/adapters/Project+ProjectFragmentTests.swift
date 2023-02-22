@@ -62,6 +62,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertFalse(project.displayPrelaunch!)
       XCTAssertNil(project.personalization.backing)
       XCTAssertNil(project.rewardData.addOns)
+      XCTAssertEqual(project.sendMetaCapiEvents, false)
 
       guard let extendedProjectProperties = project.extendedProjectProperties,
         extendedProjectProperties.story.htmlViewElements.count > 3,
@@ -387,6 +388,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "totalCount":3
        },
        "prelaunchActivated":true,
+       "sendMetaCapiEvents": false,
        "slug":"bandofbards/final-gamble-issue-1",
        "state":"LIVE",
        "stateChangedAt":1627999055,
