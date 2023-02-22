@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class MessageThreadViewControllerTests: TestCase {
@@ -72,7 +73,7 @@ internal final class MessageThreadViewControllerTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
     }
 
     AppEnvironment.popEnvironment()

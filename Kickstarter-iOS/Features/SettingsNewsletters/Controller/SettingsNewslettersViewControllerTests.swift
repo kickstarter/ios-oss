@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class SettingsNewslettersViewControllerTests: TestCase {
@@ -30,7 +31,11 @@ internal final class SettingsNewslettersViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(controller.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

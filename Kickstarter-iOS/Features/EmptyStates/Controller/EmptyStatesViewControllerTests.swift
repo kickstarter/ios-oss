@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class EmptyStatesViewControllerTests: TestCase {
@@ -25,7 +26,7 @@ internal final class EmptyStatesViewControllerTests: TestCase {
         let controller = EmptyStatesViewController.configuredWith(emptyState: emptyState)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "_\(emptyState.rawValue)_lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "_\(emptyState.rawValue)_lang_\(language)")
       }
     }
   }
@@ -38,7 +39,7 @@ internal final class EmptyStatesViewControllerTests: TestCase {
         let controller = EmptyStatesViewController.configuredWith(emptyState: emptyState)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "_\(emptyState.rawValue)_lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "_\(emptyState.rawValue)_lang_\(language)")
       }
     }
   }

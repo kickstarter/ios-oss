@@ -154,15 +154,6 @@
       }
     },
     {
-      "identity" : "ios-snapshot-test-case",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/uber/ios-snapshot-test-case/",
-      "state" : {
-        "revision" : "7b10770333a961be6e5a41c9ce04b8c6d3990126",
-        "version" : "8.0.0"
-      }
-    },
-    {
       "identity" : "kickstarter-prelude",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
@@ -322,6 +313,15 @@
       "state" : {
         "revision" : "193cc00e1004d29f16f7b32e5b6787199760c482",
         "version" : "3.10.1"
+      }
+    },
+    {
+      "identity" : "swift-snapshot-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
+      "state" : {
+        "revision" : "cef5b3f6f11781dd4591bdd1dd0a3d22bd609334",
+        "version" : "1.11.0"
       }
     },
     {

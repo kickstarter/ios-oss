@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class SortPagerViewControllerTests: TestCase {
@@ -30,7 +31,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .milliseconds(100))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -46,7 +47,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .milliseconds(100))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -62,7 +63,7 @@ internal final class SortPagerViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .milliseconds(100))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }

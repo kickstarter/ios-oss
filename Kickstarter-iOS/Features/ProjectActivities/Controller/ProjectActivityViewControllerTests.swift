@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class ProjectActivityViewControllerTests: TestCase {
@@ -36,10 +37,10 @@ internal final class ProjectActivityViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(
-          parent.view,
-          identifier: "lang_\(language)_device_\(device)",
-          overallTolerance: 0.03
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }

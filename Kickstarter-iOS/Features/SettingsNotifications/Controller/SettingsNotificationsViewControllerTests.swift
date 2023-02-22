@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class SettingsNotificationsViewControllerTests: TestCase {
@@ -41,7 +42,7 @@ final class SettingsNotificationsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -71,7 +72,7 @@ final class SettingsNotificationsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

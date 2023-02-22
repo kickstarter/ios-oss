@@ -3,6 +3,7 @@
 import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
+import SnapshotTesting
 import XCTest
 
 internal final class CommentCellHeaderStackViewTests: TestCase {
@@ -32,30 +33,51 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
   func testAuthorBadge_Backer() {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.backerTemplate)
-    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Backer")
+
+    assertSnapshot(
+      matching: self.commentCellHeaderStackView,
+      as: .image,
+      named: "state_AuthorBadge_Is_Backer"
+    )
   }
 
   func testAuthorBadge_Collaborator() {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.collaboratorTemplate)
-    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Colaborator")
+
+    assertSnapshot(
+      matching: self.commentCellHeaderStackView,
+      as: .image,
+      named: "state_AuthorBadge_Is_Colaborator"
+    )
   }
 
   func testAuthorBadge_Creator() {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.template)
-    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Creator")
+
+    assertSnapshot(
+      matching: self.commentCellHeaderStackView,
+      as: .image,
+      named: "state_AuthorBadge_Is_Creator"
+    )
   }
 
   func testAuthorBadge_SuperBacker() {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.superbackerTemplate)
-    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Superbacker")
+
+    assertSnapshot(
+      matching: self.commentCellHeaderStackView,
+      as: .image,
+      named: "state_AuthorBadge_Is_Superbacker"
+    )
   }
 
   func testAuthorBadge_You() {
     self.commentCellHeaderStackView
       .configureWith(comment: Comment.failedTemplate)
-    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_You")
+
+    assertSnapshot(matching: self.commentCellHeaderStackView, as: .image, named: "state_AuthorBadge_Is_You")
   }
 }

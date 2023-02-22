@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 final class CreatePasswordTableViewControllerTests: TestCase {
@@ -24,7 +25,7 @@ final class CreatePasswordTableViewControllerTests: TestCase {
         let controller = CreatePasswordTableViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

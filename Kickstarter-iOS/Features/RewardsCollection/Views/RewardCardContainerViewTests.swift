@@ -3,6 +3,7 @@ import Foundation
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 import XCTest
 
@@ -36,7 +37,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -66,7 +71,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -94,7 +103,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -119,7 +132,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -141,7 +158,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -169,7 +190,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -197,7 +222,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -218,7 +247,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -253,7 +286,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -288,7 +325,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -313,7 +354,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -338,7 +383,11 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: vc,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(rewardDescription)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }

@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 final class ChangeEmailViewControllerTests: TestCase {
@@ -29,7 +30,7 @@ final class ChangeEmailViewControllerTests: TestCase {
 
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -45,7 +46,7 @@ final class ChangeEmailViewControllerTests: TestCase {
 
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -68,7 +69,7 @@ final class ChangeEmailViewControllerTests: TestCase {
 
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -86,7 +87,7 @@ final class ChangeEmailViewControllerTests: TestCase {
 
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

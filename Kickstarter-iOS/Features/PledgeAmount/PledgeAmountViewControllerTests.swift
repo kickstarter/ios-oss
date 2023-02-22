@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 private let regularHeight: CGFloat = 150
@@ -30,7 +31,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: .template, reward: .template, 0))
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -42,8 +43,10 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: .template, reward: .template, 0))
 
-      FBSnapshotVerifyView(
-        parent.view, identifier: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
       )
     }
   }
@@ -60,7 +63,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: project, reward: .template, 0))
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -76,7 +79,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: project, reward: .template, 0))
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -93,7 +96,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.stepperValueChanged(UIStepper(frame: .zero) |> \.value .~ 0)
       controller.textFieldDidChange(UITextField(frame: .zero) |> \.text .~ "0")
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -116,7 +119,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.stepperValueChanged(stepper)
       controller.textFieldDidChange(textField)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -135,7 +138,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: .template, reward: reward, 0))
       controller.stepperValueChanged(stepper)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -155,7 +158,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -175,7 +178,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 }
