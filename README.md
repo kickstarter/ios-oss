@@ -22,7 +22,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 If you’re just looking for a quick glance at a few things we’re particularly
 proud of, look no further:
 
-* The snapshots directory is location in each feature folder of `Kickstarter-Framework-iOS` and together holds nearly 600 screenshots of various screens in every language,
+* The snapshots directory in each feature folder of `Kickstarter-Framework-iOS` together holds nearly 600 screenshots of various screens in every language,
 device and edge-case state that we like to make sure stays true. For example,
 a backer viewing a project in Japanese
 [here](https://github.com/kickstarter/ios-oss/blob/main/Kickstarter-iOS/Features/ProjectPage/Controller/__Snapshots__/ProjectPageViewControllerTests/testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_NotOmittingCurrencyCode_Success.lang_ja_device_pad.png)
