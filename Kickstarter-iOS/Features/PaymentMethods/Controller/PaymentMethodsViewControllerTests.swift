@@ -2,11 +2,13 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 class PaymentMethodsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -21,27 +23,27 @@ class PaymentMethodsViewControllerTests: TestCase {
     let graphUser = GraphUser.template |> \.storedCards .~ .template
     let response = UserEnvelope<GraphUser>(me: graphUser)
 
-    self.generateSnapshots(with: response)
+    self.generateSnapshots(with: response, name: "non-empty")
   }
 
   func testView_NoCreditCards() {
     let graphUser = GraphUser.template |> \.storedCards .~ .emptyTemplate
     let response = UserEnvelope<GraphUser>(me: graphUser)
 
-    self.generateSnapshots(with: response)
+    self.generateSnapshots(with: response, name: "empty")
   }
 
-  private func generateSnapshots(with response: UserEnvelope<GraphUser>) {
+  private func generateSnapshots(with response: UserEnvelope<GraphUser>, name: String) {
     combos(Language.allLanguages, Device.allCases).forEach {
       arg in
-
+      let controller = PaymentMethodsViewController.instantiate()
       let (language, device) = arg
       withEnvironment(
         apiService: MockService(fetchGraphUserResult: .success(response)),
+        apiDelayInterval: .seconds(0),
         language: language,
         userDefaults: MockKeyValueStore()
       ) {
-        let controller = PaymentMethodsViewController.instantiate()
         let (parent, _) = traitControllers(
           device: device,
           orientation: .portrait,
@@ -50,9 +52,13 @@ class PaymentMethodsViewControllerTests: TestCase {
 
         parent.view.layoutIfNeeded()
 
-        self.scheduler.run()
+        self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "\(name)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }

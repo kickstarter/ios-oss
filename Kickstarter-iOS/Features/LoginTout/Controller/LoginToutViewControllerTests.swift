@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 import Library
+import SnapshotTesting
 import XCTest
 
 internal final class LoginToutViewControllerTests: TestCase {
@@ -24,7 +25,11 @@ internal final class LoginToutViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "intent_\(intent)_lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "intent_\(intent)_lang_\(language)_device_\(device)"
+        )
       }
     }
   }

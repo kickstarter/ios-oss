@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
@@ -18,24 +19,23 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  /** FIXME: Once agnostic snapshot tests pr https://github.com/kickstarter/ios-oss/pull/1757 is merged, comment back in.
-   func testOptimizelyFeatureFlagToolsViewController() {
-     let mockOptimizelyClient = MockOptimizelyClient()
-       |> \.features .~ [
-         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
-         OptimizelyFeature.paymentSheetEnabled.rawValue: false,
-         OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
-         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
-         OptimizelyFeature.consentManagementDialogEnabled.rawValue: false
-       ]
+  func testOptimizelyFeatureFlagToolsViewController() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
+        OptimizelyFeature.paymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
+        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: false
+      ]
 
-     withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
-       let controller = OptimizelyFeatureFlagToolsViewController.instantiate()
-       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-       self.scheduler.run()
-       FBSnapshotVerifyView(parent.view)
-     }
-   }
-   */
+    withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
+      let controller = OptimizelyFeatureFlagToolsViewController.instantiate()
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+      self.scheduler.run()
+
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98))
+    }
+  }
 }

@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import SnapshotTesting
 import XCTest
 
 internal final class HelpViewControllerTests: TestCase {
@@ -21,11 +22,11 @@ internal final class HelpViewControllerTests: TestCase {
         language: language
       ) {
         let vc = HelpViewController.instantiate()
-        _ = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)")
       }
     }
   }

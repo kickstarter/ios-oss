@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class ShippingRulesTableViewControllerTests: TestCase {
@@ -37,7 +38,7 @@ final class ShippingRulesTableViewControllerTests: TestCase {
       vc.configureWith(.template, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image, named: "device_\(device)")
     }
   }
 }

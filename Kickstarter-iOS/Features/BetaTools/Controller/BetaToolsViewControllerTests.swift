@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class BetaToolsViewControllerTests: TestCase {
@@ -26,7 +27,7 @@ final class BetaToolsViewControllerTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(parent.view)
+      assertSnapshot(matching: parent.view, as: .image)
     }
   }
 }

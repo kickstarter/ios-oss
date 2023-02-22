@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import Library
+import SnapshotTesting
 import UIKit
 
 final class ToggleViewControllerTests: TestCase {
@@ -29,7 +30,11 @@ final class ToggleViewControllerTests: TestCase {
 
         parent.view.frame.size.height = 60
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -44,8 +49,10 @@ final class ToggleViewControllerTests: TestCase {
 
       parent.view.frame.size.height = 300
 
-      FBSnapshotVerifyView(
-        parent.view, identifier: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
       )
     }
   }

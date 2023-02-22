@@ -3,6 +3,7 @@
 import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
+import SnapshotTesting
 import XCTest
 
 internal final class FundingGraphViewTests: TestCase {
@@ -36,7 +37,8 @@ internal final class FundingGraphViewTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         graphView.setNeedsDisplay()
-        FBSnapshotVerifyView(graphView, identifier: "lang_\(language)")
+
+        assertSnapshot(matching: graphView, as: .image, named: "lang_\(language)")
       }
     }
   }
@@ -87,7 +89,7 @@ internal final class FundingGraphViewTests: TestCase {
       graphView.stats = self.graphData.lastValue!.stats
       graphView.yAxisTickSize = self.graphData.lastValue!.yAxisTickSize
 
-      FBSnapshotVerifyView(graphView, identifier: "state_\(key)")
+      assertSnapshot(matching: graphView, as: .image, named: "state_\(key)")
     }
   }
 
@@ -115,7 +117,7 @@ internal final class FundingGraphViewTests: TestCase {
       graphView.stats = self.graphData.lastValue!.stats
       graphView.yAxisTickSize = self.graphData.lastValue!.yAxisTickSize
 
-      FBSnapshotVerifyView(graphView, identifier: "state_\(key)")
+      assertSnapshot(matching: graphView, as: .image, named: "state_\(key)")
     }
   }
 }

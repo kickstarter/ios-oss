@@ -140,11 +140,6 @@
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "FB_REFERENCE_IMAGE_DIR"
-            value = "$(SOURCE_ROOT)/Screenshots/"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
             key = "TRACKING_ENABLED"
             value = "true"
             isEnabled = "NO">
@@ -153,11 +148,6 @@
             key = "OS_ACTIVITY_MODE"
             value = "disable"
             isEnabled = "NO">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "IMAGE_DIFF_DIR"
-            value = "$(SOURCE_ROOT)/Screenshots/FailureDiffs"
-            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
