@@ -26,7 +26,8 @@ extension Project {
         $1.extendedProjectProperties, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -40,7 +41,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug, staffPick:
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug, staffPick:
         $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
       ) }
     )
@@ -53,7 +55,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization,
-        photo: $1.photo, prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        photo: $1.photo, prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $0, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
       ) }
     )
@@ -67,7 +70,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -81,7 +85,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -96,7 +101,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -111,7 +117,8 @@ extension Project {
         memberData: $1.memberData, dates: $0,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -125,7 +132,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $0, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -139,7 +147,8 @@ extension Project {
         creator: $1.creator, extendedProjectProperties: $0, memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -154,7 +163,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $0,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -169,7 +179,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $0, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -184,7 +195,8 @@ extension Project {
         memberData: $0, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -199,7 +211,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $0, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -214,7 +227,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $0, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -229,7 +243,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $0,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -244,7 +259,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $0, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $0, rewardData: $1.rewardData, sendMetaCapiEvents: $1.sendMetaCapiEvents,
+        slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
         video: $1.video
       ) }
@@ -259,12 +275,13 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $0, slug: $1.slug, staffPick: $1.staffPick,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $0, sendMetaCapiEvents: $1.sendMetaCapiEvents,
+        slug: $1.slug, staffPick: $1.staffPick,
         state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
       ) }
     )
 
-    public static let sendMetaCapiEvents = Lens<Project, Bool?>(
+    public static let sendMetaCapiEvents = Lens<Project, Bool>(
       view: { $0.sendMetaCapiEvents },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
@@ -289,7 +306,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $0,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $0,
         staffPick: $1.staffPick,
         state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
       ) }
@@ -304,7 +322,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $0, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
       ) }
     )
@@ -318,7 +337,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $0, tags: $1.tags, urls: $1.urls, video: $1.video
       ) }
     )
@@ -332,7 +352,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $0, urls: $1.urls, video: $1.video
       ) }
     )
@@ -346,7 +367,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $0, video: $1.video
       ) }
     )
@@ -360,7 +382,8 @@ extension Project {
         memberData: $1.memberData, dates: $1.dates,
         displayPrelaunch: $1.displayPrelaunch, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, slug: $1.slug,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $0
       ) }
     )

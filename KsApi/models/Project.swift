@@ -19,7 +19,7 @@ public struct Project {
   public var photo: Photo
   public var prelaunchActivated: Bool?
   public var rewardData: RewardData
-  public var sendMetaCapiEvents: Bool?
+  public var sendMetaCapiEvents: Bool
   public var slug: String
   public var staffPick: Bool
   public var state: State
@@ -263,7 +263,7 @@ extension Project: Decodable {
     case name
     case photo
     case prelaunchActivated = "prelaunch_activated"
-    case sendMetaCapiEvents
+    case sendMetaCapiEvents = "send_meta_capi_events"
     case slug
     case staffPick = "staff_pick"
     case state
@@ -290,7 +290,7 @@ extension Project: Decodable {
     self.photo = try values.decode(Photo.self, forKey: .photo)
     self.prelaunchActivated = try values.decodeIfPresent(Bool.self, forKey: .prelaunchActivated)
     self.rewardData = try Project.RewardData(from: decoder)
-    self.sendMetaCapiEvents = try values.decodeIfPresent(Bool.self, forKey: .sendMetaCapiEvents)
+    self.sendMetaCapiEvents = try values.decodeIfPresent(Bool.self, forKey: .sendMetaCapiEvents) ?? false
     self.slug = try values.decode(String.self, forKey: .slug)
     self.staffPick = try values.decode(Bool.self, forKey: .staffPick)
     self.state = try values.decode(State.self, forKey: .state)
