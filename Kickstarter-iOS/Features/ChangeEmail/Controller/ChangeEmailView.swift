@@ -1,4 +1,3 @@
-import Kingfisher
 import Library
 import SwiftUI
 
@@ -12,16 +11,16 @@ struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
-  // FIXME: In the view model output, alternate text is `Email_unverified`
+  // FIXME: Requires view model integration. In the view model output, alternate text is `Email_unverified`
   @State private var warningMessage: (String, Bool)? = (Strings.We_ve_been_unable_to_send_email(), true)
-  // FIXME: In the view model output, alternate text is `Send_verfication_email`
+  // FIXME: Requires view moel integration. In the view model output, alternate text is `Send_verfication_email`
   @State private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
   @State private var saveEnabled = true
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
   private let contentPadding = 12.0
-  /** FIXME: Causes the compilation of init to fail
+  /** FIXME: Requires view model integration. Causes the compilation of init to fail
    private var viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
    */
 
@@ -29,6 +28,7 @@ struct ChangeEmailView: View {
     self.emailText = emailText
   }
 
+  // FIXME: Background colour is not correct when landscape on larger iPhones (13 Pro Max) because it shows the non-safe area color as white.
   var body: some View {
     List {
       Color(.ksr_support_100)
@@ -37,7 +37,7 @@ struct ChangeEmailView: View {
         .listRowInsets(EdgeInsets())
 
       VStack(alignment: .center, spacing: 0) {
-        entryField(
+        inputFieldView(
           titleText: Strings.Current_email(),
           placeholderText: "",
           secureField: false,
@@ -79,7 +79,7 @@ struct ChangeEmailView: View {
         .listRowInsets(EdgeInsets())
 
       VStack(alignment: .center, spacing: 0) {
-        entryField(
+        inputFieldView(
           titleText: Strings.New_email(),
           placeholderText: Strings.login_placeholder_email(),
           secureField: false,
@@ -91,7 +91,7 @@ struct ChangeEmailView: View {
           focusField = .currentPassword
         }
 
-        entryField(
+        inputFieldView(
           titleText: Strings.Current_password(),
           placeholderText: Strings.login_placeholder_password(),
           secureField: true,
@@ -123,10 +123,10 @@ struct ChangeEmailView: View {
   }
 
   @ViewBuilder
-  private func entryField(titleText: String,
-                          placeholderText: String,
-                          secureField: Bool,
-                          valueText: Binding<String>) -> some View {
+  private func inputFieldView(titleText: String,
+                              placeholderText: String,
+                              secureField: Bool,
+                              valueText: Binding<String>) -> some View {
     HStack {
       Text(titleText)
         .frame(
@@ -137,7 +137,11 @@ struct ChangeEmailView: View {
         .foregroundColor(Color(.ksr_support_700))
       Spacer()
 
-      newEntryField(secureField: secureField, placeholderText: placeholderText, valueText: valueText)
+      inputFieldUserInputView(
+        secureField: secureField,
+        placeholderText: placeholderText,
+        valueText: valueText
+      )
     }
     .padding(self.contentPadding)
     .accessibilityElement(children: .combine)
@@ -145,9 +149,9 @@ struct ChangeEmailView: View {
   }
 
   @ViewBuilder
-  private func newEntryField(secureField: Bool,
-                             placeholderText: String,
-                             valueText: Binding<String>) -> some View {
+  private func inputFieldUserInputView(secureField: Bool,
+                                       placeholderText: String,
+                                       valueText: Binding<String>) -> some View {
     if secureField {
       SecureField(
         "",
@@ -177,78 +181,7 @@ struct ChangeEmailView: View {
   }
 }
 
-@available(iOS 15.0, *)
-struct EntryFieldModifier: ViewModifier {
-  let keyboardType: UIKeyboardType
-  let textColor: Color
-  let submitLabel: SubmitLabel
-  let editable: Bool
-  let titleText: String
-
-  func body(content: Content) -> some View {
-    content
-      .frame(
-        maxWidth: .infinity,
-        alignment: .trailing
-      )
-      .keyboardType(self.keyboardType)
-      .font(Font(UIFont.ksr_body()))
-      .foregroundColor(self.textColor)
-      .lineLimit(1)
-      .multilineTextAlignment(.trailing)
-      .submitLabel(self.submitLabel)
-      .disabled(!self.editable)
-      .accessibilityElement()
-      .accessibilityLabel(self.titleText)
-  }
-}
-
-@available(iOS 15.0, *)
-extension View {
-  func currentEmail(keyboardType: UIKeyboardType = .default,
-                    textColor: Color = Color(.ksr_support_700),
-                    submitLabel: SubmitLabel = .return,
-                    editable: Bool = false,
-                    titleText: String = Strings.Current_email()) -> some View {
-    modifier(EntryFieldModifier(
-      keyboardType: keyboardType,
-      textColor: textColor,
-      submitLabel: submitLabel,
-      editable: editable,
-      titleText: titleText
-    ))
-  }
-
-  func newEmail(keyboardType: UIKeyboardType = .emailAddress,
-                textColor: Color = Color(.ksr_support_400),
-                submitLabel: SubmitLabel = .next,
-                editable: Bool = true,
-                titleText: String = Strings.New_email()) -> some View {
-    modifier(EntryFieldModifier(
-      keyboardType: keyboardType,
-      textColor: textColor,
-      submitLabel: submitLabel,
-      editable: editable,
-      titleText: titleText
-    ))
-  }
-
-  func currentPassword(keyboardType: UIKeyboardType = .default,
-                       textColor: Color = Color(.ksr_support_400),
-                       submitLabel: SubmitLabel = .done,
-                       editable: Bool = true,
-                       titleText: String = Strings.Current_password()) -> some View {
-    modifier(EntryFieldModifier(
-      keyboardType: keyboardType,
-      textColor: textColor,
-      submitLabel: submitLabel,
-      editable: editable,
-      titleText: titleText
-    ))
-  }
-}
-
-/** Current not working - pauses
+/** Currently not working - pauses
  struct CircleImage_Previews: PreviewProvider {
  static var previews: some View {
    if #available(iOS 15, *) {

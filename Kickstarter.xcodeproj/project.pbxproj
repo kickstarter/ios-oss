@@ -274,6 +274,7 @@
 		19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226028D10497007F4197 /* FirebaseAnalytics */; };
 		19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226228D10497007F4197 /* FirebaseCrashlytics */; };
 		19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226428D10497007F4197 /* FirebasePerformance */; };
+		19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */; };
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
@@ -1854,6 +1855,7 @@
 		194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
+		19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputFieldModifiers.swift; sourceTree = "<group>"; };
 		19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazePushEnvelope.swift; sourceTree = "<group>"; };
 		19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCellViewModel.swift; sourceTree = "<group>"; };
 		19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentSheetPaymentMethodCell.swift; sourceTree = "<group>"; };
@@ -5830,6 +5832,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		19C8E56729A923F4007C3504 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
 		3742036B22DD41A0007AA86E /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -6171,6 +6181,7 @@
 		A751A51B1C85EAD8009C5DEA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
+				19C8E56729A923F4007C3504 /* ViewModifiers */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
@@ -8497,6 +8508,7 @@
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */,
 				D668509F236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift in Sources */,
+				19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */,
 				D6B6766720FF8D3C0082717D /* SettingsNewslettersViewController.swift in Sources */,
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */,
