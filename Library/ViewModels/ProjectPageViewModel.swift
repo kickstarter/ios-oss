@@ -355,7 +355,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(userAccountFields)
       .combineLatest(with: userEmail)
       .observeValues { projectAndRefTag, userEmail in
-        guard let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
+        guard featureFacebookConversionsAPIEnabled(),
+          let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
 
         let (project, _) = projectAndRefTag
         let eventInput = FacebookCAPIEventService
