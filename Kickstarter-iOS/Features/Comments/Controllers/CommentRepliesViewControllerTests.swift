@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 final class CommentRepliesViewControllerTests: TestCase {
@@ -40,7 +41,11 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "CommentReplies - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -70,7 +75,11 @@ final class CommentRepliesViewControllerTests: TestCase {
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "CommentReplies - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -100,7 +109,11 @@ final class CommentRepliesViewControllerTests: TestCase {
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "CommentReplies - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -132,7 +145,11 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "CommentReplies - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -166,7 +183,11 @@ final class CommentRepliesViewControllerTests: TestCase {
 
           self.scheduler.advance()
 
-          FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "CommentReplies - lang_\(language)_device_\(device)"
+          )
         }
       }
     }
@@ -196,7 +217,11 @@ final class CommentRepliesViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "CommentReplies - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "CommentReplies - lang_\(language)_device_\(device)"
+        )
       }
     }
   }

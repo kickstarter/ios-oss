@@ -14,13 +14,6 @@ public func featureProjectPageStoryTabEnabled() -> Bool {
       .isFeatureEnabled(featureKey: OptimizelyFeature.projectPageStoryTabEnabled.rawValue) ?? false)
 }
 
-public func featureRewardLocalPickupEnabled() -> Bool {
-  return AppEnvironment.current.userDefaults
-    .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue] ??
-    (AppEnvironment.current.optimizelyClient?
-      .isFeatureEnabled(featureKey: OptimizelyFeature.rewardLocalPickupEnabled.rawValue) ?? false)
-}
-
 public func featurePaymentSheetEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] ??
@@ -40,4 +33,18 @@ public func featureFacebookLoginDeprecationEnabled() -> Bool {
     .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue] ??
     (AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue) ?? false)
+}
+
+public func featureConsentManagementDialogEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.consentManagementDialogEnabled.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.consentManagementDialogEnabled.rawValue) ?? false)
+}
+
+public func featureFacebookConversionsAPIEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .optimizelyFeatureFlags[OptimizelyFeature.facebookConversionsAPI.rawValue] ??
+    (AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.facebookConversionsAPI.rawValue) ?? false)
 }

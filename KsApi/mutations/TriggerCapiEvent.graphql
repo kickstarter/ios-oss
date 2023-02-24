@@ -1,0 +1,5 @@
+mutation triggerCAPIEvent($input: TriggerCapiEventInput!) {
+  triggerCAPIEvent(input: $input) {
+    success
+  }
+}

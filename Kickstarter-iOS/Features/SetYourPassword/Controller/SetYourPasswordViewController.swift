@@ -4,6 +4,10 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+protocol SetYourPasswordViewControllerDelegate: AnyObject {
+  func setPasswordCompleteAndLogUserIn()
+}
+
 public final class SetYourPasswordViewController: UIViewController {
   // MARK: - Properties
 
@@ -13,11 +17,16 @@ public final class SetYourPasswordViewController: UIViewController {
   private lazy var confirmPasswordLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmPasswordTextField: UITextField = { UITextField(frame: .zero) |> \.tag .~ 1 }()
 
+  private lazy var loadingIndicator: UIActivityIndicatorView = {
+    UIActivityIndicatorView()
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
       |> \.alwaysBounceVertical .~ true
-
+      |> \.showsVerticalScrollIndicator .~ false
   }()
 
   private lazy var saveButton = { UIButton(type: .custom)
@@ -33,23 +42,14 @@ public final class SetYourPasswordViewController: UIViewController {
   }()
 
   private let viewModel: SetYourPasswordViewModelType = SetYourPasswordViewModel()
-
-  // MARK: - Configuration
-
-  public static func configuredWith(
-    userEmail: String
-  ) -> SetYourPasswordViewController {
-    let vc = SetYourPasswordViewController.instantiate()
-    vc.viewModel.inputs.configureWith(userEmail)
-    return vc
-  }
+  weak var delegate: SetYourPasswordViewControllerDelegate?
 
   // MARK: - Lifecycle
 
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.title = "Set your password"
+    self.title = Strings.Set_your_password()
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
@@ -58,6 +58,12 @@ public final class SetYourPasswordViewController: UIViewController {
     self.configureTargets()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   // MARK: - Styles
@@ -82,11 +88,13 @@ public final class SetYourPasswordViewController: UIViewController {
       |> textFieldStyle
       |> \.accessibilityLabel .~ self.newPasswordLabel.text
       |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
+      |> UITextField.lens.returnKeyType .~ .next
 
     _ = self.confirmPasswordTextField
       |> textFieldStyle
       |> \.accessibilityLabel .~ self.confirmPasswordLabel.text
       |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
+      |> UITextField.lens.returnKeyType .~ .go
 
     _ = self.saveButton
       |> savePasswordButtonStyle
@@ -96,19 +104,44 @@ public final class SetYourPasswordViewController: UIViewController {
   // MARK: - Bind View Model
 
   public override func bindViewModel() {
+    super.bindViewModel()
+
+    self.loadingIndicator.rac.animating = self.viewModel.outputs.shouldShowActivityIndicator
     self.contextLabel.rac.text = self.viewModel.outputs.contextLabelText
     self.newPasswordLabel.rac.text = self.viewModel.outputs.newPasswordLabel
     self.confirmPasswordLabel.rac.text = self.viewModel.outputs.confirmPasswordLabel
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+    self.confirmPasswordTextField.rac.becomeFirstResponder = self.viewModel.outputs
+      .nextPasswordFieldBecomeFirstResponder
+
+    self.viewModel.outputs.setPasswordFailure
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.present(UIAlertController.genericError(errorMessage), animated: true, completion: nil)
+        self?.enableTextFieldsAndSaveButton(true)
+      }
+
+    self.viewModel.outputs.setPasswordSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.delegate?.setPasswordCompleteAndLogUserIn()
+      }
+
+    self.viewModel.outputs.textFieldsAndSaveButtonAreEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.enableTextFieldsAndSaveButton(isEnabled)
+      }
+
+    Keyboard.change.observeForUI()
+      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
   // MARK: - Functions
 
   private func configureViews() {
     _ = self.view
-      |> \.autoresizingMask .~ .flexibleHeight
       |> \.backgroundColor .~ .ksr_white
-      |> \.clipsToBounds .~ true
 
     _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
@@ -124,7 +157,8 @@ public final class SetYourPasswordViewController: UIViewController {
       self.newPasswordTextField,
       self.confirmPasswordLabel,
       self.confirmPasswordTextField,
-      self.saveButton
+      self.saveButton,
+      self.loadingIndicator
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -135,18 +169,40 @@ public final class SetYourPasswordViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+
       self.newPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+
       self.confirmPasswordTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+
       self.saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
     ])
   }
 
   private func configureTargets() {
     self.newPasswordTextField
-      .addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+      .addTarget(self, action: #selector(self.textFieldReturn(_:)), for: .editingDidEndOnExit)
+    self.newPasswordTextField
+      .addTarget(
+        self,
+        action: #selector(self.textFieldDidChange(_:)),
+        for: [.editingDidEndOnExit, .editingChanged]
+      )
     self.confirmPasswordTextField
-      .addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+      .addTarget(self, action: #selector(self.textFieldReturn(_:)), for: .editingDidEndOnExit)
+    self.confirmPasswordTextField
+      .addTarget(
+        self,
+        action: #selector(self.textFieldDidChange(_:)),
+        for: [.editingDidEndOnExit, .editingChanged]
+      )
     self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchUpInside)
+  }
+
+  private func enableTextFieldsAndSaveButton(_ isEnabled: Bool) {
+    _ = [self.newPasswordTextField, self.confirmPasswordTextField, self.saveButton]
+      ||> \.isUserInteractionEnabled .~ isEnabled
+
+    self.saveButton.isHidden = !isEnabled
   }
 
   // MARK: - Accessors
@@ -168,6 +224,17 @@ public final class SetYourPasswordViewController: UIViewController {
     }
   }
 
+  @objc internal func textFieldReturn(_ textField: UITextField) {
+    switch textField.tag {
+    case 0:
+      self.viewModel.inputs.newPasswordFieldDidReturn()
+    case 1:
+      self.viewModel.inputs.confirmPasswordFieldDidReturn()
+    default:
+      return
+    }
+  }
+
   @objc private func saveButtonPressed() {
     self.viewModel.inputs.saveButtonPressed()
   }
@@ -176,17 +243,10 @@ public final class SetYourPasswordViewController: UIViewController {
 // MARK: - Extensions
 
 extension SetYourPasswordViewController: UITextFieldDelegate {
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let password = textField.text else { return }
-
-    switch textField.tag {
-    case 0:
-      self.viewModel.inputs.newPasswordFieldDidReturn(newPassword: password)
-    case 1:
-      self.viewModel.inputs.confirmPasswordFieldDidReturn(confirmPassword: password)
-    default:
-      return
-    }
+  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
+      self.scrollView.contentInset.bottom = change.frame.height
+    }, completion: nil)
   }
 }
 

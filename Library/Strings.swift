@@ -929,7 +929,7 @@ public enum Strings {
    "Backed by people you follow"
 
    - **en**: "Backed by people you follow"
-   - **de**: "Unterstützt von deinen Freunden"
+   - **de**: "Unterstützt von Personen, denen du folgst"
    - **es**: "Patrocinados por gente que sigues"
    - **fr**: "Soutenus par ceux que vous suivez"
    - **ja**: "フォロー中の友達がバック"
@@ -988,8 +988,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -3995,7 +3994,7 @@ Cliquez pour réessayer."
    "Followed"
 
    - **en**: "Followed"
-   - **de**: "Abonniert"
+   - **de**: "Gefolgt"
    - **es**: "Siguiendo"
    - **fr**: "Abonné"
    - **ja**: "フォロー中"
@@ -4012,7 +4011,7 @@ Cliquez pour réessayer."
    "Following"
 
    - **en**: "Following"
-   - **de**: "Abonniert"
+   - **de**: "Gefolgt"
    - **es**: "Siguiendo"
    - **fr**: "Projets soutenus par mes amis"
    - **ja**: "フォロー中の友達"
@@ -4029,7 +4028,7 @@ Cliquez pour réessayer."
    "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature."
 
    - **en**: "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature."
-   - **de**: "Die Funktion "Abonnieren" muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz."
+   - **de**: "Die Funktion „Folgen“ muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz."
    - **es**: "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad."
    - **fr**: "Pour retrouver vos amis Facebook, activez la fonction Abonnements sous Paramètres > Vie privée."
    - **ja**: "Facebook の友達を見つけるには、フォローをオンにする必要があります。フォローの設定は、「設定 > プライバシー」から変更することができます。"
@@ -5355,6 +5354,23 @@ with friends."
     )
   }
   /**
+   "Kickstarter’s Community Guidelines."
+
+   - **en**: "Kickstarter’s Community Guidelines."
+   - **de**: "Kickstarter’s Community Guidelines."
+   - **es**: "Kickstarter’s Community Guidelines."
+   - **fr**: "Kickstarter’s Community Guidelines."
+   - **ja**: "Kickstarter’s Community Guidelines."
+  */
+  public static func Kickstarters_community_guidelines() -> String {
+    return localizedString(
+      key: "Kickstarters_community_guidelines",
+      defaultValue: "Kickstarter’s Community Guidelines.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Know when creators and backers message you by enabling notifications."
 
    - **en**: "Know when creators and backers message you by enabling notifications."
@@ -6466,7 +6482,7 @@ n'ont rien soutenu."
    "Not followed"
 
    - **en**: "Not followed"
-   - **de**: "Nicht abonniert"
+   - **de**: "Nicht gefolgt"
    - **es**: "No siguiendo"
    - **fr**: "Non abonné"
    - **ja**: "フォローしてない"
@@ -8285,6 +8301,23 @@ daring ideas."
     )
   }
   /**
+   "Reset your password"
+
+   - **en**: "Reset your password"
+   - **de**: "Passwort zurücksetzen"
+   - **es**: "Restablece tu contraseña"
+   - **fr**: "Réinitialiser votre mot de passe"
+   - **ja**: "パスワードをリセット"
+  */
+  public static func Reset_your_password() -> String {
+    return localizedString(
+      key: "Reset_your_password",
+      defaultValue: "Reset your password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Retry"
 
    - **en**: "Retry"
@@ -9033,6 +9066,40 @@ daring ideas."
     )
   }
   /**
+   "Set new password"
+
+   - **en**: "Set new password"
+   - **de**: "Neues Passwort festlegen"
+   - **es**: "Configurar nueva contraseña"
+   - **fr**: "Création d'un mot de passe"
+   - **ja**: "新しいパスワードを設定"
+  */
+  public static func Set_new_password() -> String {
+    return localizedString(
+      key: "Set_new_password",
+      defaultValue: "Set new password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Set your password"
+
+   - **en**: "Set your password"
+   - **de**: "Passwort festlegen"
+   - **es**: "Configura tu contraseña"
+   - **fr**: "Veuillez créer un mot de passe"
+   - **ja**: "パスワードを設定"
+  */
+  public static func Set_your_password() -> String {
+    return localizedString(
+      key: "Set_your_password",
+      defaultValue: "Set your password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Share"
 
    - **en**: "Share"
@@ -9424,18 +9491,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} others"
+   "%{friend_name} and %{remaining_count} other"
 
-   - **en**: "%{friend_name} and %{remaining_count} others"
-   - **de**: "%{friend_name} und %{remaining_count} weitere"
-   - **es**: "%{friend_name} y %{remaining_count} otros"
-   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
+   - **en**: "%{friend_name} and %{remaining_count} other"
+   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
+   - **es**: "%{friend_name} y %{remaining_count} persona más"
+   - **fr**: "%{friend_name} et %{remaining_count} autre"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} others",
+      defaultValue: "%{friend_name} and %{remaining_count} other",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -10290,6 +10357,57 @@ catch your eye?"
       defaultValue: "This comment has been removed by Kickstarter.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "This comment is under review."
+
+   - **en**: "This comment is under review."
+   - **de**: "Dieser Kommentar wird gerade überprüft."
+   - **es**: "Este comentario está en revisión."
+   - **fr**: "Ce commentaire est en cours de vérification."
+   - **ja**: "このコメントは現在審査中です。"
+  */
+  public static func This_comment_is_under_review() -> String {
+    return localizedString(
+      key: "This_comment_is_under_review",
+      defaultValue: "This comment is under review.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This comment is under review for potentially violating"
+
+   - **en**: "This comment is under review for potentially violating"
+   - **de**: "This comment is under review for potentially violating"
+   - **es**: "This comment is under review for potentially violating"
+   - **fr**: "This comment is under review for potentially violating"
+   - **ja**: "This comment is under review for potentially violating"
+  */
+  public static func This_comment_is_under_review_for_potentially_violating() -> String {
+    return localizedString(
+      key: "This_comment_is_under_review_for_potentially_violating",
+      defaultValue: "This comment is under review for potentially violating",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This comment is under review for potentially violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+
+   - **en**: "This comment is under review for potentially violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
+   - **de**: "Dieser Kommentar wird gerade geprüft, weil er möglicherweise gegen die <a href="%{community_guidelines}">Community-Richtlinien von Kickstarter</a> verstößt."
+   - **es**: "Este comentario está en revisión por una posible infracción de las <a href="%{community_guidelines}">Reglas de la comunidad de Kickstarter.</a>"
+   - **fr**: "Ce commentaire est en cours d'examen pour manquement possible aux <a href="%{community_guidelines}">Règles de bonne conduite de Kickstarter.</a>"
+   - **ja**: "このコメントは <a href="%{community_guidelines}">Kickstarter のコミュニティガイドライン</a>に違反している可能性があるとして現在審査中です。"
+  */
+  public static func This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines(community_guidelines: String) -> String {
+    return localizedString(
+      key: "This_comment_is_under_review_for_potentially_violating_kickstarters_community_guidelines",
+      defaultValue: "This comment is under review for potentially violating <a href=\"%{community_guidelines}\">Kickstarter’s Community Guidelines.</a>",
+      count: nil,
+      substitutions: ["community_guidelines": community_guidelines]
     )
   }
   /**
@@ -11262,6 +11380,23 @@ catch your eye?"
     )
   }
   /**
+   "We can no longer log you in through Facebook. Please log in with your Kickstarter password, or set a new password with your Facebook email."
+
+   - **en**: "We can no longer log you in through Facebook. Please log in with your Kickstarter password, or set a new password with your Facebook email."
+   - **de**: "Wir können dich nicht mehr über Facebook anmelden. Bitte melde dich mit deinem Kickstarter-Passwort an oder leg für deine Facebook-E-Mail-Adresse ein neues Passwort fest."
+   - **es**: "Ya no admitimos el inicio de sesión a través de Facebook. Inicia sesión con tu contraseña de Kickstarter o configura una nueva contraseña con tu correo electrónico de Facebook."
+   - **fr**: "La connexion Facebook est désormais impossible. Veuillez vous connecter avec votre mot de passe Kickstarter, ou créer un autre mot de passe pour votre adresse Facebook."
+   - **ja**: "Facebook を介したログインはできなくなりました。Kickstarter のパスワードを使ってログインするか、Facebook のメールアドレスを使って新しいパスワードを設定してください。"
+  */
+  public static func We_can_no_longer_log_you_in_through_Facebook() -> String {
+    return localizedString(
+      key: "We_can_no_longer_log_you_in_through_Facebook",
+      defaultValue: "We can no longer log you in through Facebook. Please log in with your Kickstarter password, or set a new password with your Facebook email.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We can’t process this pledge because of a problem with the backer’s payment method."
 
    - **en**: "We can’t process this pledge because of a problem with the backer’s payment method."
@@ -11449,6 +11584,23 @@ catch your eye?"
     )
   }
   /**
+   "We’re simplifying our login process. To access your Kickstarter account, enter the email associated to your Facebook account and we’ll send you a link to set a password"
+
+   - **en**: "We’re simplifying our login process. To access your Kickstarter account, enter the email associated to your Facebook account and we’ll send you a link to set a password"
+   - **de**: "Wir vereinfachen unseren Anmeldeprozess. Wenn du auf dein Kickstarter-Konto zugreifen möchtest, gib die E-Mail-Adresse ein, die mit deinem Facebook-Konto verknüpft ist. Wir senden dir dann einen Link, über den du ein Passwort festlegen kannst"
+   - **es**: "Simplificaremos el proceso de inicio de sesión. Para acceder a tu cuenta de Kickstarter, escribe el correo electrónico asociado a tu cuenta de Facebook y te enviaremos un enlace para configurar una contraseña."
+   - **fr**: "Notre procédure de connexion est en cours de simplification. Pour accéder à votre compte Kickstarter, saisissez l'adresse e-mail associée à votre compte Facebook et nous vous enverrons un lien de réinitialisation."
+   - **ja**: "Kickstarter ではログインの手続きが簡素化されます。Kickstarter アカウントにアクセスするには、Facebook アカウントに登録されているメールアドレスを入力してください。パスワードを設定するためのリンクをお送りします。"
+  */
+  public static func We_re_simplifying_our_login_process_To_log_in() -> String {
+    return localizedString(
+      key: "We_re_simplifying_our_login_process_To_log_in",
+      defaultValue: "We’re simplifying our login process. To access your Kickstarter account, enter the email associated to your Facebook account and we’ll send you a link to set a password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We think you’ll like these, too"
 
    - **en**: "We think you’ll like these, too"
@@ -11537,6 +11689,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "We were unable to load the shipping destinations.\nPlease try again later.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that's at least 6 characters long."
+
+   - **en**: "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that's at least 6 characters long."
+   - **de**: "Wir werden die Anmeldung über Facebook einstellen. Um dich mit der E-Mail-Adresse %{email} in deinem Konto anzumelden, leg bitte ein Passwort fest, das mindestens 6 Zeichen lang ist."
+   - **es**: "Descontinuaremos la posibilidad de iniciar sesión a través de Facebook. Para iniciar sesión en tu cuenta con el correo electrónico %{email}, configura una contraseña que tenga al menos seis caracteres."
+   - **fr**: "La fonctionnalité de connexion avec Facebook va être éliminée. Pour vous connecter à votre compte avec l'adresse %{email}, veuillez créer un mot de passe qui contient au moins 6 caractères."
+   - **ja**: "Facebook 経由でのログイン機能の提供がまもなく終了します。メールアドレス %{email} を使ってアカウントにログインするには、6 文字以上のパスワードを設定してください。"
+  */
+  public static func We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: String) -> String {
+    return localizedString(
+      key: "We_will_be_discontinuing_the_ability_to_log_in_via_Facebook",
+      defaultValue: "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that's at least 6 characters long.",
+      count: nil,
+      substitutions: ["email": email]
     )
   }
   /**
@@ -11662,7 +11831,7 @@ Veuillez réessayer ultérieurement."
    "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
 
    - **en**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **de**: "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht."
+   - **de**: "Wenn die Funktion Folgen aktiviert wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion deaktiviert wurde, werden diese Daten endgültig gelöscht."
    - **es**: "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente."
    - **fr**: "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi."
    - **ja**: "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。"
@@ -13515,7 +13684,7 @@ Veuillez réessayer ultérieurement."
    "Follow back?"
 
    - **en**: "Follow back?"
-   - **de**: "Ihm/ihr auch folgen?"
+   - **de**: "Auch folgen?"
    - **es**: "¿Le quieres seguir también?"
    - **fr**: "Suivre cette personne ?"
    - **ja**: "フォローバックしますか？"
@@ -13821,7 +13990,7 @@ Veuillez réessayer ultérieurement."
    "Following"
 
    - **en**: "Following"
-   - **de**: "Abonniert"
+   - **de**: "Gefolgt"
    - **es**: "Siguiendo"
    - **fr**: "Abonné"
    - **ja**: "フォロー中"
@@ -18210,7 +18379,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -19594,6 +19763,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_reset_your_password",
       defaultValue: "We’ve sent an email to %{email} with instructions to reset your password.",
+      count: nil,
+      substitutions: ["email": email]
+    )
+  }
+  /**
+   "We’ve sent an email to %{email} with instructions to set your password."
+
+   - **en**: "We’ve sent an email to %{email} with instructions to set your password."
+   - **de**: "Wir haben eine E-Mail mit einer Anleitung zum Festlegen deines Passworts an %{email} geschickt."
+   - **es**: "Hemos enviado un correo electrónico a %{email} con las instrucciones para configurar tu contraseña."
+   - **fr**: "Nous avons envoyé un e-mail à %{email} contenant les instructions nécessaires pour définir votre mot de passe."
+   - **ja**: "パスワードの設定方法が記載されたメールを %{email} に送信しました。"
+  */
+  public static func forgot_password_we_sent_an_email_to_email_address_with_instructions_to_set_your_password(email: String) -> String {
+    return localizedString(
+      key: "forgot_password.we_sent_an_email_to_email_address_with_instructions_to_set_your_password",
+      defaultValue: "We’ve sent an email to %{email} with instructions to set your password.",
       count: nil,
       substitutions: ["email": email]
     )
@@ -21587,7 +21773,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -24698,7 +24884,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -25596,7 +25782,7 @@ projets enregistrés"
    "Following"
 
    - **en**: "Following"
-   - **de**: "Abonniert"
+   - **de**: "Gefolgt"
    - **es**: "Siguiendo"
    - **fr**: "Abonné"
    - **ja**: "フォロー中"
@@ -25650,7 +25836,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

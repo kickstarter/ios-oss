@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
@@ -37,8 +38,10 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
         parent.view.frame.size.height = 80
 
-        FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }
@@ -62,8 +65,10 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
         parent.view.frame.size.height = 80
 
-        FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)"
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
         )
       }
     }

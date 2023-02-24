@@ -2,6 +2,7 @@ import Foundation
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import SnapshotTesting
 import XCTest
 
 final class CancelPledgeViewControllerTests: TestCase {
@@ -23,7 +24,6 @@ final class CancelPledgeViewControllerTests: TestCase {
 
     let data = CancelPledgeViewData(
       project: project,
-      projectCountry: project.country,
       projectName: project.name,
       omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
       backingId: String(project.personalization.backing?.id ?? 0),
@@ -36,7 +36,11 @@ final class CancelPledgeViewControllerTests: TestCase {
         controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

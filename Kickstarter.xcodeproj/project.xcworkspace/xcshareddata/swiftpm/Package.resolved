@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/segmentio/analytics-ios.git",
       "state" : {
-        "revision" : "fc64997865619f73bbab196c164f7845a13da110",
-        "version" : "4.1.6"
+        "revision" : "78423aaae2e48e32a07246850f37c76f3d34cb84",
+        "version" : "4.1.8"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Appboy/appboy-segment-ios",
       "state" : {
-        "revision" : "a7a58bf045140ac5d4303e38851993cefb07c53b",
-        "version" : "4.5.0"
+        "revision" : "08a061113e8a7e835e6bc9c0e1629d94e63aa29e",
+        "version" : "4.6.0"
       }
     },
     {
@@ -77,17 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
       "state" : {
-        "revision" : "836548b7b82137a3c04157854919b892ae8e6981",
-        "version" : "4.5.0"
-      }
-    },
-    {
-      "identity" : "braze-swift-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/braze-inc/braze-swift-sdk",
-      "state" : {
-        "revision" : "b8147a77d726f6c75e0ef7efcf0b26f9d1c7b4b5",
-        "version" : "5.5.0"
+        "revision" : "538e3729ec56f1c10e678c0e83266c57da17b5fa",
+        "version" : "4.5.4"
       }
     },
     {
@@ -160,15 +151,6 @@
       "state" : {
         "revision" : "b1d0099abe36facd198113633f502889842906af",
         "version" : "0.0.2"
-      }
-    },
-    {
-      "identity" : "ios-snapshot-test-case",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/uber/ios-snapshot-test-case/",
-      "state" : {
-        "revision" : "7b10770333a961be6e5a41c9ce04b8c6d3990126",
-        "version" : "8.0.0"
       }
     },
     {
@@ -266,8 +248,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "484bc774e1091f622c4856e576ff957b29403676",
-        "version" : "5.13.3"
+        "revision" : "6c6b951845a520fa7e8356e28adb5339c0f008d3",
+        "version" : "5.15.0"
       }
     },
     {
@@ -331,6 +313,15 @@
       "state" : {
         "revision" : "193cc00e1004d29f16f7b32e5b6787199760c482",
         "version" : "3.10.1"
+      }
+    },
+    {
+      "identity" : "swift-snapshot-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
+      "state" : {
+        "revision" : "cef5b3f6f11781dd4591bdd1dd0a3d22bd609334",
+        "version" : "1.11.0"
       }
     },
     {

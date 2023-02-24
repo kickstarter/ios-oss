@@ -96,9 +96,11 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   -> (min: Double, max: Double) {
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
+  // project currency is more accurate to find the country to base the min/max values off of.
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
   let country = AppEnvironment.current.launchedCountries.countries
-    .first { $0 == project.country }
-    .coalesceWith(project.country)
+    .first { $0 == projectCurrencyCountry }
+    .coalesceWith(projectCurrencyCountry)
 
   switch reward {
   case .none, .some(Reward.noReward):
@@ -156,6 +158,26 @@ public func currencySymbol(
   }
 }
 
+/**
+ Returns the full country for a currency code.
+
+ - parameter code: The currency code.
+ - parameter env: Current Environment.
+
+ - returns: The first matching country for currency symbol
+ */
+public func projectCountry(
+  forCurrency code: String?,
+  env: Environment = AppEnvironment.current
+) -> Project.Country? {
+  guard let currencyCode = code,
+    let country = env.launchedCountries.countries.filter({ $0.currencyCode == currencyCode }).first else {
+    return nil
+  }
+  // return a hardcoded Country if it matches the country code
+  return country
+}
+
 public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
   return AppEnvironment.current.apiService.clearUserUnseenActivity(input: .init())
     .filter { _ in AppEnvironment.current.currentUser != nil }
@@ -183,18 +205,20 @@ public func formattedAmountForRewardOrBacking(
   project: Project,
   rewardOrBacking: Either<Reward, Backing>
 ) -> String {
+  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)
     return Format.currency(
       min,
-      country: project.country,
+      country: projectCurrencyCountry,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
   case let .right(backing):
     return Format.formattedCurrency(
       backing.amount,
-      country: project.country,
+      country: projectCurrencyCountry,
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
   }

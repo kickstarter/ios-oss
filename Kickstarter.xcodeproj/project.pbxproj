@@ -258,19 +258,14 @@
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
-		197C398E28ECB3E2006A3C6B /* BrazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 197C398D28ECB3E2006A3C6B /* BrazeKit */; };
-		197C399028ECB3E2006A3C6B /* BrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 197C398F28ECB3E2006A3C6B /* BrazeUI */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
+		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
+		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
 		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
-		198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; };
-		198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; };
-		198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */ = {isa = PBXBuildFile; productRef = 198ED06128D229560008CB98 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1998BCA828F60E8900D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCA728F60E8900D04077 /* ReactiveExtensions */; };
 		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
 		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
-		19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19A824AD28DA54ED00325124 /* AppboySegment */; };
-		19A824B028DA562800325124 /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19A824AF28DA562800325124 /* AppboySegment */; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
 		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
@@ -279,6 +274,7 @@
 		19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226028D10497007F4197 /* FirebaseAnalytics */; };
 		19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226228D10497007F4197 /* FirebaseCrashlytics */; };
 		19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226428D10497007F4197 /* FirebasePerformance */; };
+		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
 		19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */; };
@@ -483,6 +479,15 @@
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
+		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
+		6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */; };
+		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
+		606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */; };
+		606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */; };
+		606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */; };
+		606F2166299D456D00BA5CDF /* TriggerCapiEvent.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 606F2165299D456D00BA5CDF /* TriggerCapiEvent.graphql */; };
+		606F2168299D45F900BA5CDF /* TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F2167299D45F900BA5CDF /* TriggerCapiEventInput.swift */; };
+		606F216B299E8D8500BA5CDF /* TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
@@ -491,10 +496,11 @@
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
 		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
-		60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		701160D7291EED5C0095BF24 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D5291EED3F0095BF24 /* MessageBannerView.swift */; };
+		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
+		70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
@@ -719,7 +725,6 @@
 		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
-		8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */; };
 		8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB524DCB7D500B4AB10 /* Constants.swift */; };
 		8A67DDB824DDB21100B4AB10 /* ErroredBackingsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB724DDB21100B4AB10 /* ErroredBackingsEnvelope.swift */; };
 		8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */; };
@@ -751,7 +756,6 @@
 		8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */; };
 		8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		8AA407C024DA43D8008C5FB0 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */; };
-		8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */; };
 		8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */; };
 		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
 		8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */; };
@@ -1616,7 +1620,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				60EAD1B528D0EE45009F9474 /* iOSSnapshotTestCase in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1640,7 +1643,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				198ED06328D229560008CB98 /* iOSSnapshotTestCase in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1852,6 +1854,7 @@
 		194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
+		19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazePushEnvelope.swift; sourceTree = "<group>"; };
 		19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCellViewModel.swift; sourceTree = "<group>"; };
 		19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentSheetPaymentMethodCell.swift; sourceTree = "<group>"; };
 		19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentSheetPaymentMethodCellViewModel.swift; sourceTree = "<group>"; };
@@ -2069,12 +2072,22 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
+		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
+		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTrackingAuthorizationStatus.swift; sourceTree = "<group>"; };
+		606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift"; sourceTree = "<group>"; };
+		606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift"; sourceTree = "<group>"; };
+		606F2165299D456D00BA5CDF /* TriggerCapiEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerCapiEvent.graphql; sourceTree = "<group>"; };
+		606F2167299D45F900BA5CDF /* TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerCapiEventInput.swift; sourceTree = "<group>"; };
+		606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerCapiEventInputTests.swift; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		701160D5291EED3F0095BF24 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
+		70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
@@ -2310,7 +2323,6 @@
 		8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Configs/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+GraphUserTests.swift"; sourceTree = "<group>"; };
 		8A67DDB524DCB7D500B4AB10 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8A67DDB724DDB21100B4AB10 /* ErroredBackingsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelope.swift; sourceTree = "<group>"; };
 		8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+StartRefreshing.swift"; sourceTree = "<group>"; };
@@ -2334,7 +2346,6 @@
 		8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeTableView.swift; sourceTree = "<group>"; };
 		8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
-		8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+GraphUser.swift"; sourceTree = "<group>"; };
 		8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryTemplates.swift; sourceTree = "<group>"; };
 		8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift"; sourceTree = "<group>"; };
 		8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAndBackingEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -3181,10 +3192,10 @@
 				60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				191A4B4028FF386C009D62A5 /* ReactiveSwift in Frameworks */,
-				19A824B028DA562800325124 /* AppboySegment in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
+				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				191A4B4228FF3897009D62A5 /* ReactiveExtensions in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
@@ -3197,7 +3208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F91B14289C8097000AEC6A /* Stripe in Frameworks */,
-				198ED06228D229560008CB98 /* iOSSnapshotTestCase in Frameworks */,
 				191A4B5028FF44D8009D62A5 /* ReactiveExtensions in Frameworks */,
 				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
 				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
@@ -3223,12 +3233,10 @@
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
-				19A824AE28DA54ED00325124 /* AppboySegment in Frameworks */,
+				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
-				197C398E28ECB3E2006A3C6B /* BrazeKit in Frameworks */,
 				1905787B28F8CD2500428375 /* ReactiveSwift in Frameworks */,
-				197C399028ECB3E2006A3C6B /* BrazeUI in Frameworks */,
 				1998BCA828F60E8900D04077 /* ReactiveExtensions in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 			);
@@ -3238,7 +3246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				198ED05D28D21AD40008CB98 /* iOSSnapshotTestCase in Frameworks */,
+				70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
@@ -4828,6 +4836,7 @@
 				19A97D0928C7EA450031B857 /* Discovery */,
 				1937A6E328C92C0100DD732D /* EmptyStates */,
 				1937A6E428C92C1800DD732D /* FacebookConfirmation */,
+				6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */,
 				1937A6E528C92C8500DD732D /* FeatureFlagTools */,
 				19A97D1128C7ED500031B857 /* FindFriends */,
 				19A97D1828C7EF190031B857 /* Help */,
@@ -5829,6 +5838,23 @@
 			path = Layouts;
 			sourceTree = "<group>";
 		};
+		6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6067BCE6293E48050036ABB1 /* Controller */,
+			);
+			path = FacebookResetPasswordViewController;
+			sourceTree = "<group>";
+		};
+		6067BCE6293E48050036ABB1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */,
+				70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
@@ -5840,6 +5866,7 @@
 				06261602273B0E1500389981 /* PostComment.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */,
+				606F2165299D456D00BA5CDF /* TriggerCapiEvent.graphql */,
 				8AC3E0F4269F48A400168BF8 /* UpdateBacking.graphql */,
 				06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */,
 				06C38CB826A9D13400591CED /* UpdateUserProfile.graphql */,
@@ -5960,6 +5987,7 @@
 				8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */,
 				94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */,
 				94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */,
+				606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -6052,6 +6080,8 @@
 				06962F8E273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift */,
 				47D7D09726C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift */,
 				47D7D09B26C2FA5F00D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInputTests.swift */,
+				606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */,
+				606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */,
 				8AC3E10C269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift */,
 				8AC3E111269F4DAF00168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInputTests.swift */,
 				06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */,
@@ -6093,8 +6123,6 @@
 				47D7D09D26C2FC4000D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.DataTests.swift */,
 				065E6BA526B1C7FD007F67CA /* UpdateBackingEnvelope+UpdateBackingMutation.Data.swift */,
 				8AC3E127269F5B9700168BF8 /* UpdateBackingEnvelope+UpdateBackingMutation.DataTests.swift */,
-				8AA407C724DB4399008C5FB0 /* User+GraphUser.swift */,
-				8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */,
 				8A1557142693B28300017845 /* User+UserFragment.swift */,
 				8AC3E0652697AC0400168BF8 /* User+UserFragmentTests.swift */,
 				4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */,
@@ -6594,6 +6622,8 @@
 				D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */,
 				A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */,
 				A7ED1F8B1E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift */,
+				6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */,
+				6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */,
 				774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */,
 				77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */,
 				D04AAC0E218BB70900CF713E /* FindFriendsCellViewModel.swift */,
@@ -6787,6 +6817,8 @@
 				D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */,
 				D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */,
 				D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */,
+				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
+				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
 				37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */,
@@ -6811,8 +6843,6 @@
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
-				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
-				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -6910,6 +6940,7 @@
 				474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */,
 				8A4E954824525EC100A578CF /* BackingState.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
+				19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */,
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
 				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
 				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
@@ -7154,6 +7185,8 @@
 				47A662F826AF7745001CE7B1 /* WatchProjectInputTests.swift */,
 				D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */,
 				77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */,
+				606F2167299D45F900BA5CDF /* TriggerCapiEventInput.swift */,
+				606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */,
 				4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */,
 				4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */,
 			);
@@ -7209,10 +7242,10 @@
 				60DA512828CA580B002E2DF1 /* Optimizely */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
-				19A824AF28DA562800325124 /* AppboySegment */,
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
 				191A4B3F28FF386C009D62A5 /* ReactiveSwift */,
 				191A4B4128FF3897009D62A5 /* ReactiveExtensions */,
+				19821C86299D3E8300EF312F /* AppboySegment */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7235,7 +7268,6 @@
 			name = "Library-iOSTests";
 			packageProductDependencies = (
 				19F91B13289C8097000AEC6A /* Stripe */,
-				198ED06128D229560008CB98 /* iOSSnapshotTestCase */,
 				191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */,
 				191A4B4F28FF44D8009D62A5 /* ReactiveExtensions */,
 			);
@@ -7289,12 +7321,10 @@
 				19BF226228D10497007F4197 /* FirebaseCrashlytics */,
 				19BF226428D10497007F4197 /* FirebasePerformance */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
-				19A824AD28DA54ED00325124 /* AppboySegment */,
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
-				197C398D28ECB3E2006A3C6B /* BrazeKit */,
-				197C398F28ECB3E2006A3C6B /* BrazeUI */,
 				1998BCA728F60E8900D04077 /* ReactiveExtensions */,
 				1905787A28F8CD2500428375 /* ReactiveSwift */,
+				19821C84299D392400EF312F /* AppboySegment */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7316,8 +7346,8 @@
 			);
 			name = "Kickstarter-Framework-iOSTests";
 			packageProductDependencies = (
-				60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */,
 				1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */,
+				7049568F299D53ED00B273DF /* SnapshotTesting */,
 			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
@@ -7385,7 +7415,6 @@
 					A755113B1C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 1000;
-						ProvisioningStyle = Manual;
 					};
 					A75511441C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -7394,7 +7423,6 @@
 					A7C7959D1C873A870081977F = {
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 1000;
-						ProvisioningStyle = Manual;
 					};
 					A7D1F9441C850B7C000D41D5 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -7420,9 +7448,7 @@
 					};
 					D015874F1EEB2DE4006E7684 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 1000;
-						ProvisioningStyle = Manual;
 					};
 					D01587571EEB2DE4006E7684 = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -7454,13 +7480,12 @@
 				60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */,
 				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */,
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
-				19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
-				197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
+				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -7723,6 +7748,7 @@
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
+				606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */,
 				473DE012273C502F0033331D /* ProjectRisksCellViewModel.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
@@ -7949,6 +7975,7 @@
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				9D9F58191D13243900CE81DE /* ProjectActivitiesViewModel.swift in Sources */,
 				77AA2B3B233C0A1B008BBCB8 /* CreateBackingInput+Constructor.swift in Sources */,
+				6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */,
 				77C26957240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift in Sources */,
 				A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */,
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
@@ -8143,6 +8170,7 @@
 				77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */,
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
+				6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
 				771F388A2422C961009036A0 /* PersonalizationCellViewModelTests.swift in Sources */,
 				94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */,
@@ -8347,6 +8375,7 @@
 				777C60A6241FECD800820C59 /* PersonalizationCell.swift in Sources */,
 				370C8B64234FCC6F00DE75DD /* LoadingButton.swift in Sources */,
 				A75A292E1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,
+				6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */,
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
 				0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */,
 				8A864ACD24429A5B0026BF13 /* PledgePaymentMethodLoadingCell.swift in Sources */,
@@ -8643,6 +8672,7 @@
 				D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */,
 				A7ED20141E83229E00BFFA01 /* DashboardProjectsDrawerDataSourceTests.swift in Sources */,
 				A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */,
+				70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */,
 				A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */,
 				D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */,
 				94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */,
@@ -8753,6 +8783,7 @@
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
 				8AC3E00726961E6400168BF8 /* Reward+RewardFragment.swift in Sources */,
 				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
+				606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */,
 				476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
@@ -8788,6 +8819,7 @@
 				D01588AB1EEB2ED7006E7684 /* Project.PhotoLenses.swift in Sources */,
 				D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */,
 				19047FBF2889B05B00BDD1A8 /* CreateSetupIntentMutation.swift in Sources */,
+				19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */,
 				8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
 				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
@@ -8817,7 +8849,6 @@
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
 				8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,
-				8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */,
 				8A4E95392450FBB500A578CF /* CreditCardType.swift in Sources */,
 				D0158A2F1EEB30A2006E7684 /* User.MemberDataTemplates.swift in Sources */,
 				D015883D1EEB2ED7006E7684 /* Route.swift in Sources */,
@@ -8870,6 +8901,7 @@
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
 				D01588E51EEB2ED7006E7684 /* Location.swift in Sources */,
 				8A15571D2693B29600017845 /* Comment+CommentFragment.swift in Sources */,
+				606F2168299D45F900BA5CDF /* TriggerCapiEventInput.swift in Sources */,
 				06232D442795EC4300A81755 /* ExternalSourceViewElement.swift in Sources */,
 				8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */,
 				D01588A11EEB2ED7006E7684 /* MessageThreadLenses.swift in Sources */,
@@ -8933,6 +8965,7 @@
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
 				06566375270BAA7C00CE7EDF /* Project+FetchProjectRewardsByIdQueryData.swift in Sources */,
+				606F2166299D456D00BA5CDF /* TriggerCapiEvent.graphql in Sources */,
 				8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */,
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
 				06B3605F26E15A5E006CB9E4 /* Project+FetchProjectQueryData.swift in Sources */,
@@ -9040,6 +9073,7 @@
 				06D00FAB26EFA95300E11E38 /* UserFragmentTemplate.swift in Sources */,
 				77DB532A2215D0AA0078991C /* UserCreditCardsTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
+				606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				06032A8E26CEB3E50013AAB9 /* CommentFragmentTemplate.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
@@ -9047,7 +9081,6 @@
 				8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */,
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
-				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
 				064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
 				06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */,
@@ -9109,6 +9142,7 @@
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				066C0AE926CC20490048F4D8 /* SignInWithAppleMutationTemplate.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
+				606F216B299E8D8500BA5CDF /* TriggerCapiEventInputTests.swift in Sources */,
 				06032A9026CEC3290013AAB9 /* FetchUpdateCommentsQueryTemplate.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
@@ -9228,7 +9262,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
@@ -9251,6 +9285,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Beta.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -9260,7 +9296,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
@@ -9274,6 +9310,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9283,6 +9322,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -9292,8 +9332,11 @@
 		A745D1D71CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9305,7 +9348,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9321,6 +9364,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9331,6 +9376,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -9340,8 +9386,11 @@
 		A745D1D91CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9358,7 +9407,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9373,8 +9422,11 @@
 		A755114D1C8642B3005355CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9386,7 +9438,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9401,8 +9453,11 @@
 		A755114E1C8642B3005355CF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9414,7 +9469,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9449,6 +9504,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9459,6 +9516,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -9468,8 +9526,10 @@
 		A7C795A71C873A870081977F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9486,7 +9546,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9501,8 +9561,11 @@
 		A7C795A81C873A870081977F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9519,7 +9582,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9538,10 +9601,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Debug.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9549,11 +9612,11 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.debug";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_WORKSPACE = NO;
@@ -9578,7 +9641,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
@@ -9591,6 +9654,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9610,6 +9674,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -9619,6 +9686,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -9685,7 +9753,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -9754,7 +9822,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
@@ -9779,6 +9847,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -9792,7 +9861,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9812,10 +9881,13 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9827,7 +9899,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -9847,10 +9919,13 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -9862,7 +9937,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10008,7 +10083,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
@@ -10042,7 +10117,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickAlpha;
@@ -10055,8 +10130,11 @@
 		D083B1051F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -10068,7 +10146,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOS";
 				PRODUCT_NAME = Library;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10084,6 +10162,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -10094,6 +10174,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -10103,8 +10184,11 @@
 		D083B1071F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -10121,7 +10205,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kickstarter-Framework-iOS";
 				PRODUCT_NAME = Kickstarter_Framework;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10137,6 +10221,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -10146,6 +10233,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.KickstarterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -10159,10 +10247,13 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -10174,7 +10265,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.0;
+				MARKETING_VERSION = 5.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.KsApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -10348,15 +10439,7 @@
 				kind = branch;
 			};
 		};
-		197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/braze-inc/braze-swift-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-		19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
+		19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Appboy/appboy-segment-ios";
 			requirement = {
@@ -10420,20 +10503,20 @@
 				minimumVersion = 3.6.1;
 			};
 		};
-		60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/uber/ios-snapshot-test-case/";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.0.0;
-			};
-		};
 		60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.0.0;
+			};
+		};
+		7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -10514,20 +10597,20 @@
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
 		};
-		197C398D28ECB3E2006A3C6B /* BrazeKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
-			productName = BrazeKit;
-		};
-		197C398F28ECB3E2006A3C6B /* BrazeUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 197C398C28ECB3E2006A3C6B /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
-			productName = BrazeUI;
-		};
 		1981AC8F289075D900BB4897 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
+		};
+		19821C84299D392400EF312F /* AppboySegment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
+			productName = AppboySegment;
+		};
+		19821C86299D3E8300EF312F /* AppboySegment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
+			productName = AppboySegment;
 		};
 		198E574A28E2705100D5B8A9 /* PerimeterX */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -10538,11 +10621,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
-		};
-		198ED06128D229560008CB98 /* iOSSnapshotTestCase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
-			productName = iOSSnapshotTestCase;
 		};
 		1998BCA728F60E8900D04077 /* ReactiveExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -10558,16 +10636,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = ReactiveExtensions;
-		};
-		19A824AD28DA54ED00325124 /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
-		};
-		19A824AF28DA562800325124 /* AppboySegment */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19A824AC28DA54ED00325124 /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
-			productName = AppboySegment;
 		};
 		19BF226028D10497007F4197 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -10619,15 +10687,15 @@
 			package = 60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */;
 			productName = Optimizely;
 		};
-		60EAD1B328D0EE45009F9474 /* iOSSnapshotTestCase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60EAD1B028D0EE24009F9474 /* XCRemoteSwiftPackageReference "ios-snapshot-test-case" */;
-			productName = iOSSnapshotTestCase;
-		};
 		60EAD1C628D25A36009F9474 /* AppCenterDistribute */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
 			productName = AppCenterDistribute;
+		};
+		7049568F299D53ED00B273DF /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

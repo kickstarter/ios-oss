@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class PledgePaymentMethodsViewControllerTests: TestCase {
@@ -62,7 +63,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -108,7 +109,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 private let regularHeight: CGFloat = 150
@@ -30,7 +31,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: .template, reward: .template, 0))
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -42,15 +43,18 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: .template, reward: .template, 0))
 
-      FBSnapshotVerifyView(
-        parent.view, identifier: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
       )
     }
   }
 
-  func testView_ShowsCurrencySymbol() {
+  func testView_ShowsCurrencySymbol_NonUS_ProjectCurrency_US_ProjectCountry() {
     let project = Project.template
-      |> Project.lens.country .~ Project.Country.ca
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
@@ -59,7 +63,23 @@ final class PledgeAmountViewControllerTests: TestCase {
 
       controller.configureWith(value: (project: project, reward: .template, 0))
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
+    }
+  }
+
+  func testView_ShowsCurrencySymbol_US_ProjectCurrency_US_ProjectCountry() {
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      let controller = PledgeAmountViewController.instantiate()
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+      parent.view.frame.size.height = regularHeight
+
+      controller.configureWith(value: (project: project, reward: .template, 0))
+
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -76,7 +96,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.stepperValueChanged(UIStepper(frame: .zero) |> \.value .~ 0)
       controller.textFieldDidChange(UITextField(frame: .zero) |> \.text .~ "0")
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -99,7 +119,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.stepperValueChanged(stepper)
       controller.textFieldDidChange(textField)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -118,7 +138,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: .template, reward: reward, 0))
       controller.stepperValueChanged(stepper)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -138,7 +158,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 
@@ -158,7 +178,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      assertSnapshot(matching: parent.view, as: .image(perceptualPrecision: 0.98), named: "device_\(device)")
     }
   }
 }

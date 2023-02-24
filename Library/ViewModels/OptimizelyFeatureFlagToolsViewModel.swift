@@ -95,18 +95,21 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .commentFlaggingEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue]
+  case .consentManagementDialogEnabled:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.consentManagementDialogEnabled.rawValue]
   case .projectPageStoryTabEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue]
-  case .rewardLocalPickupEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue]
   case .paymentSheetEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue]
   case .settingsPaymentSheetEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue]
+  case .facebookConversionsAPI:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.facebookConversionsAPI.rawValue]
   case .facebookLoginDeprecationEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue]
@@ -120,18 +123,21 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .commentFlaggingEnabled:
     AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue] = value
+  case .consentManagementDialogEnabled:
+    AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.consentManagementDialogEnabled.rawValue] = value
   case .projectPageStoryTabEnabled:
     AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue] = value
-  case .rewardLocalPickupEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.rewardLocalPickupEnabled.rawValue] = value
   case .paymentSheetEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] = value
   case .settingsPaymentSheetEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue] = value
+  case .facebookConversionsAPI:
+    return AppEnvironment.current.userDefaults
+      .optimizelyFeatureFlags[OptimizelyFeature.facebookConversionsAPI.rawValue] = value
   case .facebookLoginDeprecationEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue] = value

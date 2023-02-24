@@ -55,6 +55,14 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
     _ = ([self.activityIndicator, self.addButton], self.containerView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = (self.addButton, self.containerView)
+      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToCenterInParent()
+
+    _ = (self.activityIndicator, self.containerView)
+      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToCenterInParent()
+
     _ = (self.containerView, self.contentView)
       |> ksr_constrainViewToEdgesInParent()
       |> ksr_constrainViewToCenterInParent()

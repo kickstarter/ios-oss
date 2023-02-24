@@ -125,7 +125,11 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       }
 
     self.currency = project
-      .map { currencySymbol(forCountry: $0.country).trimmed() }
+      .map {
+        let projectCurrencyCountry = projectCountry(forCurrency: $0.stats.currency) ?? $0.country
+
+        return currencySymbol(forCountry: projectCurrencyCountry).trimmed()
+      }
 
     let textFieldValue = self.textFieldValueProperty.signal
       .map { $0.coalesceWith("") }
@@ -158,7 +162,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .ignoreValues()
 
     self.generateNotificationWarningFeedback = stepperValueChanged
-      .filter { min, max, value in value <= min || max <= value }
+      .filter { min, max, value in
+        value <= min || max <= value
+      }
       .ignoreValues()
 
     self.notifyDelegateAmountUpdated = updatedValue
@@ -177,7 +183,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map(second)
       .combineLatest(with: project)
       .map { max, project in
-        let maxPledge = Format.currency(max, country: project.country, omitCurrencyCode: false)
+        let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+        let maxPledge = Format.currency(max, country: projectCurrencyCountry, omitCurrencyCode: false)
 
         return Strings.Enter_an_amount_less_than_max_pledge(max_pledge: maxPledge)
       }

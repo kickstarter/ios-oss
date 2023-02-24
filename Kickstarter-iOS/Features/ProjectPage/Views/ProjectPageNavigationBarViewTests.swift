@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class ProjectPageNavBarViewTests: TestCase {
@@ -44,7 +45,7 @@ internal final class ProjectPageNavBarViewTests: TestCase {
 
       scheduler.run()
 
-      FBSnapshotVerifyView(parent.view, identifier: "unwatched")
+      assertSnapshot(matching: parent.view, as: .image, named: "unwatched")
     }
   }
 
@@ -74,7 +75,7 @@ internal final class ProjectPageNavBarViewTests: TestCase {
 
       scheduler.run()
 
-      FBSnapshotVerifyView(parent.view, identifier: "watched")
+      assertSnapshot(matching: parent.view, as: .image, named: "watched")
     }
   }
 

@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class RiskMessagingViewControllerTests: TestCase {
@@ -19,9 +20,9 @@ final class RiskMessagingViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RiskMessagingViewController()
-        _ = traitControllers(device: device, orientation: .portrait, child: vc)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -31,9 +32,9 @@ final class RiskMessagingViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RiskMessagingViewController()
-        _ = traitControllers(device: device, orientation: .landscape, child: vc)
+        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

@@ -25,7 +25,6 @@ import UserNotifications
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
-
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
@@ -37,10 +36,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
-
-    // Braze initialization
-    SEGAppboyIntegrationFactory.instance()?.saveLaunchOptions(launchOptions)
-    SEGAppboyIntegrationFactory.instance()?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -265,9 +260,18 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
       }
 
-    self.viewModel.outputs.configureSegment
-      .observeValues { writeKey in
-        let configuration = Analytics.configuredClient(withWriteKey: writeKey)
+    self.viewModel.outputs.configureSegmentWithBraze
+      .observeValues { [weak self] writeKey in
+        guard let strongSelf = self else { return }
+
+        let (configuration, appBoyInstance) = Analytics.configuredClient(withWriteKey: writeKey)
+
+        appBoyInstance?.saveLaunchOptions(launchOptions)
+        appBoyInstance?.appboyOptions = [
+          ABKInAppMessageControllerDelegateKey: strongSelf,
+          ABKURLDelegateKey: strongSelf,
+          ABKMinimumTriggerTimeIntervalKey: 5
+        ]
 
         Analytics.setup(with: configuration)
 
@@ -500,21 +504,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
+    _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
-    }
-
-    // Braze
-    let factory = SEGAppboyIntegrationFactory.instance()
-    userNotificationCenterDidReceiveResponse(appBoy: Appboy.sharedInstance()) {
-      factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
-    } isNil: {
-      factory?.appboyHelper.save(center, notificationResponse: response)
     }
 
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
@@ -528,5 +524,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: ABKInAppMessageControllerDelegate {
   func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
     return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
+  }
+}
+
+// MARK: - ABKURLDelegate
+
+extension AppDelegate: ABKURLDelegate {
+  func handleAppboyURL(_ url: URL?, from _: ABKChannel, withExtras _: [AnyHashable: Any]?) -> Bool {
+    self.viewModel.inputs.urlFromBrazeInAppNotification(url)
+
+    return true
   }
 }

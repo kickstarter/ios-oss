@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class ProjectPageViewControllerTests: TestCase {
@@ -115,7 +116,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -169,7 +174,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -223,7 +232,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -268,7 +281,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -310,7 +327,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -350,7 +371,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -392,7 +417,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -429,7 +458,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -469,7 +502,219 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_US_UserChosenCurrency_Success() {
+    let config = Config.template
+    let reward = Reward.template
+      |> Reward.lens.title .~ "Magic Lamp"
+    let project = Project.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testLoggedIn_Backer_LiveProject_US_ProjectCurrency_US_ProjectCountry_US_UserChosenCurrency_OmittingCurrencyCode_Success() {
+    let config = Config.template
+    let reward = Reward.template
+      |> Reward.lens.title .~ "Magic Lamp"
+    let project = Project.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testLoggedIn_Backer_LiveProject_NonUS_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_NotOmittingCurrencyCode_Success() {
+    let config = Config.template
+    let reward = Reward.template
+      |> Reward.lens.title .~ "Magic Lamp"
+    let project = Project.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testLoggedIn_Backer_LiveProject_US_ProjectCurrency_US_ProjectCountry_NonUS_UserChosenCurrency_Success() {
+    let config = Config.template
+    let reward = Reward.template
+      |> Reward.lens.title .~ "Magic Lamp"
+    let project = Project.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
+    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([reward])
+    )
+
+    combos(Language.allLanguages, [Device.phone5_8inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        self.scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -506,7 +751,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -541,7 +790,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -579,7 +832,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -618,7 +875,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -661,7 +922,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -702,7 +967,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -753,7 +1022,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -794,7 +1067,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

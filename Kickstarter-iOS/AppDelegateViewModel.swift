@@ -1,4 +1,5 @@
 import AppboyKit
+import AppTrackingTransparency
 import KsApi
 import Library
 import Prelude
@@ -85,6 +86,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
+  /// Call when Braze in-app notifications send a valid URL.
+  func urlFromBrazeInAppNotification(_ url: URL?)
+
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
@@ -111,8 +115,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Perimeter X
   var configurePerimeterX: Signal<(), Never> { get }
 
-  /// Emits when the application should configure Segment.
-  var configureSegment: Signal<String, Never> { get }
+  /// Emits when the application should configure Segment with an instance of Braze.
+  var configureSegmentWithBraze: Signal<String, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -179,6 +183,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when we should register the device push token in Segment Analytics.
   var registerPushTokenInSegment: Signal<Data, Never> { get }
+
+  /// Emits when  application didFinishLaunchingWithOptions.
+  var requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never> { get }
 
   /// Emits when our config updates with the enabled state for Semgent Analytics.
   var segmentIsEnabled: Signal<Bool, Never> { get }
@@ -331,6 +338,18 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map(navigation(fromPushEnvelope:))
 
+    let deepLinkFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
+      .map(BrazePushEnvelope.decodeJSONDictionary)
+      .skipNil()
+      .map { $0.abURI }
+      .skipNil()
+      .map(URL.init(string:))
+      .skipNil()
+      .map(Navigation.deepLinkMatch)
+
+    let deepLinkFromBrazeInAppNotification = self.brazeInAppNotificationURLProperty.signal.skipNil()
+      .map(Navigation.deepLinkMatch)
+
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
     let continueUserActivityWithNavigation = continueUserActivity
@@ -367,6 +386,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
+        deepLinkFromBrazeNotification,
+        deepLinkFromBrazeInAppNotification,
         deepLinkFromShortcut
       )
       .skipNil()
@@ -767,7 +788,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    self.configureSegment = self.applicationLaunchOptionsProperty.signal
+    self.configureSegmentWithBraze = self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .map { _ in
         AppEnvironment.current.mainBundle.isRelease
@@ -785,6 +806,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.brazeWillDisplayInAppMessageReturnProperty <~ self.brazeWillDisplayInAppMessageProperty.signal
       .skipNil()
       .map { _ in .displayInAppMessageNow }
+
+    self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
+      .skipNil()
+      .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+      .map { _ -> ATTrackingAuthorizationStatus in
+        guard featureConsentManagementDialogEnabled() else { return .notDetermined }
+        return atTrackingAuthorizationStatus()
+      }
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -905,6 +934,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.userSessionStartedProperty.value = ()
   }
 
+  fileprivate let brazeInAppNotificationURLProperty = MutableProperty<URL?>(nil)
+  public func urlFromBrazeInAppNotification(_ url: URL?) {
+    self.brazeInAppNotificationURLProperty.value = url
+  }
+
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return self.applicationDidFinishLaunchingReturnValueProperty.value
@@ -933,7 +967,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let configurePerimeterX: Signal<(), Never>
-  public let configureSegment: Signal<String, Never>
+  public let configureSegmentWithBraze: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>
@@ -956,6 +990,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
   public let registerPushTokenInSegment: Signal<Data, Never>
+  public let requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never>
   public let segmentIsEnabled: Signal<Bool, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
@@ -963,6 +998,27 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
+}
+
+private func atTrackingAuthorizationStatus() -> ATTrackingAuthorizationStatus {
+  var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
+
+  ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+    switch status {
+    case .notDetermined:
+      authorizationStatus = .notDetermined
+    case .authorized:
+      authorizationStatus = .authorized
+    case .denied:
+      authorizationStatus = .denied
+    case .restricted:
+      authorizationStatus = .restricted
+    @unknown default:
+      authorizationStatus = .notDetermined
+    }
+  })
+
+  return authorizationStatus
 }
 
 /// Handles the deeplink route with both an id and text based name for a deeplink to categories.

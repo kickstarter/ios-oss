@@ -41,18 +41,50 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     self.notifyDelegateOpenHelpType.assertValues(allCases)
   }
 
-  func testAmountAttributedText_RegularReward() {
-    self.vm.inputs.configure(with: (.template, total: 30, false))
+  func testAmountAttributedText_US_ProjectCurrency_RegularReward() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+
+    self.vm.inputs.configure(with: (project, total: 30, false))
     self.vm.inputs.viewDidLoad()
 
     self.amountLabelText.assertValues(["$30.00"], "Total is added to reward minimum")
   }
 
-  func testAmountAttributedText_NoReward() {
-    self.vm.inputs.configure(with: (.template, total: 10, false))
+  func testAmountAttributedText_NonUS_ProjectCurrency_RegularReward() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+
+    self.vm.inputs.configure(with: (project, total: 30, false))
+    self.vm.inputs.viewDidLoad()
+
+    self.amountLabelText.assertValues([" MX$ 30.00"], "Total is added to reward minimum")
+  }
+
+  func testAmountAttributedText_US_ProjectCurrency_NoReward() {
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+    self.vm.inputs.configure(with: (project, total: 10, false))
+
     self.vm.inputs.viewDidLoad()
 
     self.amountLabelText.assertValues(["$10.00"], "Total is used directly")
+  }
+
+  func testAmountAttributedText_NonUS_ProjectCurrency_NoReward() {
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.country .~ Project.Country.us
+    let pledgeSummaryViewData = PledgeSummaryViewData(project, total: 10, false)
+
+    self.vm.inputs.configure(with: pledgeSummaryViewData)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.amountLabelText.assertValues([" MX$ 10.00"], "Total is used directly")
   }
 
   func testTotalConversionText_NeedsConversion_NoReward() {
@@ -149,7 +181,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     }
   }
 
-  func testUpdateContext_ConfirmationLabelShowsTotalAmount() {
+  func testUpdateContext_NonUS_ProjectCurrency_US_ProjectCountry_ConfirmationLabelShowsTotalAmount() {
     let dateComponents = DateComponents()
       |> \.month .~ 11
       |> \.day .~ 1
@@ -166,7 +198,7 @@ internal final class PledgeSummaryViewModelTests: TestCase {
         |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
         |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
         |> Project.lens.stats.currency .~ Currency.HKD.rawValue
-        |> Project.lens.country .~ .hk
+        |> Project.lens.country .~ .us
 
       self.vm.inputs.configure(with: (project: project, total: 10, false))
       self.vm.inputs.viewDidLoad()

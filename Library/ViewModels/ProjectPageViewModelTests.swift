@@ -266,6 +266,92 @@ final class ProjectPageViewModelTests: TestCase {
     self.configureDataSourceProject.assertDidEmitValue()
   }
 
+  func testConfigureProjectPageViewControllerDataSourceProject_US_ProjectCurrency_US_ProjectCountry() {
+    let USCurrencyProject = self.projectWithEmptyProperties
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+
+    let backing = Backing.template
+      |> Backing.lens.id .~ 543
+
+    let projectPamphletData = Project
+      .ProjectPamphletData(project: USCurrencyProject, backingId: backing.id)
+
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: USCurrencyProject, backing: backing)
+
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([.template])
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refTag: .category)
+
+      self.configureDataSourceProject.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configureDataSourceProject.assertValueCount(1)
+
+      self.vm.inputs.pledgeRetryButtonTapped()
+
+      self.configureDataSourceProject.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        self.configureDataSourceProject.lastValue?.stats.currency,
+        Project.Country.us.currencyCode
+      )
+      XCTAssertEqual(
+        self.configureDataSourceProject.lastValue?.country,
+        Project.Country.us
+      )
+    }
+  }
+
+  func testConfigureProjectPageViewControllerDataSourceProject_NonUS_ProjectCurrency_US_ProjectCountry() {
+    let USCurrencyProject = self.projectWithEmptyProperties
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+
+    let backing = Backing.template
+      |> Backing.lens.id .~ 543
+
+    let projectPamphletData = Project
+      .ProjectPamphletData(project: USCurrencyProject, backingId: backing.id)
+
+    let projectFullAndEnvelope = ProjectAndBackingEnvelope(project: USCurrencyProject, backing: backing)
+
+    withEnvironment(apiService: MockService(
+      fetchManagePledgeViewBackingResult: .success(projectFullAndEnvelope),
+      fetchProjectPamphletResult: .success(projectPamphletData),
+      fetchProjectRewardsResult: .success([.template])
+    )) {
+      self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refTag: .category)
+
+      self.configureDataSourceProject.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configureDataSourceProject.assertValueCount(1)
+
+      self.vm.inputs.pledgeRetryButtonTapped()
+
+      self.configureDataSourceProject.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(
+        self.configureDataSourceProject.lastValue?.stats.currency,
+        Project.Country.mx.currencyCode
+      )
+      XCTAssertEqual(
+        self.configureDataSourceProject.lastValue?.country,
+        Project.Country.us
+      )
+    }
+  }
+
   func testConfigureProjectNavigationSelectorView_ExtendedPropertiesEmpty_CreatesNavigationSelector_Success() {
     let projectPamphletData = Project
       .ProjectPamphletData(project: self.projectWithEmptyProperties, backingId: nil)

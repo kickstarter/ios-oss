@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class CommentsViewControllerTests: TestCase {
@@ -37,7 +38,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -62,7 +67,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -81,7 +90,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -102,7 +115,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -120,7 +137,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -143,7 +164,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
           self.scheduler.advance()
 
-          FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+          assertSnapshot(
+            matching: parent.view,
+            as: .image,
+            named: "Comments - lang_\(language)_device_\(device)"
+          )
         }
       }
     }
@@ -173,7 +198,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -202,7 +231,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -225,7 +258,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -247,7 +284,11 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image,
+          named: "Comments - lang_\(language)_device_\(device)"
+        )
       }
     }
   }

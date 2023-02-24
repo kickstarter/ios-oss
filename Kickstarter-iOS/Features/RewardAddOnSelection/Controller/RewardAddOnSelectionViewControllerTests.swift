@@ -2,6 +2,7 @@
 @testable import KsApi
 @testable import Library
 import Prelude
+import SnapshotTesting
 import UIKit
 
 final class RewardAddOnSelectionViewControllerTests: TestCase {
@@ -53,7 +54,11 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -112,7 +117,11 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -207,7 +216,11 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -238,7 +251,11 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -278,7 +295,11 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

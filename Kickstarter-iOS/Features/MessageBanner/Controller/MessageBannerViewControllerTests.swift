@@ -2,6 +2,7 @@
 @testable import KsApi
 import Library
 import Prelude
+import SnapshotTesting
 import XCTest
 
 internal final class MessageBannerViewControllerTests: TestCase {
@@ -36,7 +37,7 @@ internal final class MessageBannerViewControllerTests: TestCase {
         scheduler.run()
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -59,7 +60,7 @@ internal final class MessageBannerViewControllerTests: TestCase {
         scheduler.run()
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -82,7 +83,7 @@ internal final class MessageBannerViewControllerTests: TestCase {
         scheduler.run()
         scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

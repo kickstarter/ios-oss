@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 import Library
+import SnapshotTesting
 import XCTest
 
 internal final class LandingViewControllerTests: TestCase {
@@ -21,7 +22,7 @@ internal final class LandingViewControllerTests: TestCase {
         let controller = LandingViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
       }
     }
   }

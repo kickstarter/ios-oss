@@ -269,8 +269,6 @@ platform :ios do
 
   private_lane :upload_s3 do |options|
     aws_s3(
-      access_key: ENV['AWS_ACCESS_KEY_ID'],
-      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
       bucket: ENV['AWS_BUCKET'],
       region: ENV['AWS_REGION'],
       ipa: options[:ipa],

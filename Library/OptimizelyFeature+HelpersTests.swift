@@ -39,24 +39,6 @@ final class OptimizelyFeatureHelpersTests: TestCase {
     }
   }
 
-  func testRewardLocalPickupEnabled_Optimizely_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.rewardLocalPickupEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertTrue(featureRewardLocalPickupEnabled())
-    }
-  }
-
-  func testRewardLocalPickupEnabled_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.rewardLocalPickupEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featureRewardLocalPickupEnabled())
-    }
-  }
-
   func testPaymentSheet_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: true]
@@ -90,6 +72,42 @@ final class OptimizelyFeatureHelpersTests: TestCase {
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       XCTAssertFalse(featureFacebookLoginDeprecationEnabled())
+    }
+  }
+
+  func testConsentManagementDialog_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertTrue(featureConsentManagementDialogEnabled())
+    }
+  }
+
+  func testConsentManagementDialog_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featureConsentManagementDialogEnabled())
+    }
+  }
+
+  func testFacebookConversionsAPI_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.facebookConversionsAPI.rawValue: true]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertTrue(featureFacebookConversionsAPIEnabled())
+    }
+  }
+
+  func testFacebookConversionsAPI_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.facebookConversionsAPI.rawValue: false]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      XCTAssertFalse(featureFacebookConversionsAPIEnabled())
     }
   }
 }

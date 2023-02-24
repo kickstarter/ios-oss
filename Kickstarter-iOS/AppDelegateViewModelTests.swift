@@ -18,7 +18,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let configurePerimeterX = TestObserver<(), Never>()
-  private let configureSegment = TestObserver<String, Never>()
+  private let configureSegmentWithBraze = TestObserver<String, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let emailVerificationCompletedMessage = TestObserver<String, Never>()
   private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
@@ -42,6 +42,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let pushRegistrationStarted = TestObserver<(), Never>()
   private let pushTokenSuccessfullyRegistered = TestObserver<String, Never>()
   private let registerPushTokenInSegment = TestObserver<Data, Never>()
+  private let requestATTrackingAuthorizationStatus = TestObserver<ATTrackingAuthorizationStatus, Never>()
   private let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
   private let segmentIsEnabled = TestObserver<Bool, Never>()
   private let showAlert = TestObserver<Notification, Never>()
@@ -71,7 +72,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
     self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
-    self.vm.outputs.configureSegment.observe(self.configureSegment.observer)
+    self.vm.outputs.configureSegmentWithBraze.observe(self.configureSegmentWithBraze.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
       .observe(self.emailVerificationCompletedMessage.observer)
     self.vm.outputs.emailVerificationCompleted.map(second)
@@ -96,6 +97,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.pushTokenRegistrationStarted.observe(self.pushRegistrationStarted.observer)
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
     self.vm.outputs.registerPushTokenInSegment.observe(self.registerPushTokenInSegment.observer)
+    self.vm.outputs.requestATTrackingAuthorizationStatus
+      .observe(self.requestATTrackingAuthorizationStatus.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.segmentIsEnabled.observe(self.segmentIsEnabled.observer)
@@ -2910,7 +2913,7 @@ final class AppDelegateViewModelTests: TestCase {
       bundleIdentifier: KickstarterBundleIdentifier.release.rawValue
     )
 
-    self.configureSegment.assertDidNotEmitValue()
+    self.configureSegmentWithBraze.assertDidNotEmitValue()
 
     withEnvironment(mainBundle: mockBundle) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -2918,7 +2921,7 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureSegment.assertValues([Secrets.Segment.production])
+      self.configureSegmentWithBraze.assertValues([Secrets.Segment.production])
     }
   }
 
@@ -2927,7 +2930,7 @@ final class AppDelegateViewModelTests: TestCase {
       bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue
     )
 
-    self.configureSegment.assertDidNotEmitValue()
+    self.configureSegmentWithBraze.assertDidNotEmitValue()
 
     withEnvironment(mainBundle: mockBundle) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -2935,7 +2938,7 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureSegment.assertValues([Secrets.Segment.staging])
+      self.configureSegmentWithBraze.assertValues([Secrets.Segment.staging])
     }
   }
 
@@ -3002,6 +3005,35 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateCurrentUserInEnvironment.assertValues([user, updatedUser])
+    }
+  }
+
+  func testRequestATTrackingAuthorizationStatus_CalledOnceOnDidFinishLaunching() {
+    self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+  }
+
+  func testPresentViewController_BrazeInAppNotificationDeeplink_ProjectCommentThread_Success() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    withEnvironment(apiService: MockService(fetchCommentRepliesEnvelopeResult: .success(CommentRepliesEnvelope
+        .successfulRepliesTemplate), fetchProjectResult: .success(.template))) {
+      let url =
+        "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/projects/fjorden/fjorden-iphone-photography-reinvented/"
+
+      self.presentViewController.assertValues([])
+
+      self.vm.inputs.urlFromBrazeInAppNotification(URL(string: url)!)
+
+      self.presentViewController.assertValues([1])
     }
   }
 }

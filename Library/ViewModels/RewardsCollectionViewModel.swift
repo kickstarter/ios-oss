@@ -341,36 +341,5 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
 }
 
 private func allowableProjectRewards(from project: Project) -> [Reward] {
-  let rewards = project.rewards
-  var allowedDisplay = true
-  var backedReward: Reward?
-
-  if let backing = project.personalization.backing {
-    backedReward = reward(from: backing, inProject: project)
-  }
-
-  let isRewardBeingBacked: (Reward) -> Bool = { reward in
-    var rewardIsBacked = false
-
-    if let backedRewardExists = backedReward,
-      backedRewardExists.id == reward.id {
-      rewardIsBacked = true
-    }
-
-    return rewardIsBacked
-  }
-
-  let allowedNonbackedRewardsFromFeatureFlagRules = rewards.filter { reward in
-    allowedDisplay = true
-
-    if !featureRewardLocalPickupEnabled(),
-      isRewardLocalPickup(reward),
-      !isRewardBeingBacked(reward) {
-      allowedDisplay = false
-    }
-
-    return allowedDisplay
-  }
-
-  return allowedNonbackedRewardsFromFeatureFlagRules
+  project.rewards
 }

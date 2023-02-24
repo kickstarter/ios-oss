@@ -46,6 +46,9 @@ public protocol DashboardViewModelInputs {
   /// Call when to show or hide the projects drawer.
   func showHideProjectsDrawer()
 
+  /// Call when Post Update is clicked
+  func trackPostUpdateClicked()
+
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -290,6 +293,32 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
       .filter { AppEnvironment.current.isVoiceOverRunning() }
+
+    // MARK: - Tracking
+
+    self.viewWillAppearAnimatedProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackCreatorDashboardPageViewed()
+    }
+
+    _ = projects
+      .takePairWhen(self.switchToProjectProperty.signal)
+      .map { allProjects, param -> Project? in
+        param.flatMap { find(projectForParam: $0, in: allProjects) }
+      }
+      .skipNil()
+      .observeValues { switchedToProject in
+        AppEnvironment.current.ksrAnalytics
+          .trackCreatorDashboardSwitchProjectClicked(project: switchedToProject, refTag: RefTag.dashboard)
+      }
+
+    _ = self.project
+      .takePairWhen(self.trackPostUpdateClickedProperty.signal)
+      .observeValues { project, _ in
+        AppEnvironment.current.ksrAnalytics.trackCreatorDashboardPostUpdateClicked(
+          project: project,
+          refTag: RefTag.dashboard
+        )
+      }
   }
 
   fileprivate let showHideProjectsDrawerProperty = MutableProperty(())
@@ -320,6 +349,11 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
   fileprivate let projectsDrawerDidAnimateOutProperty = MutableProperty(())
   public func dashboardProjectsDrawerDidAnimateOut() {
     self.projectsDrawerDidAnimateOutProperty.value = ()
+  }
+
+  fileprivate let trackPostUpdateClickedProperty = MutableProperty(())
+  public func trackPostUpdateClicked() {
+    self.trackPostUpdateClickedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

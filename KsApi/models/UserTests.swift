@@ -20,6 +20,7 @@ final class UserTests: XCTestCase {
         "medium": "http://www.kickstarter.com/medium.jpg",
         "small": "http://www.kickstarter.com/small.jpg"
       ],
+      "needs_password": true,
       "backed_projects_count": 2,
       "draft_projects_count": 4,
       "weekly_newsletter": false,
@@ -44,24 +45,29 @@ final class UserTests: XCTestCase {
       "social": true
     ]
 
-    let user: User? = tryDecode(json)
+    guard let user: User = tryDecode(json) else {
+      XCTFail("User object should be decodable")
 
-    XCTAssertEqual(1, user?.id)
-    XCTAssertEqual(false, user?.isAdmin)
-    XCTAssertEqual("http://www.kickstarter.com/small.jpg", user?.avatar.small)
-    XCTAssertEqual(2, user?.stats.backedProjectsCount)
-    XCTAssertEqual(4, user?.stats.draftProjectsCount)
-    XCTAssertEqual(false, user?.newsletters.weekly)
-    XCTAssertEqual(false, user?.newsletters.promo)
-    XCTAssertEqual(false, user?.newsletters.happening)
-    XCTAssertEqual(false, user?.newsletters.games)
-    XCTAssertEqual(false, user?.notifications.commentReplies)
-    XCTAssertEqual(true, user?.notifications.mobileMarketingUpdate)
-    XCTAssertEqual(false, user?.facebookConnected)
-    XCTAssertEqual(false, user?.isEmailVerified)
-    XCTAssertEqual(false, user?.isFriend)
-    XCTAssertNotNil(user?.location)
-    XCTAssertEqual(json as NSDictionary?, user?.encode() as NSDictionary?)
+      return
+    }
+
+    XCTAssertEqual(1, user.id)
+    XCTAssertEqual(false, user.isAdmin)
+    XCTAssertEqual("http://www.kickstarter.com/small.jpg", user.avatar.small)
+    XCTAssertEqual(2, user.stats.backedProjectsCount)
+    XCTAssertEqual(4, user.stats.draftProjectsCount)
+    XCTAssertEqual(false, user.newsletters.weekly)
+    XCTAssertEqual(false, user.newsletters.promo)
+    XCTAssertEqual(false, user.newsletters.happening)
+    XCTAssertEqual(false, user.newsletters.games)
+    XCTAssertEqual(false, user.notifications.commentReplies)
+    XCTAssertEqual(true, user.notifications.mobileMarketingUpdate)
+    XCTAssertEqual(false, user.facebookConnected)
+    XCTAssertEqual(false, user.isEmailVerified)
+    XCTAssertTrue(user.needsPassword!)
+    XCTAssertEqual(false, user.isFriend)
+    XCTAssertNotNil(user.location)
+    XCTAssertEqual(json as NSDictionary?, user.encode() as NSDictionary?)
   }
 
   func testJsonEncoding() {
@@ -73,6 +79,7 @@ final class UserTests: XCTestCase {
         "small": "http://www.kickstarter.com/small.jpg",
         "large": "http://www.kickstarter.com/large.jpg"
       ],
+      "needs_password": false,
       "backed_projects_count": 2,
       "games_newsletter": false,
       "happening_newsletter": false,

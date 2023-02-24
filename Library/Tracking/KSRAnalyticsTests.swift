@@ -499,6 +499,48 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
   }
 
+  // MARK: - Creator Dashboard Properties Tests
+
+  func testCreatorDashboardPageViewed() {
+    let segmentClient = MockTrackingClient()
+    let loggedInUser = User.template |> \.id .~ 23
+    let ksrAnalytics = KSRAnalytics(
+      loggedInUser: loggedInUser,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackCreatorDashboardPageViewed()
+
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
+  }
+
+  func testCreatorDashboardSwitchProjectClicked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+
+    ksrAnalytics.trackCreatorDashboardSwitchProjectClicked(project: .template, refTag: RefTag.dashboard)
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual(["creator_project_select"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
+    XCTAssertEqual(["The Project"], segmentClient.properties(forKey: "project_name"))
+  }
+
+  func testCreatorDashboardPostUpdateClicked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+
+    ksrAnalytics.trackCreatorDashboardPostUpdateClicked(project: .template, refTag: RefTag.dashboard)
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual(["creator_project_update_create_draft"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["creator_dashboard"], segmentClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["dashboard"], segmentClient.properties(forKey: "context_section"))
+  }
+
   // MARK: - Discovery Properties Tests
 
   func testDiscoveryProperties() {
@@ -1108,6 +1150,33 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(
       "checkout",
       segmentClientProps?["context_page"] as? String
+    )
+  }
+
+  func testTrackProjectCurrency_WhenDifferentFromCountry_ComesFromCountryCurrencyNotCountry_Success() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.us
+      |> Project.lens.stats.currency .~ Project.Country.de.currencyCode
+
+    ksrAnalytics.trackPledgeConfirmButtonClicked(
+      project: project,
+      reward: reward,
+      typeContext: .creditCard,
+      checkoutData: .template,
+      refTag: nil
+    )
+
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(
+      "EUR",
+      segmentClientProps?["project_currency"] as? String
     )
   }
 
