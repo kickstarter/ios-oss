@@ -341,6 +341,37 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         )
       }
 
+    let userAccountFields = self.viewDidAppearAnimatedProperty.signal.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphUser(withStoredCards: false)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let userEmail = userAccountFields.values().map(\.me.email)
+
+    trackFreshProjectAndRefTagViewed
+      .takeWhen(userAccountFields)
+      .combineLatest(with: userEmail)
+      .observeValues { projectAndRefTag, userEmail in
+        guard let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
+
+        let (project, _) = projectAndRefTag
+        let eventInput = FacebookCAPIEventService
+          .createMutationInput(
+            for: .ViewContent,
+            projectId: "\(project.id)",
+            externalId: externalId,
+            userEmail: userEmail ?? ""
+          )
+
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(input: eventInput)
+      }
+
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))
