@@ -5216,6 +5216,22 @@
             "deprecationReason": null
           },
           {
+            "name": "sendMetaCapiEvents",
+            "description": "Is this project configured so that events should be triggered for Meta's Conversions API?",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "showCtaToLiveProjects",
             "description": "Whether or not to show ended to live cta",
             "args": [],
@@ -11501,12 +11517,6 @@
             "deprecationReason": null
           },
           {
-            "name": "facebook_pixel_2022",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "hide_facebook_login_button_2022",
             "description": null,
             "isDeprecated": false,
@@ -11526,18 +11536,6 @@
           },
           {
             "name": "payment_element_project_build_2022",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "payment_element_pledge_update_2022",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "payment_element_errored_pledge_2022",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -42562,6 +42560,26 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "image",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "S3AssetInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "deleteAsset",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null

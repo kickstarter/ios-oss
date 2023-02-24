@@ -476,6 +476,7 @@ public enum FetchAddsOnsQueryTemplate {
               "uid": "618005886"
             }
           },
+          "sendMetaCapiEvents": false,
           "category": {
             "__typename": "Category",
             "id": "Q2F0ZWdvcnktMjI=",
