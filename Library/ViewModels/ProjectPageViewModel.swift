@@ -341,36 +341,36 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         )
       }
 
-    let userAccountFields = self.viewDidAppearAnimatedProperty.signal.ignoreValues()
+    // FB CAPI
+    let graphUser = self.viewDidAppearAnimatedProperty.signal.ignoreValues()
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphUser(withStoredCards: false)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
-
-    let userEmail = userAccountFields.values().map(\.me.email)
-
+    
     trackFreshProjectAndRefTagViewed
-      .takeWhen(userAccountFields)
-      .combineLatest(with: userEmail)
-      .observeValues { projectAndRefTag, userEmail in
-        guard featureFacebookConversionsAPIEnabled(),
-          let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
+      .combineLatest(with: graphUser)
+      .observeValues { projectAndRefTag, graphUser in
+        guard featureFacebookConversionsAPIEnabled() else { return }
 
         let (project, _) = projectAndRefTag
-        let eventInput = FacebookCAPIEventService
-          .createMutationInput(
-            for: .ViewContent,
-            projectId: "\(project.id)",
-            externalId: externalId,
-            userEmail: userEmail ?? ""
-          )
+        let userEmail = graphUser.value?.me.email
 
-        _ = AppEnvironment
-          .current
-          .apiService
-          .triggerCapiEventInput(input: eventInput)
+        triggerCapiEvent(for: .ViewContent, projectId: "\(project.id)", userEmail: userEmail ?? "")
+      }
+
+    trackFreshProjectAndRefTagViewed
+      .takeWhen(shouldGoToRewards)
+      .combineLatest(with: graphUser)
+      .observeValues { projectAndRefTag, graphUser in
+        guard featureFacebookConversionsAPIEnabled() else { return }
+
+        let (project, _) = projectAndRefTag
+        let userEmail = graphUser.value?.me.email
+
+        triggerCapiEvent(for: .InitiateCheckout, projectId: "\(project.id)", userEmail: userEmail ?? "")
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
@@ -658,4 +658,21 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
   return type.isAny(of: .viewBacking, .manage, .fix)
+}
+
+private func triggerCapiEvent(for eventName: FacebookCAPIEventName, projectId: String, userEmail: String) {
+  guard let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
+
+  let eventInput = FacebookCAPIEventService
+    .createMutationInput(
+      for: eventName,
+      projectId: projectId,
+      externalId: externalId,
+      userEmail: userEmail
+    )
+
+  _ = AppEnvironment
+    .current
+    .apiService
+    .triggerCapiEventInput(input: eventInput)
 }
