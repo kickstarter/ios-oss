@@ -1,5 +1,4 @@
 import AppboyKit
-import AppTrackingTransparency
 import KsApi
 import Library
 import Prelude
@@ -812,7 +811,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       .map { _ -> ATTrackingAuthorizationStatus in
         guard featureConsentManagementDialogEnabled() else { return .notDetermined }
-        return atTrackingAuthorizationStatus()
+        return AppTrackingTransparencyService.authorizationStatus()
       }
   }
 
@@ -998,27 +997,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
-}
-
-private func atTrackingAuthorizationStatus() -> ATTrackingAuthorizationStatus {
-  var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
-
-  ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-    switch status {
-    case .notDetermined:
-      authorizationStatus = .notDetermined
-    case .authorized:
-      authorizationStatus = .authorized
-    case .denied:
-      authorizationStatus = .denied
-    case .restricted:
-      authorizationStatus = .restricted
-    @unknown default:
-      authorizationStatus = .notDetermined
-    }
-  })
-
-  return authorizationStatus
 }
 
 /// Handles the deeplink route with both an id and text based name for a deeplink to categories.
