@@ -125,6 +125,9 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     XCTAssertEqual(project.country.minPledge, 1)
     XCTAssertEqual(project.country.trailingCode, true)
 
+    // Project Send Capi Events
+    XCTAssertEqual(project.sendMetaCapiEvents, true)
+
     /// Project User
     XCTAssertEqual(
       project.creator.avatar.large,

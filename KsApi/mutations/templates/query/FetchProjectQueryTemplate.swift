@@ -240,6 +240,7 @@ public enum FetchProjectQueryTemplate {
           "slug":"theaschneider/thequiet",
           "state":"LIVE",
           "stateChangedAt":1625118950,
+          "sendMetaCapiEvents" : true,
           "tags":[],
           "url":"https://staging.kickstarter.com/projects/theaschneider/thequiet",
           "usdExchangeRate":1.18302594,
