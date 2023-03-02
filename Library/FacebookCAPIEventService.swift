@@ -13,7 +13,29 @@ public enum FacebookCAPIEventName: String {
 }
 
 public struct FacebookCAPIEventService {
-  public static func createMutationInput(
+  public static func triggerCapiEvent(
+    for eventName: FacebookCAPIEventName,
+    projectId: String,
+    userEmail: String
+  ) {
+    guard let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
+
+    let eventInput = self.createMutationInput(
+      for: eventName,
+      projectId: projectId,
+      externalId: externalId,
+      userEmail: userEmail
+    )
+
+    _ = AppEnvironment
+      .current
+      .apiService
+      .triggerCapiEventInput(input: eventInput)
+  }
+
+  // MARK: Private Methods
+
+  private static func createMutationInput(
     for eventName: FacebookCAPIEventName,
     projectId: String,
     externalId: String,

@@ -349,7 +349,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
-    
+
     trackFreshProjectAndRefTagViewed
       .combineLatest(with: graphUser)
       .observeValues { projectAndRefTag, graphUser in
@@ -358,7 +358,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         let (project, _) = projectAndRefTag
         let userEmail = graphUser.value?.me.email
 
-        triggerCapiEvent(for: .ViewContent, projectId: "\(project.id)", userEmail: userEmail ?? "")
+        FacebookCAPIEventService
+          .triggerCapiEvent(for: .ViewContent, projectId: "\(project.id)", userEmail: userEmail ?? "")
       }
 
     trackFreshProjectAndRefTagViewed
@@ -370,7 +371,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         let (project, _) = projectAndRefTag
         let userEmail = graphUser.value?.me.email
 
-        triggerCapiEvent(for: .InitiateCheckout, projectId: "\(project.id)", userEmail: userEmail ?? "")
+        FacebookCAPIEventService
+          .triggerCapiEvent(for: .InitiateCheckout, projectId: "\(project.id)", userEmail: userEmail ?? "")
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
@@ -658,21 +660,4 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
   return type.isAny(of: .viewBacking, .manage, .fix)
-}
-
-private func triggerCapiEvent(for eventName: FacebookCAPIEventName, projectId: String, userEmail: String) {
-  guard let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
-
-  let eventInput = FacebookCAPIEventService
-    .createMutationInput(
-      for: eventName,
-      projectId: projectId,
-      externalId: externalId,
-      userEmail: userEmail
-    )
-
-  _ = AppEnvironment
-    .current
-    .apiService
-    .triggerCapiEventInput(input: eventInput)
 }
