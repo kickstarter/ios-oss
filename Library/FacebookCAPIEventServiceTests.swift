@@ -2,7 +2,7 @@
 @testable import Library
 import XCTest
 
-final class FacebookCAPIEventNameTests: XCTestCase {
+final class FacebookCAPIEventServiceTests: XCTestCase {
   func testCreateMutationInput() {
     let mutationInput = FacebookCAPIEventService
       .createMutationInput(
