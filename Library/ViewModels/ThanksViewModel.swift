@@ -199,6 +199,30 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       reward: $0.reward,
       checkoutData: $0.checkoutData
     ) }
+
+    // FB CAPI
+    let graphUser = self.viewDidLoadProperty.signal.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphUser(withStoredCards: false)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
+      .combineLatest(with: graphUser)
+      .observeValues { projectSignal, graphUser in
+        guard featureFacebookConversionsAPIEnabled() else { return }
+
+        let userEmail = graphUser.value?.me.email
+
+        FacebookCAPIEventService
+          .triggerCapiEvent(
+            for: .Purchase,
+            projectId: "\(projectSignal.0.id)",
+            userEmail: userEmail ?? ""
+          )
+      }
   }
 
   // MARK: - ThanksViewModelType
