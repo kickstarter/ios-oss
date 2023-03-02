@@ -212,14 +212,16 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
       .combineLatest(with: graphUser)
       .observeValues { projectSignal, graphUser in
-        guard featureFacebookConversionsAPIEnabled() else { return }
+        let (project, _) = projectSignal
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
 
         let userEmail = graphUser.value?.me.email
 
         FacebookCAPIEventService
           .triggerCapiEvent(
             for: .Purchase,
-            projectId: "\(projectSignal.0.id)",
+            projectId: "\(project.id)",
             userEmail: userEmail ?? ""
           )
       }

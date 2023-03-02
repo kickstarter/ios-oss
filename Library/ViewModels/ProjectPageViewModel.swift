@@ -353,9 +353,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     trackFreshProjectAndRefTagViewed
       .combineLatest(with: graphUser)
       .observeValues { projectAndRefTag, graphUser in
-        guard featureFacebookConversionsAPIEnabled() else { return }
-
         let (project, _) = projectAndRefTag
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
+
         let userEmail = graphUser.value?.me.email
 
         FacebookCAPIEventService
@@ -366,9 +367,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(shouldGoToRewards)
       .combineLatest(with: graphUser)
       .observeValues { projectAndRefTag, graphUser in
-        guard featureFacebookConversionsAPIEnabled() else { return }
-
         let (project, _) = projectAndRefTag
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
+
         let userEmail = graphUser.value?.me.email
 
         FacebookCAPIEventService

@@ -392,14 +392,16 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takeWhen(didTapToAddNewCard)
       .combineLatest(with: graphUser)
       .observeValues { projectSignal, graphUser in
-        guard featureFacebookConversionsAPIEnabled() else { return }
+        let (project, _) = projectSignal
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
 
         let userEmail = graphUser.value?.me.email
 
         FacebookCAPIEventService
           .triggerCapiEvent(
             for: .AddPaymentInfo,
-            projectId: "\(projectSignal.0.id)",
+            projectId: "\(project.id)",
             userEmail: userEmail ?? ""
           )
       }

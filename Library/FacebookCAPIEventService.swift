@@ -33,9 +33,7 @@ public struct FacebookCAPIEventService {
       .triggerCapiEventInput(input: eventInput)
   }
 
-  // MARK: Private Methods
-
-  private static func createMutationInput(
+  public static func createMutationInput(
     for eventName: FacebookCAPIEventName,
     projectId: String,
     externalId: String,
