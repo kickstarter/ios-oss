@@ -378,6 +378,31 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         return indexPath
       }
+
+    // FB CAPI
+    let graphUser = self.viewDidLoadProperty.signal.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphUser(withStoredCards: false)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
+      .takeWhen(didTapToAddNewCard)
+      .combineLatest(with: graphUser)
+      .observeValues { projectSignal, graphUser in
+        guard featureFacebookConversionsAPIEnabled() else { return }
+
+        let userEmail = graphUser.value?.me.email
+
+        FacebookCAPIEventService
+          .triggerCapiEvent(
+            for: .AddPaymentInfo,
+            projectId: "\(projectSignal.0.id)",
+            userEmail: userEmail ?? ""
+          )
+      }
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
