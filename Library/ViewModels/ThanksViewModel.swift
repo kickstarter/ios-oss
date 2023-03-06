@@ -209,6 +209,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           .materialize()
       }
 
+    let checkoutTotal = self.configureWithDataProperty.signal
+      .skipNil()
+      .map { ($0.checkoutData?.revenueInUsd) }
+
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
       .combineLatest(with: graphUser)
       .observeValues { projectSignal, graphUser in
@@ -219,12 +223,19 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPI
-          .triggerEvent(
-            for: .BackingComplete,
-            projectId: "\(project.id)",
-            externalId: externalId,
-            userEmail: userEmail ?? ""
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.BackingComplete.rawValue,
+              externalId: externalId,
+              userEmail: userEmail,
+              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
+              customData: GraphAPI
+                .CustomDataInput(currency: project.stats.currency, value: "\(checkoutTotal)")
+            )
           )
       }
   }

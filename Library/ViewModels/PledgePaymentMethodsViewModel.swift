@@ -380,31 +380,33 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     // FB CAPI
-    let graphUser = self.viewDidLoadProperty.signal.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphUser(withStoredCards: false)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
+    let userEmail = storedCardsEvent.values()
+      .filter(second >>> isFalse)
+      .map(first)
+      .skipNil()
+      .map { $0.me.email }
 
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
       .takeWhen(didTapToAddNewCard)
-      .combineLatest(with: graphUser)
-      .observeValues { projectSignal, graphUser in
+      .combineLatest(with: userEmail)
+      .observeValues { projectSignal, userEmail in
         let (project, _) = projectSignal
 
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
           let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
-        let userEmail = graphUser.value?.me.email
-
-        FacebookCAPI
-          .triggerEvent(
-            for: .AddNewPaymentMethod,
-            projectId: "\(project.id)",
-            externalId: externalId,
-            userEmail: userEmail ?? ""
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.AddNewPaymentMethod.rawValue,
+              externalId: externalId,
+              userEmail: userEmail,
+              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
+              customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
+            )
           )
       }
   }

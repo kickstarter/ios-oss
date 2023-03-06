@@ -360,12 +360,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPI
-          .triggerEvent(
-            for: .ProjectPageViewed,
-            projectId: "\(project.id)",
-            externalId: externalId,
-            userEmail: userEmail ?? ""
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.ProjectPageViewed.rawValue,
+              externalId: externalId,
+              userEmail: userEmail,
+              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
+              customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
+            )
           )
       }
 
@@ -380,12 +386,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPI
-          .triggerEvent(
-            for: .RewardSelectionViewed,
-            projectId: "\(project.id)",
-            externalId: externalId,
-            userEmail: userEmail ?? ""
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
+              externalId: externalId,
+              userEmail: userEmail,
+              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
+              customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
+            )
           )
       }
 
