@@ -9,6 +9,7 @@ internal class TestCase: XCTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()
+  internal let appTrackingTransparency = MockAppTrackingTransparencyService()
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
@@ -37,6 +38,7 @@ internal class TestCase: XCTestCase {
       apiDelayInterval: .seconds(0),
       applePayCapabilities: MockApplePayCapabilities(),
       application: UIApplication.shared,
+      appTrackingTransparency: self.appTrackingTransparency,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,

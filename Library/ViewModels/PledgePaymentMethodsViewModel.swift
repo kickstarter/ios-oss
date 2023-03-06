@@ -398,7 +398,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         let (project, _) = projectSignal
 
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
-          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+          let externalId = AppTrackingTransparency().advertisingIdentifier() else { return }
 
         _ = AppEnvironment
           .current

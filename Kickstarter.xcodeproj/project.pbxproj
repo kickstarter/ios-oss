@@ -491,6 +491,7 @@
 		606F216B299E8D8500BA5CDF /* TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
+		609C7DF129B67DC4008D66F2 /* MockAppTrackingTrasparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609C7DF029B67DC4008D66F2 /* MockAppTrackingTrasparency.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
@@ -2083,6 +2084,7 @@
 		606F2169299E8C9F00BA5CDF /* TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerCapiEventInputTests.swift; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
+		609C7DF029B67DC4008D66F2 /* MockAppTrackingTrasparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppTrackingTrasparency.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
@@ -6274,6 +6276,7 @@
 				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
 				8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */,
 				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
+				609C7DF029B67DC4008D66F2 /* MockAppTrackingTrasparency.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				77D19FF4240813240058FC8E /* NavigationController.swift */,
 				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
@@ -7805,6 +7808,7 @@
 				77A64E5A24647C55003BF98E /* DiscoveryProjectCardViewModel.swift in Sources */,
 				06B0FDBA2702579A00147E3E /* ProjectPageViewModel.swift in Sources */,
 				608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */,
+				609C7DF129B67DC4008D66F2 /* MockAppTrackingTrasparency.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */,
 				94114D83265451FF0063E8F6 /* CommentCellViewModel.swift in Sources */,
