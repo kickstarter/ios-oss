@@ -504,6 +504,7 @@ public final class KSRAnalytics {
     let shippingEnabled: Bool
     let shippingAmountUsd: Double?
     let userHasStoredApplePayCard: Bool
+    let facebookCAPIUserEmail: String?
   }
 
   public init(

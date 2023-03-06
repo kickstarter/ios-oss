@@ -201,27 +201,21 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     ) }
 
     // FB CAPI
-    let graphUser = self.viewDidLoadProperty.signal.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphUser(withStoredCards: false)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
+    let facebookCAPIUserEmail = self.configureWithDataProperty.signal
+      .skipNil()
+      .map { $0.checkoutData?.facebookCAPIUserEmail }
+    
     let checkoutTotal = self.configureWithDataProperty.signal
       .skipNil()
       .map { ($0.checkoutData?.revenueInUsd) }
 
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
-      .combineLatest(with: graphUser)
-      .observeValues { projectSignal, graphUser in
+      .combineLatest(with: facebookCAPIUserEmail)
+      .observeValues { projectSignal, facebookCAPIUserEmail in
         let (project, _) = projectSignal
 
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
           let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
-
-        let userEmail = graphUser.value?.me.email
 
         _ = AppEnvironment
           .current
@@ -231,7 +225,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
               projectId: "\(project.id)",
               eventName: FacebookCAPIEventName.BackingComplete.rawValue,
               externalId: externalId,
-              userEmail: userEmail,
+              userEmail: facebookCAPIUserEmail ?? "",
               appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
               customData: GraphAPI
                 .CustomDataInput(currency: project.stats.currency, value: "\(checkoutTotal)")

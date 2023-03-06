@@ -579,7 +579,8 @@ public func checkoutProperties(
   pledgeTotal: Double,
   shippingTotal: Double,
   checkoutId: String? = nil,
-  isApplePay: Bool?
+  isApplePay: Bool?,
+  facebookCAPIUserEmail: String? = nil
 ) -> KSRAnalytics.CheckoutPropertiesData {
   let staticUsdRate = Double(project.stats.staticUsdRate)
 
@@ -637,7 +638,8 @@ public func checkoutProperties(
     rewardTitle: rewardTitle,
     shippingEnabled: shippingEnabled,
     shippingAmountUsd: shippingAmountUsd,
-    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
+    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard,
+    facebookCAPIUserEmail: facebookCAPIUserEmail
   )
 }
 
