@@ -64,7 +64,7 @@ public protocol PledgeViewModelInputs {
   func riskMessagingViewControllerDismissed(isApplePay: Bool)
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
-  func storeFacebookCAPIUserEmail(_ email: String)
+  func storeFacebookCAPIUserEmail(_ email: String?)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
@@ -875,7 +875,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       facebookCAPIUserEmail
     )
     .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal, facebookCAPIUserEmail
-      -> (CreateBackingData, Bool, String?, Reward, Double, Double, String) in
+      -> (CreateBackingData, Bool, String?, Reward, Double, Double, String?) in
       let (data, isApplePay) = dataAndIsApplePay
       guard let checkoutId = checkoutId else {
         return (
@@ -1160,8 +1160,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.creditCardSelectedObserver.send(value: paymentSourceData)
   }
 
-  private let facebookCAPIUserEmailProperty = MutableProperty<String>("")
-  public func storeFacebookCAPIUserEmail(_ email: String) {
+  private let facebookCAPIUserEmailProperty = MutableProperty<String?>(nil)
+  public func storeFacebookCAPIUserEmail(_ email: String?) {
     self.facebookCAPIUserEmailProperty.value = email
   }
 
