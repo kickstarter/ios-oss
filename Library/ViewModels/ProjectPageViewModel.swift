@@ -359,8 +359,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPIEventService
-          .triggerCapiEvent(for: .ViewContent, projectId: "\(project.id)", userEmail: userEmail ?? "")
+        FacebookCAPI
+          .triggerEvent(for: .ProjectPageViewed, projectId: "\(project.id)", userEmail: userEmail ?? "")
       }
 
     trackFreshProjectAndRefTagViewed
@@ -373,8 +373,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPIEventService
-          .triggerCapiEvent(for: .InitiateCheckout, projectId: "\(project.id)", userEmail: userEmail ?? "")
+        FacebookCAPI
+          .triggerEvent(for: .RewardSelectionViewed, projectId: "\(project.id)", userEmail: userEmail ?? "")
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))

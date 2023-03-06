@@ -3,17 +3,17 @@ import KsApi
 
 public enum FacebookCAPIEventName: String {
   /// viewing a project page
-  case ViewContent
+  case ProjectPageViewed = "ViewContent"
   /// viewing the reward selection screen
-  case InitiateCheckout
+  case RewardSelectionViewed = "InitiateCheckout"
   /// viewing the checkout page where you enter credit card details
-  case AddPaymentInfo
+  case AddNewPaymentMethod = "AddPaymentInfo"
   /// completion of backing
-  case Purchase
+  case BackingComplete = "Purchase"
 }
 
-public struct FacebookCAPIEventService {
-  public static func triggerCapiEvent(
+public struct FacebookCAPI {
+  public static func triggerEvent(
     for eventName: FacebookCAPIEventName,
     projectId: String,
     userEmail: String

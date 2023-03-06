@@ -218,9 +218,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPIEventService
-          .triggerCapiEvent(
-            for: .Purchase,
+        FacebookCAPI
+          .triggerEvent(
+            for: .BackingComplete,
             projectId: "\(project.id)",
             userEmail: userEmail ?? ""
           )

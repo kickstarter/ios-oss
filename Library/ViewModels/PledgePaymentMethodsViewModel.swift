@@ -398,9 +398,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         let userEmail = graphUser.value?.me.email
 
-        FacebookCAPIEventService
-          .triggerCapiEvent(
-            for: .AddPaymentInfo,
+        FacebookCAPI
+          .triggerEvent(
+            for: .AddNewPaymentMethod,
             projectId: "\(project.id)",
             userEmail: userEmail ?? ""
           )

@@ -2,11 +2,11 @@
 @testable import Library
 import XCTest
 
-final class FacebookCAPIEventServiceTests: XCTestCase {
+final class FacebookCAPITests: XCTestCase {
   func testCreateMutationInput() {
-    let mutationInput = FacebookCAPIEventService
+    let mutationInput = FacebookCAPI
       .createMutationInput(
-        for: .ViewContent,
+        for: .ProjectPageViewed,
         projectId: "projId",
         externalId: "extId",
         userEmail: "email",
@@ -16,7 +16,7 @@ final class FacebookCAPIEventServiceTests: XCTestCase {
 
     let dict = mutationInput.toInputDictionary()
 
-    XCTAssertEqual(dict["eventName"] as! String, FacebookCAPIEventName.ViewContent.rawValue)
+    XCTAssertEqual(dict["eventName"] as! String, FacebookCAPIEventName.ProjectPageViewed.rawValue)
     XCTAssertEqual(dict["projectId"] as! String, "projId")
     XCTAssertEqual(dict["externalId"] as! String, "extId")
     XCTAssertEqual(dict["userEmail"] as! String, "email")
