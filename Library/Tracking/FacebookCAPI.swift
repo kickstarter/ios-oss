@@ -16,10 +16,9 @@ public struct FacebookCAPI {
   public static func triggerEvent(
     for eventName: FacebookCAPIEventName,
     projectId: String,
+    externalId: String,
     userEmail: String
   ) {
-    guard let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
-
     let eventInput = self.createMutationInput(
       for: eventName,
       projectId: projectId,

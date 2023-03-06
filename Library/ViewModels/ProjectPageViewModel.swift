@@ -355,12 +355,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .observeValues { projectAndRefTag, graphUser in
         let (project, _) = projectAndRefTag
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
+          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
         let userEmail = graphUser.value?.me.email
 
         FacebookCAPI
-          .triggerEvent(for: .ProjectPageViewed, projectId: "\(project.id)", userEmail: userEmail ?? "")
+          .triggerEvent(
+            for: .ProjectPageViewed,
+            projectId: "\(project.id)",
+            externalId: externalId,
+            userEmail: userEmail ?? ""
+          )
       }
 
     trackFreshProjectAndRefTagViewed
@@ -369,12 +375,18 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .observeValues { projectAndRefTag, graphUser in
         let (project, _) = projectAndRefTag
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
+          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
         let userEmail = graphUser.value?.me.email
 
         FacebookCAPI
-          .triggerEvent(for: .RewardSelectionViewed, projectId: "\(project.id)", userEmail: userEmail ?? "")
+          .triggerEvent(
+            for: .RewardSelectionViewed,
+            projectId: "\(project.id)",
+            externalId: externalId,
+            userEmail: userEmail ?? ""
+          )
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))

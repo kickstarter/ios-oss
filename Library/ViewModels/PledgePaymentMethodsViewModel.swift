@@ -394,7 +394,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .observeValues { projectSignal, graphUser in
         let (project, _) = projectSignal
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true else { return }
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
+          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
         let userEmail = graphUser.value?.me.email
 
@@ -402,6 +403,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .triggerEvent(
             for: .AddNewPaymentMethod,
             projectId: "\(project.id)",
+            externalId: externalId,
             userEmail: userEmail ?? ""
           )
       }
