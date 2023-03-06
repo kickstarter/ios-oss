@@ -10,7 +10,7 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
   )
-  func passFacebookCAPIUserEmail(_ email: String)
+  func passFacebookCAPIUserEmail(_ email: String?)
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -140,12 +140,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         strongSelf.updateAddNewPaymentMethodButtonLoading(state: showLoadingIndicator)
       }
-    
+
     self.viewModel.outputs.notifyFacebookCAPIUserEmail
       .observeForUI()
       .observeValues { [weak self] email in
         guard let strongSelf = self else { return }
-        
+
         strongSelf.delegate?.passFacebookCAPIUserEmail(email)
       }
   }

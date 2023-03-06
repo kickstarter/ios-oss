@@ -631,6 +631,7 @@ public func checkoutProperties(
     bonusAmountInUsd: bonusAmountUsd,
     checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
+    facebookCAPIUserEmail: facebookCAPIUserEmail,
     paymentType: paymentType,
     revenueInUsd: pledgeTotalUsd,
     rewardId: rewardId,
@@ -638,8 +639,7 @@ public func checkoutProperties(
     rewardTitle: rewardTitle,
     shippingEnabled: shippingEnabled,
     shippingAmountUsd: shippingAmountUsd,
-    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard,
-    facebookCAPIUserEmail: facebookCAPIUserEmail
+    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
 }
 

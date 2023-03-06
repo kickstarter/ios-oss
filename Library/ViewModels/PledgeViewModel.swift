@@ -862,7 +862,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: creatingContext).ignoreValues(),
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
-    
+
     let facebookCAPIUserEmail = self.facebookCAPIUserEmailProperty.signal
       .map { $0 }
 
@@ -878,7 +878,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       -> (CreateBackingData, Bool, String?, Reward, Double, Double, String) in
       let (data, isApplePay) = dataAndIsApplePay
       guard let checkoutId = checkoutId else {
-        return (data, isApplePay, nil, baseReward, additionalPledgeAmount, allRewardsShippingTotal, facebookCAPIUserEmail)
+        return (
+          data,
+          isApplePay,
+          nil,
+          baseReward,
+          additionalPledgeAmount,
+          allRewardsShippingTotal,
+          facebookCAPIUserEmail
+        )
       }
       return (
         data,
@@ -902,7 +910,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         shippingTotal: allRewardsShippingTotal,
         checkoutId: checkoutId,
         isApplePay: isApplePay,
-        facebookCAPIUserEmail:facebookCAPIUserEmail
+        facebookCAPIUserEmail: facebookCAPIUserEmail
       )
 
       return (data.project, baseReward, checkoutPropsData)
@@ -1151,7 +1159,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
     self.creditCardSelectedObserver.send(value: paymentSourceData)
   }
-  
+
   private let facebookCAPIUserEmailProperty = MutableProperty<String>("")
   public func storeFacebookCAPIUserEmail(_ email: String) {
     self.facebookCAPIUserEmailProperty.value = email

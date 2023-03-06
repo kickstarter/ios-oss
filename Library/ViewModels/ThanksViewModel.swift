@@ -204,7 +204,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let facebookCAPIUserEmail = self.configureWithDataProperty.signal
       .skipNil()
       .map { $0.checkoutData?.facebookCAPIUserEmail }
-    
+
     let checkoutTotal = self.configureWithDataProperty.signal
       .skipNil()
       .map { ($0.checkoutData?.revenueInUsd) }

@@ -47,7 +47,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 public protocol PledgePaymentMethodsViewModelOutputs {
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
-  var notifyFacebookCAPIUserEmail: Signal<String, Never> { get }
+  var notifyFacebookCAPIUserEmail: Signal<String?, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
@@ -386,8 +386,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map(first)
       .skipNil()
       .map { $0.me.email }
-    
-    self.notifyFacebookCAPIUserEmail = userEmail.signal.skipNil()
+
+    self.notifyFacebookCAPIUserEmail = userEmail.signal
 
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
       .takeWhen(didTapToAddNewCard)
@@ -457,7 +457,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
-  public let notifyFacebookCAPIUserEmail: Signal<String, Never>
+  public let notifyFacebookCAPIUserEmail: Signal<String?, Never>
   public let notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>

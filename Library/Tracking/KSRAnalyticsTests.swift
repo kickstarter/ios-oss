@@ -2058,6 +2058,7 @@ extension KSRAnalytics.CheckoutPropertiesData {
     bonusAmountInUsd: 10.00,
     checkoutId: "1",
     estimatedDelivery: 12_345_678,
+    facebookCAPIUserEmail: nil,
     paymentType: "CREDIT_CARD",
     revenueInUsd: 20.00,
     rewardId: "2",
