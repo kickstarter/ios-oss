@@ -18,7 +18,7 @@ public struct FacebookCAPIEventService {
     projectId: String,
     userEmail: String
   ) {
-    guard let externalId = AppTrackingTransparencyService.advertisingIdentifier() else { return }
+    guard let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
     let eventInput = self.createMutationInput(
       for: eventName,

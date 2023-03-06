@@ -2,7 +2,7 @@ import AdSupport
 import AppTrackingTransparency
 import Foundation
 
-public struct AppTrackingTransparencyService {
+public struct AppTrackingTransparency {
   public static func authorizationStatus() -> ATTrackingAuthorizationStatus {
     var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
 

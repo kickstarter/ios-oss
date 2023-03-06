@@ -811,7 +811,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       .map { _ -> ATTrackingAuthorizationStatus in
         guard featureConsentManagementDialogEnabled() else { return .notDetermined }
-        return AppTrackingTransparencyService.authorizationStatus()
+        return AppTrackingTransparency.authorizationStatus()
       }
   }
 
