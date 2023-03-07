@@ -226,9 +226,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
               eventName: FacebookCAPIEventName.BackingComplete.rawValue,
               externalId: externalId,
               userEmail: facebookCAPIUserEmail ?? "",
-              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
-              customData: GraphAPI
-                .CustomDataInput(currency: project.stats.currency, value: "\(checkoutTotal)")
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: project.stats.currency, value: "\(checkoutTotal)")
             )
           )
       }

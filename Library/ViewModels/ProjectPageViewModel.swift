@@ -355,7 +355,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .observeValues { projectAndRefTag, graphUser in
         let (project, _) = projectAndRefTag
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
           let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
         let userEmail = graphUser.value?.me.email
@@ -369,8 +369,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
               eventName: FacebookCAPIEventName.ProjectPageViewed.rawValue,
               externalId: externalId,
               userEmail: userEmail,
-              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
-              customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: nil, value: nil)
             )
           )
       }
@@ -381,7 +381,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .observeValues { projectAndRefTag, graphUser in
         let (project, _) = projectAndRefTag
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
           let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
 
         let userEmail = graphUser.value?.me.email
@@ -395,8 +395,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
               eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
               externalId: externalId,
               userEmail: userEmail,
-              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
-              customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: nil, value: nil)
             )
           )
       }

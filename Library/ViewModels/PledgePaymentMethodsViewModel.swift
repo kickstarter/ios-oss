@@ -407,8 +407,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
               eventName: FacebookCAPIEventName.AddNewPaymentMethod.rawValue,
               externalId: externalId,
               userEmail: userEmail,
-              appData: GraphAPI.AppDataInput(extinfo: ["i2"]),
-              customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: nil, value: nil)
             )
           )
       }
