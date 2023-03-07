@@ -375,32 +375,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           )
       }
 
-    trackFreshProjectAndRefTagViewed
-      .takeWhen(shouldGoToRewards)
-      .combineLatest(with: graphUser)
-      .observeValues { projectAndRefTag, graphUser in
-        let (project, _) = projectAndRefTag
-
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
-
-        let userEmail = graphUser.value?.me.email
-
-        _ = AppEnvironment
-          .current
-          .apiService
-          .triggerCapiEventInput(
-            input: .init(
-              projectId: "\(project.id)",
-              eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
-              externalId: externalId,
-              userEmail: userEmail,
-              appData: .init(extinfo: ["i2"]),
-              customData: .init(currency: nil, value: nil)
-            )
-          )
-      }
-
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))
