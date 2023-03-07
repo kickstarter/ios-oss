@@ -5973,6 +5973,7 @@
 			isa = PBXGroup;
 			children = (
 				8A788F25263C80C500A89DAE /* Vendor */,
+				6018626529A9194600EA2842 /* AppTrackingTransparency.swift */,
 				606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */,
 				6018626729A91B8C00EA2842 /* FacebookCAPIEventName.swift */,
 				8A23203025B0ECF700B940C3 /* IdentifyingTrackingClient.swift */,
@@ -6212,7 +6213,6 @@
 				D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */,
 				77C9122823C4FC0B00F3D2C9 /* ApplePayCapabilities.swift */,
 				77C9122E23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift */,
-				6018626529A9194600EA2842 /* AppTrackingTransparency.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
 				374CB94E22C17D4E00B84219 /* CharacterSet.swift */,
 				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
