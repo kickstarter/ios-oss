@@ -36,6 +36,7 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
   func shouldCancelPaymentSheetAppearance(state: Bool)
+  func stripePaymentSheetDidAppear()
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
@@ -60,7 +61,8 @@ public protocol PledgePaymentMethodsViewModelType {
 }
 
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
-  PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
+                                                  PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
+  
   public init() {
     let configureWithValue = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
@@ -381,6 +383,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     // FB CAPI
+    let stripePaymentSheetDidAppear = self.stripePaymentSheetDidAppearProperty.signal
     let userEmail = storedCardsEvent.values()
       .filter(second >>> isFalse)
       .map(first)
@@ -389,8 +392,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.notifyFacebookCAPIUserEmail = userEmail.signal
 
-    _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
-      .takeWhen(didTapToAddNewCard)
+    _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal)
+      .takeWhen(stripePaymentSheetDidAppear)
       .combineLatest(with: userEmail)
       .observeValues { projectSignal, userEmail in
         let (project, _) = projectSignal
@@ -436,6 +439,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(true)
   public func shouldCancelPaymentSheetAppearance(state: Bool) {
     self.shouldCancelPaymentSheetAppearance.value = state
+  }
+  
+  private let stripePaymentSheetDidAppearProperty = MutableProperty(())
+  public func stripePaymentSheetDidAppear() {
+    self.stripePaymentSheetDidAppearProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())

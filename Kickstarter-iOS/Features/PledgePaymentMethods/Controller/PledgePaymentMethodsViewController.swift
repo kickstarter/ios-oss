@@ -192,6 +192,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
               strongSelf.confirmPaymentResult(with: data.clientSecret)
             }
           }
+          strongSelf.view.inputs.stripePaymentSheetDidAppearProperty()
         }
       }
   }
