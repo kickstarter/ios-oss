@@ -228,7 +228,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           refTag: refTag
         )
       }
-    
+
     // FB CAPI
     let graphUser = self.viewDidAppearProperty.signal.ignoreValues()
       .switchMap { _ in

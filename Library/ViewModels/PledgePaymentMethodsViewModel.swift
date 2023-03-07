@@ -61,8 +61,7 @@ public protocol PledgePaymentMethodsViewModelType {
 }
 
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
-                                                  PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
-  
+  PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
   public init() {
     let configureWithValue = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
@@ -440,7 +439,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public func shouldCancelPaymentSheetAppearance(state: Bool) {
     self.shouldCancelPaymentSheetAppearance.value = state
   }
-  
+
   private let stripePaymentSheetDidAppearProperty = MutableProperty(())
   public func stripePaymentSheetDidAppear() {
     self.stripePaymentSheetDidAppearProperty.value = ()
