@@ -201,36 +201,39 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     ) }
 
     // FB CAPI
-    let facebookCAPIUserEmail = self.configureWithDataProperty.signal
-      .skipNil()
-      .map { $0.checkoutData?.facebookCAPIUserEmail }
 
-    let checkoutTotal = self.configureWithDataProperty.signal
-      .skipNil()
-      .map { ($0.checkoutData?.revenueInUsd) }
+    _ = Signal.combineLatest(
+      project,
+      self.configureWithDataProperty.signal.skipNil()
+    )
+    .observeValues { project, configData in
+      var userEmail: String?
+      var checkoutUSDAmount = ""
 
-    _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal.ignoreValues())
-      .combineLatest(with: facebookCAPIUserEmail)
-      .observeValues { projectSignal, facebookCAPIUserEmail in
-        let (project, _) = projectSignal
-
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
-          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
-
-        _ = AppEnvironment
-          .current
-          .apiService
-          .triggerCapiEventInput(
-            input: .init(
-              projectId: "\(project.id)",
-              eventName: FacebookCAPIEventName.BackingComplete.rawValue,
-              externalId: externalId,
-              userEmail: facebookCAPIUserEmail ?? "",
-              appData: .init(extinfo: ["i2"]),
-              customData: .init(currency: project.stats.currency, value: "\(checkoutTotal)")
-            )
-          )
+      if let checkoutDataValues = configData.checkoutData {
+        userEmail = checkoutDataValues.facebookCAPIUserEmail
+        checkoutUSDAmount = "\(checkoutDataValues.revenueInUsd)" + "\(checkoutDataValues.addOnsMinimumUsd)"
+        checkoutUSDAmount += String(describing: checkoutDataValues.shippingAmountUsd)
+        checkoutUSDAmount += String(describing: checkoutDataValues.bonusAmountInUsd)
       }
+
+      guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
+        let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+
+      _ = AppEnvironment
+        .current
+        .apiService
+        .triggerCapiEventInput(
+          input: .init(
+            projectId: "\(project.id)",
+            eventName: FacebookCAPIEventName.BackingComplete.rawValue,
+            externalId: externalId,
+            userEmail: userEmail,
+            appData: .init(extinfo: ["i2"]),
+            customData: .init(currency: Currency.USD.rawValue, value: checkoutUSDAmount)
+          )
+        )
+    }
   }
 
   // MARK: - ThanksViewModelType
