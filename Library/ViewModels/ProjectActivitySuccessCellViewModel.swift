@@ -31,14 +31,20 @@ public final class ProjectActivitySuccessCellViewModel: ProjectActivitySuccessCe
     self.backgroundImageURL = project.map { $0.photo.med }.map(URL.init(string:))
 
     self.title = project.map { project in
-      Strings.dashboard_activity_successfully_raised_pledged(
+      var projectDeadline = ""
+
+      if let projectDeadlineValue = project.dates.deadline {
+        projectDeadline = Format.date(
+          secondsInUTC: projectDeadlineValue, dateStyle: .long,
+          timeStyle: .none
+        ).nonBreakingSpaced()
+      }
+
+      return Strings.dashboard_activity_successfully_raised_pledged(
         pledged: Format.currency(project.stats.pledged, country: project.country).nonBreakingSpaced(),
         backers: Strings.general_backer_count_backers(backer_count: project.stats.backersCount)
           .nonBreakingSpaced(),
-        deadline: Format.date(
-          secondsInUTC: project.dates.deadline, dateStyle: .long,
-          timeStyle: .none
-        ).nonBreakingSpaced()
+        deadline: projectDeadline
       )
     }
   }

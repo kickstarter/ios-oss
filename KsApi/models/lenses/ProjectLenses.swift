@@ -502,7 +502,7 @@ extension Lens where Whole == Project, Part == Project.MemberData {
 }
 
 extension Lens where Whole == Project, Part == Project.Dates {
-  public var deadline: Lens<Project, TimeInterval> {
+  public var deadline: Lens<Project, TimeInterval?> {
     return Project.lens.dates .. Project.Dates.lens.deadline
   }
 
@@ -510,7 +510,7 @@ extension Lens where Whole == Project, Part == Project.Dates {
     return Project.lens.dates .. Project.Dates.lens.featuredAt
   }
 
-  public var launchedAt: Lens<Project, TimeInterval> {
+  public var launchedAt: Lens<Project, TimeInterval?> {
     return Project.lens.dates .. Project.Dates.lens.launchedAt
   }
 
