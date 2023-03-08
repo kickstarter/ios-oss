@@ -142,7 +142,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
 
     self.viewModel.outputs.notifyFacebookCAPIUserEmail
-      .observeForUI()
       .observeValues { [weak self] email in
         guard let strongSelf = self else { return }
 

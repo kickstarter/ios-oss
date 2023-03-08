@@ -342,23 +342,13 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       }
 
     // FB CAPI
-    let graphUser = self.viewDidAppearAnimatedProperty.signal.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphUser(withStoredCards: false)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
 
     trackFreshProjectAndRefTagViewed
-      .combineLatest(with: graphUser)
-      .observeValues { projectAndRefTag, graphUser in
+      .observeValues { projectAndRefTag in
         let (project, _) = projectAndRefTag
 
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
           let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
-
-        let userEmail = graphUser.value?.me.email
 
         _ = AppEnvironment
           .current
@@ -368,7 +358,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
               projectId: "\(project.id)",
               eventName: FacebookCAPIEventName.ProjectPageViewed.rawValue,
               externalId: externalId,
-              userEmail: userEmail,
+              userEmail: nil,
               appData: .init(extinfo: ["i2"]),
               customData: .init(currency: nil, value: nil)
             )
