@@ -44,6 +44,7 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
       |> Project.lens.country .~ .us
 
     let stats = [ProjectStatsEnvelope.FundingDateStats.template]
+    let deadline = liveProject.dates.deadline!
 
     self.vm.inputs.configureWith(fundingDateStats: stats, project: liveProject)
 
@@ -53,14 +54,15 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
           pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
           goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
           backers_count: liveProject.stats.backersCount,
-          time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
-            Format.duration(secondsInUTC: liveProject.dates.deadline).unit
+          time_left: Format.duration(secondsInUTC: deadline).time + " " +
+            Format.duration(secondsInUTC: deadline).unit
         )
       ],
       "Live project stats value emits."
     )
 
     let nonLiveProject = .template |> Project.lens.state .~ .successful
+    let nonLiveDeadline = nonLiveProject.dates.deadline!
 
     self.vm.inputs.configureWith(fundingDateStats: stats, project: nonLiveProject)
 
@@ -70,15 +72,15 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
           pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
           goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
           backers_count: liveProject.stats.backersCount,
-          time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
-            Format.duration(secondsInUTC: liveProject.dates.deadline).unit
+          time_left: Format.duration(secondsInUTC: deadline).time + " " +
+            Format.duration(secondsInUTC: deadline).unit
         ),
         Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
           pledged: Format.currency(nonLiveProject.stats.pledged, country: nonLiveProject.country),
           goal: Format.currency(nonLiveProject.stats.goal, country: nonLiveProject.country),
           backers_count: nonLiveProject.stats.backersCount,
-          time_left: Format.duration(secondsInUTC: nonLiveProject.dates.deadline).time + " " +
-            Format.duration(secondsInUTC: nonLiveProject.dates.deadline).unit
+          time_left: Format.duration(secondsInUTC: nonLiveDeadline).time + " " +
+            Format.duration(secondsInUTC: nonLiveDeadline).unit
         )
       ],
       "Non live project stats value emits."
