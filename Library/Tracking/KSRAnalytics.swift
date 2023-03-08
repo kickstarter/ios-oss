@@ -496,6 +496,7 @@ public final class KSRAnalytics {
     let bonusAmountInUsd: Decimal?
     let checkoutId: String?
     let estimatedDelivery: TimeInterval?
+    let facebookCAPIUserEmail: String?
     let paymentType: String?
     let revenueInUsd: Decimal
     let rewardId: String

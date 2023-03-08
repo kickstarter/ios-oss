@@ -64,6 +64,7 @@ public protocol PledgeViewModelInputs {
   func riskMessagingViewControllerDismissed(isApplePay: Bool)
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
+  func storeFacebookCAPIUserEmail(_ email: String?)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
@@ -862,18 +863,30 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
+    let facebookCAPIUserEmail = self.facebookCAPIUserEmailProperty.signal
+      .map { $0 }
+
     let thanksPageData = Signal.combineLatest(
       createBackingDataAndIsApplePay,
       checkoutIdProperty.signal,
       baseReward,
       additionalPledgeAmount,
-      allRewardsShippingTotal
+      allRewardsShippingTotal,
+      facebookCAPIUserEmail
     )
-    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
-      -> (CreateBackingData, Bool, String?, Reward, Double, Double) in
+    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal, facebookCAPIUserEmail
+      -> (CreateBackingData, Bool, String?, Reward, Double, Double, String?) in
       let (data, isApplePay) = dataAndIsApplePay
       guard let checkoutId = checkoutId else {
-        return (data, isApplePay, nil, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
+        return (
+          data,
+          isApplePay,
+          nil,
+          baseReward,
+          additionalPledgeAmount,
+          allRewardsShippingTotal,
+          facebookCAPIUserEmail
+        )
       }
       return (
         data,
@@ -881,10 +894,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         String(checkoutId),
         baseReward,
         additionalPledgeAmount,
-        allRewardsShippingTotal
+        allRewardsShippingTotal,
+        facebookCAPIUserEmail
       )
     }
-    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
+    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal, facebookCAPIUserEmail
       -> ThanksPageData? in
       let checkoutPropsData = checkoutProperties(
         from: data.project,
@@ -895,7 +909,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         pledgeTotal: data.pledgeTotal,
         shippingTotal: allRewardsShippingTotal,
         checkoutId: checkoutId,
-        isApplePay: isApplePay
+        isApplePay: isApplePay,
+        facebookCAPIUserEmail: facebookCAPIUserEmail
       )
 
       return (data.project, baseReward, checkoutPropsData)
@@ -1143,6 +1158,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .pipe()
   public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
     self.creditCardSelectedObserver.send(value: paymentSourceData)
+  }
+
+  private let facebookCAPIUserEmailProperty = MutableProperty<String?>(nil)
+  public func storeFacebookCAPIUserEmail(_ email: String?) {
+    self.facebookCAPIUserEmailProperty.value = email
   }
 
   private let (pkPaymentSignal, pkPaymentObserver) = Signal<(
