@@ -337,6 +337,13 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
 
+  public func fetchGraphUserEmail()
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserEmailQuery())
+      .flatMap(UserEnvelope<GraphUserEmail>.envelopeProducer(from:))
+  }
+
   public func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
     guard let status = GraphAPI.BackingState.from(status) else

@@ -78,6 +78,7 @@
     fileprivate let fetchDraftError: ErrorEnvelope?
 
     fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
+    fileprivate let fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>?
     fileprivate let fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -248,6 +249,7 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
+      fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>? = nil,
       fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -360,6 +362,7 @@
       self.fetchGraphCategoriesResult = fetchGraphCategoriesResult
 
       self.fetchGraphUserResult = fetchGraphUserResult
+      self.fetchGraphUserEmailResult = fetchGraphUserEmailResult
 
       self.fetchErroredUserBackingsResult = fetchErroredUserBackingsResult
 
@@ -781,6 +784,16 @@
       let fetchGraphUserQuery = GraphAPI.FetchUserQuery(withStoredCards: withStoredCards)
 
       return client.fetchWithResult(query: fetchGraphUserQuery, result: self.fetchGraphUserResult)
+    }
+
+    internal func fetchGraphUserEmail() -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
+
+      return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
     }
 
     // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.
