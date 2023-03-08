@@ -341,6 +341,30 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         )
       }
 
+    // FB CAPI
+
+    trackFreshProjectAndRefTagViewed
+      .observeValues { projectAndRefTag in
+        let (project, _) = projectAndRefTag
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
+          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.ProjectPageViewed.rawValue,
+              externalId: externalId,
+              userEmail: nil,
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: nil, value: nil)
+            )
+          )
+      }
+
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))

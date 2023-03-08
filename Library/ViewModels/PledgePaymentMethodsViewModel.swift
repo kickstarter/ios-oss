@@ -36,6 +36,7 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
   func shouldCancelPaymentSheetAppearance(state: Bool)
+  func stripePaymentSheetDidAppear()
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
@@ -47,6 +48,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 public protocol PledgePaymentMethodsViewModelOutputs {
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
+  var notifyFacebookCAPIUserEmail: Signal<String?, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
@@ -378,6 +380,40 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         return indexPath
       }
+
+    // FB CAPI
+    let stripePaymentSheetDidAppear = self.stripePaymentSheetDidAppearProperty.signal
+    let userEmail = storedCardsEvent.values()
+      .filter(second >>> isFalse)
+      .map(first)
+      .skipNil()
+      .map { $0.me.email }
+
+    self.notifyFacebookCAPIUserEmail = userEmail.signal
+
+    _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal)
+      .takeWhen(stripePaymentSheetDidAppear)
+      .combineLatest(with: userEmail)
+      .observeValues { projectSignal, userEmail in
+        let (project, _) = projectSignal
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
+          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.AddNewPaymentMethod.rawValue,
+              externalId: externalId,
+              userEmail: userEmail,
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: nil, value: nil)
+            )
+          )
+      }
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
@@ -404,6 +440,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.shouldCancelPaymentSheetAppearance.value = state
   }
 
+  private let stripePaymentSheetDidAppearProperty = MutableProperty(())
+  public func stripePaymentSheetDidAppear() {
+    self.stripePaymentSheetDidAppearProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -423,6 +464,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
+  public let notifyFacebookCAPIUserEmail: Signal<String?, Never>
   public let notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>

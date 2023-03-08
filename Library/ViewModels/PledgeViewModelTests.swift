@@ -1774,6 +1774,8 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
+
       self.scheduler.run()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -1783,6 +1785,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 10.00,
         checkoutId: "1",
         estimatedDelivery: 1_506_897_315.0,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "apple_pay",
         revenueInUsd: 15.00,
         rewardId: "1",
@@ -1872,6 +1875,8 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
+
       self.scheduler.run()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -1881,6 +1886,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 10.00,
         checkoutId: "1",
         estimatedDelivery: 1_506_897_315.0,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "apple_pay",
         revenueInUsd: 15.00,
         rewardId: "1",
@@ -1962,6 +1968,8 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
+
       self.scheduler.run()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -1971,6 +1979,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 13.10,
         checkoutId: "1",
         estimatedDelivery: 1_506_897_315.0,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "apple_pay",
         revenueInUsd: 19.65,
         rewardId: "1",
@@ -2066,6 +2075,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanksProject.assertDidNotEmitValue()
 
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
+
       self.scheduler.run()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -2075,6 +2086,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 0.00,
         checkoutId: "1",
         estimatedDelivery: 1_506_897_315.0,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "apple_pay",
         revenueInUsd: 10.00,
         rewardId: "1",
@@ -2279,12 +2291,14 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertValues([false, true])
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -2294,6 +2308,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 15.00,
         checkoutId: "1",
         estimatedDelivery: reward.estimatedDeliveryOn,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "credit_card",
         revenueInUsd: 58.00,
         rewardId: String(reward.id),
@@ -2405,12 +2420,14 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertValues([false, true])
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -2420,6 +2437,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 15.00,
         checkoutId: "1",
         estimatedDelivery: reward.estimatedDeliveryOn,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "credit_card",
         revenueInUsd: 58.00,
         rewardId: String(reward.id),
@@ -2504,12 +2522,14 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertValues([false, true])
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -2519,6 +2539,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 25.00,
         checkoutId: "1",
         estimatedDelivery: reward.estimatedDeliveryOn,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "credit_card",
         revenueInUsd: 35.00,
         rewardId: String(reward.id),
@@ -5286,6 +5307,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
 
       self.scheduler.run()
 
@@ -5302,6 +5324,7 @@ final class PledgeViewModelTests: TestCase {
       self.processingViewIsHidden.assertValues([false, true])
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -5311,6 +5334,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 15.00,
         checkoutId: "1",
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "credit_card",
         revenueInUsd: 35.00,
         rewardId: String(reward.id),
@@ -6317,12 +6341,14 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
 
       self.scheduler.run()
 
       self.processingViewIsHidden.assertValues([false, true])
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -6332,6 +6358,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 25.00,
         checkoutId: "1",
         estimatedDelivery: reward.estimatedDeliveryOn,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "credit_card",
         revenueInUsd: 35.00,
         rewardId: String(reward.id),
@@ -6425,11 +6452,13 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.vm.inputs.storeFacebookCAPIUserEmail("test@email.com")
 
       self.scheduler.run()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = KSRAnalytics.CheckoutPropertiesData(
@@ -6439,6 +6468,7 @@ final class PledgeViewModelTests: TestCase {
         bonusAmountInUsd: 25.00,
         checkoutId: "1",
         estimatedDelivery: reward.estimatedDeliveryOn,
+        facebookCAPIUserEmail: "test@email.com",
         paymentType: "apple_pay",
         revenueInUsd: 35.00,
         rewardId: String(reward.id),
