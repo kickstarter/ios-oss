@@ -28,7 +28,7 @@ final class GraphUserEmailTests: XCTestCase {
   func testDecoding_WithNilValues() {
     let jsonString = """
     {
-      "email": "blob@me.com"
+      "email": null
     }
     """
 
@@ -41,7 +41,7 @@ final class GraphUserEmailTests: XCTestCase {
     do {
       let user = try JSONDecoder().decode(GraphUserEmail.self, from: data)
 
-      XCTAssertEqual(user.email, "blob@me.com")
+      XCTAssertNil(user.email)
     } catch {
       XCTFail("Failed to decode \(error)")
     }
