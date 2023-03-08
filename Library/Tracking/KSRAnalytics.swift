@@ -1240,9 +1240,10 @@ public final class KSRAnalytics {
     refTag: String? = nil
   ) {
     if featureConsentManagementDialogEnabled() {
-      guard AppEnvironment.current.appTrackingTransparency.authorizationStatus() == .authorized else { return }      
+      guard AppEnvironment.current.appTrackingTransparency.authorizationStatus() == .authorized
+      else { return }
     }
-    
+
     let props = self.sessionProperties(refTag: refTag)
       .withAllValuesFrom(userProperties(for: self.loggedInUser))
       .withAllValuesFrom(properties)

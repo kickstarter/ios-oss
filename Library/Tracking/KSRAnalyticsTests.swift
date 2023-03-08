@@ -1609,7 +1609,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Film & Video", segmentClient.properties.last?["discover_category_name"] as? String)
     XCTAssertEqual("Documentary", segmentClient.properties.last?["discover_subcategory_name"] as? String)
   }
-  
+
   func testEventsCalledAsExpectedWhenAppTrackingConsentAuthorized_WhenFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
@@ -1621,7 +1621,10 @@ final class KSRAnalyticsTests: TestCase {
 
     mockAppTrackingTransparency.authStatusStub = .authorized
 
-    withEnvironment(appTrackingTransparency: mockAppTrackingTransparency, optimizelyClient: optimizelyClient) {
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
       ksrAnalytics.trackDiscovery(params: .defaults)
@@ -1642,7 +1645,10 @@ final class KSRAnalyticsTests: TestCase {
 
     mockAppTrackingTransparency.authStatusStub = .denied
 
-    withEnvironment(appTrackingTransparency: mockAppTrackingTransparency, optimizelyClient: optimizelyClient) {
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
       ksrAnalytics.trackDiscovery(params: .defaults)
@@ -1666,7 +1672,10 @@ final class KSRAnalyticsTests: TestCase {
 
     mockAppTrackingTransparency.authStatusStub = .notDetermined
 
-    withEnvironment(appTrackingTransparency: mockAppTrackingTransparency, optimizelyClient: optimizelyClient) {
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
       ksrAnalytics.trackDiscovery(params: .defaults)
@@ -1690,7 +1699,10 @@ final class KSRAnalyticsTests: TestCase {
 
     mockAppTrackingTransparency.authStatusStub = .restricted
 
-    withEnvironment(appTrackingTransparency: mockAppTrackingTransparency, optimizelyClient: optimizelyClient) {
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
       ksrAnalytics.trackDiscovery(params: .defaults)

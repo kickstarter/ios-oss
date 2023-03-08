@@ -20,7 +20,7 @@ public struct Environment {
 
   /// The app instance
   public let application: UIApplicationType
-  
+
   /// A type that provides methods that return the user's tracking consent preference and advertising identifier
   public let appTrackingTransparency: AppTrackingTransparencyType
 

@@ -19,7 +19,7 @@ extension XCTestCase {
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
     appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current
-          .appTrackingTransparency,
+      .appTrackingTransparency,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
