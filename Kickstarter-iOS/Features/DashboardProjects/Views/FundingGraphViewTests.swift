@@ -133,6 +133,6 @@ private func fundingStats(forProject project: Project, pledgeValues: [Int])
     ProjectStatsEnvelope.FundingDateStats.template
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
       |> ProjectStatsEnvelope.FundingDateStats.lens.date
-      .~ (project.dates.launchedAt + TimeInterval(idx * 60 * 60 * 24))
+      .~ ((project.dates.launchedAt ?? 0.0) + TimeInterval(idx * 60 * 60 * 24))
   }
 }

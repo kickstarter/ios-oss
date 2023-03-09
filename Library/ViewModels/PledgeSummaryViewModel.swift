@@ -125,7 +125,12 @@ private func attributedCurrency(with project: Project, total: Double) -> NSAttri
 }
 
 private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString {
-  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  var date = ""
+
+  if let deadline = project.dates.deadline {
+    date = Format.date(secondsInUTC: deadline, template: "MMMM d, yyyy")
+  }
+
   let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
   let pledgeTotal = Format.currency(pledgeTotal, country: projectCurrencyCountry)
 

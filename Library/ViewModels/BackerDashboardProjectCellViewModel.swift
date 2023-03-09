@@ -88,7 +88,11 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 private func metadataString(for project: Project) -> String {
   switch project.state {
   case .live:
-    let duration = Format.duration(secondsInUTC: project.dates.deadline, abbreviate: true, useToGo: false)
+    guard let deadline = project.dates.deadline else {
+      return ""
+    }
+
+    let duration = Format.duration(secondsInUTC: deadline, abbreviate: true, useToGo: false)
     return "\(duration.time) \(duration.unit)"
   default:
     return stateString(for: project)

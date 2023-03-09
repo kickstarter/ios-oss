@@ -166,12 +166,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
   func testProjectStatsEmit() {
     let project = Project.template
+    let deadline = project.dates.deadline!
 
     self.vm.inputs.configure(with: (project, nil, nil))
 
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
 
-    let deadlineTitleAndSubtitle = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
+    let deadlineTitleAndSubtitle = Format.duration(secondsInUTC: deadline, useToGo: true)
     self.deadlineSubtitleLabelText.assertValues([deadlineTitleAndSubtitle.unit])
     self.deadlineTitleLabelText.assertValues([deadlineTitleAndSubtitle.time])
 
