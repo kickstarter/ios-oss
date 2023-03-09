@@ -1613,7 +1613,7 @@ final class KSRAnalyticsTests: TestCase {
   func testEventsCalledAsExpectedWhenAppTrackingConsentAuthorized_WhenFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-    var mockAppTrackingTransparency = MockAppTrackingTransparencyService()
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
     let optimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
@@ -1637,7 +1637,7 @@ final class KSRAnalyticsTests: TestCase {
   func testNoEventsCalledWhenAppTrackingConsentDenied_WhenFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-    var mockAppTrackingTransparency = MockAppTrackingTransparencyService()
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
     let optimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
@@ -1664,7 +1664,7 @@ final class KSRAnalyticsTests: TestCase {
   func testNoEventsCalledWhenAppTrackingConsentNotDetermined_WhenFeatureFlagEnabled() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-    var mockAppTrackingTransparency = MockAppTrackingTransparencyService()
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
     let optimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
@@ -1691,7 +1691,7 @@ final class KSRAnalyticsTests: TestCase {
   func testNoEventsCalledWhenAppTrackingConsentRestricted() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-    var mockAppTrackingTransparency = MockAppTrackingTransparencyService()
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
     let optimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.consentManagementDialogEnabled.rawValue: true

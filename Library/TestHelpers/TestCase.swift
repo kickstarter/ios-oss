@@ -9,7 +9,7 @@ internal class TestCase: XCTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()
-  internal let appTrackingTransparency = MockAppTrackingTransparencyService()
+  internal let appTrackingTransparency = MockAppTrackingTransparency()
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()

@@ -348,7 +348,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         let (project, _) = projectAndRefTag
 
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-          let externalId = AppTrackingTransparency().advertisingIdentifier() else { return }
+          let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier() else { return }
 
         _ = AppEnvironment
           .current
