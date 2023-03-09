@@ -236,7 +236,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         let (project, _) = projectAndRefTag
 
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-          let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier() else { return }
+          let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier()
+        else { return }
 
         _ = AppEnvironment
           .current

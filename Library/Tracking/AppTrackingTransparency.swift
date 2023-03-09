@@ -8,6 +8,8 @@ public protocol AppTrackingTransparencyType {
 }
 
 public struct AppTrackingTransparency: AppTrackingTransparencyType {
+  public init() {}
+  
   public func authorizationStatus() -> ATTrackingAuthorizationStatus {
     var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
 

@@ -1,3 +1,5 @@
+import Library
+
 struct MockAppTrackingTransparency: AppTrackingTransparencyType {
   public var authStatusStub: ATTrackingAuthorizationStatus =
     .authorized // defaulting to .authorized so existing tests will still pass

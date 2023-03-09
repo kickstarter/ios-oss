@@ -218,7 +218,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
       guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-        let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier() else { return }
+        let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier()
+      else { return }
 
       _ = AppEnvironment
         .current
