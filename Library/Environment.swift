@@ -44,6 +44,9 @@ public struct Environment {
 
   /// The currently logged in user.
   public let currentUser: User?
+  
+  /// The currently logged in user's email. Fetched from GraphQL
+  public let currentUserEmail: String?
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.
   public let dateType: DateProtocol.Type
@@ -119,6 +122,7 @@ public struct Environment {
     coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
     countryCode: String = "US",
     currentUser: User? = nil,
+    currentUserEmail: String? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     debugData: DebugData? = nil,
@@ -150,6 +154,7 @@ public struct Environment {
     self.countryCode = countryCode
     self.coreTelephonyNetworkInfo = coreTelephonyNetworkInfo
     self.currentUser = currentUser
+    self.currentUserEmail = currentUserEmail
     self.dateType = dateType
     self.debounceInterval = debounceInterval
     self.debugData = debugData

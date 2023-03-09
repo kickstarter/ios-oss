@@ -230,6 +230,23 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           : SignalProducer(value: .value(nil))
       }
 
+    let fetchUserEmailEvent = Signal
+      .merge(
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+        self.userSessionStartedProperty.signal
+      )
+      .switchMap { _ -> SignalProducer<Signal<UserEnvelope<GraphUserEmail>?, ErrorEnvelope>.Event, Never> in
+        AppEnvironment.current.apiService.fetchGraphUserEmail().wrapInOptional().materialize()
+      }
+
+    _ = fetchUserEmailEvent.values()
+      .map { user in
+        guard let email = user?.me.email else { return }
+
+        AppEnvironment.updateCurrentUserEmail(email)
+      }
+
     self.forceLogout = currentUserEvent
       .errors()
       .filter { $0.ksrCode == .AccessTokenInvalid }
