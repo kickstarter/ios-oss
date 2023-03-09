@@ -246,7 +246,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
               projectId: "\(project.id)",
               eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
               externalId: externalId,
-              userEmail: nil,
+              userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(extinfo: ["i2"]),
               customData: .init(currency: nil, value: nil)
             )
