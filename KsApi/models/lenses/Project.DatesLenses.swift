@@ -3,7 +3,7 @@ import Prelude
 
 extension Project.Dates {
   public enum lens {
-    public static let deadline = Lens<Project.Dates, TimeInterval>(
+    public static let deadline = Lens<Project.Dates, TimeInterval?>(
       view: { $0.deadline },
       set: { Project.Dates(
         deadline: $0, featuredAt: $1.featuredAt, launchedAt: $1.launchedAt,
@@ -19,7 +19,7 @@ extension Project.Dates {
       ) }
     )
 
-    public static let launchedAt = Lens<Project.Dates, TimeInterval>(
+    public static let launchedAt = Lens<Project.Dates, TimeInterval?>(
       view: { $0.launchedAt },
       set: { Project.Dates(
         deadline: $1.deadline, featuredAt: $1.featuredAt, launchedAt: $0,

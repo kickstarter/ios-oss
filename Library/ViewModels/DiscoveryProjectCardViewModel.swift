@@ -115,8 +115,12 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
       case .failed: return ("", Strings.profile_projects_status_unsuccessful())
       case .successful: return ("", Strings.profile_projects_status_successful())
       case .live:
+        guard let projectDeadline = project.dates.deadline else {
+          return ("", "")
+        }
+
         let (duration, unit) = Format.duration(
-          secondsInUTC: project.dates.deadline,
+          secondsInUTC: projectDeadline,
           abbreviate: false,
           useToGo: true,
           env: AppEnvironment.current

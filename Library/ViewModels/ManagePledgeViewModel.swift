@@ -526,7 +526,8 @@ private func managePledgeSummaryViewData(
   backedReward: Reward,
   backing: Backing
 ) -> ManagePledgeSummaryViewData? {
-  guard let backer = backing.backer else { return nil }
+  guard let backer = backing.backer,
+    let deadline = project.dates.deadline else { return nil }
 
   let isRewardLocalPickup = isRewardLocalPickup(backing.reward)
 
@@ -546,7 +547,7 @@ private func managePledgeSummaryViewData(
     pledgeAmount: backing.amount,
     pledgedOn: backing.pledgedAt,
     projectCurrencyCountry: projectCurrencyCountry,
-    projectDeadline: project.dates.deadline,
+    projectDeadline: deadline,
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
     shippingAmount: backing.shippingAmount.flatMap(Double.init),

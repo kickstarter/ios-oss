@@ -66,10 +66,15 @@ public final class FundingGraphView: UIView {
       .enumerated()
       .map { index, stat in CGPoint(x: index, y: stat.cumulativePledged) }
 
-    let durationInDays = dateToDayNumber(
-      launchDate: project.dates.launchedAt,
-      currentDate: self.project.dates.deadline
-    )
+    var durationInDays: CGFloat = 1
+
+    if let launchedAt = project.dates.launchedAt,
+      let deadline = project.dates.deadline {
+      durationInDays = dateToDayNumber(
+        launchDate: launchedAt,
+        currentDate: deadline
+      )
+    }
 
     let goal = self.project.stats.goal
 
