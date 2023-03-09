@@ -691,8 +691,8 @@ final class AppDelegateViewModelTests: TestCase {
       )
       XCTAssertTrue(result)
 
-      self.presentViewController.assertValues([])
-      XCTAssertEqual(self.goToMobileSafari.values.map { $0.absoluteString }, [projectUrl])
+      self.presentViewController.assertValues([1])
+      self.goToMobileSafari.assertValues([])
     }
   }
 
