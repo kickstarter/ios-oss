@@ -496,6 +496,7 @@ public final class KSRAnalytics {
     let bonusAmountInUsd: Decimal?
     let checkoutId: String?
     let estimatedDelivery: TimeInterval?
+    let facebookCAPIUserEmail: String?
     let paymentType: String?
     let revenueInUsd: Decimal
     let rewardId: String
@@ -1336,9 +1337,9 @@ private func projectProperties(
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.stats.currency
   props["creator_uid"] = String(project.creator.id)
-  props["deadline"] = project.dates.deadline.toISO8601DateTimeString()
+  props["deadline"] = project.dates.deadline?.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns
-  props["launched_at"] = project.dates.launchedAt.toISO8601DateTimeString()
+  props["launched_at"] = project.dates.launchedAt?.toISO8601DateTimeString()
   props["name"] = project.name
   props["pid"] = String(project.id)
   props["category"] = project.category.parentAnalyticsName

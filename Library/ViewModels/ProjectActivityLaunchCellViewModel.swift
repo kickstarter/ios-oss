@@ -31,12 +31,18 @@ public final class ProjectActivityLaunchCellViewModel: ProjectActivityLaunchCell
     self.backgroundImageURL = project.map { $0.photo.med }.map(URL.init(string:))
 
     self.title = project.map { project in
-      Strings.dashboard_activity_project_name_launched(
-        project_name: project.name,
-        launch_date: Format.date(
-          secondsInUTC: project.dates.launchedAt,
+      var formatted = ""
+
+      if let launchedAtDate = project.dates.launchedAt {
+        formatted = Format.date(
+          secondsInUTC: launchedAtDate,
           dateStyle: .long, timeStyle: .none
-        ).nonBreakingSpaced(),
+        ).nonBreakingSpaced()
+      }
+
+      return Strings.dashboard_activity_project_name_launched(
+        project_name: project.name,
+        launch_date: formatted,
         goal: Format.currency(project.stats.goal, country: project.country).nonBreakingSpaced()
       )
     }

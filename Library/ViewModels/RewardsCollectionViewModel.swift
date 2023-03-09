@@ -228,6 +228,30 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           refTag: refTag
         )
       }
+
+    // FB CAPI
+
+    _ = Signal.combineLatest(project, self.viewDidAppearProperty.signal.ignoreValues())
+      .observeValues { projectAndRefTag in
+        let (project, _) = projectAndRefTag
+
+        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
+          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+
+        _ = AppEnvironment
+          .current
+          .apiService
+          .triggerCapiEventInput(
+            input: .init(
+              projectId: "\(project.id)",
+              eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
+              externalId: externalId,
+              userEmail: nil,
+              appData: .init(extinfo: ["i2"]),
+              customData: .init(currency: nil, value: nil)
+            )
+          )
+      }
   }
 
   private let configDataProperty = MutableProperty<(Project, RefTag?, RewardsCollectionViewContext)?>(nil)
