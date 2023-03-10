@@ -7,6 +7,20 @@ enum FocusField {
 }
 
 @available(iOS 15.0, *)
+struct ChangelEmailWrapperView: View {
+  @State var emailText: String
+  
+  var messageBannerView: MessageBannerView<ChangeEmailView>?
+  
+  var body: some View {
+    ChangeEmailView(emailText: emailText)
+      .onAppear {
+        messageBannerView = MessageBannerView(hostingView: self)
+      }
+  }
+}
+
+@available(iOS 15.0, *)
 struct ChangeEmailView: View {
   @State var emailText: String
   @State private var newEmailText = ""
