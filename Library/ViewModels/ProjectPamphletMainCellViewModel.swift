@@ -190,8 +190,14 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.categoryNameLabelText = project.map { $0.category.name }
 
-    let deadlineTitleAndSubtitle = project.map {
-      Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
+    let deadlineTitleAndSubtitle = project.map { project -> (String, String) in
+      var durationValue = ("", "")
+
+      if let deadline = project.dates.deadline {
+        durationValue = Format.duration(secondsInUTC: deadline, useToGo: true)
+      }
+
+      return durationValue
     }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
@@ -345,7 +351,12 @@ private func statsStackViewAccessibilityLabelForProject(_ project: Project, need
   )
 
   let backersCount = project.stats.backersCount
-  let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
+  var (time, unit) = ("", "")
+
+  if let deadline = project.dates.deadline {
+    (time, unit) = Format.duration(secondsInUTC: deadline, useToGo: true)
+  }
+
   let timeLeft = time + " " + unit
 
   return project.state == .live

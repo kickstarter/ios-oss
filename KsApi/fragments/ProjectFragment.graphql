@@ -57,6 +57,7 @@ fragment ProjectFragment on Project {
   }
   prelaunchActivated
   risks
+  sendMetaCapiEvents
   slug
   state
   stateChangedAt

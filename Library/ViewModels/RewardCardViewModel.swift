@@ -259,11 +259,12 @@ private func timeLeftString(project: Project, reward: Reward) -> RewardCardPillD
 
   if project.state == .live,
     let endsAt = reward.endsAt,
+    let deadline = project.dates.deadline,
     endsAt > 0,
     endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970,
     isUnlimitedOrAvailable {
     let (time, unit) = Format.duration(
-      secondsInUTC: min(endsAt, project.dates.deadline),
+      secondsInUTC: min(endsAt, deadline),
       abbreviate: true,
       useToGo: false
     )

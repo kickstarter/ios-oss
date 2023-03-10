@@ -130,5 +130,5 @@ private let fundingStats = stats.enumerated().map { idx, pledged in
   .template
     |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
     |> ProjectStatsEnvelope.FundingDateStats.lens.date
-    .~ (cosmicSurgery.dates.launchedAt + TimeInterval(idx * 86_400))
+    .~ ((cosmicSurgery.dates.launchedAt ?? 0) + TimeInterval(idx * 86_400))
 }

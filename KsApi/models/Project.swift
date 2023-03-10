@@ -19,6 +19,7 @@ public struct Project {
   public var photo: Photo
   public var prelaunchActivated: Bool?
   public var rewardData: RewardData
+  public var sendMetaCapiEvents: Bool
   public var slug: String
   public var staffPick: Bool
   public var state: State
@@ -165,24 +166,33 @@ public struct Project {
   }
 
   public struct Dates {
-    public var deadline: TimeInterval
+    public var deadline: TimeInterval?
     public var featuredAt: TimeInterval?
     public var finalCollectionDate: TimeInterval?
-    public var launchedAt: TimeInterval
+    public var launchedAt: TimeInterval?
     public var stateChangedAt: TimeInterval
 
     /**
      Returns project duration in Days
      */
     public func duration(using calendar: Calendar = .current) -> Int? {
-      let deadlineDate = Date(timeIntervalSince1970: self.deadline)
-      let launchedAtDate = Date(timeIntervalSince1970: self.launchedAt)
+      guard let deadlineDateValue = self.deadline,
+        let launchedAtDateValue = self.launchedAt else {
+        return nil
+      }
+
+      let deadlineDate = Date(timeIntervalSince1970: deadlineDateValue)
+      let launchedAtDate = Date(timeIntervalSince1970: launchedAtDateValue)
 
       return calendar.dateComponents([.day], from: launchedAtDate, to: deadlineDate).day
     }
 
     public func hoursRemaining(from date: Date = Date(), using calendar: Calendar = .current) -> Int? {
-      let deadlineDate = Date(timeIntervalSince1970: self.deadline)
+      guard let deadlineDateValue = self.deadline else {
+        return nil
+      }
+
+      let deadlineDate = Date(timeIntervalSince1970: deadlineDateValue)
 
       guard let hoursRemaining = calendar.dateComponents([.hour], from: date, to: deadlineDate).hour else {
         return nil
@@ -224,8 +234,12 @@ public struct Project {
   }
 
   public func endsIn48Hours(today: Date = Date()) -> Bool {
+    guard let datesDeadlineValue = self.dates.deadline else {
+      return true
+    }
+
     let twoDays: TimeInterval = 60.0 * 60.0 * 48.0
-    return self.dates.deadline - today.timeIntervalSince1970 <= twoDays
+    return datesDeadlineValue - today.timeIntervalSince1970 <= twoDays
   }
 
   public func isFeaturedToday(today: Date = Date(), calendar: Calendar = .current) -> Bool {
@@ -262,6 +276,7 @@ extension Project: Decodable {
     case name
     case photo
     case prelaunchActivated = "prelaunch_activated"
+    case sendMetaCapiEvents = "send_meta_capi_events"
     case slug
     case staffPick = "staff_pick"
     case state
@@ -288,6 +303,7 @@ extension Project: Decodable {
     self.photo = try values.decode(Photo.self, forKey: .photo)
     self.prelaunchActivated = try values.decodeIfPresent(Bool.self, forKey: .prelaunchActivated)
     self.rewardData = try Project.RewardData(from: decoder)
+    self.sendMetaCapiEvents = try values.decodeIfPresent(Bool.self, forKey: .sendMetaCapiEvents) ?? false
     self.slug = try values.decode(String.self, forKey: .slug)
     self.staffPick = try values.decode(Bool.self, forKey: .staffPick)
     self.state = try values.decode(State.self, forKey: .state)

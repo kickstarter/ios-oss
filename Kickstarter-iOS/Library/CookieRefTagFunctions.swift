@@ -55,8 +55,10 @@ public func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   properties[.domain] = URL(string: project.urls.web.project)?.host
   properties[.path] = URL(string: project.urls.web.project)?.path
   properties[.version] = 0
-  properties[.expires] = AppEnvironment.current.dateType
-    .init(timeIntervalSince1970: project.dates.deadline).date
+
+  if let deadline = project.dates.deadline {
+    properties[.expires] = AppEnvironment.current.dateType.init(timeIntervalSince1970: deadline).date
+  }
 
   return HTTPCookie(properties: properties)
 }

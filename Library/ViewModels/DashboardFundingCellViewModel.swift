@@ -79,7 +79,11 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     self.backersText = statsProject.map { _, project in Format.wholeNumber(project.stats.backersCount) }
 
     self.deadlineDateText = statsProject.map { _, project in
-      Format.date(secondsInUTC: project.dates.deadline, dateStyle: .short, timeStyle: .none)
+      guard let deadline = project.dates.deadline else {
+        return ""
+      }
+
+      return Format.date(secondsInUTC: deadline, dateStyle: .short, timeStyle: .none)
     }
 
     self.goalText = statsProject.map { _, project in
@@ -111,14 +115,22 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
 
     self.launchDateText = statsProject
       .map { _, project in
-        Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .short, timeStyle: .none)
+        guard let launchedAt = project.dates.launchedAt else {
+          return ""
+        }
+
+        return Format.date(secondsInUTC: launchedAt, dateStyle: .short, timeStyle: .none)
       }
 
     self.pledgedText = statsProject
       .map { _, project in Format.currency(project.stats.pledged, country: project.country) }
 
-    let timeRemaining = statsProject.map { _, project in
-      Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
+    let timeRemaining = statsProject.map { _, project -> (String, String) in
+      guard let deadline = project.dates.deadline else {
+        return ("", "")
+      }
+
+      return Format.duration(secondsInUTC: deadline, useToGo: true)
     }
 
     self.timeRemainingTitleText = timeRemaining.map(first)
@@ -130,7 +142,12 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
         let pledged = Format.currency(project.stats.pledged, country: project.country)
         let goal = Format.currency(project.stats.goal, country: project.country)
         let backersCount = project.stats.backersCount
-        let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: false)
+        var (time, unit) = ("", "")
+
+        if let deadline = project.dates.deadline {
+          (time, unit) = Format.duration(secondsInUTC: deadline, useToGo: false)
+        }
+
         let timeLeft = time + " " + unit
 
         return project.state == .live ?
