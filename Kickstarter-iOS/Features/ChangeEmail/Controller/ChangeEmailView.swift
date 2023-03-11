@@ -7,21 +7,8 @@ enum FocusField {
 }
 
 @available(iOS 15.0, *)
-struct ChangelEmailWrapperView: View {
-  @State var emailText: String
-  
-  var messageBannerView: MessageBannerView<ChangeEmailView>?
-  
-  var body: some View {
-    ChangeEmailView(emailText: emailText)
-      .onAppear {
-        messageBannerView = MessageBannerView(hostingView: self)
-      }
-  }
-}
-
-@available(iOS 15.0, *)
 struct ChangeEmailView: View {
+  var messageBannerObservable = MessageBannerObservable()
   @State var emailText: String
   @State private var newEmailText = ""
   @State private var passwordText = ""
@@ -76,6 +63,8 @@ struct ChangeEmailView: View {
         VStack(alignment: .leading, spacing: 0) {
           Button(resendVerificationEmailButtonTitle) {
             print("Button tapped \(resendVerificationEmailButtonTitle)")
+            messageBannerObservable
+              .showMessage = "Test message should go past right edge of screen. Not perfect but useful."
           }
           .font(Font(UIFont.ksr_body()))
           .foregroundColor(Color(.ksr_create_700))
@@ -133,6 +122,14 @@ struct ChangeEmailView: View {
           saveEnabled: saveEnabled
         )
       }
+    }
+    .overlay(alignment: .bottom) {
+      MessageBannerView(
+        hostingView: self,
+        messageBannerObservable: messageBannerObservable
+      )
+      .background(Color.clear) // FIXME: Takes up entire view. Also displays at the top.
+      .allowsHitTesting(false)
     }
   }
 
@@ -198,9 +195,9 @@ struct ChangeEmailView: View {
 /** Currently not working - pauses
  struct CircleImage_Previews: PreviewProvider {
  static var previews: some View {
-   if #available(iOS 15, *) {
-     ChangeEmailView(emailText: "sample@email.com")
-   }
+ if #available(iOS 15, *) {
+ ChangeEmailView(emailText: "sample@email.com")
+ }
  }
  }
  */
