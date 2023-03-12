@@ -501,8 +501,10 @@
 		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
-		701160D7291EED5C0095BF24 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D5291EED3F0095BF24 /* MessageBannerView.swift */; };
+		701160D7291EED5C0095BF24 /* MessageBannerViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D5291EED3F0095BF24 /* MessageBannerViewControllerRepresentable.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
+		7061848B29BE4CD8008F9941 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061848829BE4C11008F9941 /* MessageBannerView.swift */; };
+		7061848D29BE577B008F9941 /* MessageBannerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */; };
 		70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
@@ -2092,7 +2094,9 @@
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
-		701160D5291EED3F0095BF24 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
+		701160D5291EED3F0095BF24 /* MessageBannerViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewControllerRepresentable.swift; sourceTree = "<group>"; };
+		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
+		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
 		70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
@@ -3598,6 +3602,7 @@
 		1937A6ED28C92EC700DD732D /* MessageBanner */ = {
 			isa = PBXGroup;
 			children = (
+				7061848A29BE4C1E008F9941 /* Views */,
 				1937A71D28C9443700DD732D /* Storyboard */,
 				1937A70128C9308600DD732D /* Controller */,
 			);
@@ -3777,7 +3782,7 @@
 			children = (
 				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
 				77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */,
-				701160D5291EED3F0095BF24 /* MessageBannerView.swift */,
+				701160D5291EED3F0095BF24 /* MessageBannerViewControllerRepresentable.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -5869,6 +5874,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		7061848A29BE4C1E008F9941 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7061848829BE4C11008F9941 /* MessageBannerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
@@ -6682,6 +6695,7 @@
 				3777F2F62343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift */,
 				3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */,
 				D04AAC1B218BB70C00CF713E /* MessageBannerViewModel.swift */,
+				7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */,
 				D04AAC11218BB70A00CF713E /* MessageBannerViewModelTests.swift */,
 				A7F4419B1D005A9400FE6FC5 /* MessageCellViewModel.swift */,
 				A7ED1F5A1E831C5C00BFFA01 /* MessageCellViewModelTests.swift */,
@@ -7981,6 +7995,7 @@
 				777C60A82420154100820C59 /* PersonalizationCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
+				7061848D29BE577B008F9941 /* MessageBannerViewViewModel.swift in Sources */,
 				778215E820F6922100F3D09F /* HelpType.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
@@ -8298,6 +8313,7 @@
 				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */,
 				018422C51D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift in Sources */,
+				7061848B29BE4CD8008F9941 /* MessageBannerView.swift in Sources */,
 				D0237C1522BC2B640092C792 /* PledgeSummaryViewController.swift in Sources */,
 				015706BB1E68DE580087DD68 /* ProfileSortBarView.swift in Sources */,
 				77A64E5824645DCE003BF98E /* DiscoveryProjectCardCell.swift in Sources */,
@@ -8364,7 +8380,7 @@
 				8A45169324B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift in Sources */,
 				015102AD1F1947C50006C0FC /* MessageThreadsDataSource.swift in Sources */,
 				379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */,
-				701160D7291EED5C0095BF24 /* MessageBannerView.swift in Sources */,
+				701160D7291EED5C0095BF24 /* MessageBannerViewControllerRepresentable.swift in Sources */,
 				3742036F22DD45A2007AA86E /* PillCell.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,

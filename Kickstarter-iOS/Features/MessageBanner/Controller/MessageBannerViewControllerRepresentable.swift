@@ -4,7 +4,7 @@ final class MessageBannerObservable: ObservableObject {
   @Published var showMessage: String?
 }
 
-final class MessageBannerWrapperViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class MessageBannerViewControllerWrapper: UIViewController, MessageBannerViewControllerPresenting {
   var messageBannerViewController: MessageBannerViewController?
 
   required init?(coder _: NSCoder) {
@@ -22,15 +22,15 @@ final class MessageBannerWrapperViewController: UIViewController, MessageBannerV
   }
 }
 
-struct MessageBannerView<T: View>: UIViewControllerRepresentable {
+struct MessageBannerViewControllerRepresentable<T: View>: UIViewControllerRepresentable {
   var hostingView: T
   @ObservedObject var messageBannerObservable: MessageBannerObservable
 
   func makeUIViewController(context _: Context) -> MessageBannerViewController {
-    let messageBannerWrapperViewController = MessageBannerWrapperViewController.instantiate()
-    messageBannerWrapperViewController.configureHostingController(view: self.hostingView)
+    let messageBannerViewControllerWrapper = MessageBannerViewControllerWrapper.instantiate()
+    messageBannerViewControllerWrapper.configureHostingController(view: self.hostingView)
 
-    return messageBannerWrapperViewController.messageBannerViewController ?? MessageBannerViewController()
+    return messageBannerViewControllerWrapper.messageBannerViewController ?? MessageBannerViewController()
   }
 
   func updateUIViewController(_ uiViewController: MessageBannerViewController, context _: Context) {
