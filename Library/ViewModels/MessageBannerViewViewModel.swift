@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-public class MessageBannerViewViewModel: ObservableObject {
+public final class MessageBannerViewViewModel: ObservableObject {
   // let pubA = PassthroughSubject<Int, Never>()
 
   @Published public var bannerBackgroundColor: Color
