@@ -55,7 +55,9 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     let displayableTabs: (Project) -> [NavigationSection] = { project in
       let baseTabs: [NavigationSection] = [.overview]
 
-      guard let extendedProjectProperties = project.extendedProjectProperties else {
+      guard let extendedProjectProperties = project.extendedProjectProperties,
+            let displayPrelaunch = project.displayPrelaunch,
+            !displayPrelaunch else {
         return baseTabs
       }
 
