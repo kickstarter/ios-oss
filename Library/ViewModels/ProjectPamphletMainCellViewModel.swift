@@ -65,6 +65,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the background color of the funding progress bar view.
   var fundingProgressBarViewBackgroundColor: Signal<UIColor, Never> { get }
 
+  /// Emits the prelaunch project state. Used to hide/show progress bar and stats view.
+  var isPrelaunchProject: Signal<Bool, Never> { get }
+
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
@@ -229,6 +232,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.statsStackViewAccessibilityLabel = projectAndNeedsConversion
       .map(statsStackViewAccessibilityLabelForProject(_:needsConversion:))
 
+    self.isPrelaunchProject = project.map { $0.displayPrelaunch }.skipNil()
+
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
@@ -310,6 +315,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let creatorLabelText: Signal<String, Never>
   public let deadlineSubtitleLabelText: Signal<String, Never>
   public let deadlineTitleLabelText: Signal<String, Never>
+  public let isPrelaunchProject: Signal<Bool, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
   public let notifyDelegateToGoToCampaignWithData: Signal<ProjectPamphletMainCellData, Never>

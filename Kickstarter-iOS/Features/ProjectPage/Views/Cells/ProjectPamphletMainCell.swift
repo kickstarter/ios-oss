@@ -241,6 +241,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ verticalSpacing
+      |> UIStackView.lens.isHidden .~ true
 
     _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -297,6 +298,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
+    self.progressBarAndStatsStackView.rac.hidden = self.viewModel.outputs.isPrelaunchProject
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
