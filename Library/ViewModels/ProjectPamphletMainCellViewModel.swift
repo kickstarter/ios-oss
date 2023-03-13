@@ -173,7 +173,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.prelaunchProjectBackingText = project
       .map { $0.displayPrelaunch == .some(true) ?
-        "Coming soon" : Strings.Youre_a_backer()
+        Strings.Coming_soon() : Strings.Youre_a_backer()
       }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
