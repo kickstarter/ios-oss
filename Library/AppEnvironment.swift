@@ -55,18 +55,6 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  /**
-   Invoke when we have acquired a fresh current user and you want to replace the current environment's
-   current user email with the fresh one.
-
-   - parameter email: A string.
-   */
-  public static func updateCurrentUserEmail(_ email: String) {
-    self.replaceCurrentEnvironment(
-      currentUserEmail: email
-    )
-  }
-
   public static func updateDebugData(_ debugData: DebugData) {
     self.replaceCurrentEnvironment(
       debugData: debugData
