@@ -59,6 +59,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testSessionProperties_OptimizelyClient() {
     let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.allKnownExperiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue
       ]
