@@ -164,9 +164,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
     let deadlineTitleAndSubtitle = configuredProject
-      .map {
-        $0.state == .live
-          ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
+      .map { project -> (String, String) in
+        guard let datesDeadline = project.dates.deadline else {
+          return ("", "")
+        }
+
+        return project.state == .live
+          ? Format.duration(secondsInUTC: datesDeadline, useToGo: true)
           : ("", "")
       }
 
