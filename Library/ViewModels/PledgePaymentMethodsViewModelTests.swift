@@ -41,7 +41,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateCreditCardSelected.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
-    self.vm.outputs.notifyFacebookCAPIUserEmail.observe(self.notifyFacebookCAPIUserEmail.observer)
 
     // swiftlint:disable line_length
     self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.card } }
@@ -665,31 +664,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           isSetupIntentClientSecret: false
         )
       ])
-    }
-  }
-
-  func testNotifyFacebookCAPIUserEmail_LoggedIn() {
-    let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let mockService = MockService(fetchGraphUserResult: .success(response))
-
-    withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.run()
-
-      self.notifyFacebookCAPIUserEmail.assertValues(["nativesquad@ksr.com"])
-    }
-  }
-
-  func testNotifyFacebookCAPIUserEmail_LoggedOut() {
-    withEnvironment(apiService: MockService(), currentUser: nil) {
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.run()
-
-      self.notifyFacebookCAPIUserEmail.assertValues([])
     }
   }
 
