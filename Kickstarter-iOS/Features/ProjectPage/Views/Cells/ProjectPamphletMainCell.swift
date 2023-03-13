@@ -55,9 +55,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var readMoreStackView: UIStackView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
-  @IBOutlet fileprivate var youreABackerContainerView: UIView!
-  @IBOutlet fileprivate var youreABackerContainerViewLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate var youreABackerLabel: UILabel!
+  @IBOutlet fileprivate var backingContainerView: UIView!
+  @IBOutlet fileprivate var backingContainerViewLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var backingLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -251,15 +251,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.backgroundColor .~ .ksr_white
 
-    _ = self.youreABackerContainerViewLeadingConstraint
+    _ = self.backingContainerViewLeadingConstraint
       |> \.constant .~ leftRightInsetValue
 
-    _ = self.youreABackerContainerView
+    _ = self.backingContainerView
       |> roundedStyle(cornerRadius: 2)
       |> UIView.lens.backgroundColor .~ .ksr_create_700
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
-    _ = self.youreABackerLabel
+    _ = self.backingLabel
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
@@ -297,8 +297,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
-    self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
+    self.backingContainerView.rac.hidden = self.viewModel.outputs.backingLabelHidden
     self.progressBarAndStatsStackView.rac.hidden = self.viewModel.outputs.isPrelaunchProject
+    self.backingLabel.rac.text = self.viewModel.outputs.prelaunchProjectBackingText
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
