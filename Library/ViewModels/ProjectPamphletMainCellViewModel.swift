@@ -186,8 +186,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.backingLabelHidden = Signal.combineLatest(project, videoIsPlaying)
       .map { project, videoIsPlaying in
-        guard let displayPrelaunch = project.displayPrelaunch,
-          !displayPrelaunch else {
+        guard let displayPrelaunch = project.displayPrelaunch else {
+          return true
+        }
+        
+        guard !displayPrelaunch else {
           return false
         }
 
