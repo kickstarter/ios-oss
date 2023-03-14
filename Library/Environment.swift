@@ -21,6 +21,9 @@ public struct Environment {
   /// The app instance
   public let application: UIApplicationType
 
+  /// A type that provides methods that return the user's tracking consent preference and advertising identifier
+  public let appTrackingTransparency: AppTrackingTransparencyType
+
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
@@ -114,6 +117,7 @@ public struct Environment {
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     applePayCapabilities: ApplePayCapabilitiesType = ApplePayCapabilities(),
     application: UIApplicationType = UIApplication.shared,
+    appTrackingTransparency: AppTrackingTransparencyType = AppTrackingTransparency(),
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
     calendar: Calendar = .current,
@@ -146,6 +150,7 @@ public struct Environment {
     self.apiDelayInterval = apiDelayInterval
     self.applePayCapabilities = applePayCapabilities
     self.application = application
+    self.appTrackingTransparency = appTrackingTransparency
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
     self.calendar = calendar

@@ -387,7 +387,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takeWhen(stripePaymentSheetDidAppear)
       .observeValues { project, _ in
         guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
-          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+          let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier()
+        else { return }
 
         _ = AppEnvironment
           .current

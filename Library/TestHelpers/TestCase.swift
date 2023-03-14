@@ -9,13 +9,14 @@ internal class TestCase: XCTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()
+  internal let appTrackingTransparency = MockAppTrackingTransparency()
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let coreTelephonyNetworkInfo = MockCoreTelephonyNetworkInfo()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
-  internal let optimizelyClient = MockOptimizelyClient()
+  internal var optimizelyClient = MockOptimizelyClient()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
   internal let segmentTrackingClient = MockTrackingClient()
@@ -32,11 +33,15 @@ internal class TestCase: XCTestCase {
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
+    self.optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
+
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
       applePayCapabilities: MockApplePayCapabilities(),
       application: UIApplication.shared,
+      appTrackingTransparency: self.appTrackingTransparency,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,

@@ -59,6 +59,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testSessionProperties_OptimizelyClient() {
     let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.allKnownExperiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue
       ]
@@ -1608,6 +1609,111 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("category_name", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("Film & Video", segmentClient.properties.last?["discover_category_name"] as? String)
     XCTAssertEqual("Documentary", segmentClient.properties.last?["discover_subcategory_name"] as? String)
+  }
+
+  func testEventsCalledAsExpectedWhenAppTrackingConsentAuthorized_WhenFeatureFlagEnabled() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+      ]
+
+    mockAppTrackingTransparency.authStatusStub = .authorized
+
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
+      ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
+      ksrAnalytics.trackDiscovery(params: .defaults)
+      ksrAnalytics.trackExploreButtonClicked()
+
+      XCTAssertEqual(["Page Viewed", "CTA Clicked", "Page Viewed", "CTA Clicked"], segmentClient.events)
+    }
+  }
+
+  func testNoEventsCalledWhenAppTrackingConsentDenied_WhenFeatureFlagEnabled() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+      ]
+
+    mockAppTrackingTransparency.authStatusStub = .denied
+
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
+      ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
+      ksrAnalytics.trackDiscovery(params: .defaults)
+      ksrAnalytics.trackExploreButtonClicked()
+
+      XCTAssert(
+        segmentClient.properties.isEmpty,
+        "No events tracked by segment client"
+      )
+    }
+  }
+
+  func testNoEventsCalledWhenAppTrackingConsentNotDetermined_WhenFeatureFlagEnabled() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+      ]
+
+    mockAppTrackingTransparency.authStatusStub = .notDetermined
+
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
+      ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
+      ksrAnalytics.trackDiscovery(params: .defaults)
+      ksrAnalytics.trackExploreButtonClicked()
+
+      XCTAssert(
+        segmentClient.properties.isEmpty,
+        "No events tracked by segment client"
+      )
+    }
+  }
+
+  func testNoEventsCalledWhenAppTrackingConsentRestricted() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
+    var mockAppTrackingTransparency = MockAppTrackingTransparency()
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+      ]
+
+    mockAppTrackingTransparency.authStatusStub = .restricted
+
+    withEnvironment(
+      appTrackingTransparency: mockAppTrackingTransparency,
+      optimizelyClient: optimizelyClient
+    ) {
+      ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
+      ksrAnalytics.trackDiscovery(params: .defaults)
+      ksrAnalytics.trackExploreButtonClicked()
+
+      XCTAssert(
+        segmentClient.properties.isEmpty,
+        "No events tracked by segment client"
+      )
+    }
   }
 
   func testTrackProjectViewedEvent() {
