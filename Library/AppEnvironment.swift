@@ -42,7 +42,7 @@ public struct AppEnvironment: AppEnvironmentType {
       ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ user
     )
   }
-  
+
   /**
    Invoke when we have acquired a fresh current user and you want to replace the current environment's
    current user email with the fresh one.

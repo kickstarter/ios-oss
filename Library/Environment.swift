@@ -47,7 +47,7 @@ public struct Environment {
 
   /// The currently logged in user.
   public let currentUser: User?
-  
+
   /// The currently logged in user's email. Fetched from GraphQL
   public let currentUserEmail: String?
 
