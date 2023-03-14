@@ -55,6 +55,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  public static func updateAdvertisingIdentifer(_ advertisingIdentifer: String?) {
+    self.replaceCurrentEnvironment(
+      advertisingIdentifier: advertisingIdentifer
+    )
+  }
+
   public static func updateDebugData(_ debugData: DebugData) {
     self.replaceCurrentEnvironment(
       debugData: debugData
@@ -142,8 +148,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current
-      .appTrackingTransparency,
+    advertisingIdentifier: String? = nil,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -176,7 +181,7 @@ public struct AppEnvironment: AppEnvironmentType {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        appTrackingTransparency: appTrackingTransparency,
+        advertisingIdentifier: advertisingIdentifier,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
@@ -213,7 +218,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current.appTrackingTransparency,
+    advertisingIdentifier: String? = nil,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -247,7 +252,7 @@ public struct AppEnvironment: AppEnvironmentType {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        appTrackingTransparency: appTrackingTransparency,
+        advertisingIdentifier: advertisingIdentifier,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,

@@ -274,6 +274,7 @@
 		19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226228D10497007F4197 /* FirebaseCrashlytics */; };
 		19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226428D10497007F4197 /* FirebasePerformance */; };
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
+		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
 		19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0F289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift */; };
@@ -8604,7 +8605,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */,
-				6008634129BF8B5100B87B39 /* MockAppTrackingTransparency.swift in Sources */,
+				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 				47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */,

@@ -386,8 +386,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal)
       .takeWhen(stripePaymentSheetDidAppear)
       .observeValues { project, _ in
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
-          let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier()
+        guard project.sendMetaCapiEvents,
+          let externalId = AppEnvironment.current.advertisingIdentifier
         else { return }
 
         _ = AppEnvironment

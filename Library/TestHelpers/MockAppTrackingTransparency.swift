@@ -8,7 +8,9 @@ struct MockAppTrackingTransparency: AppTrackingTransparencyType {
     return self.authStatusStub
   }
 
-  func advertisingIdentifier() -> String? {
+  func advertisingIdentifier(_ status: ATTrackingAuthorizationStatus) -> String? {
+    guard status == .authorized else { return nil }
+
     return "advertisingIdentifier"
   }
 }

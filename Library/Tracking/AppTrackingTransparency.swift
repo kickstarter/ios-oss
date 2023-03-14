@@ -4,7 +4,7 @@ import Foundation
 
 public protocol AppTrackingTransparencyType {
   func authorizationStatus() -> ATTrackingAuthorizationStatus
-  func advertisingIdentifier() -> String?
+  func advertisingIdentifier(_ status: ATTrackingAuthorizationStatus) -> String?
 }
 
 public struct AppTrackingTransparency: AppTrackingTransparencyType {
@@ -31,8 +31,8 @@ public struct AppTrackingTransparency: AppTrackingTransparencyType {
     return authorizationStatus
   }
 
-  public func advertisingIdentifier() -> String? {
-    guard self.authorizationStatus() == .authorized else { return nil }
+  public func advertisingIdentifier(_ status: ATTrackingAuthorizationStatus) -> String? {
+    guard status == .authorized else { return nil }
 
     return ASIdentifierManager.shared().advertisingIdentifier.uuidString
   }

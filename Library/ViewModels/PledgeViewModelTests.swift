@@ -1816,7 +1816,6 @@ final class PledgeViewModelTests: TestCase {
       )
     )
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.experiments
       .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
@@ -2326,7 +2325,6 @@ final class PledgeViewModelTests: TestCase {
       )
     )
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.experiments
       .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
@@ -6631,10 +6629,12 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
 
     let segmentClient = MockTrackingClient()
+    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: nil,
-      segmentClient: segmentClient
+      segmentClient: segmentClient,
+      advertisingId: advertisingIdentifier
     )
 
     withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
@@ -6672,10 +6672,12 @@ final class PledgeViewModelTests: TestCase {
       |> \.facebookConnected .~ true
 
     let segmentClient = MockTrackingClient()
+    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: user,
-      segmentClient: segmentClient
+      segmentClient: segmentClient,
+      advertisingId: advertisingIdentifier
     )
 
     withEnvironment(currentUser: user, ksrAnalytics: ksrAnalytics) {
@@ -6799,7 +6801,6 @@ final class PledgeViewModelTests: TestCase {
 
   func testTrackingEvents_PledgeConfirmButtonClicked() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.experiments
       .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:

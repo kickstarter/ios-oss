@@ -184,7 +184,7 @@ public protocol AppDelegateViewModelOutputs {
   var registerPushTokenInSegment: Signal<Data, Never> { get }
 
   /// Emits when  application didFinishLaunchingWithOptions.
-  var requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never> { get }
+  var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
 
   /// Emits when our config updates with the enabled state for Semgent Analytics.
   var segmentIsEnabled: Signal<Bool, Never> { get }
@@ -826,9 +826,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .map { _ -> ATTrackingAuthorizationStatus in
-        guard featureConsentManagementDialogEnabled() else { return .notDetermined }
-        return AppEnvironment.current.appTrackingTransparency.authorizationStatus()
+      .map { _ in
+        guard featureConsentManagementDialogEnabled() else { return }
+
+        let appTrackingTransparency = AppTrackingTransparency()
+
+        let authorizationStatus = appTrackingTransparency.authorizationStatus()
+        let advertisingIdentifier = appTrackingTransparency.advertisingIdentifier(authorizationStatus)
+
+        AppEnvironment.updateAdvertisingIdentifer(advertisingIdentifier)
       }
   }
 
@@ -1006,7 +1012,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
   public let registerPushTokenInSegment: Signal<Data, Never>
-  public let requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never>
+  public let requestATTrackingAuthorizationStatus: Signal<Void, Never>
   public let segmentIsEnabled: Signal<Bool, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
