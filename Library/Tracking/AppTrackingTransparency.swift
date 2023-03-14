@@ -2,8 +2,15 @@ import AdSupport
 import AppTrackingTransparency
 import Foundation
 
-public struct AppTrackingTransparency {
-  public static func authorizationStatus() -> ATTrackingAuthorizationStatus {
+public protocol AppTrackingTransparencyType {
+  func authorizationStatus() -> ATTrackingAuthorizationStatus
+  func advertisingIdentifier() -> String?
+}
+
+public struct AppTrackingTransparency: AppTrackingTransparencyType {
+  public init() {}
+
+  public func authorizationStatus() -> ATTrackingAuthorizationStatus {
     var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
 
     ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
@@ -24,7 +31,7 @@ public struct AppTrackingTransparency {
     return authorizationStatus
   }
 
-  public static func advertisingIdentifier() -> String? {
+  public func advertisingIdentifier() -> String? {
     guard self.authorizationStatus() == .authorized else { return nil }
 
     return ASIdentifierManager.shared().advertisingIdentifier.uuidString

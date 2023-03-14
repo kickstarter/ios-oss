@@ -1819,6 +1819,7 @@ final class PledgeViewModelTests: TestCase {
       )
     )
     let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.experiments
       .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
@@ -2339,6 +2340,7 @@ final class PledgeViewModelTests: TestCase {
       )
     )
     let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.experiments
       .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
@@ -6821,6 +6823,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testTrackingEvents_PledgeConfirmButtonClicked() {
     let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
       |> \.experiments
       .~ [
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
