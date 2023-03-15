@@ -186,6 +186,7 @@ final class PledgeCTAContainerView: UIView {
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
     self.pledgeButtonAndWatchesStackView.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
+    self.watchesLabel.rac.hidden = self.viewModel.outputs.watchesLabelIsHidden
   }
 
   // MARK: - Configuration
@@ -340,5 +341,4 @@ private let watchesLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 1
     |> \.text .~ "56 followers"
     |> \.textAlignment .~ .center
-    |> \.isHidden .~ true
 }

@@ -30,6 +30,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonTitleText: Signal<String, Never> { get }
   var notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
+  var watchesLabelIsHidden: Signal<Bool, Never> { get }
   var prelaunchCTASaved: Signal<PledgeCTAPrelaunchState, Never> { get }
   var retryStackViewIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
@@ -96,7 +97,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .merge(with: isLoading.filter(isTrue).mapConst(true))
       .skipRepeats()
 
-    self.prelaunchCTASaved = pledgeState.map { state in
+    let prelaunchState = pledgeState.map { state -> PledgeCTAPrelaunchState in
       switch state {
       case let .prelaunch(saved):
         return PledgeCTAPrelaunchState(
@@ -107,6 +108,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
         return PledgeCTAPrelaunchState(prelaunch: false, saved: false)
       }
     }
+    
+    self.prelaunchCTASaved = prelaunchState
+    
+    self.watchesLabelIsHidden = prelaunchState
+      .map { !$0.prelaunch }
+    
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
@@ -152,6 +159,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let prelaunchCTASaved: Signal<PledgeCTAPrelaunchState, Never>
   public let notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
+  public let watchesLabelIsHidden: Signal<Bool, Never>
   public let retryStackViewIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
@@ -163,7 +171,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
   guard project.displayPrelaunch != .some(true) else {
-    return .prelaunch(saved: true)
+    return .prelaunch(saved: false)
   }
 
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
