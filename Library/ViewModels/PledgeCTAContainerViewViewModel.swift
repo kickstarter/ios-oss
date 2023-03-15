@@ -25,6 +25,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonTitleText: Signal<String, Never> { get }
   var notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
+  var prelaunchCTA: Signal<Bool, Never> { get }
   var retryStackViewIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
@@ -89,7 +90,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .takeWhen(updateButtonStates)
       .merge(with: isLoading.filter(isTrue).mapConst(true))
       .skipRepeats()
-
+    self.prelaunchCTA = pledgeState.map { $0 == .prelaunch }
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
@@ -132,6 +133,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
+  public let prelaunchCTA: Signal<Bool, Never>
   public let notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
   public let retryStackViewIsHidden: Signal<Bool, Never>
@@ -144,6 +146,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 // MARK: - Functions
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
+  guard let prelaunchProject = project.displayPrelaunch,
+    !prelaunchProject else {
+    return .prelaunch
+  }
+
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards

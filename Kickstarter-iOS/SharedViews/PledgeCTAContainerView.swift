@@ -62,7 +62,14 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private lazy var watchesLabel: UILabel = { UILabel(frame: .zero) }()
+
   private lazy var titleAndSubtitleStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pledgeButtonAndWatchesStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -122,6 +129,9 @@ final class PledgeCTAContainerView: UIView {
     _ = self.titleAndSubtitleStackView
       |> titleAndSubtitleStackViewStyle
 
+    _ = self.pledgeButtonAndWatchesStackView
+      |> pledgeButtonAndWatchesStackViewStyle
+
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
 
@@ -130,6 +140,9 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.subtitleLabel
       |> subtitleLabelStyle
+
+    _ = self.watchesLabel
+      |> watchesLabelStyle
 
     _ = self.activityIndicator
       |> activityIndicatorStyle
@@ -156,7 +169,18 @@ final class PledgeCTAContainerView: UIView {
     self.viewModel.outputs.pledgeCTAButtonIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
-        self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
+        self?.animateView(self?.pledgeButtonAndWatchesStackView, isHidden: isHidden)
+      }
+
+    self.viewModel.outputs.prelaunchCTA
+      .observeForUI()
+      .observeValues { [weak self] flag in
+        guard flag else { return }
+
+        _ = self?.pledgeCTAButton
+          ?|> prelaunchButtonImageStyle
+
+        self?.watchesLabel.isHidden = !flag
       }
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
@@ -188,6 +212,9 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = ([self.pledgeCTAButton, self.watchesLabel], self.pledgeButtonAndWatchesStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([self.retryDescriptionLabel, self.retryButton], self.retryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -198,7 +225,7 @@ final class PledgeCTAContainerView: UIView {
         self.retryStackView,
         self.titleAndSubtitleStackView,
         self.spacer,
-        self.pledgeCTAButton,
+        self.pledgeButtonAndWatchesStackView,
         self.activityIndicatorContainerView
       ],
       self.rootStackView
@@ -271,6 +298,13 @@ private let titleAndSubtitleStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.gridHalf(1)
 }
 
+private let pledgeButtonAndWatchesStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(1)
+}
+
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_callout().bolded
@@ -292,4 +326,21 @@ private let retryDescriptionLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
+}
+
+private let prelaunchButtonImageStyle: ButtonStyle = { button in
+  button
+    |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
+    |> UIButton.lens.tintColor .~ .ksr_white
+    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
+}
+
+private let watchesLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.numberOfLines .~ 1
+    |> \.text .~ "56 followers"
+    |> \.textAlignment .~ .center
+    |> \.isHidden .~ true
 }
