@@ -450,11 +450,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   }
 
   internal func preloadCampaignImageViewElement(_ element: ImageViewElement, image: UIImage) {
-    self.appendRow(
-      value: (element, image),
-      cellClass: ImageViewElementCell.self,
-      toSection: Section.campaign.rawValue
-    )
+    self.preexistingImageViewElementsWithData.append((element, image))
   }
 
   internal func preloadCampaignAudioVideoViewElement(
@@ -462,10 +458,6 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     player: AVPlayer,
     image: UIImage?
   ) {
-    self.appendRow(
-      value: (element, player, image),
-      cellClass: AudioVideoViewElementCell.self,
-      toSection: Section.campaign.rawValue
-    )
+    self.preexistingAudioVideoViewElementsWithPlayer.append((element, player, image))
   }
 }
