@@ -64,7 +64,6 @@ public protocol PledgeViewModelInputs {
   func riskMessagingViewControllerDismissed(isApplePay: Bool)
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
-
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)

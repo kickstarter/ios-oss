@@ -48,7 +48,7 @@ public struct Environment {
   /// The currently logged in user.
   public let currentUser: User?
 
-  /// The currently logged in user's email. Fetched from GraphQL
+  /// The currently logged in user's email.
   public let currentUserEmail: String?
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.

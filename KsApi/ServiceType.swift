@@ -165,7 +165,7 @@ public protocol ServiceType {
   func fetchGraphUser(withStoredCards: Bool)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
 
-  /// Fetches the email of the currently logged in User using graphQL.
+  /// Fetches the email of the currently logged in User.
   func fetchGraphUserEmail()
     -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
 
