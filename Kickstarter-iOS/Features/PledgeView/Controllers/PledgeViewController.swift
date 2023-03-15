@@ -677,10 +677,6 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
       self.hideProcessingView()
     }
   }
-
-  func passFacebookCAPIUserEmail(_ email: String?) {
-    self.viewModel.inputs.storeFacebookCAPIUserEmail(email)
-  }
 }
 
 // MARK: - PledgeDisclaimerViewDelegate

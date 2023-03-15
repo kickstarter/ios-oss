@@ -184,7 +184,7 @@ public protocol AppDelegateViewModelOutputs {
   var registerPushTokenInSegment: Signal<Data, Never> { get }
 
   /// Emits when  application didFinishLaunchingWithOptions.
-  var requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never> { get }
+  var requestATTrackingAuthorizationStatus: Signal<Void, Never> { get }
 
   /// Emits when our config updates with the enabled state for Semgent Analytics.
   var segmentIsEnabled: Signal<Bool, Never> { get }
@@ -228,6 +228,23 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
           ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
           : SignalProducer(value: .value(nil))
+      }
+
+    let fetchUserEmailEvent = Signal
+      .merge(
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+        self.userSessionStartedProperty.signal
+      )
+      .switchMap { _ -> SignalProducer<Signal<UserEnvelope<GraphUserEmail>?, ErrorEnvelope>.Event, Never> in
+        AppEnvironment.current.apiService.fetchGraphUserEmail().wrapInOptional().materialize()
+      }
+
+    _ = fetchUserEmailEvent.values()
+      .map { user in
+        guard let email = user?.me.email else { return }
+
+        AppEnvironment.updateCurrentUserEmail(email)
       }
 
     self.forceLogout = currentUserEvent
@@ -806,9 +823,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      .map { _ -> ATTrackingAuthorizationStatus in
-        guard featureConsentManagementDialogEnabled() else { return .notDetermined }
-        return AppTrackingTransparency.authorizationStatus()
+      .map { _ in
+        guard featureConsentManagementDialogEnabled() else { return }
+
+        let appTrackingTransparency = AppTrackingTransparency()
+
+        let authorizationStatus = appTrackingTransparency.authorizationStatus()
+        let advertisingIdentifier = appTrackingTransparency.advertisingIdentifier(authorizationStatus)
+
+        AppEnvironment.updateAdvertisingIdentifer(advertisingIdentifier)
       }
   }
 
@@ -986,7 +1009,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
   public let registerPushTokenInSegment: Signal<Data, Never>
-  public let requestATTrackingAuthorizationStatus: Signal<ATTrackingAuthorizationStatus, Never>
+  public let requestATTrackingAuthorizationStatus: Signal<Void, Never>
   public let segmentIsEnabled: Signal<Bool, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>

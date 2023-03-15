@@ -42,7 +42,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let pushRegistrationStarted = TestObserver<(), Never>()
   private let pushTokenSuccessfullyRegistered = TestObserver<String, Never>()
   private let registerPushTokenInSegment = TestObserver<Data, Never>()
-  private let requestATTrackingAuthorizationStatus = TestObserver<ATTrackingAuthorizationStatus, Never>()
+  private let requestATTrackingAuthorizationStatus = TestObserver<Void, Never>()
   private let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
   private let segmentIsEnabled = TestObserver<Bool, Never>()
   private let showAlert = TestObserver<Notification, Never>()

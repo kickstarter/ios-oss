@@ -48,7 +48,6 @@ public protocol PledgePaymentMethodsViewModelInputs {
 public protocol PledgePaymentMethodsViewModelOutputs {
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
-  var notifyFacebookCAPIUserEmail: Signal<String?, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
@@ -383,22 +382,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     // FB CAPI
     let stripePaymentSheetDidAppear = self.stripePaymentSheetDidAppearProperty.signal
-    let userEmail = storedCardsEvent.values()
-      .filter(second >>> isFalse)
-      .map(first)
-      .skipNil()
-      .map { $0.me.email }
-
-    self.notifyFacebookCAPIUserEmail = userEmail.signal
 
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal)
       .takeWhen(stripePaymentSheetDidAppear)
-      .combineLatest(with: userEmail)
-      .observeValues { projectSignal, userEmail in
-        let (project, _) = projectSignal
-
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents == true,
-          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+      .observeValues { project, _ in
+        guard project.sendMetaCapiEvents,
+          let externalId = AppEnvironment.current.advertisingIdentifier
+        else { return }
 
         _ = AppEnvironment
           .current
@@ -408,7 +398,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
               projectId: "\(project.id)",
               eventName: FacebookCAPIEventName.AddNewPaymentMethod.rawValue,
               externalId: externalId,
-              userEmail: userEmail,
+              userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(extinfo: ["i2"]),
               customData: .init(currency: nil, value: nil)
             )
@@ -464,7 +454,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
-  public let notifyFacebookCAPIUserEmail: Signal<String?, Never>
   public let notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>
