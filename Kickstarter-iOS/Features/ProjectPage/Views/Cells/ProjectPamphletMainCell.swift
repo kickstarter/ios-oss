@@ -241,7 +241,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ verticalSpacing
-      |> UIStackView.lens.isHidden .~ true
 
     _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -262,7 +261,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.backingLabel
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
 
     _ = self.readMoreButton
       |> readMoreButtonStyle
