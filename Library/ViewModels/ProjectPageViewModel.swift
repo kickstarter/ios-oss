@@ -259,7 +259,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
 
     let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { $0.isAny(of: .pledge, .viewRewards, .viewYourRewards) }
+      .filter { state in
+        switch state {
+        case .pledge, .viewRewards, .viewYourRewards:
+          return true
+        default:
+          return false
+        }
+      }
       .ignoreValues()
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
@@ -648,6 +655,11 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     }
 }
 
-private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
-  return type.isAny(of: .viewBacking, .manage, .fix)
+private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
+  switch ctaType {
+  case .fix, .viewBacking, .manage:
+    return true
+  default:
+    return false
+  }
 }

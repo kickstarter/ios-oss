@@ -7,7 +7,7 @@ public enum PledgeStateCTAType {
   case viewBacking
   case viewRewards
   case viewYourRewards
-  case prelaunch
+  case prelaunch(saved: Bool)
 
   public var buttonTitle: String {
     switch self {
@@ -23,8 +23,8 @@ public enum PledgeStateCTAType {
       return Strings.View_rewards()
     case .viewYourRewards:
       return Strings.View_your_rewards()
-    case .prelaunch:
-      return Strings.Notify_me_on_launch()
+    case let .prelaunch(saved):
+      return saved ? Strings.Saved() : Strings.Notify_me_on_launch()
     }
   }
 
@@ -36,8 +36,10 @@ public enum PledgeStateCTAType {
       return .green
     case .manage:
       return .blue
-    case .viewBacking, .viewRewards, .viewYourRewards, .prelaunch:
+    case .viewBacking, .viewRewards, .viewYourRewards:
       return .black
+    case let .prelaunch(saved):
+      return saved ? .none : .black
     }
   }
 

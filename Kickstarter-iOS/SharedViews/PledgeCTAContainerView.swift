@@ -166,21 +166,15 @@ final class PledgeCTAContainerView: UIView {
           ?|> buttonStyleType.style
       }
 
-    self.viewModel.outputs.pledgeCTAButtonIsHidden
+    self.viewModel.outputs.prelaunchCTASaved
       .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.animateView(self?.pledgeButtonAndWatchesStackView, isHidden: isHidden)
-      }
-
-    self.viewModel.outputs.prelaunchCTA
-      .observeForUI()
-      .observeValues { [weak self] flag in
-        guard flag else { return }
+      .observeValues { [weak self] isPrelaunch, saved in
+        guard isPrelaunch else { return }
 
         _ = self?.pledgeCTAButton
-          ?|> prelaunchButtonImageStyle
+          ?|> saved ? prelaunchButtonSavedImageStyle : prelaunchButtonUnsavedImageStyle
 
-        self?.watchesLabel.isHidden = !flag
+        self?.watchesLabel.isHidden = !isPrelaunch
       }
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
@@ -191,6 +185,7 @@ final class PledgeCTAContainerView: UIView {
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
+    self.pledgeButtonAndWatchesStackView.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
   }
 
   // MARK: - Configuration
@@ -247,15 +242,6 @@ final class PledgeCTAContainerView: UIView {
       self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.retryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.RetryButton.minWidth)
     ])
-  }
-
-  fileprivate func animateView(_ view: UIView?, isHidden: Bool) {
-    let duration = isHidden ? 0.0 : 0.18
-    let alpha: CGFloat = isHidden ? 0.0 : 1.0
-    UIView.animate(withDuration: duration, animations: {
-      _ = view
-        ?|> \.alpha .~ alpha
-    })
   }
 
   @objc func pledgeCTAButtonTapped() {
@@ -328,11 +314,23 @@ private let retryDescriptionLabelStyle: LabelStyle = { label in
     |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
 }
 
-private let prelaunchButtonImageStyle: ButtonStyle = { button in
+private let prelaunchButtonUnsavedImageStyle: ButtonStyle = { button in
   button
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
     |> UIButton.lens.tintColor .~ .ksr_white
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
+}
+
+private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
+  button
+    |> baseButtonStyle
+    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 16)
+    |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart")
+    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_black
+    |> UIButton.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> UIButton.lens.layer.borderWidth .~ 1.0
 }
 
 private let watchesLabelStyle: LabelStyle = { label in

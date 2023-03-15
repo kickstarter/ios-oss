@@ -8,6 +8,11 @@ public enum PledgeCTAContainerViewContext {
   case projectDescription
 }
 
+public typealias PledgeCTAPrelaunchState = (
+  prelaunch: Bool,
+  saved: Bool
+)
+
 public typealias PledgeCTAContainerViewData = (
   projectOrError: Either<(Project, RefTag?), ErrorEnvelope>,
   isLoading: Bool,
@@ -25,7 +30,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonTitleText: Signal<String, Never> { get }
   var notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
-  var prelaunchCTA: Signal<Bool, Never> { get }
+  var prelaunchCTASaved: Signal<PledgeCTAPrelaunchState, Never> { get }
   var retryStackViewIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
@@ -90,7 +95,18 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .takeWhen(updateButtonStates)
       .merge(with: isLoading.filter(isTrue).mapConst(true))
       .skipRepeats()
-    self.prelaunchCTA = pledgeState.map { $0 == .prelaunch }
+
+    self.prelaunchCTASaved = pledgeState.map { state in
+      switch state {
+      case let .prelaunch(saved):
+        return PledgeCTAPrelaunchState(
+          prelaunch: true,
+          saved: saved
+        )
+      default:
+        return PledgeCTAPrelaunchState(prelaunch: false, saved: false)
+      }
+    }
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
@@ -133,7 +149,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
-  public let prelaunchCTA: Signal<Bool, Never>
+  public let prelaunchCTASaved: Signal<PledgeCTAPrelaunchState, Never>
   public let notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
   public let retryStackViewIsHidden: Signal<Bool, Never>
@@ -146,9 +162,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 // MARK: - Functions
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
-  guard let prelaunchProject = project.displayPrelaunch,
-    !prelaunchProject else {
-    return .prelaunch
+  guard project.displayPrelaunch != .some(true) else {
+    return .prelaunch(saved: true)
   }
 
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
@@ -173,7 +188,12 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
 private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> String {
   guard let backing = project.personalization.backing else { return "" }
 
-  if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
+  switch pledgeState {
+  case .fix:
+    return pledgeState.subtitleLabel ?? ""
+  default:
+    break
+  }
 
   let amount = formattedPledge(amount: backing.amount, project: project)
 
