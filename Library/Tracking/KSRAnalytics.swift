@@ -9,7 +9,7 @@ public final class KSRAnalytics {
   internal private(set) var config: Config?
   private let device: UIDeviceType
   private(set) var loggedInUser: User?
-
+  private let advertisingId: String?
   public var logEventCallback: ((String, [String: Any]) -> Void)?
   private let screen: UIScreenType
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
@@ -496,7 +496,6 @@ public final class KSRAnalytics {
     let bonusAmountInUsd: Decimal?
     let checkoutId: String?
     let estimatedDelivery: TimeInterval?
-    let facebookCAPIUserEmail: String?
     let paymentType: String?
     let revenueInUsd: Decimal
     let rewardId: String
@@ -513,7 +512,8 @@ public final class KSRAnalytics {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
+    segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil,
+    advertisingId: String? = nil
   ) {
     self.bundle = bundle
     self.config = config
@@ -521,6 +521,7 @@ public final class KSRAnalytics {
     self.loggedInUser = loggedInUser
     self.screen = screen
     self.segmentClient = segmentClient
+    self.advertisingId = advertisingId
   }
 
   /// Configure Tracking Client's supporting user identity
@@ -1239,8 +1240,7 @@ public final class KSRAnalytics {
     properties: [String: Any] = [:],
     refTag: String? = nil
   ) {
-    guard featureConsentManagementDialogEnabled(),
-      AppEnvironment.current.appTrackingTransparency.authorizationStatus() == .authorized else { return }
+    guard let _ = self.advertisingId else { return }
 
     let props = self.sessionProperties(refTag: refTag)
       .withAllValuesFrom(userProperties(for: self.loggedInUser))

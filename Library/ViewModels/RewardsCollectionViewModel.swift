@@ -235,8 +235,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .observeValues { projectAndRefTag in
         let (project, _) = projectAndRefTag
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-          let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier()
+        guard project.sendMetaCapiEvents,
+          let externalId = AppEnvironment.current.advertisingIdentifier
         else { return }
 
         _ = AppEnvironment
@@ -247,7 +247,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
               projectId: "\(project.id)",
               eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
               externalId: externalId,
-              userEmail: nil,
+              userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(extinfo: ["i2"]),
               customData: .init(currency: nil, value: nil)
             )

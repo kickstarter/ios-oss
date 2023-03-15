@@ -18,8 +18,7 @@ extension XCTestCase {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current
-      .appTrackingTransparency,
+    advertisingIdentifier: String? = AppEnvironment.current.advertisingIdentifier,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -51,7 +50,7 @@ extension XCTestCase {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        appTrackingTransparency: appTrackingTransparency,
+        advertisingIdentifier: advertisingIdentifier,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,

@@ -207,18 +207,16 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       self.configureWithDataProperty.signal.skipNil()
     )
     .observeValues { project, configData in
-      var userEmail: String?
       var checkoutUSDAmount = ""
 
       if let checkoutDataValues = configData.checkoutData {
-        userEmail = checkoutDataValues.facebookCAPIUserEmail
         checkoutUSDAmount = "\(checkoutDataValues.revenueInUsd)" + "\(checkoutDataValues.addOnsMinimumUsd)"
         checkoutUSDAmount += String(describing: checkoutDataValues.shippingAmountUsd)
         checkoutUSDAmount += String(describing: checkoutDataValues.bonusAmountInUsd)
       }
 
-      guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-        let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier()
+      guard project.sendMetaCapiEvents,
+        let externalId = AppEnvironment.current.advertisingIdentifier
       else { return }
 
       _ = AppEnvironment
@@ -229,7 +227,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
             projectId: "\(project.id)",
             eventName: FacebookCAPIEventName.BackingComplete.rawValue,
             externalId: externalId,
-            userEmail: userEmail,
+            userEmail: AppEnvironment.current.currentUserEmail,
             appData: .init(extinfo: ["i2"]),
             customData: .init(currency: Currency.USD.rawValue, value: checkoutUSDAmount)
           )

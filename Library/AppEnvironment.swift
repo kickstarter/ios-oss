@@ -43,6 +43,24 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  /**
+   Invoke when we have acquired a fresh current user and you want to replace the current environment's
+   current user email with the fresh one.
+
+   - parameter email: A string.
+   */
+  public static func updateCurrentUserEmail(_ email: String) {
+    self.replaceCurrentEnvironment(
+      currentUserEmail: email
+    )
+  }
+
+  public static func updateAdvertisingIdentifer(_ advertisingIdentifer: String?) {
+    self.replaceCurrentEnvironment(
+      advertisingIdentifier: advertisingIdentifer
+    )
+  }
+
   public static func updateDebugData(_ debugData: DebugData) {
     self.replaceCurrentEnvironment(
       debugData: debugData
@@ -130,8 +148,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current
-      .appTrackingTransparency,
+    advertisingIdentifier: String? = nil,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -164,7 +181,7 @@ public struct AppEnvironment: AppEnvironmentType {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        appTrackingTransparency: appTrackingTransparency,
+        advertisingIdentifier: advertisingIdentifier,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
@@ -201,7 +218,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current.appTrackingTransparency,
+    advertisingIdentifier: String? = nil,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -210,6 +227,7 @@ public struct AppEnvironment: AppEnvironmentType {
     coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = AppEnvironment.current.coreTelephonyNetworkInfo,
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
+    currentUserEmail: String? = AppEnvironment.current.currentUserEmail,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     debugData: DebugData? = AppEnvironment.current.debugData,
@@ -234,7 +252,7 @@ public struct AppEnvironment: AppEnvironmentType {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        appTrackingTransparency: appTrackingTransparency,
+        advertisingIdentifier: advertisingIdentifier,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
@@ -243,6 +261,7 @@ public struct AppEnvironment: AppEnvironmentType {
         coreTelephonyNetworkInfo: coreTelephonyNetworkInfo,
         countryCode: countryCode,
         currentUser: currentUser,
+        currentUserEmail: currentUserEmail,
         dateType: dateType,
         debounceInterval: debounceInterval,
         debugData: debugData,
