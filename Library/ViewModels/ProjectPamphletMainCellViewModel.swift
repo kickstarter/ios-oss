@@ -189,7 +189,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         guard let displayPrelaunch = project.displayPrelaunch else {
           return true
         }
-        
+
         guard !displayPrelaunch else {
           return false
         }

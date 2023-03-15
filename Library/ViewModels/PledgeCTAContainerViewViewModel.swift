@@ -108,12 +108,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
         return PledgeCTAPrelaunchState(prelaunch: false, saved: false)
       }
     }
-    
+
     self.prelaunchCTASaved = prelaunchState
-    
+
     self.watchesLabelIsHidden = prelaunchState
       .map { !$0.prelaunch }
-    
+
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
