@@ -29,7 +29,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -43,7 +43,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug, staffPick:
-        $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
+        $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -57,7 +58,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization,
         photo: $1.photo, prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
-        staffPick: $0, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
+        staffPick: $0, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -73,7 +75,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -88,7 +90,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -104,7 +106,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -120,7 +122,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -135,7 +137,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -150,7 +152,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -166,7 +168,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -182,7 +184,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -198,7 +200,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -214,7 +216,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -230,7 +232,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -246,7 +248,7 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -262,7 +264,7 @@ extension Project {
         prelaunchActivated: $0, rewardData: $1.rewardData, sendMetaCapiEvents: $1.sendMetaCapiEvents,
         slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
-        video: $1.video
+        video: $1.video, watchesCount: $1.watchesCount
       ) }
     )
 
@@ -277,7 +279,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $0, sendMetaCapiEvents: $1.sendMetaCapiEvents,
         slug: $1.slug, staffPick: $1.staffPick,
-        state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
+        state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -293,7 +296,8 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData, sendMetaCapiEvents: $0,
         slug: $1.slug,
         staffPick: $1.staffPick,
-        state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
+        state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -309,7 +313,8 @@ extension Project {
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $0,
         staffPick: $1.staffPick,
-        state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
+        state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -324,7 +329,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
-        staffPick: $1.staffPick, state: $0, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video
+        staffPick: $1.staffPick, state: $0, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -339,7 +345,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
-        staffPick: $1.staffPick, state: $1.state, stats: $0, tags: $1.tags, urls: $1.urls, video: $1.video
+        staffPick: $1.staffPick, state: $1.state, stats: $0, tags: $1.tags, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -354,7 +361,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
-        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $0, urls: $1.urls, video: $1.video
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $0, urls: $1.urls, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -369,7 +377,8 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
-        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $0, video: $1.video
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $0, video: $1.video,
+        watchesCount: $1.watchesCount
       ) }
     )
 
@@ -384,7 +393,24 @@ extension Project {
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
         sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
-        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $0
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls, video: $0,
+        watchesCount: $1.watchesCount
+      ) }
+    )
+
+    public static let watchesCount = Lens<Project, Int?>(
+      view: { $0.watchesCount },
+      set: { Project(
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator,
+        extendedProjectProperties: $1.extendedProjectProperties,
+        memberData: $1.memberData, dates: $1.dates,
+        displayPrelaunch: $1.displayPrelaunch, id: $1.id,
+        location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
+        prelaunchActivated: $1.prelaunchActivated, rewardData: $1.rewardData,
+        sendMetaCapiEvents: $1.sendMetaCapiEvents, slug: $1.slug,
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, tags: $1.tags, urls: $1.urls,
+        video: $1.video, watchesCount: $0
       ) }
     )
   }

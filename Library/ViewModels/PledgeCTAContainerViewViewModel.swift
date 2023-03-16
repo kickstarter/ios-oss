@@ -37,6 +37,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
   var titleText: Signal<String, Never> { get }
+  var watchesCountText: Signal<String, Never> { get }
 }
 
 public protocol PledgeCTAContainerViewViewModelType {
@@ -120,6 +121,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
+    self.watchesCountText = project
+      .map { project in
+        let watchesCountText = project.watchesCount ?? 0
+
+        return Strings.activity_followers(number_of_followers: "\(watchesCountText)")
+      }
 
     self.subtitleText = Signal.combineLatest(project, pledgeState)
       .map(subtitle(project:pledgeState:))
@@ -165,6 +172,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let stackViewIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>
   public let titleText: Signal<String, Never>
+  public let watchesCountText: Signal<String, Never>
 }
 
 // MARK: - Functions
