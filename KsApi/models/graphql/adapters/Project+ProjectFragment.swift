@@ -94,7 +94,8 @@ extension Project {
       stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
       tags: discoverTags,
       urls: urls,
-      video: projectVideo(from: projectFragment)
+      video: projectVideo(from: projectFragment),
+      watchesCount: projectFragment.watchesCount
     )
   }
 }
