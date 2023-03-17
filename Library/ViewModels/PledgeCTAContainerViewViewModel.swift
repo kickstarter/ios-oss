@@ -71,12 +71,17 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let pledgeState = Signal
+
+    let savedProjectFromNotificationAfterDebounce = self.savedProjectFromNotificationProperty.signal.skipNil()
+      .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
+
+    self.pledgeState <~ Signal
       .merge(
         Signal.combineLatest(project, backing),
-        self.savedProjectFromNotificationProperty.signal.skipNil()
+        savedProjectFromNotificationAfterDebounce
       )
       .map(pledgeCTA(project:backing:))
+      .skipRepeats()
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -88,7 +93,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       isLoading.filter(isFalse).ignoreValues()
     )
 
-    self.notifyDelegateCTATapped = pledgeState
+    self.notifyDelegateCTATapped = self.pledgeState.signal.skipNil()
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
     self.retryStackViewIsHidden = inError
@@ -103,7 +108,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .merge(with: isLoading.filter(isTrue).mapConst(true))
       .skipRepeats()
 
-    let prelaunchState = pledgeState.map { state -> PledgeCTAPrelaunchState in
+    self.prelaunchState <~ self.pledgeState.signal.skipNil().map { state -> PledgeCTAPrelaunchState in
       switch state {
       case let .prelaunch(saved):
         return PledgeCTAPrelaunchState(
@@ -115,17 +120,17 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       }
     }
 
-    self.prelaunchCTASaved = prelaunchState
+    self.prelaunchCTASaved = self.prelaunchState.signal.skipNil()
 
-    self.watchesLabelIsHidden = prelaunchState
+    self.watchesLabelIsHidden = self.prelaunchState.signal.skipNil()
       .map { !$0.prelaunch }
 
-    self.buttonStyleType = pledgeState.map { $0.buttonStyle }
-    self.buttonTitleText = pledgeState.map { $0.buttonTitle }
-    let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
+    self.buttonStyleType = self.pledgeState.signal.skipNil().map { $0.buttonStyle }
+    self.buttonTitleText = self.pledgeState.signal.skipNil().map { $0.buttonTitle }
+    let stackViewAndSpacerAreHidden = self.pledgeState.signal.skipNil().map { $0.stackViewAndSpacerAreHidden }
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
-    self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
+    self.titleText = self.pledgeState.signal.skipNil().map { $0.titleLabel }.skipNil()
     self.watchesCountText = project
       .map { project in
         let watchesCountText = project.watchesCount ?? 0
@@ -133,10 +138,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
         return Strings.activity_followers(number_of_followers: "\(watchesCountText)")
       }
 
-    self.subtitleText = Signal.combineLatest(project, pledgeState)
+    self.subtitleText = Signal.combineLatest(project, self.pledgeState.signal.skipNil())
       .map(subtitle(project:pledgeState:))
 
-    let pledgeTypeAndProject = Signal.combineLatest(pledgeState, project)
+    let pledgeTypeAndProject = Signal.combineLatest(self.pledgeState.signal.skipNil(), project)
 
     // Tracking
     pledgeTypeAndProject
@@ -151,6 +156,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
         )
       }
   }
+
+  private var pledgeState = MutableProperty<PledgeStateCTAType?>(nil)
+  private var prelaunchState = MutableProperty<PledgeCTAPrelaunchState?>(nil)
 
   fileprivate let configData = MutableProperty<PledgeCTAContainerViewData?>(nil)
   public func configureWith(value: PledgeCTAContainerViewData) {

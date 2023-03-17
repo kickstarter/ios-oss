@@ -140,6 +140,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
+
+  /// Emits a prelaunch save state that updates the navigation bar's watch project state.
+  var updateWatchProjectWithSavedPrelaunchProject: Signal<PledgeCTAPrelaunchState, Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -272,6 +275,27 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     let shouldGoToManagePledge = ctaButtonTappedWithType
       .filter(shouldGoToManagePledge(with:))
       .ignoreValues()
+
+    let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
+      .filter { state in
+        switch state {
+        case .prelaunch:
+          return true
+        default:
+          return false
+        }
+      }
+
+    self.updateWatchProjectWithSavedPrelaunchProject = shouldUpdateWatchProjectOnPrelaunch
+      .map { pledgeCTAType -> PledgeCTAPrelaunchState? in
+        switch pledgeCTAType {
+        case let .prelaunch(saved):
+          return PledgeCTAPrelaunchState(prelaunch: true, saved: saved)
+        default:
+          return nil
+        }
+      }
+      .skipNil()
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
@@ -581,6 +605,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
+  public let updateWatchProjectWithSavedPrelaunchProject: Signal<PledgeCTAPrelaunchState, Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }

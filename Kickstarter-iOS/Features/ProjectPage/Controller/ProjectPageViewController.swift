@@ -299,6 +299,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         defaultNavigationBarView.scrollEdgeAppearance?.shadowColor = .ksr_white
       }
 
+    self.viewModel.outputs.updateWatchProjectWithSavedPrelaunchProject
+      .observeForUI()
+      .observeValues { [weak self] prelaunchState in
+        self?.navigationDelegate?.configureSaveWatchPrelaunchProject(with: prelaunchState)
+      }
+
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
       .observeValues { [weak self] params in

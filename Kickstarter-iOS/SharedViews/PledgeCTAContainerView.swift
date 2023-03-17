@@ -337,6 +337,8 @@ private let prelaunchButtonUnsavedImageStyle: ButtonStyle = { button in
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
     |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_black
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
+    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_black
 }
 
 private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
@@ -349,6 +351,9 @@ private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
     |> UIButton.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
     |> UIButton.lens.layer.borderWidth .~ 1.0
     |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_white
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_black
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_black
+    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_white
 }
 
 private let watchesLabelStyle: LabelStyle = { label in

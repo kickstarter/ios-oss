@@ -1,6 +1,6 @@
 import UIKit
 
-public enum PledgeStateCTAType {
+public enum PledgeStateCTAType: Equatable {
   case fix
   case pledge
   case manage
