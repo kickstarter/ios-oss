@@ -76,6 +76,8 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private var projectSavedObserver: Any?
+
   weak var delegate: PledgeCTAContainerViewDelegate?
 
   private let viewModel: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
@@ -95,6 +97,10 @@ final class PledgeCTAContainerView: UIView {
   }
 
   // MARK: - Styles
+
+  deinit {
+    self.projectSavedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
 
   override func bindStyles() {
     super.bindStyles()
@@ -175,6 +181,14 @@ final class PledgeCTAContainerView: UIView {
           ?|> saved ? prelaunchButtonSavedImageStyle : prelaunchButtonUnsavedImageStyle
 
         self?.watchesLabel.isHidden = !isPrelaunch
+      }
+
+    self.projectSavedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
+        notification in
+        self?.viewModel.inputs.savedProjectFromNotification(
+          project: notification.userInfo?["project"] as? Project
+        )
       }
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
@@ -322,6 +336,7 @@ private let prelaunchButtonUnsavedImageStyle: ButtonStyle = { button in
     |> UIButton.lens.tintColor .~ .ksr_white
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
+    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_black
 }
 
 private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
@@ -333,6 +348,7 @@ private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_black
     |> UIButton.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
     |> UIButton.lens.layer.borderWidth .~ 1.0
+    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_white
 }
 
 private let watchesLabelStyle: LabelStyle = { label in

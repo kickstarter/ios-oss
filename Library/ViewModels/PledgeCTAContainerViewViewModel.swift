@@ -22,6 +22,7 @@ public typealias PledgeCTAContainerViewData = (
 public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(value: PledgeCTAContainerViewData)
   func pledgeCTAButtonTapped()
+  func savedProjectFromNotification(project: Project?)
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
@@ -70,7 +71,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let pledgeState = Signal.combineLatest(project, backing)
+    let pledgeState = Signal
+      .merge(
+        Signal.combineLatest(project, backing),
+        self.savedProjectFromNotificationProperty.signal.skipNil()
+      )
       .map(pledgeCTA(project:backing:))
 
     let inError = Signal.merge(
@@ -157,6 +162,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.pledgeCTAButtonTappedProperty.value = ()
   }
 
+  fileprivate let savedProjectFromNotificationProperty = MutableProperty<(Project, Backing?)?>(nil)
+  public func savedProjectFromNotification(project: Project?) {
+    guard let projectValue = project else { return }
+    self.savedProjectFromNotificationProperty.value = (projectValue, projectValue.personalization.backing)
+  }
+
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
@@ -179,7 +190,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
   guard project.displayPrelaunch != .some(true) else {
-    return .prelaunch(saved: false)
+    let projectIsSaved = project.personalization.isStarred ?? false
+
+    return .prelaunch(saved: projectIsSaved)
   }
 
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
