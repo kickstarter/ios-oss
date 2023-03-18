@@ -467,8 +467,6 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  // MARK: - Logged Out
-
   func testLoggedIn_NonBacker_NonLiveProject() {
     let config = Config.template
     let project = Project.cosmicSurgery
@@ -714,6 +712,94 @@ internal final class ProjectPageViewControllerTests: TestCase {
           matching: parent.view,
           as: .image(perceptualPrecision: 0.98),
           named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testLoggedIn_NonBacker_PrelaunchProject_Unsaved_ShowsUnsavedPledgeCTAWithFollowers_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.displayPrelaunch .~ true
+      |> Project.lens.personalization.isStarred .~ false
+      |> Project.lens.watchesCount .~ 10
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .successful
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData)
+    )
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)",
+          record: true
+        )
+      }
+    }
+  }
+
+  func testLoggedIn_NonBacker_PrelaunchProject_Saved_ShowsSavedPledgeCTAWithFollowers_Success() {
+    let config = Config.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.displayPrelaunch .~ true
+      |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.watchesCount .~ 10
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .successful
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ self.extendedProjectProperties
+
+    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: nil)
+
+    let mockService = MockService(
+      fetchProjectPamphletResult: .success(projectPamphletData)
+    )
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        apiService: mockService,
+        config: config, currentUser: .template, language: language
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)",
+          record: true
         )
       }
     }
