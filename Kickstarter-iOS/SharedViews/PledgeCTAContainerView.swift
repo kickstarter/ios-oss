@@ -250,9 +250,16 @@ final class PledgeCTAContainerView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.activityIndicator.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-      self.activityIndicator.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
+      self.activityIndicator.centerXAnchor
+        .constraint(equalTo: self.activityIndicatorContainerView.centerXAnchor),
+      self.activityIndicator.centerYAnchor
+        .constraint(equalTo: self.activityIndicatorContainerView.centerYAnchor),
+      self.activityIndicatorContainerView.widthAnchor.constraint(equalTo: self.widthAnchor),
       self.activityIndicatorContainerView.heightAnchor.constraint(equalToConstant: Layout.Button.minHeight),
+      self.activityIndicatorContainerView.centerXAnchor
+        .constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+      self.activityIndicatorContainerView.centerYAnchor
+        .constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
