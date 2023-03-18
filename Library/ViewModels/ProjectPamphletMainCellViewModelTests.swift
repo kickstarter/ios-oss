@@ -9,7 +9,7 @@ import XCTest
 final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
+  private let backingLabelHidden = TestObserver<Bool, Never>()
   private let backersTitleLabelText = TestObserver<String, Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
@@ -18,12 +18,14 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let deadlineSubtitleLabelText = TestObserver<String, Never>()
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
+  private let isPrelaunchProject = TestObserver<Bool, Never>()
   private let notifyDelegateToGoToCampaignWithData = TestObserver<ProjectPamphletMainCellData, Never>()
   private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
   private let pledgedTitleLabelText = TestObserver<String, Never>()
   private let pledgedTitleLabelTextColor = TestObserver<UIColor, Never>()
+  private let prelaunchProjectBackingText = TestObserver<String, Never>()
   private let progressPercentage = TestObserver<Float, Never>()
   private let projectBlurbLabelText = TestObserver<String, Never>()
   private let projectImageUrl = TestObserver<String?, Never>()
@@ -35,7 +37,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let readMoreButtonIsLoading = TestObserver<Bool, Never>()
   private let readMoreButtonLargeIsHidden = TestObserver<Bool, Never>()
   private let stateLabelHidden = TestObserver<Bool, Never>()
-  private let backingLabelHidden = TestObserver<Bool, Never>()
+  private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -68,6 +70,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.backingLabelHidden.observe(self.backingLabelHidden.observer)
+    self.vm.outputs.isPrelaunchProject.observe(self.isPrelaunchProject.observer)
+    self.vm.outputs.prelaunchProjectBackingText.observe(self.prelaunchProjectBackingText.observer)
   }
 
   func testReadMoreButton_ExperimentStory_Disabled_Success() {
@@ -210,6 +214,19 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.awakeFromNib()
 
     self.backingLabelHidden.assertValues([false])
+    self.isPrelaunchProject.assertValues([false])
+    self.prelaunchProjectBackingText.assertValues(["You’re a backer!"])
+  }
+
+  func testBackingLabelHidden_PrelaunchProject() {
+    let project = .template |> Project.lens.personalization.isBacking .~ false
+      |> \.displayPrelaunch .~ true
+    self.vm.inputs.configureWith(value: (project, nil))
+    self.vm.inputs.awakeFromNib()
+
+    self.backingLabelHidden.assertValues([false])
+    self.isPrelaunchProject.assertValues([true])
+    self.prelaunchProjectBackingText.assertValues(["Coming soon"])
   }
 
   func testBackingLabelHidden_Backer_VideoInteraction() {

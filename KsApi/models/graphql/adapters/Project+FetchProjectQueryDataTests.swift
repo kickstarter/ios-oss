@@ -43,6 +43,7 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     )
     XCTAssertFalse(project.displayPrelaunch!)
     XCTAssertTrue(project.prelaunchActivated!)
+    XCTAssertEqual(project.watchesCount, 180)
     XCTAssertEqual(project.slug, "thequiet")
     XCTAssertTrue(project.staffPick)
     XCTAssertEqual(project.state, .live)

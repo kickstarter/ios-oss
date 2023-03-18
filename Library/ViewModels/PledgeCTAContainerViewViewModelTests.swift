@@ -15,10 +15,13 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let notifyDelegateCTATapped = TestObserver<PledgeStateCTAType, Never>()
   let pledgeCTAButtonIsHidden = TestObserver<Bool, Never>()
   let pledgeRetryButtonIsHidden = TestObserver<Bool, Never>()
+  let prelaunchCTASaved = TestObserver<PledgeCTAPrelaunchState, Never>()
   let spacerIsHidden = TestObserver<Bool, Never>()
   let stackViewIsHidden = TestObserver<Bool, Never>()
   let subtitleText = TestObserver<String, Never>()
   let titleText = TestObserver<String, Never>()
+  let watchesLabelHidden = TestObserver<Bool, Never>()
+  let watchesCountText = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -28,11 +31,14 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.vm.outputs.buttonTitleText.observe(self.buttonTitleText.observer)
     self.vm.outputs.notifyDelegateCTATapped.observe(self.notifyDelegateCTATapped.observer)
     self.vm.outputs.pledgeCTAButtonIsHidden.observe(self.pledgeCTAButtonIsHidden.observer)
+    self.vm.outputs.prelaunchCTASaved.observe(self.prelaunchCTASaved.observer)
     self.vm.outputs.retryStackViewIsHidden.observe(self.pledgeRetryButtonIsHidden.observer)
     self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer)
     self.vm.outputs.stackViewIsHidden.observe(self.stackViewIsHidden.observer)
     self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
     self.vm.outputs.titleText.observe(self.titleText.observer)
+    self.vm.outputs.watchesLabelIsHidden.observe(self.watchesLabelHidden.observer)
+    self.vm.outputs.watchesCountText.observe(self.watchesCountText.observer)
   }
 
   func testPledgeCTA_Backer_LiveProject_US_ProjectCurrency() {
@@ -321,5 +327,62 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       "Event includes Optimizely properties"
     )
     XCTAssertEqual("pledge_initiate", segmentTrackingClientProperties?["context_cta"] as? String)
+  }
+
+  func testPledgeCTA_PrelaunchGoesFromUnsavedToSavedViaNotification_Success() {
+    let unsavedProject = Project.template
+      |> \.displayPrelaunch .~ true
+      |> \.watchesCount .~ 102
+      |> \.personalization.isStarred .~ false
+
+    let prelaunchCTAUnsaved = PledgeCTAPrelaunchState(prelaunch: true, saved: false)
+    let prelaunchCTASaved = PledgeCTAPrelaunchState(prelaunch: true, saved: true)
+
+    self.vm.inputs.configureWith(value: (.left((unsavedProject, nil)), false, .projectPamphlet))
+
+    self.buttonStyleType.assertValues([.black])
+    self.buttonTitleText.assertValues(["Notify me on launch"])
+    self.watchesCountText.assertValues(["102 followers"])
+    self.watchesLabelHidden.assertValues([false])
+    XCTAssertEqual(self.prelaunchCTASaved.values.count, 1)
+    XCTAssertEqual(self.prelaunchCTASaved.values.first!.prelaunch, prelaunchCTAUnsaved.prelaunch)
+    XCTAssertEqual(self.prelaunchCTASaved.values.first!.saved, prelaunchCTAUnsaved.saved)
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+
+    let savedProject = Project.template
+      |> \.displayPrelaunch .~ true
+      |> \.watchesCount .~ 102
+      |> \.personalization.isStarred .~ true
+
+    self.vm.inputs.savedProjectFromNotification(project: savedProject)
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.buttonStyleType.assertValues([.black, .none])
+    self.buttonTitleText.assertValues(["Notify me on launch", "Saved"])
+    self.watchesCountText.assertValues(["102 followers"])
+    self.watchesLabelHidden.assertValues([false, false])
+    XCTAssertEqual(self.prelaunchCTASaved.values.count, 2)
+    XCTAssertEqual(self.prelaunchCTASaved.values.last!.prelaunch, prelaunchCTASaved.prelaunch)
+    XCTAssertEqual(self.prelaunchCTASaved.values.last!.saved, prelaunchCTASaved.saved)
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+  }
+
+  func testPledgeCTA_PrelaunchNotifiesWithStateViaButtonClick_Success() {
+    let savedProject = Project.template
+      |> \.displayPrelaunch .~ true
+      |> \.watchesCount .~ 102
+      |> \.personalization.isStarred .~ true
+
+    self.vm.inputs.configureWith(value: (.left((savedProject, nil)), false, .projectPamphlet))
+
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeCTAButtonTapped()
+
+    self.scheduler.advance(by: .seconds(1))
+
+    XCTAssertEqual(self.notifyDelegateCTATapped.values.count, 1)
+    XCTAssertEqual(self.notifyDelegateCTATapped.values.last!, .prelaunch(saved: true))
   }
 }

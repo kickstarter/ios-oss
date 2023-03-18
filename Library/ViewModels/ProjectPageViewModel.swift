@@ -142,7 +142,7 @@ public protocol ProjectPageViewModelOutputs {
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
 
   /// Emits a prelaunch save state that updates the navigation bar's watch project state.
-  var updateWatchProjectWithSavedPrelaunchProject: Signal<PledgeCTAPrelaunchState, Never> { get }
+  var updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -286,7 +286,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         }
       }
 
-    self.updateWatchProjectWithSavedPrelaunchProject = shouldUpdateWatchProjectOnPrelaunch
+    self.updateWatchProjectWithPrelaunchProjectState = shouldUpdateWatchProjectOnPrelaunch
       .map { pledgeCTAType -> PledgeCTAPrelaunchState? in
         switch pledgeCTAType {
         case let .prelaunch(saved):
@@ -605,7 +605,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
-  public let updateWatchProjectWithSavedPrelaunchProject: Signal<PledgeCTAPrelaunchState, Never>
+  public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }

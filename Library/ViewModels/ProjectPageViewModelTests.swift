@@ -56,6 +56,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let updateDataSourceImageURLS = TestObserver<[URL], Never>()
   private let updateFAQsInDataSourceProject = TestObserver<Project, Never>()
   private let updateFAQsInDataSourceIsExpandedValues = TestObserver<[Bool], Never>()
+  private let updateWatchProjectWithPrelaunchProjectState = TestObserver<PledgeCTAPrelaunchState, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -126,6 +127,8 @@ final class ProjectPageViewModelTests: TestCase {
       .observe(self.updateFAQsInDataSourceProject.observer)
     self.vm.outputs.updateFAQsInDataSource.map { $0.2 }
       .observe(self.updateFAQsInDataSourceIsExpandedValues.observer)
+    self.vm.outputs.updateWatchProjectWithPrelaunchProjectState.map { $0 }
+      .observe(self.updateWatchProjectWithPrelaunchProjectState.observer)
   }
 
   func testConfigureChildViewControllersWithProject_WithFriendsNoBacking_ConfiguredWithProject() {
@@ -794,6 +797,25 @@ final class ProjectPageViewModelTests: TestCase {
         [.discovery, .discovery, .discovery],
         "Tapping 'View your rewards' emits the refTag"
       )
+    }
+  }
+
+  func testUpdateWatchProjectWithPrelaunchState() {
+    withEnvironment(config: .template, mainBundle: self.releaseBundle) {
+      let project = Project.template
+        |> \.displayPrelaunch .~ true
+        |> \.watchesCount .~ 10
+        |> \.personalization.isStarred .~ true
+
+      self.configureInitialState(.left(project))
+
+      self.updateWatchProjectWithPrelaunchProjectState.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .prelaunch(saved: true))
+
+      XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.count, 1)
+      XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.last!.prelaunch, true)
+      XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.last!.saved, true)
     }
   }
 

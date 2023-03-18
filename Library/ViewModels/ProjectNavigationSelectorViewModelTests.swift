@@ -98,7 +98,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     self.configureNavigationSelectorUI.assertDidEmitValue()
   }
 
-  func testOutput_ConfigureNavigationSelectorUI() {
+  func testOutput_ConfigureNavigationSelectorUI_NonPrelaunch() {
     var project = Project.template
       |> \.displayPrelaunch .~ false
 
@@ -111,6 +111,21 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     self.vm.inputs.configureNavigationSelector(with: (project, nil))
 
     self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
+  }
+
+  func testOutput_ConfigureNavigationSelectorUI_Prelaunch() {
+    var project = Project.template
+      |> \.displayPrelaunch .~ true
+
+    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
+
+    self.vm.inputs.buttonTapped(index: 0)
+
+    self.configureNavigationSelectorUI.assertDidNotEmitValue()
+
+    self.vm.inputs.configureNavigationSelector(with: (project, nil))
+
+    self.configureNavigationSelectorUI.assertValues([[.overview]])
   }
 
   func testOutput_ConfigureNavigationSelectorUI_EmptyEnvironmentalCommitments() {
