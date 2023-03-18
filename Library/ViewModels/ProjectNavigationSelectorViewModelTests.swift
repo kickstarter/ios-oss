@@ -100,6 +100,8 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
   func testOutput_ConfigureNavigationSelectorUI() {
     var project = Project.template
+      |> \.displayPrelaunch .~ false
+
     project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
 
     self.vm.inputs.buttonTapped(index: 0)
@@ -112,17 +114,22 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   }
 
   func testOutput_ConfigureNavigationSelectorUI_EmptyEnvironmentalCommitments() {
+    var projectAndEmptyRefTag = self.projectAndEmptyRefTag
+
+    projectAndEmptyRefTag.0.displayPrelaunch = false
+
     self.vm.inputs.buttonTapped(index: 0)
 
     self.configureNavigationSelectorUI.assertDidNotEmitValue()
 
-    self.vm.inputs.configureNavigationSelector(with: self.projectAndEmptyRefTag)
+    self.vm.inputs.configureNavigationSelector(with: projectAndEmptyRefTag)
 
     self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks]])
   }
 
   func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOn_ShowsCampaignTab() {
     var project = Project.template
+      |> \.displayPrelaunch .~ false
     project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
 
     let optimizelyClient = MockOptimizelyClient()
@@ -144,6 +151,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
   func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOff_DoesNotShowCampaignTab() {
     var project = Project.template
+      |> \.displayPrelaunch .~ false
     project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
 
     let optimizelyClient = MockOptimizelyClient()

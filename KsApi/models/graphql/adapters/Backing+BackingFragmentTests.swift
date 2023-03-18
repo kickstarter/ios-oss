@@ -736,7 +736,8 @@ private func backingDictionary() -> [String: Any] {
             "src": "https://v.kickstarter.com/1631480664_a23b86f39dcfa7b0009309fa0f668ceb5e13b8a8/projects/4196183/video-1116448-hls_playlist.m3u8"
           }
         }
-      }
+      },
+      "watchesCount": 19
     },
     "reward": {
       "__typename": "Reward",

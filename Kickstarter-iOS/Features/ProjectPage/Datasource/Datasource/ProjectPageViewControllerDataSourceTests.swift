@@ -496,6 +496,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
   func testOverview() {
     let project = Project.template
+      |> \.displayPrelaunch .~ false
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
@@ -565,6 +566,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
   func testIndexPathIsCommentsSubpage() {
     let project = Project.template
+      |> \.displayPrelaunch .~ false
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
@@ -588,6 +590,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
   func testIndexPathIsUpdatesSubpage() {
     let project = Project.template
+      |> \.displayPrelaunch .~ false
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],

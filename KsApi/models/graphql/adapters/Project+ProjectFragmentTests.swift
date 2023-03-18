@@ -63,6 +63,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertNil(project.personalization.backing)
       XCTAssertNil(project.rewardData.addOns)
       XCTAssertEqual(project.sendMetaCapiEvents, false)
+      XCTAssertEqual(project.watchesCount, 18)
 
       guard let extendedProjectProperties = project.extendedProjectProperties,
         extendedProjectProperties.story.htmlViewElements.count > 3,
@@ -436,7 +437,8 @@ final class Project_ProjectFragmentTests: XCTestCase {
                 "src":"https://v.kickstarter.com/1631473358_b73a85bd690a6353b9e29af6ef78496e2d20858c/projects/4196183/video-1116448-hls_playlist.m3u8"
              }
           }
-       }
+       },
+      "watchesCount": 18
     }
     """
 
