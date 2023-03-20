@@ -14,6 +14,8 @@ struct TextInputFieldModifier: ViewModifier {
   let submitLabel: SubmitLabel
   let editable: Bool
   let titleText: String
+  let autocorrectEnabled: Bool
+  let autocapitalizeEnabled: UITextAutocapitalizationType
 
   func body(content: Content) -> some View {
     content
@@ -30,6 +32,8 @@ struct TextInputFieldModifier: ViewModifier {
       .disabled(!self.editable)
       .accessibilityElement()
       .accessibilityLabel(self.titleText)
+      .disableAutocorrection(!self.autocorrectEnabled)
+      .autocapitalization(self.autocapitalizeEnabled)
   }
 }
 
@@ -39,13 +43,17 @@ extension View {
                     textColor: Color = Color(.ksr_support_700),
                     submitLabel: SubmitLabel = .return,
                     editable: Bool = false,
-                    titleText: String = Strings.Current_email()) -> some View {
+                    titleText: String = Strings.Current_email(),
+                    autocorrectEnabled: Bool = false,
+                    autocapitalizeEnabled: UITextAutocapitalizationType = .none) -> some View {
     modifier(TextInputFieldModifier(
       keyboardType: keyboardType,
       textColor: textColor,
       submitLabel: submitLabel,
       editable: editable,
-      titleText: titleText
+      titleText: titleText,
+      autocorrectEnabled: autocorrectEnabled,
+      autocapitalizeEnabled: autocapitalizeEnabled
     ))
   }
 
@@ -53,13 +61,17 @@ extension View {
                 textColor: Color = Color(.ksr_support_400),
                 submitLabel: SubmitLabel = .next,
                 editable: Bool = true,
-                titleText: String = Strings.New_email()) -> some View {
+                titleText: String = Strings.New_email(),
+                autocorrectEnabled: Bool = false,
+                autocapitalizeEnabled: UITextAutocapitalizationType = .none) -> some View {
     modifier(TextInputFieldModifier(
       keyboardType: keyboardType,
       textColor: textColor,
       submitLabel: submitLabel,
       editable: editable,
-      titleText: titleText
+      titleText: titleText,
+      autocorrectEnabled: autocorrectEnabled,
+      autocapitalizeEnabled: autocapitalizeEnabled
     ))
   }
 
@@ -67,13 +79,17 @@ extension View {
                        textColor: Color = Color(.ksr_support_400),
                        submitLabel: SubmitLabel = .done,
                        editable: Bool = true,
-                       titleText: String = Strings.Current_password()) -> some View {
+                       titleText: String = Strings.Current_password(),
+                       autocorrectEnabled: Bool = false,
+                       autocapitalizeEnabled: UITextAutocapitalizationType = .none) -> some View {
     modifier(TextInputFieldModifier(
       keyboardType: keyboardType,
       textColor: textColor,
       submitLabel: submitLabel,
       editable: editable,
-      titleText: titleText
+      titleText: titleText,
+      autocorrectEnabled: autocorrectEnabled,
+      autocapitalizeEnabled: autocapitalizeEnabled
     ))
   }
 }

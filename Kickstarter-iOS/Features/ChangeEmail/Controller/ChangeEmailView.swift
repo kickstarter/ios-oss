@@ -1,3 +1,4 @@
+import Combine
 import Library
 import SwiftUI
 
@@ -8,16 +9,17 @@ enum FocusField {
 
 @available(iOS 15.0, *)
 struct ChangeEmailView: View {
-  private var warningMessage: (String, Bool) = (Strings.We_ve_been_unable_to_send_email(), true)
-
-  private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
-
+  var cancellables = Set<AnyCancellable>()
   private let contentPadding = 12.0
   @ObservedObject private var viewModel = ChangeEmailViewViewModel()
 
-  private var reactiveViewModel = ChangeEmailViewModel_SwiftUIIntegrationTest()
+  @ObservedObject private var reactiveViewModel = ChangeEmailViewModel_SwiftUIIntegrationTest()
+  @State private var newEmailText = ""
+  @State private var newPasswordText = ""
+  @State private var saveEnabled = false
+  @State private var saveTriggered = false
 
   var body: some View {
     GeometryReader { proxy in
@@ -33,7 +35,7 @@ struct ChangeEmailView: View {
             secureField: false,
             placeholderText: "",
             contentPadding: contentPadding,
-            valueText: viewModel.emailText.value
+            valueText: $reactiveViewModel.retrievedEmailText.value
           )
           .currentEmail()
 
@@ -42,19 +44,20 @@ struct ChangeEmailView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
-        /**
-         if !reactiveViewModel.hideVerifyView {
-           warningLabel(text: warningMessage.0, warningMessage.1)
-             .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
-             .background(Color(.ksr_support_100))
-             .listRowSeparator(.hidden)
-             .listRowInsets(EdgeInsets())
-         }
-         */
+        if !reactiveViewModel.hideMessageLabel {
+          warningLabel(
+            text: reactiveViewModel.warningMessageWithAlert.0,
+            reactiveViewModel.warningMessageWithAlert.1
+          )
+          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
+          .background(Color(.ksr_support_100))
+          .listRowSeparator(.hidden)
+          .listRowInsets(EdgeInsets())
+        }
 
         if !reactiveViewModel.hideVerifyView {
           VStack(alignment: .leading, spacing: 0) {
-            Button(resendVerificationEmailButtonTitle) {
+            Button(reactiveViewModel.verifyEmailButtonTitle) {
               reactiveViewModel.inputs.resendVerificationEmailButtonTapped()
             }
             .font(Font(UIFont.ksr_body()))
@@ -78,8 +81,11 @@ struct ChangeEmailView: View {
             secureField: false,
             placeholderText: Strings.login_placeholder_email(),
             contentPadding: contentPadding,
-            valueText: $viewModel.newEmailText.value.wrappedValue
+            valueText: $newEmailText
           )
+          .onChange(of: newEmailText) { newValue in
+            reactiveViewModel.newEmailText.send(newValue)
+          }
           .newEmail()
           .focused($focusField, equals: .newEmail)
           .onSubmit {
@@ -91,13 +97,22 @@ struct ChangeEmailView: View {
             secureField: true,
             placeholderText: Strings.login_placeholder_password(),
             contentPadding: contentPadding,
-            valueText: $viewModel.newPasswordText.value.wrappedValue
+            valueText: $newPasswordText
           )
+          .onChange(of: newPasswordText) { newValue in
+            reactiveViewModel.newPasswordText.send(newValue)
+          }
           .currentPassword()
           .focused($focusField, equals: .currentPassword)
           .submitScope(viewModel.newPasswordText.value.isEmpty)
           .onSubmit {
             focusField = nil
+            
+            // FIXME: Maybe this should live in the view model?
+            if saveEnabled {
+              saveTriggered = true
+              reactiveViewModel.saveTriggered.send(true)
+            }
           }
 
           Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
@@ -111,9 +126,17 @@ struct ChangeEmailView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
-            titleText: Strings.Save(),
-            saveEnabled: viewModel.savedButtonIsEnabled
+            saveEnabled: $saveEnabled,
+            saveTriggered: $saveTriggered,
+            titleText: Strings.Save()
           )
+          .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
+            saveEnabled = newValue
+          }
+          .onChange(of: saveTriggered) { newValue in
+            focusField = nil
+            reactiveViewModel.saveTriggered.send(newValue)
+          }
         }
       }
       .overlay(alignment: .bottom) {
@@ -140,7 +163,7 @@ struct ChangeEmailView: View {
     var secureField: Bool
     var placeholderText: String
     var contentPadding: CGFloat
-    @State var valueText: String
+    var valueText: Binding<String>
 
     var body: some View {
       HStack {
@@ -168,19 +191,19 @@ struct ChangeEmailView: View {
   private struct InputFieldUserInputView: View {
     var secureField: Bool
     var placeholderText: String
-    @State var valueText: String
+    var valueText: Binding<String>
 
     var body: some View {
       if secureField {
         SecureField(
           "",
-          text: $valueText,
+          text: valueText,
           prompt: Text(placeholderText).foregroundColor(Color(.ksr_support_400))
         )
       } else {
         TextField(
           "",
-          text: $valueText,
+          text: valueText,
           prompt:
           Text(placeholderText).foregroundColor(Color(.ksr_support_400))
         )
