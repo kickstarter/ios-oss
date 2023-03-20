@@ -3,7 +3,7 @@ import Foundation
 import XCTest
 
 final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
-  func test() {
+  func testFetchUser() {
     let fetchUserQueryData = GraphAPI.FetchUserQuery
       .Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
 
@@ -33,5 +33,17 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
       ])
     )
     XCTAssertEqual(envelope.me.uid, "1470952545")
+  }
+
+  func testFetchUserEmail() {
+    let fetchUserEmailQueryData = GraphAPI.FetchUserEmailQuery
+      .Data(unsafeResultMap: GraphUserEnvelopeTemplates.userJSONDict)
+
+    guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
+      XCTFail()
+      return
+    }
+
+    XCTAssertEqual(envelope.me.email, "nativesquad@ksr.com")
   }
 }

@@ -347,8 +347,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .observeValues { projectAndRefTag in
         let (project, _) = projectAndRefTag
 
-        guard featureFacebookConversionsAPIEnabled(), project.sendMetaCapiEvents,
-          let externalId = AppTrackingTransparency.advertisingIdentifier() else { return }
+        guard project.sendMetaCapiEvents,
+          let externalId = AppEnvironment.current.advertisingIdentifier
+        else { return }
 
         _ = AppEnvironment
           .current
@@ -358,7 +359,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
               projectId: "\(project.id)",
               eventName: FacebookCAPIEventName.ProjectPageViewed.rawValue,
               externalId: externalId,
-              userEmail: nil,
+              userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(extinfo: ["i2"]),
               customData: .init(currency: nil, value: nil)
             )

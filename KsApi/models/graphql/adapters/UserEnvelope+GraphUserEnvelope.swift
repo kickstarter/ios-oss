@@ -28,4 +28,17 @@ extension UserEnvelope {
 
     return UserEnvelope<GraphUser>(me: graphUser)
   }
+
+  /**
+   Returns a `UserEnvelope<GraphUser>` from a `FetchUserQuery.Data` object.
+   */
+  static func userEnvelope(from data: GraphAPI.FetchUserEmailQuery.Data) -> UserEnvelope<GraphUserEmail>? {
+    guard let userFragment = data.me?.fragments.userEmailFragment else { return nil }
+
+    let graphUser = GraphUserEmail(
+      email: userFragment.email
+    )
+
+    return UserEnvelope<GraphUserEmail>(me: graphUser)
+  }
 }

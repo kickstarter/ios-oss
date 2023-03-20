@@ -165,6 +165,10 @@ public protocol ServiceType {
   func fetchGraphUser(withStoredCards: Bool)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
 
+  /// Fetches the email of the currently logged in User.
+  func fetchGraphUserEmail()
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
+
   /// Fetch errored User's backings with a specific status.
   func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
