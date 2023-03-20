@@ -4,7 +4,7 @@ import SwiftUI
 @available(iOS 15.0, *)
 struct MessageBannerView: View {
   @ObservedObject var viewModel: MessageBannerViewViewModel
-  @Binding var showBanner: Bool
+  @State var showBanner = true
 
   var body: some View {
     if showBanner {

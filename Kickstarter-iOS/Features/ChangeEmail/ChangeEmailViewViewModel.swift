@@ -30,7 +30,6 @@ public final class ChangeEmailViewViewModel: ObservableObject {
       .removeDuplicates(by: ==)
       .map(self.shouldEnableSaveButton(email:newEmail:password:))
       .sink(receiveValue: { [weak self] flag in
-        print("*** \(flag)")
         self?.savedButtonIsEnabled = flag
       })
       .store(in: &self.cancellables)

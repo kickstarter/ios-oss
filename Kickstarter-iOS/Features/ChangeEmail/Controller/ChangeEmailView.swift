@@ -8,21 +8,16 @@ enum FocusField {
 
 @available(iOS 15.0, *)
 struct ChangeEmailView: View {
-  @State var showBanner: Bool = false
-  // FIXME: Requires view model integration. In the view model output, alternate text is `Email_unverified`
-  @State private var warningMessage: (String, Bool)? = (Strings.We_ve_been_unable_to_send_email(), true)
-  // FIXME: Requires view moel integration. In the view model output, alternate text is `Send_verfication_email`
-  @State private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
+  private var warningMessage: (String, Bool) = (Strings.We_ve_been_unable_to_send_email(), true)
+
+  private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
   private let contentPadding = 12.0
   @ObservedObject private var viewModel = ChangeEmailViewViewModel()
-  private let messageBannerViewViewModel =
-    MessageBannerViewViewModel((
-      type: .success,
-      message: Strings.Verification_email_sent()
-    ))
+
+  private var reactiveViewModel = ChangeEmailViewModel_SwiftUIIntegrationTest()
 
   var body: some View {
     GeometryReader { proxy in
@@ -47,18 +42,20 @@ struct ChangeEmailView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
 
-        if let (warningText, alert) = warningMessage {
-          warningLabel(text: warningText, alert)
-            .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
-            .background(Color(.ksr_support_100))
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets())
-        }
+        /**
+         if !reactiveViewModel.hideVerifyView {
+           warningLabel(text: warningMessage.0, warningMessage.1)
+             .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
+             .background(Color(.ksr_support_100))
+             .listRowSeparator(.hidden)
+             .listRowInsets(EdgeInsets())
+         }
+         */
 
-        if let _ = warningMessage {
+        if !reactiveViewModel.hideVerifyView {
           VStack(alignment: .leading, spacing: 0) {
             Button(resendVerificationEmailButtonTitle) {
-              showBanner = true
+              reactiveViewModel.inputs.resendVerificationEmailButtonTapped()
             }
             .font(Font(UIFont.ksr_body()))
             .foregroundColor(Color(.ksr_create_700))
@@ -83,9 +80,6 @@ struct ChangeEmailView: View {
             contentPadding: contentPadding,
             valueText: $viewModel.newEmailText.value.wrappedValue
           )
-//            .onChange(of: $viewModel.newEmailText.value) { newValue in
-//              viewModel.newEmailTextDidChange(newValue.value.valu)
-//            }
           .newEmail()
           .focused($focusField, equals: .newEmail)
           .onSubmit {
@@ -99,9 +93,6 @@ struct ChangeEmailView: View {
             contentPadding: contentPadding,
             valueText: $viewModel.newPasswordText.value.wrappedValue
           )
-//            .onChange(of: viewModel.newPasswordText.value) { newValue in
-//              viewModel.newPasswordTextDidChange(newValue)
-//            }
           .currentPassword()
           .focused($focusField, equals: .currentPassword)
           .submitScope(viewModel.newPasswordText.value.isEmpty)
@@ -126,14 +117,20 @@ struct ChangeEmailView: View {
         }
       }
       .overlay(alignment: .bottom) {
-        MessageBannerView(viewModel: messageBannerViewViewModel, showBanner: $showBanner)
-          .frame(
-            minWidth: proxy.size.width,
-            idealWidth: proxy.size.width,
-            maxHeight: proxy.size.height / 6,
-            alignment: .bottom
-          )
-          .animation(.easeInOut)
+        if reactiveViewModel.showBanner.0,
+          let messageBannerViewViewModel = reactiveViewModel.showBanner.1 {
+          MessageBannerView(viewModel: messageBannerViewViewModel)
+            .frame(
+              minWidth: proxy.size.width,
+              idealWidth: proxy.size.width,
+              maxHeight: proxy.size.height / 6,
+              alignment: .bottom
+            )
+            .animation(.easeInOut)
+        }
+      }
+      .onAppear {
+        reactiveViewModel.inputs.viewDidLoad()
       }
     }
   }
