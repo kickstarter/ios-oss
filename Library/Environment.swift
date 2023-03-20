@@ -21,6 +21,9 @@ public struct Environment {
   /// The app instance
   public let application: UIApplicationType
 
+  /// An optional string that returns an advertising identifier if the user's tracking consent preference is given
+  public let advertisingIdentifier: String?
+
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
@@ -44,6 +47,9 @@ public struct Environment {
 
   /// The currently logged in user.
   public let currentUser: User?
+
+  /// The currently logged in user's email.
+  public let currentUserEmail: String?
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.
   public let dateType: DateProtocol.Type
@@ -111,6 +117,7 @@ public struct Environment {
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     applePayCapabilities: ApplePayCapabilitiesType = ApplePayCapabilities(),
     application: UIApplicationType = UIApplication.shared,
+    advertisingIdentifier: String? = nil,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
     calendar: Calendar = .current,
@@ -119,6 +126,7 @@ public struct Environment {
     coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
     countryCode: String = "US",
     currentUser: User? = nil,
+    currentUserEmail: String? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     debugData: DebugData? = nil,
@@ -142,6 +150,7 @@ public struct Environment {
     self.apiDelayInterval = apiDelayInterval
     self.applePayCapabilities = applePayCapabilities
     self.application = application
+    self.advertisingIdentifier = advertisingIdentifier
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
     self.calendar = calendar
@@ -150,6 +159,7 @@ public struct Environment {
     self.countryCode = countryCode
     self.coreTelephonyNetworkInfo = coreTelephonyNetworkInfo
     self.currentUser = currentUser
+    self.currentUserEmail = currentUserEmail
     self.dateType = dateType
     self.debounceInterval = debounceInterval
     self.debugData = debugData
