@@ -190,7 +190,7 @@ extension SettingsAccountViewController {
       return CreatePasswordViewController.instantiate()
     case .changeEmail:
       if #available(iOS 15, *) {
-        let changeEmailView = ChangeEmailView(emailText: "sample@email.com")
+        let changeEmailView = ChangeEmailView()
 
         return UIHostingController(rootView: changeEmailView)
       } else {

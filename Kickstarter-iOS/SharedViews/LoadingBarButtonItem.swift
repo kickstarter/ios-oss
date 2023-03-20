@@ -4,17 +4,19 @@ import SwiftUI
 struct LoadingBarButtonItem: View {
   @State var titleText: String
   @State var saveEnabled: Bool
+  @State private var showLoading = false
 
   var body: some View {
     let buttonColor = saveEnabled ? Color(.ksr_create_700) : Color(.ksr_create_300)
 
     HStack {
-      if saveEnabled {
+      if !showLoading {
         Button(titleText) {
-          saveEnabled.toggle()
+          print("Saved tapped")
         }
         .font(Font(UIFont.systemFont(ofSize: 17)))
         .foregroundColor(buttonColor)
+        .disabled(!saveEnabled)
       } else {
         ProgressView()
           .foregroundColor(Color(.ksr_support_700))
@@ -22,11 +24,5 @@ struct LoadingBarButtonItem: View {
     }
     .accessibilityElement(children: .combine)
     .accessibilityLabel(titleText)
-  }
-}
-
-struct LoadingBarButtonItem_Previews: PreviewProvider {
-  static var previews: some View {
-    LoadingBarButtonItem(titleText: Strings.Save(), saveEnabled: true)
   }
 }

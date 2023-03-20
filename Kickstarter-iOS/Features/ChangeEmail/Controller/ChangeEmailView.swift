@@ -9,30 +9,20 @@ enum FocusField {
 @available(iOS 15.0, *)
 struct ChangeEmailView: View {
   @State var showBanner: Bool = false
-  @State var emailText: String
-  @State private var newEmailText = ""
-  @State private var passwordText = ""
   // FIXME: Requires view model integration. In the view model output, alternate text is `Email_unverified`
   @State private var warningMessage: (String, Bool)? = (Strings.We_ve_been_unable_to_send_email(), true)
   // FIXME: Requires view moel integration. In the view model output, alternate text is `Send_verfication_email`
   @State private var resendVerificationEmailButtonTitle = Strings.Resend_verification_email()
-  @State private var saveEnabled = true
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
 
   private let contentPadding = 12.0
-  /** FIXME: Requires view model integration. Causes the compilation of init to fail
-   private var viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
-   */
+  @ObservedObject private var viewModel = ChangeEmailViewViewModel()
   private let messageBannerViewViewModel =
     MessageBannerViewViewModel((
       type: .success,
       message: Strings.Verification_email_sent()
     ))
-
-  init(emailText: String) {
-    self.emailText = emailText
-  }
 
   var body: some View {
     GeometryReader { proxy in
@@ -43,11 +33,12 @@ struct ChangeEmailView: View {
           .listRowInsets(EdgeInsets())
 
         VStack(alignment: .center, spacing: 0) {
-          inputFieldView(
+          InputFieldView(
             titleText: Strings.Current_email(),
-            placeholderText: "",
             secureField: false,
-            valueText: $emailText
+            placeholderText: "",
+            contentPadding: contentPadding,
+            valueText: viewModel.emailText.value
           )
           .currentEmail()
 
@@ -85,27 +76,35 @@ struct ChangeEmailView: View {
           .listRowInsets(EdgeInsets())
 
         VStack(alignment: .center, spacing: 0) {
-          inputFieldView(
+          InputFieldView(
             titleText: Strings.New_email(),
-            placeholderText: Strings.login_placeholder_email(),
             secureField: false,
-            valueText: $newEmailText
+            placeholderText: Strings.login_placeholder_email(),
+            contentPadding: contentPadding,
+            valueText: $viewModel.newEmailText.value.wrappedValue
           )
+//            .onChange(of: $viewModel.newEmailText.value) { newValue in
+//              viewModel.newEmailTextDidChange(newValue.value.valu)
+//            }
           .newEmail()
           .focused($focusField, equals: .newEmail)
           .onSubmit {
             focusField = .currentPassword
           }
 
-          inputFieldView(
+          InputFieldView(
             titleText: Strings.Current_password(),
-            placeholderText: Strings.login_placeholder_password(),
             secureField: true,
-            valueText: $passwordText
+            placeholderText: Strings.login_placeholder_password(),
+            contentPadding: contentPadding,
+            valueText: $viewModel.newPasswordText.value.wrappedValue
           )
+//            .onChange(of: viewModel.newPasswordText.value) { newValue in
+//              viewModel.newPasswordTextDidChange(newValue)
+//            }
           .currentPassword()
           .focused($focusField, equals: .currentPassword)
-          .submitScope(passwordText.isEmpty)
+          .submitScope(viewModel.newPasswordText.value.isEmpty)
           .onSubmit {
             focusField = nil
           }
@@ -122,7 +121,7 @@ struct ChangeEmailView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
             titleText: Strings.Save(),
-            saveEnabled: saveEnabled
+            saveEnabled: viewModel.savedButtonIsEnabled
           )
         }
       }
@@ -139,49 +138,56 @@ struct ChangeEmailView: View {
     }
   }
 
-  @ViewBuilder
-  private func inputFieldView(titleText: String,
-                              placeholderText: String,
-                              secureField: Bool,
-                              valueText: Binding<String>) -> some View {
-    HStack {
-      Text(titleText)
-        .frame(
-          maxWidth: .infinity,
-          alignment: .leading
-        )
-        .font(Font(UIFont.ksr_body()))
-        .foregroundColor(Color(.ksr_support_700))
-      Spacer()
+  private struct InputFieldView: View {
+    var titleText: String
+    var secureField: Bool
+    var placeholderText: String
+    var contentPadding: CGFloat
+    @State var valueText: String
 
-      inputFieldUserInputView(
-        secureField: secureField,
-        placeholderText: placeholderText,
-        valueText: valueText
-      )
+    var body: some View {
+      HStack {
+        Text(titleText)
+          .frame(
+            maxWidth: .infinity,
+            alignment: .leading
+          )
+          .font(Font(UIFont.ksr_body()))
+          .foregroundColor(Color(.ksr_support_700))
+        Spacer()
+
+        InputFieldUserInputView(
+          secureField: secureField,
+          placeholderText: placeholderText,
+          valueText: valueText
+        )
+      }
+      .padding(contentPadding)
+      .accessibilityElement(children: .combine)
+      .accessibilityLabel(titleText)
     }
-    .padding(self.contentPadding)
-    .accessibilityElement(children: .combine)
-    .accessibilityLabel(titleText)
   }
 
-  @ViewBuilder
-  private func inputFieldUserInputView(secureField: Bool,
-                                       placeholderText: String,
-                                       valueText: Binding<String>) -> some View {
-    if secureField {
-      SecureField(
-        "",
-        text: valueText,
-        prompt: Text(placeholderText).foregroundColor(Color(.ksr_support_400))
-      )
-    } else {
-      TextField(
-        "",
-        text: valueText,
-        prompt:
-        Text(placeholderText).foregroundColor(Color(.ksr_support_400))
-      )
+  private struct InputFieldUserInputView: View {
+    var secureField: Bool
+    var placeholderText: String
+    @State var valueText: String
+
+    var body: some View {
+      if secureField {
+        SecureField(
+          "",
+          text: $valueText,
+          prompt: Text(placeholderText).foregroundColor(Color(.ksr_support_400))
+        )
+      } else {
+        TextField(
+          "",
+          text: $valueText,
+          prompt:
+          Text(placeholderText).foregroundColor(Color(.ksr_support_400))
+        )
+      }
     }
   }
 

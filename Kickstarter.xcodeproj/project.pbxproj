@@ -505,6 +505,7 @@
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
 		7061848B29BE4CD8008F9941 /* MessageBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061848829BE4C11008F9941 /* MessageBannerView.swift */; };
 		7061848D29BE577B008F9941 /* MessageBannerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */; };
+		706656D529C7987600BAE7D4 /* ChangeEmailViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706656D429C7987600BAE7D4 /* ChangeEmailViewViewModel.swift */; };
 		70B1889429A521000004E293 /* FacebookResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
@@ -2097,6 +2098,7 @@
 		701160D5291EED3F0095BF24 /* MessageBannerViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
+		706656D429C7987600BAE7D4 /* ChangeEmailViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewViewModel.swift; sourceTree = "<group>"; };
 		70B1889329A521000004E293 /* FacebookResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerMessageDisplaying.swift; sourceTree = "<group>"; };
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
@@ -3477,6 +3479,7 @@
 			isa = PBXGroup;
 			children = (
 				191A2C702907350A0093B6E1 /* ChangeEmailView.swift */,
+				706656D429C7987600BAE7D4 /* ChangeEmailViewViewModel.swift */,
 				1937A6F428C92FE700DD732D /* Controller */,
 			);
 			path = ChangeEmail;
@@ -7845,6 +7848,7 @@
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
 				A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */,
 				8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */,
+				706656D529C7987600BAE7D4 /* ChangeEmailViewViewModel.swift in Sources */,
 				9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
 				774F8D5D22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift in Sources */,
 				A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
