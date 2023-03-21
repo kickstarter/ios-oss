@@ -4,8 +4,8 @@ import SwiftUI
 struct LoadingBarButtonItem: View {
   @Binding var saveEnabled: Bool
   @Binding var saveTriggered: Bool
+  @Binding var showLoading: Bool
   @State var titleText: String
-  @State private var showLoading = false
 
   var body: some View {
     let buttonColor = $saveEnabled.wrappedValue ? Color(.ksr_create_700) : Color(.ksr_create_300)
@@ -22,6 +22,10 @@ struct LoadingBarButtonItem: View {
       } else {
         ProgressView()
           .foregroundColor(Color(.ksr_support_700))
+          .onDisappear {
+            saveTriggered = false
+            saveEnabled = false
+          }
       }
     }
     .accessibilityElement(children: .combine)

@@ -20,6 +20,9 @@ struct ChangeEmailView: View {
   @State private var newPasswordText = ""
   @State private var saveEnabled = false
   @State private var saveTriggered = false
+  @State private var showLoading = false
+  @State private var showBannerMessage = false
+  @State private var bannerMessage: MessageBannerViewViewModel?
 
   var body: some View {
     GeometryReader { proxy in
@@ -63,6 +66,7 @@ struct ChangeEmailView: View {
             .font(Font(UIFont.ksr_body()))
             .foregroundColor(Color(.ksr_create_700))
             .padding(contentPadding)
+            .disabled(showLoading)
 
             Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
           }
@@ -83,10 +87,13 @@ struct ChangeEmailView: View {
             contentPadding: contentPadding,
             valueText: $newEmailText
           )
+          .onReceive(reactiveViewModel.resetEditableText) {
+            newEmailText = ""
+          }
           .onChange(of: newEmailText) { newValue in
             reactiveViewModel.newEmailText.send(newValue)
           }
-          .newEmail()
+          .newEmail(editable: !showLoading)
           .focused($focusField, equals: .newEmail)
           .onSubmit {
             focusField = .currentPassword
@@ -100,18 +107,21 @@ struct ChangeEmailView: View {
             valueText: $newPasswordText
           )
           .onChange(of: newPasswordText) { newValue in
-            reactiveViewModel.newPasswordText.send(newValue)
+            reactiveViewModel.currentPasswordText.send(newValue)
           }
-          .currentPassword()
+          .currentPassword(editable: !showLoading)
           .focused($focusField, equals: .currentPassword)
           .submitScope(viewModel.newPasswordText.value.isEmpty)
+          .onReceive(reactiveViewModel.resetEditableText) {
+            newPasswordText = ""
+          }
           .onSubmit {
             focusField = nil
-            
+
             // FIXME: Maybe this should live in the view model?
             if saveEnabled {
               saveTriggered = true
-              reactiveViewModel.saveTriggered.send(true)
+              showLoading = true
             }
           }
 
@@ -128,10 +138,12 @@ struct ChangeEmailView: View {
           LoadingBarButtonItem(
             saveEnabled: $saveEnabled,
             saveTriggered: $saveTriggered,
+            showLoading: $showLoading,
             titleText: Strings.Save()
           )
           .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
             saveEnabled = newValue
+            showLoading = !newValue
           }
           .onChange(of: saveTriggered) { newValue in
             focusField = nil
@@ -140,9 +152,8 @@ struct ChangeEmailView: View {
         }
       }
       .overlay(alignment: .bottom) {
-        if reactiveViewModel.showBanner.0,
-          let messageBannerViewViewModel = reactiveViewModel.showBanner.1 {
-          MessageBannerView(viewModel: messageBannerViewViewModel)
+        if let messageBannerViewModel = $bannerMessage.wrappedValue {
+          MessageBannerView(viewModel: messageBannerViewModel, showBanner: $showBannerMessage.wrappedValue)
             .frame(
               minWidth: proxy.size.width,
               idealWidth: proxy.size.width,
@@ -151,6 +162,12 @@ struct ChangeEmailView: View {
             )
             .animation(.easeInOut)
         }
+      }
+      .onReceive(reactiveViewModel.showBannerMessage) { newValue in
+        showBannerMessage = newValue
+      }
+      .onReceive(reactiveViewModel.bannerMessage) { newValue in
+        bannerMessage = newValue
       }
       .onAppear {
         reactiveViewModel.inputs.viewDidLoad()
