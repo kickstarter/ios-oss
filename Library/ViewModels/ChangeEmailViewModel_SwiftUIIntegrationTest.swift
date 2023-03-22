@@ -136,7 +136,7 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
       .observeValues { [weak self] _ in
         let messageBannerViewViewModel = MessageBannerViewViewModel((
           type: .success,
-          message: Strings.Verification_email_sent()
+          message: Strings.Got_it_your_changes_have_been_saved()
         ))
 
         self?.saveTriggered.send(false)

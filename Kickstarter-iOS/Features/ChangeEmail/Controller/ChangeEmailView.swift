@@ -11,10 +11,7 @@ enum FocusField {
 struct ChangeEmailView: View {
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
-  var cancellables = Set<AnyCancellable>()
   private let contentPadding = 12.0
-  @ObservedObject private var viewModel = ChangeEmailViewViewModel()
-
   @ObservedObject private var reactiveViewModel = ChangeEmailViewModel_SwiftUIIntegrationTest()
   @State private var retrievedEmailText = ""
   @State private var newEmailText = ""
@@ -117,7 +114,6 @@ struct ChangeEmailView: View {
           }
           .currentPassword(editable: !showLoading)
           .focused($focusField, equals: .currentPassword)
-          .submitScope(viewModel.newPasswordText.value.isEmpty)
           .onReceive(reactiveViewModel.resetEditableText) { resetFlag in
             if resetFlag {
               newPasswordText = ""
