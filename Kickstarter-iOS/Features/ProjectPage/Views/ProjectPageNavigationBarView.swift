@@ -5,6 +5,7 @@ import Prelude
 import UIKit
 
 protocol ProjectPageNavigationBarViewDelegate: AnyObject {
+  func configureSaveWatchPrelaunchProject(with: PledgeCTAPrelaunchState)
   func configureSharing(with context: ShareContext)
   func configureWatchProject(with context: WatchProjectValue)
   func viewDidLoad()
@@ -263,5 +264,9 @@ extension ProjectPageNavigationBarView: ProjectPageNavigationBarViewDelegate {
   func configureWatchProject(with context: WatchProjectValue) {
     self.watchProjectViewModel.inputs
       .configure(with: context)
+  }
+
+  func configureSaveWatchPrelaunchProject(with context: PledgeCTAPrelaunchState) {
+    self.watchProjectViewModel.inputs.saveButtonTapped(selected: context.saved)
   }
 }

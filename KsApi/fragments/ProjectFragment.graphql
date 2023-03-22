@@ -78,4 +78,5 @@ fragment ProjectFragment on Project {
       }
     }
   }
+  watchesCount
 }

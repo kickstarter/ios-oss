@@ -9,7 +9,7 @@ import XCTest
 final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
+  private let backingLabelHidden = TestObserver<Bool, Never>()
   private let backersTitleLabelText = TestObserver<String, Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
@@ -18,12 +18,14 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let deadlineSubtitleLabelText = TestObserver<String, Never>()
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
+  private let isPrelaunchProject = TestObserver<Bool, Never>()
   private let notifyDelegateToGoToCampaignWithData = TestObserver<ProjectPamphletMainCellData, Never>()
   private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
   private let pledgedTitleLabelText = TestObserver<String, Never>()
   private let pledgedTitleLabelTextColor = TestObserver<UIColor, Never>()
+  private let prelaunchProjectBackingText = TestObserver<String, Never>()
   private let progressPercentage = TestObserver<Float, Never>()
   private let projectBlurbLabelText = TestObserver<String, Never>()
   private let projectImageUrl = TestObserver<String?, Never>()
@@ -35,7 +37,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let readMoreButtonIsLoading = TestObserver<Bool, Never>()
   private let readMoreButtonLargeIsHidden = TestObserver<Bool, Never>()
   private let stateLabelHidden = TestObserver<Bool, Never>()
-  private let youreABackerLabelHidden = TestObserver<Bool, Never>()
+  private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -67,7 +69,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
-    self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
+    self.vm.outputs.backingLabelHidden.observe(self.backingLabelHidden.observer)
+    self.vm.outputs.isPrelaunchProject.observe(self.isPrelaunchProject.observer)
+    self.vm.outputs.prelaunchProjectBackingText.observe(self.prelaunchProjectBackingText.observer)
   }
 
   func testReadMoreButton_ExperimentStory_Disabled_Success() {
@@ -171,60 +175,75 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-  func testYoureABackerLabelHidden_NotABacker() {
+  func testBackingLabelHidden_NotABacker() {
     let project = .template |> Project.lens.personalization.isBacking .~ false
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.youreABackerLabelHidden.assertValues([true])
+    self.backingLabelHidden.assertValues([true])
   }
 
-  func testYoureABackerLabelHidden_NotABacker_VideoInteraction() {
+  func testBackingLabelHidden_NotABacker_VideoInteraction() {
     let project = .template |> Project.lens.personalization.isBacking .~ false
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.youreABackerLabelHidden.assertValues([true])
+    self.backingLabelHidden.assertValues([true])
 
     self.vm.inputs.videoDidStart()
 
-    self.youreABackerLabelHidden.assertValues([true])
+    self.backingLabelHidden.assertValues([true])
 
     self.vm.inputs.videoDidFinish()
 
-    self.youreABackerLabelHidden.assertValues([true])
+    self.backingLabelHidden.assertValues([true])
   }
 
-  func testYoureABackerLabelHidden_LoggedOut() {
+  func testBackingLabelHidden_LoggedOut() {
     let project = .template |> Project.lens.personalization.isBacking .~ nil
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.youreABackerLabelHidden.assertValues([true])
+    self.backingLabelHidden.assertValues([true])
   }
 
-  func testYoureABackerLabelHidden_Backer() {
+  func testBackingLabelHidden_Backer() {
     let project = .template |> Project.lens.personalization.isBacking .~ true
+      |> \.displayPrelaunch .~ false
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.youreABackerLabelHidden.assertValues([false])
+    self.backingLabelHidden.assertValues([false])
+    self.isPrelaunchProject.assertValues([false])
+    self.prelaunchProjectBackingText.assertValues(["You’re a backer!"])
   }
 
-  func testYoureABackerLabelHidden_Backer_VideoInteraction() {
-    let project = .template |> Project.lens.personalization.isBacking .~ true
+  func testBackingLabelHidden_PrelaunchProject() {
+    let project = .template |> Project.lens.personalization.isBacking .~ false
+      |> \.displayPrelaunch .~ true
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.youreABackerLabelHidden.assertValues([false])
+    self.backingLabelHidden.assertValues([false])
+    self.isPrelaunchProject.assertValues([true])
+    self.prelaunchProjectBackingText.assertValues(["Coming soon"])
+  }
+
+  func testBackingLabelHidden_Backer_VideoInteraction() {
+    let project = .template |> Project.lens.personalization.isBacking .~ true
+      |> \.displayPrelaunch .~ false
+    self.vm.inputs.configureWith(value: (project, nil))
+    self.vm.inputs.awakeFromNib()
+
+    self.backingLabelHidden.assertValues([false])
 
     self.vm.inputs.videoDidStart()
 
-    self.youreABackerLabelHidden.assertValues([false, true])
+    self.backingLabelHidden.assertValues([false, true])
 
     self.vm.inputs.videoDidFinish()
 
-    self.youreABackerLabelHidden.assertValues([false, true, false])
+    self.backingLabelHidden.assertValues([false, true, false])
   }
 
   func testCreatorImageUrl() {

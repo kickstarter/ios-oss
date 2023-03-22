@@ -140,6 +140,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a tuple of `Project`, `RefTag?` and `[Bool]` (isExpanded values) for the FAQs.
   var updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never> { get }
+
+  /// Emits a prelaunch save state that updates the navigation bar's watch project state.
+  var updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -259,12 +262,40 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .skipNil()
 
     let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { $0.isAny(of: .pledge, .viewRewards, .viewYourRewards) }
+      .filter { state in
+        switch state {
+        case .pledge, .viewRewards, .viewYourRewards:
+          return true
+        default:
+          return false
+        }
+      }
       .ignoreValues()
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
       .filter(shouldGoToManagePledge(with:))
       .ignoreValues()
+
+    let shouldUpdateWatchProjectOnPrelaunch = ctaButtonTappedWithType
+      .filter { state in
+        switch state {
+        case .prelaunch:
+          return true
+        default:
+          return false
+        }
+      }
+
+    self.updateWatchProjectWithPrelaunchProjectState = shouldUpdateWatchProjectOnPrelaunch
+      .map { pledgeCTAType -> PledgeCTAPrelaunchState? in
+        switch pledgeCTAType {
+        case let .prelaunch(saved):
+          return PledgeCTAPrelaunchState(prelaunch: true, saved: saved)
+        default:
+          return nil
+        }
+      }
+      .skipNil()
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
@@ -574,6 +605,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
+  public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }
@@ -649,6 +681,11 @@ private func fetchProjectRewards(project: Project) -> SignalProducer<Project, Er
     }
 }
 
-private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
-  return type.isAny(of: .viewBacking, .manage, .fix)
+private func shouldGoToManagePledge(with ctaType: PledgeStateCTAType) -> Bool {
+  switch ctaType {
+  case .fix, .viewBacking, .manage:
+    return true
+  default:
+    return false
+  }
 }

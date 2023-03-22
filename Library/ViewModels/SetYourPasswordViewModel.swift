@@ -46,8 +46,7 @@ public final class SetYourPasswordViewModel: SetYourPasswordViewModelType, SetYo
       fetchUserEmailEvent.values()
     )
     .map { _, userEnvelope in
-      Strings
-        .We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: userEnvelope.me.email ?? "")
+      Strings.We_will_be_discontinuing_the_ability_to_log_in_via_FB(email: userEnvelope.me.email ?? "")
     }
 
     self.newPasswordLabel = self.viewWillAppearProperty.signal

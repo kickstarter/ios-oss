@@ -42,6 +42,23 @@ public enum Strings {
     )
   }
   /**
+   "A project is infringing on your copyright or trademark."
+
+   - **en**: "A project is infringing on your copyright or trademark."
+   - **de**: "Es gibt ein Projekt, das gegen deine Urheber- und Markenrechte verstößt."
+   - **es**: "Un proyecto infringe tus derechos de copyright o marca comercial."
+   - **fr**: "Un projet porte atteinte à vos droits d'auteur ou de marque déposée."
+   - **ja**: "プロジェクトが著作権や商標権を侵害してはなりません。"
+  */
+  public static func A_project_is_infringing() -> String {
+    return localizedString(
+      key: "A_project_is_infringing",
+      defaultValue: "A project is infringing on your copyright or trademark.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate."
 
    - **en**: "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate."
@@ -107,6 +124,23 @@ public enum Strings {
       defaultValue: "About %{reward_amount}",
       count: nil,
       substitutions: ["reward_amount": reward_amount]
+    )
+  }
+  /**
+   "Abuse"
+
+   - **en**: "Abuse"
+   - **de**: "Missbrauch"
+   - **es**: "Acoso, violencia y abuso"
+   - **fr**: "Harcèlement, violence et abus"
+   - **ja**: "嫌がらせ・不正行為"
+  */
+  public static func Abuse() -> String {
+    return localizedString(
+      key: "Abuse",
+      defaultValue: "Abuse",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -569,6 +603,40 @@ public enum Strings {
     )
   }
   /**
+   "Allow"
+
+   - **en**: "Allow"
+   - **de**: "Erlauben"
+   - **es**: "Permitir"
+   - **fr**: "Autoriser"
+   - **ja**: "許可する"
+  */
+  public static func Allow() -> String {
+    return localizedString(
+      key: "Allow",
+      defaultValue: "Allow",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Allow app to track?"
+
+   - **en**: "Allow app to track?"
+   - **de**: "App-Tracking erlauben?"
+   - **es**: "¿Permitir que la aplicación realice un seguimiento de mis actividades?"
+   - **fr**: "Autoriser cette application à suivre mes activités ?"
+   - **ja**: "アプリによる追跡を許可しますか？"
+  */
+  public static func Allow_app_to_track() -> String {
+    return localizedString(
+      key: "Allow_app_to_track",
+      defaultValue: "Allow app to track?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Almost there!"
 
    - **en**: "Almost there!"
@@ -988,7 +1056,8 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1820,6 +1889,23 @@ contributeurs"
     )
   }
   /**
+   "Coming soon"
+
+   - **en**: "Coming soon"
+   - **de**: "Demnächst"
+   - **es**: "Próximamente"
+   - **fr**: "Bientôt disponible"
+   - **ja**: "近日公開"
+  */
+  public static func Coming_soon() -> String {
+    return localizedString(
+      key: "Coming_soon",
+      defaultValue: "Coming soon",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Comment reply digest"
 
    - **en**: "Comment reply digest"
@@ -2098,6 +2184,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Copying, reselling or plagiarism"
+
+   - **en**: "Copying, reselling or plagiarism"
+   - **de**: "Kopie, Wiederverkauf oder Plagiat"
+   - **es**: "Copia, reventa o plagio"
+   - **fr**: "Produit copié, revente d'articles ou plagiat"
+   - **ja**: "複製、再販、または盗作"
+  */
+  public static func Copying_reselling() -> String {
+    return localizedString(
+      key: "Copying_reselling",
+      defaultValue: "Copying, reselling or plagiarism",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Couldn't add attachment"
 
    - **en**: "Couldn't add attachment"
@@ -2297,7 +2400,7 @@ Cliquez pour réessayer."
    - **de**: "<b>%{creator_name}</b> benötigt einige Angaben, um dir deine Belohnung für <b>%{project_name}</b> zustellen zu können."
    - **es**: "<b>%{creator_name}</b> necesita un par de datos para entregarte tu recompensa de <b>%{project_name}</b>."
    - **fr**: "<b>%{creator_name}</b> a besoin de quelques informations pour vous envoyer votre récompense pour le projet <b>%{project_name}</b>."
-   - **ja**: "<b>%{creator_name}</b>による<b>%{project_name}</b>のリワードを送るための情報が求められています。"
+   - **ja**: "<b>%{project_name}</b>のリワード発送のため、<b>%{creator_name}</b>が情報を求めています。"
   */
   public static func Creator_name_needs_some_information_to_deliver_your_reward_for_project_name(creator_name: String, project_name: String) -> String {
     return localizedString(
@@ -2371,6 +2474,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Creator_tips",
       defaultValue: "Creator tips",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Creators must be transparent and honest in documenting their prototype. Photorealistic renderings are not permitted."
+
+   - **en**: "Creators must be transparent and honest in documenting their prototype. Photorealistic renderings are not permitted."
+   - **de**: "Bei der Dokumentation eines Prototypen wird Transparenz und Ehrlichkeit vom Projektgründer erwartet. Fotorealistische Darstellungen sind nicht gestattet."
+   - **es**: "Los creadores deben ser transparentes y honestos al documentar el prototipo. Las representaciones fotorrealistas no están permitidas."
+   - **fr**: "On demande aux créateurs de faire preuve de transparence et d'honnêteté dans la description de leur prototype. Les rendus photoréalistes sont donc interdits."
+   - **ja**: "クリエイターはプロトタイプについて透明性の高い正直な説明を行う必要があります。フォトリアリスティックレンダリング (写実的レンダリング：実写と区別がつかないような写実的な画像の生成) は禁止されています。"
+  */
+  public static func Creators_must_be_transparent() -> String {
+    return localizedString(
+      key: "Creators_must_be_transparent",
+      defaultValue: "Creators must be transparent and honest in documenting their prototype. Photorealistic renderings are not permitted.",
       count: nil,
       substitutions: [:]
     )
@@ -2762,6 +2882,23 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Data_will_appear_here_once",
       defaultValue: "Data will appear here once somebody backs your project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Decline"
+
+   - **en**: "Decline"
+   - **de**: "Ablehnen"
+   - **es**: "Rechazar"
+   - **fr**: "Refuser"
+   - **ja**: "拒否する"
+  */
+  public static func Decline() -> String {
+    return localizedString(
+      key: "Decline",
+      defaultValue: "Decline",
       count: nil,
       substitutions: [:]
     )
@@ -3181,7 +3318,7 @@ Cliquez pour réessayer."
    - **de**: "Endet bald"
    - **es**: "Finaliza pronto"
    - **fr**: "Campagnes bientôt terminées"
-   - **ja**: "終了直前"
+   - **ja**: "まもなく終了"
   */
   public static func Ending_soon() -> String {
     return localizedString(
@@ -3289,6 +3426,40 @@ Cliquez pour réessayer."
     return localizedString(
       key: "Estimated_delivery_of",
       defaultValue: "Estimated delivery of",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Ex: Posting obscene or hateful comments, doxxing or posting personal information in comments or updates."
+
+   - **en**: "Ex: Posting obscene or hateful comments, doxxing or posting personal information in comments or updates."
+   - **de**: "Beispiel: Das Posten obszöner Kommentare oder Hassreden, Doxxing oder Posten personenbezogener Daten in Kommentaren oder Aktualisierungen."
+   - **es**: "Ej.: Publicar comentarios obscenos u odiosos, obtener información personal de personas (doxxing) o publicar información personal en comentarios o actualizaciones."
+   - **fr**: "P. ex. : commentaires obscènes ou haineux, doxxing, données personnelles publiées dans les commentaires ou les actus."
+   - **ja**: "例: ひわいなコメントや攻撃的なコメントを投稿したり、コメントや更新情報内で他人の個人情報を投稿 (ドキシング) したりなど。"
+  */
+  public static func Ex_posting() -> String {
+    return localizedString(
+      key: "Ex_posting",
+      defaultValue: "Ex: Posting obscene or hateful comments, doxxing or posting personal information in comments or updates.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Ex: Using email lists from outside sources, promoting a project where it shouldn't be promoted, link bombing."
+
+   - **en**: "Ex: Using email lists from outside sources, promoting a project where it shouldn't be promoted, link bombing."
+   - **de**: "Beispiele: Benutzung von E-Mail-Listen Dritter, Bewerben eines Projekts an unangebrachten Stellen, massenweises Versenden von Links."
+   - **es**: "Ej.: usar listas de correos electrónicos de fuentes externas, promocionar un proyecto en un lugar indebido, bombardeos de enlaces."
+   - **fr**: "Par exemple : listes de distribution externes, méthodes de promotion inacceptables, bombardement de liens."
+   - **ja**: "例: 外部ソースからのメールリストを使用したり、宣伝してはいけない場所でプロジェクトの宣伝を行ったり、リンク爆弾を用いたりなど。"
+  */
+  public static func Ex_using() -> String {
+    return localizedString(
+      key: "Ex_using",
+      defaultValue: "Ex: Using email lists from outside sources, promoting a project where it shouldn't be promoted, link bombing.",
       count: nil,
       substitutions: [:]
     )
@@ -4927,6 +5098,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Intellectual property violation"
+
+   - **en**: "Intellectual property violation"
+   - **de**: "Urheberrechtsverletzung"
+   - **es**: "Violación a la propiedad intelectual"
+   - **fr**: "Atteinte à la propriété intellectuelle"
+   - **ja**: "知的財産権の侵害"
+  */
+  public static func Intellectual_property_violation() -> String {
+    return localizedString(
+      key: "Intellectual_property_violation",
+      defaultValue: "Intellectual property violation",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Introduce yourself"
 
    - **en**: "Introduce yourself"
@@ -4958,6 +5146,23 @@ Cliquez pour réessayer."
       defaultValue: "Introducing Lights On",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "It looks like you've already reported this project to us. Our Trust and Safety team will screen your report against <a href="%{our_rules}">Our Rules</a> and <a href="%{community_guidelines}">Community Guidelines</a>. Thanks for your feedback."
+
+   - **en**: "It looks like you've already reported this project to us. Our Trust and Safety team will screen your report against <a href="%{our_rules}">Our Rules</a> and <a href="%{community_guidelines}">Community Guidelines</a>. Thanks for your feedback."
+   - **de**: "Es sieht so aus, als hättest du uns dieses Projekt bereits gemeldet. Unser Team für Vertrauen und Sicherheit wird das gemeldete Projekt hinsichtlich der Einhaltung <a href="%{our_rules}">Unserer Regeln</a> und der <a href="%{community_guidelines}">Community-Richtlinien</a> überprüfen. Danke für dein Feedback."
+   - **es**: "Aparentemente, ya habías denunciado este proyecto. Nuestro equipo de confianza y seguridad revisará tu denuncia con base en <a href="%{our_rules}">Nuestras reglas</a> y <a href="%{community_guidelines}">Reglas de la comunidad</a>. Gracias por tus comentarios."
+   - **fr**: "On dirait que vous nous ayez déjà signalé ce projet. Notre service Confiance et sécurité analysera votre signalement en fonction de <a href="%{our_rules}">nos règles</a> et <a href="%{community_guidelines}">nos règles de bonne conduite</a>."
+   - **ja**: "このプロジェクトは既に報告済みです。 Kickstarter の「トラスト＆セーフティ」チームが<a href="%{our_rules}"> Kickstarter のルール</a>と<a href="%{community_guidelines}">コミュニティガイドライン</a>に基づいてご報告内容を確認いたします。貴重なご意見をいただきありがとうございます。"
+  */
+  public static func It_looks(our_rules: String, community_guidelines: String) -> String {
+    return localizedString(
+      key: "It_looks",
+      defaultValue: "It looks like you've already reported this project to us. Our Trust and Safety team will screen your report against <a href=\"%{our_rules}\">Our Rules</a> and <a href=\"%{community_guidelines}\">Community Guidelines</a>. Thanks for your feedback.",
+      count: nil,
+      substitutions: ["our_rules": our_rules, "community_guidelines": community_guidelines]
     )
   }
   /**
@@ -5354,18 +5559,18 @@ with friends."
     )
   }
   /**
-   "Kickstarter’s Community Guidelines."
+   "Kickstarter takes claims of intellectual property infringement seriously. For more information and instructions on how to report infringement, please visit our Copyright Policy and our Trademark Policy. Only claims filed by the copyright or trademark holder can be processed."
 
-   - **en**: "Kickstarter’s Community Guidelines."
-   - **de**: "Kickstarter’s Community Guidelines."
-   - **es**: "Kickstarter’s Community Guidelines."
-   - **fr**: "Kickstarter’s Community Guidelines."
-   - **ja**: "Kickstarter’s Community Guidelines."
+   - **en**: "Kickstarter takes claims of intellectual property infringement seriously. For more information and instructions on how to report infringement, please visit our Copyright Policy and our Trademark Policy. Only claims filed by the copyright or trademark holder can be processed."
+   - **de**: "Meldungen zu möglichen Verletzungen von Urheberrechten werden bei Kickstarter sehr ernst genommen. Weitere Informationen zum Melden von solchen Urheberrechtsverletzungen findest du in unserer Richtlinie zu Urheberrechten und unserer Richtlinie zu Markenrechten. Es können nur Meldungen bearbeitet werden, die vom Eigentümer des Urheberrechts oder Markenzeichens gemacht wurden."
+   - **es**: "Kickstarter presta suma atención a las denuncias de infracción de derecho intelectual. Para encontrar más información e instrucciones sobre cómo denunciar una infracción, visita nuestra Política de copyright y nuestra Política de marca registrada. Solo se pueden procesar las denuncias presentadas por el propietario del copyright o marca registrada."
+   - **fr**: "Kickstarter prend les atteintes au droit à la propriété intellectuelle très au sérieux. Pour plus d'information et pour des instructions sur le signalement d'utilisations abusives, veuillez consulter nos pages {{copyrightPolicyLink}} et {{trademarkPolicyLink}}. Seules les demandes formulées par le titulaire du droit d'auteur ou de la marque déposée seront traitées."
+   - **ja**: "Kickstarterは、知的財産権侵害の報告をすべて真剣に受け止めています。違反行為の報告手順についてのさらなる情報は、著作権ポリシーおよび商標ポリシーをご参照ください。著作権者または商標権者によって提出された申し立てのみ手続きを進めることができます。"
   */
-  public static func Kickstarters_community_guidelines() -> String {
+  public static func Kickstarter_takes_claims() -> String {
     return localizedString(
-      key: "Kickstarters_community_guidelines",
-      defaultValue: "Kickstarter’s Community Guidelines.",
+      key: "Kickstarter_takes_claims",
+      defaultValue: "Kickstarter takes claims of intellectual property infringement seriously. For more information and instructions on how to report infringement, please visit our Copyright Policy and our Trademark Policy. Only claims filed by the copyright or trademark holder can be processed.",
       count: nil,
       substitutions: [:]
     )
@@ -6513,6 +6718,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Not raising funds for a creative project"
+
+   - **en**: "Not raising funds for a creative project"
+   - **de**: "Gelder werden nicht für ein kreatives Projekt gesammelt"
+   - **es**: "No recauda fondos para un proyecto creativo"
+   - **fr**: "Financement destiné à un projet non créatif"
+   - **ja**: "クリエイティブなプロジェクトのためのファンディングではない"
+  */
+  public static func Not_raising_funds() -> String {
+    return localizedString(
+      key: "Not_raising_funds",
+      defaultValue: "Not raising funds for a creative project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{notification}, email notification, off"
 
    - **en**: "%{notification}, email notification, off"
@@ -6593,6 +6815,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Notifications",
       defaultValue: "Notifications",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Notify me on launch"
+
+   - **en**: "Notify me on launch"
+   - **de**: "Benachrichtige mich, wenn das Projekt live geht"
+   - **es**: "Notificarme cuando se publique"
+   - **fr**: "Me prévenir du lancement"
+   - **ja**: "ローンチ通知を受け取る"
+  */
+  public static func Notify_me_on_launch() -> String {
+    return localizedString(
+      key: "Notify_me_on_launch",
+      defaultValue: "Notify me on launch",
       count: nil,
       substitutions: [:]
     )
@@ -6901,6 +7140,23 @@ n'ont rien soutenu."
       defaultValue: "Other projects you might like.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Our <a href="%{community_guidelines}">Community Guidelines</a> prohibit spam and abusive behavior by both creators and backers."
+
+   - **en**: "Our <a href="%{community_guidelines}">Community Guidelines</a> prohibit spam and abusive behavior by both creators and backers."
+   - **de**: "Unsere <a href="%{community_guidelines}">Community-Richtlinien</a> verbieten Spam und missbräuchliches Verhalten seitens der Projektgründer und der Unterstützer."
+   - **es**: "Nuestras <a href="%{community_guidelines}">Reglas de la comunidad</a> prohíben el correo no deseado y el comportamiento abusivo por parte de creadores y patrocinadores."
+   - **fr**: "Nos <a href="%{community_guidelines}">règles de bonne conduite</a> interdisent le spam et les comportements abusifs, du côté des créateurs comme des contributeurs."
+   - **ja**: "Kickstarter の<a href="%{community_guidelines}">コミュニティガイドライン</a>では、クリエイターとバッカーの両者によるスパムや不正行為が禁止されています。"
+  */
+  public static func Our(community_guidelines: String) -> String {
+    return localizedString(
+      key: "Our",
+      defaultValue: "Our <a href=\"%{community_guidelines}\">Community Guidelines</a> prohibit spam and abusive behavior by both creators and backers.",
+      count: nil,
+      substitutions: ["community_guidelines": community_guidelines]
     )
   }
   /**
@@ -7567,6 +7823,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Prohibited items"
+
+   - **en**: "Prohibited items"
+   - **de**: "Unzulässige Artikel"
+   - **es**: "Artículos prohibidos"
+   - **fr**: "Articles interdits"
+   - **ja**: "禁止事項"
+  */
+  public static func Prohibited_items() -> String {
+    return localizedString(
+      key: "Prohibited_items",
+      defaultValue: "Prohibited items",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project Cancelled."
 
    - **en**: "Project Cancelled."
@@ -7630,6 +7903,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Project_cancelled",
       defaultValue: "Project cancelled",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project creators and their collaborators cannot misrepresent themselves, the involvement of third parties, or their project’s level of support."
+
+   - **en**: "Project creators and their collaborators cannot misrepresent themselves, the involvement of third parties, or their project’s level of support."
+   - **de**: "Projektgründer dürfen keine Falschdarstellungen abgeben zu ihrer Person, der Teilnahme von Drittanbietern oder dem Grad der Unterstützung ihres Projekts."
+   - **es**: "Los creadores de proyectos y sus colaboradores no pueden realizar declaraciones falsas sobre sí mismos, sobre la participación de terceros ni sobre el nivel de apoyo de su proyecto."
+   - **fr**: "Il est interdit aux créateurs de projet de donner une fausse image de leur identité, du rôle d'un tiers ou du volume des engagements reçus."
+   - **ja**: "プロジェクトのクリエイターとコラボレーターは自らに関する情報を偽ったり、第三者の関与やプロジェクトが受ける支援の度合いについて虚偽の情報を提供することはできません。"
+  */
+  public static func Project_creators_and_their() -> String {
+    return localizedString(
+      key: "Project_creators_and_their",
+      defaultValue: "Project creators and their collaborators cannot misrepresent themselves, the involvement of third parties, or their project’s level of support.",
       count: nil,
       substitutions: [:]
     )
@@ -7703,6 +7993,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Project URL"
+
+   - **en**: "Project URL"
+   - **de**: "Projekt-URL"
+   - **es**: "URL del proyecto"
+   - **fr**: "URL de projet"
+   - **ja**: "プロジェクトのURL"
+  */
+  public static func Project_url() -> String {
+    return localizedString(
+      key: "Project_url",
+      defaultValue: "Project URL",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Projects We Love"
 
    - **en**: "Projects We Love"
@@ -7715,6 +8022,57 @@ n'ont rien soutenu."
     return localizedString(
       key: "Projects_We_Love",
       defaultValue: "Projects We Love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Projects cannot plagiarize, offer items that aren't produced by the creator, or repackage a previously-created product without adding anything new."
+
+   - **en**: "Projects cannot plagiarize, offer items that aren't produced by the creator, or repackage a previously-created product without adding anything new."
+   - **de**: "Plagiate von Projekten sind verboten. Es ist verboten, Produkte anzubieten, die nicht vom Projektgründer erstellt wurden oder bereits bestehende Produkte in neuer Verpackung weiterzuleiten, ohne dabei etwas Neues hinzuzufügen."
+   - **es**: "Los proyectos no pueden plagiar, ofrecer productos que no sean fabricados por el creador ni utilizar un producto previamente fabricado con un nuevo embalaje pero sin agregar algo nuevo."
+   - **fr**: "Le plagiat, la revente d'articles que le créateur n'a pas fabriqués lui-même et le reconditionnement d'un produit créé précédemment, sans y avoir ajouté quoi que ce soit de nouveau, sont interdits."
+   - **ja**: "プロジェクトでは盗作行為は禁止されています。また、クリエイターによるプロデュースではないアイテムを提供したり、新しいものを追加することなく過去の製品を再梱包したりすることはできません。"
+  */
+  public static func Projects_cannot_plagiarize() -> String {
+    return localizedString(
+      key: "Projects_cannot_plagiarize",
+      defaultValue: "Projects cannot plagiarize, offer items that aren't produced by the creator, or repackage a previously-created product without adding anything new.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Projects may not offer items mentioned in our <a href="%{prohibited_items}">prohibited items</a> list."
+
+   - **en**: "Projects may not offer items mentioned in our <a href="%{prohibited_items}">prohibited items</a> list."
+   - **de**: "Im Rahmen von Projekten dürfen keine Artikel angeboten werden, die auf unserer Liste mit <a href="%{prohibited_items}">unzulässigen Artikeln</a> aufgeführt sind."
+   - **es**: "Los proyectos no pueden ofrecer ninguno de los artículos mencionados en nuestra lista de <a href="%{prohibited_items}">artículos prohibidos</a>."
+   - **fr**: "Les créateurs doivent s'abstenir de proposer des <a href="%{prohibited_items}">articles interdits</a>."
+   - **ja**: "プロジェクトでは、Kickstarter の<a href="%{prohibited_items}">禁止項目</a>一覧に載っているものを提供してはいけません。"
+  */
+  public static func Projects_may_not_offer(prohibited_items: String) -> String {
+    return localizedString(
+      key: "Projects_may_not_offer",
+      defaultValue: "Projects may not offer items mentioned in our <a href=\"%{prohibited_items}\">prohibited items</a> list.",
+      count: nil,
+      substitutions: ["prohibited_items": prohibited_items]
+    )
+  }
+  /**
+   "Projects on Kickstarter must create something to share with others."
+
+   - **en**: "Projects on Kickstarter must create something to share with others."
+   - **de**: "Bei Projekten auf Kickstarter muss etwas erschaffen werden, das mit anderen geteilt werden kann."
+   - **es**: "Los proyectos de Kickstarter deben crear algo para compartir con los demás."
+   - **fr**: "Les projets Kickstarter ont pour but la création d'un produit ou d'une œuvre à portée collective."
+   - **ja**: "Kickstarter のプロジェクトでは「人と共有できるもの」を創り上げる必要があります。"
+  */
+  public static func Projects_on() -> String {
+    return localizedString(
+      key: "Projects_on",
+      defaultValue: "Projects on Kickstarter must create something to share with others.",
       count: nil,
       substitutions: [:]
     )
@@ -7749,6 +8107,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Projects_youve_launched",
       defaultValue: "Projects you've launched",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Prototype misrepresentation"
+
+   - **en**: "Prototype misrepresentation"
+   - **de**: "Falschdarstellung eines Prototypen"
+   - **es**: "Presentación falsa de prototipo"
+   - **fr**: "Fausse représentation du prototype"
+   - **ja**: "プロトタイプの不実表示・虚偽表示"
+  */
+  public static func Prototype_misrepresentation() -> String {
+    return localizedString(
+      key: "Prototype_misrepresentation",
+      defaultValue: "Prototype misrepresentation",
       count: nil,
       substitutions: [:]
     )
@@ -8233,6 +8608,57 @@ daring ideas."
     )
   }
   /**
+   "Report spam or abusive behavior"
+
+   - **en**: "Report spam or abusive behavior"
+   - **de**: "Spam oder missbräuchliches Verhalten melden"
+   - **es**: "Denunciar correo no deseado o comportamiento abusivo"
+   - **fr**: "Spam ou comportement abusif"
+   - **ja**: "スパムまたは不正行為を報告する"
+  */
+  public static func Report_spam() -> String {
+    return localizedString(
+      key: "Report_spam",
+      defaultValue: "Report spam or abusive behavior",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Report this project"
+
+   - **en**: "Report this project"
+   - **de**: "Dieses Projekt melden"
+   - **es**: "Denunciar este proyecto"
+   - **fr**: "Signaler ce projet"
+   - **ja**: "このプロジェクトを報告する"
+  */
+  public static func Report_this_project() -> String {
+    return localizedString(
+      key: "Report_this_project",
+      defaultValue: "Report this project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Report this project to Kickstarter"
+
+   - **en**: "Report this project to Kickstarter"
+   - **de**: "Dieses Projekt Kickstarter melden"
+   - **es**: "Denunciar este proyecto a Kickstarter"
+   - **fr**: "Signaler ce projet à Kickstarter"
+   - **ja**: "このプロジェクトを Kickstarter に報告する"
+  */
+  public static func Report_this_project_to() -> String {
+    return localizedString(
+      key: "Report_this_project_to",
+      defaultValue: "Report this project to Kickstarter",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Request my data"
 
    - **en**: "Request my data"
@@ -8681,7 +9107,7 @@ daring ideas."
    - **de**: "Gespeichert"
    - **es**: "Guardado"
    - **fr**: "Projets enregistrés"
-   - **ja**: "保存済"
+   - **ja**: "保存済み"
   */
   public static func Saved() -> String {
     return localizedString(
@@ -8698,7 +9124,7 @@ daring ideas."
    - **de**: "Gespeicherte Projekte"
    - **es**: "Proyectos guardados"
    - **fr**: "Projets enregistrés"
-   - **ja**: "プロジェクトを保存"
+   - **ja**: "保存済みのプロジェクト"
   */
   public static func Saved_projects() -> String {
     return localizedString(
@@ -9491,18 +9917,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} other"
+   "%{friend_name} and %{remaining_count} others"
 
-   - **en**: "%{friend_name} and %{remaining_count} other"
-   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
-   - **es**: "%{friend_name} y %{remaining_count} persona más"
-   - **fr**: "%{friend_name} et %{remaining_count} autre"
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} other",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -9607,6 +10033,23 @@ catch your eye?"
     return localizedString(
       key: "Something_went_wrong_pull_to_refresh",
       defaultValue: "Something went wrong—pull to refresh.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Spam"
+
+   - **en**: "Spam"
+   - **de**: "Spam"
+   - **es**: "Correo no deseado"
+   - **fr**: "Spam"
+   - **ja**: "迷惑メール"
+  */
+  public static func Spam() -> String {
+    return localizedString(
+      key: "Spam",
+      defaultValue: "Spam",
       count: nil,
       substitutions: [:]
     )
@@ -9884,6 +10327,23 @@ catch your eye?"
     )
   }
   /**
+   "Suspicious creator behavior or pledging activity"
+
+   - **en**: "Suspicious creator behavior or pledging activity"
+   - **de**: "Verdächtiges Verhalten des Projektgründers/bei Finanzierungsbeiträgen"
+   - **es**: "Comportamiento del creador o actividad de contribución sospechosos"
+   - **fr**: "Comportement douteux de la part du créateur ou engagements suspects"
+   - **ja**: "不審なクリエイターの言動、または不審なプレッジ行為"
+  */
+  public static func Suspicious_creator_behavior() -> String {
+    return localizedString(
+      key: "Suspicious_creator_behavior",
+      defaultValue: "Suspicious creator behavior or pledging activity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Sustainable distribution"
 
    - **en**: "Sustainable distribution"
@@ -9981,6 +10441,23 @@ catch your eye?"
     return localizedString(
       key: "Tap_the_star_on_each_project_page_to_save_it",
       defaultValue: "Tap the star on each project page to save it. We’ll remind you 48 hours before the project ends.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Tell us more details"
+
+   - **en**: "Tell us more details"
+   - **de**: "Gib uns weitere Details"
+   - **es**: "Cuéntanos más"
+   - **fr**: "Dites-nous-en plus."
+   - **ja**: "詳しい説明を記入してください"
+  */
+  public static func Tell_us_more_details() -> String {
+    return localizedString(
+      key: "Tell_us_more_details",
+      defaultValue: "Tell us more details",
       count: nil,
       substitutions: [:]
     )
@@ -10377,23 +10854,6 @@ catch your eye?"
     )
   }
   /**
-   "This comment is under review for potentially violating"
-
-   - **en**: "This comment is under review for potentially violating"
-   - **de**: "This comment is under review for potentially violating"
-   - **es**: "This comment is under review for potentially violating"
-   - **fr**: "This comment is under review for potentially violating"
-   - **ja**: "This comment is under review for potentially violating"
-  */
-  public static func This_comment_is_under_review_for_potentially_violating() -> String {
-    return localizedString(
-      key: "This_comment_is_under_review_for_potentially_violating",
-      defaultValue: "This comment is under review for potentially violating",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "This comment is under review for potentially violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
 
    - **en**: "This comment is under review for potentially violating <a href="%{community_guidelines}">Kickstarter’s Community Guidelines.</a>"
@@ -10491,6 +10951,23 @@ catch your eye?"
     return localizedString(
       key: "This_post_is_for_backers_only",
       defaultValue: "This post is for backers only",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This project breaks one of Our Rules."
+
+   - **en**: "This project breaks one of Our Rules."
+   - **de**: "Dieses Projekt verstößt gegen eine unserer Regeln."
+   - **es**: "Este proyecto incumple una de nuestras reglas."
+   - **fr**: "Ce projet ne respecte pas nos règles."
+   - **ja**: "このプロジェクトは Kickstarter のルールの 1 つに違反しています。"
+  */
+  public static func This_project_breaks() -> String {
+    return localizedString(
+      key: "This_project_breaks",
+      defaultValue: "This project breaks one of Our Rules.",
       count: nil,
       substitutions: [:]
     )
@@ -11618,6 +12095,23 @@ catch your eye?"
     )
   }
   /**
+   "We use personal data to provide a good experience on Kickstarter, and to help connect you with projects you'll love."
+
+   - **en**: "We use personal data to provide a good experience on Kickstarter, and to help connect you with projects you'll love."
+   - **de**: "Wir nutzen personenbezogene Daten, um deine Nutzung von Kickstarter zu verbessern und dir Projekte zu zeigen, die dich begeistern."
+   - **es**: "Utilizamos datos personales para brindarte una buena experiencia en Kickstarter y conectarte con proyectos que te encantarán."
+   - **fr**: "Les données personnelles nous servent à proposer une expérience de qualité sur Kickstarter et à vous présenter des projets susceptibles de vous plaire."
+   - **ja**: "Kickstarter ではより良いユーザー体験を提供し気に入っていただけそうなプロジェクトにおつなげするために個人データを使用しています。"
+  */
+  public static func We_use_personal_data_to_provide_a_good_experience_on_Kickstarter_and_to_help_connect_you_with_projects_you_ll_love() -> String {
+    return localizedString(
+      key: "We_use_personal_data_to_provide_a_good_experience_on_Kickstarter_and_to_help_connect_you_with_projects_you_ll_love",
+      defaultValue: "We use personal data to provide a good experience on Kickstarter, and to help connect you with projects you'll love.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this."
 
    - **en**: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this."
@@ -11692,20 +12186,37 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that's at least 6 characters long."
+   "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that’s at least 6 characters long."
 
-   - **en**: "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that's at least 6 characters long."
+   - **en**: "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that’s at least 6 characters long."
    - **de**: "Wir werden die Anmeldung über Facebook einstellen. Um dich mit der E-Mail-Adresse %{email} in deinem Konto anzumelden, leg bitte ein Passwort fest, das mindestens 6 Zeichen lang ist."
-   - **es**: "Descontinuaremos la posibilidad de iniciar sesión a través de Facebook. Para iniciar sesión en tu cuenta con el correo electrónico %{email}, configura una contraseña que tenga al menos seis caracteres."
+   - **es**: "Descontinuaremos la posibilidad de iniciar sesión a través de Facebook. Para acceder a tu cuenta con el correo electrónico %{email}, configura una contraseña que tenga al menos seis caracteres."
    - **fr**: "La fonctionnalité de connexion avec Facebook va être éliminée. Pour vous connecter à votre compte avec l'adresse %{email}, veuillez créer un mot de passe qui contient au moins 6 caractères."
    - **ja**: "Facebook 経由でのログイン機能の提供がまもなく終了します。メールアドレス %{email} を使ってアカウントにログインするには、6 文字以上のパスワードを設定してください。"
   */
-  public static func We_will_be_discontinuing_the_ability_to_log_in_via_Facebook(email: String) -> String {
+  public static func We_will_be_discontinuing_the_ability_to_log_in_via_FB(email: String) -> String {
     return localizedString(
-      key: "We_will_be_discontinuing_the_ability_to_log_in_via_Facebook",
-      defaultValue: "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that's at least 6 characters long.",
+      key: "We_will_be_discontinuing_the_ability_to_log_in_via_FB",
+      defaultValue: "We will be discontinuing the ability to log in via Facebook. To log in to your account using the email %{email}, please set a password that’s at least 6 characters long.",
       count: nil,
       substitutions: ["email": email]
+    )
+  }
+  /**
+   "We’ll email you when this project launches so you can be one of the first backers."
+
+   - **en**: "We’ll email you when this project launches so you can be one of the first backers."
+   - **de**: "Wir schicken dir eine E-Mail, sobald das Projekt live geht, dann kannst du es als einer der ersten unterstützen."
+   - **es**: "Te enviaremos un correo electrónico cuando se publique este proyecto así puedes ser uno de los primeros patrocinadores."
+   - **fr**: "Vous recevrez un e-mail dès que le projet sera lancé, pour que vous puissiez faire partie des premiers contributeurs."
+   - **ja**: "あなたが一番乗りでバッカーになれるよう、このプロジェクトがローンチした際にはメールでお知らせします。"
+  */
+  public static func We_will_email_you() -> String {
+    return localizedString(
+      key: "We_will_email_you",
+      defaultValue: "We’ll email you when this project launches so you can be one of the first backers.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -13695,6 +14206,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "Follow back?",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{number_of_followers} followers"
+
+   - **en**: "%{number_of_followers} followers"
+   - **de**: "%{number_of_followers} Follower"
+   - **es**: "%{number_of_followers} seguidores"
+   - **fr**: "%{number_of_followers} abonnés"
+   - **ja**: "%{number_of_followers} 人のフォロワー"
+  */
+  public static func activity_followers(number_of_followers: String) -> String {
+    return localizedString(
+      key: "activity.followers",
+      defaultValue: "%{number_of_followers} followers",
+      count: nil,
+      substitutions: ["number_of_followers": number_of_followers]
     )
   }
   /**
@@ -19247,7 +19775,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Team-Favoriten"
    - **es**: "Nuestros favoritos"
    - **fr**: "Nos sélections"
-   - **ja**: "おすすめ"
+   - **ja**: "スタッフ一押し"
   */
   public static func discovery_recommended() -> String {
     return localizedString(

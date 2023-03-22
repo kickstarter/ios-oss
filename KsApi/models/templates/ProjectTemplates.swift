@@ -96,6 +96,7 @@ extension Project {
     )
     |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1171937901/cosmic-surgery"
     |> Project.lens.rewardData.rewards .~ cosmicSurgeryRewards
+    |> Project.lens.displayPrelaunch .~ false
 
   internal static let anomalisa = .template
     |> Project.lens.photo.full .~ "https://ksr-ugc.imgix.net/assets/011/388/954/25e113da402393de9de995619428d10d_original.png?w=1024&h=576&fit=fill&bg=000000&v=1463681956&auto=format&q=92&s=2a9b6a90e1f52b96d7cbdcad28319f9d"

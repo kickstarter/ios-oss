@@ -586,10 +586,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
 
-    self.goToMobileSafari = Signal.merge(
-      resolvedRedirectUrl,
-      Signal.zip(deepLinkUrl, projectPreviewLink).map(first)
-    )
+    self.goToMobileSafari = resolvedRedirectUrl
 
     self.goToDashboard = deepLink
       .map { link -> Param?? in
@@ -598,7 +595,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    let projectRootLink = projectLink
+    let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
       .filter { _, subpage, _, _ in subpage == .root }
       .map { _, _, vcs, _ in vcs }
 

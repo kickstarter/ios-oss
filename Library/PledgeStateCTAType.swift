@@ -1,12 +1,13 @@
 import UIKit
 
-public enum PledgeStateCTAType {
+public enum PledgeStateCTAType: Equatable {
   case fix
   case pledge
   case manage
   case viewBacking
   case viewRewards
   case viewYourRewards
+  case prelaunch(saved: Bool)
 
   public var buttonTitle: String {
     switch self {
@@ -22,6 +23,8 @@ public enum PledgeStateCTAType {
       return Strings.View_rewards()
     case .viewYourRewards:
       return Strings.View_your_rewards()
+    case let .prelaunch(saved):
+      return saved ? Strings.Saved() : Strings.Notify_me_on_launch()
     }
   }
 
@@ -35,12 +38,14 @@ public enum PledgeStateCTAType {
       return .blue
     case .viewBacking, .viewRewards, .viewYourRewards:
       return .black
+    case let .prelaunch(saved):
+      return saved ? .none : .black
     }
   }
 
   public var stackViewIsHidden: Bool {
     switch self {
-    case .pledge, .viewBacking, .viewRewards, .viewYourRewards:
+    case .pledge, .viewBacking, .viewRewards, .viewYourRewards, .prelaunch:
       return true
     case .fix, .manage:
       return false
@@ -69,7 +74,7 @@ public enum PledgeStateCTAType {
 
   public var stackViewAndSpacerAreHidden: Bool {
     switch self {
-    case .pledge, .viewBacking, .viewRewards, .viewYourRewards:
+    case .pledge, .viewBacking, .viewRewards, .viewYourRewards, .prelaunch:
       return true
     case .fix, .manage:
       return false
