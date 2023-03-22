@@ -16,6 +16,7 @@ struct ChangeEmailView: View {
   @ObservedObject private var viewModel = ChangeEmailViewViewModel()
 
   @ObservedObject private var reactiveViewModel = ChangeEmailViewModel_SwiftUIIntegrationTest()
+  @State private var retrievedEmailText = ""
   @State private var newEmailText = ""
   @State private var newPasswordText = ""
   @State private var saveEnabled = false
@@ -38,9 +39,12 @@ struct ChangeEmailView: View {
             secureField: false,
             placeholderText: "",
             contentPadding: contentPadding,
-            valueText: $reactiveViewModel.retrievedEmailText.value
+            valueText: $retrievedEmailText
           )
           .currentEmail()
+          .onReceive(reactiveViewModel.retrievedEmailText) { newValue in
+            retrievedEmailText = newValue
+          }
 
           Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
         }

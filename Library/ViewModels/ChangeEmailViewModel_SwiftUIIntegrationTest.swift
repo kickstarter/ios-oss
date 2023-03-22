@@ -36,7 +36,7 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
   @Published public var warningMessageWithAlert = ("", false)
   public var saveButtonEnabled: AnyPublisher<Bool, Never>
   public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
-  public var retrievedEmailText: CurrentValueSubject<String, Never> = .init("")
+  public var retrievedEmailText: PassthroughSubject<String, Never> = .init()
   public var newEmailText: PassthroughSubject<String, Never> = .init()
   public var currentPasswordText: PassthroughSubject<String, Never> = .init()
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
