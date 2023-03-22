@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -284,6 +284,9 @@
             <connections>
                 <outlet property="backersSubtitleLabel" destination="m5H-g2-PFw" id="fBh-Ou-3d9"/>
                 <outlet property="backersTitleLabel" destination="ZjE-DZ-Nid" id="ACD-Jv-eGq"/>
+                <outlet property="backingContainerView" destination="dDT-Li-H3h" id="9b8-Z1-hBK"/>
+                <outlet property="backingContainerViewLeadingConstraint" destination="d5a-qT-ewn" id="JZa-cF-Xoi"/>
+                <outlet property="backingLabel" destination="ntT-LN-gwV" id="Zxw-pe-fwR"/>
                 <outlet property="blurbAndReadMoreStackView" destination="CTC-V4-a6E" id="ZtT-Zz-Yzd"/>
                 <outlet property="blurbStackView" destination="N5v-Sa-W2B" id="dE2-PS-Kz9"/>
                 <outlet property="categoryAndLocationStackView" destination="Nk9-Fp-QSS" id="11G-bt-8PF"/>
@@ -314,9 +317,6 @@
                 <outlet property="readMoreStackView" destination="qVW-hB-5Kd" id="NRS-Nx-Jzr"/>
                 <outlet property="stateLabel" destination="t7N-l1-eTw" id="hK2-re-L6h"/>
                 <outlet property="statsStackView" destination="ZTt-dn-nNA" id="BvW-Qy-Yhg"/>
-                <outlet property="youreABackerContainerView" destination="dDT-Li-H3h" id="o6m-co-Hyc"/>
-                <outlet property="youreABackerContainerViewLeadingConstraint" destination="d5a-qT-ewn" id="6e1-1j-u0y"/>
-                <outlet property="youreABackerLabel" destination="ntT-LN-gwV" id="nk8-O9-s6v"/>
             </connections>
             <point key="canvasLocation" x="-155" y="65"/>
         </tableViewCell>

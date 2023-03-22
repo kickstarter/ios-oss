@@ -62,12 +62,21 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private lazy var watchesLabel: UILabel = { UILabel(frame: .zero) }()
+
   private lazy var titleAndSubtitleStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pledgeButtonAndWatchesStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+
+  private var projectSavedObserver: Any?
 
   weak var delegate: PledgeCTAContainerViewDelegate?
 
@@ -88,6 +97,10 @@ final class PledgeCTAContainerView: UIView {
   }
 
   // MARK: - Styles
+
+  deinit {
+    self.projectSavedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
 
   override func bindStyles() {
     super.bindStyles()
@@ -122,6 +135,9 @@ final class PledgeCTAContainerView: UIView {
     _ = self.titleAndSubtitleStackView
       |> titleAndSubtitleStackViewStyle
 
+    _ = self.pledgeButtonAndWatchesStackView
+      |> pledgeButtonAndWatchesStackViewStyle
+
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
 
@@ -130,6 +146,9 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.subtitleLabel
       |> subtitleLabelStyle
+
+    _ = self.watchesLabel
+      |> watchesLabelStyle
 
     _ = self.activityIndicator
       |> activityIndicatorStyle
@@ -153,10 +172,23 @@ final class PledgeCTAContainerView: UIView {
           ?|> buttonStyleType.style
       }
 
-    self.viewModel.outputs.pledgeCTAButtonIsHidden
+    self.viewModel.outputs.prelaunchCTASaved
       .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
+      .observeValues { [weak self] isPrelaunch, saved in
+        guard isPrelaunch else { return }
+
+        _ = self?.pledgeCTAButton
+          ?|> saved ? prelaunchButtonSavedImageStyle : prelaunchButtonUnsavedImageStyle
+
+        self?.watchesLabel.isHidden = !isPrelaunch
+      }
+
+    self.projectSavedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
+        notification in
+        self?.viewModel.inputs.savedProjectFromNotification(
+          project: notification.userInfo?["project"] as? Project
+        )
       }
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
@@ -167,6 +199,9 @@ final class PledgeCTAContainerView: UIView {
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
+    self.pledgeButtonAndWatchesStackView.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
+    self.watchesLabel.rac.hidden = self.viewModel.outputs.watchesLabelIsHidden
+    self.watchesLabel.rac.text = self.viewModel.outputs.watchesCountText
   }
 
   // MARK: - Configuration
@@ -188,6 +223,9 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = ([self.pledgeCTAButton, self.watchesLabel], self.pledgeButtonAndWatchesStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([self.retryDescriptionLabel, self.retryButton], self.retryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -198,7 +236,7 @@ final class PledgeCTAContainerView: UIView {
         self.retryStackView,
         self.titleAndSubtitleStackView,
         self.spacer,
-        self.pledgeCTAButton,
+        self.pledgeButtonAndWatchesStackView,
         self.activityIndicatorContainerView
       ],
       self.rootStackView
@@ -212,23 +250,21 @@ final class PledgeCTAContainerView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.activityIndicator.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-      self.activityIndicator.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
+      self.activityIndicator.centerXAnchor
+        .constraint(equalTo: self.activityIndicatorContainerView.centerXAnchor),
+      self.activityIndicator.centerYAnchor
+        .constraint(equalTo: self.activityIndicatorContainerView.centerYAnchor),
+      self.activityIndicatorContainerView.widthAnchor.constraint(equalTo: self.widthAnchor),
       self.activityIndicatorContainerView.heightAnchor.constraint(equalToConstant: Layout.Button.minHeight),
+      self.activityIndicatorContainerView.centerXAnchor
+        .constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+      self.activityIndicatorContainerView.centerYAnchor
+        .constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.retryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.RetryButton.minWidth)
     ])
-  }
-
-  fileprivate func animateView(_ view: UIView?, isHidden: Bool) {
-    let duration = isHidden ? 0.0 : 0.18
-    let alpha: CGFloat = isHidden ? 0.0 : 1.0
-    UIView.animate(withDuration: duration, animations: {
-      _ = view
-        ?|> \.alpha .~ alpha
-    })
   }
 
   @objc func pledgeCTAButtonTapped() {
@@ -271,6 +307,13 @@ private let titleAndSubtitleStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.gridHalf(1)
 }
 
+private let pledgeButtonAndWatchesStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(1)
+}
+
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_callout().bolded
@@ -292,4 +335,38 @@ private let retryDescriptionLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
+}
+
+private let prelaunchButtonUnsavedImageStyle: ButtonStyle = { button in
+  button
+    |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
+    |> UIButton.lens.tintColor .~ .ksr_white
+    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
+    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_black
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
+    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_black
+}
+
+private let prelaunchButtonSavedImageStyle: ButtonStyle = { button in
+  button
+    |> baseButtonStyle
+    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 16)
+    |> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart")
+    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 10.0)
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_black
+    |> UIButton.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> UIButton.lens.layer.borderWidth .~ 1.0
+    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_white
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_black
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_black
+    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_white
+}
+
+private let watchesLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.textColor .~ UIColor.ksr_support_700
+    |> \.numberOfLines .~ 1
+    |> \.textAlignment .~ .center
 }

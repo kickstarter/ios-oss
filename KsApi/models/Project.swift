@@ -27,6 +27,7 @@ public struct Project {
   public var tags: [String]?
   public var urls: UrlsEnvelope
   public var video: Video?
+  public var watchesCount: Int?
 
   public struct Category {
     public var analyticsName: String?
@@ -311,6 +312,7 @@ extension Project: Decodable {
     self.tags = try values.decodeIfPresent([String].self, forKey: .tags)
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
+    self.watchesCount = nil
   }
 }
 

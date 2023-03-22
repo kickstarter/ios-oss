@@ -65,6 +65,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the background color of the funding progress bar view.
   var fundingProgressBarViewBackgroundColor: Signal<UIColor, Never> { get }
 
+  /// Emits the prelaunch project state. Used to hide/show progress bar and stats view.
+  var isPrelaunchProject: Signal<Bool, Never> { get }
+
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
@@ -85,6 +88,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits the text color of the pledged title label.
   var pledgedTitleLabelTextColor: Signal<UIColor, Never> { get }
+
+  /// Emits a string for the backing label, which could be "you're a backer" or "coming soon".
+  var prelaunchProjectBackingText: Signal<String, Never> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
   var progressPercentage: Signal<Float, Never> { get }
@@ -113,8 +119,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the stats stack view accessibility value.
   var statsStackViewAccessibilityLabel: Signal<String, Never> { get }
 
-  /// Emits a boolean that determines if the "you're a backer" label should be hidden.
-  var youreABackerLabelHidden: Signal<Bool, Never> { get }
+  /// Emits a boolean that determines if the "you're a backer" or "coming soon" label should be hidden.
+  var backingLabelHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -165,6 +171,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         UIColor.ksr_create_700 : UIColor.ksr_support_400
       }
 
+    self.prelaunchProjectBackingText = project
+      .map { $0.displayPrelaunch == .some(true) ?
+        Strings.Coming_soon() : Strings.Youre_a_backer()
+      }
+
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
     let videoIsPlaying = Signal.merge(
@@ -173,9 +184,17 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       self.videoDidFinishProperty.signal.mapConst(false)
     )
 
-    self.youreABackerLabelHidden = Signal.combineLatest(project, videoIsPlaying)
+    self.backingLabelHidden = Signal.combineLatest(project, videoIsPlaying)
       .map { project, videoIsPlaying in
-        project.personalization.isBacking != true || videoIsPlaying
+        guard let displayPrelaunch = project.displayPrelaunch else {
+          return true
+        }
+
+        guard !displayPrelaunch else {
+          return false
+        }
+
+        return project.personalization.isBacking != true || videoIsPlaying
       }
       .skipRepeats()
 
@@ -228,6 +247,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.statsStackViewAccessibilityLabel = projectAndNeedsConversion
       .map(statsStackViewAccessibilityLabelForProject(_:needsConversion:))
+
+    self.isPrelaunchProject = project.map { $0.displayPrelaunch }.skipNil()
 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -310,6 +331,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let creatorLabelText: Signal<String, Never>
   public let deadlineSubtitleLabelText: Signal<String, Never>
   public let deadlineTitleLabelText: Signal<String, Never>
+  public let isPrelaunchProject: Signal<Bool, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
   public let notifyDelegateToGoToCampaignWithData: Signal<ProjectPamphletMainCellData, Never>
@@ -318,6 +340,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let pledgedSubtitleLabelText: Signal<String, Never>
   public let pledgedTitleLabelText: Signal<String, Never>
   public let pledgedTitleLabelTextColor: Signal<UIColor, Never>
+  public let prelaunchProjectBackingText: Signal<String, Never>
   public let progressPercentage: Signal<Float, Never>
   public let projectBlurbLabelText: Signal<String, Never>
   public let projectImageUrl: Signal<URL?, Never>
@@ -327,7 +350,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
-  public let youreABackerLabelHidden: Signal<Bool, Never>
+  public let backingLabelHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }

@@ -94,7 +94,8 @@ extension Project {
       stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
       tags: discoverTags,
       urls: urls,
-      video: projectVideo(from: projectFragment)
+      video: projectVideo(from: projectFragment),
+      watchesCount: projectFragment.watchesCount
     )
   }
 }
@@ -114,10 +115,7 @@ private func projectPersonalization(isStarred: Bool,
  Returns a minimal `Project.Dates` from a `ProjectFragment`
  */
 private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Project.Dates? {
-  guard
-    let deadline = projectFragment.deadlineAt.flatMap(TimeInterval.init),
-    let launchedAt = projectFragment.launchedAt.flatMap(TimeInterval.init),
-    let stateChangedAt = TimeInterval(projectFragment.stateChangedAt)
+  guard let stateChangedAt = TimeInterval(projectFragment.stateChangedAt)
   else { return nil }
 
   let startOfToday = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
@@ -129,10 +127,10 @@ private func projectDates(from projectFragment: GraphAPI.ProjectFragment) -> Pro
   }
 
   return Project.Dates(
-    deadline: deadline,
+    deadline: projectFragment.deadlineAt.flatMap(TimeInterval.init),
     featuredAt: featuredAtDate,
     finalCollectionDate: finalCollectionDateTimeInterval(from: projectFragment.finalCollectionDate),
-    launchedAt: launchedAt,
+    launchedAt: projectFragment.launchedAt.flatMap(TimeInterval.init),
     stateChangedAt: stateChangedAt
   )
 }
