@@ -15,7 +15,7 @@ struct MessageBannerView: View {
           .foregroundColor(vm.messageTextColor)
           .lineLimit(3)
           .multilineTextAlignment(vm.messageTextAlignment)
-          .padding()
+          .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
       }
       .accessibilityElement()
       .accessibilityLabel(vm.bannerMessageAccessibilityLabel)

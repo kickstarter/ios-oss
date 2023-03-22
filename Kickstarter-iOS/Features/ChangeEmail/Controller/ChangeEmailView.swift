@@ -119,15 +119,7 @@ struct ChangeEmailView: View {
               newPasswordText = ""
             }
           }
-          .onSubmit {
-            focusField = nil
-
-            // NOTE: Dropping keyboard with Done button
-            // FIXME: Maybe this should live in the view model?
-            if saveEnabled {
-              saveTriggered = true
-            }
-          }
+          // FIXME: So "Done" on keyboard doesn't trigger Save --> in the future we might want to add this (was in the old `ChangeEmailViewController`)
 
           Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
         }
@@ -162,7 +154,7 @@ struct ChangeEmailView: View {
           .frame(
             minWidth: proxy.size.width,
             idealWidth: proxy.size.width,
-            maxHeight: proxy.size.height / 6,
+            maxHeight: proxy.size.height / 5,
             alignment: .bottom
           )
           .animation(.easeInOut)
