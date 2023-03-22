@@ -87,8 +87,10 @@ struct ChangeEmailView: View {
             contentPadding: contentPadding,
             valueText: $newEmailText
           )
-          .onReceive(reactiveViewModel.resetEditableText) {
-            newEmailText = ""
+          .onReceive(reactiveViewModel.resetEditableText) { newValue in
+            if newValue {
+              newEmailText = ""
+            }
           }
           .onChange(of: newEmailText) { newValue in
             reactiveViewModel.newEmailText.send(newValue)
@@ -112,16 +114,18 @@ struct ChangeEmailView: View {
           .currentPassword(editable: !showLoading)
           .focused($focusField, equals: .currentPassword)
           .submitScope(viewModel.newPasswordText.value.isEmpty)
-          .onReceive(reactiveViewModel.resetEditableText) {
-            newPasswordText = ""
+          .onReceive(reactiveViewModel.resetEditableText) { resetFlag in
+            if resetFlag {
+              newPasswordText = ""
+            }
           }
           .onSubmit {
             focusField = nil
 
+            // NOTE: Dropping keyboard with Done button
             // FIXME: Maybe this should live in the view model?
             if saveEnabled {
               saveTriggered = true
-              showLoading = true
             }
           }
 
@@ -143,6 +147,8 @@ struct ChangeEmailView: View {
           )
           .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
             saveEnabled = newValue
+          }
+          .onReceive(reactiveViewModel.resetEditableText) { newValue in
             showLoading = !newValue
           }
           .onChange(of: saveTriggered) { newValue in
@@ -152,19 +158,14 @@ struct ChangeEmailView: View {
         }
       }
       .overlay(alignment: .bottom) {
-        if let messageBannerViewModel = $bannerMessage.wrappedValue {
-          MessageBannerView(viewModel: messageBannerViewModel, showBanner: $showBannerMessage.wrappedValue)
-            .frame(
-              minWidth: proxy.size.width,
-              idealWidth: proxy.size.width,
-              maxHeight: proxy.size.height / 6,
-              alignment: .bottom
-            )
-            .animation(.easeInOut)
-        }
-      }
-      .onReceive(reactiveViewModel.showBannerMessage) { newValue in
-        showBannerMessage = newValue
+        MessageBannerView(viewModel: $bannerMessage)
+          .frame(
+            minWidth: proxy.size.width,
+            idealWidth: proxy.size.width,
+            maxHeight: proxy.size.height / 6,
+            alignment: .bottom
+          )
+          .animation(.easeInOut)
       }
       .onReceive(reactiveViewModel.bannerMessage) { newValue in
         bannerMessage = newValue

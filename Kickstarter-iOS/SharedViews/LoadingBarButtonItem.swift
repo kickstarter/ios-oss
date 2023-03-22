@@ -24,7 +24,6 @@ struct LoadingBarButtonItem: View {
           .foregroundColor(Color(.ksr_support_700))
           .onDisappear {
             saveTriggered = false
-            saveEnabled = false
           }
       }
     }

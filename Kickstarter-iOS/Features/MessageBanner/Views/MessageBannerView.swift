@@ -3,31 +3,30 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 struct MessageBannerView: View {
-  @ObservedObject var viewModel: MessageBannerViewViewModel
-  @State var showBanner = true
+  @Binding var viewModel: MessageBannerViewViewModel?
 
   var body: some View {
-    if showBanner {
+    if let vm = viewModel {
       ZStack {
         RoundedRectangle(cornerRadius: 4)
-          .foregroundColor(viewModel.bannerBackgroundColor)
-        Label(viewModel.bannerMessage, image: viewModel.iconImageName)
+          .foregroundColor(vm.bannerBackgroundColor)
+        Label(vm.bannerMessage, image: vm.iconImageName)
           .font(Font(UIFont.ksr_subhead()))
-          .foregroundColor(viewModel.messageTextColor)
+          .foregroundColor(vm.messageTextColor)
           .lineLimit(3)
-          .multilineTextAlignment(viewModel.messageTextAlignment)
+          .multilineTextAlignment(vm.messageTextAlignment)
           .padding()
       }
       .accessibilityElement()
-      .accessibilityLabel(viewModel.bannerMessageAccessibilityLabel)
+      .accessibilityLabel(vm.bannerMessageAccessibilityLabel)
       .padding()
       .onAppear {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-          showBanner = false
+          viewModel = nil
         }
       }
       .onTapGesture {
-        showBanner = false
+        viewModel = nil
       }
     }
   }

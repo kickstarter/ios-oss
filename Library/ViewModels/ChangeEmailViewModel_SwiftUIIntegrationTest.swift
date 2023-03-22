@@ -35,14 +35,12 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
   @Published public var hideMessageLabel = true
   @Published public var warningMessageWithAlert = ("", false)
   public var saveButtonEnabled: AnyPublisher<Bool, Never>
-  public var showBannerMessage: PassthroughSubject<Bool, Never> = .init()
   public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
   public var retrievedEmailText: CurrentValueSubject<String, Never> = .init("")
   public var newEmailText: PassthroughSubject<String, Never> = .init()
   public var currentPasswordText: PassthroughSubject<String, Never> = .init()
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
-  public var changeEmailSuccess: PassthroughSubject<Bool, Never> = .init()
-  public var resetEditableText: PassthroughSubject<Void, Never> = .init()
+  public var resetEditableText: PassthroughSubject<Bool, Never> = .init()
 
   public init() {
     let changeEmailEvent = self.updateEmailAndPasswordProperty.signal.skipNil()
@@ -114,13 +112,10 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
 
     // MARK: Reactive Subscribers to Combine Publishers
 
-    let textFieldsAllowSaveEnabled = Publishers
+    self.saveButtonEnabled = Publishers
       .CombineLatest3(self.retrievedEmailText, self.newEmailText, self.currentPasswordText)
       .removeDuplicates(by: ==)
       .map(shouldEnableSaveButton(email:newEmail:password:))
-      .eraseToAnyPublisher()
-
-    self.saveButtonEnabled = Publishers.Merge(textFieldsAllowSaveEnabled, self.changeEmailSuccess)
       .eraseToAnyPublisher()
 
     _ = changeEmailEvent.errors()
@@ -131,29 +126,9 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
           message: errorValue.localizedDescription
         ))
 
-        let enabledSaveButton = CurrentValueSubject<Bool, Never>(true)
-        self?.saveButtonEnabled = AnyPublisher(enabledSaveButton)
         self?.saveTriggered.send(false)
-        self?.changeEmailSuccess.send(false)
-        self?.showBannerMessage.send(true)
+        self?.resetEditableText.send(true)
         self?.bannerMessage.send(messageBannerViewViewModel)
-        self?.resetEditableText.send(())
-      }
-
-    _ = Publishers.CombineLatest(self.retrievedEmailText, self.changeEmailSuccess)
-      .filter { _, changeSuccessState in
-        changeSuccessState
-      }
-      .map { [weak self] existingEmail, _ in
-        self?.newEmailText.send(existingEmail)
-      }
-
-    _ = Publishers.CombineLatest(self.newEmailText, self.changeEmailSuccess)
-      .filter { _, changeSuccessState in
-        changeSuccessState
-      }
-      .map { [weak self] newEmail, _ in
-        self?.retrievedEmailText.send(newEmail)
       }
 
     _ = changeEmailEvent.values().ignoreValues()
@@ -164,19 +139,17 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
           message: Strings.Verification_email_sent()
         ))
 
-        let enabledSaveButton = CurrentValueSubject<Bool, Never>(true)
-
-        self?.saveButtonEnabled = AnyPublisher(enabledSaveButton)
         self?.saveTriggered.send(false)
-        self?.changeEmailSuccess.send(true)
-        self?.showBannerMessage.send(true)
+        self?.resetEditableText.send(true)
         self?.bannerMessage.send(messageBannerViewViewModel)
-        self?.resetEditableText.send(())
       }
 
-    Publishers.CombineLatest3(self.saveTriggered, self.newEmailText, self.currentPasswordText)
-      .filter { $0.0 }
-      .sink(receiveValue: { [weak self] _, newEmailTextValue, newPasswordTextValue in
+    Publishers
+      .CombineLatest4(self.saveButtonEnabled, self.saveTriggered, self.newEmailText, self.currentPasswordText)
+      .filter { enabledValue, triggeredValue, _, _ in
+        enabledValue && triggeredValue
+      }
+      .sink(receiveValue: { [weak self] _, _, newEmailTextValue, newPasswordTextValue in
         self?.updateEmail(newEmail: newEmailTextValue, currentPassword: newPasswordTextValue)
       })
       .store(in: &self.cancellables)
@@ -195,7 +168,6 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
           message: Strings.Verification_email_sent()
         ))
 
-        self?.showBannerMessage.send(true)
         self?.bannerMessage.send(messageBannerViewViewModel)
       }
 
@@ -207,7 +179,6 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
           message: message
         ))
 
-        self?.showBannerMessage.send(true)
         self?.bannerMessage.send(messageBannerViewViewModel)
       }
 
