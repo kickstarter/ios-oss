@@ -10,6 +10,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
 
   private let metadataIconIsHidden = TestObserver<Bool, Never>()
   private let metadataText = TestObserver<String, Never>()
+  private let prelaunchProject = TestObserver<Bool, Never>()
   private let percentFundedText = TestObserver<String, Never>()
   private let photoURL = TestObserver<String, Never>()
   private let progress = TestObserver<Float, Never>()
@@ -24,6 +25,7 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.vm.outputs.percentFundedText.map { $0.string }.observe(self.percentFundedText.observer)
     self.vm.outputs.photoURL.map { $0?.absoluteString ?? "" }.observe(self.photoURL.observer)
     self.vm.outputs.progress.observe(self.progress.observer)
+    self.vm.outputs.prelaunchProject.observe(self.prelaunchProject.observer)
     self.vm.outputs.progressBarColor.observe(self.progressBarColor.observer)
     self.vm.outputs.projectTitleText.map { $0.string }.observe(self.projectTitleText.observer)
     self.vm.outputs.savedIconIsHidden.observe(self.savedIconIsHidden.observer)
@@ -106,5 +108,19 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.progressBarColor.assertValues([UIColor.ksr_create_700])
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([false])
+  }
+
+  func testProjectData_Prelaunch() {
+    let project = .template
+      |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
+      |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
+      |> Project.lens.displayPrelaunch .~ true
+      |> Project.lens.personalization.isStarred .~ true
+
+    self.prelaunchProject.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.prelaunchProject.assertValues([true])
   }
 }

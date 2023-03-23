@@ -25,7 +25,7 @@ public protocol MostPopularSearchProjectCellViewModelOutputs {
 
   /// Emits project name to be displayed.
   var projectName: Signal<NSAttributedString, Never> { get }
-  
+
   /// Emits to hide information about pledging when project is prelaunch
   var prelaunchProject: Signal<Bool, Never> { get }
 }
@@ -51,7 +51,7 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
     self.percentFundedText = project.map(percentFundedString(for:))
 
     self.metadataText = project.map(metadataString(for:))
-    
+
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
@@ -75,7 +75,7 @@ public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProje
 private func isProjectPrelaunch(_ project: Project) -> Bool {
   switch (project.displayPrelaunch, project.dates.launchedAt, project.prelaunchActivated) {
   case (.some(true), _, _),
-    (_, _, .some(true)):
+       (_, _, .some(true)):
     return true
   case let (_, .some(timeValue), _):
     return timeValue <= 0
@@ -86,7 +86,7 @@ private func isProjectPrelaunch(_ project: Project) -> Bool {
 
 private func metadataString(for project: Project) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }
-  
+
   switch project.state {
   case .live:
     guard let deadline = project.dates.deadline else {

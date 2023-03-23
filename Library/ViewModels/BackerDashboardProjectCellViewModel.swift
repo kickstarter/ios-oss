@@ -35,7 +35,7 @@ public protocol BackerDashboardProjectCellViewModelOutputs {
 
   /// Emits a boolean when the saved icon is hidden or not.
   var savedIconIsHidden: Signal<Bool, Never> { get }
-  
+
   /// Emits to hide information about pledging when project is prelaunch
   var prelaunchProject: Signal<Bool, Never> { get }
 }
@@ -62,7 +62,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.metadataIconIsHidden = project.map { project in
       guard !isProjectPrelaunch(project) else { return true }
-      
+
       return project.state != .live
     }
 
@@ -71,7 +71,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
     self.progressBarColor = project.map(progressBarColorForProject)
 
     self.savedIconIsHidden = project.map { $0.personalization.isStarred != .some(true) }
-    
+
     self.prelaunchProject = project.map(isProjectPrelaunch)
   }
 
@@ -97,7 +97,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
 private func metadataString(for project: Project) -> String {
   guard !isProjectPrelaunch(project) else { return Strings.Coming_soon() }
-  
+
   switch project.state {
   case .live:
     guard let deadline = project.dates.deadline else {
@@ -141,7 +141,7 @@ private func metadataBackgroundColorForProject(_ project: Project) -> UIColor {
   guard !isProjectPrelaunch(project) else {
     return .ksr_create_700
   }
-  
+
   switch project.state {
   case .live, .successful:
     return .ksr_create_700
@@ -183,7 +183,7 @@ private func stateString(for project: Project) -> String {
 private func isProjectPrelaunch(_ project: Project) -> Bool {
   switch (project.displayPrelaunch, project.dates.launchedAt, project.prelaunchActivated) {
   case (.some(true), _, _),
-    (_, _, .some(true)):
+       (_, _, .some(true)):
     return true
   case let (_, .some(timeValue), _):
     return timeValue <= 0
