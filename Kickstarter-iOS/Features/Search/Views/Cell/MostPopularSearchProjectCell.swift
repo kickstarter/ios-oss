@@ -103,6 +103,9 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     self.progressBarView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
     self.projectImageView.rac.ksr_imageUrl = self.viewModel.outputs.projectImageUrl
     self.projectNameLabel.rac.attributedText = self.viewModel.outputs.projectName
+    self.statsStackView.rac.hidden = self.viewModel.outputs.prelaunchProject
+    self.progressBarView.rac.hidden = self.viewModel.outputs.prelaunchProject
+    self.metadataIconImageView.rac.hidden = self.viewModel.outputs.prelaunchProject
 
     self.viewModel.outputs.progress
       .observeForUI()

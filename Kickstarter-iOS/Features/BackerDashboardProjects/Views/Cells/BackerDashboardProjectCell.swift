@@ -32,6 +32,9 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     self.projectNameLabel.rac.attributedText = self.viewModel.outputs.projectTitleText
     self.projectImageView.rac.ksr_imageUrl = self.viewModel.outputs.photoURL
     self.progressBarView.rac.backgroundColor = self.viewModel.outputs.progressBarColor
+    self.progressBarView.rac.hidden = self.viewModel.outputs.prelaunchProject
+    self.progressStaticView.rac.hidden = self.viewModel.outputs.prelaunchProject
+    self.percentFundedLabel.rac.hidden = self.viewModel.outputs.prelaunchProject
     self.savedIconImageView.rac.hidden = self.viewModel.outputs.savedIconIsHidden
 
     self.viewModel.outputs.progress
