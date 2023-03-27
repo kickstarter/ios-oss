@@ -59,7 +59,9 @@ internal final class BackerDashboardViewModelTests: TestCase {
       |> \.stats.starredProjectsCount .~ 58
       |> \.avatar.large .~ "http://cats.com/furball.jpg"
 
-    withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
+    let userEnvelope = UserEnvelope(me: user)
+
+    withEnvironment(apiService: MockService(fetchGraphUserSelfResult: .success(userEnvelope))) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
       self.avatarURL.assertValueCount(0)
@@ -104,7 +106,9 @@ internal final class BackerDashboardViewModelTests: TestCase {
       |> \.name .~ "user"
       |> \.stats.starredProjectsCount .~ 60
 
-    withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
+    let userEnvelope = UserEnvelope(me: user)
+
+    withEnvironment(apiService: MockService(fetchGraphUserSelfResult: .success(userEnvelope))) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
       self.vm.inputs.viewWillAppear(false)
 
@@ -115,7 +119,9 @@ internal final class BackerDashboardViewModelTests: TestCase {
       let user2 = user
         |> \.name .~ "Updated user"
 
-      withEnvironment(apiService: MockService(fetchUserSelfResponse: user2)) {
+      let user2Envelope = UserEnvelope(me: user2)
+
+      withEnvironment(apiService: MockService(fetchGraphUserSelfResult: .success(user2Envelope))) {
         self.vm.inputs.projectSaved()
 
         self.scheduler.advance()
@@ -136,7 +142,9 @@ internal final class BackerDashboardViewModelTests: TestCase {
   }
 
   func testTabNavigation() {
-    withEnvironment(apiService: MockService(fetchUserSelfResponse: .template)) {
+    let userEnvelope = UserEnvelope(me: User.template)
+
+    withEnvironment(apiService: MockService(fetchGraphUserSelfResult: .success(userEnvelope))) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
       self.vm.inputs.viewDidLoad()
