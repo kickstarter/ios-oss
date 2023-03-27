@@ -344,7 +344,6 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<GraphUserEmail>.envelopeProducer(from:))
   }
 
-  // FIXME: We should really conslidate ol
   public func fetchGraphUserSelf()
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope> {
     return GraphQL.shared.client
