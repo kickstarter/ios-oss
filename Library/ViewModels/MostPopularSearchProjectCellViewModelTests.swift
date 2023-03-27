@@ -10,6 +10,7 @@ internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
   private let metadataText = TestObserver<String, Never>()
   private let percentFundedText = TestObserver<String, Never>()
   private let progress = TestObserver<Float, Never>()
+  private let prelaunchProject = TestObserver<Bool, Never>()
   private let progressBarColor = TestObserver<UIColor, Never>()
   private let projectImageUrl = TestObserver<String, Never>()
   private let projectName = TestObserver<String, Never>()
@@ -22,6 +23,7 @@ internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
     self.vm.outputs.progressBarColor.observe(self.progressBarColor.observer)
     self.vm.outputs.projectImageUrl.map { $0?.absoluteString ?? "" }.observe(self.projectImageUrl.observer)
     self.vm.outputs.projectName.map { $0.string }.observe(self.projectName.observer)
+    self.vm.outputs.prelaunchProject.observe(self.prelaunchProject.observer)
   }
 
   func testProjectData_Live() {
@@ -86,5 +88,19 @@ internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
     self.progressBarColor.assertValues([UIColor.ksr_support_400])
     self.projectImageUrl.assertValues(["http://wwww.cosmicsurgery.com/theproject.jpg"])
     self.projectName.assertValues(["Cosmic Surgery"])
+  }
+
+  func testProjectData_Prelaunch() {
+    let project = .template
+      |> Project.lens.name .~ "Best of Lazy Bathtub Cat"
+      |> Project.lens.photo.full .~ "http://www.lazybathtubcat.com/vespa.jpg"
+      |> Project.lens.displayPrelaunch .~ true
+      |> Project.lens.personalization.isStarred .~ true
+
+    self.prelaunchProject.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(project: project)
+
+    self.prelaunchProject.assertValues([true])
   }
 }
