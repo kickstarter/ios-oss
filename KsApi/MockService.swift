@@ -78,6 +78,7 @@
     fileprivate let fetchDraftError: ErrorEnvelope?
 
     fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
+    fileprivate let fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>?
     fileprivate let fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>?
     fileprivate let fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>?
 
@@ -249,6 +250,7 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
+      fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>? = nil,
       fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>? = nil,
       fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
@@ -362,6 +364,7 @@
       self.fetchGraphCategoriesResult = fetchGraphCategoriesResult
 
       self.fetchGraphUserResult = fetchGraphUserResult
+      self.fetchGraphUserSelfResult = fetchGraphUserSelfResult
       self.fetchGraphUserEmailResult = fetchGraphUserEmailResult
 
       self.fetchErroredUserBackingsResult = fetchErroredUserBackingsResult
@@ -773,6 +776,17 @@
       let fetchGraphCategoryQuery = GraphAPI.FetchCategoryQuery(id: id)
 
       return client.fetchWithResult(query: fetchGraphCategoryQuery, result: self.fetchGraphCategoryResult)
+    }
+
+    internal func fetchGraphUserSelf()
+      -> SignalProducer<UserEnvelope<User>, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let fetchGraphUserQuery = GraphAPI.FetchUserQuery(withStoredCards: false)
+
+      return client.fetchWithResult(query: fetchGraphUserQuery, result: self.fetchGraphUserSelfResult)
     }
 
     internal func fetchGraphUser(withStoredCards: Bool)

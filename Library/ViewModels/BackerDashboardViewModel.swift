@@ -112,7 +112,10 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       self.viewWillAppearProperty.signal.ignoreValues()
     )
     .switchMap { _ in
-      AppEnvironment.current.apiService.fetchUserSelf()
+      AppEnvironment.current.apiService.fetchGraphUserSelf()
+        .map { envelope in
+          envelope.me
+        }
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
         .materialize()

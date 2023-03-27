@@ -169,6 +169,10 @@ public protocol ServiceType {
   func fetchGraphUserEmail()
     -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
 
+  /// Fetches GraphQL user fragment and returns User instance.
+  func fetchGraphUserSelf()
+    -> SignalProducer<UserEnvelope<User>, ErrorEnvelope>
+
   /// Fetch errored User's backings with a specific status.
   func fetchErroredUserBackings(status: BackingState)
     -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope>
