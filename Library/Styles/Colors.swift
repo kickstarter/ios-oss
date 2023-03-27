@@ -120,4 +120,9 @@ extension UIColor {
   public static var ksr_white: UIColor {
     return .hex(0xFFFFFF)
   }
+
+  /// 0xDCDEDD
+  public static var ksr_cell_separator: UIColor {
+    return .hex(0xDCDEDD)
+  }
 }
