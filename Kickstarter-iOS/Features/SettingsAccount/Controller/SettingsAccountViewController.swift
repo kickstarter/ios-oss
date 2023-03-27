@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import SwiftUI
 import UIKit
 
 final class SettingsAccountViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -188,7 +189,13 @@ extension SettingsAccountViewController {
     case .createPassword:
       return CreatePasswordViewController.instantiate()
     case .changeEmail:
-      return ChangeEmailViewController.instantiate()
+      if #available(iOS 15, *) {
+        let changeEmailView = ChangeEmailView()
+
+        return UIHostingController(rootView: changeEmailView)
+      } else {
+        return ChangeEmailViewController.instantiate()
+      }
     case .changePassword:
       return ChangePasswordViewController.instantiate()
     case .paymentMethods:
