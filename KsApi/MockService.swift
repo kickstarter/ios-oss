@@ -1656,6 +1656,8 @@
             exportDataError: $1.exportDataError,
             fetchDraftResponse: $1.fetchDraftResponse,
             fetchDraftError: $1.fetchDraftError,
+            fetchGraphUserResult: $1.fetchGraphUserResult,
+            fetchGraphUserSelfResult: $1.fetchGraphUserSelfResult,
             addAttachmentResponse: $1.addAttachmentResponse,
             addAttachmentError: $1.addAttachmentError,
             removeAttachmentResponse: $1.removeAttachmentResponse,
