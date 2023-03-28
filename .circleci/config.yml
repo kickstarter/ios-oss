@@ -7,7 +7,7 @@ orbs:
 aws_cli_setup: &aws_cli_setup
   role-arn: $AWS_ROLE_ARN
 
-xcode_version: &xcode_version 13.3.1
+xcode_version: &xcode_version 13.4.1
 iphone_name: &iphone_name iPhone 8
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (15.4) [" || true
 

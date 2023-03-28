@@ -1,5 +1,5 @@
 fastlane_version "2.158.0"
-
+xcversion(verson: "13.4.1")
 default_platform :ios
 
 platform :ios do
