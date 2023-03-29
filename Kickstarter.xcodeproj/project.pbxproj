@@ -254,6 +254,8 @@
 		19450C2628C8225200C60F97 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */; };
 		19450C2F28C823A400C60F97 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
+		19462F6A29D4892300868694 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191A2C702907350A0093B6E1 /* ChangeEmailView.swift */; };
+		19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706656D629C7E72B00BAE7D4 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift */; };
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
@@ -8031,6 +8033,7 @@
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
+				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
@@ -8493,6 +8496,7 @@
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
+				19462F6A29D4892300868694 /* ChangeEmailView.swift in Sources */,
 				8A08B521249C3352009CF74E /* EasyButton.swift in Sources */,
 				20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */,
 				018422BD1D2C484200CA7566 /* DashboardProjectsDrawerCell.swift in Sources */,
