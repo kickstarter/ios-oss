@@ -58,7 +58,9 @@ platform :ios do
   ### BETA
 
   lane :beta_match_gym_appcenter_s3 do
-    match_all
+    # match_all
+    setup_circle_ci
+    match_enterprise
     beta_gym
     beta_appcenter
     beta_s3
