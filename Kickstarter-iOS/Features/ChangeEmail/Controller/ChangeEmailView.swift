@@ -12,7 +12,7 @@ struct ChangeEmailView: View {
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?
   private let contentPadding = 12.0
-  @ObservedObject private var reactiveViewModel = ChangeEmailViewModel_SwiftUIIntegrationTest()
+  @ObservedObject private var reactiveViewModel = ChangeEmailViewModelSwiftUIIntegrationTest()
   @State private var retrievedEmailText = ""
   @State private var newEmailText = ""
   @State private var newPasswordText = ""
