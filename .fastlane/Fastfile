@@ -1,5 +1,8 @@
 fastlane_version "2.158.0"
-xcversion(version: "8.1")
+xcodes(
+  version: '13.3.1',
+  select_for_current_build_only: true,
+)
 default_platform :ios
 
 platform :ios do
