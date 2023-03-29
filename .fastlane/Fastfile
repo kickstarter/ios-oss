@@ -4,13 +4,23 @@ default_platform :ios
 
 platform :ios do
   ### MATCH
-  desc "Fastlane Match"
-  lane :match_all do
+  desc "Fastlane Match AppStore"
+  lane :setup_match_appstore do
     setup_circle_ci
     match_appstore
-    match_development
+  end
+
+  desc "Fastlane Match Enterprise"
+  lane :setup_match_enterprise do
+    setup_circle_ci
     match_enterprise
   end
+
+  desc "Fastlane Match Development"
+  lane :setup_match_development do
+    setup_circle_ci
+    match_development
+  end  
 
   desc "Fastlane Match - App Store"
   private_lane :match_appstore do
@@ -58,7 +68,7 @@ platform :ios do
   ### BETA
 
   lane :beta_match_gym_appcenter_s3 do
-    match_all
+    setup_match_enterprise
     beta_gym
     beta_appcenter
     beta_s3
@@ -109,7 +119,7 @@ platform :ios do
   ### PRODUCTION
 
   lane :itunes_match_gym_deliver do
-    match_all
+    setup_match_appstore
     itunes_gym
     itunes_deliver
   end
@@ -156,7 +166,7 @@ platform :ios do
 
   ### ALPHA
   lane :alpha_match_gym_appcenter do
-    match_all
+    setup_match_enterprise
     alpha_gym
     alpha_appcenter
   end
