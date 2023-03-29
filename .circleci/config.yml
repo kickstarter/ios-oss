@@ -319,7 +319,7 @@ workflows:
           filters:
             branches:
               only: main
-          requires: *all_jobs
+        #  requires: *all_jobs
       - beta:
           context: aws
           filters:
