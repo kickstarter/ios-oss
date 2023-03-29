@@ -28,7 +28,6 @@ platform :ios do
   private_lane :match_development do
     match(
       app_identifier: [
-        "com.kickstarter.kickstarter",
         "com.kickstarter.kickstarter.debug"
       ],
       type: "development",
