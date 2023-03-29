@@ -4,13 +4,13 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public protocol ChangeEmailViewModelInputs_SwiftUIIntegrationTest {
+public protocol ChangeEmailViewModelInputsSwiftUIIntegrationTest {
   func resendVerificationEmailButtonTapped()
   func viewDidLoad()
   func updateEmail(newEmail: String, currentPassword: String)
 }
 
-public protocol ChangeEmailViewModelOutputs_SwiftUIIntegrationTest {
+public protocol ChangeEmailViewModelOutputsSwiftUIIntegrationTest {
   var didFailToSendVerificationEmail: Signal<String, Never> { get }
   var didSendVerificationEmail: Signal<Void, Never> { get }
   var emailText: Signal<String, Never> { get }
@@ -21,14 +21,14 @@ public protocol ChangeEmailViewModelOutputs_SwiftUIIntegrationTest {
   var verificationEmailButtonTitle: Signal<String, Never> { get }
 }
 
-public protocol ChangeEmailViewModelType_SwiftUIIntegrationTest {
-  var inputs: ChangeEmailViewModelInputs_SwiftUIIntegrationTest { get }
-  var outputs: ChangeEmailViewModelOutputs_SwiftUIIntegrationTest { get }
+public protocol ChangeEmailViewModelTypeSwiftUIIntegrationTest {
+  var inputs: ChangeEmailViewModelInputsSwiftUIIntegrationTest { get }
+  var outputs: ChangeEmailViewModelOutputsSwiftUIIntegrationTest { get }
 }
 
-public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewModelType_SwiftUIIntegrationTest,
-  ChangeEmailViewModelInputs_SwiftUIIntegrationTest,
-  ChangeEmailViewModelOutputs_SwiftUIIntegrationTest, ObservableObject {
+public final class ChangeEmailViewModelSwiftUIIntegrationTest: ChangeEmailViewModelTypeSwiftUIIntegrationTest,
+  ChangeEmailViewModelInputsSwiftUIIntegrationTest,
+  ChangeEmailViewModelOutputsSwiftUIIntegrationTest, ObservableObject {
   private var cancellables = Set<AnyCancellable>()
   @Published public var hideVerifyView = false
   @Published public var verifyEmailButtonTitle = ""
@@ -251,11 +251,11 @@ public final class ChangeEmailViewModel_SwiftUIIntegrationTest: ChangeEmailViewM
   public let verificationEmailButtonTitle: Signal<String, Never>
   public let warningMessageLabelHidden: Signal<Bool, Never>
 
-  public var inputs: ChangeEmailViewModelInputs_SwiftUIIntegrationTest {
+  public var inputs: ChangeEmailViewModelInputsSwiftUIIntegrationTest {
     return self
   }
 
-  public var outputs: ChangeEmailViewModelOutputs_SwiftUIIntegrationTest {
+  public var outputs: ChangeEmailViewModelOutputsSwiftUIIntegrationTest {
     return self
   }
 }
