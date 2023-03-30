@@ -112,7 +112,7 @@ distribute_job: &distribute_job
           - vendor/bundle
     - run:
         name: Increment build number
-        command: agvtool new-version -all $(($(date +%s)/100))
+        command: agvtool new-version -all $(($(date +%s)/1000))
     - run:
         name: Install lane dependency xcodes
         command: brew install robotsandpencils/made/xcodes
