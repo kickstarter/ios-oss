@@ -1,5 +1,4 @@
 fastlane_version "2.158.0"
-xcodes(version: "13.3.1", select_for_current_build_only: true)
 default_platform :ios
 
 platform :ios do
@@ -69,6 +68,7 @@ platform :ios do
 
   lane :beta_match_gym_appcenter_s3 do
     setup_match_enterprise
+    xcode_check
     beta_gym
     beta_appcenter
     beta_s3
@@ -120,6 +120,7 @@ platform :ios do
 
   lane :itunes_match_gym_deliver do
     setup_match_appstore
+    xcode_check
     itunes_gym
     itunes_deliver
   end
@@ -167,6 +168,7 @@ platform :ios do
   ### ALPHA
   lane :alpha_match_gym_appcenter do
     setup_match_enterprise
+    xcode_check
     alpha_gym
     alpha_appcenter
   end
@@ -221,6 +223,10 @@ platform :ios do
       slack_url: ENV["SLACK_WEBHOOK"],
       message: "Successfully refreshed dSYMs for the latest App Store version"
     )
+  end
+
+  private_lane :xcode_check do
+    xcodes(version: "13.3.1", select_for_current_build_only: true)
   end
 
   private_lane :build_the_app do |options|
