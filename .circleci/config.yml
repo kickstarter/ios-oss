@@ -114,6 +114,9 @@ distribute_job: &distribute_job
         name: Increment build number
         command: agvtool new-version -all $(($(date +%s)/100))
     - run:
+        name: Install lane dependency xcodes
+        command: brew install robotsandpencils/made/xcodes
+    - run:
         name: Fastlane
         command: bundle exec fastlane $LANE --verbose
         no_output_timeout: "30m" # 30 minutes
