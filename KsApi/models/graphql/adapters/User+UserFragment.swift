@@ -10,7 +10,12 @@ extension User {
     let erroredBackingsCount = erroredBackingsCount(userFragment: userFragment)
 
     /// Not accurate, but GQL doesn't currently return an unseen activity count as a top-level property on the `UserFragment`
-    let unseenUserActivityCount = userFragment.hasUnseenActivity != nil ? 1 : 0
+    var unseenUserActivityCount = 0
+
+    if let hasUnseenActivity = userFragment.hasUnseenActivity,
+      hasUnseenActivity {
+      unseenUserActivityCount = 1
+    }
 
     return User(
       avatar: Avatar(
