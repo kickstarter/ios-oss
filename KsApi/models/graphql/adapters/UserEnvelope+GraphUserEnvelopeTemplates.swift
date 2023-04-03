@@ -28,4 +28,13 @@ public struct GraphUserEnvelopeTemplates {
         "uid": "1470952545"
       ]
     ]
+
+  static let userMemberStatusJSONDict: [String: Any?] =
+    [
+      "me": [
+        "__typename": "User",
+        "createdProjects": ["__typename": "UserCreatedProjectsConnection", "totalCount": 12],
+        "membershipProjects": ["__typename": "MembershipProjectsConnection", "totalCount": 20]
+      ]
+    ]
 }

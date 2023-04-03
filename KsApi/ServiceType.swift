@@ -169,6 +169,10 @@ public protocol ServiceType {
   func fetchGraphUserEmail()
     -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
 
+  /// Fetches creator and collaborator status of the currently logged in User.
+  func fetchGraphUserMemberStatus()
+    -> SignalProducer<UserEnvelope<GraphUserMemberStatus>, ErrorEnvelope>
+
   /// Fetches GraphQL user fragment and returns User instance.
   func fetchGraphUserSelf()
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope>

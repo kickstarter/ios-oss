@@ -247,6 +247,7 @@
 		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
 		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
+		193C7FB629DA74990023B95E /* GraphUserMemberStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193C7FB429DA73D90023B95E /* GraphUserMemberStatusTests.swift */; };
 		194154CE28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */; };
 		194154D128D8FBAA004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */; };
 		194154D328D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */; };
@@ -275,6 +276,9 @@
 		19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226028D10497007F4197 /* FirebaseAnalytics */; };
 		19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226228D10497007F4197 /* FirebaseCrashlytics */; };
 		19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226428D10497007F4197 /* FirebasePerformance */; };
+		19C1CE3329DA43C100899A17 /* FetchUserMemberStatus.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 19C1CE3229DA43C100899A17 /* FetchUserMemberStatus.graphql */; };
+		19C1CE3529DA44C600899A17 /* GraphUserMemberStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1CE3429DA44C600899A17 /* GraphUserMemberStatus.swift */; };
+		19C1CE3729DA478000899A17 /* UserMemberStatusFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 19C1CE3629DA478000899A17 /* UserMemberStatusFragment.graphql */; };
 		19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */; };
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
 		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
@@ -1859,12 +1863,16 @@
 		192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stripe+PaymentMethod.swift"; sourceTree = "<group>"; };
 		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
+		193C7FB429DA73D90023B95E /* GraphUserMemberStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserMemberStatusTests.swift; sourceTree = "<group>"; };
 		194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceSetupIntentInput.swift; sourceTree = "<group>"; };
 		194154CF28D8F2DE004648C8 /* CreatePaymentSourceSetupIntentClientSecret+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+Constructor.swift"; sourceTree = "<group>"; };
 		194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceSetupIntentInputTests.swift; sourceTree = "<group>"; };
 		194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
+		19C1CE3229DA43C100899A17 /* FetchUserMemberStatus.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserMemberStatus.graphql; sourceTree = "<group>"; };
+		19C1CE3429DA44C600899A17 /* GraphUserMemberStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserMemberStatus.swift; sourceTree = "<group>"; };
+		19C1CE3629DA478000899A17 /* UserMemberStatusFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserMemberStatusFragment.graphql; sourceTree = "<group>"; };
 		19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputFieldModifiers.swift; sourceTree = "<group>"; };
 		19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazePushEnvelope.swift; sourceTree = "<group>"; };
 		19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCellViewModel.swift; sourceTree = "<group>"; };
@@ -5959,6 +5967,7 @@
 				4778EE1E26A1E8230059EA69 /* FetchUser.graphql */,
 				4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */,
 				6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */,
+				19C1CE3229DA43C100899A17 /* FetchUserMemberStatus.graphql */,
 				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
 				0655C7292732FDE00087281F /* FetchCategory.graphql */,
 			);
@@ -6049,6 +6058,8 @@
 				D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */,
 				7798B56421750041008BC50D /* GraphUser.swift */,
 				6008633329B8FBD700B87B39 /* GraphUserEmail.swift */,
+				19C1CE3429DA44C600899A17 /* GraphUserMemberStatus.swift */,
+				193C7FB429DA73D90023B95E /* GraphUserMemberStatusTests.swift */,
 				D63BBD30217F7212007E01F0 /* UserCreditCards.swift */,
 				77DB53292215D0AA0078991C /* UserCreditCardsTests.swift */,
 				77FA1AF22445FB810035D659 /* GraphUserTests.swift */,
@@ -6074,6 +6085,7 @@
 				8A1556DF269394B600017845 /* RewardFragment.graphql */,
 				8AC3E08D2698CE8200168BF8 /* ShippingRuleFragment.graphql */,
 				6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */,
+				19C1CE3629DA478000899A17 /* UserMemberStatusFragment.graphql */,
 				8A1556F1269398CB00017845 /* UserFragment.graphql */,
 				06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */,
 			);
@@ -7653,6 +7665,7 @@
 				19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */,
 				062868E626B999EF00EC5052 /* DeletePaymentSource.graphql in Resources */,
 				06C38CB926A9D13400591CED /* UpdateUserProfile.graphql in Resources */,
+				19C1CE3729DA478000899A17 /* UserMemberStatusFragment.graphql in Resources */,
 				47D7D09626C2EA5200D2BAB5 /* SignInWithApple.graphql in Resources */,
 				06DAAE5926AA3CD100194E58 /* CommentFragment.graphql in Resources */,
 				06261603273B0E1500389981 /* PostComment.graphql in Resources */,
@@ -9036,6 +9049,7 @@
 				D67B6CD6221F468100B63A6B /* Location+Encode.swift in Sources */,
 				8AC3E105269F4D1C00168BF8 /* GraphAPI.ApplePay+ApplePayParams.swift in Sources */,
 				D01588331EEB2ED7006E7684 /* Decodable.swift in Sources */,
+				19C1CE3529DA44C600899A17 /* GraphUserMemberStatus.swift in Sources */,
 				06232D3E2795EC2C00A81755 /* Element+Helpers.swift in Sources */,
 				8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */,
 				8A07D00C26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift in Sources */,
@@ -9065,6 +9079,7 @@
 				8479CF2C2530A5D700FD13F1 /* Service+DecodeHelpers.swift in Sources */,
 				D68F0B16243CFF3F009FC948 /* SignInWithAppleEnvelope.swift in Sources */,
 				D6B686EB2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift in Sources */,
+				19C1CE3329DA43C100899A17 /* FetchUserMemberStatus.graphql in Sources */,
 				D6F5C60F2437DD2A00C1A79D /* SignInWithAppleMutation.swift in Sources */,
 				D67B6CD8221F46D700B63A6B /* Project.Country+Encode.swift in Sources */,
 				8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */,
@@ -9146,6 +9161,7 @@
 				06232D3C2795EC2400A81755 /* HTMLParserTests.swift in Sources */,
 				D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */,
 				06962F8B273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift in Sources */,
+				193C7FB629DA74990023B95E /* GraphUserMemberStatusTests.swift in Sources */,
 				8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */,
 				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
 				47B1338F26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift in Sources */,

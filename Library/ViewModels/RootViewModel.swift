@@ -162,7 +162,12 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     .map { _ in AppEnvironment.current.currentUser }
 
     let userState: Signal<(isLoggedIn: Bool, isMember: Bool), Never> = currentUser
-      .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
+      .map {
+        (
+          $0 != nil,
+          (($0?.stats.memberProjectsCount ?? 0) > 0) || (($0?.stats.createdProjectsCount ?? 0) > 0)
+        )
+      }
       .skipRepeats(==)
 
     let standardViewControllers = self.viewDidLoadProperty.signal.map { _ -> [RootViewControllerData] in
@@ -487,8 +492,8 @@ private func generatePersonalizedViewControllers(userState: (isMember: Bool, isL
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
-  let isMember = (user?.stats.memberProjectsCount ?? 0) > 0
-
+  let isMember =
+    (((user?.stats.memberProjectsCount ?? 0) > 0) || ((user?.stats.createdProjectsCount ?? 0) > 0))
   let items: [TabBarItem] = isMember
     ? [
       .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
