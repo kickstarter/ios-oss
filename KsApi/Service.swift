@@ -344,6 +344,13 @@ public struct Service: ServiceType {
       .flatMap(UserEnvelope<GraphUserEmail>.envelopeProducer(from:))
   }
 
+  public func fetchGraphUserMemberStatus()
+    -> SignalProducer<UserEnvelope<GraphUserMemberStatus>, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserMemberStatusQuery())
+      .flatMap(UserEnvelope<GraphUserMemberStatus>.envelopeProducer(from:))
+  }
+
   public func fetchGraphUserSelf()
     -> SignalProducer<UserEnvelope<User>, ErrorEnvelope> {
     return GraphQL.shared.client
