@@ -1679,6 +1679,8 @@
             fetchDraftError: $1.fetchDraftError,
             fetchGraphUserResult: $1.fetchGraphUserResult,
             fetchGraphUserSelfResult: $1.fetchGraphUserSelfResult,
+            fetchGraphUserEmailResult: $1.fetchGraphUserEmailResult,
+            fetchGraphUserMemberStatusResult: $1.fetchGraphUserMemberStatusResult,
             addAttachmentResponse: $1.addAttachmentResponse,
             addAttachmentError: $1.addAttachmentError,
             removeAttachmentResponse: $1.removeAttachmentResponse,

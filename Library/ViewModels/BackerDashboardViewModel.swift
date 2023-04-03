@@ -128,6 +128,9 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
               return updatedUser
             }
+            .flatMapError { _ in
+              SignalProducer(value: userValue)
+            }
         }
         .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
         .materialize()
