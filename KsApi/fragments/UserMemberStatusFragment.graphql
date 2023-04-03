@@ -1,0 +1,8 @@
+fragment UserMemberStatusFragment on User {
+  createdProjects {
+    totalCount
+  }
+  membershipProjects {
+    totalCount
+  }
+}
