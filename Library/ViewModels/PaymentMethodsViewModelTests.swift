@@ -351,13 +351,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped_Failure() {
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
+    self.goToAddCardScreenWithIntent.assertValueCount(0)
 
-      self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
-      self.scheduler.advance()
+    self.scheduler.advance()
 
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
+    self.goToAddCardScreenWithIntent.assertValueCount(0)
   }
 
   func testGoToPaymentSheet_WhenAddNewCardIsTapped_Success() {

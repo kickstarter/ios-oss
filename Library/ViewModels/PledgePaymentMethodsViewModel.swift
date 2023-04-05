@@ -297,27 +297,27 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .mapConst(true)
 
     let createSetupIntentEvent = project.signal
-    .takeWhen(didTapToAddNewCard)
-    .switchMap { project -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
-      AppEnvironment.current.apiService
-        .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
-        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+      .takeWhen(didTapToAddNewCard)
+      .switchMap { project -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
+        AppEnvironment.current.apiService
+          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
 
-          var configuration = PaymentSheet.Configuration()
-          configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-          configuration.allowsDelayedPaymentMethods = true
+            var configuration = PaymentSheet.Configuration()
+            configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+            configuration.allowsDelayedPaymentMethods = true
 
-          let data = PaymentSheetSetupData(
-            clientSecret: envelope.clientSecret,
-            configuration: configuration
-          )
+            let data = PaymentSheetSetupData(
+              clientSecret: envelope.clientSecret,
+              configuration: configuration
+            )
 
-          return SignalProducer(value: data)
-        }
-        .materialize()
-    }
+            return SignalProducer(value: data)
+          }
+          .materialize()
+      }
 
     self.goToAddCardViaStripeScreen = createSetupIntentEvent.values()
       .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)

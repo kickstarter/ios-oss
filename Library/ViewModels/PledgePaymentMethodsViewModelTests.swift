@@ -752,7 +752,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-
   func testGoToAddNewCard_PledgeContext_PaymentSheetEnabled_Failure() {
     let project = Project.template
 
