@@ -752,7 +752,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewCard_PledgeContext_PaymentSheetEnabled_Failure() {
+  func testGoToAddNewCard_PledgeContext_Failure() {
     let project = Project.template
 
     let envelope = ClientSecretEnvelope(clientSecret: "test")
@@ -781,7 +781,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCard_WithPaymentSheetEnabled_NoStoredCards_Success() {
+  func testGoToAddNewStripeCard_NoStoredCards_Success() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
     let response = UserEnvelope<GraphUser>(me: graphUser)
@@ -819,7 +819,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCard_WhenPaymentSheetEnabled_WithStoredCards_Sucess() {
+  func testGoToAddNewStripeCard_WithStoredCards_Sucess() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([UserCreditCards.visa])
     let response = UserEnvelope<GraphUser>(me: graphUser)
@@ -934,7 +934,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCardScreen_WhenPaymentSheetEnabled_PledgeContext_Success() {
+  func testGoToAddNewStripeCardScreen_PledgeContext_Success() {
     let project = Project.template
     let addNewCardIndexPath = IndexPath(
       row: 0,
