@@ -1723,22 +1723,25 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["project"], segmentClient.properties(forKey: "context_page"))
     XCTAssertEqual(["overview"], segmentClient.properties(forKey: "context_section"))
   }
-  
-  func testIdentifyingTrackingClient_advertisingId_Denied() {
+
+  func testIdentifyingTrackingClient_AdvertisingId_Denied() {
     let user = User.template
     let segmentClient = MockTrackingClient()
-    
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: MockAppTrackingTransparency().advertisingIdentifier(.denied))
-    
+
+    let ksrAnalytics = KSRAnalytics(
+      segmentClient: segmentClient,
+      advertisingId: MockAppTrackingTransparency().advertisingIdentifier(.denied)
+    )
+
     withEnvironment(ksrAnalytics: ksrAnalytics) {
       ksrAnalytics.identify(newUser: user)
-      
+
       XCTAssertNil(self.segmentTrackingClient.userId)
       XCTAssertNil(self.segmentTrackingClient.traits)
     }
   }
 
-  func testIdentifyingTrackingClient() {
+  func testIdentifyingTrackingClient_AdvertisingId_Success() {
     let user = User.template
 
     AppEnvironment.current.ksrAnalytics.identify(newUser: user)

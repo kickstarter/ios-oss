@@ -530,7 +530,7 @@ public final class KSRAnalytics {
       self.segmentClient?.reset()
       return
     }
-    
+
     guard let _ = self.advertisingId else { return }
 
     let newData = KSRAnalyticsIdentityData(newUser)
