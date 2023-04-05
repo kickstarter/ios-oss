@@ -60,7 +60,7 @@ extension UserEnvelope {
     guard let userMemberStatusFragment = data.me?.fragments.userMemberStatusFragment else { return nil }
 
     let graphUserMemberStatus = GraphUserMemberStatus(
-      creatorProjectsTotalCount: userMemberStatusFragment.createdProjects?.totalCount ?? 0,
+      launchedProjectsTotalCount: userMemberStatusFragment.launchedProjects?.totalCount ?? 0,
       memberProjectsTotalCount: userMemberStatusFragment.membershipProjects?.totalCount ?? 0
     )
 

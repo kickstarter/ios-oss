@@ -14890,7 +14890,7 @@ public enum GraphAPI {
       """
       fragment UserMemberStatusFragment on User {
         __typename
-        createdProjects {
+        launchedProjects {
           __typename
           totalCount
         }
@@ -14906,7 +14906,7 @@ public enum GraphAPI {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("createdProjects", type: .object(CreatedProject.selections)),
+        GraphQLField("launchedProjects", type: .object(LaunchedProject.selections)),
         GraphQLField("membershipProjects", type: .object(MembershipProject.selections)),
       ]
     }
@@ -14917,8 +14917,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(createdProjects: CreatedProject? = nil, membershipProjects: MembershipProject? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "createdProjects": createdProjects.flatMap { (value: CreatedProject) -> ResultMap in value.resultMap }, "membershipProjects": membershipProjects.flatMap { (value: MembershipProject) -> ResultMap in value.resultMap }])
+    public init(launchedProjects: LaunchedProject? = nil, membershipProjects: MembershipProject? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "launchedProjects": launchedProjects.flatMap { (value: LaunchedProject) -> ResultMap in value.resultMap }, "membershipProjects": membershipProjects.flatMap { (value: MembershipProject) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -14930,13 +14930,13 @@ public enum GraphAPI {
       }
     }
 
-    /// Projects a user has created.
-    public var createdProjects: CreatedProject? {
+    /// Projects a user has launched.
+    public var launchedProjects: LaunchedProject? {
       get {
-        return (resultMap["createdProjects"] as? ResultMap).flatMap { CreatedProject(unsafeResultMap: $0) }
+        return (resultMap["launchedProjects"] as? ResultMap).flatMap { LaunchedProject(unsafeResultMap: $0) }
       }
       set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "createdProjects")
+        resultMap.updateValue(newValue?.resultMap, forKey: "launchedProjects")
       }
     }
 
@@ -14950,8 +14950,8 @@ public enum GraphAPI {
       }
     }
 
-    public struct CreatedProject: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["UserCreatedProjectsConnection"]
+    public struct LaunchedProject: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["ProjectsConnectionWithTotalCount"]
 
       public static var selections: [GraphQLSelection] {
         return [
@@ -14967,7 +14967,7 @@ public enum GraphAPI {
       }
 
       public init(totalCount: Int) {
-        self.init(unsafeResultMap: ["__typename": "UserCreatedProjectsConnection", "totalCount": totalCount])
+        self.init(unsafeResultMap: ["__typename": "ProjectsConnectionWithTotalCount", "totalCount": totalCount])
       }
 
       public var __typename: String {

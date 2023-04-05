@@ -33,7 +33,7 @@ public struct GraphUserEnvelopeTemplates {
     [
       "me": [
         "__typename": "User",
-        "createdProjects": ["__typename": "UserCreatedProjectsConnection", "totalCount": 12],
+        "launchedProjects": ["__typename": "ProjectsConnectionWithTotalCount", "totalCount": 12],
         "membershipProjects": ["__typename": "MembershipProjectsConnection", "totalCount": 20]
       ]
     ]

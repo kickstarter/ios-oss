@@ -6,7 +6,7 @@ final class GraphUserMemberStatusTests: XCTestCase {
   func testDecoding_NoNilValues() {
     let dictionary: [String: Any] =
       [
-        "creatorProjectsTotalCount": 12,
+        "launchedProjectsTotalCount": 12,
         "memberProjectsTotalCount": 20
       ]
 
@@ -19,7 +19,7 @@ final class GraphUserMemberStatusTests: XCTestCase {
     do {
       let userMemberStatus = try JSONDecoder().decode(GraphUserMemberStatus.self, from: data)
 
-      XCTAssertEqual(userMemberStatus.creatorProjectsTotalCount, 12)
+      XCTAssertEqual(userMemberStatus.launchedProjectsTotalCount, 12)
       XCTAssertEqual(userMemberStatus.memberProjectsTotalCount, 20)
     } catch {
       XCTFail("Failed to decode \(error)")

@@ -144,12 +144,12 @@ internal final class BackerDashboardViewModelTests: TestCase {
     let user = User.template
       |> \.name .~ "user"
       |> \.stats.starredProjectsCount .~ 60
-      |> \.stats.createdProjectsCount .~ 0
+      |> \.stats.memberProjectsCount .~ 0
 
     let userEnvelope = UserEnvelope(me: user)
 
     let memberStatusUserEnvelope =
-      UserEnvelope(me: GraphUserMemberStatus(creatorProjectsTotalCount: 12, memberProjectsTotalCount: 0))
+      UserEnvelope(me: GraphUserMemberStatus(launchedProjectsTotalCount: 12, memberProjectsTotalCount: 0))
 
     withEnvironment(apiService: MockService(
       fetchGraphUserSelfResult: .success(userEnvelope),
@@ -164,7 +164,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
       let user2 = user
         |> \.name .~ "Updated user"
-        |> \.stats.createdProjectsCount .~ 0
+        |> \.stats.memberProjectsCount .~ 0
 
       let user2Envelope = UserEnvelope(me: user2)
 

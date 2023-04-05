@@ -121,10 +121,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
           AppEnvironment.current.apiService.fetchGraphUserMemberStatus()
             .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
             .map { userMemberStatusEnvelope -> User in
+              // FIXME: This isn't completely accurate because on GQL launched projects is separate from projects one is a member of. We are trying to simplify this here to copy the v1 definition of `membershipProjects` which included projects a user has launched and projects they collaborate on.
               let updatedUser = userValue
-                |> User.lens.stats.createdProjectsCount .~ userMemberStatusEnvelope.me
-                .creatorProjectsTotalCount
-                |> User.lens.stats.memberProjectsCount .~ userMemberStatusEnvelope.me.memberProjectsTotalCount
+                |> User.lens.stats
+                .memberProjectsCount .~
+                (userMemberStatusEnvelope.me.memberProjectsTotalCount + userMemberStatusEnvelope.me
+                  .launchedProjectsTotalCount)
 
               return updatedUser
             }

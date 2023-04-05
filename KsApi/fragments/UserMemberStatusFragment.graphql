@@ -1,5 +1,5 @@
 fragment UserMemberStatusFragment on User {
-  createdProjects {
+  launchedProjects {
     totalCount
   }
   membershipProjects {

@@ -89,7 +89,7 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(envelope.me.creatorProjectsTotalCount, 12)
+    XCTAssertEqual(envelope.me.launchedProjectsTotalCount, 12)
     XCTAssertEqual(envelope.me.memberProjectsTotalCount, 20)
   }
 }
