@@ -24,8 +24,6 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
         OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
-        OptimizelyFeature.paymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
         OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
         OptimizelyFeature.consentManagementDialogEnabled.rawValue: false
       ]
