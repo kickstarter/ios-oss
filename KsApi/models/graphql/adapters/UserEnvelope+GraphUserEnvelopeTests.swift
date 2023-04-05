@@ -78,18 +78,4 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
 
     XCTAssertEqual(envelope.me.email, "nativesquad@ksr.com")
   }
-
-  func testFetchUserMemberStatus() {
-    let fetchUserMemberStatusQueryData = GraphAPI.FetchUserMemberStatusQuery
-      .Data(unsafeResultMap: GraphUserEnvelopeTemplates.userMemberStatusJSONDict)
-
-    guard let envelope = UserEnvelope<GraphUserMemberStatus>
-      .userEnvelope(from: fetchUserMemberStatusQueryData) else {
-      XCTFail()
-      return
-    }
-
-    XCTAssertEqual(envelope.me.launchedProjectsTotalCount, 12)
-    XCTAssertEqual(envelope.me.memberProjectsTotalCount, 20)
-  }
 }

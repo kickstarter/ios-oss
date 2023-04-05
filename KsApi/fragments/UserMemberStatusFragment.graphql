@@ -1,8 +1,0 @@
-fragment UserMemberStatusFragment on User {
-  launchedProjects {
-    totalCount
-  }
-  membershipProjects {
-    totalCount
-  }
-}

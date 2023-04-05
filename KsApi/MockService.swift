@@ -80,10 +80,6 @@
     fileprivate let fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>?
     fileprivate let fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>?
     fileprivate let fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>?
-    fileprivate let fetchGraphUserMemberStatusResult: Result<
-      UserEnvelope<GraphUserMemberStatus>,
-      ErrorEnvelope
-    >?
     fileprivate let fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -256,7 +252,6 @@
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
       fetchGraphUserSelfResult: Result<UserEnvelope<User>, ErrorEnvelope>? = nil,
       fetchGraphUserEmailResult: Result<UserEnvelope<GraphUserEmail>, ErrorEnvelope>? = nil,
-      fetchGraphUserMemberStatusResult: Result<UserEnvelope<GraphUserMemberStatus>, ErrorEnvelope>? = nil,
       fetchErroredUserBackingsResult: Result<ErroredBackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
@@ -371,7 +366,6 @@
       self.fetchGraphUserResult = fetchGraphUserResult
       self.fetchGraphUserSelfResult = fetchGraphUserSelfResult
       self.fetchGraphUserEmailResult = fetchGraphUserEmailResult
-      self.fetchGraphUserMemberStatusResult = fetchGraphUserMemberStatusResult
 
       self.fetchErroredUserBackingsResult = fetchErroredUserBackingsResult
 
@@ -814,21 +808,6 @@
       let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
 
       return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
-    }
-
-    internal func fetchGraphUserMemberStatus()
-      -> SignalProducer<UserEnvelope<GraphUserMemberStatus>, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let fetchGraphUserMemberStatusQuery = GraphAPI.FetchUserMemberStatusQuery()
-
-      return client
-        .fetchWithResult(
-          query: fetchGraphUserMemberStatusQuery,
-          result: self.fetchGraphUserMemberStatusResult
-        )
     }
 
     // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.
@@ -1680,7 +1659,6 @@
             fetchGraphUserResult: $1.fetchGraphUserResult,
             fetchGraphUserSelfResult: $1.fetchGraphUserSelfResult,
             fetchGraphUserEmailResult: $1.fetchGraphUserEmailResult,
-            fetchGraphUserMemberStatusResult: $1.fetchGraphUserMemberStatusResult,
             addAttachmentResponse: $1.addAttachmentResponse,
             addAttachmentError: $1.addAttachmentError,
             removeAttachmentResponse: $1.removeAttachmentResponse,
