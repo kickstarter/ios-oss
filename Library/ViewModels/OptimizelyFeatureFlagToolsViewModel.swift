@@ -101,12 +101,6 @@ private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
   case .projectPageStoryTabEnabled:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue]
-  case .paymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue]
-  case .settingsPaymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue]
   case .facebookConversionsAPI:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.facebookConversionsAPI.rawValue]
@@ -129,12 +123,6 @@ private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: B
   case .projectPageStoryTabEnabled:
     AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue] = value
-  case .paymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] = value
-  case .settingsPaymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue] = value
   case .facebookConversionsAPI:
     return AppEnvironment.current.userDefaults
       .optimizelyFeatureFlags[OptimizelyFeature.facebookConversionsAPI.rawValue] = value

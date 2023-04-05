@@ -102,12 +102,6 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToAddCardScreenWithIntent
-      .observeForUI()
-      .observeValues { [weak self] intent in
-        self?.goToAddCardScreen(with: intent)
-      }
-
     self.viewModel.outputs.goToPaymentSheet
       .observeForUI()
       .observeValues { [weak self] data in

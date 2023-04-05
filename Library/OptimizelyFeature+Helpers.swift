@@ -14,20 +14,6 @@ public func featureProjectPageStoryTabEnabled() -> Bool {
       .isFeatureEnabled(featureKey: OptimizelyFeature.projectPageStoryTabEnabled.rawValue) ?? false)
 }
 
-public func featurePaymentSheetEnabled() -> Bool {
-  return AppEnvironment.current.userDefaults
-    .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] ??
-    (AppEnvironment.current.optimizelyClient?
-      .isFeatureEnabled(featureKey: OptimizelyFeature.paymentSheetEnabled.rawValue) ?? false)
-}
-
-public func featureSettingsPaymentSheetEnabled() -> Bool {
-  return AppEnvironment.current.userDefaults
-    .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue] ??
-    (AppEnvironment.current.optimizelyClient?
-      .isFeatureEnabled(featureKey: OptimizelyFeature.settingsPaymentSheetEnabled.rawValue) ?? false)
-}
-
 public func featureFacebookLoginDeprecationEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue] ??

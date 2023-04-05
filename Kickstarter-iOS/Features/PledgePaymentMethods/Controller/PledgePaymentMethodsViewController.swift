@@ -118,12 +118,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
       }
 
-    self.viewModel.outputs.goToAddCardScreen
-      .observeForUI()
-      .observeValues { [weak self] intent, project in
-        self?.goToAddNewCard(intent: intent, project: project)
-      }
-
     self.viewModel.outputs.goToAddCardViaStripeScreen
       .observeForUI()
       .observeValues { [weak self] data in

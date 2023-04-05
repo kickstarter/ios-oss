@@ -39,33 +39,6 @@ final class OptimizelyFeatureHelpersTests: TestCase {
     }
   }
 
-  func testPaymentSheet_Optimizely_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertTrue(featurePaymentSheetEnabled())
-    }
-  }
-
-  func testPaymentSheet_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featurePaymentSheetEnabled())
-    }
-  }
-
-  func testSettingsPaymentSheet_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featureSettingsPaymentSheetEnabled())
-    }
-  }
-
   func testFacebookDeprecation_Optimizely_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false]

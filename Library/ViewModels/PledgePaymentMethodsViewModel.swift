@@ -46,7 +46,6 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
@@ -71,10 +70,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let project = configureWithValue.map { $0.project }
     let context = configureWithValue.map { $0.context }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
-
-    lazy var paymentSheetEnabled: Bool = {
-      featurePaymentSheetEnabled()
-    }()
 
     let storedCardsEvent = configureWithValue
       .switchMap { _ in
@@ -292,18 +287,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
       .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    let paymentSheetOnPledgeContext = context.map { _ in paymentSheetEnabled }
-
-    self.goToAddCardScreen = Signal.combineLatest(
-      project,
-      paymentSheetOnPledgeContext.filter(isFalse)
-    )
-    .takeWhen(didTapToAddNewCard)
-    .map { project, _ in
-      (.pledge, project)
-    }
-
-    let showLoadingIndicator = Signal.combineLatest(project, paymentSheetOnPledgeContext.filter(isTrue))
+    let showLoadingIndicator = project.signal
       .takeWhen(didTapToAddNewCard)
       .mapConst(true)
 
@@ -312,12 +296,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.shouldCancelPaymentSheetAppearance <~ updatedCards.signal
       .mapConst(true)
 
-    let createSetupIntentEvent = Signal.combineLatest(
-      project,
-      paymentSheetOnPledgeContext.filter(isTrue)
-    )
+    let createSetupIntentEvent = project.signal
     .takeWhen(didTapToAddNewCard)
-    .switchMap { (project, _) -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
+    .switchMap { project -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
       AppEnvironment.current.apiService
         .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
         .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
@@ -452,7 +433,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     return self.willSelectRowAtIndexPathReturnProperty.value
   }
 
-  public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
   public let notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>

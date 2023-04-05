@@ -31,7 +31,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
     self.vm.outputs.errorLoadingPaymentMethodsOrSetupIntent
       .observe(self.errorLoadingPaymentMethodsOrSetupIntent.observer)
-    self.vm.outputs.goToAddCardScreenWithIntent.observe(self.goToAddCardScreenWithIntent.observer)
     self.vm.outputs.goToPaymentSheet.observe(self.goToPaymentSheet.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
@@ -87,14 +86,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testPaymentMethodsFetch_errorFetchingSetupIntent() {
     let mockService = MockService(createStripeSetupIntentResult: .failure(.couldNotParseJSON))
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
-      ]
-
     withEnvironment(
-      apiService: mockService,
-      optimizelyClient: mockOptimizelyClient
+      apiService: mockService
     ) {
       self.errorLoadingPaymentMethodsOrSetupIntent.assertDidNotEmitValue()
 
@@ -110,14 +103,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testPaymentMethodsFetch_WhenSettingsPaymentSheetIsDisabled_OnAddNewCardSucceeded() {
     let response = UserEnvelope<GraphUser>(me: userTemplate)
     let apiService = MockService(fetchGraphUserResult: .success(response))
-    let mockOptimizely = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false
-      ]
 
     withEnvironment(
-      apiService: apiService,
-      optimizelyClient: mockOptimizely
+      apiService: apiService
     ) {
       self.paymentMethods.assertValues([])
 
@@ -143,12 +131,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       addPaymentSheetPaymentSourceResult: .success(.paymentSourceSuccessTemplate),
       fetchGraphUserResult: .success(response)
     )
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
-      ]
 
-    withEnvironment(apiService: apiService, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -207,12 +191,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       addPaymentSheetPaymentSourceResult: .failure(.couldNotParseJSON),
       fetchGraphUserResult: .success(response)
     )
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
-      ]
 
-    withEnvironment(apiService: apiService, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
@@ -370,30 +350,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped_PaymentSheetFlagFalse_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false
-      ]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
-
-      self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
-
-      self.scheduler.advance()
-
-      self.goToAddCardScreenWithIntent.assertValues([.settings], "Should emit after tapping button")
-    }
-  }
-
-  func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped_PaymentSheetFlagTrue_Failure() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
-      ]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+  func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped_Failure() {
       self.goToAddCardScreenWithIntent.assertValueCount(0)
 
       self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
@@ -401,20 +358,14 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.goToAddCardScreenWithIntent.assertValueCount(0)
-    }
   }
 
-  func testGoToPaymentSheet_WhenAddNewCardIsTapped_PaymentSheetFlagTrue_Success() {
+  func testGoToPaymentSheet_WhenAddNewCardIsTapped_Success() {
     let envelope = ClientSecretEnvelope(clientSecret: "UHJvamVjdC0yMzEyODc5ODc")
     let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true
-      ]
 
     withEnvironment(
-      apiService: mockService,
-      optimizelyClient: mockOptimizelyClient
+      apiService: mockService
     ) {
       self.goToAddCardScreenWithIntent.assertValueCount(0)
       self.goToPaymentSheet.assertValueCount(0)
