@@ -1,4 +1,3 @@
-import Library
 import XCTest
 
 internal enum MockOptimizelyError: Error {

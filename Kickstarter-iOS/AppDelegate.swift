@@ -12,7 +12,6 @@ import Foundation
 import AppboySegment
 import Kickstarter_Framework
 import Library
-import Optimizely
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
@@ -177,12 +176,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
-
-    self.viewModel.outputs.configureOptimizely
-      .observeForUI()
-      .observeValues { [weak self] key, logLevel, dispatchInterval in
-        self?.configureOptimizely(with: key, logLevel: logLevel, dispatchInterval: dispatchInterval)
-      }
 
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
@@ -390,39 +383,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   // MARK: - Functions
-
-  private func configureOptimizely(
-    with key: String,
-    logLevel: OptimizelyLogLevelType,
-    dispatchInterval: TimeInterval
-  ) {
-    let eventDispatcher = DefaultEventDispatcher(timerInterval: dispatchInterval)
-    let optimizelyClient = OptimizelyClient(
-      sdkKey: key,
-      eventDispatcher: eventDispatcher,
-      defaultLogLevel: logLevel.logLevel
-    )
-
-    optimizelyClient.start(resourceTimeout: 3) { [weak self] result in
-      guard let self = self else { return }
-
-      let optimizelyConfigurationError = self.viewModel.inputs.optimizelyConfigured(with: result)
-
-      guard let optimizelyError = optimizelyConfigurationError else {
-        print("🔮 Optimizely SDK Successfully Configured")
-        AppEnvironment.updateOptimizelyClient(optimizelyClient)
-
-        self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
-
-        return
-      }
-
-      print("🔴 Optimizely SDK Configuration Failed with Error: \(optimizelyError.localizedDescription)")
-
-      Crashlytics.crashlytics().record(error: optimizelyError)
-      self.viewModel.inputs.optimizelyClientConfigurationFailed()
-    }
-  }
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {

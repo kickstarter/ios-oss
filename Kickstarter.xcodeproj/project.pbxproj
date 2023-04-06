@@ -281,6 +281,8 @@
 		19C1CE3729DA478000899A17 /* UserMemberStatusFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 19C1CE3629DA478000899A17 /* UserMemberStatusFragment.graphql */; };
 		19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */; };
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
+		19DCCF7729DF5467004417DC /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */; };
+		19DCCF7829DF5996004417DC /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */; };
 		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
 		19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */; };
@@ -509,7 +511,6 @@
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
-		60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA512828CA580B002E2DF1 /* Optimizely */; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
@@ -553,10 +554,7 @@
 		774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76E820D841110012A71F /* BetaToolsViewController.swift */; };
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
 		774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */; };
-		774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */; };
 		774D98D923A96E7500FC81C2 /* OptimizelyClientTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */; };
-		774D98DE23B1613800FC81C2 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */; };
-		774D98E023B162CA00FC81C2 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */; };
 		774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */; };
 		774F8D5D22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */; };
 		7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */; };
@@ -2153,7 +2151,6 @@
 		7748437F22D8DA3800508C9B /* Instantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiable.swift; sourceTree = "<group>"; };
 		774A76E820D841110012A71F /* BetaToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewController.swift; sourceTree = "<group>"; };
 		774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewControllerTests.swift; sourceTree = "<group>"; };
-		774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optimizely+OptimizelyClientType.swift"; sourceTree = "<group>"; };
 		774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyClientTypeTests.swift; sourceTree = "<group>"; };
 		774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockOptimizelyClient.swift; sourceTree = "<group>"; };
 		774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
@@ -3218,7 +3215,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
-				60DA512928CA580B002E2DF1 /* Optimizely in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				191A4B4028FF386C009D62A5 /* ReactiveSwift in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
@@ -3318,7 +3314,6 @@
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
 				379CFFF02242DAC400F6F0C2 /* Nib.swift */,
 				379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */,
-				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
 				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 				06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */,
 				770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */,
@@ -6333,6 +6328,7 @@
 				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
 				8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */,
 				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
+				774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				77D19FF4240813240058FC8E /* NavigationController.swift */,
 				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
@@ -6545,7 +6541,6 @@
 				D033E2C122A05B4800464E43 /* MockApplication.swift */,
 				6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
-				774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */,
 				1611EF6823B275700051CDCC /* MockUUID.swift */,
 				1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
@@ -7298,7 +7293,6 @@
 				1981AC8F289075D900BB4897 /* Stripe */,
 				60DA50FD28C38DDB002E2DF1 /* AlamofireImage */,
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
-				60DA512828CA580B002E2DF1 /* Optimizely */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
@@ -7536,7 +7530,6 @@
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
-				60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */,
 				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
@@ -7932,6 +7925,7 @@
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
+				19DCCF7829DF5996004417DC /* MockOptimizelyClient.swift in Sources */,
 				8A45168D24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift in Sources */,
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
@@ -8196,7 +8190,6 @@
 				D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */,
 				D79970B723EC88CB00584911 /* ThanksCategoryCellViewModelTests.swift in Sources */,
 				8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */,
-				774D98DE23B1613800FC81C2 /* MockOptimizelyClient.swift in Sources */,
 				D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */,
 				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
 				06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */,
@@ -8354,6 +8347,7 @@
 				598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */,
 				477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */,
 				4791BDE227174DFB00DFE5D5 /* ProjectFAQsEmptyStateCell.swift in Sources */,
+				19DCCF7729DF5467004417DC /* MockOptimizelyClient.swift in Sources */,
 				0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */,
 				A7CC14421D00E74F00035C52 /* FindFriendsStatsCell.swift in Sources */,
 				77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */,
@@ -8501,7 +8495,6 @@
 				8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */,
 				473DE014273C551C0033331D /* ProjectRisksDisclaimerCell.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
-				774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
 				777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */,
@@ -8751,7 +8744,6 @@
 				37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */,
 				8AA3DB34250AE410009AC8EA /* SettingsViewModelTests.swift in Sources */,
 				8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */,
-				774D98E023B162CA00FC81C2 /* MockOptimizelyClient.swift in Sources */,
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
@@ -10569,14 +10561,6 @@
 				minimumVersion = 2.4.3;
 			};
 		};
-		60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/optimizely/swift-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.6.1;
-			};
-		};
 		60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple";
@@ -10755,11 +10739,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DA511028C96865002E2DF1 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
-		};
-		60DA512828CA580B002E2DF1 /* Optimizely */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 60DA512528CA5780002E2DF1 /* XCRemoteSwiftPackageReference "swift-sdk" */;
-			productName = Optimizely;
 		};
 		60EAD1C628D25A36009F9474 /* AppCenterDistribute */ = {
 			isa = XCSwiftPackageProductDependency;

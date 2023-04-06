@@ -1,4 +1,3 @@
-import Optimizely
 import XCTest
 
 final class OptimizelyResultTypeTests: XCTestCase {
