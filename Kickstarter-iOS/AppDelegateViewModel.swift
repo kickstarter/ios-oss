@@ -1285,6 +1285,7 @@ private func configureOptimizely(for _: Environment) -> OptimizelyClientType? {
         .control.rawValue,
       OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue
     ]
+  _ = mockOptimizelyClient
     |> \.features .~
     [
       OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
