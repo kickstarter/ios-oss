@@ -102,6 +102,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits an app secret that should be used to configure AppCenter.
   var configureAppCenterWithData: Signal<AppCenterConfigData, Never> { get }
 
+  /// Emits when the application has configured feature flag client.
+  var configureFeatureFlagClient: Signal<OptimizelyClientType, Never> { get }
+
   /// Emits when the application should configure Firebase
   var configureFirebase: Signal<(), Never> { get }
 
@@ -820,15 +823,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.updateAdvertisingIdentifer(advertisingIdentifier)
       }
 
-    _ = self.applicationLaunchOptionsProperty.signal
+    self.configureFeatureFlagClient = self.applicationLaunchOptionsProperty.signal
       .map { _ in AppEnvironment.current }
       .map(configureOptimizely(for:))
       .skipNil()
-      .map { [weak self] mockOptimizelyClient in
-        AppEnvironment.updateOptimizelyClient(mockOptimizelyClient)
-
-        self?.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
-      }
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -972,6 +970,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
+  public let configureFeatureFlagClient: Signal<OptimizelyClientType, Never>
   public let configurePerimeterX: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
