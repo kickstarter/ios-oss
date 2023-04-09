@@ -493,7 +493,7 @@ private func generatePersonalizedViewControllers(userState: (isMember: Bool, isL
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
   let isMember =
-    ((user?.stats.memberProjectsCount ?? 0) > 0)
+    (user?.stats.memberProjectsCount ?? 0) > 0
   let items: [TabBarItem] = isMember
     ? [
       .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
