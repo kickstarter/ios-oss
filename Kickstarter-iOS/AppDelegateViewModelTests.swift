@@ -13,9 +13,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   private let applicationIconBadgeNumber = TestObserver<Int, Never>()
   private let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
-  private let configureOptimizelySDKKey = TestObserver<String, Never>()
-  private let configureOptimizelyLogLevel = TestObserver<OptimizelyLogLevelType, Never>()
-  private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
+  private let configureFeatureFlagClient = TestObserver<OptimizelyClientType, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let configurePerimeterX = TestObserver<(), Never>()
   private let configureSegmentWithBraze = TestObserver<String, Never>()
@@ -60,6 +58,24 @@ final class AppDelegateViewModelTests: TestCase {
       ]
   }
 
+  private let experimentsWithDefaultValues = [
+    OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
+    OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue,
+    OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
+      .control.rawValue,
+    OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue
+  ]
+  private let featureFlagsWithDefaultValues =
+    [
+      OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
+      OptimizelyFeature.consentManagementDialogEnabled.rawValue: false,
+      OptimizelyFeature.facebookConversionsAPI.rawValue: false,
+      OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
+      OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
+      OptimizelyFeature.paymentSheetEnabled.rawValue: true,
+      OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
+    ]
+
   override func setUp() {
     super.setUp()
 
@@ -68,9 +84,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFirebase.observe(self.configureFirebase.observer)
-    self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
-    self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
-    self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
+    self.vm.outputs.configureFeatureFlagClient.observe(self.configureFeatureFlagClient.observer)
     self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
     self.vm.outputs.configureSegmentWithBraze.observe(self.configureSegmentWithBraze.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
@@ -167,105 +181,161 @@ final class AppDelegateViewModelTests: TestCase {
     self.configurePerimeterX.assertValueCount(1)
   }
 
-  // MARK: - Optimizely
+  // MARK: - Feature Flag Client
 
-  func testConfigureOptimizely_Production() {
+  func testConfigureFeatureFlagClient_Production() {
     let mockService = MockService(serverConfig: ServerConfig.production)
 
     withEnvironment(apiService: mockService) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelySDKKey
-        .assertValues([Secrets.OptimizelySDKKey.production])
+      self.configureFeatureFlagClient.assertValueCount(1)
+
+      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
+      else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
+      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
 
-  func testConfigureOptimizely_Staging() {
+  func testConfigureFeatureFlagClient_Staging() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelySDKKey
-        .assertValues([Secrets.OptimizelySDKKey.staging])
+      self.configureFeatureFlagClient.assertValueCount(1)
+
+      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
+      else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
+      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
 
-  func testConfigureOptimizely_Release() {
+  func testConfigureFeatureFlag_Release() {
     let mockBundle = MockBundle(
       bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
       lang: Language.en.rawValue
     )
 
     withEnvironment(mainBundle: mockBundle) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelyLogLevel
-        .assertValues([OptimizelyLogLevelType.error])
+      self.configureFeatureFlagClient.assertValueCount(1)
+
+      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
+      else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
+      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
 
-  func testConfigureOptimizely_Alpha() {
+  func testConfigureFeatureFlagClient_Alpha() {
     let mockBundle = MockBundle(
       bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue,
       lang: Language.en.rawValue
     )
 
     withEnvironment(mainBundle: mockBundle) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelyLogLevel
-        .assertValues([OptimizelyLogLevelType.error])
+      self.configureFeatureFlagClient.assertValueCount(1)
+
+      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
+      else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
+      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
 
-  func testConfigureOptimizely_Beta() {
+  func testConfigureFeatureFlagClient_Beta() {
     let mockBundle = MockBundle(
       bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
       lang: Language.en.rawValue
     )
 
     withEnvironment(mainBundle: mockBundle) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelyLogLevel
-        .assertValues([OptimizelyLogLevelType.error])
+      self.configureFeatureFlagClient.assertValueCount(1)
+
+      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
+      else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
+      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
 
-  func testConfigureOptimizely_Debug() {
+  func testConfigureFeatureFlag_Debug() {
     let mockBundle = MockBundle(
       bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue,
       lang: Language.en.rawValue
     )
 
     withEnvironment(mainBundle: mockBundle) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelyLogLevel
-        .assertValues([OptimizelyLogLevelType.debug])
+      self.configureFeatureFlagClient.assertValueCount(1)
+
+      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
+      else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
+      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
 
-  func testConfigureOptimizelyDispatchInterval() {
-    self.configureOptimizelyDispatchInterval.assertDidNotEmitValue()
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-    self.configureOptimizelyDispatchInterval.assertValues([5])
-  }
-
-  func testOptimizelyConfiguration_IsSuccess() {
+  func testFeatureFlagClientConfiguration_IsSuccess() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService) {
+      self.configureFeatureFlagClient.assertDidNotEmitValue()
+
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizelySDKKey
-        .assertValues([Secrets.OptimizelySDKKey.staging])
-
-      let error = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
-
-      XCTAssertNil(error)
+      self.configureFeatureFlagClient.assertValueCount(1)
 
       self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
@@ -273,25 +343,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOptimizelyConfiguration_IsFailure() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-    let mockResult = MockOptimizelyResult() |> \.shouldSucceed .~ false
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureOptimizelySDKKey
-        .assertValues([Secrets.OptimizelySDKKey.staging])
-
-      let error = self.vm.inputs.optimizelyConfigured(with: mockResult) as? MockOptimizelyError
-
-      XCTAssertEqual("Optimizely Error", error?.localizedDescription)
-
-      self.vm.inputs.optimizelyClientConfigurationFailed()
-
-      self.postNotificationName.assertValues([.ksr_optimizelyClientConfigurationFailed])
-    }
-  }
+  // FIXME: When a real feature flagging client is setup, test the error case.
 
   // MARK: - AppCenter
 
@@ -2506,7 +2558,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
     withEnvironment(
       currentUser: .template,
@@ -2532,7 +2583,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
     withEnvironment(
       currentUser: nil,
@@ -2557,7 +2607,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
     withEnvironment(
       currentUser: nil,
@@ -2582,7 +2631,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
     withEnvironment(
       currentUser: nil,
@@ -2607,7 +2655,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
     withEnvironment(
       currentUser: nil,
