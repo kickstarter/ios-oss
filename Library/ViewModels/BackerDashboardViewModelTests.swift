@@ -59,10 +59,8 @@ internal final class BackerDashboardViewModelTests: TestCase {
       |> \.stats.starredProjectsCount .~ 58
       |> \.avatar.large .~ "http://cats.com/furball.jpg"
 
-    let userEnvelope = UserEnvelope(me: user)
-
     withEnvironment(apiService: MockService(
-      fetchGraphUserSelfResult: .success(userEnvelope)
+      fetchUserSelfResponse: user
     )) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
