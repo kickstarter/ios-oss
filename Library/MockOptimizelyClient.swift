@@ -1,7 +1,4 @@
-import Library
-import XCTest
-
-internal enum MockOptimizelyError: Error {
+public enum MockOptimizelyError: Error {
   case generic
 
   var localizedDescription: String {
@@ -9,37 +6,45 @@ internal enum MockOptimizelyError: Error {
   }
 }
 
-internal class MockOptimizelyClient: OptimizelyClientType {
+public class MockOptimizelyClient: OptimizelyClientType {
   // MARK: - Experiment Activation Test Properties
 
-  var activatePathCalled: Bool = false
-  var allKnownExperiments: [String] = []
-  var experiments: [String: String] = [:]
-  var error: MockOptimizelyError?
-  var features: [String: Bool] = [:]
-  var getVariantPathCalled: Bool = false
-  var userAttributes: [String: Any?]?
+  public var activatePathCalled: Bool
+  public var allKnownExperiments: [String]
+  public var experiments: [String: String]
+  public var features: [String: Bool]
+  public var getVariantPathCalled: Bool
+  public var error: MockOptimizelyError?
+  public var userAttributes: [String: Any?]?
 
   // MARK: - Event Tracking Test Properties
 
-  var trackedAttributes: [String: Any?]?
-  var trackedEventKey: String?
-  var trackedUserId: String?
+  public var trackedAttributes: [String: Any?]?
+  public var trackedEventKey: String?
+  public var trackedUserId: String?
 
-  internal func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
+  public init() {
+    self.activatePathCalled = false
+    self.allKnownExperiments = []
+    self.experiments = [:]
+    self.features = [:]
+    self.getVariantPathCalled = false
+  }
+
+  public func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
     -> String {
       self.activatePathCalled = true
 
       return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
     }
 
-  internal func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
+  public func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
     -> String {
       self.getVariantPathCalled = true
       return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
     }
 
-  func isFeatureEnabled(featureKey: String, userId _: String, attributes _: [String: Any?]?) -> Bool {
+  public func isFeatureEnabled(featureKey: String, userId _: String, attributes _: [String: Any?]?) -> Bool {
     return self.features[featureKey] == true
   }
 
@@ -58,7 +63,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
       return experimentVariant
     }
 
-  func track(
+  public func track(
     eventKey: String,
     userId: String,
     attributes: [String: Any?]?,
@@ -69,7 +74,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
     self.trackedUserId = userId
   }
 
-  func allExperiments() -> [String] {
+  public func allExperiments() -> [String] {
     return self.allKnownExperiments
   }
 }

@@ -307,15 +307,6 @@
       }
     },
     {
-      "identity" : "swift-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/optimizely/swift-sdk",
-      "state" : {
-        "revision" : "193cc00e1004d29f16f7b32e5b6787199760c482",
-        "version" : "3.10.1"
-      }
-    },
-    {
       "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
