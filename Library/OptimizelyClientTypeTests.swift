@@ -24,7 +24,7 @@ final class OptimizelyClientTypeTests: TestCase {
         OptimizelyFeature.commentFlaggingEnabled.rawValue: true
       ]
 
-    XCTAssert(mockOptimizelyClient.allFeatures().count == 7)
+    XCTAssert(mockOptimizelyClient.allFeatures().count == 6)
   }
 
   func testVariantForExperiment_NoError() {
