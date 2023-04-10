@@ -69,7 +69,6 @@ final class AppDelegateViewModelTests: TestCase {
     [
       OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
       OptimizelyFeature.consentManagementDialogEnabled.rawValue: false,
-      OptimizelyFeature.facebookConversionsAPI.rawValue: false,
       OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
       OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
       OptimizelyFeature.paymentSheetEnabled.rawValue: true,
