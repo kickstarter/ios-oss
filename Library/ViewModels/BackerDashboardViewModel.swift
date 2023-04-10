@@ -112,26 +112,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       self.viewWillAppearProperty.signal.ignoreValues()
     )
     .switchMap { _ in
-      AppEnvironment.current.apiService.fetchGraphUserSelf()
+      AppEnvironment.current.apiService.fetchUserSelf()
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .map { envelope in
-          envelope.me
-        }
-        .switchMap { userValue -> SignalProducer<User, ErrorEnvelope> in
-          AppEnvironment.current.apiService.fetchGraphUserMemberStatus()
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .map { userMemberStatusEnvelope -> User in
-              let updatedUser = userValue
-                |> User.lens.stats.createdProjectsCount .~ userMemberStatusEnvelope.me
-                .creatorProjectsTotalCount
-                |> User.lens.stats.memberProjectsCount .~ userMemberStatusEnvelope.me.memberProjectsTotalCount
-
-              return updatedUser
-            }
-            .flatMapError { _ in
-              SignalProducer(value: userValue)
-            }
-        }
         .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
         .materialize()
     }

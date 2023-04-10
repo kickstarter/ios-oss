@@ -51,19 +51,4 @@ extension UserEnvelope {
 
     return UserEnvelope<GraphUserEmail>(me: graphUser)
   }
-
-  /**
-   Returns a `UserEnvelope<GraphUserMemberStatus>` from a `FetchUserMemberStatusQuery.Data` object.
-   */
-  static func userEnvelope(from data: GraphAPI.FetchUserMemberStatusQuery
-    .Data) -> UserEnvelope<GraphUserMemberStatus>? {
-    guard let userMemberStatusFragment = data.me?.fragments.userMemberStatusFragment else { return nil }
-
-    let graphUserMemberStatus = GraphUserMemberStatus(
-      creatorProjectsTotalCount: userMemberStatusFragment.createdProjects?.totalCount ?? 0,
-      memberProjectsTotalCount: userMemberStatusFragment.membershipProjects?.totalCount ?? 0
-    )
-
-    return UserEnvelope<GraphUserMemberStatus>(me: graphUserMemberStatus)
-  }
 }

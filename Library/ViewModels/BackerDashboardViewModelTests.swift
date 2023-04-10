@@ -59,11 +59,8 @@ internal final class BackerDashboardViewModelTests: TestCase {
       |> \.stats.starredProjectsCount .~ 58
       |> \.avatar.large .~ "http://cats.com/furball.jpg"
 
-    let userEnvelope = UserEnvelope(me: user)
-
     withEnvironment(apiService: MockService(
-      fetchGraphUserSelfResult: .success(userEnvelope),
-      fetchGraphUserMemberStatusResult: .failure(.couldNotParseErrorEnvelopeJSON)
+      fetchUserSelfResponse: user
     )) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
@@ -104,83 +101,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
     }
   }
 
-  func testUserUpdatesInEnvironment_AfterSavingProject_NoGraphUserMemberStatus_Success() {
-    let user = User.template
-      |> \.name .~ "user"
-      |> \.stats.starredProjectsCount .~ 60
-
-    let userEnvelope = UserEnvelope(me: user)
-
-    withEnvironment(apiService: MockService(
-      fetchGraphUserSelfResult: .success(userEnvelope),
-      fetchGraphUserMemberStatusResult: .failure(.couldNotParseErrorEnvelopeJSON)
-    )) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-      self.vm.inputs.viewWillAppear(false)
-
-      self.scheduler.advance()
-
-      self.updateCurrentUserInEnvironment.assertValues([user])
-
-      let user2 = user
-        |> \.name .~ "Updated user"
-
-      let user2Envelope = UserEnvelope(me: user2)
-
-      withEnvironment(apiService: MockService(
-        fetchGraphUserSelfResult: .success(user2Envelope),
-        fetchGraphUserMemberStatusResult: .failure(.couldNotParseErrorEnvelopeJSON)
-      )) {
-        self.vm.inputs.projectSaved()
-
-        self.scheduler.advance()
-
-        self.updateCurrentUserInEnvironment.assertValues([user, user, user2])
-      }
-    }
-  }
-
-  func testUserUpdatesInEnvironment_AfterSavingProject_GraphUserMemberStatus_Success() {
-    let user = User.template
-      |> \.name .~ "user"
-      |> \.stats.starredProjectsCount .~ 60
-      |> \.stats.createdProjectsCount .~ 0
-
-    let userEnvelope = UserEnvelope(me: user)
-
-    let memberStatusUserEnvelope =
-      UserEnvelope(me: GraphUserMemberStatus(creatorProjectsTotalCount: 12, memberProjectsTotalCount: 0))
-
-    withEnvironment(apiService: MockService(
-      fetchGraphUserSelfResult: .success(userEnvelope),
-      fetchGraphUserMemberStatusResult: .failure(.couldNotParseJSON)
-    )) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-      self.vm.inputs.viewWillAppear(false)
-
-      self.scheduler.advance()
-
-      XCTAssertFalse(self.updateCurrentUserInEnvironment.lastValue!.isCreator)
-
-      let user2 = user
-        |> \.name .~ "Updated user"
-        |> \.stats.createdProjectsCount .~ 0
-
-      let user2Envelope = UserEnvelope(me: user2)
-
-      withEnvironment(apiService: MockService(
-        fetchGraphUserSelfResult: .success(user2Envelope),
-        fetchGraphUserMemberStatusResult: .success(memberStatusUserEnvelope)
-      )) {
-        self.vm.inputs.projectSaved()
-
-        self.scheduler.advance()
-
-        XCTAssertTrue(self.updateCurrentUserInEnvironment.lastValue!.isCreator)
-      }
-    }
-  }
-
   func testConfigurePagesData() {
     self.configurePagesDataSourceTab.assertValueCount(0)
     self.configurePagesDataSourceSort.assertValueCount(0)
@@ -195,8 +115,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
     let userEnvelope = UserEnvelope(me: User.template)
 
     withEnvironment(apiService: MockService(
-      fetchGraphUserSelfResult: .success(userEnvelope),
-      fetchGraphUserMemberStatusResult: .failure(.couldNotParseErrorEnvelopeJSON)
+      fetchGraphUserSelfResult: .success(userEnvelope)
     )) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
