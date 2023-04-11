@@ -1282,8 +1282,7 @@ private func configureOptimizely(for _: Environment) -> OptimizelyClientType? {
       OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
       OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue,
       OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
-        .control.rawValue,
-      OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        .control.rawValue
     ]
   _ = mockOptimizelyClient
     |> \.features .~
@@ -1363,15 +1362,7 @@ private func shouldGoToLandingPage() -> Bool {
     return false
   }
 
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(for: OptimizelyExperiment.Key.nativeOnboarding)
-
-  switch optimizelyVariant {
-  case .variant1, .variant2:
-    return hasNotSeenLandingPage
-  case .control, nil:
-    return false
-  }
+  return false
 }
 
 private func accessTokenFromUrl(_ url: URL?) -> String? {

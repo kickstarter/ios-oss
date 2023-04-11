@@ -3,7 +3,6 @@ import KsApi
 
 public enum OptimizelyExperiment {
   public enum Key: String, CaseIterable {
-    case nativeOnboarding = "native_onboarding_series_new_backers"
     case onboardingCategoryPersonalizationFlow = "onboarding_category_personalization_flow"
     case nativeProjectCards = "native_project_cards"
     case nativeRiskMessaging = "native_risk_messaging"

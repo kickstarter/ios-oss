@@ -21,7 +21,9 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
   LandingPageViewModelOutputs {
   public init() {
     self.landingPageCards = self.viewDidLoadSignal
-      .map(cards)
+      .map { _ -> [LandingPageCardType]? in
+        nil
+      }
       .skipNil()
 
     self.dismissViewController = self.ctaButtonTappedSignal
@@ -51,22 +53,4 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
 
   public var inputs: LandingPageViewModelInputs { return self }
   public var outputs: LandingPageViewModelOutputs { return self }
-}
-
-private func cards() -> [LandingPageCardType]? {
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(for: OptimizelyExperiment.Key.nativeOnboarding)
-
-  guard let variant = optimizelyVariant else {
-    return nil
-  }
-
-  switch variant {
-  case .variant1:
-    return LandingPageCardType.statsCards
-  case .variant2:
-    return LandingPageCardType.howToCards
-  case .control:
-    return nil
-  }
 }
