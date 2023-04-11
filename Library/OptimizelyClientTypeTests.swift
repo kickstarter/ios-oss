@@ -8,14 +8,11 @@ final class OptimizelyClientTypeTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
       [
-        OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
-          .variant1.rawValue,
         OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
-    XCTAssert(mockOptimizelyClient.experiments.count == 4)
+    XCTAssert(mockOptimizelyClient.experiments.count == 2)
   }
 
   func testAllFeatures() {

@@ -504,22 +504,7 @@ private func saveSeen(activities: [Activity]) {
 }
 
 private func shouldShowPersonalization() -> Bool {
-  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow,
-    !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
-    return false
-  }
-
-  guard let variant = AppEnvironment.current.optimizelyClient?
-    .getVariation(for: OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue) else {
-    return false
-  }
-
-  switch variant {
-  case .control, .variant2:
-    return false
-  case .variant1:
-    return true
-  }
+  return false
 }
 
 private func cachedCategories() -> [KsApi.Category]? {

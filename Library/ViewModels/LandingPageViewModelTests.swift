@@ -41,52 +41,11 @@ internal final class LandingPageViewModelTests: TestCase {
     }
   }
 
-  func testCards_Variant1() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
-      self.viewModel.inputs.viewDidLoad()
-
-      self.landingPageCards.assertValue(LandingPageCardType.statsCards)
-    }
-  }
-
-  func testCards_Variant2() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
-      self.viewModel.inputs.viewDidLoad()
-
-      self.landingPageCards.assertValue(LandingPageCardType.howToCards)
-    }
-  }
-
-  func testCards_Control() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+  func testCards() {
+    withEnvironment(currentUser: nil) {
       self.viewModel.inputs.viewDidLoad()
 
       self.landingPageCards.assertDidNotEmitValue()
-    }
-  }
-
-  func testNumberOfPages() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
-      self.viewModel.inputs.viewDidLoad()
-
-      let cards = LandingPageCardType.howToCards
-      self.numberOfPages.assertValue(cards.count)
     }
   }
 }

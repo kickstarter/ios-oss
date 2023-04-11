@@ -60,9 +60,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   private let experimentsWithDefaultValues = [
     OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-    OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-    OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
-      .control.rawValue
+    OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue
   ]
   private let featureFlagsWithDefaultValues =
     [
@@ -1240,19 +1238,13 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
-  func testDeeplink_WhenOnboardingFlowIsActive() {
+  func testDeeplink() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
     )
 
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+    withEnvironment(currentUser: nil) {
       let result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: "https://www.kickstarter.com/search")!,
@@ -1261,7 +1253,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertTrue(result)
 
-      self.goToSearch.assertValueCount(0)
+      self.goToSearch.assertValueCount(1)
     }
   }
 
@@ -1570,7 +1562,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOpenPushNotification_WhenOnboardingFlowIsActive() {
+  func testOpenPushNotification_WhenOnboardingFlowIsNotActive() {
     let pushData: [String: Any] = [
       "aps": [
         "alert": "Blob liked your update: Important message..."
@@ -1581,13 +1573,7 @@ final class AppDelegateViewModelTests: TestCase {
       ]
     ]
 
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+    withEnvironment(currentUser: nil) {
       self.vm.inputs.didReceive(remoteNotification: pushData)
 
       self.presentViewController.assertValueCount(0)
@@ -1620,17 +1606,11 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
   }
 
-  func testContinueUserActivity_WhenOnboardingFlowIsActive() {
+  func testContinueUserActivity() {
     let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
     userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
 
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+    withEnvironment(currentUser: nil) {
       self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
 
       self.goToActivity.assertValueCount(0)
@@ -1640,7 +1620,7 @@ final class AppDelegateViewModelTests: TestCase {
       XCTAssertTrue(result)
 
       XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
-      self.goToActivity.assertValueCount(0)
+      self.goToActivity.assertValueCount(1)
     }
   }
 
@@ -1811,21 +1791,15 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
-  func testPerformShortcutItem_WhenOnboardingFlowIsActive() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+  func testPerformShortcutItem() {
+    withEnvironment(currentUser: nil) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
       self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
 
-      self.goToSearch.assertValueCount(0)
+      self.goToSearch.assertValueCount(1)
     }
   }
 
@@ -1841,14 +1815,8 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
   }
 
-  func testLaunchShortcutItem_WhenOnboardingFlowIsActive() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+  func testLaunchShortcutItem_WhenOnboardingFlowIsNotActive() {
+    withEnvironment(currentUser: nil) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [
@@ -1856,7 +1824,7 @@ final class AppDelegateViewModelTests: TestCase {
         ]
       )
 
-      self.goToSearch.assertValueCount(0)
+      self.goToSearch.assertValueCount(1)
       XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
     }
   }
@@ -2039,15 +2007,10 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testEmailDeepLinking_WhenOnboardingFlowIsActive() {
+  func testEmailDeepLinking_WhenOnboardingFlowIsNotActive() {
     let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
 
-    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+    withEnvironment(currentUser: nil) {
       // The application launches.
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
@@ -2396,85 +2359,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testGoToCategoriesPersonalizationOnboarding_WhenLoggedIn() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-
-    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-
-    withEnvironment(
-      currentUser: .template,
-      optimizelyClient: mockOptimizelyClient,
-      userDefaults: MockKeyValueStore()
-    ) {
-      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
-
-      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToCategoriesPersonalizationOnboarding_WhenPreviouslySeen() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-    let mockValueStore = MockKeyValueStore()
-    mockValueStore.hasSeenCategoryPersonalizationFlow = true
-
-    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-
-    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-
-    withEnvironment(
-      currentUser: nil,
-      optimizelyClient: mockOptimizelyClient,
-      userDefaults: mockValueStore
-    ) {
-      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
-
-      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToCategoriesPersonalizationOnboarding_Variant1() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-    let mockValueStore = MockKeyValueStore()
-
-    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-
-    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-
-    withEnvironment(
-      currentUser: nil,
-      optimizelyClient: mockOptimizelyClient,
-      userDefaults: mockValueStore
-    ) {
-      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
-
-      self.goToCategoriesPersonalizationOnboarding.assertValueCount(1)
-    }
-  }
-
   func testGoToCategoriesPersonalizationOnboarding_Control() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
     let mockValueStore = MockKeyValueStore()
 
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
@@ -2483,34 +2368,9 @@ final class AppDelegateViewModelTests: TestCase {
 
     withEnvironment(
       currentUser: nil,
-      optimizelyClient: mockOptimizelyClient,
       userDefaults: mockValueStore
     ) {
-      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
-
-      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToCategoriesPersonalizationOnboarding_Variant2() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant2.rawValue
-      ]
-    let mockValueStore = MockKeyValueStore()
-
-    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-
-    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-
-    withEnvironment(
-      currentUser: nil,
-      optimizelyClient: mockOptimizelyClient,
-      userDefaults: mockValueStore
-    ) {
-      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
     }

@@ -1007,168 +1007,15 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   // MARK: Personalization Section
 
-  func testShowPersonalization_LoggedOut() {
+  func testShowPersonalization() {
     let mockKeyValueStore = MockKeyValueStore()
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
       |> \.hasDismissedPersonalizationCard .~ false
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    let defaultFilter = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-
-    withEnvironment(
-      currentUser: nil,
-      optimizelyClient: mockOpClient,
-      userDefaults: mockKeyValueStore
-    ) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertValues([true])
-
-      // Change the filter
-      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
-      self.showPersonalization.assertValues([true, true], "Section does not hide on default filters")
-    }
-  }
-
-  func testShowPersonalization_LoggedIn() {
-    let mockKeyValueStore = MockKeyValueStore()
-      |> \.hasCompletedCategoryPersonalizationFlow .~ true
-      |> \.hasDismissedPersonalizationCard .~ false
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
 
     let defaultFilter = DiscoveryParams.recommendedDefaults
 
     withEnvironment(
       currentUser: User.template,
-      optimizelyClient: mockOpClient,
-      userDefaults: mockKeyValueStore
-    ) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertValues([true])
-
-      XCTAssertTrue(mockOpClient.getVariantPathCalled)
-
-      // Change the filter
-      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
-      self.showPersonalization.assertValues([true, true], "Section does not hide on default filters")
-    }
-  }
-
-  func testShowPersonalization_When_HasCompletedCategorySelection_IsFalse() {
-    let mockKeyValueStore = MockKeyValueStore()
-      |> \.hasCompletedCategoryPersonalizationFlow .~ false
-      |> \.hasDismissedPersonalizationCard .~ false
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    let defaultFilter = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(
-      currentUser: User.template,
-      optimizelyClient: mockOpClient,
-      userDefaults: mockKeyValueStore
-    ) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertValues([false], "Does not show personalization section")
-    }
-  }
-
-  func testShowPersonalization_When_HasDismissedPersonalizationCell_IsTrue() {
-    let mockKeyValueStore = MockKeyValueStore()
-      |> \.hasCompletedCategoryPersonalizationFlow .~ true
-      |> \.hasDismissedPersonalizationCard .~ true
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    let defaultFilter = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(
-      currentUser: User.template,
-      optimizelyClient: mockOpClient,
-      userDefaults: mockKeyValueStore
-    ) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertValues([false], "Does not show personalization section")
-    }
-  }
-
-  func testShowPersonalization_Variant2() {
-    let mockKeyValueStore = MockKeyValueStore()
-      |> \.hasCompletedCategoryPersonalizationFlow .~ true
-      |> \.hasDismissedPersonalizationCard .~ false
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant2.rawValue
-      ]
-
-    let defaultFilter = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(
-      currentUser: User.template,
-      optimizelyClient: mockOpClient,
-      userDefaults: mockKeyValueStore
-    ) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertValues([false], "Does not show personalization section")
-    }
-  }
-
-  func testShowPersonalization_Control() {
-    let mockKeyValueStore = MockKeyValueStore()
-      |> \.hasCompletedCategoryPersonalizationFlow .~ true
-      |> \.hasDismissedPersonalizationCard .~ false
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
-    let defaultFilter = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(
-      currentUser: User.template,
-      optimizelyClient: mockOpClient,
       userDefaults: mockKeyValueStore
     ) {
       self.vm.inputs.configureWith(sort: .magic)
@@ -1185,17 +1032,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
       |> \.hasDismissedPersonalizationCard .~ false
 
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
     let defaultFilter = DiscoveryParams.recommendedDefaults
 
     withEnvironment(
       currentUser: User.template,
-      optimizelyClient: mockOpClient,
       userDefaults: mockKeyValueStore
     ) {
       self.vm.inputs.configureWith(sort: .magic)
@@ -1257,18 +1097,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> \.hasCompletedCategoryPersonalizationFlow .~ false // Hasn't completed personalization flow yet
       |> \.hasDismissedPersonalizationCard .~ false
 
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
     let defaultFilter = DiscoveryParams.defaults
       |> DiscoveryParams.lens.includePOTD .~ true
 
     withEnvironment(
       currentUser: nil,
-      optimizelyClient: mockOpClient,
       userDefaults: mockKeyValueStore
     ) {
       self.vm.inputs.configureWith(sort: .magic)
@@ -1282,7 +1115,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.onboardingCompleted()
 
-      self.showPersonalization.assertValues([false, true])
+      self.showPersonalization.assertValues([false, false])
     }
   }
 

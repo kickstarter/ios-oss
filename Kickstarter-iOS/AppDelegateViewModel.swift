@@ -1280,9 +1280,7 @@ private func configureOptimizely(for _: Environment) -> OptimizelyClientType? {
   let mockOptimizelyClient = MockOptimizelyClient()
     |> \.experiments .~ [
       OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-      OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-      OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
-        .control.rawValue
+      OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue
     ]
   _ = mockOptimizelyClient
     |> \.features .~
@@ -1330,27 +1328,7 @@ private func visitorCookies() -> [HTTPCookie] {
 }
 
 private func shouldSeeCategoryPersonalization() -> Bool {
-  let isLoggedIn = AppEnvironment.current.currentUser != nil
-  let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
-
-  if isLoggedIn || hasSeenCategoryPersonalization {
-    // Currently logged-in users should not see the onboarding flow
-    AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
-
-    return false
-  }
-
-  guard let variant = AppEnvironment.current.optimizelyClient?
-    .variant(for: .onboardingCategoryPersonalizationFlow) else {
-    return false
-  }
-
-  switch variant {
-  case .control, .variant2:
-    return false
-  case .variant1:
-    return true
-  }
+  return false
 }
 
 private func shouldGoToLandingPage() -> Bool {
