@@ -62,9 +62,6 @@ final class KSRAnalyticsTests: TestCase {
   func testSessionProperties_OptimizelyClient() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
-      |> \.allKnownExperiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue
-      ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
       let segmentClient = MockTrackingClient()
@@ -73,7 +70,7 @@ final class KSRAnalyticsTests: TestCase {
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
       XCTAssertEqual(
-        [["native_project_cards": "control"]],
+        [],
         segmentClient.properties.last?["session_variants_optimizely"] as? [[String: String]]
       )
     }

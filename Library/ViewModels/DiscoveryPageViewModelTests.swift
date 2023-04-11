@@ -28,7 +28,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let projectsAreLoading = TestObserver<Bool, Never>()
   fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), Never>()
   fileprivate let projectsLoadedDiscoveryParams = TestObserver<DiscoveryParams?, Never>()
-  fileprivate let projectsLoadedVariant = TestObserver<OptimizelyExperiment.Variant, Never>()
   fileprivate let setScrollsToTop = TestObserver<Bool, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
@@ -54,7 +53,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.projectsAreLoadingAnimated.observe(self.projectsAreLoadingAnimated.observer)
     self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
     self.vm.outputs.projectsLoaded.map(second).observe(self.projectsLoadedDiscoveryParams.observer)
-    self.vm.outputs.projectsLoaded.map(third).observe(self.projectsLoadedVariant.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
@@ -280,106 +278,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       [true, false, true],
       "Switch away from the view and coming back doesn't do anything"
     )
-  }
-
-  func testProjectsLoaded_IsNativeProjectCardsControl() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
-    let params = DiscoveryParams.defaults
-      |> \.sort .~ .magic
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
-
-      self.hasAddedProjects.assertValues([])
-      self.projectsLoadedDiscoveryParams.assertValues([])
-      self.projectsLoadedVariant.assertValues([])
-
-      self.vm.inputs.selectedFilter(.defaults)
-      self.scheduler.advance()
-
-      self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
-      self.projectsLoadedDiscoveryParams.assertValues([params])
-      self.projectsLoadedVariant.assertValues([.control])
-
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-    }
-  }
-
-  func testProjectsLoaded_IsNativeProjectCardsVariant1() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    let params = DiscoveryParams.defaults
-      |> \.sort .~ .magic
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
-
-      self.hasAddedProjects.assertValues([])
-      self.projectsLoadedDiscoveryParams.assertValues([])
-      self.projectsLoadedVariant.assertValues([])
-
-      self.vm.inputs.selectedFilter(.defaults)
-      self.scheduler.advance()
-
-      self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
-      self.projectsLoadedDiscoveryParams.assertValues([params])
-      self.projectsLoadedVariant.assertValues([.variant1])
-
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-    }
-  }
-
-  func testContentInset_IsNativeProjectCardsControl() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
-
-      self.contentInset.assertValues([UIEdgeInsets.zero])
-
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-    }
-  }
-
-  func testContentInset_IsNativeProjectCardsVariant1() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
-
-      self.contentInset.assertValues([UIEdgeInsets.init(topBottom: Styles.grid(1))])
-
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-    }
   }
 
   func testGoToProject() {

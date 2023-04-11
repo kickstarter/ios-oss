@@ -272,14 +272,7 @@ public func ksr_pledgeAmount(
 }
 
 public func discoveryPageBackgroundColor() -> UIColor {
-  let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
-
-  switch variant {
-  case .variant1:
-    return UIColor.ksr_support_100
-  case .variant2, .control:
-    return UIColor.ksr_white
-  }
+  return UIColor.ksr_white
 }
 
 public func isNativeRiskMessagingControlEnabled() -> Bool {

@@ -43,20 +43,6 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureDataSource.assertValueCount(1, "Data source configures after view loads.")
   }
 
-  func testConfigureDataSourceOptimizelyConfiguration() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.optimizelyClientConfigured()
-
-      XCTAssertTrue(mockOptimizelyClient.activatePathCalled)
-
-      self.configureDataSource.assertValueCount(1)
-    }
-  }
-
   func testConfigureDataSource_OptimizelyConfiguration_Failed() {
     withEnvironment(optimizelyClient: nil) {
       self.vm.inputs.viewDidLoad()

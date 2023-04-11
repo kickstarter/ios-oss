@@ -1279,8 +1279,7 @@ private func configureOptimizely(for _: Environment) -> OptimizelyClientType? {
   // FIXME: This is until we add a new feature flagging client
   let mockOptimizelyClient = MockOptimizelyClient()
     |> \.experiments .~ [
-      OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-      OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue
+      OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue
     ]
   _ = mockOptimizelyClient
     |> \.features .~

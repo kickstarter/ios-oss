@@ -269,26 +269,8 @@ internal final class SharedFunctionsTests: TestCase {
   }
 
   func testDiscoveryPageBackgroundColor_Control() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
     withEnvironment(optimizelyClient: optimizelyClient) {
       XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
-    }
-  }
-
-  func testDiscoveryPageBackgroundColor_Variant1() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_support_100)
     }
   }
 

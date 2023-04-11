@@ -8,11 +8,10 @@ final class OptimizelyClientTypeTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
       [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
         OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
-    XCTAssert(mockOptimizelyClient.experiments.count == 2)
+    XCTAssert(mockOptimizelyClient.experiments.count == 1)
   }
 
   func testAllFeatures() {
@@ -22,79 +21,6 @@ final class OptimizelyClientTypeTests: TestCase {
       ]
 
     XCTAssert(mockOptimizelyClient.allFeatures().count == 6)
-  }
-
-  func testVariantForExperiment_NoError() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.variant1,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the correction variation"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_ThrowsError() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-      |> \.error .~ MockOptimizelyError.generic
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the control variant if error is thrown"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_ExperimentNotFound() {
-    let mockClient = MockOptimizelyClient()
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the control variant if experiment key is not found"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_UnknownVariant() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: "other_variant"]
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the control variant if the variant is not recognized"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_NoError_LoggedIn_IsAdmin() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-
-    let user = User.template |> User.lens.isAdmin .~ true
-
-    withEnvironment(currentUser: user) {
-      XCTAssertEqual(
-        OptimizelyExperiment.Variant.variant1,
-        mockClient.variant(for: .nativeProjectCards),
-        "Returns the correction variation"
-      )
-      XCTAssertFalse(mockClient.activatePathCalled)
-      XCTAssertTrue(mockClient.getVariantPathCalled)
-    }
   }
 
   func testGetVariation() {

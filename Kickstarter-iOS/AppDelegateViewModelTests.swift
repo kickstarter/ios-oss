@@ -59,8 +59,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   private let experimentsWithDefaultValues = [
-    OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-    OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue
+    OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue
   ]
   private let featureFlagsWithDefaultValues =
     [
