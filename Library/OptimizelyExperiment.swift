@@ -3,7 +3,7 @@ import KsApi
 
 public enum OptimizelyExperiment {
   public enum Key: String, CaseIterable {
-    case nativeRiskMessaging = "native_risk_messaging"
+    case temp = ""
   }
 
   public enum Variant: String, Equatable {

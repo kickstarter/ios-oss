@@ -4,16 +4,6 @@ import Prelude
 import XCTest
 
 final class OptimizelyClientTypeTests: TestCase {
-  func testAllExperiments() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    XCTAssert(mockOptimizelyClient.experiments.count == 1)
-  }
-
   func testAllFeatures() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [

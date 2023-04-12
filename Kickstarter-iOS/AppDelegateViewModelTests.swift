@@ -58,9 +58,6 @@ final class AppDelegateViewModelTests: TestCase {
       ]
   }
 
-  private let experimentsWithDefaultValues = [
-    OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue
-  ]
   private let featureFlagsWithDefaultValues =
     [
       OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
@@ -195,7 +192,6 @@ final class AppDelegateViewModelTests: TestCase {
         return
       }
 
-      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
       XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
@@ -217,7 +213,6 @@ final class AppDelegateViewModelTests: TestCase {
         return
       }
 
-      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
       XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
@@ -242,7 +237,6 @@ final class AppDelegateViewModelTests: TestCase {
         return
       }
 
-      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
       XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
@@ -267,7 +261,6 @@ final class AppDelegateViewModelTests: TestCase {
         return
       }
 
-      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
       XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
@@ -292,7 +285,6 @@ final class AppDelegateViewModelTests: TestCase {
         return
       }
 
-      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
       XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
@@ -317,7 +309,6 @@ final class AppDelegateViewModelTests: TestCase {
         return
       }
 
-      XCTAssertEqual(mockOptimizelyClient.experiments, experimentsWithDefaultValues)
       XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
     }
   }
