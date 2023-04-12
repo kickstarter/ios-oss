@@ -108,6 +108,7 @@ internal final class WatchProjectViewModelTests: TestCase {
   func testUnwatchProject_LoggedIn_User() {
     let project = Project.template
       |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.watchesCount .~ 1
 
     withEnvironment(
       apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate)),
@@ -116,6 +117,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.vm.inputs.configure(with: (project, .projectPage, nil))
       self.vm.inputs.viewDidLoad()
 
+      XCTAssertEqual(self.postNotificationWithProject.lastValue!.watchesCount, 1)
       self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
 
       self.vm.inputs.saveButtonTapped(selected: true)
@@ -128,6 +130,7 @@ internal final class WatchProjectViewModelTests: TestCase {
         [true, false],
         "Save button remains deselected after request."
       )
+      XCTAssertEqual(self.postNotificationWithProject.lastValue!.watchesCount, 9)
     }
   }
 
@@ -271,7 +274,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     }
   }
 
-  func testLoggedInUser_WatchesAndUnwatchesProject() {
+  func testLoggedInUser_WatchesAndUnwatchesProject_SegmentEvents_Success() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = Project.template
@@ -379,17 +382,20 @@ internal final class WatchProjectViewModelTests: TestCase {
 
     let project = Project.template
       |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.watchesCount .~ 8
 
     withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
       self.vm.inputs.configure(with: (project, .projectPage, nil))
       self.vm.inputs.viewDidLoad()
 
       self.postNotificationWithProject.assertValueCount(1)
+      XCTAssertEqual(self.postNotificationWithProject.lastValue!.watchesCount, 8)
 
-      self.vm.inputs.saveButtonTapped(selected: false)
+      self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance(by: .milliseconds(500))
 
       self.postNotificationWithProject.assertValueCount(3)
+      XCTAssertEqual(self.postNotificationWithProject.lastValue!.watchesCount, 10)
     }
   }
 

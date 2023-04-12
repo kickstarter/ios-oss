@@ -275,14 +275,6 @@ private func cached(project: Project) -> Project {
   return project |> Project.lens.personalization.isStarred .~ isSaved
 }
 
-private func updateWatchCount(for project: Project, with watchCount: Int) -> Project {
-  var projectUpdatedWithWatchCount = project
-
-  projectUpdatedWithWatchCount.watchesCount = watchCount
-
-  return projectUpdatedWithWatchCount
-}
-
 private func watchAndCacheProject(_ project: Project, shouldWatch: Bool) -> (Project, Bool) {
   // create cache if it doesn't exist yet
   let tryCache = AppEnvironment.current.cache[KSCache.ksr_projectSaved]
