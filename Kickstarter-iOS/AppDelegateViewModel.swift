@@ -141,9 +141,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
-  /// Emits when the root view controller should present the Landing Page for new users.
-  var goToLandingPage: Signal<(), Never> { get }
-
   /// Emits when the root view controller should present the login modal.
   var goToLoginWithIntent: Signal<LoginIntent, Never> { get }
 
@@ -405,13 +402,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
       .skipNil()
 
-    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
-      .filter(shouldGoToLandingPage)
-
     let deepLink = deeplinkActivated
-      .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
-      .take(until: self.goToLandingPage)
+      .filter { _ in shouldSeeCategoryPersonalization() == false }
 
     let updatedUserNotificationSettings = deepLink.filter { nav in
       guard case .settings(.notifications(_, _)) = nav else { return false }
@@ -983,7 +975,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
-  public let goToLandingPage: Signal<(), Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never>
@@ -1323,18 +1314,6 @@ private func visitorCookies() -> [HTTPCookie] {
 }
 
 private func shouldSeeCategoryPersonalization() -> Bool {
-  return false
-}
-
-private func shouldGoToLandingPage() -> Bool {
-  let hasNotSeenLandingPage = !AppEnvironment.current.userDefaults.hasSeenLandingPage
-
-  guard AppEnvironment.current.currentUser == nil, hasNotSeenLandingPage else {
-    AppEnvironment.current.userDefaults.hasSeenLandingPage = true
-
-    return false
-  }
-
   return false
 }
 

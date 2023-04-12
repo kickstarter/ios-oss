@@ -26,7 +26,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToCategoriesPersonalizationOnboarding = TestObserver<(), Never>()
   private let goToDashboard = TestObserver<Param?, Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
-  private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToPerimeterXCaptcha = TestObserver<PerimeterXBlockResponseType, Never>()
@@ -90,7 +89,6 @@ final class AppDelegateViewModelTests: TestCase {
       .observe(self.goToCategoriesPersonalizationOnboarding.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
-    self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToPerimeterXCaptcha.observe(self.goToPerimeterXCaptcha.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
@@ -2363,16 +2361,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToLandingPage_DoesNotEmitIf_UserHasNotSeenLandingPage() {
-    withEnvironment(currentUser: nil) {
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
-
-      self.goToLandingPage.assertDidNotEmitValue()
     }
   }
 

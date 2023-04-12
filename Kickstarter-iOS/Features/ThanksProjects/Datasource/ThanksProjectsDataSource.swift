@@ -8,7 +8,7 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     let values = projects.map { (project) -> DiscoveryProjectCellRowValue in
       DiscoveryProjectCellRowValue(project: project, category: category, params: nil)
     }
-    
+
     self.set(values: values, cellClass: DiscoveryPostcardCell.self, inSection: 0)
 
     self.appendRow(

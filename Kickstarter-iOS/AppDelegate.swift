@@ -135,16 +135,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
 
-    self.viewModel.outputs.goToLandingPage
-      .observeForUI()
-      .observeValues { [weak self] in
-        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
-
-        let landingPage = LandingPageViewController()
-          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
-        self?.rootTabBarController?.present(landingPage, animated: true)
-      }
-
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
       .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }

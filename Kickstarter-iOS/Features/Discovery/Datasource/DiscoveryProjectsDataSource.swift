@@ -36,7 +36,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       category: params?.category,
       params: params
     ) }
-    
+
     self.set(
       values: values,
       cellClass: DiscoveryPostcardCell.self,

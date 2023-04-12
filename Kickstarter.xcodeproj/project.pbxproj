@@ -539,7 +539,6 @@
 		7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */; };
 		77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */; };
 		77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77319C7D2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift */; };
-		77320F88243FC51E004C631E /* LandingPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */; };
 		77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F8924411459004C631E /* SettingsAccountHeaderView.swift */; };
 		773BFCB0241013D60078A79A /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCAF241013D60078A79A /* LandingViewController.swift */; };
 		773BFCB2241049510078A79A /* LandingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCB1241049510078A79A /* LandingViewModel.swift */; };
@@ -1389,13 +1388,6 @@
 		D0D77C1E22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */; };
 		D0E78C3622A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */; };
 		D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */; };
-		D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F49240424FC00E029D2 /* LandingPageViewController.swift */; };
-		D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */; };
-		D6050F4E2404311300E029D2 /* LandingPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */; };
-		D6050F502404387A00E029D2 /* LandingPageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */; };
-		D6050F52240463AC00E029D2 /* LandingPageStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */; };
-		D6050F54240463F100E029D2 /* LandingPageStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */; };
-		D6050F5624047CBB00E029D2 /* LandingPageStatsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F5524047CBB00E029D2 /* LandingPageStatsViewModelTests.swift */; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
@@ -2131,7 +2123,6 @@
 		7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderView.swift; sourceTree = "<group>"; };
 		77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		77319C7D2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCardViewModelTests.swift; sourceTree = "<group>"; };
-		77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewControllerTests.swift; sourceTree = "<group>"; };
 		77320F8924411459004C631E /* SettingsAccountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountHeaderView.swift; sourceTree = "<group>"; };
 		773BFCAF241013D60078A79A /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		773BFCB1241049510078A79A /* LandingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewModel.swift; sourceTree = "<group>"; };
@@ -2999,13 +2990,6 @@
 		D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+ThreadSafety.swift"; sourceTree = "<group>"; };
 		D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelope.swift; sourceTree = "<group>"; };
 		D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelopeTests.swift; sourceTree = "<group>"; };
-		D6050F49240424FC00E029D2 /* LandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewController.swift; sourceTree = "<group>"; };
-		D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
-		D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModelTests.swift; sourceTree = "<group>"; };
-		D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageCardType.swift; sourceTree = "<group>"; };
-		D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsView.swift; sourceTree = "<group>"; };
-		D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsViewModel.swift; sourceTree = "<group>"; };
-		D6050F5524047CBB00E029D2 /* LandingPageStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsViewModelTests.swift; sourceTree = "<group>"; };
 		D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialog.swift; sourceTree = "<group>"; };
 		D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewController.swift; sourceTree = "<group>"; };
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
@@ -3549,15 +3533,6 @@
 			path = HelpWeb;
 			sourceTree = "<group>";
 		};
-		1937A6E728C92DB300DD732D /* LandingPage */ = {
-			isa = PBXGroup;
-			children = (
-				1937A72728C95A0700DD732D /* Views */,
-				1937A6FD28C9306600DD732D /* Controller */,
-			);
-			path = LandingPage;
-			sourceTree = "<group>";
-		};
 		1937A6E828C92DBD00DD732D /* Landing */ = {
 			isa = PBXGroup;
 			children = (
@@ -3737,15 +3712,6 @@
 			isa = PBXGroup;
 			children = (
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		1937A6FD28C9306600DD732D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				D6050F49240424FC00E029D2 /* LandingPageViewController.swift */,
-				77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4049,14 +4015,6 @@
 			isa = PBXGroup;
 			children = (
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		1937A72728C95A0700DD732D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4852,7 +4810,6 @@
 				19A97D1828C7EF190031B857 /* Help */,
 				1937A6E628C92C8E00DD732D /* HelpWeb */,
 				1937A6E828C92DBD00DD732D /* Landing */,
-				1937A6E728C92DB300DD732D /* LandingPage */,
 				1937A6EA28C92DD000DD732D /* Login */,
 				1937A6E928C92DC700DD732D /* LoginTout */,
 				19A97D2028C7FBBC0031B857 /* ManagePledge */,
@@ -6675,11 +6632,6 @@
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
 				06232D4C27962FAA00A81755 /* HTML Parser */,
-				D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */,
-				D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */,
-				D6050F5524047CBB00E029D2 /* LandingPageStatsViewModelTests.swift */,
-				D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */,
-				D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */,
 				773BFCB1241049510078A79A /* LandingViewModel.swift */,
 				778AA77F2410542900E67293 /* LandingViewModelTests.swift */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
@@ -7738,7 +7690,6 @@
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,
 				1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */,
 				014D629B1E6E31790033D2BD /* BackerDashboardProjectsViewModel.swift in Sources */,
-				D6050F54240463F100E029D2 /* LandingPageStatsViewModel.swift in Sources */,
 				D78E038E229305E90043E92F /* PledgeStateCTAType.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
@@ -7894,7 +7845,6 @@
 				D79970B423EB79A600584911 /* ThanksCategoryCellViewModel.swift in Sources */,
 				D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */,
 				D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */,
-				D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */,
 				8A49396F24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
@@ -7909,7 +7859,6 @@
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */,
-				D6050F502404387A00E029D2 /* LandingPageCardType.swift in Sources */,
 				8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				94C92E8A2659F09A00A96818 /* PaddingLabel.swift in Sources */,
@@ -8112,7 +8061,6 @@
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
-				D6050F4E2404311300E029D2 /* LandingPageViewModelTests.swift in Sources */,
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */,
 				8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */,
@@ -8121,7 +8069,6 @@
 				D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */,
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
 				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
-				D6050F5624047CBB00E029D2 /* LandingPageStatsViewModelTests.swift in Sources */,
 				8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */,
 				D0D19BCA22BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift in Sources */,
 				A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */,
@@ -8540,7 +8487,6 @@
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				A757EAEE1D19FAFA00A5C978 /* ProjectActivitiesDataSource.swift in Sources */,
 				8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */,
-				D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */,
 				77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */,
 				8A13D15F249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift in Sources */,
 				77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */,
@@ -8572,7 +8518,6 @@
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
 				8A49396B24B7735100C3C3CE /* RewardAddOnCardView.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
-				D6050F52240463AC00E029D2 /* LandingPageStatsView.swift in Sources */,
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
 				3767EDAD22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift in Sources */,
 				370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */,
@@ -8676,7 +8621,6 @@
 				778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */,
 				778AA782241060FC00E67293 /* LandingViewControllerTests.swift in Sources */,
 				D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */,
-				77320F88243FC51E004C631E /* LandingPageViewControllerTests.swift in Sources */,
 				37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */,
 				D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */,
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
