@@ -4440,6 +4440,7 @@ public enum GraphAPI {
             __typename
             id
             isWatched
+            watchesCount
           }
         }
       }
@@ -4542,6 +4543,7 @@ public enum GraphAPI {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("isWatched", type: .nonNull(.scalar(Bool.self))),
+              GraphQLField("watchesCount", type: .scalar(Int.self)),
             ]
           }
 
@@ -4551,8 +4553,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, isWatched: Bool) {
-            self.init(unsafeResultMap: ["__typename": "Project", "id": id, "isWatched": isWatched])
+          public init(id: GraphQLID, isWatched: Bool, watchesCount: Int? = nil) {
+            self.init(unsafeResultMap: ["__typename": "Project", "id": id, "isWatched": isWatched, "watchesCount": watchesCount])
           }
 
           public var __typename: String {
@@ -4580,6 +4582,16 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "isWatched")
+            }
+          }
+
+          /// Number of watchers a project has.
+          public var watchesCount: Int? {
+            get {
+              return resultMap["watchesCount"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "watchesCount")
             }
           }
         }
@@ -5039,6 +5051,7 @@ public enum GraphAPI {
             __typename
             id
             isWatched
+            watchesCount
           }
         }
       }
@@ -5141,6 +5154,7 @@ public enum GraphAPI {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("isWatched", type: .nonNull(.scalar(Bool.self))),
+              GraphQLField("watchesCount", type: .scalar(Int.self)),
             ]
           }
 
@@ -5150,8 +5164,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, isWatched: Bool) {
-            self.init(unsafeResultMap: ["__typename": "Project", "id": id, "isWatched": isWatched])
+          public init(id: GraphQLID, isWatched: Bool, watchesCount: Int? = nil) {
+            self.init(unsafeResultMap: ["__typename": "Project", "id": id, "isWatched": isWatched, "watchesCount": watchesCount])
           }
 
           public var __typename: String {
@@ -5179,6 +5193,16 @@ public enum GraphAPI {
             }
             set {
               resultMap.updateValue(newValue, forKey: "isWatched")
+            }
+          }
+
+          /// Number of watchers a project has.
+          public var watchesCount: Int? {
+            get {
+              return resultMap["watchesCount"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "watchesCount")
             }
           }
         }

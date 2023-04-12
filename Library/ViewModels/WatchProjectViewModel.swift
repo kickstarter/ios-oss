@@ -110,7 +110,18 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
       .switchMap { project, shouldWatch in
         watchProjectProducer(with: project, shouldWatch: shouldWatch)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { _ in (project, project.personalization.isStarred ?? false, success: true) }
+          .map { watchProjectEnvelope in
+            let updatedWatchCount = watchProjectEnvelope.watchProject.project.watchesCount
+
+            let updatedProjectWithWatchCount = project
+              |> \.watchesCount .~ updatedWatchCount
+
+            return (
+              updatedProjectWithWatchCount,
+              updatedProjectWithWatchCount.personalization.isStarred ?? false,
+              success: true
+            )
+          }
           .flatMapError { _ in .init(value: (project, !shouldWatch, success: false)) }
           .take(until: saveButtonTapped.ignoreValues())
       }
@@ -262,6 +273,14 @@ private func cached(project: Project) -> Project {
   else { return project }
 
   return project |> Project.lens.personalization.isStarred .~ isSaved
+}
+
+private func updateWatchCount(for project: Project, with watchCount: Int) -> Project {
+  var projectUpdatedWithWatchCount = project
+
+  projectUpdatedWithWatchCount.watchesCount = watchCount
+
+  return projectUpdatedWithWatchCount
 }
 
 private func watchAndCacheProject(_ project: Project, shouldWatch: Bool) -> (Project, Bool) {

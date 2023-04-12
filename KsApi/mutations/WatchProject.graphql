@@ -4,6 +4,7 @@ mutation watchProject($input: WatchProjectInput!) {
     project {
       id
       isWatched
+      watchesCount
     }
   }
 }

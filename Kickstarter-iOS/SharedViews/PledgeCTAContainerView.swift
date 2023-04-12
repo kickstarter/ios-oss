@@ -174,7 +174,7 @@ final class PledgeCTAContainerView: UIView {
 
     self.viewModel.outputs.prelaunchCTASaved
       .observeForUI()
-      .observeValues { [weak self] isPrelaunch, saved in
+      .observeValues { [weak self] isPrelaunch, saved, _ in
         guard isPrelaunch else { return }
 
         _ = self?.pledgeCTAButton
