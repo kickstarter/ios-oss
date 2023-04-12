@@ -360,7 +360,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.buttonStyleType.assertValues([.black, .none])
     self.buttonTitleText.assertValues(["Notify me on launch", "Saved"])
-    self.watchesCountText.assertValues(["100 followers"])
+    self.watchesCountText.assertValues(["99 followers", "100 followers"])
     self.watchesLabelHidden.assertValues([false, false])
     XCTAssertEqual(self.prelaunchCTASaved.values.count, 2)
     XCTAssertEqual(self.prelaunchCTASaved.values.last!.prelaunch, prelaunchCTASaved.prelaunch)

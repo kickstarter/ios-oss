@@ -381,7 +381,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
 
     let project = Project.template
-      |> Project.lens.personalization.isStarred .~ true
+      |> Project.lens.personalization.isStarred .~ false
       |> Project.lens.watchesCount .~ 8
 
     withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
@@ -391,7 +391,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.postNotificationWithProject.assertValueCount(1)
       XCTAssertEqual(self.postNotificationWithProject.lastValue!.watchesCount, 8)
 
-      self.vm.inputs.saveButtonTapped(selected: true)
+      self.vm.inputs.saveButtonTapped(selected: false)
       self.scheduler.advance(by: .milliseconds(500))
 
       self.postNotificationWithProject.assertValueCount(3)
