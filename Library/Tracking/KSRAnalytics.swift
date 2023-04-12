@@ -1279,15 +1279,6 @@ public final class KSRAnalytics {
     props["platform"] = self.clientPlatform
     props["user_is_logged_in"] = self.loggedInUser != nil
     props["ref_tag"] = refTag
-    props["variants_internal"] = self.config?.abExperimentsArray.sorted()
-
-    if let env = AppEnvironment.current, let optimizelyClient = env.optimizelyClient {
-      let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
-        let variation = optimizelyClient.getVariation(for: experimentKey)
-        return [experimentKey: variation.rawValue]
-      }
-      props["variants_optimizely"] = allExperiments
-    }
 
     return props.prefixedKeys(prefix)
   }

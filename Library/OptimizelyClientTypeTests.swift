@@ -13,54 +13,8 @@ final class OptimizelyClientTypeTests: TestCase {
     XCTAssert(mockOptimizelyClient.allFeatures().count == 6)
   }
 
-  func testGetVariation() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      ["fake_experiment": OptimizelyExperiment.Variant.variant1.rawValue]
-
-    withEnvironment(currentUser: User.template, optimizelyClient: mockOptimizelyClient) {
-      let variation = mockOptimizelyClient.getVariation(for: "fake_experiment")
-      let userAttributes = mockOptimizelyClient.userAttributes
-
-      XCTAssertEqual(.variant1, variation)
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-
-      assertUserAttributes(userAttributes)
-    }
-  }
-
-  func testGetVariation_Error() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      ["fake_experiment": OptimizelyExperiment.Variant.variant1.rawValue]
-
-    withEnvironment(currentUser: User.template, optimizelyClient: mockOptimizelyClient) {
-      let variation = mockOptimizelyClient.getVariation(for: "other_experiment")
-      let userAttributes = mockOptimizelyClient.userAttributes
-
-      XCTAssertEqual(.control, variation, "Defaults to control when error is thrown")
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-
-      assertUserAttributes(userAttributes)
-    }
-  }
-
   func testOptimizelyProperties() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        "fake_experiment_1":
-          OptimizelyExperiment.Variant.control.rawValue,
-        "fake_experiment_2":
-          OptimizelyExperiment.Variant.variant1.rawValue,
-        "fake_experiment_3":
-          OptimizelyExperiment.Variant.variant2.rawValue
-      ]
-      |> \.allKnownExperiments .~ [
-        "fake_experiment_1",
-        "fake_experiment_2",
-        "fake_experiment_3",
-        "fake_experiment_4"
-      ]
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {

@@ -28,8 +28,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   }
 
   func load(projects: [Project],
-            params: DiscoveryParams? = nil,
-            projectCardVariant: OptimizelyExperiment.Variant = .control) {
+            params: DiscoveryParams? = nil) {
     self.clearValues(section: Section.projects.rawValue)
 
     let values = projects.map { DiscoveryProjectCellRowValue(
@@ -37,20 +36,12 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       category: params?.category,
       params: params
     ) }
-
-    if projectCardVariant == .variant1 {
-      self.set(
-        values: values,
-        cellClass: DiscoveryProjectCardCell.self,
-        inSection: Section.projects.rawValue
-      )
-    } else {
-      self.set(
-        values: values,
-        cellClass: DiscoveryPostcardCell.self,
-        inSection: Section.projects.rawValue
-      )
-    }
+    
+    self.set(
+      values: values,
+      cellClass: DiscoveryPostcardCell.self,
+      inSection: Section.projects.rawValue
+    )
   }
 
   func show(onboarding: Bool) {
