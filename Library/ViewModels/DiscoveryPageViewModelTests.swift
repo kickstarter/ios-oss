@@ -1011,6 +1011,26 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testShowPersonalization_When_HasCompletedCategorySelection_IsFalse() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ false
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertValues([false], "Does not show personalization section")
+    }
+  }
+
   func testDismissPersonalizationCell() {
     let mockKeyValueStore = MockKeyValueStore()
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
