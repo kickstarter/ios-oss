@@ -7,7 +7,6 @@ public enum AppKeys: String {
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
   case favoriteCategoryIds = "favorite_category_ids"
   case hasCompletedCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasCompletedCategoryPersonalizationFlow"
-  case hasSeenCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasSeenCategoryPersonalizationFlow"
   case hasDismissedPersonalizationCard = "com.kickstarter.KeyValueStoreType.hasDismissedPersonalizationCard"
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
@@ -40,7 +39,6 @@ public protocol KeyValueStoreType: AnyObject {
   var hasCompletedCategoryPersonalizationFlow: Bool { get set }
   var hasDismissedPersonalizationCard: Bool { get set }
   var hasSeenAppRating: Bool { get set }
-  var hasSeenCategoryPersonalizationFlow: Bool { get set }
   var hasSeenFavoriteCategoryAlert: Bool { get set }
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
@@ -65,15 +63,6 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.deniedNotificationContexts.rawValue)
-    }
-  }
-
-  public var hasSeenCategoryPersonalizationFlow: Bool {
-    get {
-      return self.bool(forKey: AppKeys.hasSeenCategoryPersonalizationFlow.rawValue)
-    }
-    set {
-      self.set(newValue, forKey: AppKeys.hasSeenCategoryPersonalizationFlow.rawValue)
     }
   }
 

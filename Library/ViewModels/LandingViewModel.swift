@@ -17,10 +17,6 @@ public protocol LandingViewModelType {
 
 public final class LandingViewModel: LandingViewModelType, LandingViewModelInputs, LandingViewModelOutputs {
   public init() {
-    self.viewDidLoadProperty.signal.observeValues {
-      AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
-    }
-
     self.goToCategorySelection = self.getStartedButtonTappedProperty.signal
   }
 

@@ -26,16 +26,4 @@ final class LandingViewModelTests: TestCase {
 
     self.goToCategorySelection.assertValueCount(1)
   }
-
-  func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {
-    let mockKVStore = MockKeyValueStore()
-
-    withEnvironment(userDefaults: mockKVStore) {
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.run()
-
-      XCTAssertTrue(mockKVStore.hasSeenCategoryPersonalizationFlow)
-    }
-  }
 }
