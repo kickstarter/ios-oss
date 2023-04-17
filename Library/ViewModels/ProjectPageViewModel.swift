@@ -289,8 +289,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.updateWatchProjectWithPrelaunchProjectState = shouldUpdateWatchProjectOnPrelaunch
       .map { pledgeCTAType -> PledgeCTAPrelaunchState? in
         switch pledgeCTAType {
-        case let .prelaunch(saved):
-          return PledgeCTAPrelaunchState(prelaunch: true, saved: saved)
+        case let .prelaunch(saved, watchesCount):
+          return PledgeCTAPrelaunchState(prelaunch: true, saved: saved, watchesCount: watchesCount)
         default:
           return nil
         }

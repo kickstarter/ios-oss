@@ -10,6 +10,7 @@ final class WatchProjectResponseEnvelope_WatchProjectMutationTests: XCTestCase {
 
     XCTAssertEqual(envelope?.watchProject.project.id, "id")
     XCTAssertEqual(envelope?.watchProject.project.isWatched, true)
+    XCTAssertEqual(envelope?.watchProject.project.watchesCount, 100)
   }
 
   func test_envelopeFrom_ReturnsNil() {
