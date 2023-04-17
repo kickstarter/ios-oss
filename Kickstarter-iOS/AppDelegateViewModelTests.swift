@@ -1223,7 +1223,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
-  func testDeeplink() {
+  func testDeeplink_IsActivated_Success() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -1547,7 +1547,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOpenPushNotification_WhenOnboardingFlowIsNotActive() {
+  func testOpenPushNotification_Success() {
     let pushData: [String: Any] = [
       "aps": [
         "alert": "Blob liked your update: Important message..."
