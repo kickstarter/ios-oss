@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 
 public protocol OptimizelyClientType: AnyObject {
-  func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func isFeatureEnabled(featureKey: String, userId: String, attributes: [String: Any?]?) -> Bool
   func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
 }

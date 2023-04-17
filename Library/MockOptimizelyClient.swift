@@ -11,7 +11,6 @@ public class MockOptimizelyClient: OptimizelyClientType {
 
   public var activatePathCalled: Bool
   public var allKnownExperiments: [String]
-  public var experiments: [String: String]
   public var features: [String: Bool]
   public var getVariantPathCalled: Bool
   public var error: MockOptimizelyError?
@@ -26,42 +25,13 @@ public class MockOptimizelyClient: OptimizelyClientType {
   public init() {
     self.activatePathCalled = false
     self.allKnownExperiments = []
-    self.experiments = [:]
     self.features = [:]
     self.getVariantPathCalled = false
   }
 
-  public func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
-    -> String {
-      self.activatePathCalled = true
-
-      return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
-    }
-
-  public func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
-    -> String {
-      self.getVariantPathCalled = true
-      return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
-    }
-
   public func isFeatureEnabled(featureKey: String, userId _: String, attributes _: [String: Any?]?) -> Bool {
     return self.features[featureKey] == true
   }
-
-  private func experiment(forKey key: String, userId _: String, attributes: [String: Any?]?) throws
-    -> String {
-      self.userAttributes = attributes
-
-      if let error = self.error {
-        throw error
-      }
-
-      guard let experimentVariant = self.experiments[key] else {
-        throw MockOptimizelyError.generic
-      }
-
-      return experimentVariant
-    }
 
   public func track(
     eventKey: String,
