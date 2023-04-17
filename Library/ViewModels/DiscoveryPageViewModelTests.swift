@@ -304,6 +304,21 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testContentInset_Success() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.contentInset.assertValues([UIEdgeInsets.zero])
+
+      XCTAssertFalse(mockOptimizelyClient.getVariantPathCalled)
+    }
+  }
+
   func testGoToProject() {
     let project = Project.template
     let discoveryEnvelope = .template
