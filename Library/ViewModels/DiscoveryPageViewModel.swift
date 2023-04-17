@@ -206,9 +206,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
     self.contentInset = self.viewWillAppearProperty.signal
-      .map { _ in
-        .zero
-      }
+      .map { .zero }
 
     let isRefreshing = isLoading
       .combineLatest(with: self.pulledToRefreshProperty.signal)
