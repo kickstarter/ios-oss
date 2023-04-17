@@ -328,17 +328,17 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   func testPledgeCTA_PrelaunchGoesFromUnsavedToSavedViaNotification_Success() {
     let unsavedProject = Project.template
       |> \.displayPrelaunch .~ true
-      |> \.watchesCount .~ 102
+      |> \.watchesCount .~ 99
       |> \.personalization.isStarred .~ false
 
-    let prelaunchCTAUnsaved = PledgeCTAPrelaunchState(prelaunch: true, saved: false)
-    let prelaunchCTASaved = PledgeCTAPrelaunchState(prelaunch: true, saved: true)
+    let prelaunchCTAUnsaved = PledgeCTAPrelaunchState(prelaunch: true, saved: false, watchesCount: 99)
+    let prelaunchCTASaved = PledgeCTAPrelaunchState(prelaunch: true, saved: true, watchesCount: 100)
 
     self.vm.inputs.configureWith(value: (.left((unsavedProject, nil)), false, .projectPamphlet))
 
     self.buttonStyleType.assertValues([.black])
     self.buttonTitleText.assertValues(["Notify me on launch"])
-    self.watchesCountText.assertValues(["102 followers"])
+    self.watchesCountText.assertValues(["99 followers"])
     self.watchesLabelHidden.assertValues([false])
     XCTAssertEqual(self.prelaunchCTASaved.values.count, 1)
     XCTAssertEqual(self.prelaunchCTASaved.values.first!.prelaunch, prelaunchCTAUnsaved.prelaunch)
@@ -347,7 +347,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     let savedProject = Project.template
       |> \.displayPrelaunch .~ true
-      |> \.watchesCount .~ 102
+      |> \.watchesCount .~ 100
       |> \.personalization.isStarred .~ true
 
     self.vm.inputs.savedProjectFromNotification(project: savedProject)
@@ -356,7 +356,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.buttonStyleType.assertValues([.black, .none])
     self.buttonTitleText.assertValues(["Notify me on launch", "Saved"])
-    self.watchesCountText.assertValues(["102 followers"])
+    self.watchesCountText.assertValues(["99 followers", "100 followers"])
     self.watchesLabelHidden.assertValues([false, false])
     XCTAssertEqual(self.prelaunchCTASaved.values.count, 2)
     XCTAssertEqual(self.prelaunchCTASaved.values.last!.prelaunch, prelaunchCTASaved.prelaunch)
@@ -379,6 +379,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.scheduler.advance(by: .seconds(1))
 
     XCTAssertEqual(self.notifyDelegateCTATapped.values.count, 1)
-    XCTAssertEqual(self.notifyDelegateCTATapped.values.last!, .prelaunch(saved: true))
+    XCTAssertEqual(self.notifyDelegateCTATapped.values.last!, .prelaunch(saved: true, watchCount: 102))
   }
 }

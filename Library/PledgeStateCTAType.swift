@@ -7,7 +7,7 @@ public enum PledgeStateCTAType: Equatable {
   case viewBacking
   case viewRewards
   case viewYourRewards
-  case prelaunch(saved: Bool)
+  case prelaunch(saved: Bool, watchCount: Int)
 
   public var buttonTitle: String {
     switch self {
@@ -23,7 +23,7 @@ public enum PledgeStateCTAType: Equatable {
       return Strings.View_rewards()
     case .viewYourRewards:
       return Strings.View_your_rewards()
-    case let .prelaunch(saved):
+    case let .prelaunch(saved, _):
       return saved ? Strings.Saved() : Strings.Notify_me_on_launch()
     }
   }
@@ -38,7 +38,7 @@ public enum PledgeStateCTAType: Equatable {
       return .blue
     case .viewBacking, .viewRewards, .viewYourRewards:
       return .black
-    case let .prelaunch(saved):
+    case let .prelaunch(saved, _):
       return saved ? .none : .black
     }
   }

@@ -9,6 +9,7 @@ public struct WatchProjectResponseEnvelope: Decodable {
     public struct Project: Decodable {
       public var id: String
       public var isWatched: Bool
+      public var watchesCount: Int
     }
   }
 }

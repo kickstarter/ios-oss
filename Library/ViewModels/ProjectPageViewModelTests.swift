@@ -811,11 +811,12 @@ final class ProjectPageViewModelTests: TestCase {
 
       self.updateWatchProjectWithPrelaunchProjectState.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(with: .prelaunch(saved: true))
+      self.vm.inputs.pledgeCTAButtonTapped(with: .prelaunch(saved: true, watchCount: 10))
 
       XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.count, 1)
       XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.last!.prelaunch, true)
       XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.last!.saved, true)
+      XCTAssertEqual(self.updateWatchProjectWithPrelaunchProjectState.values.last!.watchesCount, 10)
     }
   }
 

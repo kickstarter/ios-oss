@@ -35,7 +35,8 @@ public enum WatchProjectResponseMutationTemplate {
         "clientMutationId": nil,
         "project": [
           "id": "id",
-          "isWatched": watched
+          "isWatched": watched,
+          "watchesCount": 100
         ]
       ]
     ]
@@ -47,7 +48,8 @@ public enum WatchProjectResponseMutationTemplate {
         "clientMutationId": nil,
         "project": [
           "id": "id",
-          "isWatched": watched
+          "isWatched": watched,
+          "watchesCount": 100
         ]
       ]
     ]
