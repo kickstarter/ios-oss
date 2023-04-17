@@ -1776,7 +1776,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
-  func testPerformShortcutItem() {
+  func testPerformShortcutItem_Success() {
     withEnvironment(currentUser: nil) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
