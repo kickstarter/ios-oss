@@ -1800,7 +1800,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
   }
 
-  func testLaunchShortcutItem_WhenOnboardingFlowIsNotActive() {
+  func testLaunchShortcutItem_Failure() {
     withEnvironment(currentUser: nil) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
