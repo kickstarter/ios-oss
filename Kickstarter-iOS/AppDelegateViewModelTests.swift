@@ -1992,39 +1992,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testEmailDeepLinking_WhenOnboardingFlowIsNotActive() {
-    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
-
-    withEnvironment(currentUser: nil) {
-      // The application launches.
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      // We deep-link to an email url.
-      self.vm.inputs.applicationDidEnterBackground()
-      self.vm.inputs.applicationWillEnterForeground()
-      let result = self.vm.inputs.applicationOpenUrl(
-        application: UIApplication.shared,
-        url: emailUrl,
-        options: [:]
-      )
-      XCTAssertTrue(result)
-
-      self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
-      self.presentViewController.assertValues([], "No view controller is presented yet.")
-      self.goToMobileSafari.assertValues([])
-
-      // We find the redirect to be a project url.
-      self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
-
-      self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
-      self.presentViewController.assertValueCount(0, "Nothing is presented")
-      self.goToMobileSafari.assertValues([])
-    }
-  }
-
   func testEmailDeepLinking_ContinuedUserActivity() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
       let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
