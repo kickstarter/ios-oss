@@ -280,6 +280,30 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     )
   }
 
+  func testProjectsLoaded_Success() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+    let params = DiscoveryParams.defaults
+      |> \.sort .~ .magic
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([])
+      self.projectsLoadedDiscoveryParams.assertValues([])
+
+      self.vm.inputs.selectedFilter(.defaults)
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
+      self.projectsLoadedDiscoveryParams.assertValues([params])
+
+      XCTAssertFalse(mockOptimizelyClient.getVariantPathCalled)
+    }
+  }
+
   func testGoToProject() {
     let project = Project.template
     let discoveryEnvelope = .template
