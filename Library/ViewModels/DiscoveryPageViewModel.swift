@@ -198,14 +198,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skip { $0.isEmpty }
     .skipRepeats(==)
 
-    let projectsData = paramsChanged.takePairWhen(projects)
-      .map { params, projects -> ([Project], DiscoveryParams?) in
-        _ = ""
-
-        return (projects, params)
+    self.projectsLoaded = paramsChanged.takePairWhen(projects)
+      .map { paramsValue, projects in
+        (projects, paramsValue)
       }
-
-    self.projectsLoaded = projectsData
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
