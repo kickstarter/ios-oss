@@ -944,6 +944,53 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   // MARK: Personalization Section
 
+  func testShowPersonalization_LoggedOut() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let defaultFilter = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+
+    withEnvironment(
+      currentUser: nil,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      // Change the filter
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
+      self.showPersonalization.assertValues([false, false], "Section does not hide on default filters")
+    }
+  }
+
+  func testShowPersonalization_LoggedIn() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertValues([false])
+
+      // Change the filter
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
+      self.showPersonalization.assertValues([false, false], "Section does not hide on default filters")
+    }
+  }
+
   func testShowPersonalization() {
     let mockKeyValueStore = MockKeyValueStore()
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
