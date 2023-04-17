@@ -540,7 +540,6 @@
 		77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */; };
 		77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77319C7D2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift */; };
 		77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F8924411459004C631E /* SettingsAccountHeaderView.swift */; };
-		773BFCB0241013D60078A79A /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCAF241013D60078A79A /* LandingViewController.swift */; };
 		773BFCB2241049510078A79A /* LandingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCB1241049510078A79A /* LandingViewModel.swift */; };
 		774527DE21B1E0480072E590 /* MessageBannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774527DD21B1E0480072E590 /* MessageBannerViewController.xib */; };
 		7748438022D8DA3800508C9B /* Instantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7748437F22D8DA3800508C9B /* Instantiable.swift */; };
@@ -576,7 +575,6 @@
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
 		778AA7802410542900E67293 /* LandingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778AA77F2410542900E67293 /* LandingViewModelTests.swift */; };
-		778AA782241060FC00E67293 /* LandingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778AA781241060FC00E67293 /* LandingViewControllerTests.swift */; };
 		778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCC5122822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift */; };
 		778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */; };
 		778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778F891B22D3E37300D095C5 /* Feature+Helpers.swift */; };
@@ -2124,7 +2122,6 @@
 		77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		77319C7D2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCardViewModelTests.swift; sourceTree = "<group>"; };
 		77320F8924411459004C631E /* SettingsAccountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountHeaderView.swift; sourceTree = "<group>"; };
-		773BFCAF241013D60078A79A /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		773BFCB1241049510078A79A /* LandingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewModel.swift; sourceTree = "<group>"; };
 		774527DD21B1E0480072E590 /* MessageBannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageBannerViewController.xib; sourceTree = "<group>"; };
 		7748437F22D8DA3800508C9B /* Instantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiable.swift; sourceTree = "<group>"; };
@@ -2162,7 +2159,6 @@
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		778AA77F2410542900E67293 /* LandingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewModelTests.swift; sourceTree = "<group>"; };
-		778AA781241060FC00E67293 /* LandingViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewControllerTests.swift; sourceTree = "<group>"; };
 		778CCC5122822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetOverlayTransitionAnimator.swift; sourceTree = "<group>"; };
 		778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutTests.swift"; sourceTree = "<group>"; };
 		778F891B22D3E37300D095C5 /* Feature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feature+Helpers.swift"; sourceTree = "<group>"; };
@@ -3533,14 +3529,6 @@
 			path = HelpWeb;
 			sourceTree = "<group>";
 		};
-		1937A6E828C92DBD00DD732D /* Landing */ = {
-			isa = PBXGroup;
-			children = (
-				1937A6FE28C9306E00DD732D /* Controller */,
-			);
-			path = Landing;
-			sourceTree = "<group>";
-		};
 		1937A6E928C92DC700DD732D /* LoginTout */ = {
 			isa = PBXGroup;
 			children = (
@@ -3712,15 +3700,6 @@
 			isa = PBXGroup;
 			children = (
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		1937A6FE28C9306E00DD732D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				773BFCAF241013D60078A79A /* LandingViewController.swift */,
-				778AA781241060FC00E67293 /* LandingViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4809,7 +4788,6 @@
 				19A97D1128C7ED500031B857 /* FindFriends */,
 				19A97D1828C7EF190031B857 /* Help */,
 				1937A6E628C92C8E00DD732D /* HelpWeb */,
-				1937A6E828C92DBD00DD732D /* Landing */,
 				1937A6EA28C92DD000DD732D /* Login */,
 				1937A6E928C92DC700DD732D /* LoginTout */,
 				19A97D2028C7FBBC0031B857 /* ManagePledge */,
@@ -8423,7 +8401,6 @@
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
 				777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */,
-				773BFCB0241013D60078A79A /* LandingViewController.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
@@ -8619,7 +8596,6 @@
 				37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */,
 				A7ED20401E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
 				778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */,
-				778AA782241060FC00E67293 /* LandingViewControllerTests.swift in Sources */,
 				D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */,
 				37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */,
 				D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */,

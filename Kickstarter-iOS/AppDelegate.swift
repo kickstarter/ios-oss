@@ -207,17 +207,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
 
-    self.viewModel.outputs.goToCategoryPersonalizationOnboarding
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        let categorySelectionViewController = LandingViewController.instantiate()
-        let navController = NavigationController(rootViewController: categorySelectionViewController)
-        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
-        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
-
-        self?.rootTabBarController?.present(navController, animated: true)
-      }
-
     self.viewModel.outputs.emailVerificationCompleted
       .observeForUI()
       .observeValues { [weak self] message, success in

@@ -23,7 +23,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let findRedirectUrl = TestObserver<URL, Never>()
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
-  private let goToCategoriesPersonalizationOnboarding = TestObserver<(), Never>()
   private let goToDashboard = TestObserver<Param?, Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
@@ -85,8 +84,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
-    self.vm.outputs.goToCategoryPersonalizationOnboarding
-      .observe(self.goToCategoriesPersonalizationOnboarding.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
@@ -2344,23 +2341,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.showNotificationDialog(notification: notification)
 
       self.showAlert.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToCategoriesPersonalizationOnboarding_Control() {
-    let mockValueStore = MockKeyValueStore()
-
-    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
-
-    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-
-    withEnvironment(
-      currentUser: nil,
-      userDefaults: mockValueStore
-    ) {
-      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
-
-      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
     }
   }
 

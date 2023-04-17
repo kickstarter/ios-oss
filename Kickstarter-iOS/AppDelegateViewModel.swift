@@ -129,9 +129,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
-  /// Emits when the root view controller should navigate to the onboarding flow
-  var goToCategoryPersonalizationOnboarding: Signal<Void, Never> { get }
-
   /// Emits when application should navigate to the creator's message thread
   var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
@@ -333,14 +330,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
 
-    // Onboarding
-
-    self.goToCategoryPersonalizationOnboarding = Signal.combineLatest(
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.didUpdateOptimizelyClientProperty.signal.skipNil().ignoreValues()
-    ).ignoreValues()
-      .filter(shouldSeeCategoryPersonalization)
-
     // Deep links
 
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
@@ -403,7 +392,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
 
     let deepLink = deeplinkActivated
-      .filter { _ in shouldSeeCategoryPersonalization() == false }
 
     let updatedUserNotificationSettings = deepLink.filter { nav in
       guard case .settings(.notifications(_, _)) = nav else { return false }
@@ -971,7 +959,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
-  public let goToCategoryPersonalizationOnboarding: Signal<Void, Never>
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
@@ -1311,10 +1298,6 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
-}
-
-private func shouldSeeCategoryPersonalization() -> Bool {
-  return false
 }
 
 private func accessTokenFromUrl(_ url: URL?) -> String? {
