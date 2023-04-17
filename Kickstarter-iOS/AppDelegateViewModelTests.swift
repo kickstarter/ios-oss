@@ -1591,7 +1591,7 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
   }
 
-  func testContinueUserActivity() {
+  func testContinueUserActivity_Success() {
     let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
     userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
 
