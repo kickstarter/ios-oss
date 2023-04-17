@@ -7,12 +7,7 @@ public enum MockOptimizelyError: Error {
 }
 
 public class MockOptimizelyClient: OptimizelyClientType {
-  // MARK: - Experiment Activation Test Properties
-
-  public var activatePathCalled: Bool
-  public var allKnownExperiments: [String]
   public var features: [String: Bool]
-  public var getVariantPathCalled: Bool
   public var error: MockOptimizelyError?
   public var userAttributes: [String: Any?]?
 
@@ -23,10 +18,7 @@ public class MockOptimizelyClient: OptimizelyClientType {
   public var trackedUserId: String?
 
   public init() {
-    self.activatePathCalled = false
-    self.allKnownExperiments = []
     self.features = [:]
-    self.getVariantPathCalled = false
   }
 
   public func isFeatureEnabled(featureKey: String, userId _: String, attributes _: [String: Any?]?) -> Bool {
@@ -42,9 +34,5 @@ public class MockOptimizelyClient: OptimizelyClientType {
     self.trackedEventKey = eventKey
     self.trackedAttributes = attributes
     self.trackedUserId = userId
-  }
-
-  public func allExperiments() -> [String] {
-    return self.allKnownExperiments
   }
 }

@@ -281,11 +281,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testProjectsLoaded_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
     let params = DiscoveryParams.defaults
       |> \.sort .~ .magic
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(optimizelyClient: MockOptimizelyClient()) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -299,23 +298,17 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
       self.projectsLoadedDiscoveryParams.assertValues([params])
-
-      XCTAssertFalse(mockOptimizelyClient.getVariantPathCalled)
     }
   }
 
   func testContentInset_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(optimizelyClient: MockOptimizelyClient()) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
 
       self.contentInset.assertValues([UIEdgeInsets.zero])
-
-      XCTAssertFalse(mockOptimizelyClient.getVariantPathCalled)
     }
   }
 
