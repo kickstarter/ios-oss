@@ -10,7 +10,8 @@ public enum PledgeCTAContainerViewContext {
 
 public typealias PledgeCTAPrelaunchState = (
   prelaunch: Bool,
-  saved: Bool
+  saved: Bool,
+  watchesCount: Int
 )
 
 public typealias PledgeCTAContainerViewData = (
@@ -110,13 +111,14 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
     self.prelaunchState <~ self.pledgeState.signal.skipNil().map { state -> PledgeCTAPrelaunchState in
       switch state {
-      case let .prelaunch(saved):
+      case let .prelaunch(saved, watchCount):
         return PledgeCTAPrelaunchState(
           prelaunch: true,
-          saved: saved
+          saved: saved,
+          watchesCount: watchCount
         )
       default:
-        return PledgeCTAPrelaunchState(prelaunch: false, saved: false)
+        return PledgeCTAPrelaunchState(prelaunch: false, saved: false, watchesCount: 0)
       }
     }
 
@@ -125,13 +127,21 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.watchesLabelIsHidden = self.prelaunchState.signal.skipNil()
       .map { !$0.prelaunch }
 
+    let updatedWatchCountProject = project
+      .takePairWhen(self.prelaunchState.signal.skipNil())
+      .map { project, prelaunchStateValue -> Project in
+        let updatedProjectWithWatchesCount = project |> \.watchesCount .~ prelaunchStateValue.watchesCount
+
+        return updatedProjectWithWatchesCount
+      }
+
     self.buttonStyleType = self.pledgeState.signal.skipNil().map { $0.buttonStyle }
     self.buttonTitleText = self.pledgeState.signal.skipNil().map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = self.pledgeState.signal.skipNil().map { $0.stackViewAndSpacerAreHidden }
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = self.pledgeState.signal.skipNil().map { $0.titleLabel }.skipNil()
-    self.watchesCountText = project
+    self.watchesCountText = Signal.merge(project, updatedWatchCountProject)
       .map { project in
         let watchesCountText = project.watchesCount ?? 0
 
@@ -200,7 +210,7 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
   guard project.displayPrelaunch != .some(true) else {
     let projectIsSaved = project.personalization.isStarred ?? false
 
-    return .prelaunch(saved: projectIsSaved)
+    return .prelaunch(saved: projectIsSaved, watchCount: project.watchesCount ?? 0)
   }
 
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
