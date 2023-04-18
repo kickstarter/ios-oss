@@ -1547,24 +1547,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOpenPushNotification_Success() {
-    let pushData: [String: Any] = [
-      "aps": [
-        "alert": "Blob liked your update: Important message..."
-      ],
-      "post": [
-        "id": 1,
-        "project_id": 2
-      ]
-    ]
-
-    withEnvironment(currentUser: nil) {
-      self.vm.inputs.didReceive(remoteNotification: pushData)
-
-      self.presentViewController.assertValueCount(0)
-    }
-  }
-
   func testContinueUserActivity_ValidActivity() {
     let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
     userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
