@@ -4,17 +4,12 @@ import UIKit
 
 internal final class ThanksProjectsDataSource: ValueCellDataSource {
   internal func loadData(projects: [Project],
-                         category: KsApi.Category,
-                         nativeProjectCardsVariant: OptimizelyExperiment.Variant = .control) {
+                         category: KsApi.Category) {
     let values = projects.map { (project) -> DiscoveryProjectCellRowValue in
       DiscoveryProjectCellRowValue(project: project, category: category, params: nil)
     }
 
-    if nativeProjectCardsVariant == .variant1 {
-      self.set(values: values, cellClass: DiscoveryProjectCardCell.self, inSection: 0)
-    } else {
-      self.set(values: values, cellClass: DiscoveryPostcardCell.self, inSection: 0)
-    }
+    self.set(values: values, cellClass: DiscoveryPostcardCell.self, inSection: 0)
 
     self.appendRow(
       value: category,

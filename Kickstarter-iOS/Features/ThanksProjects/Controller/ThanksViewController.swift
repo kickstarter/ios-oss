@@ -170,11 +170,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.viewModel.outputs.showRecommendations
       .observeForUI()
-      .observeValues { [weak self] projects, category, nativeProjectCardsVariant in
+      .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(
           projects: projects,
-          category: category,
-          nativeProjectCardsVariant: nativeProjectCardsVariant
+          category: category
         )
         self?.projectsTableView.reloadData()
       }

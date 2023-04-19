@@ -268,27 +268,9 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(ksr_pledgeAmount(700.50, subtractingShippingAmount: 100), 600.50)
   }
 
-  func testDiscoveryPageBackgroundColor_Control() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
+  func testDiscoveryPageBackgroundColor() {
     withEnvironment(optimizelyClient: optimizelyClient) {
       XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
-    }
-  }
-
-  func testDiscoveryPageBackgroundColor_Variant1() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_support_100)
     }
   }
 
@@ -322,27 +304,9 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(selectedRewardQuantities(in: backing), quantities)
   }
 
-  func testIsNativeRiskMessagingControlEnabled_Control() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
+  func testIsNativeRiskMessagingControlEnabled() {
     withEnvironment(optimizelyClient: optimizelyClient) {
       XCTAssertTrue(isNativeRiskMessagingControlEnabled())
-    }
-  }
-
-  func testIsNativeRiskMessagingControlDisabled_Variant1() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertFalse(isNativeRiskMessagingControlEnabled())
     }
   }
 

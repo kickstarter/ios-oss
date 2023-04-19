@@ -135,16 +135,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
 
-    self.viewModel.outputs.goToLandingPage
-      .observeForUI()
-      .observeValues { [weak self] in
-        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
-
-        let landingPage = LandingPageViewController()
-          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
-        self?.rootTabBarController?.present(landingPage, animated: true)
-      }
-
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
       .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }
@@ -216,17 +206,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.findRedirectUrl
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
-
-    self.viewModel.outputs.goToCategoryPersonalizationOnboarding
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        let categorySelectionViewController = LandingViewController.instantiate()
-        let navController = NavigationController(rootViewController: categorySelectionViewController)
-        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
-        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
-
-        self?.rootTabBarController?.present(navController, animated: true)
-      }
 
     self.viewModel.outputs.emailVerificationCompleted
       .observeForUI()

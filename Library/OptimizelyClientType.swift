@@ -3,74 +3,11 @@ import KsApi
 import Prelude
 
 public protocol OptimizelyClientType: AnyObject {
-  func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
-  func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
-  func allExperiments() -> [String]
   func isFeatureEnabled(featureKey: String, userId: String, attributes: [String: Any?]?) -> Bool
   func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
 }
 
 extension OptimizelyClientType {
-  public func variant(
-    for experiment: OptimizelyExperiment.Key,
-    userAttributes: [String: Any]? = optimizelyUserAttributes()
-  ) -> OptimizelyExperiment.Variant {
-    let variationString: String?
-
-    let userId = deviceIdentifier(uuid: UUID())
-    let isAdmin = AppEnvironment.current.currentUser?.isAdmin ?? false
-
-    if isAdmin {
-      variationString = try? self.getVariationKey(
-        experimentKey: experiment.rawValue, userId: userId, attributes: userAttributes
-      )
-    } else {
-      variationString = try? self.activate(
-        experimentKey: experiment.rawValue, userId: userId, attributes: userAttributes
-      )
-    }
-
-    guard
-      let variation = variationString,
-      let variant = OptimizelyExperiment.Variant(rawValue: variation)
-    else {
-      return .control
-    }
-
-    return variant
-  }
-
-  /*
-   Calls `getVariation` on the Optimizely SDK for the given experiment,
-   using the default attributes and deviceId
-
-   Does *not* record an Optimizely impression. If you wish to record an experiment impression, use
-   `variant(for experiment)`, which calls `activate` on the Optimizely SDK
-   */
-
-  public func getVariation(for experimentKey: String) -> OptimizelyExperiment.Variant {
-    let userId = deviceIdentifier(uuid: UUID())
-    let attributes = optimizelyUserAttributes()
-    let variationString = try? self.getVariationKey(
-      experimentKey: experimentKey, userId: userId, attributes: attributes
-    )
-
-    guard
-      let variation = variationString,
-      let variant = OptimizelyExperiment.Variant(rawValue: variation)
-    else {
-      return .control
-    }
-
-    return variant
-  }
-
-  /* Returns all experiments the app knows about */
-
-  public func allExperiments() -> [String] {
-    return OptimizelyExperiment.Key.allCases.map { $0.rawValue }
-  }
-
   /* Returns all features the app knows about */
 
   public func allFeatures() -> [OptimizelyFeature] {

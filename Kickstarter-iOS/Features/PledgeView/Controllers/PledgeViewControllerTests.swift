@@ -26,54 +26,6 @@ final class PledgeViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_PledgeContext_UnavailableStoredCards_OptimizelyExperiementVariant1Enabled() {
-    let response = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-    let mockService = MockService(fetchGraphUserResult: .success(response))
-    let project = Project.template
-      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
-
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(
-        apiService: mockService,
-        currentUser: User.template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
-      ) {
-        let controller = PledgeViewController.instantiate()
-
-        let reward = Reward.template
-        let data = PledgeViewData(
-          project: project,
-          rewards: [reward],
-          selectedQuantities: [reward.id: 1],
-          selectedLocationId: nil,
-          refTag: nil,
-          context: .pledge
-        )
-        controller.configure(with: data)
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_200
-
-        self.scheduler.advance(by: .seconds(1))
-
-        self.allowLayoutPass()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
   func testView_PledgeContext_UnavailableStoredCards() {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let mockService = MockService(fetchGraphUserResult: .success(response))
@@ -264,56 +216,6 @@ final class PledgeViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
-        let controller = PledgeViewController.instantiate()
-        let data = PledgeViewData(
-          project: project,
-          rewards: [reward],
-          selectedQuantities: [reward.id: 1],
-          selectedLocationId: nil,
-          refTag: nil,
-          context: .update
-        )
-        controller.configure(with: data)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-        self.scheduler.advance(by: .seconds(1))
-
-        self.allowLayoutPass()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
-  func testView_UpdateContext_NeedsConversion_IsFalse_OptimizelyExperimentVariant1Enabled() {
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 10.0
-      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-    let project = Project.template
-      |> Project.lens.stats.currency .~ Currency.USD.rawValue
-      |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-      |> Project.lens.country .~ .us
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 0
-          |> Backing.lens.amount .~ 10.0
-      )
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(currentUser: .template, language: language, optimizelyClient: mockOptimizelyClient) {
         let controller = PledgeViewController.instantiate()
         let data = PledgeViewData(
           project: project,

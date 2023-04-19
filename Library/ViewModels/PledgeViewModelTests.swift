@@ -1357,13 +1357,7 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
-  func testOutputGoToRiskMessagingModal_OptimizelyClientControl_SubmitButtonTapped() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
+  func testOutputGoToRiskMessagingModal_SubmitButtonTapped() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.minimum .~ 20
@@ -1386,51 +1380,12 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(shippingRule)
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment {
       self.vm.inputs.submitButtonTapped()
 
       self.scheduler.advance()
 
       self.goToRiskMessagingModal.assertDidNotEmitValue()
-    }
-  }
-
-  func testOutputGoToRiskMessagingModal_OptimizelyClientVariant1() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 20
-      |> Reward.lens.shipping.enabled .~ true
-    let shippingRule = ShippingRule.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .projectPage,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-    self.vm.inputs.viewDidLoad()
-
-    self.goToRiskMessagingModal.assertDidNotEmitValue()
-
-    self.vm.inputs.shippingRuleSelected(shippingRule)
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.submitButtonTapped()
-
-      self.scheduler.advance()
-
-      self.goToRiskMessagingModal.assertDidEmitValue()
-      self.goToRiskMessagingModal.assertValue(false)
     }
   }
 
@@ -1815,18 +1770,13 @@ final class PledgeViewModelTests: TestCase {
         backing: .init(clientSecret: nil, requiresAction: false)
       )
     )
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
+
     let mockService = MockService(
       createBackingResult:
       Result.success(CreateBackingEnvelope(createBacking: createBacking))
     )
 
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.template
         |> Reward.lens.minimum .~ 5
@@ -2316,133 +2266,6 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testCreateBacking_Success_NativeRiskMessaging_Variant() {
-    let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(
-        id: "Q2hlY2tvdXQtMQ==",
-        state: .verifying,
-        backing: .init(clientSecret: nil, requiresAction: false)
-      )
-    )
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-    let mockService = MockService(
-      createBackingResult:
-      Result.success(CreateBackingEnvelope(createBacking: createBacking))
-    )
-
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: mockOptimizelyClient) {
-      let shippingRule = ShippingRule.template
-
-      let reward = Reward.template
-        |> Reward.lens.id .~ 1
-        |> Reward.lens.hasAddOns .~ true
-        |> Reward.lens.minimum .~ 10.0
-        |> Reward.lens.shipping.enabled .~ true
-        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
-        |> Reward.lens.shippingRules .~ [shippingRule]
-
-      let addOn1 = Reward.template
-        |> Reward.lens.id .~ 2
-        |> Reward.lens.minimum .~ 5.0
-        |> Reward.lens.shipping.enabled .~ true
-        |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.unrestricted
-        |> Reward.lens.shippingRules .~ [shippingRule]
-
-      let addOn2 = Reward.template
-        |> Reward.lens.id .~ 3
-        |> Reward.lens.minimum .~ 8.0
-        |> Reward.lens.shipping.enabled .~ false
-
-      let project = Project.template
-        |> Project.lens.rewardData.rewards .~ [reward]
-        |> Project.lens.rewardData.addOns .~ [addOn1, addOn2]
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward, addOn1, addOn2],
-        selectedQuantities: [reward.id: 1, addOn1.id: 2, addOn2.id: 1],
-        selectedLocationId: shippingRule.location.id,
-        refTag: .activity,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.goToThanksProject.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      let paymentSourceSelected = PaymentSourceSelected(
-        paymentSourceId: "123",
-        isSetupIntentClientSecret: false
-      )
-
-      self.vm.inputs.creditCardSelected(with: paymentSourceSelected)
-
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-        with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
-      )
-
-      self.vm.inputs.shippingRuleSelected(shippingRule)
-
-      self.processingViewIsHidden.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
-
-      self.vm.inputs.submitButtonTapped()
-
-      self.vm.inputs.riskMessagingViewControllerDismissed(isApplePay: false)
-
-      self.processingViewIsHidden.assertValues([false])
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
-      self.goToThanksProject.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      self.scheduler.run()
-
-      self.processingViewIsHidden.assertValues([false, true])
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
-
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
-        addOnsCountTotal: 3,
-        addOnsCountUnique: 2,
-        addOnsMinimumUsd: 18.00,
-        bonusAmountInUsd: 15.00,
-        checkoutId: "1",
-        estimatedDelivery: reward.estimatedDeliveryOn,
-        paymentType: "credit_card",
-        revenueInUsd: 58.00,
-        rewardId: String(reward.id),
-        rewardMinimumUsd: 10.00,
-        rewardTitle: reward.title,
-        shippingEnabled: true,
-        shippingAmountUsd: 15.00,
-        userHasStoredApplePayCard: true
-      )
-
-      self.goToThanksProject.assertValues([.template])
-      self.goToThanksReward.assertValues([.template])
-      self.goToThanksCheckoutData.assertValues([checkoutData])
-
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked", "CTA Clicked"],
-        self.segmentTrackingClient.events
-      )
-    }
-  }
-
   func testCreateBacking_Success_AddOns() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
@@ -2682,110 +2505,6 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false])
-      self.processingViewIsHidden.assertValues([false])
-
-      self.scheduler.run()
-
-      self.processingViewIsHidden.assertValues([false, true])
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
-        "Got it! Your changes have been saved."
-      ])
-      self.popToRootViewController.assertValueCount(1)
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-    }
-  }
-
-  func testUpdateBacking_Success_OptimizelyClientVariant1() {
-    let reward = Reward.postcards
-      |> Reward.lens.shipping.enabled .~ true
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-          |> Backing.lens.status .~ .pledged
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700.0
-      )
-
-    let updateBackingEnvelope = UpdateBackingEnvelope(
-      updateBacking: .init(
-        checkout: .init(
-          id: "Q2hlY2tvdXQtMQ==",
-          state: .successful,
-          backing: .init(
-            clientSecret: "client-secret",
-            requiresAction: false
-          )
-        )
-      )
-    )
-
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    let mockService = MockService(
-      updateBackingResult: .success(updateBackingEnvelope)
-    )
-
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: mockOptimizelyClient) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .discovery,
-        context: .update
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
-      self.processingViewIsHidden.assertDidNotEmitValue()
-
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
-      )
-
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
-      self.processingViewIsHidden.assertDidNotEmitValue()
-
-      self.vm.inputs.shippingRuleSelected(.template)
-
-      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
-      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.popToRootViewController.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
-      self.processingViewIsHidden.assertDidNotEmitValue()
-
-      self.vm.inputs.submitButtonTapped()
-
-      self.goToRiskMessagingModal.assertDidNotEmitValue()
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
@@ -3520,7 +3239,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_OptimizelyClientVariant_ApplePay_Success() {
+  func testChangePaymentMethod_ApplePay_Success() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -3533,13 +3252,6 @@ final class PledgeViewModelTests: TestCase {
         )
       )
     )
-
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
 
     let mockService = MockService(
       updateBackingResult: .success(updateBackingEnvelope)
@@ -3559,7 +3271,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
     self.goToThanksProject.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.minimum .~ 10
@@ -3846,7 +3558,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_OptimizelyClientVariant_ApplePay_StripeTokenFailure() {
+  func testChangePaymentMethod_ApplePay_StripeTokenFailure() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -3859,13 +3571,6 @@ final class PledgeViewModelTests: TestCase {
         )
       )
     )
-
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
 
     let mockService = MockService(
       updateBackingResult: .success(updateBackingEnvelope)
@@ -3885,7 +3590,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
     self.goToThanksProject.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
 
@@ -4154,14 +3859,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_OptimizelyClientVariant_ApplePay_Failure() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
+  func testChangePaymentMethod_ApplePay_Failure() {
     let mockService = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
     )
@@ -4179,7 +3877,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
     self.goToThanksProject.assertDidNotEmitValue()
 
-    withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
 
@@ -6800,12 +6498,6 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_PledgeConfirmButtonClicked() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments
-      .~ [
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -6819,7 +6511,7 @@ final class PledgeViewModelTests: TestCase {
       context: .pledge
     )
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 

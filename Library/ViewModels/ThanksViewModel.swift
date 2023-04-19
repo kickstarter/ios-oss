@@ -62,7 +62,7 @@ public protocol ThanksViewModelOutputs {
   var showRatingAlert: Signal<(), Never> { get }
 
   /// Emits array of projects and a category when should show recommendations
-  var showRecommendations: Signal<([Project], KsApi.Category, OptimizelyExperiment.Variant), Never> { get }
+  var showRecommendations: Signal<([Project], KsApi.Category), Never> { get }
 
   /// Emits a User that can be used to replace the current user in the environment
   var updateUserInEnvironment: Signal<User, Never> { get }
@@ -143,9 +143,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .filter { projects in !projects.isEmpty }
 
     self.showRecommendations = Signal.zip(projects, rootCategory).map { projects, category in
-      let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
-
-      return (projects, category, variant)
+      (projects, category)
     }
 
     self.goToProject = self.showRecommendations
@@ -288,7 +286,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let showRatingAlert: Signal<(), Never>
   public let showGamesNewsletterAlert: Signal<(), Never>
   public let showGamesNewsletterOptInAlert: Signal<String, Never>
-  public let showRecommendations: Signal<([Project], KsApi.Category, OptimizelyExperiment.Variant), Never>
+  public let showRecommendations: Signal<([Project], KsApi.Category), Never>
   public let updateUserInEnvironment: Signal<User, Never>
 }
 

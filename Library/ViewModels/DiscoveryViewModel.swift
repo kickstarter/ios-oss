@@ -88,10 +88,6 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
         .ignoreValues(),
       self.optimizelyClientConfigurationFailedProperty.signal
     ).take(first: 1)
-      .map { _ in
-        // Immediately activate the nativeProjectCards experiment
-        activateNativeProjectCardsExperiment()
-      }.ignoreValues()
 
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
 
@@ -259,14 +255,4 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
   public var inputs: DiscoveryViewModelInputs { return self }
   public var outputs: DiscoveryViewModelOutputs { return self }
-}
-
-private func activateNativeProjectCardsExperiment() -> OptimizelyExperiment.Variant {
-  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
-    return .control
-  }
-
-  let variant = optimizelyClient.variant(for: .nativeProjectCards)
-
-  return variant
 }

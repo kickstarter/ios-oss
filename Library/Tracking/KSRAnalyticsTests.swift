@@ -39,11 +39,6 @@ final class KSRAnalyticsTests: TestCase {
 
     let segmentClientProperties = segmentClient.properties.last
 
-    XCTAssertEqual(
-      ["native_checkout[experimental]", "other_experiment[control]"],
-      segmentClientProperties?["session_variants_internal"] as? [String]
-    )
-
     XCTAssertEqual("native", segmentClientProperties?["session_client"] as? String)
     XCTAssertEqual(1_234_567_890, segmentClientProperties?["session_app_build_number"] as? Int)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", segmentClientProperties?["session_app_release_version"] as? String)
@@ -56,27 +51,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", segmentClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(14, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
-  }
-
-  func testSessionProperties_OptimizelyClient() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
-      |> \.allKnownExperiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      let segmentClient = MockTrackingClient()
-      let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
-
-      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
-
-      XCTAssertEqual(
-        [["native_project_cards": "control"]],
-        segmentClient.properties.last?["session_variants_optimizely"] as? [[String: String]]
-      )
-    }
+    XCTAssertEqual(12, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
 
   func testSessionProperties_Language() {

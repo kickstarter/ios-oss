@@ -21,7 +21,6 @@ final class ThanksViewModelTests: TestCase {
   private let showGamesNewsletterAlert = TestObserver<(), Never>()
   private let showGamesNewsletterOptInAlert = TestObserver<String, Never>()
   private let showRecommendationsProjects = TestObserver<[Project], Never>()
-  private let showRecommendationsVariant = TestObserver<OptimizelyExperiment.Variant, Never>()
   private let postContextualNotification = TestObserver<(), Never>()
   private let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
   private let updateUserInEnvironment = TestObserver<User, Never>()
@@ -46,7 +45,6 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.showRatingAlert.observe(self.showRatingAlert.observer)
     self.vm.outputs.showRecommendations.map(first)
       .observe(self.showRecommendationsProjects.observer)
-    self.vm.outputs.showRecommendations.map(third).observe(self.showRecommendationsVariant.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
@@ -299,7 +297,6 @@ final class ThanksViewModelTests: TestCase {
       scheduler.advance()
 
       self.showRecommendationsProjects.assertValueCount(1, "Recommended projects emit, shuffled.")
-      self.showRecommendationsVariant.assertValues([.control])
     }
   }
 
@@ -314,33 +311,6 @@ final class ThanksViewModelTests: TestCase {
       scheduler.advance()
 
       self.showRecommendationsProjects.assertValueCount(0, "Recommended projects did not emit")
-      self.showRecommendationsVariant.assertDidNotEmitValue()
-    }
-  }
-
-  func testRecommendationsProjects_ExperimentalVariant() {
-    let recommendedProject = Project.template
-      |> \.id .~ 3
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ [recommendedProject]
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(
-      apiService: MockService(
-        fetchGraphCategoryResult: .success(self.categoryEnvelope),
-        fetchDiscoveryResponse: response
-      ),
-      optimizelyClient: mockOptimizelyClient
-    ) {
-      self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
-      self.vm.inputs.viewDidLoad()
-
-      scheduler.advance()
-
-      self.showRecommendationsProjects.assertValues([[recommendedProject]])
-      self.showRecommendationsVariant.assertValues([.variant1])
     }
   }
 

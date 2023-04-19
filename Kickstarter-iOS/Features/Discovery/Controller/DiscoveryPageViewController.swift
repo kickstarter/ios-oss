@@ -189,8 +189,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects, params, variant in
-        self?.dataSource.load(projects: projects, params: params, projectCardVariant: variant)
+      .observeValues { [weak self] projects, params in
+        self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
       }
 
