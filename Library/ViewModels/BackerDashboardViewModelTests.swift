@@ -59,7 +59,10 @@ internal final class BackerDashboardViewModelTests: TestCase {
       |> \.stats.starredProjectsCount .~ 58
       |> \.avatar.large .~ "http://cats.com/furball.jpg"
 
+    let userEnvelope = UserEnvelope(me: user)
+
     withEnvironment(apiService: MockService(
+      fetchGraphUserSelfResult: .success(userEnvelope),
       fetchUserSelfResponse: user
     )) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -84,7 +87,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.avatarURL.assertValues(["http://cats.com/furball.jpg", "http://cats.com/furball.jpg"])
       self.backedButtonTitleText.assertValues(["45\nbacked", "45\nbacked"])
       self.backerNameText.assertValues(["Princess Vespa", "Princess Vespa"])
-      self.savedButtonTitleText.assertValues(["58\nsaved", "58\nsaved"])
+      self.savedButtonTitleText.assertValues(["58\nsaved"])
       self.setSelectedButton.assertValues([.backed])
       self.sortBarIsHidden.assertValues([true])
       self.embeddedViewTopConstraintConstant.assertValues([0.0])
