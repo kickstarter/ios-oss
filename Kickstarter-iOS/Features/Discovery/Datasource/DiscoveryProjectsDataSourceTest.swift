@@ -69,8 +69,7 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.load(
       projects: [.template, .template, .template],
-      params: DiscoveryParams.defaults,
-      projectCardVariant: .variant1
+      params: DiscoveryParams.defaults
     )
 
     XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))

@@ -23,19 +23,6 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     XCTAssertEqual(4, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
   }
 
-  func testLoadData_ExperimentalVariant() {
-    let projects = [
-      Project.template |> Project.lens.id .~ 1,
-      Project.template |> Project.lens.id .~ 2,
-      Project.template |> Project.lens.id .~ 3
-    ]
-    self.dataSource
-      .loadData(projects: projects, category: Category.games, nativeProjectCardsVariant: .variant1)
-
-    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
-    XCTAssertEqual(4, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
-  }
-
   func testProjectAtIndexPaths() {
     let projects = [
       Project.template |> Project.lens.id .~ 1,

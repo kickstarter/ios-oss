@@ -101,7 +101,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var notifyDelegateContentOffsetChanged: Signal<CGPoint, Never> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
-  var projectsLoaded: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never> { get }
+  var projectsLoaded: Signal<([Project], DiscoveryParams?), Never> { get }
 
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoadingAnimated: Signal<(Bool, Bool), Never> { get }
@@ -198,28 +198,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skip { $0.isEmpty }
     .skipRepeats(==)
 
-    let projectsData = paramsChanged.takePairWhen(projects)
-      .map { params, projects -> ([Project], DiscoveryParams?, OptimizelyExperiment.Variant) in
-        let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
-
-        return (projects, params, variant)
+    self.projectsLoaded = paramsChanged.takePairWhen(projects)
+      .map { paramsValue, projects in
+        (projects, paramsValue)
       }
-
-    self.projectsLoaded = projectsData
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
     self.contentInset = self.viewWillAppearProperty.signal
-      .map { _ in
-        let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
-
-        switch variant {
-        case .variant1:
-          return .init(topBottom: Styles.grid(1))
-        case .variant2, .control:
-          return .zero
-        }
-      }
+      .map { .zero }
 
     let isRefreshing = isLoading
       .combineLatest(with: self.pulledToRefreshProperty.signal)
@@ -482,7 +469,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>
   public let notifyDelegateContentOffsetChanged: Signal<CGPoint, Never>
-  public let projectsLoaded: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never>
+  public let projectsLoaded: Signal<([Project], DiscoveryParams?), Never>
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let showEmptyState: Signal<EmptyState, Never>
@@ -504,22 +491,7 @@ private func saveSeen(activities: [Activity]) {
 }
 
 private func shouldShowPersonalization() -> Bool {
-  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow,
-    !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
-    return false
-  }
-
-  guard let variant = AppEnvironment.current.optimizelyClient?
-    .getVariation(for: OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue) else {
-    return false
-  }
-
-  switch variant {
-  case .control, .variant2:
-    return false
-  case .variant1:
-    return true
-  }
+  return false
 }
 
 private func cachedCategories() -> [KsApi.Category]? {

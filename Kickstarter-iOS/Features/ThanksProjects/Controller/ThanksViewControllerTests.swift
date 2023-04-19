@@ -48,36 +48,4 @@ class ThanksViewControllerTests: TestCase {
       }
     }
   }
-
-  func testThanksViewController_ExperimentalCards() {
-    let discoveryEnvelope = DiscoveryEnvelope.template
-    let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.tabletopGames])
-    let mockService = MockService(
-      fetchGraphCategoryResult: .success(categoryEnvelope),
-      fetchGraphCategoriesResult: .success(rootCategories),
-      fetchDiscoveryResponse: discoveryEnvelope
-    )
-
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    combos(Language.allLanguages, Device.allCases).forEach {
-      language, device in
-      withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {
-        let project = Project.cosmicSurgery
-          |> Project.lens.id .~ 3
-
-        let controller = ThanksViewController.configured(with: (project, Reward.template, nil))
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_000
-
-        self.scheduler.run()
-
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
-    }
-  }
 }

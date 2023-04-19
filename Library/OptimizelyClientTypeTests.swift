@@ -4,20 +4,6 @@ import Prelude
 import XCTest
 
 final class OptimizelyClientTypeTests: TestCase {
-  func testAllExperiments() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [
-        OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
-          .variant1.rawValue,
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue,
-        OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    XCTAssert(mockOptimizelyClient.experiments.count == 4)
-  }
-
   func testAllFeatures() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
@@ -27,127 +13,8 @@ final class OptimizelyClientTypeTests: TestCase {
     XCTAssert(mockOptimizelyClient.allFeatures().count == 6)
   }
 
-  func testVariantForExperiment_NoError() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.variant1,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the correction variation"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_ThrowsError() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-      |> \.error .~ MockOptimizelyError.generic
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the control variant if error is thrown"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_ExperimentNotFound() {
-    let mockClient = MockOptimizelyClient()
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the control variant if experiment key is not found"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_UnknownVariant() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: "other_variant"]
-
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .nativeProjectCards),
-      "Returns the control variant if the variant is not recognized"
-    )
-    XCTAssertTrue(mockClient.activatePathCalled)
-    XCTAssertFalse(mockClient.getVariantPathCalled)
-  }
-
-  func testVariantForExperiment_NoError_LoggedIn_IsAdmin() {
-    let mockClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-
-    let user = User.template |> User.lens.isAdmin .~ true
-
-    withEnvironment(currentUser: user) {
-      XCTAssertEqual(
-        OptimizelyExperiment.Variant.variant1,
-        mockClient.variant(for: .nativeProjectCards),
-        "Returns the correction variation"
-      )
-      XCTAssertFalse(mockClient.activatePathCalled)
-      XCTAssertTrue(mockClient.getVariantPathCalled)
-    }
-  }
-
-  func testGetVariation() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      ["fake_experiment": OptimizelyExperiment.Variant.variant1.rawValue]
-
-    withEnvironment(currentUser: User.template, optimizelyClient: mockOptimizelyClient) {
-      let variation = mockOptimizelyClient.getVariation(for: "fake_experiment")
-      let userAttributes = mockOptimizelyClient.userAttributes
-
-      XCTAssertEqual(.variant1, variation)
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-
-      assertUserAttributes(userAttributes)
-    }
-  }
-
-  func testGetVariation_Error() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      ["fake_experiment": OptimizelyExperiment.Variant.variant1.rawValue]
-
-    withEnvironment(currentUser: User.template, optimizelyClient: mockOptimizelyClient) {
-      let variation = mockOptimizelyClient.getVariation(for: "other_experiment")
-      let userAttributes = mockOptimizelyClient.userAttributes
-
-      XCTAssertEqual(.control, variation, "Defaults to control when error is thrown")
-      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
-
-      assertUserAttributes(userAttributes)
-    }
-  }
-
   func testOptimizelyProperties() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        "fake_experiment_1":
-          OptimizelyExperiment.Variant.control.rawValue,
-        "fake_experiment_2":
-          OptimizelyExperiment.Variant.variant1.rawValue,
-        "fake_experiment_3":
-          OptimizelyExperiment.Variant.variant2.rawValue
-      ]
-      |> \.allKnownExperiments .~ [
-        "fake_experiment_1",
-        "fake_experiment_2",
-        "fake_experiment_3",
-        "fake_experiment_4"
-      ]
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {

@@ -129,9 +129,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
-  /// Emits when the root view controller should navigate to the onboarding flow
-  var goToCategoryPersonalizationOnboarding: Signal<Void, Never> { get }
-
   /// Emits when application should navigate to the creator's message thread
   var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
@@ -140,9 +137,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
-
-  /// Emits when the root view controller should present the Landing Page for new users.
-  var goToLandingPage: Signal<(), Never> { get }
 
   /// Emits when the root view controller should present the login modal.
   var goToLoginWithIntent: Signal<LoginIntent, Never> { get }
@@ -336,14 +330,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
 
-    // Onboarding
-
-    self.goToCategoryPersonalizationOnboarding = Signal.combineLatest(
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.didUpdateOptimizelyClientProperty.signal.skipNil().ignoreValues()
-    ).ignoreValues()
-      .filter(shouldSeeCategoryPersonalization)
-
     // Deep links
 
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
@@ -405,13 +391,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
       .skipNil()
 
-    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
-      .filter(shouldGoToLandingPage)
-
     let deepLink = deeplinkActivated
-      .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
-      .take(until: self.goToLandingPage)
 
     let updatedUserNotificationSettings = deepLink.filter { nav in
       guard case .settings(.notifications(_, _)) = nav else { return false }
@@ -979,11 +959,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
-  public let goToCategoryPersonalizationOnboarding: Signal<Void, Never>
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
-  public let goToLandingPage: Signal<(), Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never>
@@ -1278,14 +1256,6 @@ extension ShortcutItem {
 private func configureOptimizely(for _: Environment) -> OptimizelyClientType? {
   // FIXME: This is until we add a new feature flagging client
   let mockOptimizelyClient = MockOptimizelyClient()
-    |> \.experiments .~ [
-      OptimizelyExperiment.Key.nativeRiskMessaging.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-      OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.control.rawValue,
-      OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue: OptimizelyExperiment.Variant
-        .control.rawValue,
-      OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue
-    ]
-  _ = mockOptimizelyClient
     |> \.features .~
     [
       OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
@@ -1328,50 +1298,6 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
-}
-
-private func shouldSeeCategoryPersonalization() -> Bool {
-  let isLoggedIn = AppEnvironment.current.currentUser != nil
-  let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
-
-  if isLoggedIn || hasSeenCategoryPersonalization {
-    // Currently logged-in users should not see the onboarding flow
-    AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
-
-    return false
-  }
-
-  guard let variant = AppEnvironment.current.optimizelyClient?
-    .variant(for: .onboardingCategoryPersonalizationFlow) else {
-    return false
-  }
-
-  switch variant {
-  case .control, .variant2:
-    return false
-  case .variant1:
-    return true
-  }
-}
-
-private func shouldGoToLandingPage() -> Bool {
-  let hasNotSeenLandingPage = !AppEnvironment.current.userDefaults.hasSeenLandingPage
-
-  guard AppEnvironment.current.currentUser == nil, hasNotSeenLandingPage else {
-    AppEnvironment.current.userDefaults.hasSeenLandingPage = true
-
-    return false
-  }
-
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(for: OptimizelyExperiment.Key.nativeOnboarding)
-
-  switch optimizelyVariant {
-  case .variant1, .variant2:
-    return hasNotSeenLandingPage
-  case .control, nil:
-    return false
-  }
 }
 
 private func accessTokenFromUrl(_ url: URL?) -> String? {

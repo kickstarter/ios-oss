@@ -37,7 +37,6 @@ public final class KSRAnalytics {
     case creatorDashboard = "creator_dashboard" // DashboardViewController
     case discovery = "discover" // DiscoveryViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
-    case landingPage = "landing_page" // LandingViewController
     case login = "log_in" // LoginViewController
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
@@ -1279,15 +1278,6 @@ public final class KSRAnalytics {
     props["platform"] = self.clientPlatform
     props["user_is_logged_in"] = self.loggedInUser != nil
     props["ref_tag"] = refTag
-    props["variants_internal"] = self.config?.abExperimentsArray.sorted()
-
-    if let env = AppEnvironment.current, let optimizelyClient = env.optimizelyClient {
-      let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
-        let variation = optimizelyClient.getVariation(for: experimentKey)
-        return [experimentKey: variation.rawValue]
-      }
-      props["variants_optimizely"] = allExperiments
-    }
 
     return props.prefixedKeys(prefix)
   }
