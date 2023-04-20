@@ -108,7 +108,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .map { (.backed, DiscoveryParams.Sort.endingSoon) }
 
     let fetchedUserEvent = Signal.merge(
-      self.projectSavedProperty.signal.ignoreValues(),
+      self.projectSavedProperty.signal.ignoreValues()
+        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler),
       self.viewWillAppearProperty.signal.ignoreValues()
     )
     .switchMap { _ in
@@ -118,9 +119,33 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
         .materialize()
     }
 
+    let graphUserEvent = Signal.merge(
+      self.projectSavedProperty.signal.ignoreValues()
+        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler),
+      self.viewWillAppearProperty.signal.ignoreValues()
+    )
+    .switchMap { _ in
+      AppEnvironment.current
+        .apiService.fetchGraphUserSelf()
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
     let user = fetchedUserEvent.values()
 
+    let updatedUserWithSavedProjectsCount = graphUserEvent.values()
+      .map { $0.me }
+
     self.updateCurrentUserInEnvironment = user.skip(first: 1)
+      .takePairWhen(updatedUserWithSavedProjectsCount)
+      .map { user, graphEventUser in
+        var updatedUserWithStarredProjectsCount = user
+
+        updatedUserWithStarredProjectsCount.stats.starredProjectsCount = graphEventUser.stats
+          .starredProjectsCount
+
+        return updatedUserWithStarredProjectsCount
+      }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated, object: nil))
@@ -133,7 +158,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.backerNameText = user.map { $0.name }
 
-    self.savedButtonTitleText = user.map { user in
+    self.savedButtonTitleText = updatedUserWithSavedProjectsCount.map { user in
       Strings.projects_count_newline_saved(projects_count: user.stats.starredProjectsCount ?? 0)
     }
 
