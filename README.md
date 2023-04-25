@@ -70,7 +70,6 @@ A collection of operators we like to add to ReactiveCocoa.
 * [Stripe](https://github.com/stripe/stripe-ios)
 * [KingFisher](https://github.com/onevcat/Kingfisher)
 * [SwiftSoup](https://github.com/scinfu/SwiftSoup)
-* [Optimizely](https://github.com/optimizely/swift-sdk)
 * [Facebook](https://github.com/facebook/facebook-ios-sdk)
 * [Firebase](https://github.com/firebase/firebase-ios-sdk)
 * [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
