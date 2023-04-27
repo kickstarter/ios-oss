@@ -183,11 +183,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     #if RELEASE || APPCENTER
       self.viewModel.outputs.configureFirebase
         .observeForUI()
-        .observeValues {
+        .observeValues { [weak self] in
+          guard let strongSelf = self else { return }
+
           FirebaseApp.configure()
           AppEnvironment.current.ksrAnalytics.logEventCallback = { event, _ in
             Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([event]))
           }
+
+          strongSelf.configureRemoteConfig()
         }
     #endif
 
@@ -421,6 +425,48 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
+  }
+
+  private func configureRemoteConfig() {
+    let remoteConfig = RemoteConfig.remoteConfig()
+
+    // WARNING: Don't actually do this in production!
+    let settings = RemoteConfigSettings()
+    settings.minimumFetchInterval = 0
+    remoteConfig.configSettings = settings
+
+    AppEnvironment.updateRemoteConfigClient(remoteConfig)
+
+    let appDefaults: [String: Any?] = [
+      RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
+      RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
+    ]
+    AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
+
+    AppEnvironment.current.remoteConfigClient?.activate { _, error in
+      guard let remoteConfigActivationError = error else {
+        print("🔮 Remote Config SDK Successfully Activated")
+
+        // TODO: Eventually replace self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient), when we remove `MockOptimizelyClient`
+        return
+      }
+
+      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
+
+      Crashlytics.crashlytics().record(error: remoteConfigActivationError)
+
+      self.viewModel.inputs.optimizelyClientConfigurationFailed()
+      // we'll rename this later but keep it this way for now - because notifications are attached to it.
+    }
+
+    AppEnvironment.current.remoteConfigClient?.fetch { _, error in
+      if let remoteConfigFetchError = error {
+        print("🔴 Remote Config SDK Fetch Failed with Error: \(remoteConfigFetchError.localizedDescription)")
+      }
+    }
+
+    // TODO: self.remoteConfigUpdateListener = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { }
+    // This will be a global private var in `AppDelegate`, remember to deallocate when `applicationWillTerminate` delegate is called - https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623111-applicationwillterminate. (New method + signal to and out of view model)
   }
 }
 

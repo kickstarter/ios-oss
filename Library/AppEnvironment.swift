@@ -73,6 +73,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  public static func updateRemoteConfigClient(_ remoteConfigClient: RemoteConfigClientType?) {
+    self.replaceCurrentEnvironment(
+      remoteConfigClient: remoteConfigClient
+    )
+  }
+
   public static func updateServerConfig(_ config: ServerConfigType) {
     let service = Service(serverConfig: config)
 
@@ -170,6 +176,7 @@ public struct AppEnvironment: AppEnvironmentType {
     optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
+    remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
@@ -203,6 +210,7 @@ public struct AppEnvironment: AppEnvironmentType {
         optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
+        remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,
@@ -241,6 +249,7 @@ public struct AppEnvironment: AppEnvironmentType {
     optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
+    remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
@@ -275,6 +284,7 @@ public struct AppEnvironment: AppEnvironmentType {
         optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
+        remoteConfigClient: remoteConfigClient,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults,

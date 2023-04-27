@@ -99,6 +99,9 @@ public struct Environment {
   /// A reachability signal producer.
   public let reachability: SignalProducer<Reachability, Never>
 
+  /// The remote config client
+  public let remoteConfigClient: RemoteConfigClientType?
+
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateScheduler
@@ -141,6 +144,7 @@ public struct Environment {
     optimizelyClient: OptimizelyClientType? = nil,
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
+    remoteConfigClient: RemoteConfigClientType? = nil,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard,
@@ -174,6 +178,7 @@ public struct Environment {
     self.optimizelyClient = optimizelyClient
     self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
+    self.remoteConfigClient = remoteConfigClient
     self.scheduler = scheduler
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults

@@ -492,6 +492,12 @@
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
 		6067BCEC293E49F00036ABB1 /* FacebookResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */; };
 		6067BCF2293FC3520036ABB1 /* FacebookResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */; };
+		606C45F129FACD49001BA067 /* RemoteConfigClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F029FACD49001BA067 /* RemoteConfigClientType.swift */; };
+		606C45F329FACD68001BA067 /* RemoteConfigFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F229FACD68001BA067 /* RemoteConfigFeature.swift */; };
+		606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */; };
+		606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */; };
+		606C45FA29FACE17001BA067 /* MockRemoteConfigClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */; };
+		606C45FC29FAD091001BA067 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 606C45FB29FAD091001BA067 /* FirebaseRemoteConfig */; };
 		606F214429799A1200BA5CDF /* ATTrackingAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */; };
 		606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */; };
 		606F215E299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */; };
@@ -2076,6 +2082,11 @@
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
+		606C45F029FACD49001BA067 /* RemoteConfigClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigClientType.swift; sourceTree = "<group>"; };
+		606C45F229FACD68001BA067 /* RemoteConfigFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeature.swift; sourceTree = "<group>"; };
+		606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+Helpers.swift"; sourceTree = "<group>"; };
+		606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
+		606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteConfigClient.swift; sourceTree = "<group>"; };
 		606F214229799A0000BA5CDF /* ATTrackingAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTrackingAuthorizationStatus.swift; sourceTree = "<group>"; };
 		606F215A299D3EF800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift"; sourceTree = "<group>"; };
 		606F215D299D414800BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerCapiEventInput+TriggerCapiEventInput.swift"; sourceTree = "<group>"; };
@@ -3180,6 +3191,7 @@
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				191A4B4028FF386C009D62A5 /* ReactiveSwift in Frameworks */,
+				606C45FC29FAD091001BA067 /* FirebaseRemoteConfig in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
@@ -6242,6 +6254,7 @@
 				8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */,
 				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
 				774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */,
+				606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				77D19FF4240813240058FC8E /* NavigationController.swift */,
 				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
@@ -6283,6 +6296,10 @@
 				8053D3101D3848A3007B85DB /* Reachability.swift */,
 				A7DC83951C9DBBE700BB2B44 /* RefTag.swift */,
 				A7ED1F1E1E830FDC00BFFA01 /* RefTagTests.swift */,
+				606C45F029FACD49001BA067 /* RemoteConfigClientType.swift */,
+				606C45F229FACD68001BA067 /* RemoteConfigFeature.swift */,
+				606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */,
+				606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */,
 				D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */,
 				D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */,
 				0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */,
@@ -7204,6 +7221,7 @@
 				191A4B3F28FF386C009D62A5 /* ReactiveSwift */,
 				191A4B4128FF3897009D62A5 /* ReactiveExtensions */,
 				19821C86299D3E8300EF312F /* AppboySegment */,
+				606C45FB29FAD091001BA067 /* FirebaseRemoteConfig */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7669,6 +7687,7 @@
 				A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */,
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				8A23203125B0ECF700B940C3 /* IdentifyingTrackingClient.swift in Sources */,
+				606C45F329FACD68001BA067 /* RemoteConfigFeature.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
 				77C9122723C4F99400F3D2C9 /* Double+Currency.swift in Sources */,
@@ -7727,6 +7746,7 @@
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
 				8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */,
+				606C45F129FACD49001BA067 /* RemoteConfigClientType.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
 				7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */,
 				D6534D3A22E7878D00E9D279 /* CreditCard+Utils.swift in Sources */,
@@ -7798,6 +7818,7 @@
 				A75C811E1D210C4700B5AD03 /* ProjectActivityItemProvider.swift in Sources */,
 				370C8B6623590CA500DE75DD /* LoadingButtonViewModel.swift in Sources */,
 				1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */,
+				606C45FA29FACE17001BA067 /* MockRemoteConfigClient.swift in Sources */,
 				D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */,
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
@@ -7941,6 +7962,7 @@
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
+				606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
@@ -8051,6 +8073,7 @@
 				A7ED1FC61E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift in Sources */,
 				061645AE26697D55007D8D96 /* CommentRepliesViewModelTests.swift in Sources */,
 				A7ED1F281E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift in Sources */,
+				606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */,
 				A7ED1FB81E831C5C00BFFA01 /* BackingCellViewModelTests.swift in Sources */,
 				1923770A28DA2AE300F68635 /* Stripe+PaymentMethod.swift in Sources */,
 				A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */,
@@ -10610,6 +10633,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
+		};
+		606C45FB29FAD091001BA067 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 		60DA50FD28C38DDB002E2DF1 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
