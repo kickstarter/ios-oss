@@ -4,12 +4,12 @@ public func featureConsentManagementDialogEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue] ??
     (AppEnvironment.current.remoteConfigClient?
-      .bool(forKey: RemoteConfigFeature.consentManagementDialogEnabled) ?? false)
+      .isFeatureEnabled(featureKey: RemoteConfigFeature.consentManagementDialogEnabled) ?? false)
 }
 
 public func featureFacebookLoginInterstitialEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] ??
     (AppEnvironment.current.remoteConfigClient?
-      .bool(forKey: RemoteConfigFeature.facebookLoginInterstitialEnabled) ?? false)
+      .isFeatureEnabled(featureKey: RemoteConfigFeature.facebookLoginInterstitialEnabled) ?? false)
 }

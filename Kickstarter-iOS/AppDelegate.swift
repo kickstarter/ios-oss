@@ -430,40 +430,30 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private func configureRemoteConfig() {
     let remoteConfig = RemoteConfig.remoteConfig()
 
-    // WARNING: Don't actually do this in production!
-    let settings = RemoteConfigSettings()
-    settings.minimumFetchInterval = 0
-    remoteConfig.configSettings = settings
-
     AppEnvironment.updateRemoteConfigClient(remoteConfig)
 
     let appDefaults: [String: Any?] = [
       RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
       RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
     ]
+
     AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
 
-    AppEnvironment.current.remoteConfigClient?.activate { _, error in
-      guard let remoteConfigActivationError = error else {
+    AppEnvironment.current.remoteConfigClient?.fetchAndActivate(completionHandler: { _, error in
+      guard let remoteConfigFetchActivationError = error else {
         print("🔮 Remote Config SDK Successfully Activated")
 
         // TODO: Eventually replace self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient), when we remove `MockOptimizelyClient`
         return
       }
 
-      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
+      print("🔴 Remote Config SDK Fetch and Activation Failed with Error: \(remoteConfigFetchActivationError.localizedDescription)")
 
-      Crashlytics.crashlytics().record(error: remoteConfigActivationError)
+      Crashlytics.crashlytics().record(error: remoteConfigFetchActivationError)
 
       self.viewModel.inputs.optimizelyClientConfigurationFailed()
-      // we'll rename this later but keep it this way for now - because notifications are attached to it.
-    }
-
-    AppEnvironment.current.remoteConfigClient?.fetch { _, error in
-      if let remoteConfigFetchError = error {
-        print("🔴 Remote Config SDK Fetch Failed with Error: \(remoteConfigFetchError.localizedDescription)")
-      }
-    }
+      // TODO: we'll rename this later but keep it this way for now - because notifications are attached to it.
+    })
 
     // TODO: self.remoteConfigUpdateListener = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { }
     // This will be a global private var in `AppDelegate`, remember to deallocate when `applicationWillTerminate` delegate is called - https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623111-applicationwillterminate. (New method + signal to and out of view model)

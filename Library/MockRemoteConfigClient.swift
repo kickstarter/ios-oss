@@ -1,24 +1,19 @@
 import FirebaseRemoteConfig
 import Foundation
 
-public enum MockRemoteConfigError: Error {
-  case generic
-
-  var localizedDescription: String {
-    return "Mock Remote Config Error"
-  }
-}
-
 private class MockRemoteConfigValue: RemoteConfigValue {
   var bool = false
 }
 
 public class MockRemoteConfigClient: RemoteConfigClientType {
   public var features: [String: Bool]
-  public var error: MockRemoteConfigError?
 
   public init() {
     self.features = [:]
+  }
+
+  public func activate() async throws -> Bool {
+    return true
   }
 
   public func configValue(forKey key: String?) -> RemoteConfigValue {
@@ -28,9 +23,14 @@ public class MockRemoteConfigClient: RemoteConfigClientType {
     return value
   }
 
-  public func activate(completion _: ((Bool, Error?) -> Void)?) {}
-
-  public func fetch(completionHandler _: ((RemoteConfigFetchStatus, Error?) -> Void)?) {}
+  public func fetchAndActivate(completionHandler _: ((RemoteConfigFetchAndActivateStatus, Error?)
+      -> Void)?) {}
 
   public func setDefaults(_: [String: NSObject]?) {}
+
+//  public func addOnConfigUpdateListener(remoteConfigUpdateCompletion listener: @escaping (RemoteConfigUpdate?, Error?) -> Void) -> ConfigUpdateListenerRegistration {}
+
+  public func isFeatureEnabled(featureKey: RemoteConfigFeature) -> Bool {
+    return self.features[featureKey.rawValue] == true
+  }
 }
