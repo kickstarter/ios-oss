@@ -133,8 +133,6 @@
 		06634FBE2807A4C300950F60 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBD2807A4C300950F60 /* Apollo */; };
 		06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FBF2807A4C300950F60 /* ApolloAPI */; };
 		06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC12807A4C300950F60 /* ApolloUtils */; };
-		06634FC52807A4EB00950F60 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC42807A4EB00950F60 /* Prelude */; };
-		06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC62807A4EB00950F60 /* Prelude_UIKit */; };
 		06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
 		0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */; };
@@ -205,7 +203,6 @@
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
 		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
 		06E3296B270E39B300216306 /* ProjectPageNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */; };
-		06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06EA2D4B280F76B700F4DE2E /* Prelude */; };
 		06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2F27B5D26800D8BFCC /* PinchToZoom.swift */; };
 		06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EB4E2D27B5D06A00D8BFCC /* OverlayView.swift */; };
 		06ED88D727BFF02200893A24 /* AudioVideoViewElementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475D16FA2773B0DE009E4354 /* AudioVideoViewElementCell.swift */; };
@@ -233,14 +230,6 @@
 		19047FCB2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */; };
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
-		1905787B28F8CD2500428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905787A28F8CD2500428375 /* ReactiveSwift */; };
-		1905788128F8CD7000428375 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1905788028F8CD7000428375 /* ReactiveSwift */; };
-		191A4B4028FF386C009D62A5 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B3F28FF386C009D62A5 /* ReactiveSwift */; };
-		191A4B4228FF3897009D62A5 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4128FF3897009D62A5 /* ReactiveExtensions */; };
-		191A4B4428FF395E009D62A5 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4328FF395E009D62A5 /* ReactiveExtensions */; };
-		191A4B4628FF3965009D62A5 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4528FF3965009D62A5 /* ReactiveSwift */; };
-		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
-		191A4B5028FF44D8009D62A5 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4F28FF44D8009D62A5 /* ReactiveExtensions */; };
 		191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 191EDC6628E29BB9009B41B2 /* PerimeterX */; };
 		1923770A28DA2AE300F68635 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
 		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
@@ -259,14 +248,22 @@
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
+		197107142A01A08700834701 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 197107132A01A08700834701 /* Prelude */; };
+		197107162A01A08700834701 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 197107152A01A08700834701 /* Prelude_UIKit */; };
+		197107192A01A0F100834701 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 197107182A01A0F100834701 /* ReactiveExtensions */; };
+		1971071B2A01A0F100834701 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1971071A2A01A0F100834701 /* ReactiveExtensions-TestHelpers */; };
+		1971071C2A01A17700834701 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
+		1971071D2A01A29400834701 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
+		197107202A01A2CA00834701 /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
+		197107222A01A2D600834701 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 197107212A01A2D600834701 /* ReactiveExtensions-TestHelpers */; };
+		197107282A01A2FD00834701 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 197107272A01A2FD00834701 /* Prelude */; };
+		197107292A01A30E00834701 /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
+		1971072A2A01A31300834701 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		1981AC90289075D900BB4897 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 1981AC8F289075D900BB4897 /* Stripe */; };
 		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
 		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
 		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
-		1998BCA828F60E8900D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCA728F60E8900D04077 /* ReactiveExtensions */; };
-		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
-		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
 		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
@@ -750,7 +747,6 @@
 		8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */; };
 		8AA3DB30250AB4AB009AC8EA /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B4181D10B419000C4252 /* UIAlertController.swift */; };
 		8AA3DB31250AB4E5009AC8EA /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
-		8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		8AA3DB33250AE40C009AC8EA /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC17218BB70B00CF713E /* SettingsViewModel.swift */; };
 		8AA3DB34250AE410009AC8EA /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */; };
 		8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */; };
@@ -883,7 +879,6 @@
 		A7169BF61DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */; };
 		A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A718885C1DE0DDCE0094856D /* ShortcutItem.swift */; };
 		A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F59E71D2424CA00909BE3 /* KSCache.swift */; };
-		A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72AFFD91CD7ED6B008F052B /* Keyboard.swift */; };
 		A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */; };
 		A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C3A8B1D00F6A80075227E /* SelectableRow.swift */; };
@@ -916,7 +911,6 @@
 		A73923C91D272242004524C3 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B81D272242004524C3 /* Search.storyboard */; };
 		A73923CB1D272242004524C3 /* Update.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923BA1D272242004524C3 /* Update.storyboard */; };
 		A73923CC1D272242004524C3 /* UpdateDraft.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923BB1D272242004524C3 /* UpdateDraft.storyboard */; };
-		A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A73924041D272404004524C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */; };
 		A73924051D27247E004524C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B31D272242004524C3 /* Main.storyboard */; };
@@ -973,7 +967,6 @@
 		A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A41C90C94000EDCCB9 /* UICollectionView-Extensions.swift */; };
 		A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A51C90C94000EDCCB9 /* UIView-Extensions.swift */; };
 		A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76126A61C90C94000EDCCB9 /* UITableView-Extensions.swift */; };
-		A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */; };
 		A7698B2A1D00602800953FD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7698B291D00602800953FD3 /* LoginViewModel.swift */; };
 		A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */; };
@@ -1167,7 +1160,6 @@
 		D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */; };
 		D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D002CAE4218CF951009783F2 /* WatchProjectResponseEnvelope.swift */; };
 		D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */; };
-		D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015876A1EEB2ED6006E7684 /* NSURLSession.swift */; };
 		D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015876D1EEB2ED6006E7684 /* BasicHTTPAuth.swift */; };
 		D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015876E1EEB2ED6006E7684 /* ClientAuth.swift */; };
@@ -1349,9 +1341,7 @@
 		D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */; };
 		D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */; };
 		D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */; };
-		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
 		D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877D1EEB2ED6006E7684 /* BackingTests.swift */; };
 		D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */; };
@@ -1563,14 +1553,35 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A724BA621D2BFCC10041863C /* PBXContainerItemProxy */ = {
+		197107062A01768900834701 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A7C7959D1C873A870081977F;
-			remoteInfo = "Kickstarter-iOS-Framework";
+			remoteInfo = "Kickstarter-Framework-iOS";
 		};
-		A73923FE1D272302004524C3 /* PBXContainerItemProxy */ = {
+		197107102A01792500834701 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A755113B1C8642B3005355CF;
+			remoteInfo = "Library-iOS";
+		};
+		197107232A01A2E600834701 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A755113B1C8642B3005355CF;
+			remoteInfo = "Library-iOS";
+		};
+		197107252A01A2EA00834701 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
+			remoteInfo = KsApi;
+		};
+		A724BA621D2BFCC10041863C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
@@ -1584,21 +1595,7 @@
 			remoteGlobalIDString = A755113B1C8642B3005355CF;
 			remoteInfo = "Library-iOS";
 		};
-		A76E0A4B1D00C00500EC525A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A755113B1C8642B3005355CF;
-			remoteInfo = "Library-iOS";
-		};
 		D015875A1EEB2DE4006E7684 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
-			remoteInfo = KsApi;
-		};
-		D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
 			proxyType = 1;
@@ -1608,16 +1605,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		77539E692147E2C700A564CD /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1629,15 +1616,6 @@
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D00698DC225C31C900EB58BD /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -3177,15 +3155,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1971071C2A01A17700834701 /* KsApi.framework in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
-				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
-				191A4B4028FF386C009D62A5 /* ReactiveSwift in Frameworks */,
-				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
+				197107162A01A08700834701 /* Prelude_UIKit in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
-				191A4B4228FF3897009D62A5 /* ReactiveExtensions in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 			);
@@ -3196,9 +3172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F91B14289C8097000AEC6A /* Stripe in Frameworks */,
-				191A4B5028FF44D8009D62A5 /* ReactiveExtensions in Frameworks */,
-				8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */,
-				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
+				1971071B2A01A0F100834701 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3206,9 +3180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
-				191A4B4628FF3965009D62A5 /* ReactiveSwift in Frameworks */,
-				191A4B4428FF395E009D62A5 /* ReactiveExtensions in Frameworks */,
+				1971071D2A01A29400834701 /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3218,15 +3190,13 @@
 			files = (
 				19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */,
 				19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */,
+				197107282A01A2FD00834701 /* Prelude in Frameworks */,
+				197107292A01A30E00834701 /* Kickstarter_Framework.framework in Frameworks */,
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
-				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
-				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
 				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
-				1905787B28F8CD2500428375 /* ReactiveSwift in Frameworks */,
-				1998BCA828F60E8900D04077 /* ReactiveExtensions in Frameworks */,
-				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
+				1971072A2A01A31300834701 /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3234,9 +3204,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				197107202A01A2CA00834701 /* Kickstarter_Framework.framework in Frameworks */,
 				70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */,
-				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
-				1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */,
+				197107222A01A2D600834701 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3244,22 +3214,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				197107142A01A08700834701 /* Prelude in Frameworks */,
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
-				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
 				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
-				1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */,
-				1905788128F8CD7000428375 /* ReactiveSwift in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
+				197107192A01A0F100834701 /* ReactiveExtensions in Frameworks */,
 				198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D01587551EEB2DE4006E7684 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7154,30 +7115,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		A75511391C8642B3005355CF /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A7C7959B1C873A870081977F /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D015874D1EEB2DE4006E7684 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		A755113B1C8642B3005355CF /* Library-iOS */ = {
 			isa = PBXNativeTarget;
@@ -7185,7 +7122,6 @@
 			buildPhases = (
 				A75511371C8642B3005355CF /* Sources */,
 				A75511381C8642B3005355CF /* Frameworks */,
-				A75511391C8642B3005355CF /* Headers */,
 				A755113A1C8642B3005355CF /* Resources */,
 			);
 			buildRules = (
@@ -7194,16 +7130,14 @@
 			);
 			name = "Library-iOS";
 			packageProductDependencies = (
-				06634FC62807A4EB00950F60 /* Prelude_UIKit */,
 				1981AC8F289075D900BB4897 /* Stripe */,
 				60DA50FD28C38DDB002E2DF1 /* AlamofireImage */,
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
-				191A4B3F28FF386C009D62A5 /* ReactiveSwift */,
-				191A4B4128FF3897009D62A5 /* ReactiveExtensions */,
 				19821C86299D3E8300EF312F /* AppboySegment */,
+				197107152A01A08700834701 /* Prelude_UIKit */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7215,8 +7149,6 @@
 			buildPhases = (
 				A75511411C8642B3005355CF /* Sources */,
 				A75511421C8642B3005355CF /* Frameworks */,
-				A75511431C8642B3005355CF /* Resources */,
-				D00698DC225C31C900EB58BD /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -7226,8 +7158,7 @@
 			name = "Library-iOSTests";
 			packageProductDependencies = (
 				19F91B13289C8097000AEC6A /* Stripe */,
-				191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */,
-				191A4B4F28FF44D8009D62A5 /* ReactiveExtensions */,
+				1971071A2A01A0F100834701 /* ReactiveExtensions-TestHelpers */,
 			);
 			productName = "Library-iOSTests";
 			productReference = A75511451C8642B3005355CF /* Library-iOSTests.xctest */;
@@ -7239,18 +7170,15 @@
 			buildPhases = (
 				A7C795991C873A870081977F /* Sources */,
 				A7C7959A1C873A870081977F /* Frameworks */,
-				A7C7959B1C873A870081977F /* Headers */,
 				A7C7959C1C873A870081977F /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A76E0A4C1D00C00500EC525A /* PBXTargetDependency */,
+				197107112A01792500834701 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
-				191A4B4328FF395E009D62A5 /* ReactiveExtensions */,
-				191A4B4528FF3965009D62A5 /* ReactiveSwift */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -7269,20 +7197,19 @@
 			buildRules = (
 			);
 			dependencies = (
-				A73923FF1D272302004524C3 /* PBXTargetDependency */,
-				D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */,
+				197107072A01768900834701 /* PBXTargetDependency */,
+				197107242A01A2E600834701 /* PBXTargetDependency */,
+				197107262A01A2EA00834701 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
-				06EA2D4B280F76B700F4DE2E /* Prelude */,
 				19BF226028D10497007F4197 /* FirebaseAnalytics */,
 				19BF226228D10497007F4197 /* FirebaseCrashlytics */,
 				19BF226428D10497007F4197 /* FirebasePerformance */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
-				1998BCA728F60E8900D04077 /* ReactiveExtensions */,
-				1905787A28F8CD2500428375 /* ReactiveSwift */,
 				19821C84299D392400EF312F /* AppboySegment */,
+				197107272A01A2FD00834701 /* Prelude */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7294,8 +7221,6 @@
 			buildPhases = (
 				A7D1F9561C850B7C000D41D5 /* Sources */,
 				A7D1F9571C850B7C000D41D5 /* Frameworks */,
-				77539E692147E2C700A564CD /* Embed Frameworks */,
-				A7D1F9581C850B7C000D41D5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -7304,8 +7229,8 @@
 			);
 			name = "Kickstarter-Framework-iOSTests";
 			packageProductDependencies = (
-				1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */,
 				7049568F299D53ED00B273DF /* SnapshotTesting */,
+				197107212A01A2D600834701 /* ReactiveExtensions-TestHelpers */,
 			);
 			productName = KickstarterTests;
 			productReference = A7D1F95A1C850B7C000D41D5 /* Kickstarter-Framework-iOSTests.xctest */;
@@ -7318,7 +7243,6 @@
 				8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */,
 				D015874B1EEB2DE4006E7684 /* Sources */,
 				D015874C1EEB2DE4006E7684 /* Frameworks */,
-				D015874D1EEB2DE4006E7684 /* Headers */,
 				D015874E1EEB2DE4006E7684 /* Resources */,
 			);
 			buildRules = (
@@ -7330,11 +7254,10 @@
 				06634FBD2807A4C300950F60 /* Apollo */,
 				06634FBF2807A4C300950F60 /* ApolloAPI */,
 				06634FC12807A4C300950F60 /* ApolloUtils */,
-				06634FC42807A4EB00950F60 /* Prelude */,
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				198E574C28E2705E00D5B8A9 /* PerimeterX */,
-				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
-				1905788028F8CD7000428375 /* ReactiveSwift */,
+				197107132A01A08700834701 /* Prelude */,
+				197107182A01A0F100834701 /* ReactiveExtensions */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -7345,8 +7268,6 @@
 			buildConfigurationList = D01587651EEB2DE4006E7684 /* Build configuration list for PBXNativeTarget "KsApiTests" */;
 			buildPhases = (
 				D01587541EEB2DE4006E7684 /* Sources */,
-				D01587551EEB2DE4006E7684 /* Frameworks */,
-				D01587561EEB2DE4006E7684 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -7430,7 +7351,6 @@
 			mainGroup = A7E06C701C5A6EB300EBDCC2;
 			packageReferences = (
 				06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */,
-				06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
 				194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */,
 				60DA50F628BFA331002E2DF1 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				60DA510928C7DC0E002E2DF1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
@@ -7439,10 +7359,10 @@
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
-				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
-				1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
+				197107122A01A08700834701 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */,
+				197107172A01A0F100834701 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -7465,13 +7385,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A78214741DB9326A00D0DD91 /* Localizable.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A75511431C8642B3005355CF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7544,13 +7457,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7D1F9581C850B7C000D41D5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D015874E1EEB2DE4006E7684 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7593,13 +7499,6 @@
 				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
 				06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */,
 				47A662F126AF1FCC001CE7B1 /* WatchProject.graphql in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D01587561EEB2DE4006E7684 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7866,6 +7765,7 @@
 				D04AAC34218BB70D00CF713E /* SettingsAccountPickerCellViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				06BD75C926C431A000A12D4E /* CommentDialogViewModel.swift in Sources */,
+				D04AAC1F218BB70D00CF713E /* SettingsNotificationCellViewModel.swift in Sources */,
 				064B007827A463D2007B21FE /* ImageViewElementCellViewModel.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
 				370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */,
@@ -7876,7 +7776,6 @@
 				D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */,
 				D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */,
 				018422BB1D2C483000CA7566 /* DashboardTitleViewViewModel.swift in Sources */,
-				D04AAC1F218BB70D00CF713E /* SettingsNotificationCellViewModel.swift in Sources */,
 				A72AFFDA1CD7ED6B008F052B /* Keyboard.swift in Sources */,
 				37FDAFAC2273BA4700662CC8 /* UIStackView.swift in Sources */,
 				D04AAC2F218BB70D00CF713E /* LoadingBarButtonItemViewModel.swift in Sources */,
@@ -7926,6 +7825,7 @@
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */,
+				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */,
@@ -7940,7 +7840,6 @@
 				3706408222A8A66E00889CBD /* PledgeAmountViewModel.swift in Sources */,
 				A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */,
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
-				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
@@ -9112,35 +9011,40 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		197107072A01768900834701 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */;
+			targetProxy = 197107062A01768900834701 /* PBXContainerItemProxy */;
+		};
+		197107112A01792500834701 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A755113B1C8642B3005355CF /* Library-iOS */;
+			targetProxy = 197107102A01792500834701 /* PBXContainerItemProxy */;
+		};
+		197107242A01A2E600834701 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A755113B1C8642B3005355CF /* Library-iOS */;
+			targetProxy = 197107232A01A2E600834701 /* PBXContainerItemProxy */;
+		};
+		197107262A01A2EA00834701 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D015874F1EEB2DE4006E7684 /* KsApi */;
+			targetProxy = 197107252A01A2EA00834701 /* PBXContainerItemProxy */;
+		};
 		A724BA631D2BFCC10041863C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */;
 			targetProxy = A724BA621D2BFCC10041863C /* PBXContainerItemProxy */;
-		};
-		A73923FF1D272302004524C3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */;
-			targetProxy = A73923FE1D272302004524C3 /* PBXContainerItemProxy */;
 		};
 		A75511481C8642B3005355CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
 			targetProxy = A75511471C8642B3005355CF /* PBXContainerItemProxy */;
 		};
-		A76E0A4C1D00C00500EC525A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A755113B1C8642B3005355CF /* Library-iOS */;
-			targetProxy = A76E0A4B1D00C00500EC525A /* PBXContainerItemProxy */;
-		};
 		D015875B1EEB2DE4006E7684 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
 			targetProxy = D015875A1EEB2DE4006E7684 /* PBXContainerItemProxy */;
-		};
-		D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D015874F1EEB2DE4006E7684 /* KsApi */;
-			targetProxy = D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -9821,6 +9725,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -9859,6 +9764,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -9897,6 +9803,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -10225,6 +10132,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -10359,22 +10267,6 @@
 				version = 0.44.0;
 			};
 		};
-		06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kickstarter/Kickstarter-Prelude.git";
-			requirement = {
-				branch = "feature/swift-package";
-				kind = branch;
-			};
-		};
-		1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveCocoa/ReactiveSwift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.5.0;
-			};
-		};
 		194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stripe/stripe-ios";
@@ -10383,12 +10275,20 @@
 				minimumVersion = 22.7.1;
 			};
 		};
-		194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */ = {
+		197107122A01A08700834701 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kickstarter/Kickstarter-Prelude";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		197107172A01A0F100834701 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kickstarter/Kickstarter-ReactiveExtensions";
 			requirement = {
-				branch = "feature/swift-package";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
 			};
 		};
 		19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */ = {
@@ -10481,65 +10381,40 @@
 			package = 06634FBC2807A4C300950F60 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloUtils;
 		};
-		06634FC42807A4EB00950F60 /* Prelude */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
-			productName = Prelude;
-		};
-		06634FC62807A4EB00950F60 /* Prelude_UIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
-			productName = Prelude_UIKit;
-		};
-		06EA2D4B280F76B700F4DE2E /* Prelude */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
-			productName = Prelude;
-		};
-		1905787A28F8CD2500428375 /* ReactiveSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
-			productName = ReactiveSwift;
-		};
-		1905788028F8CD7000428375 /* ReactiveSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
-			productName = ReactiveSwift;
-		};
-		191A4B3F28FF386C009D62A5 /* ReactiveSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
-			productName = ReactiveSwift;
-		};
-		191A4B4128FF3897009D62A5 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
-		};
-		191A4B4328FF395E009D62A5 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
-		};
-		191A4B4528FF3965009D62A5 /* ReactiveSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1905787928F8CD2500428375 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
-			productName = ReactiveSwift;
-		};
-		191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = "ReactiveExtensions-TestHelpers";
-		};
-		191A4B4F28FF44D8009D62A5 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
-		};
 		191EDC6628E29BB9009B41B2 /* PerimeterX */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
+		};
+		197107132A01A08700834701 /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 197107122A01A08700834701 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude;
+		};
+		197107152A01A08700834701 /* Prelude_UIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 197107122A01A08700834701 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude_UIKit;
+		};
+		197107182A01A0F100834701 /* ReactiveExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 197107172A01A0F100834701 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = ReactiveExtensions;
+		};
+		1971071A2A01A0F100834701 /* ReactiveExtensions-TestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 197107172A01A0F100834701 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = "ReactiveExtensions-TestHelpers";
+		};
+		197107212A01A2D600834701 /* ReactiveExtensions-TestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 197107172A01A0F100834701 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
+			productName = "ReactiveExtensions-TestHelpers";
+		};
+		197107272A01A2FD00834701 /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 197107122A01A08700834701 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude;
 		};
 		1981AC8F289075D900BB4897 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -10565,21 +10440,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
-		};
-		1998BCA728F60E8900D04077 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
-		};
-		1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = "ReactiveExtensions-TestHelpers";
-		};
-		1998BCB128F60ED400D04077 /* ReactiveExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
-			productName = ReactiveExtensions;
 		};
 		19BF226028D10497007F4197 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
