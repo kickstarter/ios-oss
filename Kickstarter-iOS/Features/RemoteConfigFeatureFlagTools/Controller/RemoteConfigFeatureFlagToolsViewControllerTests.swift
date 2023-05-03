@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
-final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
+final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 
@@ -19,7 +19,7 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testOptimizelyFeatureFlagToolsViewController() {
+  func testRemoteConfigFeatureFlagToolsViewController() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [
         OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
@@ -31,7 +31,7 @@ final class OptimizelyFeatureFlagToolsViewControllerTests: TestCase {
       ]
 
     withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
-      let controller = OptimizelyFeatureFlagToolsViewController.instantiate()
+      let controller = RemoteConfigFeatureFlagToolsViewController.instantiate()
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
       self.scheduler.run()
 

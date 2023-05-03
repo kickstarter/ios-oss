@@ -407,8 +407,8 @@
 		477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */; };
 		477239772710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */; };
 		477239792710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */; };
-		47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */; };
-		47733001268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */; };
+		47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47732FFB26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift */; };
+		47733001268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
 		4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4778EE1E26A1E8230059EA69 /* FetchUser.graphql */; };
 		4778EE2126A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */; };
 		478E31C126C1C4C6004BF898 /* UnwatchProject.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
@@ -440,8 +440,8 @@
 		47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */; };
 		47D8619B26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */; };
 		47D8619D26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */; };
-		47F4CA5F267A7B1800356DBF /* OptimizelyFeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */; };
-		47F4CA63267A7B2300356DBF /* OptimizelyFeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */; };
+		47F4CA5F267A7B1800356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA57267A7AD100356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift */; };
+		47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F4CA52267A7A8A00356DBF /* RemoteConfigFeatureFlagToolsViewController.swift */; };
 		47F85271272206840050DB39 /* ProjectFAQsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */; };
 		47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F95ECF2672C587001365B2 /* ViewRepliesView.swift */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
@@ -1998,8 +1998,8 @@
 		477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModel.swift; sourceTree = "<group>"; };
 		477239782710FABB00D26CDA /* ProjectNavigationSelectorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorViewModelTests.swift; sourceTree = "<group>"; };
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
-		47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewControllerTests.swift; sourceTree = "<group>"; };
-		47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
+		47732FFB26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewControllerTests.swift; sourceTree = "<group>"; };
+		47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		4778EE1E26A1E8230059EA69 /* FetchUser.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUser.graphql; sourceTree = "<group>"; };
 		4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEnvelope+GraphUserEnvelope.swift"; sourceTree = "<group>"; };
 		478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnwatchProject.graphql; sourceTree = "<group>"; };
@@ -2032,8 +2032,8 @@
 		47D8619826B9E4F700A31F9A /* ClearUserUnseenActivity.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ClearUserUnseenActivity.graphql; sourceTree = "<group>"; };
 		47D8619A26B9E98E00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.Data.swift"; sourceTree = "<group>"; };
 		47D8619C26B9F23A00A31F9A /* ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClearUserUnseenActivityEnvelope+ClearUserUnseenActivityMutation.DataTests.swift"; sourceTree = "<group>"; };
-		47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
-		47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
+		47F4CA52267A7A8A00356DBF /* RemoteConfigFeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
+		47F4CA57267A7AD100356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigFeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
 		47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsCellViewModelTests.swift; sourceTree = "<group>"; };
 		47F95ECF2672C587001365B2 /* ViewRepliesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRepliesView.swift; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
@@ -3588,12 +3588,12 @@
 			path = MessageDialog;
 			sourceTree = "<group>";
 		};
-		1937A6EF28C92EDC00DD732D /* OptimizelyFeatureFlagTools */ = {
+		1937A6EF28C92EDC00DD732D /* RemoteConfigFeatureFlagTools */ = {
 			isa = PBXGroup;
 			children = (
 				1937A70328C9309F00DD732D /* Controller */,
 			);
-			path = OptimizelyFeatureFlagTools;
+			path = RemoteConfigFeatureFlagTools;
 			sourceTree = "<group>";
 		};
 		1937A6F028C92F0000DD732D /* PledgeAmountSummary */ = {
@@ -3750,8 +3750,8 @@
 		1937A70328C9309F00DD732D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				47F4CA52267A7A8A00356DBF /* OptimizelyFeatureFlagToolsViewController.swift */,
-				47732FFB26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift */,
+				47F4CA52267A7A8A00356DBF /* RemoteConfigFeatureFlagToolsViewController.swift */,
+				47732FFB26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4803,7 +4803,6 @@
 				1937A6ED28C92EC700DD732D /* MessageBanner */,
 				1937A6EE28C92ED400DD732D /* MessageDialog */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
-				1937A6EF28C92EDC00DD732D /* OptimizelyFeatureFlagTools */,
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
 				1937A6F128C92F0C00DD732D /* PledgeAmount */,
@@ -4815,6 +4814,7 @@
 				1965436E28C810CC00457EC6 /* ProjectNotifications */,
 				1965437528C812F100457EC6 /* ProjectPamphletContentDataSource_DEPRECATED_09_06_2022 */,
 				1965437628C8141700457EC6 /* ProjectPage */,
+				1937A6EF28C92EDC00DD732D /* RemoteConfigFeatureFlagTools */,
 				1937A70728C939D100DD732D /* ResetPassword */,
 				19450C1A28C81DBC00C60F97 /* RewardAddOnSelection */,
 				19450C1F28C81FEF00C60F97 /* RewardsCollection */,
@@ -6656,8 +6656,6 @@
 				A7ED1F6C1E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift */,
 				D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */,
 				D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */,
-				47F4CA57267A7AD100356DBF /* OptimizelyFeatureFlagToolsViewModel.swift */,
-				47733000268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift */,
 				D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */,
 				D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */,
 				777C60A72420154100820C59 /* PersonalizationCellViewModel.swift */,
@@ -6742,6 +6740,8 @@
 				473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */,
 				59392C1D1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift */,
 				A7ED1FA11E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift */,
+				47F4CA57267A7AD100356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift */,
+				47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */,
 				A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */,
 				A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */,
 				8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */,
@@ -7870,7 +7870,7 @@
 				D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */,
 				A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
-				47F4CA5F267A7B1800356DBF /* OptimizelyFeatureFlagToolsViewModel.swift in Sources */,
+				47F4CA5F267A7B1800356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift in Sources */,
 				D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */,
 				A75511681C8642C3005355CF /* UIGestureRecognizer-Extensions.swift in Sources */,
 				0616459A266974F7007D8D96 /* CommentRepliesViewModel.swift in Sources */,
@@ -8199,7 +8199,7 @@
 				D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */,
 				A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
 				063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */,
-				47733001268252C800E84915 /* OptimizelyFeatureFlagToolsViewModelTests.swift in Sources */,
+				47733001268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */,
 				8A4B8E98263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift in Sources */,
 				A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */,
 				37DEC2202257CA0A0051EF9B /* PledgeViewModelTests.swift in Sources */,
@@ -8382,7 +8382,7 @@
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
 				3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */,
-				47F4CA63267A7B2300356DBF /* OptimizelyFeatureFlagToolsViewController.swift in Sources */,
+				47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				593AC5CF1D33F4BF002613F4 /* DashboardFundingCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,
@@ -8569,7 +8569,7 @@
 				19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
-				47732FFC26824E5000E84915 /* OptimizelyFeatureFlagToolsViewControllerTests.swift in Sources */,
+				47732FFC26824E5000E84915 /* RemoteConfigFeatureFlagToolsViewControllerTests.swift in Sources */,
 				4771DF9926EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift in Sources */,
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
