@@ -6,11 +6,11 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class OptimizelyFlagToolsViewModelTests: TestCase {
+final class RemoteConfigFlagToolsViewModelTests: TestCase {
   private let vm: RemoteConfigFeatureFlagToolsViewModelType = RemoteConfigFeatureFlagToolsViewModel()
 
-  private let reloadWithData = TestObserver<OptimizelyFeatures, Never>()
-  private let updateUserDefaultsWithFeatures = TestObserver<OptimizelyFeatures, Never>()
+  private let reloadWithData = TestObserver<RemoteConfigFeatures, Never>()
+  private let updateUserDefaultsWithFeatures = TestObserver<RemoteConfigFeatures, Never>()
 
   override func setUp() {
     super.setUp()
@@ -20,22 +20,18 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
   }
 
   func testReloadWithData_AllFeaturesEnabled() {
-    let mockOptimizelyClient = MockOptimizelyClient()
+    let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: true,
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true,
-        OptimizelyFeature.paymentSheetEnabled.rawValue: true,
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
-        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
+        RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true
       ]
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
 
       self.reloadWithData.values.forEach { featureTuples in
         featureTuples.forEach { feature, isEnabled in
-          let isEnabledOnClient = mockOptimizelyClient.features[feature.rawValue]
+          let isEnabledOnClient = mockRemoteConfigClient.features[feature.rawValue]
 
           XCTAssertEqual(isEnabled, isEnabledOnClient)
         }
@@ -44,22 +40,18 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
   }
 
   func testReloadWithData_FeaturesEnabledAndDisabled() {
-    let mockOptimizelyClient = MockOptimizelyClient()
+    let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
-        OptimizelyFeature.paymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
+        RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
       ]
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
 
       self.reloadWithData.values.forEach { featureTuples in
         featureTuples.forEach { feature, isEnabled in
-          let isEnabledOnClient = mockOptimizelyClient.features[feature.rawValue]
+          let isEnabledOnClient = mockRemoteConfigClient.features[feature.rawValue]
 
           XCTAssertEqual(isEnabled, isEnabledOnClient)
         }
@@ -68,12 +60,12 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
   }
 
   func testUpdateUserDefaultsWithFeatures_FeaturesAreEnabled() {
-    let mockOptimizelyClient = MockOptimizelyClient()
+    let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
       ]
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -89,12 +81,12 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
   }
 
   func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
-    let mockOptimizelyClient = MockOptimizelyClient()
+    let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
       ]
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient, userDefaults: userDefaults) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient, userDefaults: userDefaults) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -109,9 +101,9 @@ final class OptimizelyFlagToolsViewModelTests: TestCase {
 
       XCTAssertEqual(
         userDefaults
-          .dictionary(forKey: "com.kickstarter.KeyValueStoreType.optimizelyFeatureFlags") as? [String: Bool],
+          .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
         [
-          OptimizelyFeature.commentFlaggingEnabled.rawValue: true
+          RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
         ]
       )
     }
