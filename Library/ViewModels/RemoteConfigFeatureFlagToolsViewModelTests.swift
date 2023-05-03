@@ -7,7 +7,7 @@ import ReactiveSwift
 import XCTest
 
 final class OptimizelyFlagToolsViewModelTests: TestCase {
-  private let vm: OptimizelyFeatureFlagToolsViewModelType = OptimizelyFeatureFlagToolsViewModel()
+  private let vm: RemoteConfigFeatureFlagToolsViewModelType = RemoteConfigFeatureFlagToolsViewModel()
 
   private let reloadWithData = TestObserver<OptimizelyFeatures, Never>()
   private let updateUserDefaultsWithFeatures = TestObserver<OptimizelyFeatures, Never>()

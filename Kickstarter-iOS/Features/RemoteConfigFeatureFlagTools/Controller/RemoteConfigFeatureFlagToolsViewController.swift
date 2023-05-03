@@ -4,15 +4,15 @@ import Library
 import Prelude
 import UIKit
 
-final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
+final class RemoteConfigFeatureFlagToolsViewController: UITableViewController {
   // MARK: - Properties
 
   private var features = OptimizelyFeatures()
   private let reuseId = "FeatureFlagTools.TableViewCell"
-  private let viewModel: OptimizelyFeatureFlagToolsViewModelType = OptimizelyFeatureFlagToolsViewModel()
+  private let viewModel: RemoteConfigFeatureFlagToolsViewModelType = RemoteConfigFeatureFlagToolsViewModel()
 
-  static func instantiate() -> OptimizelyFeatureFlagToolsViewController {
-    return OptimizelyFeatureFlagToolsViewController(style: .plain)
+  static func instantiate() -> RemoteConfigFeatureFlagToolsViewController {
+    return RemoteConfigFeatureFlagToolsViewController(style: .plain)
   }
 
   // MARK: - Lifecycle
@@ -21,7 +21,7 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title .~ "Optimizely Feature flags"
+      |> \.title .~ "Remote Config Feature flags"
 
     _ = self.tableView
       |> \.tableFooterView .~ UIView(frame: .zero)
@@ -64,7 +64,7 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension OptimizelyFeatureFlagToolsViewController {
+extension RemoteConfigFeatureFlagToolsViewController {
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return self.features.count
   }
