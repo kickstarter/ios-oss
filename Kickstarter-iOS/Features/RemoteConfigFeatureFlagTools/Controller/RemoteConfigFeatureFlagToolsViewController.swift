@@ -7,7 +7,7 @@ import UIKit
 final class RemoteConfigFeatureFlagToolsViewController: UITableViewController {
   // MARK: - Properties
 
-  private var features = OptimizelyFeatures()
+  private var features = RemoteConfigFeatures()
   private let reuseId = "FeatureFlagTools.TableViewCell"
   private let viewModel: RemoteConfigFeatureFlagToolsViewModelType = RemoteConfigFeatureFlagToolsViewModel()
 
@@ -57,7 +57,7 @@ final class RemoteConfigFeatureFlagToolsViewController: UITableViewController {
 
   // MARK: - Private Helpers
 
-  private func updateUserDefaults(with _: OptimizelyFeatures) {
+  private func updateUserDefaults(with _: RemoteConfigFeatures) {
     self.viewModel.inputs.didUpdateUserDefaults()
   }
 }
