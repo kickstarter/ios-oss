@@ -20,17 +20,14 @@ final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
   }
 
   func testRemoteConfigFeatureFlagToolsViewController() {
-    let mockOptimizelyClient = MockOptimizelyClient()
+    let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false,
-        OptimizelyFeature.paymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: false,
-        OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: false
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
+        RemoteConfigFeature.facebookLoginInterstitialEnabled
+          .rawValue: false
       ]
 
-    withEnvironment(language: .en, mainBundle: MockBundle(), optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(language: .en, mainBundle: MockBundle(), remoteConfigClient: mockRemoteConfigClient) {
       let controller = RemoteConfigFeatureFlagToolsViewController.instantiate()
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
       self.scheduler.run()
