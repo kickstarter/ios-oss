@@ -3,11 +3,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias OptimizelyFeatures = [(OptimizelyFeature, Bool)]
+public typealias RemoteConfigFeatures = [(RemoteConfigFeature, Bool)]
 
 public protocol RemoteConfigFeatureFlagToolsViewModelOutputs {
-  var reloadWithData: Signal<OptimizelyFeatures, Never> { get }
-  var updateUserDefaultsWithFeatures: Signal<OptimizelyFeatures, Never> { get }
+  var reloadWithData: Signal<RemoteConfigFeatures, Never> { get }
+  var updateUserDefaultsWithFeatures: Signal<RemoteConfigFeatures, Never> { get }
 }
 
 public protocol RemoteConfigFeatureFlagToolsViewModelInputs {
@@ -32,27 +32,22 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
       self.viewDidLoadProperty.signal,
       didUpdateUserDefaultsAndUI
     )
-    .map { _ in AppEnvironment.current.optimizelyClient?.allFeatures() }
+    .map { _ in AppEnvironment.current.remoteConfigClient?.allFeatures() }
     .skipNil()
 
-    let optimizelyFeatures = features
+    let remoteConfigFeatures = features
       .map { features in
-        features.map { feature -> (OptimizelyFeature, Bool) in
-          let isEnabledFromServer = AppEnvironment.current.optimizelyClient?
-            .isFeatureEnabled(featureKey: feature.rawValue) ?? false
-
-          let isEnabledFromUserDefaults = getValueFromUserDefaults(for: feature)
-
-          return (feature, isEnabledFromUserDefaults ?? isEnabledFromServer)
+        features.map { feature -> (RemoteConfigFeature, Bool) in
+          (feature, isFeatureEnabled(feature))
         }
       }
 
-    self.reloadWithData = optimizelyFeatures
+    self.reloadWithData = remoteConfigFeatures
 
-    self.updateUserDefaultsWithFeatures = optimizelyFeatures
+    self.updateUserDefaultsWithFeatures = remoteConfigFeatures
       .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
       .map(unpack)
-      .map { features, index, isEnabled -> OptimizelyFeatures? in
+      .map { features, index, isEnabled -> RemoteConfigFeatures? in
         let (feature, _) = features[index]
         var mutatedFeatures = features
 
@@ -79,8 +74,8 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadWithData: Signal<OptimizelyFeatures, Never>
-  public let updateUserDefaultsWithFeatures: Signal<OptimizelyFeatures, Never>
+  public let reloadWithData: Signal<RemoteConfigFeatures, Never>
+  public let updateUserDefaultsWithFeatures: Signal<RemoteConfigFeatures, Never>
 
   public var inputs: RemoteConfigFeatureFlagToolsViewModelInputs { return self }
   public var outputs: RemoteConfigFeatureFlagToolsViewModelOutputs { return self }
@@ -90,50 +85,35 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
 
 /** Returns the value of the User Defaults key in the AppEnvironment.
  */
-private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
+private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool? {
   switch feature {
-  case .commentFlaggingEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue]
   case .consentManagementDialogEnabled:
     return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.consentManagementDialogEnabled.rawValue]
-  case .projectPageStoryTabEnabled:
+      .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue]
+  case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue]
-  case .paymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue]
-  case .settingsPaymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue]
-  case .facebookLoginDeprecationEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue]
+      .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
+  }
+}
+
+private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
+  switch feature {
+  case .consentManagementDialogEnabled:
+    return featureConsentManagementDialogEnabled()
+  case .facebookLoginInterstitialEnabled:
+    return featureFacebookLoginInterstitialEnabled()
   }
 }
 
 /** Sets the value for the UserDefaults key in the AppEnvironment.
  */
-private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: Bool) {
+private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value: Bool) {
   switch feature {
-  case .commentFlaggingEnabled:
-    AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.commentFlaggingEnabled.rawValue] = value
   case .consentManagementDialogEnabled:
     AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.consentManagementDialogEnabled.rawValue] = value
-  case .projectPageStoryTabEnabled:
-    AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.projectPageStoryTabEnabled.rawValue] = value
-  case .paymentSheetEnabled:
+      .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue] = value
+  case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.paymentSheetEnabled.rawValue] = value
-  case .settingsPaymentSheetEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.settingsPaymentSheetEnabled.rawValue] = value
-  case .facebookLoginDeprecationEnabled:
-    return AppEnvironment.current.userDefaults
-      .optimizelyFeatureFlags[OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue] = value
+      .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
   }
 }
