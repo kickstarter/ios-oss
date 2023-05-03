@@ -166,7 +166,7 @@ internal final class BetaToolsViewController: UITableViewController {
   }
 
   private func goToOptimizelyFeatureFlagTools() {
-    let viewController = OptimizelyFeatureFlagToolsViewController.instantiate()
+    let viewController = RemoteConfigFeatureFlagToolsViewController.instantiate()
 
     self.navigationController?.pushViewController(viewController, animated: true)
   }

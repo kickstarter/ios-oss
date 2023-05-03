@@ -5,25 +5,25 @@ import ReactiveSwift
 
 public typealias OptimizelyFeatures = [(OptimizelyFeature, Bool)]
 
-public protocol OptimizelyFeatureFlagToolsViewModelOutputs {
+public protocol RemoteConfigFeatureFlagToolsViewModelOutputs {
   var reloadWithData: Signal<OptimizelyFeatures, Never> { get }
   var updateUserDefaultsWithFeatures: Signal<OptimizelyFeatures, Never> { get }
 }
 
-public protocol OptimizelyFeatureFlagToolsViewModelInputs {
+public protocol RemoteConfigFeatureFlagToolsViewModelInputs {
   func didUpdateUserDefaults()
   func setFeatureAtIndexEnabled(index: Int, isEnabled: Bool)
   func viewDidLoad()
 }
 
-public protocol OptimizelyFeatureFlagToolsViewModelType {
-  var inputs: OptimizelyFeatureFlagToolsViewModelInputs { get }
-  var outputs: OptimizelyFeatureFlagToolsViewModelOutputs { get }
+public protocol RemoteConfigFeatureFlagToolsViewModelType {
+  var inputs: RemoteConfigFeatureFlagToolsViewModelInputs { get }
+  var outputs: RemoteConfigFeatureFlagToolsViewModelOutputs { get }
 }
 
-public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToolsViewModelType,
-  OptimizelyFeatureFlagToolsViewModelInputs,
-  OptimizelyFeatureFlagToolsViewModelOutputs {
+public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFlagToolsViewModelType,
+  RemoteConfigFeatureFlagToolsViewModelInputs,
+  RemoteConfigFeatureFlagToolsViewModelOutputs {
   public init() {
     let didUpdateUserDefaultsAndUI = self.didUpdateUserDefaultsProperty.signal
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
@@ -82,8 +82,8 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
   public let reloadWithData: Signal<OptimizelyFeatures, Never>
   public let updateUserDefaultsWithFeatures: Signal<OptimizelyFeatures, Never>
 
-  public var inputs: OptimizelyFeatureFlagToolsViewModelInputs { return self }
-  public var outputs: OptimizelyFeatureFlagToolsViewModelOutputs { return self }
+  public var inputs: RemoteConfigFeatureFlagToolsViewModelInputs { return self }
+  public var outputs: RemoteConfigFeatureFlagToolsViewModelOutputs { return self }
 }
 
 // MARK: - Private Helpers
