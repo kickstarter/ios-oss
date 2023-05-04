@@ -2,7 +2,9 @@ import AppboyKit
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit
-import Firebase
+import FirebaseCore
+import FirebaseRemoteConfig
+import FirebaseCrashlytics
 import Foundation
 #if DEBUG
   @testable import KsApi
@@ -181,10 +183,46 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
 
     #if RELEASE || APPCENTER
+      FirebaseApp.configure()
+    
+      let appDefaults: [String: Any?] = [
+        "consent_management_dialog": false,
+        "facebook_interstitial": false
+      ]
+  
+      RemoteConfig.remoteConfig().setDefaults(appDefaults as? [String: NSObject])
+    
+      RemoteConfig.remoteConfig().activate { changed, error in
+        guard let remoteConfigActivationError = error else {
+          print("🔮 Remote Config SDK Successfully Activated \(changed)")
+
+          // TODO: Eventually replace self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient), when we remove `MockOptimizelyClient`
+          return
+        }
+
+        print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
+
+        Crashlytics.crashlytics().record(error: remoteConfigActivationError)
+
+        self.viewModel.inputs.optimizelyClientConfigurationFailed()
+        // we'll rename this later but keep it this way for now - because notifications are attached to it.
+      }
+
+      RemoteConfig.remoteConfig().fetch { _,_ in }
+
+      RemoteConfig.remoteConfig().addOnConfigUpdateListener { config, error in
+        guard let configUpdate = config, error == nil else {
+          print("Error listening for config updates: \(error)")
+          
+          return
+        }
+
+        print("Updated keys: \(configUpdate.updatedKeys)")
+      }
+    
       self.viewModel.outputs.configureFirebase
         .observeForUI()
         .observeValues {
-          FirebaseApp.configure()
           AppEnvironment.current.ksrAnalytics.logEventCallback = { event, _ in
             Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([event]))
           }

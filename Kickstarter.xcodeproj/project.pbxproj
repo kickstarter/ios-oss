@@ -264,14 +264,15 @@
 		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
 		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
 		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
+		19A6664D2A02F10E00708F8B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 19A6664C2A02F10E00708F8B /* FirebaseRemoteConfig */; };
+		19A6664F2A02F36200708F8B /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 19A6664E2A02F36200708F8B /* FirebasePerformance */; };
+		19A666512A02F36800708F8B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19A666502A02F36800708F8B /* FirebaseAnalytics */; };
+		19A666532A02F36E00708F8B /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19A666522A02F36E00708F8B /* FirebaseCrashlytics */; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
 		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
 		19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
 		19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */; };
-		19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226028D10497007F4197 /* FirebaseAnalytics */; };
-		19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226228D10497007F4197 /* FirebaseCrashlytics */; };
-		19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 19BF226428D10497007F4197 /* FirebasePerformance */; };
 		19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */; };
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
 		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
@@ -3155,15 +3156,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19A6664F2A02F36200708F8B /* FirebasePerformance in Frameworks */,
 				1971071C2A01A17700834701 /* KsApi.framework in Frameworks */,
+				19A666512A02F36800708F8B /* FirebaseAnalytics in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				1981AC90289075D900BB4897 /* Stripe in Frameworks */,
 				197107162A01A08700834701 /* Prelude_UIKit in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
+				19A666532A02F36E00708F8B /* FirebaseCrashlytics in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
+				19A6664D2A02F10E00708F8B /* FirebaseRemoteConfig in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3188,14 +3193,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19BF226528D10497007F4197 /* FirebasePerformance in Frameworks */,
-				19BF226128D10497007F4197 /* FirebaseAnalytics in Frameworks */,
 				197107282A01A2FD00834701 /* Prelude in Frameworks */,
 				197107292A01A30E00834701 /* Kickstarter_Framework.framework in Frameworks */,
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
-				19BF226328D10497007F4197 /* FirebaseCrashlytics in Frameworks */,
 				1971072A2A01A31300834701 /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7138,6 +7140,10 @@
 				198E574A28E2705100D5B8A9 /* PerimeterX */,
 				19821C86299D3E8300EF312F /* AppboySegment */,
 				197107152A01A08700834701 /* Prelude_UIKit */,
+				19A6664C2A02F10E00708F8B /* FirebaseRemoteConfig */,
+				19A6664E2A02F36200708F8B /* FirebasePerformance */,
+				19A666502A02F36800708F8B /* FirebaseAnalytics */,
+				19A666522A02F36E00708F8B /* FirebaseCrashlytics */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7203,9 +7209,6 @@
 			);
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
-				19BF226028D10497007F4197 /* FirebaseAnalytics */,
-				19BF226228D10497007F4197 /* FirebaseCrashlytics */,
-				19BF226428D10497007F4197 /* FirebasePerformance */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				191EDC6628E29BB9009B41B2 /* PerimeterX */,
 				19821C84299D392400EF312F /* AppboySegment */,
@@ -9965,8 +9968,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-alpha";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Alpha.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -9980,7 +9983,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickAlpha;
-				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.kickalpha";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
 			};
@@ -10304,7 +10307,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				minimumVersion = 10.7.0;
 			};
 		};
 		602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */ = {
@@ -10441,20 +10444,25 @@
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
 			productName = PerimeterX;
 		};
-		19BF226028D10497007F4197 /* FirebaseAnalytics */ = {
+		19A6664C2A02F10E00708F8B /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		19A6664E2A02F36200708F8B /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
+		};
+		19A666502A02F36800708F8B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		19BF226228D10497007F4197 /* FirebaseCrashlytics */ = {
+		19A666522A02F36E00708F8B /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
-		};
-		19BF226428D10497007F4197 /* FirebasePerformance */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebasePerformance;
 		};
 		19F91B13289C8097000AEC6A /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -3,6 +3,7 @@ import KsApi
 import Library
 import Prelude
 import UIKit
+import FirebaseRemoteConfig
 
 final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
   // MARK: - Properties
@@ -29,6 +30,17 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseId)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    
+  let facebookInterstitialKey = "facebook_interstitial"
+  let consentManagementKey = "consent_management_dialog"
+  
+    print("**** \(RemoteConfig.remoteConfig().configValue(forKey: "\(facebookInterstitialKey)").boolValue)")
+    print("**** \(RemoteConfig.remoteConfig().configValue(forKey: "\(consentManagementKey)").boolValue)")
   }
 
   // MARK: - View model
