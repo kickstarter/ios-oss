@@ -433,30 +433,39 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     AppEnvironment.updateRemoteConfigClient(remoteConfig)
 
     let appDefaults: [String: Any?] = [
-      RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
-      RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
+      "consent_management_dialog": false,
+      "facebook_interstitial": false
     ]
 
     AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
 
-    AppEnvironment.current.remoteConfigClient?.fetchAndActivate(completionHandler: { _, error in
-      guard let remoteConfigFetchActivationError = error else {
-        print("🔮 Remote Config SDK Successfully Activated")
+    AppEnvironment.current.remoteConfigClient?.activate { changed, error in
+      guard let remoteConfigActivationError = error else {
+        print("🔮 Remote Config SDK Successfully Activated \(changed)")
 
         // TODO: Eventually replace self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient), when we remove `MockOptimizelyClient`
         return
       }
 
-      print("🔴 Remote Config SDK Fetch and Activation Failed with Error: \(remoteConfigFetchActivationError.localizedDescription)")
+      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
 
-      Crashlytics.crashlytics().record(error: remoteConfigFetchActivationError)
+      Crashlytics.crashlytics().record(error: remoteConfigActivationError)
 
       self.viewModel.inputs.optimizelyClientConfigurationFailed()
-      // TODO: we'll rename this later but keep it this way for now - because notifications are attached to it.
-    })
+      // we'll rename this later but keep it this way for now - because notifications are attached to it.
+    }
 
-    // TODO: self.remoteConfigUpdateListener = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { }
-    // This will be a global private var in `AppDelegate`, remember to deallocate when `applicationWillTerminate` delegate is called - https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623111-applicationwillterminate. (New method + signal to and out of view model)
+    AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
+
+    _ = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { config, error in
+      guard let configUpdate = config, error == nil else {
+        print("Error listening for config updates: \(String(describing: error))")
+
+        return
+      }
+
+      print("Updated keys: \(configUpdate.updatedKeys)")
+    }
   }
 }
 

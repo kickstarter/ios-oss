@@ -12,9 +12,7 @@ public class MockRemoteConfigClient: RemoteConfigClientType {
     self.features = [:]
   }
 
-  public func activate() async throws -> Bool {
-    return true
-  }
+  public func activate(completion _: ((Bool, Error?) -> Void)?) {}
 
   public func configValue(forKey key: String?) -> RemoteConfigValue {
     let value = MockRemoteConfigValue()
@@ -23,12 +21,16 @@ public class MockRemoteConfigClient: RemoteConfigClientType {
     return value
   }
 
-  public func fetchAndActivate(completionHandler _: ((RemoteConfigFetchAndActivateStatus, Error?)
-      -> Void)?) {}
+  public func fetch(completionHandler _: ((RemoteConfigFetchStatus, Error?) -> Void)?) {}
 
   public func setDefaults(_: [String: NSObject]?) {}
 
-//  public func addOnConfigUpdateListener(remoteConfigUpdateCompletion listener: @escaping (RemoteConfigUpdate?, Error?) -> Void) -> ConfigUpdateListenerRegistration {}
+  public func addOnConfigUpdateListener(remoteConfigUpdateCompletion _: @escaping (
+    RemoteConfigUpdate?,
+    Error?
+  ) -> Void) -> ConfigUpdateListenerRegistration {
+    return ConfigUpdateListenerRegistration()
+  }
 
   public func isFeatureEnabled(featureKey: RemoteConfigFeature) -> Bool {
     return self.features[featureKey.rawValue] == true
