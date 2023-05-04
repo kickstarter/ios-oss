@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
       "state" : {
-        "branch" : "feature/swift-package",
-        "revision" : "b0cec69c19a13088864b52ad1745397f587daec7"
+        "revision" : "f3a2dc432e8d5fea7acddb90d57adb2e9d421f7e",
+        "version" : "1.0.0"
       }
     },
     {
@@ -158,8 +158,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kickstarter/Kickstarter-ReactiveExtensions",
       "state" : {
-        "branch" : "feature/swift-package",
-        "revision" : "34276be97fa5acae36e714ad65f8ecb733c0566b"
+        "revision" : "36984ccbdbf1874728f801f29bc0e41706efdd0a",
+        "version" : "2.0.0"
       }
     },
     {
@@ -230,8 +230,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
       "state" : {
-        "revision" : "e03cda84105ba707de039b757e2b2de868c65a3e",
-        "version" : "6.5.0"
+        "revision" : "40c465af19b993344e84355c00669ba2022ca3cd",
+        "version" : "7.1.1"
       }
     },
     {

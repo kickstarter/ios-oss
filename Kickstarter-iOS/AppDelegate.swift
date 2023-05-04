@@ -428,22 +428,22 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func configureRemoteConfig() {
-    let remoteConfig = RemoteConfig.remoteConfig()
+    let remoteConfigClient = RemoteConfigClient(with: RemoteConfig.remoteConfig())
 
-    AppEnvironment.updateRemoteConfigClient(remoteConfig)
+    AppEnvironment.updateRemoteConfigClient(remoteConfigClient)
 
     let appDefaults: [String: Any?] = [
-      "consent_management_dialog": false,
-      "facebook_interstitial": false
+      RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
+      RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
     ]
 
     AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
 
-    AppEnvironment.current.remoteConfigClient?.activate { changed, error in
+    AppEnvironment.current.remoteConfigClient?.activate { _, error in
       guard let remoteConfigActivationError = error else {
-        print("🔮 Remote Config SDK Successfully Activated \(changed)")
+        print("🔮 Remote Config SDK Successfully Activated")
 
-        // TODO: Eventually replace self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient), when we remove `MockOptimizelyClient`
+        // TODO: Rename/rework self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
         return
       }
 
@@ -452,19 +452,19 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       Crashlytics.crashlytics().record(error: remoteConfigActivationError)
 
       self.viewModel.inputs.optimizelyClientConfigurationFailed()
-      // we'll rename this later but keep it this way for now - because notifications are attached to it.
+      // TODO: Rename/rework input signal with Optimizely gone.
     }
 
     AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
 
-    _ = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { config, error in
-      guard let configUpdate = config, error == nil else {
-        print("Error listening for config updates: \(String(describing: error))")
+    _ = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { _, error in
+      guard let realtimeUpdateError = error else {
+        print("🔮 Remote Config Key/Value Pair Updated")
 
         return
       }
 
-      print("Updated keys: \(configUpdate.updatedKeys)")
+      print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
     }
   }
 }

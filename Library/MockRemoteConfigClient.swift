@@ -16,7 +16,12 @@ public class MockRemoteConfigClient: RemoteConfigClientType {
 
   public func configValue(forKey key: String?) -> RemoteConfigValue {
     let value = MockRemoteConfigValue()
-    value.bool = self.features[key ?? ""] == true
+
+    guard let keyValue = key else {
+      return value
+    }
+
+    value.bool = self.features[keyValue] == true
 
     return value
   }
@@ -30,9 +35,5 @@ public class MockRemoteConfigClient: RemoteConfigClientType {
     Error?
   ) -> Void) -> ConfigUpdateListenerRegistration {
     return ConfigUpdateListenerRegistration()
-  }
-
-  public func isFeatureEnabled(featureKey: RemoteConfigFeature) -> Bool {
-    return self.features[featureKey.rawValue] == true
   }
 }
