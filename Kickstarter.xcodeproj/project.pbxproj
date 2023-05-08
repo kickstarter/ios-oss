@@ -261,6 +261,7 @@
 		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
 		19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 19A6665E2A045F2A00708F8B /* FirebaseRemoteConfig */; };
 		19A666612A0472A500708F8B /* RemoteConfligClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A666602A0472A500708F8B /* RemoteConfligClient.swift */; };
+		19A666632A0488F500708F8B /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
 		19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75AB1F81C8A84B5002FC3E6 /* ActivitiesDataSource.swift */; };
 		19A97CF228C7E2D30031B857 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */; };
 		19A97D1928C7F0E30031B857 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
@@ -3200,6 +3201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19A666632A0488F500708F8B /* Library.framework in Frameworks */,
 				19F91B14289C8097000AEC6A /* Stripe in Frameworks */,
 				191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */,
 			);
