@@ -47,7 +47,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     withEnvironment(optimizelyClient: MockOptimizelyClient()) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.optimizelyClientConfigured()
+      self.vm.inputs.remoteConfigClientConfigured()
 
       self.configureDataSource.assertValueCount(1)
     }
@@ -58,7 +58,7 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.vm.inputs.optimizelyClientConfigurationFailed()
+      self.vm.inputs.remoteConfigClientConfigurationFailed()
 
       self.configureDataSource.assertValueCount(1)
     }
@@ -95,7 +95,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.vm.inputs.optimizelyClientConfigured()
+      self.vm.inputs.remoteConfigClientConfigured()
 
       self.scheduler.advance()
 
@@ -119,7 +119,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.vm.inputs.optimizelyClientConfigurationFailed()
+      self.vm.inputs.remoteConfigClientConfigurationFailed()
 
       self.scheduler.advance()
 
@@ -218,7 +218,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.vm.inputs.optimizelyClientConfigured()
+      self.vm.inputs.remoteConfigClientConfigured()
 
       self.scheduler.advance()
 
@@ -242,7 +242,7 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.vm.inputs.optimizelyClientConfigurationFailed()
+      self.vm.inputs.remoteConfigClientConfigurationFailed()
 
       self.scheduler.advance()
 

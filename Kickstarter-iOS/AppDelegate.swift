@@ -183,11 +183,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     #if RELEASE || APPCENTER
       self.viewModel.outputs.configureFirebase
         .observeForUI()
-        .observeValues {
+        .observeValues { [weak self] in
+          guard let strongSelf = self else { return }
+
           FirebaseApp.configure()
           AppEnvironment.current.ksrAnalytics.logEventCallback = { event, _ in
             Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([event]))
           }
+
+          strongSelf.configureRemoteConfig()
         }
     #endif
 
@@ -254,9 +258,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] featureFlagClient in
         guard let strongSelf = self else { return }
 
+        // TODO: Will remove this method and input/output with the full removal of Optimizely code
         AppEnvironment.updateOptimizelyClient(featureFlagClient)
 
-        strongSelf.viewModel.inputs.didUpdateOptimizelyClient(featureFlagClient)
+        strongSelf.viewModel.inputs.didUpdateRemoteConfigClient()
       }
 
     self.viewModel.outputs.segmentIsEnabled
@@ -421,6 +426,46 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
+  }
+
+  private func configureRemoteConfig() {
+    let remoteConfigClient = RemoteConfigClient(with: RemoteConfig.remoteConfig())
+
+    AppEnvironment.updateRemoteConfigClient(remoteConfigClient)
+
+    let appDefaults: [String: Any?] = [
+      RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
+      RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
+    ]
+
+    AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
+
+    AppEnvironment.current.remoteConfigClient?.activate { _, error in
+      guard let remoteConfigActivationError = error else {
+        print("🔮 Remote Config SDK Successfully Activated")
+
+        self.viewModel.inputs.didUpdateRemoteConfigClient()
+        return
+      }
+
+      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
+
+      Crashlytics.crashlytics().record(error: remoteConfigActivationError)
+
+      self.viewModel.inputs.remoteConfigClientConfigurationFailed()
+    }
+
+    AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
+
+    _ = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { _, error in
+      guard let realtimeUpdateError = error else {
+        print("🔮 Remote Config Key/Value Pair Updated")
+
+        return
+      }
+
+      print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
+    }
   }
 }
 
