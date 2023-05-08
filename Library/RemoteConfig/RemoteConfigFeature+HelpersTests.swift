@@ -11,7 +11,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureConsentManagementDialogEnabled())
     }
   }
-  
+
   /** FIXME: RemoteConfigValue is not initializing because its' OBJC intiliazer is not available
    func testConsentManagementDialog_RemoteConfig_FeatureFlag_True() {
      let mockRemoteConfigClient = MockRemoteConfigClient()
@@ -31,7 +31,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
      }
    }
    */
-  
+
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false]
