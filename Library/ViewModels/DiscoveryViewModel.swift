@@ -11,11 +11,11 @@ public protocol DiscoveryViewModelInputs {
   /// Call when params have been selected.
   func filter(withParams params: DiscoveryParams)
 
-  /// Call when the OptimizelyClient has been configured
-  func optimizelyClientConfigured()
+  /// Call when the Remote Config Client has been configured
+  func remoteConfigClientConfigured()
 
   /// Call when the OptimizelyClient configuration has failed
-  func optimizelyClientConfigurationFailed()
+  func remoteConfigClientConfigurationFailed()
 
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed: Bool)
@@ -82,16 +82,16 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   }
 
   public init() {
-    let optimizelyReadyOrContinue = Signal.merge(
-      self.optimizelyClientConfiguredProperty.signal,
+    let remoteConfigReadyOrContinue = Signal.merge(
+      self.remoteConfigClientConfiguredProperty.signal,
       self.viewDidLoadProperty.signal.map { _ in AppEnvironment.current.optimizelyClient }
         .ignoreValues(),
-      self.optimizelyClientConfigurationFailedProperty.signal
+      self.remoteConfigClientConfigurationFailedProperty.signal
     ).take(first: 1)
 
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
 
-    let configureWithSorts = optimizelyReadyOrContinue.mapConst(sorts)
+    let configureWithSorts = remoteConfigReadyOrContinue.mapConst(sorts)
 
     self.configurePagerDataSource = configureWithSorts
     self.configureSortPager = configureWithSorts
@@ -204,14 +204,14 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     self.filterWithParamsProperty.value = params
   }
 
-  fileprivate let optimizelyClientConfiguredProperty = MutableProperty(())
-  public func optimizelyClientConfigured() {
-    self.optimizelyClientConfiguredProperty.value = ()
+  fileprivate let remoteConfigClientConfiguredProperty = MutableProperty(())
+  public func remoteConfigClientConfigured() {
+    self.remoteConfigClientConfiguredProperty.value = ()
   }
 
-  fileprivate let optimizelyClientConfigurationFailedProperty = MutableProperty(())
-  public func optimizelyClientConfigurationFailed() {
-    self.optimizelyClientConfigurationFailedProperty.value = ()
+  fileprivate let remoteConfigClientConfigurationFailedProperty = MutableProperty(())
+  public func remoteConfigClientConfigurationFailed() {
+    self.remoteConfigClientConfigurationFailedProperty.value = ()
   }
 
   fileprivate let pageTransitionCompletedProperty = MutableProperty(false)

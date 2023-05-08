@@ -9,8 +9,8 @@ internal final class DiscoveryViewController: UIViewController {
 
   private var recommendationsChangedObserver: Any?
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
-  private var optimizelyConfiguredObserver: Any?
-  private var optimizelyConfigurationFailedObserver: Any?
+  private var remoteConfigConfiguredObserver: Any?
+  private var remoteConfigConfigurationFailedObserver: Any?
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
 
@@ -48,18 +48,18 @@ internal final class DiscoveryViewController: UIViewController {
         self?.viewModel.inputs.didChangeRecommendationsSetting()
       }
 
-    self.optimizelyConfiguredObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.optimizelyClientConfigured()
+    self.remoteConfigConfiguredObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_remoteConfigClientConfigured, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.remoteConfigClientConfigured()
       }
 
-    self.optimizelyConfigurationFailedObserver = NotificationCenter.default
+    self.remoteConfigConfigurationFailedObserver = NotificationCenter.default
       .addObserver(
-        forName: .ksr_optimizelyClientConfigurationFailed,
+        forName: .ksr_remoteConfigClientConfigurationFailed,
         object: nil,
         queue: nil
       ) { [weak self] _ in
-        self?.viewModel.inputs.optimizelyClientConfigurationFailed()
+        self?.viewModel.inputs.remoteConfigClientConfigurationFailed()
       }
 
     self.viewModel.inputs.viewDidLoad()
@@ -67,8 +67,8 @@ internal final class DiscoveryViewController: UIViewController {
 
   deinit {
     [
-      self.optimizelyConfiguredObserver,
-      self.optimizelyConfigurationFailedObserver,
+      self.remoteConfigConfiguredObserver,
+      self.remoteConfigConfigurationFailedObserver,
       self.recommendationsChangedObserver
     ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }

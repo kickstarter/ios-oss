@@ -320,7 +320,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
-      self.postNotificationName.assertValues([.ksr_optimizelyClientConfigured])
+      self.postNotificationName.assertValues([.ksr_remoteConfigClientConfigured])
     }
   }
 

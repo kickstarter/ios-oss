@@ -6,9 +6,9 @@ public enum CurrentUserNotifications {
   public static let environmentChanged = "CurrentUserNotification.environmentChanged"
   public static let localePreferencesChanged = "CurrentUserNotification.localePreferencesChanged"
   public static let onboardingCompleted = "CurrentUserNotifications.onboardingCompleted"
-  public static let optimizelyClientConfigured = "CurrentUserNotification.optimizelyClientConfigured"
-  public static let optimizelyClientConfigurationFailed =
-    "CurrentUserNotification.optimizelyClientConfigurationFailed"
+  public static let remoteConfigClientConfigured = "CurrentUserNotification.remoteConfigClientConfigured"
+  public static let remoteConfigClientConfigurationFailed =
+    "CurrentUserNotification.remoteConfigClientConfigurationFailed"
   public static let projectBacked = "CurrentUserNotifications.projectBacked"
   public static let projectSaved = "CurrentUserNotifications.projectSaved"
   public static let recommendationsSettingChanged = "CurrentUserNotifications.recommendationsSettingChanged"
@@ -40,11 +40,11 @@ extension Notification.Name {
   public static let ksr_onboardingCompleted = Notification.Name(
     rawValue: CurrentUserNotifications.onboardingCompleted
   )
-  public static let ksr_optimizelyClientConfigured = Notification.Name(
-    rawValue: CurrentUserNotifications.optimizelyClientConfigured
+  public static let ksr_remoteConfigClientConfigured = Notification.Name(
+    rawValue: CurrentUserNotifications.remoteConfigClientConfigured
   )
-  public static let ksr_optimizelyClientConfigurationFailed = Notification.Name(
-    rawValue: CurrentUserNotifications.optimizelyClientConfigurationFailed
+  public static let ksr_remoteConfigClientConfigurationFailed = Notification.Name(
+    rawValue: CurrentUserNotifications.remoteConfigClientConfigurationFailed
   )
   public static let ksr_projectBacked = Notification.Name(rawValue: CurrentUserNotifications.projectBacked)
   public static let ksr_projectSaved = Notification.Name(rawValue: CurrentUserNotifications.projectSaved)

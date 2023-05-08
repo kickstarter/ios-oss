@@ -258,9 +258,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] featureFlagClient in
         guard let strongSelf = self else { return }
 
+        // TODO: Will remove this method and input/output with the full removal of Optimizely code
         AppEnvironment.updateOptimizelyClient(featureFlagClient)
 
-        strongSelf.viewModel.inputs.didUpdateOptimizelyClient(featureFlagClient)
+        strongSelf.viewModel.inputs.didUpdateRemoteConfigClient()
       }
 
     self.viewModel.outputs.segmentIsEnabled
@@ -443,7 +444,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       guard let remoteConfigActivationError = error else {
         print("🔮 Remote Config SDK Successfully Activated")
 
-        // TODO: Rename/rework self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
+        self.viewModel.inputs.didUpdateRemoteConfigClient()
         return
       }
 
@@ -451,8 +452,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
       Crashlytics.crashlytics().record(error: remoteConfigActivationError)
 
-      self.viewModel.inputs.optimizelyClientConfigurationFailed()
-      // TODO: Rename/rework input signal with Optimizely gone.
+      self.viewModel.inputs.remoteConfigClientConfigurationFailed()
     }
 
     AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
