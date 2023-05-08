@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "abseil-cpp-swiftpm",
+      "identity" : "abseil-cpp-binary",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/abseil-cpp-SwiftPM.git",
+      "location" : "https://github.com/google/abseil-cpp-binary.git",
       "state" : {
-        "revision" : "583de9bd60f66b40e78d08599cc92036c2e7e4e1",
-        "version" : "0.20220203.2"
+        "revision" : "a5f16ba68913840ee5df91b8dc06f5cc063579de",
+        "version" : "1.2021110200.0"
       }
     },
     {
@@ -64,15 +64,6 @@
       }
     },
     {
-      "identity" : "boringssl-swiftpm",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/boringssl-SwiftPM.git",
-      "state" : {
-        "revision" : "dd3eda2b05a3f459fc3073695ad1b28659066eab",
-        "version" : "0.9.1"
-      }
-    },
-    {
       "identity" : "braze-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/braze-inc/braze-ios-sdk.git",
@@ -95,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk.git",
       "state" : {
-        "revision" : "7e80c25b51c2ffa238879b07fbfc5baa54bb3050",
-        "version" : "9.6.0"
+        "revision" : "4961c0b7eb5d794e47a58dbfdd258b4beca4263a",
+        "version" : "10.9.0"
       }
     },
     {
@@ -104,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
       "state" : {
-        "revision" : "c1cfde8067668027b23a42c29d11c246152fe046",
-        "version" : "9.6.0"
+        "revision" : "9209b95a2593985569918e5e5ee2bf4ef8ff3640",
+        "version" : "10.9.0"
       }
     },
     {
@@ -122,17 +113,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "22907832079d808e82f1182b21af58ef3880666f",
-        "version" : "7.8.0"
+        "revision" : "871d43135925cde39ef7421d8723ce47edfdcc39",
+        "version" : "7.11.1"
       }
     },
     {
-      "identity" : "grpc-ios",
+      "identity" : "grpc-binary",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/grpc/grpc-ios.git",
+      "location" : "https://github.com/google/grpc-binary.git",
       "state" : {
-        "revision" : "8440b914756e0d26d4f4d054a1c1581daedfc5b6",
-        "version" : "1.44.3-grpc"
+        "revision" : "df37f6af8a273bc687e3166843ed86007de57d78",
+        "version" : "1.44.0"
       }
     },
     {
@@ -158,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kickstarter/Kickstarter-Prelude.git",
       "state" : {
-        "branch" : "feature/swift-package",
-        "revision" : "b0cec69c19a13088864b52ad1745397f587daec7"
+        "revision" : "f3a2dc432e8d5fea7acddb90d57adb2e9d421f7e",
+        "version" : "1.0.0"
       }
     },
     {
@@ -167,8 +158,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kickstarter/Kickstarter-ReactiveExtensions",
       "state" : {
-        "branch" : "feature/swift-package",
-        "revision" : "34276be97fa5acae36e714ad65f8ecb733c0566b"
+        "revision" : "36984ccbdbf1874728f801f29bc0e41706efdd0a",
+        "version" : "2.0.0"
       }
     },
     {
@@ -239,8 +230,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
       "state" : {
-        "revision" : "e03cda84105ba707de039b757e2b2de868c65a3e",
-        "version" : "6.5.0"
+        "revision" : "40c465af19b993344e84355c00669ba2022ca3cd",
+        "version" : "7.1.1"
       }
     },
     {

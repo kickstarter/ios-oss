@@ -318,9 +318,9 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.configureFeatureFlagClient.assertValueCount(1)
 
-      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
+      self.vm.inputs.didUpdateRemoteConfigClient()
 
-      self.postNotificationName.assertValues([.ksr_optimizelyClientConfigured])
+      self.postNotificationName.assertValues([.ksr_remoteConfigClientConfigured])
     }
   }
 

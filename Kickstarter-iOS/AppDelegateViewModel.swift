@@ -67,14 +67,14 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the config has been updated the AppEnvironment
   func didUpdateConfig(_ config: Config)
 
-  /// Call when the Optimizely client has been updated in the AppEnvironment
-  func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
+  /// Call when the Remote Config client has been updated in the AppEnvironment
+  func didUpdateRemoteConfigClient()
 
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
-  /// Call when Optimizely configuration has failed
-  func optimizelyClientConfigurationFailed()
+  /// Call when Remote Config configuration has failed
+  func remoteConfigClientConfigurationFailed()
 
   /// Call when Perimeter X Captcha is triggered
   func perimeterXCaptchaTriggeredWithUserInfo(_ userInfo: [AnyHashable: Any]?)
@@ -265,12 +265,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .mapConst(Notification(name: .ksr_configUpdated, object: nil))
 
-    let optimizelyClientConfiguredNotification = self.didUpdateOptimizelyClientProperty.signal
-      .mapConst(Notification(name: .ksr_optimizelyClientConfigured, object: nil))
+    let remoteConfigClientConfiguredNotification = self.didUpdateRemoteConfigClientProperty.signal
+      .mapConst(Notification(name: .ksr_remoteConfigClientConfigured, object: nil))
 
-    let optimizelyClientConfigurationFailedNotification = self.optimizelyClientConfigurationFailedProperty
+    let remoteConfigClientConfigurationFailedNotification = self.remoteConfigClientConfigurationFailedProperty
       .signal
-      .mapConst(Notification(name: .ksr_optimizelyClientConfigurationFailed, object: nil))
+      .mapConst(Notification(name: .ksr_remoteConfigClientConfigurationFailed, object: nil))
 
     let appEnteredBackgroundNotification = self.applicationDidEnterBackgroundProperty.signal
       .mapConst(Notification(name: .ksr_applicationDidEnterBackground, object: nil))
@@ -278,8 +278,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
       configUpdatedNotification,
-      optimizelyClientConfiguredNotification,
-      optimizelyClientConfigurationFailedNotification,
+      remoteConfigClientConfiguredNotification,
+      remoteConfigClientConfigurationFailedNotification,
       appEnteredBackgroundNotification
     )
 
@@ -887,9 +887,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didUpdateConfigProperty.value = config
   }
 
-  fileprivate let didUpdateOptimizelyClientProperty = MutableProperty<OptimizelyClientType?>(nil)
-  public func didUpdateOptimizelyClient(_ client: OptimizelyClientType) {
-    self.didUpdateOptimizelyClientProperty.value = client
+  fileprivate let didUpdateRemoteConfigClientProperty = MutableProperty(())
+  public func didUpdateRemoteConfigClient() {
+    self.didUpdateRemoteConfigClientProperty.value = ()
   }
 
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
@@ -938,9 +938,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   }
 
   // FIXME: Currently not used with `MockOptimizelyClient`, but could be when we implement the next real feature flagging client.
-  fileprivate let optimizelyClientConfigurationFailedProperty = MutableProperty(())
-  public func optimizelyClientConfigurationFailed() {
-    self.optimizelyClientConfigurationFailedProperty.value = ()
+  fileprivate let remoteConfigClientConfigurationFailedProperty = MutableProperty(())
+  public func remoteConfigClientConfigurationFailed() {
+    self.remoteConfigClientConfigurationFailedProperty.value = ()
   }
 
   private let perimeterXCaptchaTriggeredWithUserInfoProperty = MutableProperty<[AnyHashable: Any]?>(nil)

@@ -65,31 +65,4 @@ final class OptimizelyFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureSettingsPaymentSheetEnabled())
     }
   }
-
-  func testFacebookDeprecation_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featureFacebookLoginDeprecationEnabled())
-    }
-  }
-
-  func testConsentManagementDialog_Optimizely_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertTrue(featureConsentManagementDialogEnabled())
-    }
-  }
-
-  func testConsentManagementDialog_Optimizely_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.consentManagementDialogEnabled.rawValue: false]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      XCTAssertFalse(featureConsentManagementDialogEnabled())
-    }
-  }
 }

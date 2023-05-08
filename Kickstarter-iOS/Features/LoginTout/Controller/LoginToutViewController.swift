@@ -199,7 +199,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
         AppEnvironment.login(accessTokenEnv)
 
-        if featureFacebookLoginDeprecationEnabled(), accessTokenEnv.user.needsPassword == true {
+        if featureFacebookLoginInterstitialEnabled(), accessTokenEnv.user.needsPassword == true {
           strongSelf.pushSetYourPasswordViewController()
           return
         }
@@ -235,7 +235,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       .observeValues { [weak self] error in
         guard let strongSelf = self else { return }
 
-        if featureFacebookLoginDeprecationEnabled() {
+        if featureFacebookLoginInterstitialEnabled() {
           strongSelf.present(
             UIAlertController.facebookDeprecationNewPasswordOptionAlert(
               loginHandler: { [weak self] _ in
