@@ -97,7 +97,8 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
 
     let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()
     let isEmailDeliverable = userEmailEvent.values().map { $0.me.isDeliverable }.skipNil()
-    let emailVerifiedAndDeliverable = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
+    let emailVerifiedAndDeliverable: Signal<Bool, Never> = Signal
+      .combineLatest(isEmailVerified, isEmailDeliverable)
       .map { isEmailVerified, isEmailDeliverable -> Bool in
         let r = isEmailVerified && isEmailDeliverable
         return r

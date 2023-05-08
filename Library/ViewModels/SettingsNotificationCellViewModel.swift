@@ -69,7 +69,7 @@ public final class SettingsNotificationCellViewModel: SettingsNotificationCellVi
       emailNotificationValueToggled.signal.skipRepeats().map { (NotificationType.email, $0) }
     )
 
-    let userAttributeChanged = cellType
+    let userAttributeChanged: Signal<(UserAttribute.Notification?, Bool), Never> = cellType
       .takePairWhen(updatedNotificationSetting)
       .map(unpack)
       .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
