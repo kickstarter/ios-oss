@@ -38,7 +38,7 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
     let remoteConfigFeatures = features
       .map { features in
         features.map { feature -> (RemoteConfigFeature, Bool) in
-          (feature, isFeatureEnabled(feature))
+          (feature, AppEnvironment.current.remoteConfigClient?.isFeatureEnabled(featureKey: feature) ?? false)
         }
       }
 
@@ -93,15 +93,6 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
-  }
-}
-
-private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
-  switch feature {
-  case .consentManagementDialogEnabled:
-    return featureConsentManagementDialogEnabled()
-  case .facebookLoginInterstitialEnabled:
-    return featureFacebookLoginInterstitialEnabled()
   }
 }
 
