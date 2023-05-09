@@ -70,10 +70,10 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToConfigFeatureFlagTools()
       }
 
-    self.viewModel.outputs.goToOptimizelyFeatureFlagTools
+    self.viewModel.outputs.goToRemoteConfigFeatureFlagTools
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToOptimizelyFeatureFlagTools()
+        self?.goToRemoteConfigFeatureFlagTools()
       }
 
     self.viewModel.outputs.goToBetaFeedback
@@ -165,7 +165,7 @@ internal final class BetaToolsViewController: UITableViewController {
     self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
   }
 
-  private func goToOptimizelyFeatureFlagTools() {
+  private func goToRemoteConfigFeatureFlagTools() {
     let viewController = RemoteConfigFeatureFlagToolsViewController.instantiate()
 
     self.navigationController?.pushViewController(viewController, animated: true)

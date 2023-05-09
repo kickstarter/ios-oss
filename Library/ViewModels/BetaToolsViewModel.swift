@@ -66,7 +66,7 @@ public typealias BetaToolsData = (currentLanguage: String, currentEnvironment: S
 public protocol BetaToolsViewModelOutputs {
   var goToBetaFeedback: Signal<(), Never> { get }
   var goToConfigFeatureFlagTools: Signal<(), Never> { get }
-  var goToOptimizelyFeatureFlagTools: Signal<(), Never> { get }
+  var goToRemoteConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToPushNotificationTools: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadWithData: Signal<BetaToolsData, Never> { get }
@@ -143,7 +143,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.debugConfigFeatureFlags }
       .ignoreValues()
 
-    self.goToOptimizelyFeatureFlagTools = self.didSelectBetaToolsRowProperty.signal
+    self.goToRemoteConfigFeatureFlagTools = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
       .filter { $0 == BetaToolsRow.debugRemoteConfigFeatureFlags }
       .ignoreValues()
@@ -198,7 +198,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
 
   public let goToBetaFeedback: Signal<(), Never>
   public let goToConfigFeatureFlagTools: Signal<(), Never>
-  public let goToOptimizelyFeatureFlagTools: Signal<(), Never>
+  public let goToRemoteConfigFeatureFlagTools: Signal<(), Never>
   public let goToPushNotificationTools: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>
   public let updateEnvironment: Signal<EnvironmentType, Never>
