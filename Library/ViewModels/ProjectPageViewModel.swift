@@ -186,7 +186,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         return fetchProjectFriends(projectOrParam: projectOrParam).demoteErrors()
       }
 
-    let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
+    let freshProjectAndRefTag: Signal<(Project, RefTag?), Never> = freshProjectAndRefTagEvent.values()
       .map { project, refTag -> (Project, RefTag?) in
         let updatedProjectWithFriends = project
           |> Project.lens.personalization.friends .~ projectFriends.value
@@ -327,7 +327,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       = self.managePledgeViewControllerFinishedWithMessageProperty.signal
       .skipNil()
 
-    let cookieRefTag = freshProjectAndRefTag
+    let cookieRefTag: Signal<RefTag?, Never> = freshProjectAndRefTag
       .map { project, refTag -> RefTag? in
         let r = cookieRefTagFor(project: project) ?? refTag
         return r
