@@ -440,6 +440,27 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
 
+    self.activateRemoteConfigValues()
+
+    AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
+
+    _ = AppEnvironment.current.remoteConfigClient?
+      .addOnConfigUpdateListener { [weak self] configUpdate, error in
+        guard let strongSelf = self else { return }
+
+        guard let realtimeUpdateError = error else {
+          print("🔮 Remote Config Keys Update: \(configUpdate?.updatedKeys)")
+
+          strongSelf.activateRemoteConfigValues()
+
+          return
+        }
+
+        print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
+      }
+  }
+
+  private func activateRemoteConfigValues() {
     AppEnvironment.current.remoteConfigClient?.activate { _, error in
       guard let remoteConfigActivationError = error else {
         print("🔮 Remote Config SDK Successfully Activated")
@@ -453,18 +474,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       Crashlytics.crashlytics().record(error: remoteConfigActivationError)
 
       self.viewModel.inputs.remoteConfigClientConfigurationFailed()
-    }
-
-    AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
-
-    _ = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { _, error in
-      guard let realtimeUpdateError = error else {
-        print("🔮 Remote Config Key/Value Pair Updated")
-
-        return
-      }
-
-      print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
     }
   }
 }
