@@ -6,14 +6,14 @@ import UIKit
 
 public enum BetaToolsRow: Int, CaseIterable {
   case debugConfigFeatureFlags
-  case debugOptimizelyFeatureFlags
+  case debugRemoteConfigFeatureFlags
   case debugPushNotifications
   case changeEnvironment
   case changeLanguage
 
   public var cellStyle: UITableViewCell.CellStyle {
     switch self {
-    case .debugConfigFeatureFlags, .debugOptimizelyFeatureFlags, .debugPushNotifications: return .default
+    case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags, .debugPushNotifications: return .default
     default: return .value1
     }
   }
@@ -28,7 +28,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   public var titleText: String {
     switch self {
     case .debugConfigFeatureFlags: return "Config Feature Flags"
-    case .debugOptimizelyFeatureFlags: return "Optimizely Feature Flags"
+    case .debugRemoteConfigFeatureFlags: return "Remote Config Feature Flags"
     case .debugPushNotifications: return "Debug Push Notifications"
     case .changeEnvironment: return "Change Environment"
     case .changeLanguage: return "Change Language"
@@ -37,7 +37,7 @@ public enum BetaToolsRow: Int, CaseIterable {
 
   public var rightIconImageName: String? {
     switch self {
-    case .debugConfigFeatureFlags, .debugOptimizelyFeatureFlags,
+    case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags,
          .debugPushNotifications: return "chevron-right"
     default: return nil
     }
@@ -66,7 +66,7 @@ public typealias BetaToolsData = (currentLanguage: String, currentEnvironment: S
 public protocol BetaToolsViewModelOutputs {
   var goToBetaFeedback: Signal<(), Never> { get }
   var goToConfigFeatureFlagTools: Signal<(), Never> { get }
-  var goToOptimizelyFeatureFlagTools: Signal<(), Never> { get }
+  var goToRemoteConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToPushNotificationTools: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadWithData: Signal<BetaToolsData, Never> { get }
@@ -143,9 +143,9 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.debugConfigFeatureFlags }
       .ignoreValues()
 
-    self.goToOptimizelyFeatureFlagTools = self.didSelectBetaToolsRowProperty.signal
+    self.goToRemoteConfigFeatureFlagTools = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
-      .filter { $0 == BetaToolsRow.debugOptimizelyFeatureFlags }
+      .filter { $0 == BetaToolsRow.debugRemoteConfigFeatureFlags }
       .ignoreValues()
 
     self.showChangeEnvironmentSheetWithSourceViewIndex = self.didSelectBetaToolsRowProperty.signal
@@ -198,7 +198,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
 
   public let goToBetaFeedback: Signal<(), Never>
   public let goToConfigFeatureFlagTools: Signal<(), Never>
-  public let goToOptimizelyFeatureFlagTools: Signal<(), Never>
+  public let goToRemoteConfigFeatureFlagTools: Signal<(), Never>
   public let goToPushNotificationTools: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>
   public let updateEnvironment: Signal<EnvironmentType, Never>
