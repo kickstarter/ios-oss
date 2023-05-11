@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   macos: circleci/macos@2
-  ruby: circleci/ruby@2.7
   aws-cli: circleci/aws-cli@3.1
   codecov: codecov/codecov@1.1.3
 
