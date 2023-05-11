@@ -154,7 +154,7 @@ jobs:
           command: xcodebuild -version > xcode_version.txt
       - run: 
           name: Pre-install simulator
-          command: xcrun simctl create iPhone 8 com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-4
+          command: xcrun simctl create "iPhone 8 (15.4)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-4
       - restore_cache:
           name: Restore SPM Cache
           keys:
