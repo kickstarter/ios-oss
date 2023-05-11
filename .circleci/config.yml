@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   macos: circleci/macos@2
+  ruby: circleci/ruby@2.6.3
   aws-cli: circleci/aws-cli@3.1
   codecov: codecov/codecov@1.1.3
 
@@ -147,8 +148,6 @@ jobs:
       - *default_environment
     steps:
       - checkout
-      - macos/switch-ruby: 
-          version: "system"
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
