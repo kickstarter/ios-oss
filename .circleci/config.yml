@@ -147,7 +147,6 @@ jobs:
       - *default_environment
     steps:
       - checkout
-        steps:
       - macos/switch-ruby: 
           version: "system"
       - run:
