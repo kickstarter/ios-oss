@@ -54,6 +54,9 @@ test_job: &test_job
     - run:
         name: Download GraphQL Schema
         command: bin/apollo-schema-download.sh
+    - run: 
+        name: Pre-install simulator
+        command: xcrun simctl create "iPhone 8 (15.5)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
     - run:
         name: Pre-load simulator
         command: *preload_simulator
@@ -153,9 +156,6 @@ jobs:
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
-      - run: 
-          name: Pre-install simulator
-          command: xcrun simctl create "iPhone 8 (15.5)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
       - restore_cache:
           name: Restore SPM Cache
           keys:
