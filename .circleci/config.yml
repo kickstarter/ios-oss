@@ -9,7 +9,7 @@ aws_cli_setup: &aws_cli_setup
 
 xcode_version: &xcode_version 14.2
 iphone_name: &iphone_name iPhone 8
-preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (15.4) [" || true
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (15.5) [" || true
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
 spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
@@ -154,7 +154,7 @@ jobs:
           command: xcodebuild -version > xcode_version.txt
       - run: 
           name: Pre-install simulator
-          command: xcrun simctl create "iPhone 8 (15.4)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-4
+          command: xcrun simctl create "iPhone 8 (15.5)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
       - restore_cache:
           name: Restore SPM Cache
           keys:
