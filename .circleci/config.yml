@@ -30,9 +30,6 @@ default_environment: &default_environment
 base_job: &base_job
   macos:
     xcode: *xcode_version
-  steps:
-    - macos/switch-ruby: 
-      version: "system"
   working_directory: ~/kickstarter
 
 test_job: &test_job
@@ -150,6 +147,9 @@ jobs:
       - *default_environment
     steps:
       - checkout
+        steps:
+      - macos/switch-ruby: 
+          version: "system"
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
