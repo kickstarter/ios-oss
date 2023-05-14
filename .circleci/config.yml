@@ -1,15 +1,16 @@
 version: 2.1
 
 orbs:
+  macos: circleci/macos@2
   aws-cli: circleci/aws-cli@3.1
   codecov: codecov/codecov@1.1.3
 
 aws_cli_setup: &aws_cli_setup
   role-arn: $AWS_ROLE_ARN
 
-xcode_version: &xcode_version 13.3.1
+xcode_version: &xcode_version 14.2
 iphone_name: &iphone_name iPhone 8
-preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (15.4) [" || true
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (15.5) [" || true
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
 spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
@@ -33,43 +34,20 @@ base_job: &base_job
 
 test_job: &test_job
   steps:
-    - checkout
-    - run:
-        name: SPM SSH Workaround
-        command: *spm_ssh_workaround
-    - run:
-        name: Store Xcode Version
-        command: xcodebuild -version > xcode_version.txt
+    - attach_workspace:
+        at: .
     - restore_cache:
         name: Restore SPM Cache
         keys:
           - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
-    - run:
-        name: Bootstrap SPM
-        command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
-    - run:
-        name: Bootstrap
-        command: make bootstrap
-    - run:
-        name: Download GraphQL Schema
-        command: bin/apollo-schema-download.sh
-    - run:
-        name: Pre-load simulator
-        command: *preload_simulator
-    - run:
-        name: Run tests
-        command: make test
-        no_output_timeout: "20m" # 20 minutes
     - restore_cache:
         name: Restore Bundler
         keys:
           - v1-gems-{{ checksum "Gemfile.lock" }}
     - run:
-        name: Install Bundler
-        command: bundle check || bundle install
-        environment:
-          BUNDLE_JOBS: 4
-          BUNDLE_RETRY: 3
+        name: Run tests
+        command: make test
+        no_output_timeout: "20m" # 20 minutes
     - run:
         name: Generate Slather coverage report
         command: bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
@@ -78,38 +56,10 @@ test_job: &test_job
 
 distribute_job: &distribute_job
   steps:
-    - checkout
+    - attach_workspace:
+        at: .
     - aws-cli/setup:
         <<: *aws_cli_setup
-    - run:
-        name: SPM SSH Workaround
-        command: *spm_ssh_workaround
-    - run:
-        name: Store Xcode Version
-        command: xcodebuild -version > xcode_version.txt
-    - restore_cache:
-        name: Restore SPM Cache
-        keys:
-          - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
-    - run:
-        name: Bootstrap SPM
-        command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
-    - run:
-        name: Bootstrap
-        command: make bootstrap
-    - restore_cache:
-        keys:
-          - v1-gems-{{ checksum "Gemfile.lock" }}
-    - run:
-        name: Bundle install
-        command: bundle check || bundle install
-        environment:
-          BUNDLE_JOBS: 4
-          BUNDLE_RETRY: 3
-    - save_cache:
-        key: v1-gems-{{ checksum "Gemfile.lock" }}
-        paths:
-          - vendor/bundle
     - run:
         name: Increment build number
         command: agvtool new-version -all $(($(date +%s)/1000))
@@ -132,8 +82,7 @@ distribute_job: &distribute_job
         path: output
 
 all_jobs: &all_jobs
-  - build-and-cache
-  - kickstarter-tests
+  - kickstarter-tests  
   - library-tests
   - ksapi-tests
 
@@ -152,10 +101,6 @@ jobs:
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
-      - restore_cache:
-          name: Restore SPM Cache
-          keys:
-            - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
       - run:
           name: Bootstrap SPM
           command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
@@ -167,10 +112,6 @@ jobs:
           key: spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - SourcePackages
-      - restore_cache:
-          name: Restore Bundler
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Install Bundler
           command: bundle check || bundle install
@@ -183,8 +124,21 @@ jobs:
           paths:
             - vendor/bundle
       - run:
+          name: Download GraphQL Schema
+          command: bin/apollo-schema-download.sh
+      - run: 
+          name: Pre-install simulator
+          command: xcrun simctl create "iPhone 8 (15.5)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
+      - run:
           name: Danger
           command: bin/danger.sh
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
 
   # Kickstarter tests
   kickstarter-tests:
@@ -298,9 +252,16 @@ workflows:
     # Matches all_jobs
     jobs:
       - build-and-cache
-      - kickstarter-tests
-      - library-tests
-      - ksapi-tests
+      - kickstarter-tests:
+          requires:
+           - build-and-cache
+      - library-tests:
+          requires:
+           - build-and-cache
+      - ksapi-tests:
+          requires:
+           - build-and-cache
+
       # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
       # or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.
       # See: https://docs.fastlane.tools/app-store-connect-api/
