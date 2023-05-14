@@ -36,6 +36,9 @@ test_job: &test_job
   steps:
     - attach_workspace:
         at: .
+    - run:
+      name: SPM SSH Workaround
+      command: *spm_ssh_workaround
     - restore_cache:
         name: Restore SPM Cache
         keys:
@@ -58,6 +61,9 @@ distribute_job: &distribute_job
   steps:
     - attach_workspace:
         at: .
+    - run:
+      name: SPM SSH Workaround
+      command: *spm_ssh_workaround
     - aws-cli/setup:
         <<: *aws_cli_setup
     - run:
