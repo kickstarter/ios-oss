@@ -39,11 +39,11 @@ test_job: &test_job
     - restore_cache:
         name: Restore Bundler
         keys:
-          - v1-gems-{{ checksum "Gemfile.lock" }}
+          - v2-gems-{{ checksum "Gemfile.lock" }}
     - restore_cache:
         name: Restore SPM Cache
         keys:
-          - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+          - spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Run tests
         command: make test
@@ -109,7 +109,7 @@ jobs:
           command: make bootstrap
       - save_cache:
           name: Cache SPM
-          key: spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
+          key: spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - SourcePackages
       - run:
@@ -120,7 +120,7 @@ jobs:
             BUNDLE_RETRY: 3
       - save_cache:
           name: Cache Bundler
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
       - run:
@@ -220,7 +220,7 @@ jobs:
           command: make secrets
       - restore_cache:
           keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
+            - v2-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -228,7 +228,7 @@ jobs:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
       - run:
