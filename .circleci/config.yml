@@ -36,17 +36,14 @@ test_job: &test_job
   steps:
     - attach_workspace:
         at: .
-    - run:
-        name: SPM SSH Workaround
-        command: *spm_ssh_workaround
-    - restore_cache:
-        name: Restore SPM Cache
-        keys:
-          - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - restore_cache:
         name: Restore Bundler
         keys:
           - v1-gems-{{ checksum "Gemfile.lock" }}
+    - restore_cache:
+        name: Restore SPM Cache
+        keys:
+          - spm-cache-v1-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Run tests
         command: make test
@@ -61,9 +58,6 @@ distribute_job: &distribute_job
   steps:
     - attach_workspace:
         at: .
-    - run:
-        name: SPM SSH Workaround
-        command: *spm_ssh_workaround
     - aws-cli/setup:
         <<: *aws_cli_setup
     - run:
