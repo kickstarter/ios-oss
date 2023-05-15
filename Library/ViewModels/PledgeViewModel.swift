@@ -241,7 +241,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         isRewardLocalPickup(baseReward) ? true : flag
       }
 
-    let shippingViewsHidden = Signal.combineLatest(
+    let shippingViewsHidden: Signal<Bool, Never> = Signal.combineLatest(
       self.shippingSummaryViewHidden,
       self.shippingLocationViewHidden
     )
@@ -250,7 +250,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       return r
     }
 
-    let shippingViewsHiddenConditionsForPledgeAmountSummary = Signal
+    let shippingViewsHiddenConditionsForPledgeAmountSummary: Signal<Bool, Never> = Signal
       .combineLatest(
         nonLocalPickupShippingLocationViewHidden,
         nonLocalPickupShippingSummaryViewHidden
@@ -378,7 +378,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { !$0 || $1.paymentMethodsViewHidden }
 
-    let pledgeAmountIsValid = self.pledgeAmountDataSignal
+    let pledgeAmountIsValid: Signal<Bool, Never> = self.pledgeAmountDataSignal
       .map { $0.isValid }
 
     self.configureStripeIntegration = Signal.combineLatest(
@@ -429,7 +429,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.riskMessagingViewControllerDismissedProperty.signal.skipNil().filter(isTrue).ignoreValues()
     )
 
-    let paymentAuthorizationData = Signal.combineLatest(
+    let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = Signal.combineLatest(
       project,
       baseReward,
       allRewardsTotal,

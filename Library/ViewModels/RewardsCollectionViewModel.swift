@@ -90,7 +90,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let refTag = configData
       .map(second)
 
-    let goToPledge = Signal.combineLatest(
+    let goToPledge: Signal<(PledgeViewData, Bool), Never> = Signal.combineLatest(
       project,
       selectedRewardFromId,
       refTag

@@ -148,7 +148,7 @@ public final class ManagePledgeViewModel:
     )
     .ignoreValues()
 
-    let project = initialProject.combineLatest(with: backing)
+    let project: Signal<Project, Never> = initialProject.combineLatest(with: backing)
       .map { project, backing -> Project in
         /**
          Here we are updating the `Project`'s `Backing` with an updated one from GraphQL.

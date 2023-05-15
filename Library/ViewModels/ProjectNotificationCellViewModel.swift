@@ -35,7 +35,7 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     self.name = notification.map { $0.project.name }
 
-    let toggledNotification = notification
+    let toggledNotification: Signal<ProjectNotification, Never> = notification
       .takePairWhen(self.notificationTappedProperty.signal)
       .map { notification, on -> ProjectNotification in
         let n = (notification
