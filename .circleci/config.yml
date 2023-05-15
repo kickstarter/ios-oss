@@ -110,6 +110,9 @@ jobs:
       #     paths:
       #       - SourcePackages
       - run:
+          name: Bootstrap
+          command: make bootstrap
+      - run:
           name: Install Bundler
           command: bundle check || bundle install
           environment:
