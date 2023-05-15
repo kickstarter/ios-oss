@@ -45,9 +45,6 @@ test_job: &test_job
     #     keys:
     #       - spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
-        name: Bootstrap
-        command: make bootstrap
-    - run:
         name: Run tests
         command: make test
         no_output_timeout: "20m" # 20 minutes
