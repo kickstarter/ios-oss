@@ -12,6 +12,10 @@ xcode_version: &xcode_version 14.2
 iphone_name: &iphone_name iPhone 8
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (15.5) [" || true
 
+executors:
+  ios-executor:
+    working_directory: ~/kickstarter
+
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
 spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
 
@@ -90,6 +94,7 @@ all_jobs: &all_jobs
 
 jobs:
   build-and-cache:
+    executor: ios-executor
     <<: *base_job
     environment:
       - *default_environment
@@ -142,6 +147,7 @@ jobs:
 
   # Kickstarter tests
   kickstarter-tests:
+    executor: ios-executor
     <<: *base_job
     <<: *test_job
     environment:
@@ -150,6 +156,7 @@ jobs:
 
   # Library tests
   library-tests:
+    executor: ios-executor
     <<: *base_job
     <<: *test_job
     environment:
@@ -159,6 +166,7 @@ jobs:
 
   # KsApi tests
   ksapi-tests:
+    executor: ios-executor
     <<: *base_job
     <<: *test_job
     environment:
@@ -166,6 +174,7 @@ jobs:
       - SCHEME=KsApi
 
   deploy_alpha:
+    executor: ios-executor
     <<: *base_job
     environment:
       - *default_environment
@@ -178,6 +187,7 @@ jobs:
           command: make alpha
 
   deploy_beta:
+    executor: ios-executor
     <<: *base_job
     environment:
       - *default_environment
@@ -191,6 +201,7 @@ jobs:
 
   # AppCenter and S3 bucket beta
   beta:
+    executor: ios-executor
     <<: *base_job
     <<: *distribute_job
     environment:
@@ -201,6 +212,7 @@ jobs:
 
   # AppCenter Alpha
   alpha:
+    executor: ios-executor
     <<: *base_job
     <<: *distribute_job
     environment:
@@ -210,6 +222,7 @@ jobs:
       - DSYMS_FILE=KickAlpha.app.dSYM.zip
 
   refresh_app_store_dsyms:
+    executor: ios-executor
     <<: *base_job
     environment:
       - *default_environment
@@ -237,6 +250,7 @@ jobs:
 
   # iTunes
   itunes:
+    executor: ios-executor
     <<: *base_job
     <<: *distribute_job
     environment:
