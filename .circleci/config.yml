@@ -48,6 +48,9 @@ test_job: &test_job
         name: Bootstrap SPM
         command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
     - run:
+        name: Bootstrap
+        command: make bootstrap
+    - run:
         name: Run tests
         command: make test
         no_output_timeout: "20m" # 20 minutes
