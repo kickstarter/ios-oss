@@ -445,13 +445,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
 
     _ = AppEnvironment.current.remoteConfigClient?
-      .addOnConfigUpdateListener { [weak self] configUpdate, error in
-        guard let strongSelf = self else { return }
-
+      .addOnConfigUpdateListener { configUpdate, error in
         guard let realtimeUpdateError = error else {
           print("🔮 Remote Config Keys Update: \(configUpdate?.updatedKeys)")
-
-          strongSelf.activateRemoteConfigValues()
 
           return
         }

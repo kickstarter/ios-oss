@@ -378,7 +378,6 @@
 		473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */; };
 		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
 		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
-		4748C17C25B79DA20098E89E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4748C17B25B79DA20098E89E /* GoogleService-Info.plist */; };
 		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
 		4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */; };
 		4751A677272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */; };
@@ -1959,7 +1958,6 @@
 		473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
-		4748C17B25B79DA20098E89E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelopeTests.swift; sourceTree = "<group>"; };
 		4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCell.swift; sourceTree = "<group>"; };
 		4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModel.swift; sourceTree = "<group>"; };
@@ -2090,6 +2088,7 @@
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		60ED97F82A13F22F00B16941 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
@@ -5901,7 +5900,7 @@
 				8A86D7F224FED01C00037A7B /* GoogleService-Info.plist */,
 				8A86D7F424FED02A00037A7B /* GoogleService-Info.plist */,
 				8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */,
-				4748C17B25B79DA20098E89E /* GoogleService-Info.plist */,
+				60ED97F82A13F22F00B16941 /* GoogleService-Info.plist */,
 				D0158A511EEB3730006E7684 /* Secrets.swift */,
 				802800571C88F64D00141235 /* Base.xcconfig */,
 			);
@@ -7530,7 +7529,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */,
-				4748C17C25B79DA20098E89E /* GoogleService-Info.plist in Resources */,
 				8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */,
 				01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */,
 				A73924051D27247E004524C3 /* Main.storyboard in Resources */,
