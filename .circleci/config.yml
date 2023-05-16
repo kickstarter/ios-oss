@@ -46,7 +46,7 @@ test_job: &test_job
     #       - spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Run tests
-        shell: /bin/bash --login -eo pipefail
+        shell: /bin/bash -eo pipefail
         command: make test
         no_output_timeout: "20m" # 20 minutes
     - run:
