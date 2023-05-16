@@ -45,11 +45,11 @@ test_job: &test_job
     #       - spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run: 
           name: Create iPhone 8 iOS 15.5 Simulator
-          command: xcrun simctl create "iPhone 8 (15.5)" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
+          command: xcrun simctl create "iPhone 8" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
     - macos/preboot-simulator:
         version: "15.5"
         platform: "iOS"
-        device: "iPhone 8 (15.5)"
+        device: "iPhone 8"
     - run:
         name: Run tests
         command: make test
