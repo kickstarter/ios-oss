@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   macos: circleci/macos@2
+  shellcheck: circleci/shellcheck@2.1
   aws-cli: circleci/aws-cli@3.1
   codecov: codecov/codecov@1.1.3
 
@@ -33,7 +34,6 @@ base_job: &base_job
   working_directory: ~/kickstarter
 
 test_job: &test_job
-  working_directory: ~/kickstarter
   steps:
     - attach_workspace:
         at: .
@@ -252,15 +252,19 @@ workflows:
   build:
     # Matches all_jobs
     jobs:
+      - shellcheck/check
       - build-and-cache
       - kickstarter-tests:
           requires:
+           - shellcheck/check
            - build-and-cache
       - library-tests:
           requires:
+           - shellcheck/check
            - build-and-cache
       - ksapi-tests:
           requires:
+           - shellcheck/check
            - build-and-cache
 
       # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
