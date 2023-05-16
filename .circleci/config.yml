@@ -49,7 +49,7 @@ test_job: &test_job
     - macos/preboot-simulator:
         version: "15.5"
         platform: "iOS"
-        device: "iPhone 8"
+        device: "iPhone 8 (15.5)"
     - run:
         name: Run tests
         command: make test
