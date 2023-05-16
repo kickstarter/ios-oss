@@ -433,22 +433,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AppEnvironment.updateRemoteConfigClient(remoteConfigClient)
 
-    let appDefaults: [String: Any?] = [
-      RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
-      RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
-    ]
-
-    AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
-
-    self.activateRemoteConfigValues()
-
-    AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
+    self.fetchAndActivateRemoteConfig()
 
     _ = AppEnvironment.current.remoteConfigClient?
       .addOnConfigUpdateListener { configUpdate, error in
         guard let realtimeUpdateError = error else {
           print("🔮 Remote Config Keys Update: \(configUpdate?.updatedKeys)")
-          
+
           return
         }
 
@@ -456,8 +447,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
   }
 
-  private func activateRemoteConfigValues() {
-    AppEnvironment.current.remoteConfigClient?.activate { _, error in
+  private func fetchAndActivateRemoteConfig() {
+    AppEnvironment.current.remoteConfigClient?.fetchAndActivate { _, error in
       guard let remoteConfigActivationError = error else {
         print("🔮 Remote Config SDK Successfully Activated")
 

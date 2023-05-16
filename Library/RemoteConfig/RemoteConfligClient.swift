@@ -1,6 +1,10 @@
 import FirebaseRemoteConfig
 
 public class RemoteConfigClient: RemoteConfigClientType {
+  public func fetchAndActivate(completionHandler: ((RemoteConfigFetchAndActivateStatus, Error?) -> Void)?) {
+    self.sharedClient.fetchAndActivate(completionHandler: completionHandler)
+  }
+
   private var sharedClient: RemoteConfig
 
   public init(with client: RemoteConfig) {
