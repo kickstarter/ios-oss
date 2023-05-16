@@ -37,7 +37,13 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
 
     let remoteConfigFeatures = features
       .map { features in
-        features.map { feature -> (RemoteConfigFeature, Bool) in
+        print("userDefaults:")
+        print(AppEnvironment.current.userDefaults
+          .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue])
+        print("remote config instance value:")
+        print(AppEnvironment.current.remoteConfigClient?
+          .isFeatureEnabled(featureKey: RemoteConfigFeature.consentManagementDialogEnabled))
+        return features.map { feature -> (RemoteConfigFeature, Bool) in
           (feature, isFeatureEnabled(feature))
         }
       }

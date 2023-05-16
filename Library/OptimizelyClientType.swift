@@ -42,16 +42,16 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
 
   let environmentType = env.environmentType
 
-  var sdkKey: String
-
-  switch environmentType {
-  case .production:
-    sdkKey = Secrets.OptimizelySDKKey.production
-  case .staging:
-    sdkKey = Secrets.OptimizelySDKKey.staging
-  case .development, .local, .custom:
-    sdkKey = Secrets.OptimizelySDKKey.development
-  }
+  var sdkKey: String = ""
+//
+//  switch environmentType {
+//  case .production:
+//    sdkKey = Secrets.OptimizelySDKKey.production
+//  case .staging:
+//    sdkKey = Secrets.OptimizelySDKKey.staging
+//  case .development, .local, .custom:
+//    sdkKey = Secrets.OptimizelySDKKey.development
+//  }
 
   return [
     "optimizely_api_key": sdkKey,

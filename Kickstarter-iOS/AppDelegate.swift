@@ -448,7 +448,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .addOnConfigUpdateListener { configUpdate, error in
         guard let realtimeUpdateError = error else {
           print("🔮 Remote Config Keys Update: \(configUpdate?.updatedKeys)")
-
+          
           return
         }
 
