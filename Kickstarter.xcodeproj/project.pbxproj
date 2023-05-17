@@ -235,6 +235,8 @@
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
 		1923770A28DA2AE300F68635 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
+		192428002A158FCF00EC049C /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 192427FF2A158FCF00EC049C /* PerimeterX */; };
+		192428022A15904100EC049C /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 192428012A15904100EC049C /* PerimeterX */; };
 		19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 19338D9A2A0D4E2300075F29 /* Stripe */; };
 		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
@@ -3187,6 +3189,7 @@
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
+				192428002A158FCF00EC049C /* PerimeterX in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
@@ -3219,6 +3222,7 @@
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				192428022A15904100EC049C /* PerimeterX in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 			);
@@ -7204,6 +7208,7 @@
 				6078106E2A04191C0050D4F7 /* FirebaseAnalytics */,
 				19A6665E2A045F2A00708F8B /* FirebaseRemoteConfig */,
 				19338D9A2A0D4E2300075F29 /* Stripe */,
+				192427FF2A158FCF00EC049C /* PerimeterX */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7274,6 +7279,7 @@
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				19821C84299D392400EF312F /* AppboySegment */,
+				192428012A15904100EC049C /* PerimeterX */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -10530,6 +10536,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = "ReactiveExtensions-TestHelpers";
+		};
+		192427FF2A158FCF00EC049C /* PerimeterX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
+			productName = PerimeterX;
+		};
+		192428012A15904100EC049C /* PerimeterX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
+			productName = PerimeterX;
 		};
 		19338D9A2A0D4E2300075F29 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
