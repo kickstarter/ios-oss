@@ -80,10 +80,9 @@ distribute_job: &distribute_job
         path: output
 
 all_jobs: &all_jobs
-  # - kickstarter-tests  
-  # - library-tests
-  # - ksapi-tests
-    - build-and-cache
+  - kickstarter-tests  
+  - library-tests
+  - ksapi-tests
 
 # Jobs
 
@@ -228,15 +227,15 @@ workflows:
     # Matches all_jobs
     jobs:
       - build-and-cache
-      # - kickstarter-tests:
-      #     requires:
-      #      - build-and-cache
-      # - library-tests:
-      #     requires:
-      #      - build-and-cache
-      # - ksapi-tests:
-      #     requires:
-      #      - build-and-cache
+      - kickstarter-tests:
+          requires:
+           - build-and-cache
+      - library-tests:
+          requires:
+           - build-and-cache
+      - ksapi-tests:
+          requires:
+           - build-and-cache
 
       # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
       # or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.

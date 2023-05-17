@@ -119,8 +119,8 @@ sync:
 
 cleanup:
 	@echo "Adding remotes..."
-	@git remote add oss https://github.com/kickstarter/ios-oss
-	@git remote add private https://github.com/kickstarter/ios-private
+	@git remote add oss git@github.com:kickstarter/ios-oss
+	@git remote add private git@github.com:kickstarter/ios-private
 
 	@echo "Deleting temporary branch: $(CIRCLE_BRANCH)"
 
