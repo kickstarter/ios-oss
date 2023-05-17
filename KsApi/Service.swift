@@ -51,7 +51,7 @@ public struct Service: ServiceType {
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
 
     // Initialize PerimeterX
-    PXManager.sharedInstance().start(with: Secrets.PerimeterX.appId)
+    perimeterXClient.start()
 
     // Configure GraphQL Client
     GraphQL.shared.configure(

@@ -9,19 +9,21 @@ extension PerimeterXClient {
 }
 
 struct MockPerimeterXBlockResponse: PerimeterXBlockResponseType {
+  func displayCaptcha(on _: PerimeterXClientType, vc _: UIViewController?) {}
+
   var blockType: PXBlockType
 
   var type: PXBlockType {
     return self.blockType
   }
-
-  func displayCaptcha(on _: UIViewController?) {}
 }
 
 final class MockPerimeterXManager: PerimeterXManagerType {
   var headers: [AnyHashable: Any] = ["PX-AUTH-TEST": "foobar"]
   var responseType: PerimeterXBlockResponseType?
   var vid: String = "test-vid-id"
+
+  func start(_: String!) {}
 
   func getVid() -> String! {
     return self.vid
@@ -34,4 +36,6 @@ final class MockPerimeterXManager: PerimeterXManagerType {
   func checkError(_: [AnyHashable: Any]!) -> PerimeterXBlockResponseType? {
     return self.responseType
   }
+
+  func handle(_: PXBlockResponse!, with _: UIViewController!, captchaSuccess _: PXCompletionBlock!) {}
 }

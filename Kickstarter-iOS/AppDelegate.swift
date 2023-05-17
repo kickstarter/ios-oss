@@ -410,7 +410,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func goToPerimeterXCaptcha(_ response: PerimeterXBlockResponseType) {
-    response.displayCaptcha(on: self.window?.rootViewController)
+    response
+      .displayCaptcha(
+        on: AppEnvironment.current.apiService.perimeterXClient,
+        vc: self.window?.rootViewController
+      )
   }
 
   private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {

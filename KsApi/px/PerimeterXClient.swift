@@ -31,6 +31,10 @@ public class PerimeterXClient: NSObject, PerimeterXClientType {
     (self.manager as? PXManager)?.delegate = self
   }
 
+  public func start() {
+    self.manager.start(Secrets.PerimeterX.appId)
+  }
+
   public func handleError(response: HTTPURLResponse, and data: Data) -> Bool {
     /// We have a `403` statusCode.
     guard response.statusCode == 403 else { return false }
@@ -57,6 +61,14 @@ public class PerimeterXClient: NSObject, PerimeterXClientType {
 
   public func headers() -> [String: String] {
     return (self.manager.httpHeaders() as? [String: String]) ?? [:]
+  }
+
+  public func handle(
+    _ blockResponse: PXBlockResponse!,
+    with presentingViewController: UIViewController!,
+    captchaSuccess successBlock: PXCompletionBlock!
+  ) {
+    self.manager.handle(blockResponse, with: presentingViewController, captchaSuccess: successBlock)
   }
 }
 
