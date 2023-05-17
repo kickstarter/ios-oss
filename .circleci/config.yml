@@ -35,14 +35,6 @@ test_job: &test_job
   steps:
     - attach_workspace:
         at: .
-    # - restore_cache:
-    #     name: Restore Bundler
-    #     keys:
-    #       - v2-gems-{{ checksum "Gemfile.lock" }}
-    # - restore_cache:
-    #     name: Restore SPM Cache
-    #     keys:
-    #       - spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run: 
           name: Create iPhone 8 iOS 15.5 Simulator
           command: xcrun simctl create "iPhone 8" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
@@ -110,11 +102,6 @@ jobs:
       - run:
           name: Bootstrap SPM
           command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
-      # - save_cache:
-      #     name: Cache SPM
-      #     key: spm-cache-v2-{{ checksum "./Kickstarter.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}-{{ checksum "xcode_version.txt" }}
-      #     paths:
-      #       - SourcePackages
       - run:
           name: Bootstrap
           command: make bootstrap
@@ -124,11 +111,6 @@ jobs:
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
-      # - save_cache:
-      #     name: Cache Bundler
-      #     key: v2-gems-{{ checksum "Gemfile.lock" }}
-      #     paths:
-      #       - vendor/bundle
       - run:
           name: Download GraphQL Schema
           command: bin/apollo-schema-download.sh
@@ -218,19 +200,12 @@ jobs:
       - run:
           name: Secrets
           command: make secrets
-      # - restore_cache:
-      #     keys:
-      #       - v2-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
-      # - save_cache:
-      #     key: v2-gems-{{ checksum "Gemfile.lock" }}
-      #     paths:
-      #       - vendor/bundle
       - run:
           name: Download dSYMs and upload to Crashlytics
           command: bundle exec fastlane refresh_dsyms
