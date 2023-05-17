@@ -433,14 +433,22 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AppEnvironment.updateRemoteConfigClient(remoteConfigClient)
 
-    let appDefaults: [String: Any?] = [
-      RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
-      RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
-    ]
+    self.fetchAndActivateRemoteConfig()
 
-    AppEnvironment.current.remoteConfigClient?.setDefaults(appDefaults as? [String: NSObject])
+    _ = AppEnvironment.current.remoteConfigClient?
+      .addOnConfigUpdateListener { configUpdate, error in
+        guard let realtimeUpdateError = error else {
+          print("🔮 Remote Config Keys Update: \(configUpdate?.updatedKeys)")
 
-    AppEnvironment.current.remoteConfigClient?.activate { _, error in
+          return
+        }
+
+        print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
+      }
+  }
+
+  private func fetchAndActivateRemoteConfig() {
+    AppEnvironment.current.remoteConfigClient?.fetchAndActivate { _, error in
       guard let remoteConfigActivationError = error else {
         print("🔮 Remote Config SDK Successfully Activated")
 
@@ -453,18 +461,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       Crashlytics.crashlytics().record(error: remoteConfigActivationError)
 
       self.viewModel.inputs.remoteConfigClientConfigurationFailed()
-    }
-
-    AppEnvironment.current.remoteConfigClient?.fetch { _, _ in }
-
-    _ = AppEnvironment.current.remoteConfigClient?.addOnConfigUpdateListener { _, error in
-      guard let realtimeUpdateError = error else {
-        print("🔮 Remote Config Key/Value Pair Updated")
-
-        return
-      }
-
-      print("🔴 Remote Config SDK Config Update Listener Failure: \(realtimeUpdateError.localizedDescription)")
     }
   }
 }

@@ -4,6 +4,7 @@ import Foundation
 public protocol RemoteConfigClientType: AnyObject {
   func activate(completion: ((Bool, Error?) -> Void)?)
   func fetch(completionHandler: ((RemoteConfigFetchStatus, Error?) -> Void)?)
+  func fetchAndActivate(completionHandler: ((RemoteConfigFetchAndActivateStatus, Error?) -> Void)?)
   func setDefaults(_ defaults: [String: NSObject]?)
   func addOnConfigUpdateListener(remoteConfigUpdateCompletion listener: @escaping (
     RemoteConfigUpdate?,
