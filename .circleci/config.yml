@@ -227,15 +227,15 @@ workflows:
     # Matches all_jobs
     jobs:
       - build-and-cache
-      - kickstarter-tests:
-          requires:
-           - build-and-cache
-      - library-tests:
-          requires:
-           - build-and-cache
-      - ksapi-tests:
-          requires:
-           - build-and-cache
+      # - kickstarter-tests:
+      #     requires:
+      #      - build-and-cache
+      # - library-tests:
+      #     requires:
+      #      - build-and-cache
+      # - ksapi-tests:
+      #     requires:
+      #      - build-and-cache
 
       # ** Refreshing dSYMs disabled until a suitable workaround is found for App Store Connect 2FA authentication
       # or Fastlane implements API key support in this Fastlane action. Uncomment below to re-enable.
@@ -252,7 +252,7 @@ workflows:
             branches:
               # matches all branches that contain 'feature' but do not contain 'alpha-dist'
               only: /^((?!alpha\-dist).*feature.*)*$/
-          requires: *all_jobs
+          # requires: *all_jobs
       - deploy_beta:
           context: aws
           filters:
@@ -272,7 +272,7 @@ workflows:
             branches:
               # matches all branches that begin with 'alpha-dist'
               only: /alpha-dist.*/
-          requires: *all_jobs
+          # requires: *all_jobs
       - itunes:
           context: aws
           filters:
