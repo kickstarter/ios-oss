@@ -250,6 +250,7 @@
 		194520C5288859A600CA9B88 /* PaymentCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194520C4288859A600CA9B88 /* PaymentCardTextField.swift */; };
 		19462F6A29D4892300868694 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191A2C702907350A0093B6E1 /* ChangeEmailView.swift */; };
 		19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706656D629C7E72B00BAE7D4 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift */; };
+		194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 194A8E4D2A13FB010099583B /* GoogleService-Info.plist */; };
 		194A9C3D29E3505A00D7C4BF /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */; };
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
@@ -378,7 +379,6 @@
 		473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */; };
 		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
 		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
-		4748C17C25B79DA20098E89E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4748C17B25B79DA20098E89E /* GoogleService-Info.plist */; };
 		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
 		4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */; };
 		4751A677272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */; };
@@ -1844,6 +1844,7 @@
 		194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceSetupIntentInputTests.swift; sourceTree = "<group>"; };
 		194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
 		194520C4288859A600CA9B88 /* PaymentCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardTextField.swift; sourceTree = "<group>"; };
+		194A8E4D2A13FB010099583B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		19A666602A0472A500708F8B /* RemoteConfligClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfligClient.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
 		19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputFieldModifiers.swift; sourceTree = "<group>"; };
@@ -1959,7 +1960,6 @@
 		473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
-		4748C17B25B79DA20098E89E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelopeTests.swift; sourceTree = "<group>"; };
 		4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCell.swift; sourceTree = "<group>"; };
 		4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModel.swift; sourceTree = "<group>"; };
@@ -5901,7 +5901,7 @@
 				8A86D7F224FED01C00037A7B /* GoogleService-Info.plist */,
 				8A86D7F424FED02A00037A7B /* GoogleService-Info.plist */,
 				8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */,
-				4748C17B25B79DA20098E89E /* GoogleService-Info.plist */,
+				194A8E4D2A13FB010099583B /* GoogleService-Info.plist */,
 				D0158A511EEB3730006E7684 /* Secrets.swift */,
 				802800571C88F64D00141235 /* Base.xcconfig */,
 			);
@@ -7530,12 +7530,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */,
-				4748C17C25B79DA20098E89E /* GoogleService-Info.plist in Resources */,
 				8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */,
 				01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */,
 				A73924051D27247E004524C3 /* Main.storyboard in Resources */,
 				8A86D7F324FED01D00037A7B /* GoogleService-Info.plist in Resources */,
 				8A86D7F524FED02A00037A7B /* GoogleService-Info.plist in Resources */,
+				194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
