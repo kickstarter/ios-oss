@@ -12,7 +12,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 
 ## Getting Started
 
-1. Install Xcode. We currently support up to XCode 13.4.1.
+1. Install Xcode. We currently support XCode 14.3 Swift 5.8.
 2. Clone this repository.
 
 &#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
@@ -72,7 +72,6 @@ A collection of operators we like to add to ReactiveCocoa.
 * [SwiftSoup](https://github.com/scinfu/SwiftSoup)
 * [Facebook](https://github.com/facebook/facebook-ios-sdk)
 * [Firebase](https://github.com/firebase/firebase-ios-sdk)
-* [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
 * [AppCenter](https://github.com/microsoft/appcenter-sdk-apple)
 * [Appboy](https://github.com/Appboy/Appboy-segment-ios)
 
