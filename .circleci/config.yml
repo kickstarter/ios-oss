@@ -258,14 +258,14 @@ workflows:
           filters:
             branches:
               only: main
-          requires: *all_jobs
+          #requires: *all_jobs
       - beta:
           context: aws
           filters:
             branches:
               # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
-          requires: *all_jobs
+          #requires: *all_jobs
       - alpha:
           context: aws
           filters:
@@ -279,7 +279,7 @@ workflows:
             branches:
               # matches branch named exactly `itunes-dist`
               only: itunes-dist
-          requires: *all_jobs
+         # requires: *all_jobs
 
 experimental:
   notify:
