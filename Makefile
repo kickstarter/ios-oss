@@ -119,8 +119,8 @@ sync:
 
 cleanup:
 	@echo "Adding remotes..."
-	@git remote add oss https://github.com/kickstarter/ios-oss
-	@git remote add private https://github.com/kickstarter/ios-private
+	@git remote add oss git@github.com:kickstarter/ios-oss
+	@git remote add private git@github.com:kickstarter/ios-private
 
 	@echo "Deleting temporary branch: $(CIRCLE_BRANCH)"
 
@@ -132,7 +132,7 @@ strings:
 
 secrets:
 	-@rm -rf Frameworks/native-secrets
-	-@git clone https://github.com/kickstarter/native-secrets Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
+	-@git clone git@github.com:kickstarter/native-secrets Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
 	if [ ! -d Frameworks/native-secrets ]; \
 	then \
 		mkdir -p Frameworks/native-secrets/ios \
