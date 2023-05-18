@@ -113,8 +113,7 @@ public final class CommentCellViewModel:
 
     self.flagButtonIsHidden = self.commentAndProject.signal
       .ignoreValues()
-      .map(featureCommentFlaggingIsEnabled)
-      .map(isFalse)
+      .mapConst(true)
 
     let isLoggedOut = self.commentAndProject.signal
       .ignoreValues()

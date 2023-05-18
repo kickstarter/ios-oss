@@ -84,8 +84,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   public init() {
     let remoteConfigReadyOrContinue = Signal.merge(
       self.remoteConfigClientConfiguredProperty.signal,
-      self.viewDidLoadProperty.signal.map { _ in AppEnvironment.current.optimizelyClient }
-        .ignoreValues(),
+      self.viewDidLoadProperty.signal.ignoreValues(),
       self.remoteConfigClientConfigurationFailedProperty.signal
     ).take(first: 1)
 
