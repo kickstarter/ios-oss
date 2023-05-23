@@ -12,7 +12,6 @@ public enum AppKeys: String {
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
   case onboardingCategories = "com.kickstarter.KeyValueStoreType.onboardingCategories"
-  case optimizelyFeatureFlags = "com.kickstarter.KeyValueStoreType.optimizelyFeatureFlags"
   case remoteConfigFeatureFlags = "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
@@ -45,7 +44,6 @@ public protocol KeyValueStoreType: AnyObject {
   var hasSeenSaveProjectAlert: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
   var onboardingCategories: Data? { get set }
-  var optimizelyFeatureFlags: [String: Bool] { get set }
   var remoteConfigFeatureFlags: [String: Bool] { get set }
 }
 
@@ -156,16 +154,6 @@ extension KeyValueStoreType {
 
     set {
       self.set(newValue, forKey: AppKeys.onboardingCategories.rawValue)
-    }
-  }
-
-  public var optimizelyFeatureFlags: [String: Bool] {
-    get {
-      return self
-        .object(forKey: AppKeys.optimizelyFeatureFlags.rawValue) as? [String: Bool] ?? [:]
-    }
-    set {
-      self.set(newValue, forKey: AppKeys.optimizelyFeatureFlags.rawValue)
     }
   }
 

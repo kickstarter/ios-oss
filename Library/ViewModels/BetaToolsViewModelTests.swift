@@ -152,14 +152,4 @@ final class BetaToolsViewModelTests: TestCase {
 
     self.goToFeatureFlagTools.assertValueCount(1)
   }
-
-  func testGoToOptimizelyFeatureFlags() {
-    self.vm.inputs.viewDidLoad()
-
-    self.goToRemoteConfigFeatureFlagTools.assertDidNotEmitValue()
-
-    self.vm.inputs.didSelectBetaToolsRow(.debugRemoteConfigFeatureFlags)
-
-    self.goToRemoteConfigFeatureFlagTools.assertValueCount(1)
-  }
 }

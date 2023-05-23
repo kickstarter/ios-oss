@@ -14,7 +14,7 @@ public protocol DiscoveryViewModelInputs {
   /// Call when the Remote Config Client has been configured
   func remoteConfigClientConfigured()
 
-  /// Call when the OptimizelyClient configuration has failed
+  /// Call when the RemoteConfigClient configuration has failed
   func remoteConfigClientConfigurationFailed()
 
   /// Call when the UIPageViewController finishes transitioning.

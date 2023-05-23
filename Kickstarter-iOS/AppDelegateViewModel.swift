@@ -929,7 +929,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  // FIXME: Currently not used with `MockOptimizelyClient`, but could be when we implement the next real feature flagging client.
   fileprivate let remoteConfigClientConfigurationFailedProperty = MutableProperty(())
   public func remoteConfigClientConfigurationFailed() {
     self.remoteConfigClientConfigurationFailedProperty.value = ()

@@ -93,7 +93,7 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigured()
 
@@ -117,7 +117,7 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigurationFailed()
 
@@ -216,7 +216,7 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigured()
 
@@ -240,7 +240,7 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigurationFailed()
 

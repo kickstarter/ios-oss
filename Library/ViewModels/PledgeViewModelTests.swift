@@ -3069,7 +3069,7 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
-  func testChangePaymentMethod_OptimizelyClientControl_ApplePay_Success() {
+  func testChangePaymentMethod_ApplePay_Success() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -3409,7 +3409,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_OptimizelyClientControl_ApplePay_StripeTokenFailure() {
+  func testChangePaymentMethod_ApplePay_StripeTokenFailure() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -3707,7 +3707,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testChangePaymentMethod_OptimizelyClientControl_ApplePay_Failure() {
+  func testChangePaymentMethod_ApplePay_Failure() {
     let mockService = MockService(
       updateBackingResult: .failure(.couldNotParseJSON)
     )
