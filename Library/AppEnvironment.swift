@@ -67,12 +67,6 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-//  public static func updateOptimizelyClient(_ optimizelyClient: OptimizelyClientType?) {
-//    self.replaceCurrentEnvironment(
-//      optimizelyClient: optimizelyClient
-//    )
-//  }
-
   public static func updateRemoteConfigClient(_ remoteConfigClient: RemoteConfigClientType?) {
     self.replaceCurrentEnvironment(
       remoteConfigClient: remoteConfigClient
@@ -173,7 +167,6 @@ public struct AppEnvironment: AppEnvironmentType {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-  //  optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
@@ -207,7 +200,6 @@ public struct AppEnvironment: AppEnvironmentType {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
-     //   optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
         remoteConfigClient: remoteConfigClient,
@@ -246,7 +238,6 @@ public struct AppEnvironment: AppEnvironmentType {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
-   // optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     remoteConfigClient: RemoteConfigClientType? = AppEnvironment.current.remoteConfigClient,
@@ -281,7 +272,6 @@ public struct AppEnvironment: AppEnvironmentType {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
-     //   optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
         remoteConfigClient: remoteConfigClient,

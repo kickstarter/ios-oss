@@ -54,7 +54,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     }
 
     lazy var paymentSheetEnabled: Bool = {
-      // featureSettingsPaymentSheetEnabled()
       true
     }()
 

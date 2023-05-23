@@ -90,9 +90,6 @@ public struct Environment {
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
 
-  /// The optimizely client
-  //public let optimizelyClient: OptimizelyClientType?
-
   /// A type that manages registration for push notifications.
   public let pushRegistrationType: PushRegistrationType.Type
 
@@ -141,7 +138,6 @@ public struct Environment {
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
-    //optimizelyClient: OptimizelyClientType? = nil,
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     remoteConfigClient: RemoteConfigClientType? = nil,
@@ -175,7 +171,6 @@ public struct Environment {
     self.launchedCountries = launchedCountries
     self.locale = locale
     self.mainBundle = mainBundle
-   // self.optimizelyClient = optimizelyClient
     self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
     self.remoteConfigClient = remoteConfigClient
