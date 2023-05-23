@@ -269,9 +269,7 @@ internal final class SharedFunctionsTests: TestCase {
   }
 
   func testDiscoveryPageBackgroundColor() {
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
-    }
+    XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
   }
 
   func testSelectedRewardQuantities_NoAddOns() {
@@ -305,9 +303,7 @@ internal final class SharedFunctionsTests: TestCase {
   }
 
   func testIsNativeRiskMessagingControlEnabled() {
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertTrue(isNativeRiskMessagingControlEnabled())
-    }
+    XCTAssertTrue(isNativeRiskMessagingControlEnabled())
   }
 
   func testRewardIsAvailable_NotLimitedBaseReward_NotBacked() {

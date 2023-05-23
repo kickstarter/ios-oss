@@ -29,8 +29,6 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
   func testView_PledgeContext_AddNewCardNonLoadingState_Success() {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
     let envelope = ClientSecretEnvelope(clientSecret: "test")
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: true]
     let mockService = MockService(
       createStripeSetupIntentResult: .success(envelope),
       fetchGraphUserResult: .success(response)
@@ -42,8 +40,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let controller = PledgePaymentMethodsViewController.instantiate()
 
@@ -70,8 +67,6 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
 
   func testView_PledgeContext_AddNewCardLoadingState_Success() {
     let response = UserEnvelope<GraphUser>(me: self.userWithCards)
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.paymentSheetEnabled.rawValue: true]
     /// Using .failure case to prevent real Stripe sheet from being shown.
     let mockService = MockService(
       createStripeSetupIntentResult: .failure(.couldNotParseJSON),
@@ -84,8 +79,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
       withEnvironment(
         apiService: mockService,
         currentUser: User.template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let controller = PledgePaymentMethodsViewController.instantiate()
 
