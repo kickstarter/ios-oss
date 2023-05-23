@@ -284,32 +284,28 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let params = DiscoveryParams.defaults
       |> \.sort .~ .magic
 
-    withEnvironment(optimizelyClient: MockOptimizelyClient()) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.scheduler.advance()
 
-      self.hasAddedProjects.assertValues([])
-      self.projectsLoadedDiscoveryParams.assertValues([])
+    self.hasAddedProjects.assertValues([])
+    self.projectsLoadedDiscoveryParams.assertValues([])
 
-      self.vm.inputs.selectedFilter(.defaults)
-      self.scheduler.advance()
+    self.vm.inputs.selectedFilter(.defaults)
+    self.scheduler.advance()
 
-      self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
-      self.projectsLoadedDiscoveryParams.assertValues([params])
-    }
+    self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
+    self.projectsLoadedDiscoveryParams.assertValues([params])
   }
 
   func testContentInset_Success() {
-    withEnvironment(optimizelyClient: MockOptimizelyClient()) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.scheduler.advance()
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.scheduler.advance()
 
-      self.contentInset.assertValues([UIEdgeInsets.zero])
-    }
+    self.contentInset.assertValues([UIEdgeInsets.zero])
   }
 
   func testGoToProject() {

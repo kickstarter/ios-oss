@@ -142,8 +142,8 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagEnabled() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true]
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
 
     let token = AccessToken(
       tokenString: "12344566",
@@ -165,7 +165,7 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: []
     )
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
@@ -198,8 +198,8 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testFacebookLoginFlow_Success_WhenFBLoginDeprecationFlagDisabled() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true]
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
 
     let token = AccessToken(
       tokenString: "12344566",
@@ -221,7 +221,7 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: []
     )
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
@@ -679,10 +679,10 @@ final class LoginToutViewModelTests: TestCase {
 
     let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false]
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false]
 
-    withEnvironment(apiService: service, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: service, remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 
@@ -719,10 +719,10 @@ final class LoginToutViewModelTests: TestCase {
 
     let service = MockService(fetchUserResult: .success(user), signInWithAppleResult: .success(envelope))
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: true]
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
 
-    withEnvironment(apiService: service, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(apiService: service, remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
       self.vm.inputs.viewWillAppear()
 

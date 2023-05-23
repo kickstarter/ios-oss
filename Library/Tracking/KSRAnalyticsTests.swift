@@ -1592,14 +1592,14 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingIdentifier)
-    let optimizelyClient = MockOptimizelyClient()
+    let remoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
       ]
 
     withEnvironment(
       advertisingIdentifier: advertisingIdentifier,
-      optimizelyClient: optimizelyClient
+      remoteConfigClient: remoteConfigClient
     ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1614,14 +1614,14 @@ final class KSRAnalyticsTests: TestCase {
     let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.denied)
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingIdentifier)
-    let optimizelyClient = MockOptimizelyClient()
+    let remoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
       ]
 
     withEnvironment(
       advertisingIdentifier: advertisingIdentifier,
-      optimizelyClient: optimizelyClient
+      remoteConfigClient: remoteConfigClient
     ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1639,14 +1639,14 @@ final class KSRAnalyticsTests: TestCase {
     let advertisingId = MockAppTrackingTransparency().advertisingIdentifier(.notDetermined)
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingId)
-    let optimizelyClient = MockOptimizelyClient()
+    let remoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
       ]
 
     withEnvironment(
       advertisingIdentifier: advertisingId,
-      optimizelyClient: optimizelyClient
+      remoteConfigClient: remoteConfigClient
     ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1664,14 +1664,14 @@ final class KSRAnalyticsTests: TestCase {
     let advertisingId = MockAppTrackingTransparency().advertisingIdentifier(.restricted)
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingId)
-    let optimizelyClient = MockOptimizelyClient()
+    let remoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        OptimizelyFeature.consentManagementDialogEnabled.rawValue: true
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
       ]
 
     withEnvironment(
       advertisingIdentifier: advertisingId,
-      optimizelyClient: optimizelyClient
+      remoteConfigClient: remoteConfigClient
     ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)

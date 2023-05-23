@@ -110,7 +110,8 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.vm.inputs.configureNavigationSelector(with: (project, nil))
 
-    self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
+    self.configureNavigationSelectorUI
+      .assertValues([[.overview, .campaign, .faq, .risks, .environmentalCommitments]])
   }
 
   func testOutput_ConfigureNavigationSelectorUI_Prelaunch() {
@@ -139,20 +140,15 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.vm.inputs.configureNavigationSelector(with: projectAndEmptyRefTag)
 
-    self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks]])
+    self.configureNavigationSelectorUI.assertValues([[.overview, .campaign, .faq, .risks]])
   }
 
-  func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOn_ShowsCampaignTab() {
+  func testOutput_ConfigureNavigationSelectorUI_ShowsCampaignTab() {
     var project = Project.template
       |> \.displayPrelaunch .~ false
     project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
 
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
+    withEnvironment {
       self.vm.inputs.buttonTapped(index: 0)
 
       self.configureNavigationSelectorUI.assertDidNotEmitValue()
@@ -161,27 +157,6 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
       self.configureNavigationSelectorUI
         .assertValues([[.overview, .campaign, .faq, .risks, .environmentalCommitments]])
-    }
-  }
-
-  func testOutput_ConfigureNavigationSelectorUI_WithStoryOptimizelyFlagOff_DoesNotShowCampaignTab() {
-    var project = Project.template
-      |> \.displayPrelaunch .~ false
-    project.extendedProjectProperties = self.projectPropertiesWithEnvironmentalCommitments
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.buttonTapped(index: 0)
-
-      self.configureNavigationSelectorUI.assertDidNotEmitValue()
-
-      self.vm.inputs.configureNavigationSelector(with: (project, nil))
-
-      self.configureNavigationSelectorUI.assertValues([[.overview, .faq, .risks, .environmentalCommitments]])
     }
   }
 
