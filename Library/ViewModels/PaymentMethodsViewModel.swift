@@ -54,7 +54,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     }
 
     lazy var paymentSheetEnabled: Bool = {
-      featureSettingsPaymentSheetEnabled()
+      true
     }()
 
     let deletePaymentMethodEvents = self.didDeleteCreditCardSignal

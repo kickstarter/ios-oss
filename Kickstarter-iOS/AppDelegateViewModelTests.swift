@@ -13,7 +13,6 @@ final class AppDelegateViewModelTests: TestCase {
 
   private let applicationIconBadgeNumber = TestObserver<Int, Never>()
   private let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
-  private let configureFeatureFlagClient = TestObserver<OptimizelyClientType, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let configurePerimeterX = TestObserver<(), Never>()
   private let configureSegmentWithBraze = TestObserver<String, Never>()
@@ -56,16 +55,6 @@ final class AppDelegateViewModelTests: TestCase {
       ]
   }
 
-  private let featureFlagsWithDefaultValues =
-    [
-      OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-      OptimizelyFeature.consentManagementDialogEnabled.rawValue: false,
-      OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
-      OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
-      OptimizelyFeature.paymentSheetEnabled.rawValue: true,
-      OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-    ]
-
   override func setUp() {
     super.setUp()
 
@@ -74,7 +63,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFirebase.observe(self.configureFirebase.observer)
-    self.vm.outputs.configureFeatureFlagClient.observe(self.configureFeatureFlagClient.observer)
     self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
     self.vm.outputs.configureSegmentWithBraze.observe(self.configureSegmentWithBraze.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
@@ -167,164 +155,6 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.configurePerimeterX.assertValueCount(1)
   }
-
-  // MARK: - Feature Flag Client
-
-  func testConfigureFeatureFlagClient_Production() {
-    let mockService = MockService(serverConfig: ServerConfig.production)
-
-    withEnvironment(apiService: mockService) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
-      else {
-        XCTFail()
-
-        return
-      }
-
-      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
-    }
-  }
-
-  func testConfigureFeatureFlagClient_Staging() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
-      else {
-        XCTFail()
-
-        return
-      }
-
-      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
-    }
-  }
-
-  func testConfigureFeatureFlag_Release() {
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    withEnvironment(mainBundle: mockBundle) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
-      else {
-        XCTFail()
-
-        return
-      }
-
-      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
-    }
-  }
-
-  func testConfigureFeatureFlagClient_Alpha() {
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    withEnvironment(mainBundle: mockBundle) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
-      else {
-        XCTFail()
-
-        return
-      }
-
-      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
-    }
-  }
-
-  func testConfigureFeatureFlagClient_Beta() {
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    withEnvironment(mainBundle: mockBundle) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
-      else {
-        XCTFail()
-
-        return
-      }
-
-      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
-    }
-  }
-
-  func testConfigureFeatureFlag_Debug() {
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    withEnvironment(mainBundle: mockBundle) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      guard let mockOptimizelyClient = self.configureFeatureFlagClient.lastValue as? MockOptimizelyClient
-      else {
-        XCTFail()
-
-        return
-      }
-
-      XCTAssertEqual(mockOptimizelyClient.features, featureFlagsWithDefaultValues)
-    }
-  }
-
-  func testFeatureFlagClientConfiguration_IsSuccess() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService) {
-      self.configureFeatureFlagClient.assertDidNotEmitValue()
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-      self.configureFeatureFlagClient.assertValueCount(1)
-
-      self.vm.inputs.didUpdateRemoteConfigClient()
-
-      self.postNotificationName.assertValues([.ksr_remoteConfigClientConfigured])
-    }
-  }
-
-  // FIXME: When a real feature flagging client is setup, test the error case.
 
   // MARK: - AppCenter
 

@@ -862,8 +862,7 @@ public final class KSRAnalytics {
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
-    project: Project,
-    optimizelyProperties _: [String: Any] = [:]
+    project: Project
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(page: .projectPage))
@@ -871,7 +870,7 @@ public final class KSRAnalytics {
     switch stateType {
     case .pledge:
       let allProps = props
-        .withAllValuesFrom(optimizelyProperties() ?? [:])
+        .withAllValuesFrom([:])
         .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
         .withAllValuesFrom(props)
 

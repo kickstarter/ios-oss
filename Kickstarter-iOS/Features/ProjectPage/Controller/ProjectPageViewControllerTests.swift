@@ -151,77 +151,12 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fetchProjectRewardsResult: .success([reward])
     )
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         apiService: mockService,
         config: config,
         currentUser: .template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
-      ) {
-        let vc = ProjectPageViewController.configuredWith(
-          projectOrParam: .left(project), refTag: nil
-        )
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
-
-        self.scheduler.run()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
-  func testLoggedIn_Backer_LiveProject_NotShowingCampaign_Success() {
-    let config = Config.template
-    let reward = Reward.template
-      |> Reward.lens.title .~ "Magic Lamp"
-    let project = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.personalization.backing .~ nil
-      |> Project.lens.state .~ .live
-      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
-      |> Project.lens.rewardData.rewards .~ []
-      |> \.extendedProjectProperties .~ self.extendedProjectProperties
-
-    let backing = Backing.template
-      |> Backing.lens.reward .~ reward
-
-    let projectPamphletData = Project.ProjectPamphletData(project: project, backingId: 1)
-    let projectAndEnvelope = ProjectAndBackingEnvelope(project: project, backing: backing)
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(projectAndEnvelope),
-      fetchProjectPamphletResult: .success(projectPamphletData),
-      fetchProjectRewardsResult: .success([reward])
-    )
-
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
-      ]
-
-    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
-      withEnvironment(
-        apiService: mockService,
-        config: config,
-        currentUser: .template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
@@ -980,17 +915,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
@@ -1025,17 +953,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
@@ -1070,18 +991,11 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
         currentUser: .template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
@@ -1125,17 +1039,10 @@ internal final class ProjectPageViewControllerTests: TestCase {
       |> Project.lens.rewardData.rewards .~ []
       |> \.extendedProjectProperties .~ self.extendedProjectProperties
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
     combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
       withEnvironment(
         config: config,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
+        language: language
       ) {
         let vc = ProjectPageViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
