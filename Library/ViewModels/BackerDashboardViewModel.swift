@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public enum BackerDashboardTab {
+public enum BackerDashboardTab: String {
   case backed
   case saved
 
