@@ -22,6 +22,7 @@ struct BackerDashboardTabBarView: View {
   }
 
   // MARK: @ViewBuilders
+
   private func TabView(tab: BackerDashboardTab, number: Int) -> some View {
     Button {
       currentTab = tab
@@ -48,7 +49,6 @@ struct BackerDashboardTabBarView: View {
       }
       .animation(.spring(), value: currentTab)
     }
-
   }
 }
 
