@@ -72,9 +72,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let context = configureWithValue.map { $0.context }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
-    lazy var paymentSheetEnabled: Bool = {
-      true
-    }()
+    let paymentSheetEnabled: Bool = true
 
     let storedCardsEvent = configureWithValue
       .switchMap { _ in
