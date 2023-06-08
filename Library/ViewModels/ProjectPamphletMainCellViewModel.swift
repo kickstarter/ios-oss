@@ -281,7 +281,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     }
 
     self.campaignTabShown = project.ignoreValues()
-      .map(campaignTabEnabled)
+      .map(value: campaignTabEnabled)
   }
 
   private let awakeFromNibProperty = MutableProperty(())
@@ -412,9 +412,7 @@ private func fundingStatus(forProject project: Project) -> String {
   }
 }
 
-private func campaignTabEnabled() -> Bool {
-  true
-}
+private let campaignTabEnabled: Bool = true
 
 typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)
 
