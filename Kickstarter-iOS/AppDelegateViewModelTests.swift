@@ -2448,6 +2448,34 @@ final class AppDelegateViewModelTests: TestCase {
       self.presentViewController.assertValues([1])
     }
   }
+
+  func testRemoteConfigClientConfiguredNotification_Success() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.postNotificationName.assertDidNotEmitValue()
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.vm.inputs.didUpdateRemoteConfigClient()
+
+      self.postNotificationName.assertValues([.ksr_remoteConfigClientConfigured])
+    }
+  }
+
+  func testRemoteConfigClientConfigurationFailedNotification() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.postNotificationName.assertDidNotEmitValue()
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.vm.inputs.remoteConfigClientConfigurationFailed()
+
+      self.postNotificationName.assertValues([.ksr_remoteConfigClientConfigurationFailed])
+    }
+  }
 }
 
 private let backingForCreatorPushData: [String: Any] = [
