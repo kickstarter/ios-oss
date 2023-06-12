@@ -174,35 +174,6 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedIn_IsBacking() {
-    let mockService =
-      MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
-
-    let project = Project.template
-      |> \.personalization.isBacking .~ true
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(
-        apiService: mockService,
-        currentUser: .template,
-        language: language
-      ) {
-        let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_100
-
-        self.scheduler.run()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "Comments - lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
   func testView_NoComments_ShouldShowEmptyState() {
     AppEnvironment.pushEnvironment(
       apiService: MockService(

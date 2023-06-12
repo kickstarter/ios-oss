@@ -894,7 +894,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddNewStripeCard_WithPaymentSheetEnabled_NoStoredCards_Success() {
+  func testGoToAddNewStripeCard_NoStoredCards_Success() {
     let project = Project.template
     let graphUser = GraphUser.template |> \.storedCards .~ UserCreditCards.withCards([])
     let response = UserEnvelope<GraphUser>(me: graphUser)

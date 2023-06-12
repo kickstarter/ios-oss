@@ -53,9 +53,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         .materialize()
     }
 
-    lazy var paymentSheetEnabled: Bool = {
-      true
-    }()
+    let paymentSheetEnabled: Bool = true
 
     let deletePaymentMethodEvents = self.didDeleteCreditCardSignal
       .map(first)
