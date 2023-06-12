@@ -157,12 +157,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     pledgeTypeAndProject
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
       .observeValues { state, project in
-        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.ksrAnalytics.trackPledgeCTAButtonClicked(
           stateType: state,
-          project: project,
-          optimizelyProperties: optimizelyProps
+          project: project
         )
       }
   }

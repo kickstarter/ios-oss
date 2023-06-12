@@ -254,16 +254,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(Analytics.shared())
       }
 
-    self.viewModel.outputs.configureFeatureFlagClient
-      .observeValues { [weak self] featureFlagClient in
-        guard let strongSelf = self else { return }
-
-        // TODO: Will remove this method and input/output with the full removal of Optimizely code
-        AppEnvironment.updateOptimizelyClient(featureFlagClient)
-
-        strongSelf.viewModel.inputs.didUpdateRemoteConfigClient()
-      }
-
     self.viewModel.outputs.segmentIsEnabled
       .observeValues { enabled in
         enabled ? Analytics.shared().enable() : Analytics.shared().disable()

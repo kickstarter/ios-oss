@@ -174,72 +174,6 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
-
-    let mockService =
-      MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
-
-    let project = Project.template
-      |> \.personalization.isBacking .~ true
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(
-        apiService: mockService,
-        currentUser: .template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
-      ) {
-        let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_100
-
-        self.scheduler.run()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "Comments - lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
-  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
-
-    let mockService =
-      MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
-
-    let project = Project.template
-      |> \.personalization.isBacking .~ true
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(
-        apiService: mockService,
-        currentUser: .template,
-        language: language,
-        optimizelyClient: mockOptimizelyClient
-      ) {
-        let controller = CommentsViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1_100
-
-        self.scheduler.run()
-
-        assertSnapshot(
-          matching: parent.view,
-          as: .image,
-          named: "Comments - lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
   func testView_NoComments_ShouldShowEmptyState() {
     AppEnvironment.pushEnvironment(
       apiService: MockService(
@@ -294,11 +228,10 @@ internal final class CommentsViewControllerTests: TestCase {
   }
 
   func testCommentsViewControllerCreation_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
     let mockService = MockService(fetchProjectResult: .success(.template))
 
     withEnvironment(
-      apiService: mockService, optimizelyClient: mockOptimizelyClient
+      apiService: mockService
     ) {
       XCTAssert(commentsViewController(for: .template).isKind(of: CommentsViewController.self))
     }

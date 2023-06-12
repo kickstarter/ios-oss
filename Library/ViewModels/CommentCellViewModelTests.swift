@@ -76,15 +76,10 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_bottomRowStackViewIsHidden_LoggedIn_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
-      ]
-
+  func testOutputs_bottomRowStackViewIsHidden_LoggedIn() {
     let user = User.template |> \.id .~ 12_345
 
-    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.bottomRowStackViewIsHidden
@@ -95,54 +90,17 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_bottomRowStackViewIsHidden_IsBacking_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.commentFlaggingEnabled.rawValue: false
-      ]
-
+  func testOutputs_bottomRowStackViewIsHidden_IsBacking() {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: project)
+    self.vm.inputs.configureWith(comment: .template, project: project)
 
-      self.bottomRowStackViewIsHidden
-        .assertValue(
-          true,
-          "The feature flags are false, therefore the stack view is hidden."
-        )
-    }
-  }
-
-  func testOutputs_bottomRowStackViewIsHidden_LoggedOut_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
-
-      self.bottomRowStackViewIsHidden
-        .assertValue(
-          false,
-          "The comment flagging feature is enabled, therefore the stack view is not hidden."
-        )
-    }
-  }
-
-  func testOutputs_bottomRowStackViewIsHidden_IsNotBacking_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
-
-      self.bottomRowStackViewIsHidden
-        .assertValue(
-          false,
-          "The comment flagging feature is enabled, therefore the stack view is not hidden."
-        )
-    }
+    self.bottomRowStackViewIsHidden
+      .assertValue(
+        true,
+        "The feature flags are false, therefore the stack view is hidden."
+      )
   }
 
   func testOutput_bottomRowStackViewIsHidden_IsReply() {
@@ -155,11 +113,8 @@ internal final class CommentCellViewModelTests: TestCase {
       )
   }
 
-  func testOutput_bottomRowStackViewIsHidden_FeatureFlagFalse_LoggedOut_IsReplyTrue() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
-
-    withEnvironment(currentUser: nil, optimizelyClient: mockOptimizelyClient) {
+  func testOutput_bottomRowStackViewIsHidden_LoggedOut_IsReplyTrue() {
+    withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(comment: .replyTemplate, project: .template)
 
       self.bottomRowStackViewIsHidden
@@ -182,49 +137,28 @@ internal final class CommentCellViewModelTests: TestCase {
     self.shouldIndentContent.assertValue(false)
   }
 
-  func testOutputs_flagButtonIsHidden_FeatureFlag_False() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: false]
+  func testOutputs_flagButtonIsHidden() {
+    self.vm.inputs.configureWith(comment: .template, project: .template)
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
-
-      self.flagButtonIsHidden
-        .assertValue(true, "The feature flag is not enabled, therefore the flag button is hidden.")
-    }
-  }
-
-  func testOutputs_flagButtonIsHidden_FeatureFlag_True() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.commentFlaggingEnabled.rawValue: true]
-
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
-
-      self.flagButtonIsHidden
-        .assertValue(false, "The feature flag is enabled, therefore the flag button is not hidden.")
-    }
+    self.flagButtonIsHidden
+      .assertValue(true, "The feature flag is not enabled, therefore the flag button is hidden.")
   }
 
   func testOutput_notifyDelegateLinkTappedWithURL() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-
     guard let expectedURL = HelpType.community
       .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) else {
       XCTFail()
       return
     }
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: .template, project: nil)
+    self.vm.inputs.configureWith(comment: .template, project: nil)
 
-      self.scheduler.advance()
+    self.scheduler.advance()
 
-      self.vm.inputs.linkTapped(url: expectedURL)
+    self.vm.inputs.linkTapped(url: expectedURL)
 
-      self.notifyDelegateLinkTappedWithURL
-        .assertValue(expectedURL, "The URL directs to Kickstarters Community Guidelines.")
-    }
+    self.notifyDelegateLinkTappedWithURL
+      .assertValue(expectedURL, "The URL directs to Kickstarters Community Guidelines.")
   }
 
   func testOutputs_replyButtonIsHidden_IsBacker_False_IsLoggedOut() {
@@ -253,9 +187,7 @@ internal final class CommentCellViewModelTests: TestCase {
     let project = Project.template
       |> \.memberData.permissions .~ [.post, .comment]
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-
-    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(comment: .template, project: project)
 
       self.replyButtonIsHidden
@@ -266,9 +198,7 @@ internal final class CommentCellViewModelTests: TestCase {
   func testOutputs_replyButtonIsHidden_IsNotBacker_IsNotCreatorOrCollaborator_True() {
     let user = User.template |> \.id .~ 12_345
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-
-    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.replyButtonIsHidden
@@ -280,14 +210,12 @@ internal final class CommentCellViewModelTests: TestCase {
   }
 
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_True_IsLoggedIn() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
     let user = User.template |> \.id .~ 12_345
 
-    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(comment: .template, project: project)
 
       self.replyButtonIsHidden
@@ -298,11 +226,9 @@ internal final class CommentCellViewModelTests: TestCase {
   }
 
   func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-
     let user = User.template |> \.id .~ 12_345
 
-    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.replyButtonIsHidden
@@ -441,15 +367,11 @@ internal final class CommentCellViewModelTests: TestCase {
     let comment = Comment.template
       |> \.replyCount .~ 1
 
-    let mockOptimizelyClient = MockOptimizelyClient()
-
     self.viewRepliesStackViewIsHidden.assertDidNotEmitValue()
 
-    withEnvironment(optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(comment: comment, project: .template)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
 
-      self.viewRepliesStackViewIsHidden
-        .assertValue(false, "The stack view is not hidden because there are replies.")
-    }
+    self.viewRepliesStackViewIsHidden
+      .assertValue(false, "The stack view is not hidden because there are replies.")
   }
 }

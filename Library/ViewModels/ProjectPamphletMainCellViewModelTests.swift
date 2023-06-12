@@ -74,27 +74,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.prelaunchProjectBackingText.observe(self.prelaunchProjectBackingText.observer)
   }
 
-  func testReadMoreButton_ExperimentStory_Disabled_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: false
-      ]
-
-    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([false])
-    }
-  }
-
-  func testReadMoreButton_ExperimentStory_Enabled_Success() {
-    let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [
-        OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-      ]
-
-    withEnvironment(config: .template, optimizelyClient: mockOptimizelyClient) {
+  func testReadMoreButton_ExperimentStory_Success() {
+    withEnvironment(config: .template) {
       self.vm.inputs.configureWith(value: (.template, nil))
       self.vm.inputs.awakeFromNib()
 

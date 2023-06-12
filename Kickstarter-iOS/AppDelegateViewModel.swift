@@ -102,9 +102,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits an app secret that should be used to configure AppCenter.
   var configureAppCenterWithData: Signal<AppCenterConfigData, Never> { get }
 
-  /// Emits when the application has configured feature flag client.
-  var configureFeatureFlagClient: Signal<OptimizelyClientType, Never> { get }
-
   /// Emits when the application should configure Firebase
   var configureFirebase: Signal<(), Never> { get }
 
@@ -802,11 +799,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
         AppEnvironment.updateAdvertisingIdentifer(advertisingIdentifier)
       }
-
-    self.configureFeatureFlagClient = self.applicationLaunchOptionsProperty.signal
-      .map { _ in AppEnvironment.current }
-      .map(configureOptimizely(for:))
-      .skipNil()
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -937,7 +929,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  // FIXME: Currently not used with `MockOptimizelyClient`, but could be when we implement the next real feature flagging client.
   fileprivate let remoteConfigClientConfigurationFailedProperty = MutableProperty(())
   public func remoteConfigClientConfigurationFailed() {
     self.remoteConfigClientConfigurationFailedProperty.value = ()
@@ -951,7 +942,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
-  public let configureFeatureFlagClient: Signal<OptimizelyClientType, Never>
   public let configurePerimeterX: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
@@ -1251,22 +1241,6 @@ extension ShortcutItem {
       )
     }
   }
-}
-
-private func configureOptimizely(for _: Environment) -> OptimizelyClientType? {
-  // FIXME: This is until we add a new feature flagging client
-  let mockOptimizelyClient = MockOptimizelyClient()
-    |> \.features .~
-    [
-      OptimizelyFeature.commentFlaggingEnabled.rawValue: false,
-      OptimizelyFeature.consentManagementDialogEnabled.rawValue: false,
-      OptimizelyFeature.facebookLoginDeprecationEnabled.rawValue: false,
-      OptimizelyFeature.settingsPaymentSheetEnabled.rawValue: true,
-      OptimizelyFeature.paymentSheetEnabled.rawValue: true,
-      OptimizelyFeature.projectPageStoryTabEnabled.rawValue: true
-    ]
-
-  return mockOptimizelyClient
 }
 
 private func visitorCookies() -> [HTTPCookie] {

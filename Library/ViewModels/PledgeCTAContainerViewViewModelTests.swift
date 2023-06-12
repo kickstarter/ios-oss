@@ -314,14 +314,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
-    XCTAssertNotNil(
-      segmentTrackingClientProperties?["optimizely_api_key"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      segmentTrackingClientProperties?["optimizely_environment"],
-      "Event includes Optimizely properties"
-    )
     XCTAssertEqual("pledge_initiate", segmentTrackingClientProperties?["context_cta"] as? String)
   }
 

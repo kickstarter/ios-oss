@@ -43,8 +43,8 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureDataSource.assertValueCount(1, "Data source configures after view loads.")
   }
 
-  func testConfigureDataSourceOptimizelyConfiguration() {
-    withEnvironment(optimizelyClient: MockOptimizelyClient()) {
+  func testConfigureDataSourceRemoteConfigConfiguration() {
+    withEnvironment(remoteConfigClient: MockRemoteConfigClient()) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
       self.vm.inputs.remoteConfigClientConfigured()
@@ -53,8 +53,8 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
-  func testConfigureDataSource_OptimizelyConfiguration_Failed() {
-    withEnvironment(optimizelyClient: nil) {
+  func testConfigureDataSource_RemoteConfigConfiguration_Failed() {
+    withEnvironment(remoteConfigClient: nil) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
@@ -86,14 +86,14 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
-  func testLoadFilterIntoDataSource_OptimizelyConfiguration() {
-    withEnvironment(optimizelyClient: nil) {
+  func testLoadFilterIntoDataSource_RemoteConfigConfiguration() {
+    withEnvironment(remoteConfigClient: nil) {
       self.loadFilterIntoDataSource.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigured()
 
@@ -110,14 +110,14 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
-  func testLoadFilterIntoDataSource_OptimizelyConfiguration_Failed() {
-    withEnvironment(optimizelyClient: nil) {
+  func testLoadFilterIntoDataSource_RemoteConfigConfiguration_Failed() {
+    withEnvironment(remoteConfigClient: nil) {
       self.loadFilterIntoDataSource.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigurationFailed()
 
@@ -209,14 +209,14 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureNavigationHeader.assertValues([self.initialParams])
   }
 
-  func testConfigureNavigationHeader_OptimizelyConfiguration() {
-    withEnvironment(optimizelyClient: nil) {
+  func testConfigureNavigationHeader_RemoteConfigConfiguration() {
+    withEnvironment(remoteConfigClient: nil) {
       self.configureNavigationHeader.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigured()
 
@@ -233,14 +233,14 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
-  func testConfigureNavigationHeader_OptimizelyConfiguration_Failed() {
-    withEnvironment(optimizelyClient: nil) {
+  func testConfigureNavigationHeader_RemoteConfigConfiguration_Failed() {
+    withEnvironment(remoteConfigClient: nil) {
       self.configureNavigationHeader.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
-      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
+      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Remote Config configuration")
 
       self.vm.inputs.remoteConfigClientConfigurationFailed()
 

@@ -61,8 +61,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
         return baseTabs
       }
 
-      let moreTabs: [NavigationSection] = featureProjectPageStoryTabEnabled() ? [.campaign, .faq, .risks] :
-        [.faq, .risks]
+      let moreTabs: [NavigationSection] = [.campaign, .faq, .risks]
 
       guard !extendedProjectProperties.environmentalCommitments.isEmpty else {
         return baseTabs + moreTabs

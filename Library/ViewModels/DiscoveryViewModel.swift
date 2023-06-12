@@ -14,7 +14,7 @@ public protocol DiscoveryViewModelInputs {
   /// Call when the Remote Config Client has been configured
   func remoteConfigClientConfigured()
 
-  /// Call when the OptimizelyClient configuration has failed
+  /// Call when the RemoteConfigClient configuration has failed
   func remoteConfigClientConfigurationFailed()
 
   /// Call when the UIPageViewController finishes transitioning.
@@ -84,8 +84,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   public init() {
     let remoteConfigReadyOrContinue = Signal.merge(
       self.remoteConfigClientConfiguredProperty.signal,
-      self.viewDidLoadProperty.signal.map { _ in AppEnvironment.current.optimizelyClient }
-        .ignoreValues(),
+      self.viewDidLoadProperty.signal.ignoreValues(),
       self.remoteConfigClientConfigurationFailedProperty.signal
     ).take(first: 1)
 
