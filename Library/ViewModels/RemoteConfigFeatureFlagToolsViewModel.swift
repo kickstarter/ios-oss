@@ -89,6 +89,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureConsentManagementDialogEnabled()
   case .facebookLoginInterstitialEnabled:
     return featureFacebookLoginInterstitialEnabled()
+  case .creatorDashboardHiddenEnabled:
+    return featureCreatorDashboardHiddenEnabled()
   }
 }
 
@@ -102,6 +104,9 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
+  case .creatorDashboardHiddenEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardHiddenEnabled.rawValue]
   }
 }
 
@@ -115,5 +120,8 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
+  case .creatorDashboardHiddenEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardHiddenEnabled.rawValue] = value
   }
 }
