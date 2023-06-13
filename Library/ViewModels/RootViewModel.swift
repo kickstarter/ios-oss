@@ -488,21 +488,34 @@ private func generateStandardViewControllers() -> [RootViewControllerData] {
 
 private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool))
   -> [RootViewControllerData] {
-  return [.dashboard(isMember: userState.isMember), .profile(isLoggedIn: userState.isLoggedIn)]
+  if featureCreatorDashboardEnabled() {
+    return [.dashboard(isMember: userState.isMember), .profile(isLoggedIn: userState.isLoggedIn)]
+  }
+
+  return [.profile(isLoggedIn: userState.isLoggedIn)]
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
   let isMember =
     (user?.stats.memberProjectsCount ?? 0) > 0
-  let items: [TabBarItem] = isMember
-    ? [
-      .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
-      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
-    ]
-    : [
+  let items: [TabBarItem]
+
+  if featureCreatorDashboardEnabled() {
+    items = isMember
+      ? [
+        .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
+        .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
+      ]
+      : [
+        .home(index: 0), .activity(index: 1), .search(index: 2),
+        .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+      ]
+  } else {
+    items = [
       .home(index: 0), .activity(index: 1), .search(index: 2),
       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
     ]
+  }
 
   return TabBarItemsData(
     items: items,
