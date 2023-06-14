@@ -25,7 +25,7 @@ final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled
           .rawValue: false,
-        RemoteConfigFeature.creatorDashboardHiddenEnabled
+        RemoteConfigFeature.creatorDashboardEnabled
           .rawValue: false
       ]
 

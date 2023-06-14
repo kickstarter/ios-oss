@@ -41,12 +41,12 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testCreatorDashboardHidden_RemoteConfig_FeatureFlag_False() {
+  func testCreatorDashboard_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.creatorDashboardHiddenEnabled.rawValue: false]
+      |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: false]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureCreatorDashboardHiddenEnabled())
+      XCTAssertFalse(featureCreatorDashboardEnabled())
     }
   }
 }
