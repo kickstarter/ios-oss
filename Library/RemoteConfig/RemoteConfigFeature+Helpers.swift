@@ -7,6 +7,13 @@ public func featureConsentManagementDialogEnabled() -> Bool {
       .isFeatureEnabled(featureKey: RemoteConfigFeature.consentManagementDialogEnabled) ?? false)
 }
 
+public func featureCreatorDashboardEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardEnabled.rawValue] ??
+    (AppEnvironment.current.remoteConfigClient?
+      .isFeatureEnabled(featureKey: RemoteConfigFeature.creatorDashboardEnabled) ?? false)
+}
+
 public func featureFacebookLoginInterstitialEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] ??
