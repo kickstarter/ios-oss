@@ -31,7 +31,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
     self.vm.outputs.errorLoadingPaymentMethodsOrSetupIntent
       .observe(self.errorLoadingPaymentMethodsOrSetupIntent.observer)
-    self.vm.outputs.goToAddCardScreenWithIntent.observe(self.goToAddCardScreenWithIntent.observer)
     self.vm.outputs.goToPaymentSheet.observe(self.goToPaymentSheet.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
@@ -158,21 +157,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.cancelLoadingState.assertDidEmitValue()
-    }
-  }
-
-  func testPaymentMethodsFetch_OnAddNewCardDismissed() {
-    let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService = MockService(fetchGraphUserResult: .success(response))
-
-    withEnvironment(apiService: apiService) {
-      self.paymentMethods.assertValues([])
-
-      self.vm.inputs.addNewCardDismissed()
-
-      self.scheduler.advance()
-
-      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
     }
   }
 
@@ -327,7 +311,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.tableViewIsEditing.assertValues([false, true])
 
-    self.vm.inputs.addNewCardPresented()
+    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
     self.tableViewIsEditing.assertValues([false, true, false])
   }
@@ -335,7 +319,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testPresentMessageBanner() {
     self.presentBanner.assertValues([])
 
-    self.vm.inputs.addNewCardSucceeded(with: Strings.Got_it_your_changes_have_been_saved())
+    self.vm.addNewCardSucceeded(with: Strings.Got_it_your_changes_have_been_saved())
 
     self.presentBanner.assertValues([Strings.Got_it_your_changes_have_been_saved()])
   }
@@ -479,7 +463,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
       )
 
-      self.vm.addNewCardDismissed()
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues(

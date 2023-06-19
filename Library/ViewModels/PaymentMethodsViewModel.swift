@@ -5,9 +5,6 @@ import ReactiveSwift
 import Stripe
 
 public protocol PaymentMethodsViewModelInputs {
-  func addNewCardSucceeded(with message: String)
-  func addNewCardDismissed()
-  func addNewCardPresented()
   func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
@@ -22,7 +19,6 @@ public protocol PaymentMethodsViewModelOutputs {
   var editButtonIsEnabled: Signal<Bool, Never> { get }
   var editButtonTitle: Signal<String, Never> { get }
   var errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never> { get }
-  var goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never> { get }
   var goToPaymentSheet: Signal<PaymentSheetSetupData, Never> { get }
   var paymentMethods: Signal<[UserCreditCards.CreditCard], Never> { get }
   var presentBanner: Signal<String, Never> { get }
@@ -44,8 +40,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
     let paymentMethodsEvent = Signal.merge(
       self.viewDidLoadProperty.signal,
-      self.addNewCardSucceededProperty.signal.ignoreValues(),
-      self.addNewCardDismissedProperty.signal
+      self.addNewCardSucceededProperty.signal.ignoreValues()
     )
     .switchMap { _ in
       AppEnvironment.current.apiService.fetchGraphUser(withStoredCards: true)
@@ -137,25 +132,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     )
     .skipRepeats()
 
-    self.goToAddCardScreenWithIntent = self.didTapAddCardButtonProperty.signal
-      .switchMap { SignalProducer(value: paymentSheetEnabled) }
-      .filter(isFalse)
-      .mapConst(.settings)
-
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
-
-    let stopEditing = Signal.merge(
-      self.editButtonIsEnabled.filter(isFalse),
-      self.addNewCardPresentedSignal.mapConst(false)
-    )
-
-    self.tableViewIsEditingProperty <~ Signal.merge(
-      stopEditing,
-      self.editButtonTappedSignal
-        .withLatest(from: self.tableViewIsEditingProperty.signal)
-        .map(second)
-        .negate()
-    )
 
     self.tableViewIsEditing = self.tableViewIsEditingProperty.signal
 
@@ -192,6 +169,20 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         shouldCancel ? nil : data
       }
       .skipNil()
+    
+    let stopEditing = Signal.merge(
+      self.editButtonIsEnabled.filter(isFalse),
+      self.goToPaymentSheet.signal.ignoreValues().mapConst(false)
+    )
+    
+    self.tableViewIsEditingProperty <~ Signal.merge(
+      stopEditing,
+      self.editButtonTappedSignal
+        .withLatest(from: self.tableViewIsEditingProperty.signal)
+        .map(second)
+        .negate()
+    )
+
 
     self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
       paymentMethodsEvent.errors(),
@@ -249,16 +240,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     self.addNewCardSucceededProperty.value = message
   }
 
-  fileprivate let addNewCardDismissedProperty = MutableProperty(())
-  public func addNewCardDismissed() {
-    self.addNewCardDismissedProperty.value = ()
-  }
-
-  fileprivate let (addNewCardPresentedSignal, addNewCardPresentedObserver) = Signal<(), Never>.pipe()
-  public func addNewCardPresented() {
-    self.addNewCardPresentedObserver.send(value: ())
-  }
-
   private let newSetupIntentCreditCardProperty =
     MutableProperty<(PaymentSheet.FlowController.PaymentOptionDisplayData, String)?>(nil)
   public func paymentSheetDidAdd(
@@ -277,7 +258,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   public let editButtonIsEnabled: Signal<Bool, Never>
   public let editButtonTitle: Signal<String, Never>
   public let errorLoadingPaymentMethodsOrSetupIntent: Signal<String, Never>
-  public let goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never>
   public let goToPaymentSheet: Signal<PaymentSheetSetupData, Never>
   public let paymentMethods: Signal<[UserCreditCards.CreditCard], Never>
   public let presentBanner: Signal<String, Never>

@@ -102,12 +102,6 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToAddCardScreenWithIntent
-      .observeForUI()
-      .observeValues { [weak self] intent in
-        self?.goToAddCardScreen(with: intent)
-      }
-
     self.viewModel.outputs.goToPaymentSheet
       .observeForUI()
       .observeValues { [weak self] data in
@@ -159,16 +153,6 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   @objc private func edit() {
     self.viewModel.inputs.editButtonTapped()
     self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-  }
-
-  private func goToAddCardScreen(with intent: AddNewCardIntent) {
-    let vc = AddNewCardViewController.instantiate()
-    vc.configure(with: intent)
-    vc.delegate = self
-    let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
-
-    self.present(nav, animated: true) { self.viewModel.inputs.addNewCardPresented() }
   }
 
   // MARK: - Private Helpers
@@ -277,24 +261,6 @@ extension PaymentMethodsViewController: UITableViewDelegate {
 extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
   internal func paymentMethodsFooterViewDidTapAddNewCardButton(_: PaymentMethodsFooterView) {
     self.viewModel.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
-  }
-}
-
-extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
-  func addNewCardViewController(
-    _: AddNewCardViewController,
-    didAdd _: UserCreditCards.CreditCard,
-    withMessage message: String
-  ) {
-    self.dismiss(animated: true) {
-      self.viewModel.inputs.addNewCardSucceeded(with: message)
-    }
-  }
-
-  func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
-    self.dismiss(animated: true) {
-      self.viewModel.inputs.addNewCardDismissed()
-    }
   }
 }
 

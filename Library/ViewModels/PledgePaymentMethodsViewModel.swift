@@ -34,7 +34,6 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
-  func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard)
   func shouldCancelPaymentSheetAppearance(state: Bool)
   func stripePaymentSheetDidAppear()
   func configure(with value: PledgePaymentMethodsValue)
@@ -46,7 +45,6 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
@@ -72,7 +70,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let context = configureWithValue.map { $0.context }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
-    let paymentSheetEnabled: Bool = true
+    let paymentSheetEnabled = true
 
     let storedCardsEvent = configureWithValue
       .switchMap { _ in
@@ -117,11 +115,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
       .scan([]) { current, new in new + current }
 
-    let newCard = self.newCreditCardProperty.signal.skipNil()
-
     let allCards = Signal.merge(
-      storedCards,
-      newCard.map { [$0] }
+      storedCards
     )
     .scan([]) { current, new in new + current }
 
@@ -131,14 +126,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       project
     )
 
-    let newCardAdded = allCardData
-      .takePairWhen(newCard)
-      .map { cardData, _ in (cardData.0, cardData.1, cardData.2, true) }
-
-    let cards = Signal.merge(
-      initialCardData,
-      newCardAdded
-    )
+    let cards = initialCardData
     .map(pledgePaymentMethodCellDataAndSelectedCard)
 
     let reloadWithLoadingCell: Signal<PledgePaymentMethodsAndSelectionData, Never> = storedCardsEvent.values()
@@ -292,15 +280,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let paymentSheetOnPledgeContext = context.map { _ in paymentSheetEnabled }
 
-    self.goToAddCardScreen = Signal.combineLatest(
-      project,
-      paymentSheetOnPledgeContext.filter(isFalse)
-    )
-    .takeWhen(didTapToAddNewCard)
-    .map { project, _ in
-      (.pledge, project)
-    }
-
     let showLoadingIndicator = Signal.combineLatest(project, paymentSheetOnPledgeContext.filter(isTrue))
       .takeWhen(didTapToAddNewCard)
       .mapConst(true)
@@ -409,11 +388,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.configureWithValueProperty.value = value
   }
 
-  private let newCreditCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
-  public func addNewCardViewControllerDidAdd(newCard card: UserCreditCards.CreditCard) {
-    self.newCreditCardProperty.value = card
-  }
-
   private let newSetupIntentCreditCardProperty =
     MutableProperty<(PaymentSheet.FlowController.PaymentOptionDisplayData, String)?>(nil)
   public func paymentSheetDidAdd(
@@ -450,7 +424,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     return self.willSelectRowAtIndexPathReturnProperty.value
   }
 
-  public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let goToAddCardViaStripeScreen: Signal<PaymentSheetSetupData, Never>
   public let notifyDelegateCreditCardSelected: Signal<PaymentSourceSelected, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
