@@ -230,6 +230,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToProjectActivities(projectId: Param) {
+    guard featureCreatorDashboardEnabled() else {
+      return
+    }
+    
     self.switchToDashboard(project: nil)
 
     guard
