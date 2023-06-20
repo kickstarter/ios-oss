@@ -373,7 +373,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         guard featureCreatorDashboardEnabled() else {
           return
         }
-        
+
         self?.goToDashboard(param: param)
       }
 
