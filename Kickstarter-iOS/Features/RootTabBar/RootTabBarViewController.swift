@@ -167,6 +167,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToDashboard(project param: Param?) {
+    guard featureCreatorDashboardEnabled() else {
+      return
+    }
+    
     self.viewModel.inputs.switchToDashboard(project: param)
   }
 
