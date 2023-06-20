@@ -390,10 +390,10 @@ final class RootViewModelTests: TestCase {
         ],
         "Show the logged in tabs."
       )
-      
+
       AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
       self.vm.inputs.currentUserUpdated()
-      
+
       viewControllerNames.assertValues(
         [
           ["Discovery", "Activities", "Search", "LoginTout"],
@@ -402,10 +402,10 @@ final class RootViewModelTests: TestCase {
         ],
         "Show the creator dashboard tab."
       )
-      
+
       AppEnvironment.logout()
       self.vm.inputs.userSessionEnded()
-      
+
       viewControllerNames.assertValues(
         [
           ["Discovery", "Activities", "Search", "LoginTout"],
@@ -494,10 +494,10 @@ final class RootViewModelTests: TestCase {
         ],
         "Show the BackerDashboard instead of Profile."
       )
-      
+
       AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
       vm.inputs.currentUserUpdated()
-      
+
       viewControllerNames.assertValues(
         [
           ["Discovery", "Activities", "Search", "LoginTout"],
@@ -666,27 +666,27 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.switchToDiscovery(params: params)
     self.filterDiscovery.assertValues([params])
   }
-  
+
   func testSwitchToDashboardParam_WhenCreatorDashboardEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-    |> \.features .~ [
-      RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
-    ]
-    
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
+      ]
+
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
-      
+
       let param = Param.id(1)
-      
+
       AppEnvironment.login(AccessTokenEnvelope(
         accessToken: "deadbeef", user: .template
-        |> \.stats.memberProjectsCount .~ 1
+          |> \.stats.memberProjectsCount .~ 1
       ))
       self.vm.inputs.userSessionStarted()
-      
+
       self.switchDashboardProject.assertValues([])
       self.vm.inputs.switchToDashboard(project: param)
-      
+
       self.switchDashboardProject.assertValues([param])
     }
   }
@@ -713,25 +713,25 @@ final class RootViewModelTests: TestCase {
       self.switchDashboardProject.assertValues([])
     }
   }
-  
+
   func testTabBarItemStyles_WhenCreatorDashboardEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-    |> \.features .~ [
-      RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
-    ]
-    
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
+      ]
+
     let user = User.template |> \.avatar.small .~ "http://image.com/image"
     let creator = User.template
-    |> \.stats.memberProjectsCount .~ 1
-    |> \.avatar.small .~ "http://image.com/image2"
-    
+      |> \.stats.memberProjectsCount .~ 1
+      |> \.avatar.small .~ "http://image.com/image2"
+
     let items: [TabBarItem] = [
       .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
       .profile(avatarUrl: nil, index: 3)
     ]
-    
+
     let itemsLoggedIn: [TabBarItem] = [
       .home(index: 0),
       .activity(index: 1),
@@ -745,35 +745,35 @@ final class RootViewModelTests: TestCase {
       .dashboard(index: 3),
       .profile(avatarUrl: URL(string: creator.avatar.small), index: 4)
     ]
-    
+
     let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)
     let tabDataLoggedIn = TabBarItemsData(items: itemsLoggedIn, isLoggedIn: true, isMember: false)
     let tabDataMember = TabBarItemsData(items: itemsMember, isLoggedIn: true, isMember: true)
-    
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient){
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.tabBarItemsData.assertValueCount(0)
-      
+
       self.vm.inputs.viewDidLoad()
-      
+
       self.tabBarItemsData.assertValues([tabData])
-      
+
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
       self.vm.inputs.userSessionStarted()
-      
+
       self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
-      
+
       self.vm.inputs.currentUserUpdated()
-      
+
       self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
-      
+
       AppEnvironment.logout()
       self.vm.inputs.userSessionEnded()
-      
+
       self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
-      
+
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
       self.vm.inputs.userSessionStarted()
-      
+
       self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
     }
   }

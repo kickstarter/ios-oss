@@ -11,20 +11,20 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureConsentManagementDialogEnabled())
     }
   }
-  
+
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_True() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-    |> \.features .~ [RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true]
-    
+      |> \.features .~ [RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true]
+
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       XCTAssertTrue(featureConsentManagementDialogEnabled())
     }
   }
-  
+
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_True() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-    |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
-    
+      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
+
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       XCTAssertTrue(featureFacebookLoginInterstitialEnabled())
     }

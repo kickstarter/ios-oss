@@ -170,7 +170,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     guard featureCreatorDashboardEnabled() else {
       return
     }
-    
+
     self.viewModel.inputs.switchToDashboard(project: param)
   }
 
@@ -217,6 +217,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToCreatorMessageThread(projectId: Param, messageThread: MessageThread) {
+    guard featureCreatorDashboardEnabled() else {
+      return
+    }
+
     self.switchToDashboard(project: nil)
 
     guard
@@ -233,7 +237,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     guard featureCreatorDashboardEnabled() else {
       return
     }
-    
+
     self.switchToDashboard(project: nil)
 
     guard

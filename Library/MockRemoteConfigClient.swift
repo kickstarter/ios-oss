@@ -3,8 +3,8 @@ import Foundation
 
 private class MockRemoteConfigValue: RemoteConfigValue {
   var bool = false
-    
-  override var boolValue: Bool { bool }
+
+  override var boolValue: Bool { self.bool }
 }
 
 public class MockRemoteConfigClient: RemoteConfigClientType {
