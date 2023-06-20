@@ -418,7 +418,7 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testSetViewControllers_WhenCreatorDashboardDisabled() {
+  func testSetViewControllers_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
@@ -509,7 +509,7 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testBackerDashboardShownWithCreatorDashboard_WhenCreatorDashboardFlagDisabled() {
+  func testBackerDashboardShownWithCreatorDashboard_WhenCreatorDashboardFlagDisabled_NoCreatorDashboard() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
@@ -691,7 +691,7 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testSwitchToDashboardParam_WhenCreatorDashboardDisabled() {
+  func testSwitchToDashboardParam_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
@@ -778,7 +778,7 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testTabBarItemStyles_WhenCreatorDashboardDisabled() {
+  func testTabBarItemStyles_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.creatorDashboardEnabled.rawValue: false

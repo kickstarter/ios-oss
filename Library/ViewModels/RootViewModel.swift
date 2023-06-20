@@ -499,23 +499,19 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
   let isMember =
     (user?.stats.memberProjectsCount ?? 0) > 0
   let items: [TabBarItem]
-
-  if featureCreatorDashboardEnabled() {
-    items = isMember
-      ? [
-        .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
-        .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
-      ]
-      : [
-        .home(index: 0), .activity(index: 1), .search(index: 2),
-        .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
-      ]
-  } else {
-    items = [
-      .home(index: 0), .activity(index: 1), .search(index: 2),
-      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
-    ]
-  }
+  
+  switch (featureCreatorDashboardEnabled(), isMember) {
+   case (false, _), (true, false):
+     items = [
+       .home(index: 0), .activity(index: 1), .search(index: 2),
+       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+     ]
+   case (true, true):
+     items = [
+       .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
+       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
+     ]
+   }
 
   return TabBarItemsData(
     items: items,
