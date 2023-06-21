@@ -53,6 +53,15 @@ final class RemoteConfigFeatureFlagToolsViewController: UITableViewController {
 
   @objc private func switchToggled(_ switchControl: UISwitch) {
     self.viewModel.inputs.setFeatureAtIndexEnabled(index: switchControl.tag, isEnabled: switchControl.isOn)
+
+    let (feature, _) = self.features[switchControl.tag]
+    if feature == RemoteConfigFeature.creatorDashboardEnabled {
+      NotificationCenter.default.post(
+        name: Notification.Name.ksr_userLocalePreferencesChanged,
+        object: nil,
+        userInfo: nil
+      )
+    }
   }
 
   // MARK: - Private Helpers
