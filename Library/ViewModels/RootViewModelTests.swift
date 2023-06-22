@@ -715,11 +715,6 @@ final class RootViewModelTests: TestCase {
   }
 
   func testTabBarItemStyles_WhenCreatorDashboardEnabled() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
-      ]
-
     let user = User.template |> \.avatar.small .~ "http://image.com/image"
     let creator = User.template
       |> \.stats.memberProjectsCount .~ 1
@@ -750,95 +745,30 @@ final class RootViewModelTests: TestCase {
     let tabDataLoggedIn = TabBarItemsData(items: itemsLoggedIn, isLoggedIn: true, isMember: false)
     let tabDataMember = TabBarItemsData(items: itemsMember, isLoggedIn: true, isMember: true)
 
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      self.tabBarItemsData.assertValueCount(0)
+    self.tabBarItemsData.assertValueCount(0)
 
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-      self.tabBarItemsData.assertValues([tabData])
+    self.tabBarItemsData.assertValues([tabData])
 
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-      self.vm.inputs.userSessionStarted()
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.userSessionStarted()
 
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
 
-      self.vm.inputs.currentUserUpdated()
+    self.vm.inputs.currentUserUpdated()
 
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
 
-      AppEnvironment.logout()
-      self.vm.inputs.userSessionEnded()
+    AppEnvironment.logout()
+    self.vm.inputs.userSessionEnded()
 
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
 
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
-      self.vm.inputs.userSessionStarted()
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
+    self.vm.inputs.userSessionStarted()
 
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
-    }
-  }
-
-  func testTabBarItemStyles_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
-      ]
-
-    let user = User.template |> \.avatar.small .~ "http://image.com/image"
-    let creator = User.template
-      |> \.stats.memberProjectsCount .~ 1
-      |> \.avatar.small .~ "http://image.com/image2"
-
-    let items: [TabBarItem] = [
-      .home(index: 0),
-      .activity(index: 1),
-      .search(index: 2),
-      .profile(avatarUrl: nil, index: 3)
-    ]
-
-    let itemsLoggedIn: [TabBarItem] = [
-      .home(index: 0),
-      .activity(index: 1),
-      .search(index: 2),
-      .profile(avatarUrl: URL(string: user.avatar.small), index: 3)
-    ]
-    let itemsMember: [TabBarItem] = [
-      .home(index: 0),
-      .activity(index: 1),
-      .search(index: 2),
-      .profile(avatarUrl: URL(string: creator.avatar.small), index: 3)
-    ]
-
-    let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)
-    let tabDataLoggedIn = TabBarItemsData(items: itemsLoggedIn, isLoggedIn: true, isMember: false)
-    let tabDataMember = TabBarItemsData(items: itemsMember, isLoggedIn: true, isMember: true)
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      self.tabBarItemsData.assertValueCount(0)
-
-      self.vm.inputs.viewDidLoad()
-
-      self.tabBarItemsData.assertValues([tabData])
-
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-      self.vm.inputs.userSessionStarted()
-
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn])
-
-      self.vm.inputs.currentUserUpdated()
-
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn])
-
-      AppEnvironment.logout()
-      self.vm.inputs.userSessionEnded()
-
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData])
-
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
-      self.vm.inputs.userSessionStarted()
-
-      self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
-    }
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
   }
 
   func testSetViewControllers_DoesNotFilterDiscovery() {
