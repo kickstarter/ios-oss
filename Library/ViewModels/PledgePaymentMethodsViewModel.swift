@@ -127,7 +127,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
 
     let cards = initialCardData
-    .map(pledgePaymentMethodCellDataAndSelectedCard)
+      .map(pledgePaymentMethodCellDataAndSelectedCard)
 
     let reloadWithLoadingCell: Signal<PledgePaymentMethodsAndSelectionData, Never> = storedCardsEvent.values()
       .filter(second >>> isTrue)

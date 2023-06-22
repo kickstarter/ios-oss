@@ -5,6 +5,7 @@ import ReactiveSwift
 import Stripe
 
 public protocol PaymentMethodsViewModelInputs {
+  func failedToAddNewCard()
   func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
@@ -40,7 +41,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
     let paymentMethodsEvent = Signal.merge(
       self.viewDidLoadProperty.signal,
-      self.addNewCardSucceededProperty.signal.ignoreValues()
+      self.addNewCardSucceededProperty.signal.ignoreValues(),
+      self.failedToAddNewCardProperty.signal
     )
     .switchMap { _ in
       AppEnvironment.current.apiService.fetchGraphUser(withStoredCards: true)
@@ -169,12 +171,12 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         shouldCancel ? nil : data
       }
       .skipNil()
-    
+
     let stopEditing = Signal.merge(
       self.editButtonIsEnabled.filter(isFalse),
       self.goToPaymentSheet.signal.ignoreValues().mapConst(false)
     )
-    
+
     self.tableViewIsEditingProperty <~ Signal.merge(
       stopEditing,
       self.editButtonTappedSignal
@@ -182,7 +184,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         .map(second)
         .negate()
     )
-
 
     self.errorLoadingPaymentMethodsOrSetupIntent = Signal.merge(
       paymentMethodsEvent.errors(),
@@ -228,6 +229,11 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let failedToAddNewCardProperty = MutableProperty(())
+  public func failedToAddNewCard() {
+    self.failedToAddNewCardProperty.value = ()
   }
 
   fileprivate let didTapAddCardButtonProperty = MutableProperty(())

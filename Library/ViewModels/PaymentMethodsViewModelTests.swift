@@ -14,7 +14,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
   private let editButtonTitle = TestObserver<String, Never>()
   private let errorLoadingPaymentMethodsOrSetupIntent = TestObserver<String, Never>()
-  private let goToAddCardScreenWithIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToPaymentSheet = TestObserver<PaymentSheetSetupData, Never>()
   private let paymentMethods = TestObserver<[UserCreditCards.CreditCard], Never>()
   private let presentBanner = TestObserver<String, Never>()
@@ -274,16 +273,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped_Failure() {
-    self.goToAddCardScreenWithIntent.assertValueCount(0)
-
-    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
-
-    self.scheduler.advance()
-
-    self.goToAddCardScreenWithIntent.assertValueCount(0)
-  }
-
   func testGoToPaymentSheet_WhenAddNewCardIsTapped_Success() {
     let envelope = ClientSecretEnvelope(clientSecret: "UHJvamVjdC0yMzEyODc5ODc")
     let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
@@ -291,29 +280,36 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(
       apiService: mockService
     ) {
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
       self.goToPaymentSheet.assertValueCount(0)
 
       self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
       self.scheduler.advance(by: .seconds(1))
 
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
       self.goToPaymentSheet.assertValueCount(1)
     }
   }
 
   func testTableViewIsEditing_isFalse_WhenAddNewCardIsPresented() {
-    self.tableViewIsEditing.assertValueCount(0)
+    let envelope = ClientSecretEnvelope(clientSecret: "UHJvamVjdC0yMzEyODc5ODc")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.editButtonTapped()
+    withEnvironment(
+      apiService: mockService
+    ) {
+      self.tableViewIsEditing.assertValueCount(0)
 
-    self.tableViewIsEditing.assertValues([false, true])
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.editButtonTapped()
 
-    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+      self.tableViewIsEditing.assertValues([false, true])
 
-    self.tableViewIsEditing.assertValues([false, true, false])
+      self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.tableViewIsEditing.assertValues([false, true, false])
+    }
   }
 
   func testPresentMessageBanner() {
@@ -463,6 +459,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
       )
 
+      self.vm.failedToAddNewCard()
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues(

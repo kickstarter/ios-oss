@@ -206,9 +206,11 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         strongSelf.viewModel.inputs
           .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
       case .canceled:
+        strongSelf.viewModel.inputs.failedToAddNewCard()
         strongSelf.messageBannerViewController?
           .showBanner(with: .error, message: Strings.general_error_something_wrong())
       case let .failed(error):
+        strongSelf.viewModel.inputs.failedToAddNewCard()
         strongSelf.messageBannerViewController?.showBanner(with: .error, message: error.localizedDescription)
       }
     }
