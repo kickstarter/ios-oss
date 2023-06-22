@@ -500,13 +500,13 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
     (user?.stats.memberProjectsCount ?? 0) > 0
   let items: [TabBarItem]
 
-  switch (featureCreatorDashboardEnabled(), isMember) {
-  case (false, _), (true, false):
+  switch isMember {
+  case false:
     items = [
       .home(index: 0), .activity(index: 1), .search(index: 2),
       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
     ]
-  case (true, true):
+  case true:
     items = [
       .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
