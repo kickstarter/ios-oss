@@ -226,6 +226,9 @@ internal final class DashboardViewController: UITableViewController {
           equalTo: tabBar.topAnchor,
           constant: 0
         ).isActive = true
+
+        self.tableView.contentInset
+          .bottom = (tabBar.frame.height + (dashboardRemovalWarningHostingController?.view.frame.height ?? 0))
       }
     }
   }
