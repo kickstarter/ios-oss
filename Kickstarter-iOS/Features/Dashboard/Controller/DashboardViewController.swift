@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
+import SwiftUI
 import UIKit
 
 internal final class DashboardViewController: UITableViewController {
@@ -13,6 +14,7 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   fileprivate let backgroundView = UIView()
+  fileprivate var dashboardRemovalWarningHostingController: UIViewController?
 
   internal static func instantiate() -> DashboardViewController {
     return Storyboard.Dashboard.instantiate(DashboardViewController.self)
@@ -43,6 +45,8 @@ internal final class DashboardViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    self.setupDashboardRemovalWarning()
+
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 
@@ -59,6 +63,9 @@ internal final class DashboardViewController: UITableViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+
+    /// This view needs to be manually removed  since it has been added directly to the window
+    self.dashboardRemovalWarningHostingController?.view.removeFromSuperview()
 
     self.viewModel.inputs.viewWillDisappear()
   }
@@ -195,6 +202,31 @@ internal final class DashboardViewController: UITableViewController {
       referrersCell.delegate = self
     } else if let rewardsCell = cell as? DashboardRewardsCell {
       rewardsCell.delegate = self
+    }
+  }
+
+  fileprivate func setupDashboardRemovalWarning() {
+    if #available(iOS 15, *) {
+      if let window = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first,
+        let tabBar = self.tabBarController?.tabBar {
+        dashboardRemovalWarningHostingController = UIHostingController(rootView: DashboardRemovalWarning())
+        /// Added to the window because views added to a tableviewcontroller are automatically scrollable and we need this to be a sticky view
+        window.addSubview((dashboardRemovalWarningHostingController?.view)!)
+
+        /// Constraints
+        dashboardRemovalWarningHostingController?.view.insetsLayoutMarginsFromSafeArea = false
+        dashboardRemovalWarningHostingController?.view.translatesAutoresizingMaskIntoConstraints = false
+        dashboardRemovalWarningHostingController?.view.leftAnchor.constraint(equalTo: window.leftAnchor)
+          .isActive = true
+        dashboardRemovalWarningHostingController?.view.rightAnchor.constraint(equalTo: window.rightAnchor)
+          .isActive = true
+        dashboardRemovalWarningHostingController?.view.widthAnchor.constraint(equalTo: window.widthAnchor)
+          .isActive = true
+        dashboardRemovalWarningHostingController?.view.bottomAnchor.constraint(
+          equalTo: tabBar.topAnchor,
+          constant: 0
+        ).isActive = true
+      }
     }
   }
 
