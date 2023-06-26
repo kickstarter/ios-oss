@@ -13,7 +13,7 @@ struct DashboardRemovalWarning: View {
         .padding(.horizontal, 12)
 
       Text("After August 14, 2023, the Dashboard and Post Update features will only be available on our website.")
-        .font(Font(UIFont.ksr_body(size: 15)))
+        .font(Font(UIFont.ksr_subhead(size: 15)))
         .foregroundColor(Color(UIColor.ksr_white))
         .lineLimit(nil)
         .padding(.vertical, 12)
