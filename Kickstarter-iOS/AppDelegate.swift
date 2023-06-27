@@ -295,6 +295,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
+  func applicationDidBecomeActive(_: UIApplication) {
+    self.viewModel.inputs.applicationActive(state: true)
+  }
+
+  func applicationWillResignActive(_: UIApplication) {
+    self.viewModel.inputs.applicationActive(state: false)
+  }
+
   func applicationWillEnterForeground(_: UIApplication) {
     self.viewModel.inputs.applicationWillEnterForeground()
   }
