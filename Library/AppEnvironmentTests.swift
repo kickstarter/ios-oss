@@ -101,7 +101,7 @@ final class AppEnvironmentTests: XCTestCase {
         "apiService.serverConfig.webBaseUrl": "http://ksr.com",
         "apiService.language": "en",
         "currentUser": user.encode()
-      ],
+      ] as [String: Any],
       forKey: AppEnvironment.environmentStorageKey
     )
 
@@ -115,6 +115,7 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("http://ksr.com", env.apiService.serverConfig.webBaseUrl.absoluteString)
     XCTAssertEqual(user, env.currentUser)
     XCTAssertEqual(user, env.ksrAnalytics.loggedInUser)
+    XCTAssertNotNil(env.appTrackingTransparency)
 
     let differentEnv = AppEnvironment.fromStorage(
       ubiquitousStore: MockKeyValueStore(),
@@ -122,6 +123,7 @@ final class AppEnvironmentTests: XCTestCase {
     )
     XCTAssertNil(differentEnv.apiService.oauthToken?.token)
     XCTAssertEqual(nil, differentEnv.currentUser)
+    XCTAssertNotNil(env.appTrackingTransparency)
   }
 
   func testFromStorage_LegacyUserDefaults() {

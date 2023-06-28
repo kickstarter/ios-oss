@@ -2420,14 +2420,22 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_CalledOnceOnDidFinishLaunchingAndAppBecomesActive() {
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_ShowsConsentDialogAndUpdatesAdId() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
       ]
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
 
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
       self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
 
       self.vm.inputs.applicationActive(state: false)
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
@@ -2435,6 +2443,91 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(1))
 
+      XCTAssertEqual(appTrackingTransparency.advertisingIdentifier, "advertisingIdentifier")
+      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+    }
+  }
+
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusFalse_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
+      ]
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = false
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+    }
+  }
+
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOn_WhenShouldRequestAuthorizationStatusTrue_RequestDenied_DoesNotShowConsentDialogAndDoesNotUpdateAdId() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
+      ]
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = false
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+    }
+  }
+
+  func testRequestATTrackingAuthorizationStatus_WhenAppBecomesActive_WhenAdvertisingIdentifierNil_WhenConsentManagementFeatureFlagOff_WhenShouldRequestAuthorizationStatusTrue_RequestAllowed_DoesNotShowConsentDialogAndDoesNotUpdateAdId() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
+      ]
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.requestAndSetAuthorizationStatusFlag = true
+    appTrackingTransparency.shouldRequestAuthStatus = true
+
+    withEnvironment(
+      appTrackingTransparency: appTrackingTransparency,
+      remoteConfigClient: mockRemoteConfigClient
+    ) {
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
+
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      XCTAssertNil(appTrackingTransparency.advertisingIdentifier)
       self.requestATTrackingAuthorizationStatus.assertValueCount(1)
     }
   }

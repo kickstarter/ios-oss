@@ -1256,7 +1256,38 @@ final class ProjectPageViewModelTests: TestCase {
     self.dismissManagePledgeAndShowMessageBannerWithMessage.assertValues(["Your changes have been saved"])
   }
 
-  func testTrackingProjectPageViewed_LoggedIn() {
+  func testTrackingProjectPageViewed_LoggedIn_AdvertisingConsentNotAllowed_EventsNotTracked() {
+    let segmentClient = MockTrackingClient()
+    let appTrackingTransparency = MockAppTrackingTransparency()
+    appTrackingTransparency.shouldRequestAuthStatus = false
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: appTrackingTransparency
+    )
+
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(
+      apiService: MockService(
+        fetchProjectPamphletResult: .success(projectPamphletData),
+        fetchProjectRewardsResult: .success([Reward.noReward, Reward.template])
+      ),
+      currentUser: User.template,
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, [])
+    }
+  }
+
+  func testTrackingProjectPageViewed_LoggedIn_AdvertisingConsentAllowed_EventsTracked() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       config: .template,
