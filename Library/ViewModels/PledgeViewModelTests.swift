@@ -5856,12 +5856,12 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
 
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
+
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: nil,
       segmentClient: segmentClient,
-      advertisingId: advertisingIdentifier
+      appTrackingTransparency: MockAppTrackingTransparency()
     )
 
     withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
@@ -5899,12 +5899,11 @@ final class PledgeViewModelTests: TestCase {
       |> \.facebookConnected .~ true
 
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: user,
       segmentClient: segmentClient,
-      advertisingId: advertisingIdentifier
+      appTrackingTransparency: MockAppTrackingTransparency()
     )
 
     withEnvironment(currentUser: user, ksrAnalytics: ksrAnalytics) {

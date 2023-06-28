@@ -2420,14 +2420,23 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testRequestATTrackingAuthorizationStatus_CalledOnceOnDidFinishLaunching() {
-    self.requestATTrackingAuthorizationStatus.assertValueCount(0)
+  func testRequestATTrackingAuthorizationStatus_CalledOnceOnDidFinishLaunchingAndAppBecomesActive() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
+      ]
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      self.requestATTrackingAuthorizationStatus.assertValueCount(0)
 
-    self.scheduler.advance(by: .seconds(1))
+      self.vm.inputs.applicationActive(state: false)
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationActive(state: true)
 
-    self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+      self.scheduler.advance(by: .seconds(1))
+
+      self.requestATTrackingAuthorizationStatus.assertValueCount(1)
+    }
   }
 
   func testPresentViewController_BrazeInAppNotificationDeeplink_ProjectCommentThread_Success() {

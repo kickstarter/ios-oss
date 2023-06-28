@@ -1258,12 +1258,11 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testTrackingProjectPageViewed_LoggedIn() {
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: User.template,
       segmentClient: segmentClient,
-      advertisingId: advertisingIdentifier
+      appTrackingTransparency: MockAppTrackingTransparency()
     )
 
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
@@ -1299,12 +1298,11 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.countryCode .~ "GB"
 
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(
       config: config,
       loggedInUser: nil,
       segmentClient: segmentClient,
-      advertisingId: advertisingIdentifier
+      appTrackingTransparency: MockAppTrackingTransparency()
     )
 
     let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)

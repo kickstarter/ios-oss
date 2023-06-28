@@ -7,8 +7,6 @@ import XCTest
 final class KSRAnalyticsTests: TestCase {
   // MARK: - Session Properties Tests
 
-  let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
-
   func testSessionProperties() {
     let bundle = MockBundle()
     let segmentClient = MockTrackingClient()
@@ -32,7 +30,8 @@ final class KSRAnalyticsTests: TestCase {
       device: device,
       loggedInUser: nil,
       screen: screen,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -57,7 +56,7 @@ final class KSRAnalyticsTests: TestCase {
   func testSessionProperties_Language() {
     withEnvironment(language: Language.es) {
       let segmentClient = MockTrackingClient()
-      let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+      let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
@@ -67,7 +66,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testSessionProperties_VoiceOver() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     withEnvironment(isVoiceOverRunning: { true }) {
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -90,7 +89,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: User.template,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -105,7 +104,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(
       device: MockDevice(userInterfaceIdiom: .phone),
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
@@ -118,7 +117,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(
       device: MockDevice(userInterfaceIdiom: .pad),
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
@@ -131,7 +130,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(
       device: MockDevice(userInterfaceIdiom: .tv),
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
@@ -144,7 +143,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .faceDown)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -157,7 +156,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .faceUp)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -170,7 +169,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .landscapeLeft)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -183,7 +182,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .landscapeRight)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -196,7 +195,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .portrait)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -209,7 +208,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .portraitUpsideDown)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -225,7 +224,7 @@ final class KSRAnalyticsTests: TestCase {
     let device = MockDevice(orientation: .unknown)
     let ksrAnalytics = KSRAnalytics(
       device: device,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -239,7 +238,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackLoginSubmitButtonClicked()
@@ -253,7 +252,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: true)
@@ -268,7 +267,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackSignupPageViewed()
@@ -281,7 +280,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackLoginPageViewed()
@@ -296,7 +295,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [Reward.template, .noReward]
@@ -365,7 +364,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
@@ -390,7 +389,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
@@ -414,7 +413,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
@@ -438,7 +437,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = project.creator
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
@@ -458,7 +457,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [Reward.template, .noReward]
@@ -484,7 +483,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 23
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackCreatorDashboardPageViewed()
@@ -496,7 +495,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testCreatorDashboardSwitchProjectClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackCreatorDashboardSwitchProjectClicked(project: .template, refTag: RefTag.dashboard)
 
@@ -509,7 +508,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testCreatorDashboardPostUpdateClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackCreatorDashboardPostUpdateClicked(project: .template, refTag: RefTag.dashboard)
 
@@ -542,7 +541,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackDiscovery(params: params)
@@ -576,7 +575,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackDiscovery(params: params)
@@ -602,7 +601,7 @@ final class KSRAnalyticsTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackDiscovery(params: params)
@@ -625,7 +624,7 @@ final class KSRAnalyticsTests: TestCase {
   func testTrackProjectViewed_SectionContext_Campaign() {
     let segmentClient = MockTrackingClient()
     let project = Project.template
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics
       .trackProjectViewed(project, refTag: .discovery, sectionContext: .campaign)
@@ -640,7 +639,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackCheckoutPaymentMethodViewed_PledgeViewContext_Pledge() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -665,7 +664,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackUpdatePledgeScreenViewed_PledgeViewContext_Update() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -692,7 +691,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackUpdatePledgeScreenViewed_PledgeViewContext_UpdateReward() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -718,7 +717,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackUpdatePledgeScreenViewed_PledgeViewContext_ChangePayment() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -754,7 +753,7 @@ final class KSRAnalyticsTests: TestCase {
       device: device,
       loggedInUser: nil,
       screen: screen,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     var callBackEvents = [String]()
@@ -788,7 +787,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectCardClicked_Page_Discover() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectCardClicked(
       page: .discovery,
@@ -810,7 +809,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectCardClicked_Page_Activities() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectCardClicked(
       page: .activities,
@@ -826,7 +825,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectCardClicked_Page_Profile_Section_Backed() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
@@ -846,7 +845,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectCardClicked_Page_Profile_Section_Watched() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
@@ -866,7 +865,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectCardClicked_Page_Thanks() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -892,7 +891,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectCardClicked_Page_Search() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectCardClicked(
       page: .search,
@@ -914,7 +913,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testProjectVideoPlaybackStarted() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectVideoPlaybackStarted(
       project: .template,
@@ -932,7 +931,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testWatchProjectButtonClicked_DiscoveryLocationContext() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
@@ -952,7 +951,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testUnWatchProjectButtonClicked_DiscoveryLocationContext() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
@@ -972,7 +971,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testWatchProjectButtonClicked_ProjectPageLocationContext() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
@@ -990,7 +989,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testUnWatchProjectButtonClicked_ProjectPageLocationContext() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
@@ -1008,7 +1007,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackGotoCreatorDetailsClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackGotoCreatorDetailsClicked(
       project: .template
@@ -1027,7 +1026,7 @@ final class KSRAnalyticsTests: TestCase {
 
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
@@ -1048,7 +1047,7 @@ final class KSRAnalyticsTests: TestCase {
 
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackRewardClicked(
@@ -1076,7 +1075,7 @@ final class KSRAnalyticsTests: TestCase {
 
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: loggedInUser,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackRewardsViewed(
@@ -1097,7 +1096,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackPledgeConfirmButtonClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.endsAt .~ 5.0
       |> Reward.lens.shipping.preference .~ .restricted
@@ -1133,7 +1132,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackProjectCurrency_WhenDifferentFromCountry_ComesFromCountryCurrencyNotCountry_Success() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.endsAt .~ 5.0
       |> Reward.lens.shipping.preference .~ .restricted
@@ -1160,7 +1159,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackPledgeSubmitButtonClicked_Pledge() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.endsAt .~ 5.0
       |> Reward.lens.shipping.preference .~ .restricted
@@ -1196,7 +1195,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackPledgeSubmitButtonClicked_ApplePay() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let reward = Reward.template
       |> Reward.lens.endsAt .~ 5.0
       |> Reward.lens.shipping.preference .~ .restricted
@@ -1233,7 +1232,7 @@ final class KSRAnalyticsTests: TestCase {
   func testTrackManagePledgePageViewed() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     let project = Project.template
@@ -1259,7 +1258,7 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
 
     let ksrAnalytics = KSRAnalytics(
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     let project = Project.template
@@ -1280,7 +1279,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackExploreButtonClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackExploreButtonClicked()
 
@@ -1294,7 +1293,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackSearchViewed() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectSearchView(
       params: .defaults |> DiscoveryParams.lens.query .~ "mavericks",
@@ -1315,7 +1314,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(
       config: config,
       loggedInUser: nil,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1341,7 +1340,7 @@ final class KSRAnalyticsTests: TestCase {
 
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: user,
-      segmentClient: segmentClient, advertisingId: self.advertisingIdentifier
+      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1359,7 +1358,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTabBarClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     let tabBarActivity = KSRAnalytics.TabBarItemLabel.activity
     let tabBarDashboard = KSRAnalytics.TabBarItemLabel.dashboard
@@ -1400,7 +1399,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testSearchTabBarClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .profile)
 
@@ -1424,7 +1423,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackDiscoverySortProperties() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackDiscoverySelectedSort(
       prevSort: .popular,
@@ -1485,7 +1484,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackDiscoveryModalSelectedFilter() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     let allProjectParams = DiscoveryParams.defaults |> DiscoveryParams.lens.includePOTD .~ true
     ksrAnalytics
@@ -1573,7 +1572,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackDiscoveryModalSelectedFilter_Category_Spanish() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
     let artParams = DiscoveryParams.defaults
       |> DiscoveryParams.lens.category .~ Category.documentarySpanish
     ksrAnalytics
@@ -1588,18 +1587,15 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Documentary", segmentClient.properties.last?["discover_subcategory_name"] as? String)
   }
 
-  func testEventsCalledAsExpectedWhenAppTrackingConsentAuthorized_WhenFeatureFlagEnabled() {
+  func testEventsCalledAsExpectedWhenAppTrackingConsentAuthorized() {
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingIdentifier)
-    let remoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
-      ]
+    let sampleTracking = self.appTrackingTransparency
+    (sampleTracking as? MockAppTrackingTransparency)?.shouldRequestAuthStatus = true
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: sampleTracking)
 
+    
     withEnvironment(
-      advertisingIdentifier: advertisingIdentifier,
-      remoteConfigClient: remoteConfigClient
+      appTrackingTransparency: sampleTracking
     ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1610,68 +1606,14 @@ final class KSRAnalyticsTests: TestCase {
     }
   }
 
-  func testNoEventsCalledWhenAppTrackingConsentDenied_WhenFeatureFlagEnabled() {
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.denied)
+  func testNoEventsCalledWhenAppTrackingConsentNotAuthorized() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingIdentifier)
-    let remoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
-      ]
-
+    let sampleTracking = self.appTrackingTransparency
+    (sampleTracking as? MockAppTrackingTransparency)?.shouldRequestAuthStatus = false
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: sampleTracking)
+  
     withEnvironment(
-      advertisingIdentifier: advertisingIdentifier,
-      remoteConfigClient: remoteConfigClient
-    ) {
-      ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
-      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
-      ksrAnalytics.trackDiscovery(params: .defaults)
-      ksrAnalytics.trackExploreButtonClicked()
-
-      XCTAssert(
-        segmentClient.properties.isEmpty,
-        "No events tracked by segment client"
-      )
-    }
-  }
-
-  func testNoEventsCalledWhenAppTrackingConsentNotDetermined_WhenFeatureFlagEnabled() {
-    let advertisingId = MockAppTrackingTransparency().advertisingIdentifier(.notDetermined)
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingId)
-    let remoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
-      ]
-
-    withEnvironment(
-      advertisingIdentifier: advertisingId,
-      remoteConfigClient: remoteConfigClient
-    ) {
-      ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
-      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
-      ksrAnalytics.trackDiscovery(params: .defaults)
-      ksrAnalytics.trackExploreButtonClicked()
-
-      XCTAssert(
-        segmentClient.properties.isEmpty,
-        "No events tracked by segment client"
-      )
-    }
-  }
-
-  func testNoEventsCalledWhenAppTrackingConsentRestricted() {
-    let advertisingId = MockAppTrackingTransparency().advertisingIdentifier(.restricted)
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: advertisingId)
-    let remoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
-      ]
-
-    withEnvironment(
-      advertisingIdentifier: advertisingId,
-      remoteConfigClient: remoteConfigClient
+      appTrackingTransparency: sampleTracking
     ) {
       ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview)
       ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
@@ -1687,7 +1629,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackProjectViewedEvent() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackProjectViewed(Project.template, sectionContext: .overview) // approved event
 
@@ -1781,7 +1723,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testTrackAddOnsContinueButtonClicked() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     let project = Project.template
     let reward = Reward.template
@@ -1811,7 +1753,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testContextProperties() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_cta"] as? String)
@@ -1821,7 +1763,7 @@ final class KSRAnalyticsTests: TestCase {
 
   func testContextLocationProperties() {
     let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, advertisingId: self.advertisingIdentifier)
+    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency)
 
     ksrAnalytics.trackDiscovery(params: .defaults)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)

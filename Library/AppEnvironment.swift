@@ -383,7 +383,8 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: service,
       config: config,
       currentUser: currentUser,
-      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser
+      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser |> KSRAnalytics
+        .lens.appTrackingTransparency .~ self.current.appTrackingTransparency
     )
   }
 

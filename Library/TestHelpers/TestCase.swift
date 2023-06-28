@@ -9,7 +9,7 @@ internal class TestCase: XCTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
 
   internal let apiService = MockService()
-  internal let appTrackingTransparency = MockAppTrackingTransparency(authStatusStub: .authorized)
+  internal let appTrackingTransparency: AppTrackingTransparencyType = MockAppTrackingTransparency()
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
@@ -33,15 +33,12 @@ internal class TestCase: XCTestCase {
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    let advertisingID = self.appTrackingTransparency
-      .advertisingIdentifier(ATTrackingAuthorizationStatus.authorized)
-
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
       applePayCapabilities: MockApplePayCapabilities(),
       application: UIApplication.shared,
-      advertisingIdentifier: advertisingID,
+      appTrackingTransparency: appTrackingTransparency,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,
@@ -57,7 +54,7 @@ internal class TestCase: XCTestCase {
       ksrAnalytics: KSRAnalytics(
         loggedInUser: nil,
         segmentClient: self.segmentTrackingClient,
-        advertisingId: advertisingID
+        appTrackingTransparency: self.appTrackingTransparency
       ),
       language: .en,
       launchedCountries: .init(),
