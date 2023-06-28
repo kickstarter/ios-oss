@@ -38,7 +38,7 @@ internal class TestCase: XCTestCase {
       apiDelayInterval: .seconds(0),
       applePayCapabilities: MockApplePayCapabilities(),
       application: UIApplication.shared,
-      appTrackingTransparency: appTrackingTransparency,
+      appTrackingTransparency: self.appTrackingTransparency,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,
