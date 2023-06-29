@@ -235,9 +235,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .observeValues { projectAndRefTag in
         let (project, _) = projectAndRefTag
 
-        guard project.sendMetaCapiEvents,
-          let externalId = AppEnvironment.current.advertisingIdentifier
+        guard project.sendMetaCapiEvents else { return }
+
+        AppEnvironment.current.appTrackingTransparency.updateAdvertisingIdentifier()
+
+        guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
         else { return }
+
+        /** FIXME: Soon we will use `triggerThirdPartyEvents` mutation paired with an in-app flag for allowing an advertising identifier to be sent even if it isn't nil. That will affect `applicationTrackingEnabled` and `advertiserTrackingEnabled`. */
 
         _ = AppEnvironment
           .current
@@ -248,7 +253,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
               eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
               externalId: externalId,
               userEmail: AppEnvironment.current.currentUserEmail,
-              appData: .init(extinfo: ["i2"]),
+              appData: .init(
+                advertiserTrackingEnabled: true,
+                applicationTrackingEnabled: true,
+                extinfo: ["i2"]
+              ),
               customData: .init(currency: nil, value: nil)
             )
           )

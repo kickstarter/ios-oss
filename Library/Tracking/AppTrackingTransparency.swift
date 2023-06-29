@@ -3,37 +3,40 @@ import AppTrackingTransparency
 import Foundation
 
 public protocol AppTrackingTransparencyType {
-  func authorizationStatus() -> ATTrackingAuthorizationStatus
-  func advertisingIdentifier(_ status: ATTrackingAuthorizationStatus) -> String?
+  var advertisingIdentifier: String? { get }
+  func updateAdvertisingIdentifier()
+  func requestAndSetAuthorizationStatus()
+  func shouldRequestAuthorizationStatus() -> Bool
 }
 
-public struct AppTrackingTransparency: AppTrackingTransparencyType {
-  public init() {}
+public class AppTrackingTransparency: AppTrackingTransparencyType {
+  public private(set) var advertisingIdentifier: String?
 
-  public func authorizationStatus() -> ATTrackingAuthorizationStatus {
-    var authorizationStatus: ATTrackingAuthorizationStatus = .notDetermined
-
-    ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-      switch status {
-      case .notDetermined:
-        authorizationStatus = .notDetermined
-      case .authorized:
-        authorizationStatus = .authorized
-      case .denied:
-        authorizationStatus = .denied
-      case .restricted:
-        authorizationStatus = .restricted
-      @unknown default:
-        authorizationStatus = .notDetermined
-      }
-    })
-
-    return authorizationStatus
+  public init() {
+    self.updateAdvertisingIdentifier()
   }
 
-  public func advertisingIdentifier(_ status: ATTrackingAuthorizationStatus) -> String? {
-    guard status == .authorized else { return nil }
+  public func requestAndSetAuthorizationStatus() {
+    ATTrackingManager.requestTrackingAuthorization { [weak self] authStatus in
+      switch authStatus {
+      case .authorized:
+        self?.advertisingIdentifier = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+      default:
+        self?.advertisingIdentifier = nil
+      }
+    }
+  }
 
-    return ASIdentifierManager.shared().advertisingIdentifier.uuidString
+  public func shouldRequestAuthorizationStatus() -> Bool {
+    ATTrackingManager.trackingAuthorizationStatus == .notDetermined
+  }
+
+  public func updateAdvertisingIdentifier() {
+    switch ATTrackingManager.trackingAuthorizationStatus {
+    case .authorized:
+      self.advertisingIdentifier = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+    default:
+      self.advertisingIdentifier = nil
+    }
   }
 }
