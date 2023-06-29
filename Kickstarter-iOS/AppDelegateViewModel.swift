@@ -33,6 +33,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application enters background.
   func applicationDidEnterBackground()
 
+  /// Call when the application becomes active `UIApplicationStateActive` and `UIApplicationStateInactive`
+  func applicationActive(state: Bool)
+
   /// Call when the aplication receives memory warning from the system.
   func applicationDidReceiveMemoryWarning()
 
@@ -786,18 +789,24 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { _ in .displayInAppMessageNow }
 
-    self.requestATTrackingAuthorizationStatus = self.applicationLaunchOptionsProperty.signal
-      .skipNil()
+    self.requestATTrackingAuthorizationStatus = Signal
+      .combineLatest(
+        self.applicationDidFinishLaunchingReturnValueProperty.signal.ignoreValues(),
+        self.applicationActiveProperty.signal
+      )
+      .map(second)
+      .skipRepeats()
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+      .filter(isTrue)
       .map { _ in
-        guard featureConsentManagementDialogEnabled() else { return }
+        guard let _ = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier else {
+          if AppEnvironment.current.appTrackingTransparency.shouldRequestAuthorizationStatus(),
+            featureConsentManagementDialogEnabled() {
+            AppEnvironment.current.appTrackingTransparency.requestAndSetAuthorizationStatus()
+          }
 
-        let appTrackingTransparency = AppTrackingTransparency()
-
-        let authorizationStatus = appTrackingTransparency.authorizationStatus()
-        let advertisingIdentifier = appTrackingTransparency.advertisingIdentifier(authorizationStatus)
-
-        AppEnvironment.updateAdvertisingIdentifer(advertisingIdentifier)
+          return
+        }
       }
   }
 
@@ -824,6 +833,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let applicationWillEnterForegroundProperty = MutableProperty(())
   public func applicationWillEnterForeground() {
     self.applicationWillEnterForegroundProperty.value = ()
+  }
+
+  fileprivate let applicationActiveProperty = MutableProperty<Bool>(false)
+  public func applicationActive(state: Bool) {
+    self.applicationActiveProperty.value = state
   }
 
   fileprivate let applicationDidEnterBackgroundProperty = MutableProperty(())

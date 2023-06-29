@@ -314,7 +314,32 @@ final class ThanksViewModelTests: TestCase {
     }
   }
 
-  func testThanksPageViewed_Properties() {
+  func testThanksPageViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
+    let checkoutData = KSRAnalytics.CheckoutPropertiesData(
+      addOnsCountTotal: 2,
+      addOnsCountUnique: 1,
+      addOnsMinimumUsd: 8.00,
+      bonusAmountInUsd: 10.00,
+      checkoutId: "1",
+      estimatedDelivery: 12_345_678,
+      paymentType: "CREDIT_CARD",
+      revenueInUsd: 20.00,
+      rewardId: "2",
+      rewardMinimumUsd: 5.00,
+      rewardTitle: "SUPER reward",
+      shippingEnabled: true,
+      shippingAmountUsd: 10.00,
+      userHasStoredApplePayCard: true
+    )
+
+    (self.appTrackingTransparency as? MockAppTrackingTransparency)?.shouldRequestAuthStatus = false
+    self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertNil(self.segmentTrackingClient.properties.last)
+  }
+
+  func testThanksPageViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
     let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,

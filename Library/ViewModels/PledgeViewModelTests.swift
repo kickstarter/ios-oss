@@ -5695,7 +5695,7 @@ final class PledgeViewModelTests: TestCase {
 
   // MARK: - Tracking
 
-  func testTrackingEvents_CheckoutPaymentPageViewed() {
+  func testTrackingEvents_CheckoutPaymentPageViewed_AdvertisingConsentNotAllowed_EventsNotTracked() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
@@ -5710,34 +5710,14 @@ final class PledgeViewModelTests: TestCase {
       context: .pledge
     )
 
+    (self.appTrackingTransparency as? MockAppTrackingTransparency)?.shouldRequestAuthStatus = false
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-
-    let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
-
-    // Context properties
-
-    XCTAssertEqual("checkout", segmentTrackingClientProps?["context_page"] as? String)
-
-    // Checkout properties
-
-    XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
-    XCTAssertEqual("1", segmentTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
-    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
-    XCTAssertEqual(
-      true,
-      segmentTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
+    XCTAssertNil(self.segmentTrackingClient.properties.last)
   }
 
-  func testTrackingEvents_ChangePaymentMethod() {
+  func testTrackingEvents_ChangePaymentMethod_AdvertisingConsentAllowed_EventsTracked() {
     let project = Project.template
     let reward = Reward.template
 
@@ -5856,12 +5836,12 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
 
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
+
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: nil,
       segmentClient: segmentClient,
-      advertisingId: advertisingIdentifier
+      appTrackingTransparency: MockAppTrackingTransparency()
     )
 
     withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
@@ -5899,12 +5879,11 @@ final class PledgeViewModelTests: TestCase {
       |> \.facebookConnected .~ true
 
     let segmentClient = MockTrackingClient()
-    let advertisingIdentifier = MockAppTrackingTransparency().advertisingIdentifier(.authorized)
     let ksrAnalytics = KSRAnalytics(
       config: .template,
       loggedInUser: user,
       segmentClient: segmentClient,
-      advertisingId: advertisingIdentifier
+      appTrackingTransparency: MockAppTrackingTransparency()
     )
 
     withEnvironment(currentUser: user, ksrAnalytics: ksrAnalytics) {
