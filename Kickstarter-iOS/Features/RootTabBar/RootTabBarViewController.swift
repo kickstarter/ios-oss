@@ -167,6 +167,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToDashboard(project param: Param?) {
+    guard featureCreatorDashboardEnabled() else {
+      return
+    }
+
     self.viewModel.inputs.switchToDashboard(project: param)
   }
 
@@ -213,6 +217,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToCreatorMessageThread(projectId: Param, messageThread: MessageThread) {
+    guard featureCreatorDashboardEnabled() else {
+      return
+    }
+
     self.switchToDashboard(project: nil)
 
     guard
@@ -226,6 +234,10 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToProjectActivities(projectId: Param) {
+    guard featureCreatorDashboardEnabled() else {
+      return
+    }
+
     self.switchToDashboard(project: nil)
 
     guard
@@ -248,44 +260,68 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       case let .search(index):
         _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
       case let .dashboard(index):
-        _ = tabBarItem(atIndex: index) ?|> dashboardTabBarItemStyle
+        let featureFlaggedTabBarItemStyle = self
+          .isDashboardViewControllerDisplayable() ? dashboardTabBarItemStyle :
+          profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
+        _ = tabBarItem(atIndex: index) ?|> featureFlaggedTabBarItemStyle
       case let .profile(avatarUrl, index):
         _ = tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
 
-        guard
-          data.isLoggedIn == true,
-          let avatarUrl = avatarUrl,
-          let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
-        else { return }
-
-        let hash = avatarUrl.absoluteString.hashValue
-        let imagePath = "\(dir)/tabbar-avatar-image-\(hash).dat"
-        let imageUrl = URL(fileURLWithPath: imagePath)
-
-        if let imageData = try? Data(contentsOf: imageUrl) {
-          let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
-          _ = self.tabBarItem(atIndex: index)
-            ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
-            ?|> UITabBarItem.lens.image .~ defaultImage
-            ?|> UITabBarItem.lens.selectedImage .~ selectedImage
-        } else {
-          let sessionConfig = URLSessionConfiguration.default
-          let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
-          let dataTask = session.dataTask(with: avatarUrl) { [weak self] avatarData, _, _ in
-            guard let avatarData = avatarData else { return }
-            try? avatarData.write(to: imageUrl, options: [.atomic])
-
-            let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
-            _ = self?.tabBarItem(atIndex: index)
-              ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
-              ?|> UITabBarItem.lens.image .~ defaultImage
-              ?|> UITabBarItem.lens.selectedImage .~ selectedImage
-          }
-          dataTask.resume()
-        }
+        setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
       }
     }
+  }
+
+  fileprivate func setProfileImage(with data: TabBarItemsData, avatarUrl: URL?, index: Int) {
+    guard
+      data.isLoggedIn == true,
+      let avatarUrl = avatarUrl,
+      let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
+    else { return }
+
+    let hash = avatarUrl.absoluteString.hashValue
+    let imagePath = "\(dir)/tabbar-avatar-image-\(hash).dat"
+    let imageUrl = URL(fileURLWithPath: imagePath)
+
+    if let imageData = try? Data(contentsOf: imageUrl) {
+      let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
+      _ = self.tabBarItem(atIndex: index)
+        ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
+        ?|> UITabBarItem.lens.image .~ defaultImage
+        ?|> UITabBarItem.lens.selectedImage .~ selectedImage
+    } else {
+      let sessionConfig = URLSessionConfiguration.default
+      let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: .main)
+      let dataTask = session.dataTask(with: avatarUrl) { [weak self] avatarData, _, _ in
+        guard let avatarData = avatarData else { return }
+        try? avatarData.write(to: imageUrl, options: [.atomic])
+
+        let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
+        _ = self?.tabBarItem(atIndex: index)
+          ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
+          ?|> UITabBarItem.lens.image .~ defaultImage
+          ?|> UITabBarItem.lens.selectedImage .~ selectedImage
+      }
+      dataTask.resume()
+    }
+  }
+
+  fileprivate func isDashboardViewControllerDisplayable() -> Bool {
+    guard let navigationControllers = self.viewControllers as? [UINavigationController] else {
+      return false
+    }
+
+    var foundDashboardViewController = false
+
+    for navController in navigationControllers {
+      if let dashboardVC = navController.viewControllers.first as? DashboardViewController {
+        foundDashboardViewController = true
+        break
+      }
+    }
+
+    return foundDashboardViewController
   }
 
   fileprivate func tabBarItem(atIndex index: Int) -> UITabBarItem? {
