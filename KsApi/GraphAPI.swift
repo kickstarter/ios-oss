@@ -590,9 +590,10 @@ public enum GraphAPI {
     ///   - appData
     ///   - customData
     ///   - waitForConsent
+    ///   - testEventCode
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, eventName: String, externalId: String, userEmail: Swift.Optional<String?> = nil, appData: Swift.Optional<AppDataInput?> = nil, customData: Swift.Optional<CustomDataInput?> = nil, waitForConsent: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "eventName": eventName, "externalId": externalId, "userEmail": userEmail, "appData": appData, "customData": customData, "waitForConsent": waitForConsent, "clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, eventName: String, externalId: String, userEmail: Swift.Optional<String?> = nil, appData: Swift.Optional<AppDataInput?> = nil, customData: Swift.Optional<CustomDataInput?> = nil, waitForConsent: Swift.Optional<Bool?> = nil, testEventCode: Swift.Optional<String?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "eventName": eventName, "externalId": externalId, "userEmail": userEmail, "appData": appData, "customData": customData, "waitForConsent": waitForConsent, "testEventCode": testEventCode, "clientMutationId": clientMutationId]
     }
 
     public var projectId: GraphQLID {
@@ -658,6 +659,15 @@ public enum GraphAPI {
       }
     }
 
+    public var testEventCode: Swift.Optional<String?> {
+      get {
+        return graphQLMap["testEventCode"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "testEventCode")
+      }
+    }
+
     /// A unique identifier for the client performing the mutation.
     public var clientMutationId: Swift.Optional<String?> {
       get {
@@ -674,9 +684,31 @@ public enum GraphAPI {
     public var graphQLMap: GraphQLMap
 
     /// - Parameters:
+    ///   - advertiserTrackingEnabled: Use this field to specify ATT permission on an iOS 14.5+ device.
+    ///   - applicationTrackingEnabled: A person can choose to enable ad tracking on an app level. Your SDK should allow an app developer to put an opt-out setting into their app. Use this field to specify the person's choice.
     ///   - extinfo: Extended device information, such as screen width and height. Required only for native.
-    public init(extinfo: [String]) {
-      graphQLMap = ["extinfo": extinfo]
+    public init(advertiserTrackingEnabled: Bool, applicationTrackingEnabled: Bool, extinfo: [String]) {
+      graphQLMap = ["advertiserTrackingEnabled": advertiserTrackingEnabled, "applicationTrackingEnabled": applicationTrackingEnabled, "extinfo": extinfo]
+    }
+
+    /// Use this field to specify ATT permission on an iOS 14.5+ device.
+    public var advertiserTrackingEnabled: Bool {
+      get {
+        return graphQLMap["advertiserTrackingEnabled"] as! Bool
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "advertiserTrackingEnabled")
+      }
+    }
+
+    /// A person can choose to enable ad tracking on an app level. Your SDK should allow an app developer to put an opt-out setting into their app. Use this field to specify the person's choice.
+    public var applicationTrackingEnabled: Bool {
+      get {
+        return graphQLMap["applicationTrackingEnabled"] as! Bool
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "applicationTrackingEnabled")
+      }
     }
 
     /// Extended device information, such as screen width and height. Required only for native.
@@ -4122,7 +4154,7 @@ public enum GraphAPI {
               }
             }
 
-            /// Whether a user is a creator
+            /// Whether a user is a creator of any project
             public var isCreator: Bool? {
               get {
                 return resultMap["isCreator"] as? Bool
@@ -5877,7 +5909,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "ProjectFeaturedImage", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "ProjectFeaturedImage", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -5950,6 +5982,14 @@ public enum GraphAPI {
 
         public static func makeUserUrl() -> Node {
           return Node(unsafeResultMap: ["__typename": "UserUrl"])
+        }
+
+        public static func makeAiDisclosure() -> Node {
+          return Node(unsafeResultMap: ["__typename": "AiDisclosure"])
+        }
+
+        public static func makeBusinessAddress() -> Node {
+          return Node(unsafeResultMap: ["__typename": "BusinessAddress"])
         }
 
         public static func makeProjectFeaturedImage() -> Node {
@@ -6322,7 +6362,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "ProjectFeaturedImage", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "ProjectFeaturedImage", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -6391,6 +6431,14 @@ public enum GraphAPI {
 
         public static func makeCategory() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "Category"])
+        }
+
+        public static func makeAiDisclosure() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "AiDisclosure"])
+        }
+
+        public static func makeBusinessAddress() -> Comment {
+          return Comment(unsafeResultMap: ["__typename": "BusinessAddress"])
         }
 
         public static func makeProjectFeaturedImage() -> Comment {
@@ -13003,7 +13051,7 @@ public enum GraphAPI {
       }
     }
 
-    /// When the reward is scheduled to end
+    /// When the reward is scheduled to end in seconds
     public var endsAt: String? {
       get {
         return resultMap["endsAt"] as? String
@@ -14115,7 +14163,7 @@ public enum GraphAPI {
       }
     }
 
-    /// Whether a user is a creator
+    /// Whether a user is a creator of any project
     public var isCreator: Bool? {
       get {
         return resultMap["isCreator"] as? Bool

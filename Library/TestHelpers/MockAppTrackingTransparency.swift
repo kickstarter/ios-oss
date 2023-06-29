@@ -1,16 +1,19 @@
 import Library
 
-struct MockAppTrackingTransparency: AppTrackingTransparencyType {
-  public var authStatusStub: ATTrackingAuthorizationStatus =
-    .authorized // defaulting to .authorized so existing tests will still pass
+class MockAppTrackingTransparency: AppTrackingTransparencyType {
+  public private(set) var advertisingIdentifier: String?
+  public var shouldRequestAuthStatus = true
+  public var requestAndSetAuthorizationStatusFlag = false
 
-  func authorizationStatus() -> ATTrackingAuthorizationStatus {
-    return self.authStatusStub
+  func updateAdvertisingIdentifier() {
+    self.advertisingIdentifier = self.shouldRequestAuthStatus ? "advertisingIdentifer" : nil
   }
 
-  func advertisingIdentifier(_ status: ATTrackingAuthorizationStatus) -> String? {
-    guard status == .authorized else { return nil }
+  func requestAndSetAuthorizationStatus() {
+    self.advertisingIdentifier = self.requestAndSetAuthorizationStatusFlag ? "advertisingIdentifier" : nil
+  }
 
-    return "advertisingIdentifier"
+  func shouldRequestAuthorizationStatus() -> Bool {
+    self.shouldRequestAuthStatus
   }
 }

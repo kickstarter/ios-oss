@@ -8,7 +8,11 @@ class GraphAPI_TriggerCapiEventInput_TriggerCapiEventInputTests: XCTestCase {
       eventName: "eventName",
       externalId: "externalId",
       userEmail: "userEmail",
-      appData: GraphAPI.AppDataInput(extinfo: ["appData"]),
+      appData: GraphAPI.AppDataInput(
+        advertiserTrackingEnabled: true,
+        applicationTrackingEnabled: true,
+        extinfo: ["appData"]
+      ),
       customData: GraphAPI.CustomDataInput(currency: nil, value: nil)
     )
 

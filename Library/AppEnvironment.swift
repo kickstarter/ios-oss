@@ -55,9 +55,9 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  public static func updateAdvertisingIdentifer(_ advertisingIdentifer: String?) {
+  public static func updateAppTrackingTransparency(_ appTrackingTransparency: AppTrackingTransparencyType) {
     self.replaceCurrentEnvironment(
-      advertisingIdentifier: advertisingIdentifer
+      appTrackingTransparency: appTrackingTransparency
     )
   }
 
@@ -148,7 +148,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    advertisingIdentifier: String? = nil,
+    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current.appTrackingTransparency,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -181,7 +181,7 @@ public struct AppEnvironment: AppEnvironmentType {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        advertisingIdentifier: advertisingIdentifier,
+        appTrackingTransparency: appTrackingTransparency,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
@@ -218,7 +218,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    advertisingIdentifier: String? = nil,
+    appTrackingTransparency: AppTrackingTransparencyType = AppEnvironment.current.appTrackingTransparency,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -252,7 +252,7 @@ public struct AppEnvironment: AppEnvironmentType {
         apiDelayInterval: apiDelayInterval,
         applePayCapabilities: applePayCapabilities,
         application: application,
-        advertisingIdentifier: advertisingIdentifier,
+        appTrackingTransparency: appTrackingTransparency,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
@@ -383,7 +383,8 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: service,
       config: config,
       currentUser: currentUser,
-      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser
+      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser |> KSRAnalytics
+        .lens.appTrackingTransparency .~ self.current.appTrackingTransparency
     )
   }
 
