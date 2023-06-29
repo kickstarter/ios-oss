@@ -263,6 +263,23 @@ public enum Strings {
     )
   }
   /**
+   "After August 14, 2023, this Dashboard feature will only be available on our website."
+
+   - **en**: "After August 14, 2023, this Dashboard feature will only be available on our website."
+   - **de**: "Nach dem 14. August 2023 ist das Dashboard nur noch auf unserer Website verfügbar."
+   - **es**: "Después del 14 de agosto de 2023, este panel solo estará disponible en nuestro sitio web."
+   - **fr**: "À compter du 14 août 2023, ce tableau de bord ne sera disponible que sur notre site Web."
+   - **ja**: "2023年8月14日以降、このダッシュボード機能は Kickstarter ウェブサイトでのみご利用いただけます。"
+  */
+  public static func After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website() -> String {
+    return localizedString(
+      key: "After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website",
+      defaultValue: "After August 14, 2023, this Dashboard feature will only be available on our website.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Alert"
 
    - **en**: "Alert"
@@ -1056,8 +1073,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -2340,6 +2356,23 @@ Cliquez pour réessayer."
       defaultValue: "Creator",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "After %{expiration_date}, the Dashboard and Post Update features will only be available on our website."
+
+   - **en**: "After %{expiration_date}, the Dashboard and Post Update features will only be available on our website."
+   - **de**: "Nach dem %{expiration_date} sind das Dashboard und die Funktion „Update veröffentlichen“ nur noch auf unserer Website verfügbar."
+   - **es**: "Después del %{expiration_date}, el panel y la funcionalidad para publicar actualizaciones solo estarán disponibles en nuestro sitio web."
+   - **fr**: "Après le %{expiration_date}, le tableau de bord et la fonctionnalité de publication d'actus ne seront accessibles que depuis le site Web."
+   - **ja**: "%{expiration_date}以降、ダッシュボード機能とアップデート投稿機能は Kickstarter ウェブサイトでのみご利用いただけます。"
+  */
+  public static func Creator_dashboard_removal_warning(expiration_date: String) -> String {
+    return localizedString(
+      key: "Creator_dashboard_removal_warning",
+      defaultValue: "After %{expiration_date}, the Dashboard and Post Update features will only be available on our website.",
+      count: nil,
+      substitutions: ["expiration_date": expiration_date]
     )
   }
   /**
@@ -18907,7 +18940,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -22301,7 +22334,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -25412,7 +25445,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -26364,7 +26397,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
