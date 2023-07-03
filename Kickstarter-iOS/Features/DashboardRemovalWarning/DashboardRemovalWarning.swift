@@ -12,7 +12,7 @@ struct DashboardRemovalWarning: View {
         .frame(width: 18, height: 18)
         .padding(.horizontal, 12)
 
-      Text("After August 14, 2023, the Dashboard and Post Update features will only be available on our website.")
+      Text(Strings.Creator_dashboard_removal_warning(expiration_date: "August 14, 2023"))
         .font(Font(UIFont.ksr_subhead(size: 15)))
         .foregroundColor(Color(UIColor.ksr_white))
         .lineLimit(nil)
