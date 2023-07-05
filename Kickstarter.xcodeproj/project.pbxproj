@@ -498,7 +498,7 @@
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
 		60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA510E28C7E04B002E2DF1 /* Kingfisher */; };
 		60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA511328C96A65002E2DF1 /* SwiftSoup */; };
-		60DF50982A434E75002C771F /* DashboardRemovalWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DF50962A434E6B002C771F /* DashboardRemovalWarning.swift */; };
+		60DF50982A434E75002C771F /* DashboardDeprecationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DF50962A434E6B002C771F /* DashboardDeprecationView.swift */; };
 		60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 60EAD1C628D25A36009F9474 /* AppCenterDistribute */; };
 		701160D4291ECB9F0095BF24 /* LoadingBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */; };
 		70495690299D53ED00B273DF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 7049568F299D53ED00B273DF /* SnapshotTesting */; };
@@ -2075,7 +2075,7 @@
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
-		60DF50962A434E6B002C771F /* DashboardRemovalWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRemovalWarning.swift; sourceTree = "<group>"; };
+		60DF50962A434E6B002C771F /* DashboardDeprecationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDeprecationView.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
 		7061848829BE4C11008F9941 /* MessageBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerView.swift; sourceTree = "<group>"; };
 		7061848C29BE577B008F9941 /* MessageBannerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewViewModel.swift; sourceTree = "<group>"; };
@@ -4745,7 +4745,7 @@
 				1937A6E128C92BBD00DD732D /* CuratedProjects */,
 				19A97CF728C7E40C0031B857 /* Dashboard */,
 				19A97CFD28C7E6460031B857 /* DashboardProjects */,
-				60DF50952A434E30002C771F /* DashboardRemovalWarning */,
+				60DF50952A434E30002C771F /* DashboardDeprecationBanner */,
 				1937A6E228C92BD400DD732D /* DebugPushNotifications */,
 				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
 				19A97D0928C7EA450031B857 /* Discovery */,
@@ -5788,12 +5788,12 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		60DF50952A434E30002C771F /* DashboardRemovalWarning */ = {
+		60DF50952A434E30002C771F /* DashboardDeprecationBanner */ = {
 			isa = PBXGroup;
 			children = (
-				60DF50962A434E6B002C771F /* DashboardRemovalWarning.swift */,
+				60DF50962A434E6B002C771F /* DashboardDeprecationView.swift */,
 			);
-			path = DashboardRemovalWarning;
+			path = DashboardDeprecationBanner;
 			sourceTree = "<group>";
 		};
 		7061848A29BE4C1E008F9941 /* Views */ = {
@@ -8300,7 +8300,7 @@
 				8AA3DB33250AE40C009AC8EA /* SettingsViewModel.swift in Sources */,
 				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
 				06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */,
-				60DF50982A434E75002C771F /* DashboardRemovalWarning.swift in Sources */,
+				60DF50982A434E75002C771F /* DashboardDeprecationView.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				777C60A6241FECD800820C59 /* PersonalizationCell.swift in Sources */,
 				370C8B64234FCC6F00DE75DD /* LoadingButton.swift in Sources */,
