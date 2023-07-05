@@ -14,7 +14,8 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   fileprivate let backgroundView = UIView()
-  fileprivate var deprecationWarningHostingController: UIViewController? {
+
+  private var deprecationWarningHostingController: UIViewController? {
     self.tabBarController?.children.first { viewController in
       viewController is UIHostingController<DashboardDeprecationView>
     }
@@ -210,8 +211,7 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func updateTableViewBottomContentInset() {
-    /// Makes sure that the deprecation warning doesn't cover any table view content
+  private func updateTableViewBottomContentInset() {
     if let tabController = self.tabBarController as? RootTabBarViewController,
       let deprecationWarningHostingController = deprecationWarningHostingController {
       self.tableView.contentInset
@@ -220,10 +220,8 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func removeDeprecationWarning() {
-    let deprecationWarningHostingController = deprecationWarningHostingController
-
-    deprecationWarningHostingController?.removeFromParent()
+  private func removeDeprecationWarning() {
+    self.deprecationWarningHostingController?.removeFromParent()
 
     let deprecationWarningView = self.tabBarController?.view.subviews.first(where: { view in
       view.viewWithTag(-99) != nil
@@ -232,7 +230,7 @@ internal final class DashboardViewController: UITableViewController {
     deprecationWarningView?.removeFromSuperview()
   }
 
-  fileprivate func showDeprecationWarning() {
+  private func showDeprecationWarning() {
     let deprecationWarningHostingController = UIHostingController(rootView: DashboardDeprecationView())
 
     guard let tabController = self.tabBarController as? RootTabBarViewController,
