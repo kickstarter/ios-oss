@@ -14,6 +14,11 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   fileprivate let backgroundView = UIView()
+  fileprivate var deprecationWarningHostingController: UIViewController? {
+    self.tabBarController?.children.first { viewController in
+      viewController is UIHostingController<DashboardDeprecationView>
+    }
+  }
 
   internal static func instantiate() -> DashboardViewController {
     return Storyboard.Dashboard.instantiate(DashboardViewController.self)
@@ -48,13 +53,7 @@ internal final class DashboardViewController: UITableViewController {
 
     self.showDeprecationWarning()
 
-    /// Makes sure that the deprecation warning doesn't cover any table view content
-    if let tabController = self.tabBarController as? RootTabBarViewController,
-      let deprecationWarningHostingController = deprecationWarningHostingController() {
-      self.tableView.contentInset
-        .bottom = (tabController.tabBar.bounds.height + deprecationWarningHostingController.view.bounds
-          .height)
-    }
+    self.updateTableViewBottomContentInset()
   }
 
   override func bindStyles() {
@@ -211,14 +210,18 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func deprecationWarningHostingController() -> UIViewController? {
-    return self.tabBarController?.children.first { viewController in
-      viewController is UIHostingController<DashboardDeprecationView>
+  fileprivate func updateTableViewBottomContentInset() {
+    /// Makes sure that the deprecation warning doesn't cover any table view content
+    if let tabController = self.tabBarController as? RootTabBarViewController,
+      let deprecationWarningHostingController = deprecationWarningHostingController {
+      self.tableView.contentInset
+        .bottom = (tabController.tabBar.bounds.height + deprecationWarningHostingController.view.bounds
+          .height)
     }
   }
 
   fileprivate func removeDeprecationWarning() {
-    let deprecationWarningHostingController = deprecationWarningHostingController()
+    let deprecationWarningHostingController = deprecationWarningHostingController
 
     deprecationWarningHostingController?.removeFromParent()
 
