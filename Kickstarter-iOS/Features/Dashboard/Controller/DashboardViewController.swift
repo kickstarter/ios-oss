@@ -53,6 +53,10 @@ internal final class DashboardViewController: UITableViewController {
     self.viewModel.inputs.viewWillAppear(animated: animated)
 
     self.showDeprecationWarning()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
 
     self.updateTableViewBottomContentInset()
   }
@@ -212,11 +216,10 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func updateTableViewBottomContentInset() {
-    if let tabController = self.tabBarController as? RootTabBarViewController,
-      let deprecationWarningHostingController = deprecationWarningHostingController {
+    if let deprecationWarningHostingController = deprecationWarningHostingController {
       self.tableView.contentInset
-        .bottom = (tabController.tabBar.bounds.height + deprecationWarningHostingController.view.bounds
-          .height)
+        .bottom = deprecationWarningHostingController.view.bounds
+        .height
     }
   }
 

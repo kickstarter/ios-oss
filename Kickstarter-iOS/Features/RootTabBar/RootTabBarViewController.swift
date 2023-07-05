@@ -260,10 +260,11 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       case let .search(index):
         _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
       case let .dashboard(index):
-        let featureFlaggedTabBarItemStyle = self
-          .isDashboardViewControllerDisplayable() ? dashboardTabBarItemStyle :
-          profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
-        _ = tabBarItem(atIndex: index) ?|> featureFlaggedTabBarItemStyle
+        let style = self
+          .isTabBarItemLastItem(for: index) ?
+          profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember) :
+          dashboardTabBarItemStyle
+        _ = tabBarItem(atIndex: index) ?|> style
       case let .profile(avatarUrl, index):
         _ = tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
@@ -307,21 +308,12 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     }
   }
 
-  fileprivate func isDashboardViewControllerDisplayable() -> Bool {
-    guard let navigationControllers = self.viewControllers as? [UINavigationController] else {
+  fileprivate func isTabBarItemLastItem(for index: Int) -> Bool {
+    guard let tabBarItemEndIndex = self.tabBar.items?.endIndex else {
       return false
     }
 
-    var foundDashboardViewController = false
-
-    for navController in navigationControllers {
-      if let dashboardVC = navController.viewControllers.first as? DashboardViewController {
-        foundDashboardViewController = true
-        break
-      }
-    }
-
-    return foundDashboardViewController
+    return tabBarItemEndIndex - 1 == index
   }
 
   fileprivate func tabBarItem(atIndex index: Int) -> UITabBarItem? {
