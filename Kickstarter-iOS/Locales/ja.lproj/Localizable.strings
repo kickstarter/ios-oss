@@ -13,6 +13,7 @@
 "Add_new_card" = "新しいカードを追加";
 "Add_ons" = "アドオン (追加リワード)";
 "Add_ons_unavailable" = "アドオン (追加リワード) は利用できません";
+"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "2023年8月14日以降、このダッシュボード機能は Kickstarter ウェブサイトでのみご利用いただけます。";
 "Alert" = "個の警告";
 "All_Art_Projects" = "全てのアートプロジェクト";
 "All_Comics_Projects" = "全てのコミックプロジェクト";
@@ -142,6 +143,7 @@
 "Create_password" = "パスワードを作成";
 "Created_projects_projects_count" = "%{projects_count} のプロジェクト作成済";
 "Creator" = "クリエイター";
+"Creator_dashboard_removal_warning" = "%{expiration_date}以降、ダッシュボード機能とアップデート投稿機能は Kickstarter ウェブサイトでのみご利用いただけます。";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b>が進行中";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} がKickstarterでライブ配信中";
 "Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b>は%{time_ago} 前にライブ配信を行いました";

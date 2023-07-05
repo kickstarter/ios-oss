@@ -370,6 +370,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.goToDashboard
       .observeForControllerAction()
       .observeValues { [weak self] param in
+        guard featureCreatorDashboardEnabled() else {
+          return
+        }
+
         self?.goToDashboard(param: param)
       }
 

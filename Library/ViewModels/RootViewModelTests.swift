@@ -360,62 +360,129 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testSetViewControllers() {
+  func testSetViewControllers_WhenCreatorDashboardEnabled() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
+      ]
     let viewControllerNames = TestObserver<[String], Never>()
-    vm.outputs.setViewControllers.map(extractRootNames)
-      .observe(viewControllerNames.observer)
 
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      vm.outputs.setViewControllers.map(extractRootNames)
+        .observe(viewControllerNames.observer)
 
-    viewControllerNames.assertValues(
-      [
-        ["Discovery", "Activities", "Search", "LoginTout"]
-      ],
-      "Show the logged out tabs."
-    )
+      self.vm.inputs.viewDidLoad()
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-    self.vm.inputs.userSessionStarted()
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"]
+        ],
+        "Show the logged out tabs."
+      )
 
-    viewControllerNames.assertValues(
-      [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
-      ],
-      "Show the logged in tabs."
-    )
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
 
-    AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
-    self.vm.inputs.currentUserUpdated()
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ],
+        "Show the logged in tabs."
+      )
 
-    viewControllerNames.assertValues(
-      [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"]
-      ],
-      "Show the creator dashboard tab."
-    )
+      AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
+      self.vm.inputs.currentUserUpdated()
 
-    AppEnvironment.logout()
-    self.vm.inputs.userSessionEnded()
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"]
+        ],
+        "Show the creator dashboard tab."
+      )
 
-    viewControllerNames.assertValues(
-      [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "LoginTout"]
-      ],
-      "Show the logged out tabs."
-    )
+      AppEnvironment.logout()
+      self.vm.inputs.userSessionEnded()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "LoginTout"]
+        ],
+        "Show the logged out tabs."
+      )
+    }
   }
 
-  func testBackerDashboardFeatureFlagEnabled() {
-    let config = .template
-      |> Config.lens.features .~ ["ios_backer_dashboard": true]
+  func testSetViewControllers_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
+      ]
+    let viewControllerNames = TestObserver<[String], Never>()
 
-    withEnvironment(config: config) {
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      vm.outputs.setViewControllers.map(extractRootNames)
+        .observe(viewControllerNames.observer)
+
+      self.vm.inputs.viewDidLoad()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"]
+        ],
+        "Show the logged out tabs."
+      )
+
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      self.vm.inputs.userSessionStarted()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ],
+        "Show the logged in tabs."
+      )
+
+      AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
+      self.vm.inputs.currentUserUpdated()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ],
+        "Don't show the creator dashboard tab."
+      )
+
+      AppEnvironment.logout()
+      self.vm.inputs.userSessionEnded()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "LoginTout"]
+        ],
+        "Show the logged out tabs."
+      )
+    }
+  }
+
+  func testBackerDashboardShownWithCreatorDashboard_WhenCreatorDashboardFlagEnabled() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
+      ]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       vm.inputs.viewDidLoad()
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
       vm.inputs.userSessionStarted()
@@ -436,6 +503,39 @@ final class RootViewModelTests: TestCase {
           ["Discovery", "Activities", "Search", "LoginTout"],
           ["Discovery", "Activities", "Search", "BackerDashboard"],
           ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"]
+        ],
+        "Show the creator dashboard tab."
+      )
+    }
+  }
+
+  func testBackerDashboardShownWithCreatorDashboard_WhenCreatorDashboardFlagDisabled_NoCreatorDashboard() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
+      ]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      vm.inputs.viewDidLoad()
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      vm.inputs.userSessionStarted()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
+        ],
+        "Show the BackerDashboard instead of Profile."
+      )
+
+      AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
+      vm.inputs.currentUserUpdated()
+
+      viewControllerNames.assertValues(
+        [
+          ["Discovery", "Activities", "Search", "LoginTout"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"],
+          ["Discovery", "Activities", "Search", "BackerDashboard"]
         ],
         "Show the creator dashboard tab."
       )
@@ -567,23 +667,54 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  func testSwitchToDashboardParam() {
-    self.vm.inputs.viewDidLoad()
+  func testSwitchToDashboardParam_WhenCreatorDashboardEnabled() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true
+      ]
 
-    let param = Param.id(1)
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      self.vm.inputs.viewDidLoad()
 
-    AppEnvironment.login(AccessTokenEnvelope(
-      accessToken: "deadbeef", user: .template
-        |> \.stats.memberProjectsCount .~ 1
-    ))
-    self.vm.inputs.userSessionStarted()
+      let param = Param.id(1)
 
-    self.switchDashboardProject.assertValues([])
-    self.vm.inputs.switchToDashboard(project: param)
-    self.switchDashboardProject.assertValues([param])
+      AppEnvironment.login(AccessTokenEnvelope(
+        accessToken: "deadbeef", user: .template
+          |> \.stats.memberProjectsCount .~ 1
+      ))
+      self.vm.inputs.userSessionStarted()
+
+      self.switchDashboardProject.assertValues([])
+      self.vm.inputs.switchToDashboard(project: param)
+
+      self.switchDashboardProject.assertValues([param])
+    }
   }
 
-  func testTabBarItemStyles() {
+  func testSwitchToDashboardParam_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: false
+      ]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      self.vm.inputs.viewDidLoad()
+
+      let param = Param.id(1)
+
+      AppEnvironment.login(AccessTokenEnvelope(
+        accessToken: "deadbeef", user: .template
+          |> \.stats.memberProjectsCount .~ 1
+      ))
+      self.vm.inputs.userSessionStarted()
+
+      self.switchDashboardProject.assertValues([])
+      self.vm.inputs.switchToDashboard(project: param)
+      self.switchDashboardProject.assertValues([])
+    }
+  }
+
+  func testTabBarItemStyles_WhenCreatorDashboardEnabled() {
     let user = User.template |> \.avatar.small .~ "http://image.com/image"
     let creator = User.template
       |> \.stats.memberProjectsCount .~ 1

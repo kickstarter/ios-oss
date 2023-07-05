@@ -13,6 +13,7 @@
 "Add_new_card" = "Kreditkarte hinzufügen";
 "Add_ons" = "Add-ons";
 "Add_ons_unavailable" = "Add-ons nicht verfügbar";
+"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "Nach dem 14. August 2023 ist das Dashboard nur noch auf unserer Website verfügbar.";
 "Alert" = "Hinweis";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -142,6 +143,7 @@
 "Create_password" = "Passwort erstellen";
 "Created_projects_projects_count" = "Erstellte Projekte: %{projects_count}";
 "Creator" = "Projektgründer";
+"Creator_dashboard_removal_warning" = "Nach dem %{expiration_date} sind das Dashboard und die Funktion „Update veröffentlichen“ nur noch auf unserer Website verfügbar.";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> ist jetzt live";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} streamt gerade live auf Kickstarter";
 "Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> war vor %{time_ago} im Live-Stream";
