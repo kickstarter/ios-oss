@@ -225,11 +225,11 @@ internal final class DashboardViewController: UITableViewController {
 
     deprecationWarningHostingController?.removeFromParent()
 
-    let dashboardRemovalWarningView = self.tabBarController?.view.subviews.first(where: { view in
+    let deprecationWarningView = self.tabBarController?.view.subviews.first(where: { view in
       view.viewWithTag(-99) != nil
     })
 
-    dashboardRemovalWarningView?.removeFromSuperview()
+    deprecationWarningView?.removeFromSuperview()
   }
 
   fileprivate func showDeprecationWarning() {
