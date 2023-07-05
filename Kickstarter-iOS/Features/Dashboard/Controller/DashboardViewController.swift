@@ -221,32 +221,33 @@ internal final class DashboardViewController: UITableViewController {
 
     deprecationWarningHostingController?.removeFromParent()
 
-    let dashboardViewControllerView = self.tabBarController?.view.subviews.first(where: { view in
+    let dashboardRemovalWarningView = self.tabBarController?.view.subviews.first(where: { view in
       view.viewWithTag(-99) != nil
     })
 
-    dashboardViewControllerView?.removeFromSuperview()
+    dashboardRemovalWarningView?.removeFromSuperview()
   }
 
   fileprivate func showDeprecationWarning() {
-    let dashboardRemovalWarningHostingController = UIHostingController(rootView: DashboardDeprecationView())
+    let deprecationWarningHostingController = UIHostingController(rootView: DashboardDeprecationView())
 
     guard let tabController = self.tabBarController as? RootTabBarViewController,
-      let dashboardViewControllerView = dashboardRemovalWarningHostingController.view else { return }
-    dashboardViewControllerView.tag = -99
-    tabController.addChild(dashboardRemovalWarningHostingController)
-    tabController.view.addSubview(dashboardViewControllerView)
+      let deprecationWarningView = deprecationWarningHostingController.view else { return }
+    
+    deprecationWarningView.tag = -99
+    tabController.addChild(deprecationWarningHostingController)
+    tabController.view.addSubview(deprecationWarningView)
 
-    dashboardRemovalWarningHostingController.didMove(toParent: tabController)
+    deprecationWarningHostingController.didMove(toParent: tabController)
 
-    dashboardViewControllerView.translatesAutoresizingMaskIntoConstraints = false
+    deprecationWarningView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint
       .activate([
-        dashboardViewControllerView.leftAnchor.constraint(equalTo: tabController.view.leftAnchor),
-        dashboardViewControllerView.rightAnchor
+        deprecationWarningView.leftAnchor.constraint(equalTo: tabController.view.leftAnchor),
+        deprecationWarningView.rightAnchor
           .constraint(equalTo: tabController.view.rightAnchor),
-        dashboardViewControllerView.bottomAnchor.constraint(
+        deprecationWarningView.bottomAnchor.constraint(
           equalTo: tabController.tabBar.safeAreaLayoutGuide.topAnchor)
       ])
   }
