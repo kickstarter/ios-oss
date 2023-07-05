@@ -47,12 +47,13 @@ internal final class DashboardViewController: UITableViewController {
     self.viewModel.inputs.viewWillAppear(animated: animated)
 
     self.showDeprecationWarning()
-    
+
     /// Makes sure that the deprecation warning doesn't cover any table view content
     if let tabController = self.tabBarController as? RootTabBarViewController,
       let deprecationWarningHostingController = deprecationWarningHostingController() {
       self.tableView.contentInset
-        .bottom = (tabController.tabBar.bounds.height + deprecationWarningHostingController.view.bounds.height)
+        .bottom = (tabController.tabBar.bounds.height + deprecationWarningHostingController.view.bounds
+          .height)
     }
   }
 
@@ -233,7 +234,7 @@ internal final class DashboardViewController: UITableViewController {
 
     guard let tabController = self.tabBarController as? RootTabBarViewController,
       let deprecationWarningView = deprecationWarningHostingController.view else { return }
-    
+
     deprecationWarningView.tag = -99
     tabController.addChild(deprecationWarningHostingController)
     tabController.view.addSubview(deprecationWarningView)
