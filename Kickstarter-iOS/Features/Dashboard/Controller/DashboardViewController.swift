@@ -47,6 +47,13 @@ internal final class DashboardViewController: UITableViewController {
     self.viewModel.inputs.viewWillAppear(animated: animated)
 
     self.showDeprecationWarning()
+    
+    /// Makes sure that the deprecation warning doesn't cover any table view content
+    if let tabController = self.tabBarController as? RootTabBarViewController,
+      let deprecationWarningHostingController = deprecationWarningHostingController() {
+      self.tableView.contentInset
+        .bottom = (tabController.tabBar.bounds.height + deprecationWarningHostingController.view.bounds.height)
+    }
   }
 
   override func bindStyles() {
@@ -203,12 +210,16 @@ internal final class DashboardViewController: UITableViewController {
     }
   }
 
-  fileprivate func removeDeprecationWarning() {
-    let dashboardViewController = self.tabBarController?.children.first { viewController in
+  fileprivate func deprecationWarningHostingController() -> UIViewController? {
+    return self.tabBarController?.children.first { viewController in
       viewController is UIHostingController<DashboardDeprecationView>
     }
+  }
 
-    dashboardViewController?.removeFromParent()
+  fileprivate func removeDeprecationWarning() {
+    let deprecationWarningHostingController = deprecationWarningHostingController()
+
+    deprecationWarningHostingController?.removeFromParent()
 
     let dashboardViewControllerView = self.tabBarController?.view.subviews.first(where: { view in
       view.viewWithTag(-99) != nil
