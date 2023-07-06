@@ -11,7 +11,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
 
-  private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToAddStripeCardIntent = TestObserver<PaymentSheetSetupData, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<PaymentSourceSelected, Never>()
@@ -868,12 +867,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-      self.goToAddCardIntent.assertDidNotEmitValue()
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
     }
   }
@@ -896,12 +893,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-      self.goToAddCardIntent.assertDidNotEmitValue()
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
     }
   }
@@ -924,12 +919,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-      self.goToAddCardIntent.assertDidNotEmitValue()
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
     }
   }
@@ -953,12 +946,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-      self.goToAddCardIntent.assertDidNotEmitValue()
       self.goToAddStripeCardIntent.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
     }
   }
@@ -985,7 +976,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      XCTAssertEqual(self.goToAddCardIntent.values.count, 0)
       XCTAssertEqual(self.goToAddStripeCardIntent.values.count, 1)
     }
   }
