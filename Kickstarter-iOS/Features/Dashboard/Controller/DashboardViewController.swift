@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
+import SwiftUI
 import UIKit
 
 internal final class DashboardViewController: UITableViewController {
@@ -13,6 +14,12 @@ internal final class DashboardViewController: UITableViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   fileprivate let backgroundView = UIView()
+
+  private var deprecationWarningHostingController: UIViewController? {
+    self.tabBarController?.children.first { viewController in
+      viewController is UIHostingController<DashboardDeprecationView>
+    }
+  }
 
   internal static func instantiate() -> DashboardViewController {
     return Storyboard.Dashboard.instantiate(DashboardViewController.self)
@@ -44,6 +51,14 @@ internal final class DashboardViewController: UITableViewController {
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear(animated: animated)
+
+    self.showDeprecationWarning()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.updateTableViewBottomContentInset()
   }
 
   override func bindStyles() {
@@ -61,6 +76,8 @@ internal final class DashboardViewController: UITableViewController {
     super.viewWillDisappear(animated)
 
     self.viewModel.inputs.viewWillDisappear()
+
+    self.removeDeprecationWarning()
   }
 
   internal override func bindViewModel() {
@@ -196,6 +213,48 @@ internal final class DashboardViewController: UITableViewController {
     } else if let rewardsCell = cell as? DashboardRewardsCell {
       rewardsCell.delegate = self
     }
+  }
+
+  private func updateTableViewBottomContentInset() {
+    if let deprecationWarningHostingController = deprecationWarningHostingController {
+      self.tableView.contentInset
+        .bottom = deprecationWarningHostingController.view.bounds
+        .height
+    }
+  }
+
+  private func removeDeprecationWarning() {
+    self.deprecationWarningHostingController?.removeFromParent()
+
+    let deprecationWarningView = self.tabBarController?.view.subviews.first(where: { view in
+      view.viewWithTag(-99) != nil
+    })
+
+    deprecationWarningView?.removeFromSuperview()
+  }
+
+  private func showDeprecationWarning() {
+    let deprecationWarningHostingController = UIHostingController(rootView: DashboardDeprecationView())
+
+    guard let tabController = self.tabBarController as? RootTabBarViewController,
+      let deprecationWarningView = deprecationWarningHostingController.view else { return }
+
+    deprecationWarningView.tag = -99
+    tabController.addChild(deprecationWarningHostingController)
+    tabController.view.addSubview(deprecationWarningView)
+
+    deprecationWarningHostingController.didMove(toParent: tabController)
+
+    deprecationWarningView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint
+      .activate([
+        deprecationWarningView.leftAnchor.constraint(equalTo: tabController.view.leftAnchor),
+        deprecationWarningView.rightAnchor
+          .constraint(equalTo: tabController.view.rightAnchor),
+        deprecationWarningView.bottomAnchor.constraint(
+          equalTo: tabController.tabBar.safeAreaLayoutGuide.topAnchor)
+      ])
   }
 
   fileprivate func goToActivity(_ project: Project) {
