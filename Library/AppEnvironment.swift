@@ -60,6 +60,15 @@ public struct AppEnvironment: AppEnvironmentType {
       advertisingIdentifier: advertisingIdentifer
     )
   }
+//
+//  public static func updatePerimeterXClient(_ client: PerimeterXClientType) {
+//    let service = AppEnvironment.current.apiService
+//    service.perimeterXClient = client
+//
+//    self.replaceCurrentEnvironment(
+//      apiService: service
+//    )
+//  }
 
   public static func updateDebugData(_ debugData: DebugData) {
     self.replaceCurrentEnvironment(
@@ -218,7 +227,7 @@ public struct AppEnvironment: AppEnvironmentType {
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
-    advertisingIdentifier: String? = nil,
+    advertisingIdentifier: String? = AppEnvironment.current.advertisingIdentifier,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,

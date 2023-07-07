@@ -1,83 +1,93 @@
 import Foundation
-import PerimeterX
+import PerimeterX_SDK
 
 public class PerimeterXClient: NSObject, PerimeterXClientType {
   let dateType: ApiDateProtocol.Type
-  let manager: PerimeterXManagerType
-
+ // private var policy = PXPolicy()
   /**
    Custom `HTTPCookie` adding Perimeter X protection to native webviews.
    */
   public lazy var cookie: HTTPCookie? = {
     HTTPCookie(properties: [
-      .domain: "www.perimeterx.com", // Change according to the domain the webview will use
+      // Change this AppEnvironment's current apiURL
+      .domain: "https://api.kickstarter.com", // Change according to the domain the webview will use
       .path: "/",
       .name: "_pxmvid",
-      .value: self.manager.getVid() as Any,
+      .value: PerimeterX.vid() as Any,
       .expires: self.dateType.init(timeIntervalSinceNow: 3_600).date
     ])
   }()
 
+//  public lazy var vid: String? = {
+//    PerimeterX.vid()
+//  }()
+//
+  public func getPXHeaders() -> [String: String] {
+    //let headers = PerimeterX.headersForURLRequest() ?? [:]
+    //print("PX Headers - \(headers)")
+    
+    return [:]
+  }
+  
   public init(
-    manager: PerimeterXManagerType = PXManager.sharedInstance(),
     dateType: ApiDateProtocol.Type = Date.self
   ) {
-    self.manager = manager
     self.dateType = dateType
 
     super.init()
-
-    /// When this isn't a mock we'll set the delegate and have debug logging in the console.
-    (self.manager as? PXManager)?.delegate = self
   }
 
-  public func start() {
-    self.manager.start(Secrets.PerimeterX.appId)
+  public func start(policyDomains: Set<String>) {
+    let policy = PXPolicy()
+    //policy.doctorCheckEnabled = true
+    //policy.urlRequestInterceptionType = .none
+    policy.set(domains: policyDomains, forAppId: Secrets.PerimeterX.appId)
+    //PXPolicy.requestsInterceptedAutomaticallyEnabled = false
+
+    try? PerimeterX.start(appId: Secrets.PerimeterX.appId, delegate: nil, policy: policy)
+    
+   // let setPolicy = {
+
+      //policy.requestsInterceptedAutomaticallyEnabled = false
+//      PerimeterX.setPolicy(policy: policy) {
+//        print("❎ Perimeter X policy setup complete.")
+//      }
+    // }
+//    let policy = PXPolicy()
+//    //policy.doctorCheckEnabled = true
+//    //policy.urlRequestInterceptionType = .none
+//    policy.set(domains: policyDomains, forAppId: Secrets.PerimeterX.appId)
+//    //PXPolicy.requestsInterceptedAutomaticallyEnabled = false
+//
+//    do {
+//      try PerimeterX.start(appId: Secrets.PerimeterX.appId, delegate: self, policy: policy)
+//    } catch {
+//        print("failed to start \(error)")
+//    }
+//    { status, error in
+//      switch error {
+//      case let .some(errorValue):
+//        print("❎ Perimeter X start error \(errorValue)")
+//      default:
+//        print("❎ Has Perimeter X started? \(status)")
+//
+////        if status {
+////          setPolicy()
+////        }
+//      }
+//    }
   }
-
-  public func handleError(response: HTTPURLResponse, and data: Data) -> Bool {
-    /// We have a `403` statusCode.
-    guard response.statusCode == 403 else { return false }
-
-    guard
-      /// We have `JSON`.
-      let jsonData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-      /// We have a `PXBlockResponse`.
-      let response: PerimeterXBlockResponseType = self.manager.checkError(jsonData),
-      /// The response's `PXBlockType` is `Block` or `Captcha`.
-      [.Block, .Captcha].contains(response.type)
-    else { return false }
-
-    DispatchQueue.main.async {
-      NotificationCenter.default.post(
-        name: Notification.Name.ksr_perimeterXCaptcha,
-        object: nil,
-        userInfo: ["response": response]
-      )
+  
+  public func handleResponse(data: Data, response: URLResponse) -> Bool {
+    PerimeterX.handleResponse(response: response, data: data) { result in
+      switch result {
+      case .cancelled:
+        print("cancelled")
+      case .solved:
+        print("solved")
+      @unknown default:
+        fatalError()
+      }
     }
-
-    return true
-  }
-
-  public func headers() -> [String: String] {
-    return (self.manager.httpHeaders() as? [String: String]) ?? [:]
-  }
-
-  public func handle(
-    _ blockResponse: PXBlockResponse!,
-    with presentingViewController: UIViewController!,
-    captchaSuccess successBlock: PXCompletionBlock!
-  ) {
-    self.manager.handle(blockResponse, with: presentingViewController, captchaSuccess: successBlock)
-  }
-}
-
-extension PerimeterXClient: PXManagerDelegate {
-  public func managerReady(_ httpHeaders: [AnyHashable: Any]!) {
-    print("❎ Perimeter X headers ready: \(String(describing: httpHeaders))")
-  }
-
-  public func newHeaders(_ httpHeaders: [AnyHashable: Any]!) {
-    print("❎ Perimeter X headers were refreshed: \(String(describing: httpHeaders))")
   }
 }

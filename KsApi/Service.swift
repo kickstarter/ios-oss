@@ -1,9 +1,10 @@
 import Apollo
 import Foundation
-import PerimeterX
+import PerimeterX_SDK
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import UIKit
 
 public extension Bundle {
   var _buildVersion: String {
@@ -50,14 +51,11 @@ public struct Service: ServiceType {
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
 
-    // Initialize PerimeterX
-    perimeterXClient.start()
-
     // Configure GraphQL Client
     GraphQL.shared.configure(
       with: serverConfig.graphQLEndpointUrl,
       headers: self.defaultHeaders,
-      additionalHeaders: { perimeterXClient.headers() }
+      additionalHeaders: { [:] }
     )
   }
 

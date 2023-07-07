@@ -131,7 +131,7 @@ private let backingPushData: [String: Any] = [
     "category": "backing",
     "id": 1,
     "project_id": 1_929_840_910
-  ]
+  ] as [String : Any]
 ]
 
 private let updatePushData: [String: Any] = [
@@ -143,7 +143,7 @@ private let updatePushData: [String: Any] = [
     "id": 1,
     "project_id": 1_929_840_910,
     "update_id": 190_349
-  ]
+  ] as [String : Any]
 ]
 
 private let successPushData: [String: Any] = [
@@ -154,7 +154,7 @@ private let successPushData: [String: Any] = [
     "category": "success",
     "id": 1,
     "project_id": 1_929_840_910
-  ]
+  ] as [String : Any]
 ]
 
 private let failurePushData: [String: Any] = [
@@ -165,7 +165,7 @@ private let failurePushData: [String: Any] = [
     "category": "failure",
     "id": 1,
     "project_id": 1_929_840_910
-  ]
+  ] as [String : Any]
 ]
 
 private let cancellationPushData: [String: Any] = [
@@ -176,7 +176,7 @@ private let cancellationPushData: [String: Any] = [
     "category": "cancellation",
     "id": 1,
     "project_id": 1_929_840_910
-  ]
+  ] as [String : Any]
 ]
 
 private let followPushData: [String: Any] = [
@@ -186,7 +186,7 @@ private let followPushData: [String: Any] = [
   "activity": [
     "category": "follow",
     "id": 1
-  ]
+  ] as [String : Any]
 ]
 
 private let messagePushData: [String: Any] = [
@@ -216,7 +216,7 @@ private let reminderPushData: [String: Any] = [
   "project": [
     "photo": "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=160&h=90&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=fc738d87d861a96333e9f93bee680c27",
     "id": 820_501_933
-  ]
+  ] as [String : Any]
 ]
 
 private let backingForCreatorPushData: [String: Any] = [
@@ -227,7 +227,7 @@ private let backingForCreatorPushData: [String: Any] = [
     "category": "backing",
     "id": 1,
     "project_id": 820_501_933
-  ],
+  ] as [String : Any],
   "for_creator": true
 ]
 
@@ -250,7 +250,7 @@ private let failureForCreatorPushData: [String: Any] = [
     "category": "failure",
     "id": 1,
     "project_id": 820_501_933
-  ],
+  ] as [String : Any],
   "for_creator": true
 ]
 
@@ -262,7 +262,7 @@ private let successForCreatorPushData: [String: Any] = [
     "category": "success",
     "id": 1,
     "project_id": 820_501_933
-  ],
+  ] as [String : Any],
   "for_creator": true
 ]
 
@@ -274,7 +274,7 @@ private let cancellationForCreatorPushData: [String: Any] = [
     "category": "cancellation",
     "id": 1,
     "project_id": 820_501_933
-  ],
+  ] as [String : Any],
   "for_creator": true
 ]
 
@@ -286,7 +286,7 @@ private let projectCommentForCreatorPushData: [String: Any] = [
     "category": "comment-project",
     "id": 1,
     "project_id": 820_501_933
-  ],
+  ] as [String : Any],
   "for_creator": true
 ]
 
@@ -299,7 +299,7 @@ private let updateCommentForCreatorPushData: [String: Any] = [
     "id": 1,
     "project_id": 820_501_933,
     "update_id": 1_731_094
-  ],
+  ] as [String : Any],
   "for_creator": true
 ]
 

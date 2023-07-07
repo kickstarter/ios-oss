@@ -22,6 +22,11 @@ extension ApolloClient: ApolloClientType {
           guard let data = response.data else {
             return observer.send(error: .couldNotParseJSON)
           }
+//          self?.handleResponse(data: data, response: response)
+//          /// `error` is `nil` or `handleError` returns `false`.
+//          guard [nil, false].contains(false) else {
+//            return observer.send(error: .captchaError)
+//          }
 
           observer.send(value: data)
           observer.sendCompleted()
@@ -48,11 +53,17 @@ extension ApolloClient: ApolloClientType {
         switch result {
         case let .success(response):
           if let error = response.errors?.first?.errorDescription {
-            return observer.send(error: .graphError(error))
+            return observer.send(error: ErrorEnvelope.graphError(error))
           }
           guard let data = response.data else {
-            return observer.send(error: .couldNotParseJSON)
+            return observer.send(error: ErrorEnvelope.couldNotParseJSON)
           }
+          
+          /// `error` is `nil` or `handleError` returns `false`.
+//          guard let convertedMutationData = try? JSONSerialization.data(withJSONObject: response.data?.jsonObject, options: .fragmentsAllowed), [nil, false].contains(self?.handleResponse(data: convertedMutationData, response: response.data.underlying.)) else {
+//            return observer.send(error: ErrorEnvelope.captchaError)
+//          }
+          
           observer.send(value: data)
           observer.sendCompleted()
         case let .failure(error):

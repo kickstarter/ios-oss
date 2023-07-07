@@ -476,44 +476,14 @@ extension ServiceType {
     return self.preparedRequest(forRequest: request, queryString: queryString)
   }
 
-  /**
-     Prepares a URL request to be sent to the server.
-     - parameter originalRequest: The request that should be prepared
-     - parameter queryString: The GraphQL mutation string description
-     - parameter input: The input for the mutation
-
-     - returns: A new URL request that is properly configured for the server
-   **/
-  public func preparedGraphRequest(
-    forURL url: URL,
-    queryString: String,
-    input: [String: Any]
-  ) throws -> URLRequest {
-    var request = URLRequest(url: url)
-    request.httpMethod = Method.POST.rawValue
-
-    guard let URL = request.url else {
-      return request
-    }
-
-    let requestBody = self.graphMutationRequestBody(mutation: queryString, input: input)
-    let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
-
-    request.httpBody = jsonData
-
-    var headers = self.defaultHeaders
-    headers["Content-Type"] = "application/json; charset=utf-8"
-
-    let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
-    request.url = components.url
-    request.allHTTPHeaderFields = headers
-
-    return request
-  }
-
   public func isPrepared(request: URLRequest) -> Bool {
     return request.value(forHTTPHeaderField: "Authorization") == self.authorizationHeader
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
+  }
+  
+  // PerimeterX authorization header
+  internal var pxHeaders: [String: String] {
+    return self.perimeterXClient.getPXHeaders()
   }
 
   internal var defaultHeaders: [String: String] {
@@ -525,20 +495,8 @@ extension ServiceType {
     headers["User-Agent"] = Self.userAgent
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
     headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
-
-    return headers.withAllValuesFrom(self.pxHeaders)
-  }
-
-  // PerimeterX authorization header
-  internal var pxHeaders: [String: String] {
-    return self.perimeterXClient.headers()
-  }
-
-  func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {
-    return [
-      "query": mutation,
-      "variables": ["input": input]
-    ]
+    
+    return headers
   }
 
   public static var userAgent: String {

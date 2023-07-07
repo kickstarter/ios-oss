@@ -33,9 +33,9 @@ internal extension URLSession {
       .flatMapError { _ in SignalProducer(error: .couldNotParseErrorEnvelopeJSON) } // NSError
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
-
-        /// `error` is `nil` or `handleError` returns `false`.
-        guard [nil, false].contains(error?.handleError(response: response, and: data)) else { return .empty }
+        
+        // `error` is `nil` or `handleError` returns `false`.
+        guard [nil, false].contains(error?.handleResponse(data: data, response: response)) else { return .empty }
 
         guard self.isValidResponse(response: response) else {
           if let json = parseJSONData(data) as? [String: Any] {

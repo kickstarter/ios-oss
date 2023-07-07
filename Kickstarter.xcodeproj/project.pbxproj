@@ -229,7 +229,9 @@
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
-		191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 191EDC6628E29BB9009B41B2 /* PerimeterX */; };
+		192036922A38DBE20089C7E4 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 192036912A38DBE20089C7E4 /* PerimeterX_SDK */; };
+		192036942A38DBF20089C7E4 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 192036932A38DBF20089C7E4 /* PerimeterX_SDK */; };
+		192036962A38DC050089C7E4 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 192036952A38DC050089C7E4 /* PerimeterX_SDK */; };
 		1923770A28DA2AE300F68635 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
 		19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 19338D9A2A0D4E2300075F29 /* Stripe */; };
 		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
@@ -250,8 +252,6 @@
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
 		19821C85299D392400EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C84299D392400EF312F /* AppboySegment */; };
 		19821C87299D3E8300EF312F /* AppboySegment in Frameworks */ = {isa = PBXBuildFile; productRef = 19821C86299D3E8300EF312F /* AppboySegment */; };
-		198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574A28E2705100D5B8A9 /* PerimeterX */; };
-		198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 198E574C28E2705E00D5B8A9 /* PerimeterX */; };
 		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
 		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
 		19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 19A6665E2A045F2A00708F8B /* FirebaseRemoteConfig */; };
@@ -263,6 +263,7 @@
 		19A97D1A28C7F0EC0031B857 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
 		19A97D2328C7FCF00031B857 /* ManagePledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */; };
 		19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */; };
+		19CBCEBB2A3A1DD700751694 /* ApolloClient+ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19CBCEBA2A3A1DD700751694 /* ApolloClient+ErrorHandler.swift */; };
 		19D988482979CA4E00A5EE61 /* BrazePushEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */; };
 		19E9F01729C0F9A20002AD69 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */; };
@@ -789,7 +790,6 @@
 		8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */; };
 		8ACF36D1262745520026E74D /* MockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587761EEB2ED6006E7684 /* MockService.swift */; };
 		8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F66022627300900A28E74 /* ApiDateProtocol.swift */; };
-		8ACF36EA2627486D0026E74D /* KsApiNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF36E92627486D0026E74D /* KsApiNotification.swift */; };
 		8ACF36F7262763960026E74D /* MockPerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65EA262660DB00A28E74 /* MockPerimeterXTypes.swift */; };
 		8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558823E8D467001654A2 /* TryDecodable.swift */; };
 		8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */; };
@@ -1834,6 +1834,7 @@
 		19A666602A0472A500708F8B /* RemoteConfligClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfligClient.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
 		19C8E56829A9249D007C3504 /* TextInputFieldModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputFieldModifiers.swift; sourceTree = "<group>"; };
+		19CBCEBA2A3A1DD700751694 /* ApolloClient+ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+ErrorHandler.swift"; sourceTree = "<group>"; };
 		19D988472979CA4E00A5EE61 /* BrazePushEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazePushEnvelope.swift; sourceTree = "<group>"; };
 		19F0940028B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCellViewModel.swift; sourceTree = "<group>"; };
 		19F91B0D289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentSheetPaymentMethodCell.swift; sourceTree = "<group>"; };
@@ -2369,7 +2370,6 @@
 		8AC3E135269F781200168BF8 /* ErrorEnvelope+LocalizedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorEnvelope+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
 		8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSource.swift; sourceTree = "<group>"; };
-		8ACF36E92627486D0026E74D /* KsApiNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KsApiNotification.swift; sourceTree = "<group>"; };
 		8ACF558823E8D467001654A2 /* TryDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodable.swift; sourceTree = "<group>"; };
 		8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeDataSourceTests.swift; sourceTree = "<group>"; };
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
@@ -3168,13 +3168,13 @@
 				6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
-				198E574B28E2705100D5B8A9 /* PerimeterX in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
 				606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */,
+				192036942A38DBF20089C7E4 /* PerimeterX_SDK in Frameworks */,
 				606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3201,11 +3201,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				192036922A38DBE20089C7E4 /* PerimeterX_SDK in Frameworks */,
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				19821C85299D392400EF312F /* AppboySegment in Frameworks */,
-				191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3225,12 +3225,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
+				192036962A38DC050089C7E4 /* PerimeterX_SDK in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
 				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
 				1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
-				198E574D28E2705E00D5B8A9 /* PerimeterX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6817,6 +6817,7 @@
 				06FE2D7326CD844E00A4C0F4 /* ApolloClientType.swift */,
 				8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */,
 				8ADCCD852655CA680079D308 /* ApolloClient+Singleton.swift */,
+				19CBCEBA2A3A1DD700751694 /* ApolloClient+ErrorHandler.swift */,
 				8ADCCD802655CA290079D308 /* ApolloInterceptors.swift */,
 				8ADCCD902655D4030079D308 /* ApolloInterceptorsTests.swift */,
 				8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */,
@@ -6838,7 +6839,6 @@
 				D01587711EEB2ED6006E7684 /* EncodableTests.swift */,
 				D01587721EEB2ED6006E7684 /* EncodableType.swift */,
 				7703B42123217D4F00169EF3 /* EnvironmentType.swift */,
-				8ACF36E92627486D0026E74D /* KsApiNotification.swift */,
 				D01587731EEB2ED6006E7684 /* Method.swift */,
 				D01587741EEB2ED6006E7684 /* MimeType.swift */,
 				D01587751EEB2ED6006E7684 /* Route.swift */,
@@ -7175,13 +7175,13 @@
 				60DA510E28C7E04B002E2DF1 /* Kingfisher */,
 				606754BC28CF91D60033CD5E /* FacebookCore */,
 				606754BE28CF91DD0033CD5E /* FacebookLogin */,
-				198E574A28E2705100D5B8A9 /* PerimeterX */,
 				19821C86299D3E8300EF312F /* AppboySegment */,
 				6078106A2A0419130050D4F7 /* FirebaseCrashlytics */,
 				6078106C2A0419170050D4F7 /* FirebasePerformance */,
 				6078106E2A04191C0050D4F7 /* FirebaseAnalytics */,
 				19A6665E2A045F2A00708F8B /* FirebaseRemoteConfig */,
 				19338D9A2A0D4E2300075F29 /* Stripe */,
+				192036932A38DBF20089C7E4 /* PerimeterX_SDK */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -7251,8 +7251,8 @@
 			packageProductDependencies = (
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
-				191EDC6628E29BB9009B41B2 /* PerimeterX */,
 				19821C84299D392400EF312F /* AppboySegment */,
+				192036912A38DBE20089C7E4 /* PerimeterX_SDK */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7302,8 +7302,8 @@
 				06634FC12807A4C300950F60 /* ApolloUtils */,
 				06634FC42807A4EB00950F60 /* Prelude */,
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
-				198E574C28E2705E00D5B8A9 /* PerimeterX */,
 				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
+				192036952A38DC050089C7E4 /* PerimeterX_SDK */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -8868,6 +8868,7 @@
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				06FE2D7426CD844E00A4C0F4 /* ApolloClientType.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
+				19CBCEBB2A3A1DD700751694 /* ApolloClient+ErrorHandler.swift in Sources */,
 				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				47D7D09826C2ECB300D2BAB5 /* GraphAPI.SignInWithAppleInput+SignInWithAppleInput.swift in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
@@ -8911,7 +8912,6 @@
 				D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */,
 				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
-				8ACF36EA2627486D0026E74D /* KsApiNotification.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
 				8ADCCCA6264C97940079D308 /* CommentsEnvelope.swift in Sources */,
 				D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */,
@@ -9574,8 +9574,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Release.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				ENABLE_MODULE_VERIFIER = NO;
@@ -9591,7 +9591,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				VALIDATE_WORKSPACE = NO;
 			};
@@ -10424,7 +10424,7 @@
 			repositoryURL = "https://github.com/PerimeterX/px-iOS-Framework";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.13.9;
+				minimumVersion = 3.0.3;
 			};
 		};
 		606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
@@ -10513,10 +10513,20 @@
 			package = 194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */;
 			productName = "ReactiveExtensions-TestHelpers";
 		};
-		191EDC6628E29BB9009B41B2 /* PerimeterX */ = {
+		192036912A38DBE20089C7E4 /* PerimeterX_SDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX;
+			productName = PerimeterX_SDK;
+		};
+		192036932A38DBF20089C7E4 /* PerimeterX_SDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
+			productName = PerimeterX_SDK;
+		};
+		192036952A38DC050089C7E4 /* PerimeterX_SDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
+			productName = PerimeterX_SDK;
 		};
 		19338D9A2A0D4E2300075F29 /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -10532,16 +10542,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */;
 			productName = AppboySegment;
-		};
-		198E574A28E2705100D5B8A9 /* PerimeterX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX;
-		};
-		198E574C28E2705E00D5B8A9 /* PerimeterX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX;
 		};
 		1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;

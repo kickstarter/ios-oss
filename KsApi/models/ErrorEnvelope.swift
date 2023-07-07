@@ -47,6 +47,7 @@ public struct ErrorEnvelope {
     case DecodingJSONFailed = "decoding_json_failed"
     case InvalidPaginationUrl = "invalid_pagination_url"
     case GraphQLError = "graphql_error"
+//    case CaptchaError = "captcha_error"
   }
 
   public struct AltErrorMessage {
@@ -79,6 +80,18 @@ public struct ErrorEnvelope {
     facebookUser: nil,
     graphError: nil
   )
+//
+//  /**
+//   A general error that the error handler flagged this request for Catpcha.
+//   */
+//  internal static let captchaError = ErrorEnvelope(
+//    errorMessages: [],
+//    ksrCode: .CaptchaError,
+//    httpCode: 204,
+//    exception: nil,
+//    facebookUser: nil,
+//    graphError: nil
+//  )
 
   /**
    A general error that the error envelope JSON could not be parsed.
