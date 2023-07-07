@@ -118,12 +118,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
       }
 
-    self.viewModel.outputs.goToAddCardScreen
-      .observeForUI()
-      .observeValues { [weak self] intent, project in
-        self?.goToAddNewCard(intent: intent, project: project)
-      }
-
     self.viewModel.outputs.goToAddCardViaStripeScreen
       .observeForUI()
       .observeValues { [weak self] data in
@@ -148,15 +142,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Functions
-
-  private func goToAddNewCard(intent: AddNewCardIntent, project: Project) {
-    let addNewCardViewController = AddNewCardViewController.instantiate()
-      |> \.delegate .~ self
-    addNewCardViewController.configure(with: intent, project: project)
-    let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
-
-    self.present(navigationController, animated: true)
-  }
 
   private func goToPaymentSheet(data: PaymentSheetSetupData) {
     PaymentSheet.FlowController
@@ -223,24 +208,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
     if self.dataSource.numberOfItems(in: PaymentMethodsTableViewSection.addNewCard.rawValue) > 0 {
       self.tableView.reloadSections([PaymentMethodsTableViewSection.addNewCard.rawValue], with: .none)
     }
-  }
-}
-
-// MARK: - AddNewCardViewControllerDelegate
-
-extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
-  func addNewCardViewController(
-    _: AddNewCardViewController,
-    didAdd newCard: UserCreditCards.CreditCard,
-    withMessage _: String
-  ) {
-    self.dismiss(animated: true) {
-      self.viewModel.inputs.addNewCardViewControllerDidAdd(newCard: newCard)
-    }
-  }
-
-  func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
-    self.dismiss(animated: true)
   }
 }
 
