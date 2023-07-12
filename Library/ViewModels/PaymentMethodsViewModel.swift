@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Stripe
+import StripePaymentSheet
 
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
@@ -11,7 +11,7 @@ public protocol PaymentMethodsViewModelInputs {
   func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
-  func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
+  func paymentSheetDidAdd(newCard card: PaymentSheetPaymentOptionsDisplayData,
                           setupIntent: String)
   func shouldCancelPaymentSheetAppearance(state: Bool)
   func viewDidLoad()
@@ -260,9 +260,9 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   }
 
   private let newSetupIntentCreditCardProperty =
-    MutableProperty<(PaymentSheet.FlowController.PaymentOptionDisplayData, String)?>(nil)
+    MutableProperty<(PaymentSheetPaymentOptionsDisplayData, String)?>(nil)
   public func paymentSheetDidAdd(
-    newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
+    newCard card: PaymentSheetPaymentOptionsDisplayData,
     setupIntent: String
   ) {
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)

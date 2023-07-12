@@ -2,7 +2,7 @@ import KsApi
 import Library
 import PassKit
 import Prelude
-import Stripe
+import StripePaymentSheet
 import UIKit
 
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
@@ -205,8 +205,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       switch paymentResult {
       case .completed:
+        let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
+          image: existingPaymentOption.image,
+          label: existingPaymentOption.label
+        )
         strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
+          .paymentSheetDidAdd(newCard: paymentDisplayData, setupIntent: clientSecret)
       case .canceled:
         strongSelf.messageDisplayingDelegate?
           .pledgeViewController(strongSelf, didErrorWith: Strings.general_error_something_wrong())

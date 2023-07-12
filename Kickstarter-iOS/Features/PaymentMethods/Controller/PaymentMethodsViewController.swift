@@ -1,7 +1,7 @@
 import KsApi
 import Library
 import Prelude
-import Stripe
+import StripePaymentSheet
 import UIKit
 
 protocol PaymentMethodsViewControllerDelegate: AnyObject {
@@ -219,8 +219,12 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
       switch paymentResult {
       case .completed:
+        let paymentDisplayData = PaymentSheetPaymentOptionsDisplayData(
+          image: existingPaymentOption.image,
+          label: existingPaymentOption.label
+        )
         strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: existingPaymentOption, setupIntent: clientSecret)
+          .paymentSheetDidAdd(newCard: paymentDisplayData, setupIntent: clientSecret)
       case .canceled:
         strongSelf.messageBannerViewController?
           .showBanner(with: .error, message: Strings.general_error_something_wrong())

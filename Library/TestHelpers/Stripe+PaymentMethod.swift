@@ -1,4 +1,6 @@
+@testable import Library
 @testable import Stripe
+@testable import StripePaymentSheet
 
 extension STPPaymentMethod {
   static let visaStripePaymentMethod = STPPaymentMethod.decodedObject(fromAPIResponse: [
@@ -23,8 +25,13 @@ extension STPPaymentMethod {
     PaymentSheet.PaymentOption.saved(paymentMethod: paymentMethod)
   }
 
-  static let samplePaymentOptionsDisplayData: (PaymentSheet.PaymentOption) -> PaymentSheet.FlowController
-    .PaymentOptionDisplayData = { paymentOption in
-      PaymentSheet.FlowController.PaymentOptionDisplayData(paymentOption: paymentOption)
+  static let samplePaymentOptionsDisplayData: (PaymentSheet.PaymentOption)
+    -> PaymentSheetPaymentOptionsDisplayData = { paymentOption in
+      switch paymentOption {
+      case let .saved(paymentMethod):
+        return PaymentSheetPaymentOptionsDisplayData(image: .add, label: "••••1234")
+      case .applePay, .new, .link:
+        return PaymentSheetPaymentOptionsDisplayData(image: .add, label: "Unknown")
+      }
     }
 }
