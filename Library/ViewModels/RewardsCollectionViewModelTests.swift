@@ -834,7 +834,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.scrollToBackedRewardIndexPath.assertValue(indexPath)
   }
 
-  func testTrackingRewardsViewed_Properties() {
+  func testTrackingRewardsViewed_Properties_AdvertisingConsentAllowed_EventsTracked() {
     let rewards = [
       .template
         |> Reward.lens.id .~ 1,
@@ -855,6 +855,28 @@ final class RewardsCollectionViewModelTests: TestCase {
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
     XCTAssertEqual(["activity"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["rewards"], self.segmentTrackingClient.properties(forKey: "context_page"))
+  }
+
+  func testTrackingRewardsViewed_Properties_AdvertisingConsentNotAllowed_NoEventsTracked() {
+    let rewards = [
+      .template
+        |> Reward.lens.id .~ 1,
+      .template
+        |> Reward.lens.id .~ 2,
+      .template
+        |> Reward.lens.id .~ 3,
+      .template
+        |> Reward.lens.id .~ 4
+    ]
+
+    let project = Project.template
+      |> \.rewardData.rewards .~ rewards
+
+    (self.appTrackingTransparency as? MockAppTrackingTransparency)?.shouldRequestAuthStatus = false
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testTrackingRewardClicked_Properties() {

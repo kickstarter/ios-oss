@@ -14,7 +14,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
   private let editButtonTitle = TestObserver<String, Never>()
   private let errorLoadingPaymentMethodsOrSetupIntent = TestObserver<String, Never>()
-  private let goToAddCardScreenWithIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToPaymentSheet = TestObserver<PaymentSheetSetupData, Never>()
   private let paymentMethods = TestObserver<[UserCreditCards.CreditCard], Never>()
   private let presentBanner = TestObserver<String, Never>()
@@ -31,7 +30,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
     self.vm.outputs.errorLoadingPaymentMethodsOrSetupIntent
       .observe(self.errorLoadingPaymentMethodsOrSetupIntent.observer)
-    self.vm.outputs.goToAddCardScreenWithIntent.observe(self.goToAddCardScreenWithIntent.observer)
     self.vm.outputs.goToPaymentSheet.observe(self.goToPaymentSheet.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
@@ -161,21 +159,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testPaymentMethodsFetch_OnAddNewCardDismissed() {
-    let response = UserEnvelope<GraphUser>(me: userTemplate)
-    let apiService = MockService(fetchGraphUserResult: .success(response))
-
-    withEnvironment(apiService: apiService) {
-      self.paymentMethods.assertValues([])
-
-      self.vm.inputs.addNewCardDismissed()
-
-      self.scheduler.advance()
-
-      self.paymentMethods.assertValues([UserCreditCards.template.storedCards])
-    }
-  }
-
   func testEditButtonIsNotEnabled_OnViewDidLoad() {
     self.editButtonIsEnabled.assertDidNotEmitValue()
     self.vm.viewDidLoad()
@@ -290,16 +273,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped_Failure() {
-    self.goToAddCardScreenWithIntent.assertValueCount(0)
-
-    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
-
-    self.scheduler.advance()
-
-    self.goToAddCardScreenWithIntent.assertValueCount(0)
-  }
-
   func testGoToPaymentSheet_WhenAddNewCardIsTapped_Success() {
     let envelope = ClientSecretEnvelope(clientSecret: "UHJvamVjdC0yMzEyODc5ODc")
     let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
@@ -307,35 +280,42 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(
       apiService: mockService
     ) {
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
       self.goToPaymentSheet.assertValueCount(0)
 
       self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
       self.scheduler.advance(by: .seconds(1))
 
-      self.goToAddCardScreenWithIntent.assertValueCount(0)
       self.goToPaymentSheet.assertValueCount(1)
     }
   }
 
   func testTableViewIsEditing_isFalse_WhenAddNewCardIsPresented() {
-    self.tableViewIsEditing.assertValueCount(0)
+    let envelope = ClientSecretEnvelope(clientSecret: "UHJvamVjdC0yMzEyODc5ODc")
+    let mockService = MockService(createStripeSetupIntentResult: .success(envelope))
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.editButtonTapped()
+    withEnvironment(
+      apiService: mockService
+    ) {
+      self.tableViewIsEditing.assertValueCount(0)
 
-    self.tableViewIsEditing.assertValues([false, true])
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.editButtonTapped()
 
-    self.vm.inputs.addNewCardPresented()
+      self.tableViewIsEditing.assertValues([false, true])
 
-    self.tableViewIsEditing.assertValues([false, true, false])
+      self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.tableViewIsEditing.assertValues([false, true, false])
+    }
   }
 
   func testPresentMessageBanner() {
     self.presentBanner.assertValues([])
 
-    self.vm.inputs.addNewCardSucceeded(with: Strings.Got_it_your_changes_have_been_saved())
+    self.vm.addNewCardSucceeded(with: Strings.Got_it_your_changes_have_been_saved())
 
     self.presentBanner.assertValues([Strings.Got_it_your_changes_have_been_saved()])
   }
@@ -479,7 +459,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
       )
 
-      self.vm.addNewCardDismissed()
+      self.vm.failedToAddNewCard()
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues(

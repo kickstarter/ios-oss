@@ -13,6 +13,7 @@
 "Add_new_card" = "Add new card";
 "Add_ons" = "Add-ons";
 "Add_ons_unavailable" = "Add-ons unavailable";
+"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "After August 14, 2023, this Dashboard feature will only be available on our website.";
 "Alert" = "Alert";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
@@ -142,6 +143,7 @@
 "Create_password" = "Create password";
 "Created_projects_projects_count" = "Created projects %{projects_count}";
 "Creator" = "Creator";
+"Creator_dashboard_removal_warning" = "After %{expiration_date}, the Dashboard and Post Update features will only be available on our website.";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> is live now";
 "Creator_name_is_streaming_live_on_Kickstarter" = "%{creator_name} is streaming live on Kickstarter";
 "Creator_name_live_streamed_time_ago" = "<b>%{creator_name}</b> live streamed %{time_ago}";
