@@ -231,7 +231,6 @@
 		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
 		191EDC6728E29BB9009B41B2 /* PerimeterX in Frameworks */ = {isa = PBXBuildFile; productRef = 191EDC6628E29BB9009B41B2 /* PerimeterX */; };
 		19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 19338D9A2A0D4E2300075F29 /* Stripe */; };
-		1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
 		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
 		194154CE28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */; };
@@ -571,7 +570,6 @@
 		778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */; };
 		778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778F891B22D3E37300D095C5 /* Feature+Helpers.swift */; };
 		778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778F891D22D5414F00D095C5 /* Feature+HelpersTests.swift */; };
-		7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
 		77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */; };
 		7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5622174F494008BC50D /* UserEnvelope.swift */; };
@@ -2142,8 +2140,6 @@
 		778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutTests.swift"; sourceTree = "<group>"; };
 		778F891B22D3E37300D095C5 /* Feature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feature+Helpers.swift"; sourceTree = "<group>"; };
 		778F891D22D5414F00D095C5 /* Feature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feature+HelpersTests.swift"; sourceTree = "<group>"; };
-		7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFormFieldView.swift; sourceTree = "<group>"; };
-		7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFormFieldView.xib; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		7798B5622174F494008BC50D /* UserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEnvelope.swift; sourceTree = "<group>"; };
@@ -3384,16 +3380,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		1937A6DB28C92AD100DD732D /* AddNewCard */ = {
-			isa = PBXGroup;
-			children = (
-				1937A72D28C95C8C00DD732D /* Views */,
-				1937A72028C9507200DD732D /* Storyboard */,
-				1937A6F228C92FA000DD732D /* Controller */,
-			);
-			path = AddNewCard;
-			sourceTree = "<group>";
-		};
 		1937A6DC28C92AE000DD732D /* BetaTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -3562,13 +3548,6 @@
 				3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */,
 			);
 			path = PledgeAmount;
-			sourceTree = "<group>";
-		};
-		1937A6F228C92FA000DD732D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		1937A6F328C92FDF00DD732D /* Controller */ = {
@@ -3928,14 +3907,6 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
-		1937A72028C9507200DD732D /* Storyboard */ = {
-			isa = PBXGroup;
-			children = (
-				7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */,
-			);
-			path = Storyboard;
-			sourceTree = "<group>";
-		};
 		1937A72128C954C000DD732D /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3984,14 +3955,6 @@
 			isa = PBXGroup;
 			children = (
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		1937A72D28C95C8C00DD732D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4720,7 +4683,6 @@
 			isa = PBXGroup;
 			children = (
 				19A97CDC28C7D77D0031B857 /* Activities */,
-				1937A6DB28C92AD100DD732D /* AddNewCard */,
 				19A97CE428C7DC1C0031B857 /* BackerDashboardPages */,
 				19A97CE828C7DD4C0031B857 /* BackerDashboardProjects */,
 				1937A6DC28C92AE000DD732D /* BetaTools */,
@@ -7487,7 +7449,6 @@
 				01940B2E1D46A9AD0074FCE3 /* Help.storyboard in Resources */,
 				014D62FF1E7211220033D2BD /* BackerDashboardProjectCell.xib in Resources */,
 				77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */,
-				1937A71F28C94FFC00DD732D /* SettingsFormFieldView.xib in Resources */,
 				A73923C81D272242004524C3 /* ProjectActivity.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8222,7 +8183,6 @@
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */,
 				8A4841B424871B9500246223 /* RewardTableViewCell.swift in Sources */,
-				7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */,
 				20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */,
 				D0971E14221E070800DFEF9B /* SelectCurrencyDataSource.swift in Sources */,
 				8AA3DB30250AB4AB009AC8EA /* UIAlertController.swift in Sources */,
