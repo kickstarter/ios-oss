@@ -228,7 +228,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         .triggerCapiEventInput(
           input: .init(
             projectId: "\(project.id)",
-            eventName: FacebookCAPIEventName.BackingComplete.rawValue,
+            eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
             externalId: externalId,
             userEmail: AppEnvironment.current.currentUserEmail,
             appData: .init(

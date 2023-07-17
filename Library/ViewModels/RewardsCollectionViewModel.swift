@@ -250,7 +250,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           .triggerCapiEventInput(
             input: .init(
               projectId: "\(project.id)",
-              eventName: FacebookCAPIEventName.RewardSelectionViewed.rawValue,
+              eventName: ThirdPartyEventInputName.RewardSelectionViewed.rawValue,
               externalId: externalId,
               userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(

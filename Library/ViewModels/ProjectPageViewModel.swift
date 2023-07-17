@@ -393,7 +393,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
           .triggerCapiEventInput(
             input: .init(
               projectId: "\(project.id)",
-              eventName: FacebookCAPIEventName.ProjectPageViewed.rawValue,
+              eventName: ThirdPartyEventInputName.ProjectPageViewed.rawValue,
               externalId: externalId,
               userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(

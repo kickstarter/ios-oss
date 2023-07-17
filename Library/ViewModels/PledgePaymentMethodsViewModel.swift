@@ -378,7 +378,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .triggerCapiEventInput(
             input: .init(
               projectId: "\(project.id)",
-              eventName: FacebookCAPIEventName.AddNewPaymentMethod.rawValue,
+              eventName: ThirdPartyEventInputName.AddNewPaymentMethod.rawValue,
               externalId: externalId,
               userEmail: AppEnvironment.current.currentUserEmail,
               appData: .init(
