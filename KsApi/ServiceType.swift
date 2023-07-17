@@ -51,6 +51,10 @@ public protocol ServiceType {
   func triggerCapiEventInput(input: TriggerCapiEventInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Sends facebook ad data and/or google analytics data relevant to the user
+  func triggerThirdPartyEventInput(input: TriggerThirdPartyEventInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
