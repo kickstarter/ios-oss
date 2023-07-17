@@ -4610,6 +4610,18 @@
             "deprecationReason": null
           },
           {
+            "name": "fulfillmentTool",
+            "description": "The project's selected fulfillment tool",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectFulfillmentTool",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fundingRatio",
             "description": "The ratio of funding progress.",
             "args": [],
@@ -7286,6 +7298,30 @@
               "kind": "OBJECT",
               "name": "UserFollowingConnection",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fulfillmentToolOptions",
+            "description": "List of fulfillment tools available to creator based on hrc status",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "FulfillmentPlatformEnum",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -11944,12 +11980,6 @@
             "deprecationReason": null
           },
           {
-            "name": "fulfillment_report_onboarding_2023",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "updated_referrer_codes_2023",
             "description": null,
             "isDeprecated": false,
@@ -12017,6 +12047,12 @@
           },
           {
             "name": "ai_policy_disclosures",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prelaunch_faqs_2023",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -12217,6 +12253,35 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "FulfillmentPlatformEnum",
+        "description": "Top level fulfillment platform types, e.g. kickstarter, pledgemanager, or other",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "kickstarter",
+            "description": "kickstarter",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledgemanager",
+            "description": "pledgemanager",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "other",
+            "description": "other",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -17745,6 +17810,65 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "ProjectFulfillmentTool",
+        "description": "A project's selected fulfillment tool",
+        "fields": [
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "platform",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "platformType",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "FulfillmentPlatformEnum",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "Ratio",
         "description": "A number between 0.0 and 1.0.",
@@ -20496,6 +20620,11 @@
           },
           {
             "kind": "OBJECT",
+            "name": "RichTextHeader4",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "RichTextList",
             "ofType": null
           },
@@ -20611,6 +20740,33 @@
         "kind": "OBJECT",
         "name": "RichTextHeader3",
         "description": "A Header 3. <h3>",
+        "fields": [
+          {
+            "name": "html",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RichTextHeader4",
+        "description": "A Header 4. <h4>",
         "fields": [
           {
             "name": "html",
@@ -30426,6 +30582,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createOrUpdateProjectFulfillmentTool",
+            "description": "Sets a project's chosen fulfillment platform / tool",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateProjectFulfillmentToolInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateProjectFulfillmentToolPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createPaymentSource",
             "description": "Create a payment source",
             "args": [
@@ -35604,6 +35787,104 @@
               "kind": "OBJECT",
               "name": "FreeformPost",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateProjectFulfillmentToolInput",
+        "description": "Autogenerated input type of CreateProjectFulfillmentTool",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "platformType",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "FulfillmentPlatformEnum",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "platform",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateProjectFulfillmentToolPayload",
+        "description": "Autogenerated return type of CreateProjectFulfillmentTool",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fulfillmentTool",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ProjectFulfillmentTool",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -43653,6 +43934,16 @@
           },
           {
             "name": "risks",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "storyRteVersion",
             "description": null,
             "type": {
               "kind": "SCALAR",
