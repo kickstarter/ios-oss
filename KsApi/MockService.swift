@@ -38,8 +38,6 @@
 
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>?
 
-    fileprivate let triggerCapiEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
-
     fileprivate let triggerThirdPartyEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let facebookConnectResponse: User?
@@ -224,7 +222,6 @@
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, ErrorEnvelope>? = nil,
-      triggerCapiEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       triggerThirdPartyEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
@@ -344,8 +341,6 @@
 
       self.changePaymentMethodResult = changePaymentMethodResult
       self.deletePaymentMethodResult = deletePaymentMethodResult
-
-      self.triggerCapiEventResult = triggerCapiEventResult
 
       self.triggerThirdPartyEventResult = triggerThirdPartyEventResult
 
@@ -1596,18 +1591,6 @@
         .DeletePaymentSourceMutation(input: GraphAPI.PaymentSourceDeleteInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.deletePaymentMethodResult)
-    }
-
-    internal func triggerCapiEventInput(input: TriggerCapiEventInput)
-      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      guard let client = self.apolloClient else {
-        return .empty
-      }
-
-      let mutation = GraphAPI
-        .TriggerCapiEventMutation(input: GraphAPI.TriggerCapiEventInput.from(input))
-
-      return client.performWithResult(mutation: mutation, result: self.triggerCapiEventResult)
     }
 
     internal func triggerThirdPartyEventInput(input: TriggerThirdPartyEventInput) -> ReactiveSwift
