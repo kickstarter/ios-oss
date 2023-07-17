@@ -198,45 +198,47 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       checkoutData: $0.checkoutData
     ) }
 
-    // FB CAPI
-
+    // Facebook CAPI + Google Analytics
     _ = Signal.combineLatest(
       project,
       self.configureWithDataProperty.signal.skipNil()
     )
     .observeValues { project, configData in
-      var checkoutUSDAmount = ""
+      let pledgeAmount: Double?
+      let shipping: Double?
+      let transactionId: String?
 
       if let checkoutDataValues = configData.checkoutData {
-        checkoutUSDAmount = "\(checkoutDataValues.revenueInUsd)" + "\(checkoutDataValues.addOnsMinimumUsd)"
-        checkoutUSDAmount += String(describing: checkoutDataValues.shippingAmountUsd)
-        checkoutUSDAmount += String(describing: checkoutDataValues.bonusAmountInUsd)
+        transactionId = checkoutDataValues.checkoutId
+        shipping = checkoutDataValues.shippingAmountUsd
+        pledgeAmount = Double(truncating: checkoutDataValues.revenueInUsd as NSNumber)
+          + Double(truncating: (checkoutDataValues.bonusAmountInUsd ?? 0) as NSNumber)
+          + checkoutDataValues.addOnsMinimumUsd
       }
-
-      guard project.sendMetaCapiEvents else { return }
 
       AppEnvironment.current.appTrackingTransparency.updateAdvertisingIdentifier()
 
       guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
       else { return }
 
-      /** FIXME: Soon we will use `triggerThirdPartyEvents` mutation paired with an in-app flag for allowing an advertising identifier to be sent even if it isn't nil. That will affect `applicationTrackingEnabled` and `advertiserTrackingEnabled`. */
-
       _ = AppEnvironment
         .current
         .apiService
-        .triggerCapiEventInput(
-          input: .init(
-            projectId: "\(project.id)",
+        .triggerThirdPartyEventInput(
+          input: TriggerThirdPartyEventInput(
+            deviceId: externalId,
             eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
-            externalId: externalId,
-            userEmail: AppEnvironment.current.currentUserEmail,
+            projectId: "\(project.id)",
+            pledgeAmount: pledgeAmount,
+            shipping: shipping,
+            transactionId: transactionId,
+            userId: AppEnvironment.current.currentUser?.id,
             appData: .init(
               advertiserTrackingEnabled: true,
               applicationTrackingEnabled: true,
               extinfo: ["i2"]
             ),
-            customData: .init(currency: Currency.USD.rawValue, value: checkoutUSDAmount)
+            clientMutationId: ""
           )
         )
     }
