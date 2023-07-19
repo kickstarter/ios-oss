@@ -2,7 +2,7 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
-import Stripe
+import StripePaymentSheet
 import UIKit
 
 public enum PaymentMethodsTableViewSection: Int {
@@ -38,7 +38,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func stripePaymentSheetDidAppear()
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
-  func paymentSheetDidAdd(newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
+  func paymentSheetDidAdd(newCard card: PaymentSheetPaymentOptionsDisplayData,
                           setupIntent: String)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
@@ -398,9 +398,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   }
 
   private let newSetupIntentCreditCardProperty =
-    MutableProperty<(PaymentSheet.FlowController.PaymentOptionDisplayData, String)?>(nil)
+    MutableProperty<(PaymentSheetPaymentOptionsDisplayData, String)?>(nil)
   public func paymentSheetDidAdd(
-    newCard card: PaymentSheet.FlowController.PaymentOptionDisplayData,
+    newCard card: PaymentSheetPaymentOptionsDisplayData,
     setupIntent: String
   ) {
     self.newSetupIntentCreditCardProperty.value = (card, setupIntent)

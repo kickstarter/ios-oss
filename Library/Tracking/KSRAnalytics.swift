@@ -41,13 +41,13 @@ public final class KSRAnalytics {
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
-    case pledgeAddNewCard = "pledge_add_new_card" // AddNewCardViewController
+    case pledgeAddNewCard = "pledge_add_new_card"
     case pledgeScreen = "pledge" // PledgeViewController
     case projectPage = "project" // ProjectPageViewController
     case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
-    case settingsAddNewCard = "settings_add_new_card" // AddNewCardViewController
+    case settingsAddNewCard = "settings_add_new_card"
     case signup = "sign_up" // SignupViewController
     case thanks // ThanksViewController
     case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
