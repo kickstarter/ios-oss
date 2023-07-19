@@ -4,7 +4,6 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-@testable import Stripe
 @testable import StripePaymentSheet
 import XCTest
 

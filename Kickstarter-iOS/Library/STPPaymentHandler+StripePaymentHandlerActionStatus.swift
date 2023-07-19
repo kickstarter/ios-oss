@@ -1,6 +1,6 @@
 import Foundation
 import Library
-import Stripe
+import StripePaymentSheet
 
 extension STPPaymentHandlerActionStatus: StripePaymentHandlerActionStatusType {
   public var status: StripePaymentHandlerActionStatus {
