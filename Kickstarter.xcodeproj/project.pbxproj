@@ -242,6 +242,8 @@
 		19462F6A29D4892300868694 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191A2C702907350A0093B6E1 /* ChangeEmailView.swift */; };
 		19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706656D629C7E72B00BAE7D4 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift */; };
 		194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 194A8E4D2A13FB010099583B /* GoogleService-Info.plist */; };
+		194C002E2A68447200621DC3 /* TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */; };
+		194C002F2A6844B300621DC3 /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */; };
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
@@ -495,9 +497,7 @@
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
-		6093098F2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */; };
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
-		609309932A605563004297AF /* TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */; };
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
@@ -8821,7 +8821,6 @@
 				20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */,
 				D01588BD1EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift in Sources */,
 				D01588611EEB2ED7006E7684 /* Config.swift in Sources */,
-				609309932A605563004297AF /* TriggerThirdPartyEventInputTests.swift in Sources */,
 				D64DDCE123564D3700DE0EA9 /* PaymentSourceTemplates.swift in Sources */,
 				D002CAE5218CF951009783F2 /* WatchProjectResponseEnvelope.swift in Sources */,
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
@@ -8844,7 +8843,6 @@
 				8AC3E0962698CF0600168BF8 /* ShippingRule+ShippingRuleFragment.swift in Sources */,
 				06FE2D7726CDB01E00A4C0F4 /* MockGraphQLClient.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
-				6093098F2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
@@ -8962,6 +8960,7 @@
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				606F215C299D3FA900BA5CDF /* GraphAPI.TriggerCapiEventInput+TriggerCapiEventInputTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
+				194C002E2A68447200621DC3 /* TriggerThirdPartyEventInputTests.swift in Sources */,
 				06032A8E26CEB3E50013AAB9 /* CommentFragmentTemplate.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
 				474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */,
@@ -8996,6 +8995,7 @@
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
 				8A07D00426657F7800426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift in Sources */,
 				8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */,
+				194C002F2A6844B300621DC3 /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */,
 				062868EC26B9E25F00EC5052 /* DeletePaymentSourceEnvelope+DeletePaymentSourceMutation.DataTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
 				066C0AE526CC143B0048F4D8 /* DeletePaymentSourceMutationTemplate.swift in Sources */,
