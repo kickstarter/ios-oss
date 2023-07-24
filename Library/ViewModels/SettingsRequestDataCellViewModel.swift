@@ -19,7 +19,7 @@ public protocol SettingsRequestDataCellViewModelOutputs {
   var requestDataLoadingIndicator: Signal<Bool, Never> { get }
   var requestDataText: Signal<String, Never> { get }
   var requestDataTextHidden: Signal<Bool, Never> { get }
-  var showPreparingDataAndCheckBackLaterText: Signal<Bool, Never> { get }
+  var preparingDataAndCheckBackLaterTextHidden: Signal<Bool, Never> { get }
   var showRequestDataPrompt: Signal<String, Never> { get }
   var unableToRequestDataError: Signal<String, Never> { get }
 }
@@ -73,7 +73,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
     self.requestDataLoadingIndicator = Signal.merge(
       self.configureWithUserProperty.signal.mapConst(false),
-      exportEnvelope.map { $0.state == .processing },
+      exportEnvelope.map { [.assembling, .assembled, .uploading].contains($0.state) },
       self.startRequestDataTappedProperty.signal.mapConst(true)
     )
 
@@ -82,7 +82,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.requestDataText = Signal.merge(
       initialText,
       exportEnvelope
-        .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil
+        .map { canRequestData($0)
           ? Strings.Request_my_personal_data() : Strings.Download_your_personal_data()
         }
     )
@@ -96,21 +96,23 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.dataExpirationAndChevronHidden = Signal.merge(
       self.awakeFromNibProperty.signal.mapConst(true),
       exportEnvelope
-        .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil }
+        .map(canRequestData)
     )
 
     self.goToSafari = exportEnvelope
-      .filter { $0.state != .expired || $0.expiresAt != nil }
+      .filter { $0.state == .completed || $0.expiresAt != nil }
       .map { $0.dataUrl ?? "" }
       .takeWhen(self.exportDataTappedProperty.signal)
 
-    self.showPreparingDataAndCheckBackLaterText = Signal.merge(
+    self.preparingDataAndCheckBackLaterTextHidden = Signal.merge(
       self.configureWithUserProperty.signal.mapConst(true),
-      exportEnvelope.map { $0.state != .processing },
+      exportEnvelope.map {
+        ![.assembling, .assembled, .uploading].contains($0.state)
+      },
       self.startRequestDataTappedProperty.signal.mapConst(false)
     )
 
-    self.requestDataTextHidden = self.showPreparingDataAndCheckBackLaterText.signal.map { !$0 }
+    self.requestDataTextHidden = self.preparingDataAndCheckBackLaterTextHidden.signal.map { !$0 }
   }
 
   fileprivate let awakeFromNibProperty = MutableProperty(())
@@ -140,7 +142,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   public let requestDataLoadingIndicator: Signal<Bool, Never>
   public let requestDataText: Signal<String, Never>
   public let requestDataTextHidden: Signal<Bool, Never>
-  public let showPreparingDataAndCheckBackLaterText: Signal<Bool, Never>
+  public let preparingDataAndCheckBackLaterTextHidden: Signal<Bool, Never>
   public let showRequestDataPrompt: Signal<String, Never>
   public let unableToRequestDataError: Signal<String, Never>
 
@@ -149,7 +151,8 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 }
 
 private func canRequestData(_ envelope: ExportDataEnvelope) -> Bool {
-  return envelope.dataUrl == nil || envelope.state == .expired || envelope.expiresAt == nil
+  return envelope.dataUrl == nil || envelope.expiresAt == nil
+    || [.expired, .failed, .none].contains(envelope.state)
 }
 
 private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {

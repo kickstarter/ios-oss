@@ -6,9 +6,14 @@ public struct ExportDataEnvelope {
   public let dataUrl: String?
 
   public enum State: String, Decodable {
+    case none
+    case created
     case queued
-    case processing
+    case assembling
+    case assembled
+    case uploading
     case completed
+    case failed
     case expired
   }
 }
