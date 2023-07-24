@@ -204,9 +204,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       self.configureWithDataProperty.signal.skipNil()
     )
     .observeValues { project, configData in
-      let pledgeAmount: Double?
-      let shipping: Double?
-      let transactionId: String?
+      var pledgeAmount: Double?
+      var shipping: Double?
+      var transactionId: String?
 
       if let checkoutDataValues = configData.checkoutData {
         transactionId = checkoutDataValues.checkoutId
@@ -221,26 +221,43 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
       else { return }
 
-      _ = AppEnvironment
-        .current
-        .apiService
-        .triggerThirdPartyEventInput(
-          input: TriggerThirdPartyEventInput(
-            deviceId: externalId,
-            eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
-            projectId: "\(project.id)",
-            pledgeAmount: pledgeAmount,
-            shipping: shipping,
-            transactionId: transactionId,
-            userId: AppEnvironment.current.currentUser?.id,
-            appData: .init(
-              advertiserTrackingEnabled: true,
-              applicationTrackingEnabled: true,
-              extinfo: ["i2"]
-            ),
-            clientMutationId: ""
-          )
-        )
+      _ = AppEnvironment.current.apiService
+        .triggerThirdPartyEventInput(input: .init(
+          deviceId: externalId,
+          eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
+          projectId: "\(project.id)",
+          pledgeAmount: pledgeAmount,
+          shipping: shipping,
+          transactionId: transactionId,
+          userId: "\(AppEnvironment.current.currentUser?.id)",
+          appData: .init(
+            advertiserTrackingEnabled: true,
+            applicationTrackingEnabled: true,
+            extinfo: ["i2"]
+          ),
+          clientMutationId: ""
+        ))
+
+//      _ = AppEnvironment
+//        .current
+//        .apiService
+//        .triggerThirdPartyEventInput(
+//          input: .init(
+//            deviceId: externalId,
+//            eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
+//            projectId: "\(project.id)",
+//            pledgeAmount: pledgeAmount,
+//            shipping: shipping,
+//            transactionId: transactionId,
+//            userId: AppEnvironment.current.currentUser?.id,
+//            appData: .init(
+//              advertiserTrackingEnabled: true,
+//              applicationTrackingEnabled: true,
+//              extinfo: ["i2"]
+//            ),
+//            clientMutationId: ""
+//          )
+//        )
     }
   }
 

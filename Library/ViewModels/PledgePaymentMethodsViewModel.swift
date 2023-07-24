@@ -373,14 +373,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .current
           .apiService
           .triggerThirdPartyEventInput(
-            input: TriggerThirdPartyEventInput(
+            input: .init(
               deviceId: externalId,
               eventName: ThirdPartyEventInputName.AddNewPaymentMethod.rawValue,
               projectId: "\(project.id)",
               pledgeAmount: nil,
               shipping: nil,
               transactionId: nil,
-              userId: AppEnvironment.current.currentUser?.id,
+              userId: "\(AppEnvironment.current.currentUser?.id)",
               appData: .init(
                 advertiserTrackingEnabled: true,
                 applicationTrackingEnabled: true,
