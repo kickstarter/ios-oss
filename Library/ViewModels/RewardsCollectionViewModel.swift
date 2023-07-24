@@ -239,6 +239,18 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
         else { return }
 
+        var userId = ""
+
+        if let userValue = AppEnvironment.current.currentUser {
+          userId = "\(userValue.id)"
+        }
+
+        let projectId = "\(project.id)"
+
+        var extInfo = Array(repeating: "", count: 16)
+        extInfo[0] = "i2"
+        extInfo[4] = AppEnvironment.current.mainBundle.platformVersion
+
         _ = AppEnvironment
           .current
           .apiService
@@ -246,32 +258,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
             input: .init(
               deviceId: externalId,
               eventName: ThirdPartyEventInputName.RewardSelectionViewed.rawValue,
-              projectId: "\(project.id)",
+              projectId: projectId,
               pledgeAmount: nil,
               shipping: nil,
               transactionId: nil,
-              userId: "\(AppEnvironment.current.currentUser?.id)",
+              userId: userId,
               appData: .init(
                 advertiserTrackingEnabled: true,
                 applicationTrackingEnabled: true,
-                extinfo: [
-                  "i2",
-                  "",
-                  "",
-                  "",
-                  "\(ProcessInfo.processInfo.operatingSystemVersion)",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  ""
-                ]
+                extinfo: extInfo
               ),
               clientMutationId: ""
             )

@@ -211,8 +211,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       if let checkoutDataValues = configData.checkoutData {
         transactionId = checkoutDataValues.checkoutId
         shipping = checkoutDataValues.shippingAmountUsd
-        pledgeAmount = Double(truncating: checkoutDataValues.revenueInUsd as NSNumber)
-          + Double(truncating: (checkoutDataValues.bonusAmountInUsd ?? 0) as NSNumber)
+        pledgeAmount = NSDecimalNumber(decimal: checkoutDataValues.revenueInUsd).doubleValue
+          + NSDecimalNumber(decimal: checkoutDataValues.bonusAmountInUsd ?? 0).doubleValue
           + checkoutDataValues.addOnsMinimumUsd
       }
 
@@ -221,36 +221,31 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
       else { return }
 
+      var userId = ""
+
+      if let userValue = AppEnvironment.current.currentUser {
+        userId = "\(userValue.id)"
+      }
+
+      let projectId = "\(project.id)"
+
+      var extInfo = Array(repeating: "", count: 16)
+      extInfo[0] = "i2"
+      extInfo[4] = AppEnvironment.current.mainBundle.platformVersion
+
       _ = AppEnvironment.current.apiService
         .triggerThirdPartyEventInput(input: .init(
           deviceId: externalId,
           eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
-          projectId: "\(project.id)",
+          projectId: projectId,
           pledgeAmount: pledgeAmount,
           shipping: shipping,
           transactionId: transactionId,
-          userId: "\(AppEnvironment.current.currentUser?.id)",
+          userId: userId,
           appData: .init(
             advertiserTrackingEnabled: true,
             applicationTrackingEnabled: true,
-            extinfo: [
-              "i2",
-              "",
-              "",
-              "",
-              "\(ProcessInfo.processInfo.operatingSystemVersion)",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]
+            extinfo: extInfo
           ),
           clientMutationId: ""
         ))
