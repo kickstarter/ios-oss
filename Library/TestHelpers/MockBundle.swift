@@ -71,6 +71,7 @@ internal struct MockBundle: NSBundleType {
     result["CFBundleIdentifier"] = self.bundleIdentifier
     result["CFBundleVersion"] = "1234567890"
     result["CFBundleShortVersionString"] = "1.2.3.4.5.6.7.8.9.0"
+    result["DTPlatformVersion"] = "16"
     return result
   }
 }
