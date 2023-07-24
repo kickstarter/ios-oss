@@ -384,7 +384,24 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
               appData: .init(
                 advertiserTrackingEnabled: true,
                 applicationTrackingEnabled: true,
-                extinfo: ["i2"]
+                extinfo: [
+                  "i2",
+                  "",
+                  "",
+                  "",
+                  "\(ProcessInfo.processInfo.operatingSystemVersion)",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
               ),
               clientMutationId: ""
             )

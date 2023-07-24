@@ -397,7 +397,24 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
               appData: .init(
                 advertiserTrackingEnabled: true,
                 applicationTrackingEnabled: true,
-                extinfo: ["i2"]
+                extinfo: [
+                  "i2",
+                  "",
+                  "",
+                  "",
+                  "\(ProcessInfo.processInfo.operatingSystemVersion)",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
               ),
               clientMutationId: ""
             )

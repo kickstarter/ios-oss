@@ -233,31 +233,27 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           appData: .init(
             advertiserTrackingEnabled: true,
             applicationTrackingEnabled: true,
-            extinfo: ["i2"]
+            extinfo: [
+              "i2",
+              "",
+              "",
+              "",
+              "\(ProcessInfo.processInfo.operatingSystemVersion)",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
           ),
           clientMutationId: ""
         ))
-
-//      _ = AppEnvironment
-//        .current
-//        .apiService
-//        .triggerThirdPartyEventInput(
-//          input: .init(
-//            deviceId: externalId,
-//            eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
-//            projectId: "\(project.id)",
-//            pledgeAmount: pledgeAmount,
-//            shipping: shipping,
-//            transactionId: transactionId,
-//            userId: AppEnvironment.current.currentUser?.id,
-//            appData: .init(
-//              advertiserTrackingEnabled: true,
-//              applicationTrackingEnabled: true,
-//              extinfo: ["i2"]
-//            ),
-//            clientMutationId: ""
-//          )
-//        )
     }
   }
 

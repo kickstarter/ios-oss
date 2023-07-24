@@ -254,7 +254,24 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
               appData: .init(
                 advertiserTrackingEnabled: true,
                 applicationTrackingEnabled: true,
-                extinfo: ["i2"]
+                extinfo: [
+                  "i2",
+                  "",
+                  "",
+                  "",
+                  "\(ProcessInfo.processInfo.operatingSystemVersion)",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
               ),
               clientMutationId: ""
             )
