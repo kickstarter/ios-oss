@@ -5,7 +5,7 @@ struct DashboardDeprecationView: View {
   private let contentPadding = 12.0
   private let imageSizeMultiplier = 1.5
   private var deprecationDateText: String {
-    self.formatted(dateString: "2023-08-14")
+    self.formatted(dateString: "2023-09-5")
   }
 
   var body: some View {
