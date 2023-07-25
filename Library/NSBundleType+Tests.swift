@@ -11,4 +11,9 @@ class NSBundleTests: XCTestCase {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
     XCTAssertEqual(bundle.appVersionString, "1.2.3.4.5.6.7.8.9.0")
   }
+
+  func testPlatformVersionString() {
+    let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
+    XCTAssertEqual(bundle.platformVersion, "16")
+  }
 }

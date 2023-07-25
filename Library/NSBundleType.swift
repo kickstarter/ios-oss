@@ -50,6 +50,10 @@ extension NSBundleType {
     return "\(versionString)\(build)"
   }
 
+  public var platformVersion: String {
+    return self.infoDictionary?["DTPlatformVersion"] as? String ?? "Unknown"
+  }
+
   public var isDebug: Bool {
     return self.identifier == KickstarterBundleIdentifier.debug.rawValue
   }

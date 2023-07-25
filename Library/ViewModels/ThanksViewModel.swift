@@ -198,47 +198,57 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       checkoutData: $0.checkoutData
     ) }
 
-    // FB CAPI
-
+    // Facebook CAPI + Google Analytics
     _ = Signal.combineLatest(
       project,
       self.configureWithDataProperty.signal.skipNil()
     )
     .observeValues { project, configData in
-      var checkoutUSDAmount = ""
+      var pledgeAmount: Double?
+      var shipping: Double?
+      var transactionId: String?
 
       if let checkoutDataValues = configData.checkoutData {
-        checkoutUSDAmount = "\(checkoutDataValues.revenueInUsd)" + "\(checkoutDataValues.addOnsMinimumUsd)"
-        checkoutUSDAmount += String(describing: checkoutDataValues.shippingAmountUsd)
-        checkoutUSDAmount += String(describing: checkoutDataValues.bonusAmountInUsd)
+        transactionId = checkoutDataValues.checkoutId
+        shipping = checkoutDataValues.shippingAmountUsd
+        pledgeAmount = NSDecimalNumber(decimal: checkoutDataValues.revenueInUsd).doubleValue
+          + NSDecimalNumber(decimal: checkoutDataValues.bonusAmountInUsd ?? 0).doubleValue
+          + checkoutDataValues.addOnsMinimumUsd
       }
-
-      guard project.sendMetaCapiEvents else { return }
 
       AppEnvironment.current.appTrackingTransparency.updateAdvertisingIdentifier()
 
       guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
       else { return }
 
-      /** FIXME: Soon we will use `triggerThirdPartyEvents` mutation paired with an in-app flag for allowing an advertising identifier to be sent even if it isn't nil. That will affect `applicationTrackingEnabled` and `advertiserTrackingEnabled`. */
+      var userId = ""
 
-      _ = AppEnvironment
-        .current
-        .apiService
-        .triggerCapiEventInput(
-          input: .init(
-            projectId: "\(project.id)",
-            eventName: FacebookCAPIEventName.BackingComplete.rawValue,
-            externalId: externalId,
-            userEmail: AppEnvironment.current.currentUserEmail,
-            appData: .init(
-              advertiserTrackingEnabled: true,
-              applicationTrackingEnabled: true,
-              extinfo: ["i2"]
-            ),
-            customData: .init(currency: Currency.USD.rawValue, value: checkoutUSDAmount)
-          )
-        )
+      if let userValue = AppEnvironment.current.currentUser {
+        userId = "\(userValue.id)"
+      }
+
+      let projectId = "\(project.id)"
+
+      var extInfo = Array(repeating: "", count: 16)
+      extInfo[0] = "i2"
+      extInfo[4] = AppEnvironment.current.mainBundle.platformVersion
+
+      _ = AppEnvironment.current.apiService
+        .triggerThirdPartyEventInput(input: .init(
+          deviceId: externalId,
+          eventName: ThirdPartyEventInputName.BackingComplete.rawValue,
+          projectId: projectId,
+          pledgeAmount: pledgeAmount,
+          shipping: shipping,
+          transactionId: transactionId,
+          userId: userId,
+          appData: .init(
+            advertiserTrackingEnabled: true,
+            applicationTrackingEnabled: true,
+            extinfo: extInfo
+          ),
+          clientMutationId: ""
+        ))
     }
   }
 
