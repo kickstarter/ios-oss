@@ -61,6 +61,19 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     }
   }
 
+  func testRequestDataButtonIsEnabledUnknownState() {
+    let user = User.template
+    let export = .template
+      |> ExportDataEnvelope.lens.stateString .~ "invalid-state"
+      |> ExportDataEnvelope.lens.expiresAt .~ nil
+      |> ExportDataEnvelope.lens.dataUrl .~ nil
+
+    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+      self.vm.inputs.configureWith(user: user)
+      self.requestDataButtonEnabled.assertValues([true])
+    }
+  }
+
   func testDataExpirationDate() {
     let user = User.template
 

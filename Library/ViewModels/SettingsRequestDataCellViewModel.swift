@@ -152,7 +152,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
 private func canRequestData(_ envelope: ExportDataEnvelope) -> Bool {
   return envelope.dataUrl == nil || envelope.expiresAt == nil
-    || [.expired, .failed, .none].contains(envelope.state)
+    || [.expired, .failed, .none, .unknown].contains(envelope.state)
 }
 
 private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {

@@ -14,5 +14,10 @@ extension ExportDataEnvelope {
       view: { $0.dataUrl },
       set: { ExportDataEnvelope(expiresAt: $1.expiresAt, state: $1.state, dataUrl: $0) }
     )
+
+    public static let stateString = Lens<ExportDataEnvelope, String?>(
+      view: { $0.state.rawValue },
+      set: { ExportDataEnvelope(expiresAt: $1.expiresAt, stateString: $0, dataUrl: $1.dataUrl) }
+    )
   }
 }
