@@ -15,7 +15,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<PaymentSourceSelected, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
-  private let notifyFacebookCAPIUserEmail = TestObserver<String?, Never>()
 
   private let reloadPaymentMethodsCards = TestObserver<[UserCreditCards.CreditCard], Never>()
   private let reloadPaymentSheetPaymentMethodsCards = TestObserver<

@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
 
-public enum FacebookCAPIEventName: String {
+public enum ThirdPartyEventInputName: String {
   /// viewing a project page
   case ProjectPageViewed = "ViewContent"
   /// viewing the reward selection screen

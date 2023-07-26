@@ -357,36 +357,48 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         return indexPath
       }
 
-    // FB CAPI
+    // Facebook CAPI + Google Analytics
     let stripePaymentSheetDidAppear = self.stripePaymentSheetDidAppearProperty.signal
 
     _ = Signal.combineLatest(project, self.viewDidLoadProperty.signal)
       .takeWhen(stripePaymentSheetDidAppear)
       .observeValues { project, _ in
-        guard project.sendMetaCapiEvents else { return }
 
         AppEnvironment.current.appTrackingTransparency.updateAdvertisingIdentifier()
 
         guard let externalId = AppEnvironment.current.appTrackingTransparency.advertisingIdentifier
         else { return }
 
-        /** FIXME: Soon we will use `triggerThirdPartyEvents` mutation paired with an in-app flag for allowing an advertising identifier to be sent even if it isn't nil. That will affect `applicationTrackingEnabled` and `advertiserTrackingEnabled`. */
+        var userId = ""
+
+        if let userValue = AppEnvironment.current.currentUser {
+          userId = "\(userValue.id)"
+        }
+
+        let projectId = "\(project.id)"
+
+        var extInfo = Array(repeating: "", count: 16)
+        extInfo[0] = "i2"
+        extInfo[4] = AppEnvironment.current.mainBundle.platformVersion
 
         _ = AppEnvironment
           .current
           .apiService
-          .triggerCapiEventInput(
+          .triggerThirdPartyEventInput(
             input: .init(
-              projectId: "\(project.id)",
-              eventName: FacebookCAPIEventName.AddNewPaymentMethod.rawValue,
-              externalId: externalId,
-              userEmail: AppEnvironment.current.currentUserEmail,
+              deviceId: externalId,
+              eventName: ThirdPartyEventInputName.AddNewPaymentMethod.rawValue,
+              projectId: projectId,
+              pledgeAmount: nil,
+              shipping: nil,
+              transactionId: nil,
+              userId: userId,
               appData: .init(
                 advertiserTrackingEnabled: true,
                 applicationTrackingEnabled: true,
-                extinfo: ["i2"]
+                extinfo: extInfo
               ),
-              customData: .init(currency: nil, value: nil)
+              clientMutationId: ""
             )
           )
       }
