@@ -26,7 +26,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
-  private let goToPerimeterXCaptcha = TestObserver<PerimeterXBlockResponseType, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -75,7 +74,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
-    self.vm.outputs.goToPerimeterXCaptcha.observe(self.goToPerimeterXCaptcha.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
@@ -2220,28 +2218,6 @@ final class AppDelegateViewModelTests: TestCase {
         ["Something went wrong, please try again."]
       )
     }
-  }
-
-  func testGoToPerimeterXCaptcha_Captcha() {
-    self.goToPerimeterXCaptcha.assertDidNotEmitValue()
-
-    let response = MockPerimeterXBlockResponse(blockType: .Captcha)
-
-    self.vm.inputs.perimeterXCaptchaTriggeredWithUserInfo(["response": response])
-
-    self.goToPerimeterXCaptcha.assertValueCount(1)
-    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Captcha)
-  }
-
-  func testGoToPerimeterXCaptcha_Blocked() {
-    self.goToPerimeterXCaptcha.assertDidNotEmitValue()
-
-    let response = MockPerimeterXBlockResponse(blockType: .Block)
-
-    self.vm.inputs.perimeterXCaptchaTriggeredWithUserInfo(["response": response])
-
-    self.goToPerimeterXCaptcha.assertValueCount(1)
-    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Block)
   }
 
   func testFeatureFlagsRetainedInConfig_NotRelease() {

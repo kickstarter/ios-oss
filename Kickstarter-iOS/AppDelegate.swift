@@ -268,27 +268,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.configUpdatedNotificationObserved()
       }
 
-    NotificationCenter.default
-      .addObserver(
-        forName: Notification.Name.ksr_perimeterXCaptcha,
-        object: nil,
-        queue: nil
-      ) { [weak self] note in
-        self?.viewModel.inputs.perimeterXCaptchaTriggeredWithUserInfo(note.userInfo)
-      }
-
     self.window?.tintColor = .ksr_create_700
 
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
     )
-
-    self.viewModel.outputs.goToPerimeterXCaptcha
-      .observeForControllerAction()
-      .observeValues { response in
-        self.goToPerimeterXCaptcha(response)
-      }
 
     UNUserNotificationCenter.current().delegate = self
 
@@ -407,10 +392,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.rootTabBarController?.switchToMessageThread(messageThread)
   }
 
-  private func goToPerimeterXCaptcha(_ response: PerimeterXBlockResponseType) {
-    response.displayCaptcha(on: self.window?.rootViewController)
-  }
-
   private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
     self.rootTabBarController?
       .switchToCreatorMessageThread(projectId: projectId, messageThread: messageThread)
@@ -436,7 +417,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ = AppEnvironment.current.remoteConfigClient?
       .addOnConfigUpdateListener { configUpdate, error in
         guard let realtimeUpdateError = error else {
-          print("🔮 Remote Config Keys Update: \(configUpdate?.updatedKeys)")
+          print("🔮 Remote Config Keys Update: \(String(describing: configUpdate?.updatedKeys))")
 
           return
         }
