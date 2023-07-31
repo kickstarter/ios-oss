@@ -2,26 +2,26 @@
 
 public struct ExportDataEnvelope {
   public let expiresAt: String?
+  public let dataUrl: String?
   public var state: State {
-    if let stateString, let state = State(rawValue: stateString) {
-      return state
+    guard let rawState, let state = State(rawValue: rawState) else {
+      return .unknown
     }
-    return .unknown
+    return state
   }
 
-  public let dataUrl: String?
-  private let stateString: String?
+  private let rawState: String?
 
   public init(expiresAt: String?, state: State, dataUrl: String?) {
     self.expiresAt = expiresAt
     self.dataUrl = dataUrl
-    self.stateString = state.rawValue
+    self.rawState = state.rawValue
   }
 
-  public init(expiresAt: String?, stateString: String?, dataUrl: String?) {
+  public init(expiresAt: String?, rawState: String?, dataUrl: String?) {
     self.expiresAt = expiresAt
     self.dataUrl = dataUrl
-    self.stateString = stateString
+    self.rawState = rawState
   }
 
   public enum State: String, Decodable {
@@ -41,7 +41,7 @@ public struct ExportDataEnvelope {
 extension ExportDataEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case expiresAt = "expires_at"
-    case stateString = "state"
+    case rawState = "state"
     case dataUrl = "data_url"
   }
 }
