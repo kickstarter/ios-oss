@@ -218,10 +218,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?
           .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
       }
-    
+
     self.viewModel.outputs.configurePerimeterX
       .observeValues {
-        AppEnvironment.current.apiService.perimeterXClient.start(policyDomains: [AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host ?? ""])
+        AppEnvironment.current.apiService.perimeterXClient
+          .start(policyDomains: [AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host ?? ""])
       }
 
     NotificationCenter.default
