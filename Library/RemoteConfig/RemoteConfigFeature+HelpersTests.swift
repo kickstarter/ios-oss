@@ -38,7 +38,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureFacebookLoginInterstitialEnabled())
     }
   }
-  
+
   func testCreatorDashboard_RemoteConfig_FeatureFlag_True() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: true]
@@ -47,7 +47,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       XCTAssertTrue(featureCreatorDashboardEnabled())
     }
   }
-  
+
   func testCreatorDashboard_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: false]
