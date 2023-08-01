@@ -38,7 +38,16 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       XCTAssertFalse(featureFacebookLoginInterstitialEnabled())
     }
   }
+  
+  func testCreatorDashboard_RemoteConfig_FeatureFlag_True() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: true]
 
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(featureCreatorDashboardEnabled())
+    }
+  }
+  
   func testCreatorDashboard_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: false]
@@ -62,7 +71,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       |> \.features .~ [RemoteConfigFeature.useOfAIProjectTab.rawValue: true]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureUseOfAIProjectTabEnabled())
+      XCTAssertTrue(featureUseOfAIProjectTabEnabled())
     }
   }
 }
