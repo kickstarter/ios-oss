@@ -15,7 +15,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
   internal let requestDataLoadingIndicator = TestObserver<Bool, Never>()
   internal let requestDataText = TestObserver<String, Never>()
   internal let requestDataTextHidden = TestObserver<Bool, Never>()
-  internal let showPreparingDataAndCheckBackLaterText = TestObserver<Bool, Never>()
+  internal let preparingDataAndCheckBackLaterTextHidden = TestObserver<Bool, Never>()
   internal let showRequestDataPrompt = TestObserver<String, Never>()
   internal let unableToRequestDataError = TestObserver<String, Never>()
 
@@ -28,8 +28,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     self.vm.outputs.requestDataText.observe(self.requestDataText.observer)
     self.vm.outputs.requestDataTextHidden.observe(self.requestDataTextHidden.observer)
     self.vm.outputs.dataExpirationAndChevronHidden.observe(self.dataExpirationAndChevronHidden.observer)
-    self.vm.outputs.showPreparingDataAndCheckBackLaterText
-      .observe(self.showPreparingDataAndCheckBackLaterText.observer)
+    self.vm.outputs.preparingDataAndCheckBackLaterTextHidden
+      .observe(self.preparingDataAndCheckBackLaterTextHidden.observer)
     self.vm.outputs.showRequestDataPrompt.observe(self.showRequestDataPrompt.observer)
     self.vm.outputs.unableToRequestDataError.observe(self.unableToRequestDataError.observer)
   }
@@ -49,7 +49,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
   func testRequestDataButtonIsEnabled() {
     let user = User.template
     let export = .template
-      |> ExportDataEnvelope.lens.state .~ .expired
+      |> ExportDataEnvelope.lens.state .~ .none
       |> ExportDataEnvelope.lens.expiresAt .~ nil
       |> ExportDataEnvelope.lens.dataUrl .~ nil
 
@@ -58,6 +58,19 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       self.requestDataButtonEnabled.assertValues([true])
       self.vm.inputs.startRequestDataTapped()
       self.requestDataButtonEnabled.assertValues([true, false])
+    }
+  }
+
+  func testRequestDataButtonIsEnabledUnknownState() {
+    let user = User.template
+    let export = .template
+      |> ExportDataEnvelope.lens.rawState .~ "invalid-state"
+      |> ExportDataEnvelope.lens.expiresAt .~ nil
+      |> ExportDataEnvelope.lens.dataUrl .~ nil
+
+    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+      self.vm.inputs.configureWith(user: user)
+      self.requestDataButtonEnabled.assertValues([true])
     }
   }
 
@@ -137,7 +150,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     let user = User.template
     let userEnvelope = UserEnvelope(me: GraphUser.template)
     let export = .template
-      |> ExportDataEnvelope.lens.state .~ .expired
+      |> ExportDataEnvelope.lens.state .~ .none
       |> ExportDataEnvelope.lens.expiresAt .~ nil
       |> ExportDataEnvelope.lens.dataUrl .~ nil
 
@@ -167,13 +180,13 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
       self.requestDataLoadingIndicator.assertValues([false])
       self.requestDataTextHidden.assertValues([false])
-      self.showPreparingDataAndCheckBackLaterText.assertValues([true])
+      self.preparingDataAndCheckBackLaterTextHidden.assertValues([true])
 
       self.vm.inputs.startRequestDataTapped()
 
       self.requestDataLoadingIndicator.assertValues([false, true])
       self.requestDataTextHidden.assertValues([false, true])
-      self.showPreparingDataAndCheckBackLaterText.assertValues([true, false])
+      self.preparingDataAndCheckBackLaterTextHidden.assertValues([true, false])
     }
   }
 
