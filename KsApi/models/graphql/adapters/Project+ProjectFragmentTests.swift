@@ -113,6 +113,24 @@ final class Project_ProjectFragmentTests: XCTestCase {
       )
       XCTAssertEqual(externalSourceViewElement.embeddedURLContentHeight, 80)
 
+      guard let aiDisclosureRawData = extendedProjectProperties.aiDisclosure else {
+        XCTFail("AI disclosure should contain data.")
+
+        return
+      }
+
+      XCTAssertEqual(aiDisclosureRawData.id, decompose(id: "QWlEaXNjbG9zdXJlLTE="))
+      XCTAssertTrue(aiDisclosureRawData.fundingForAiAttribution!)
+      XCTAssertFalse(aiDisclosureRawData.fundingForAiConsent!)
+      XCTAssertFalse(aiDisclosureRawData.fundingForAiOption!)
+      XCTAssertFalse(aiDisclosureRawData.generatedByAiConsent!.isEmpty)
+      XCTAssertFalse(aiDisclosureRawData.generatedByAiDetails!.isEmpty)
+      XCTAssertTrue(aiDisclosureRawData.involvesAi)
+      XCTAssertTrue(aiDisclosureRawData.involvesFunding)
+      XCTAssertTrue(aiDisclosureRawData.involvesGeneration)
+      XCTAssertFalse(aiDisclosureRawData.involvesOther)
+      XCTAssertNil(aiDisclosureRawData.otherAiDetails)
+
       XCTAssertNotNil(extendedProjectProperties.risks)
       XCTAssertEqual(extendedProjectProperties.environmentalCommitments.count, 1)
       XCTAssertEqual(
@@ -408,6 +426,20 @@ final class Project_ProjectFragmentTests: XCTestCase {
            "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
          }
        ],
+       "aiDisclosure": {
+         "__typename": "AiDisclosure",
+         "id": "QWlEaXNjbG9zdXJlLTE=",
+         "fundingForAiAttribution": true,
+         "fundingForAiConsent": false,
+         "fundingForAiOption": false,
+         "generatedByAiConsent": "Yes! You can see more information about how I went about capturing consent of the artists and photographers whose works I used on my website.",
+         "generatedByAiDetails": "For my project, the cover art for the cover of the DVD will use existing images of Paragon Park, and will leverage AI technology to simulate what the park would have looked like with attendees and visitors moving around.",
+         "involvesAi": true,
+         "involvesFunding": true,
+         "involvesGeneration": true,
+         "involvesOther": false,
+         "otherAiDetails": null
+       },
        "faqs": {
          "__typename": "ProjectFaqConnection",
          "nodes": [

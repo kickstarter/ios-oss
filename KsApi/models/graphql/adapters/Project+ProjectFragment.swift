@@ -230,10 +230,12 @@ private func extendedProject(from projectFragment: GraphAPI.ProjectFragment) -> 
   let environmentalCommitments = extendedProjectEnvironmentalCommitments(from: projectFragment)
   let faqs = extendedProjectFAQs(from: projectFragment)
   let minimumSingleTierPledgeAmount = projectFragment.minPledge
+  let aiDisclosure = extendedProjectAIDisclosure(from: projectFragment)
 
   let extendedProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: environmentalCommitments,
     faqs: faqs,
+    aiDisclosure: aiDisclosure,
     risks: risks,
     story: storyElements(from: projectFragment),
     minimumPledgeAmount: minimumSingleTierPledgeAmount
@@ -349,4 +351,28 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
   }
 
   return environmentalCommitments
+}
+
+private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
+  .ProjectFragment) -> ProjectAIDisclosure? {
+  guard let aiDisclosureRawData = projectFragment.aiDisclosure,
+    let decomposedId = decompose(id: aiDisclosureRawData.id) else {
+    return nil
+  }
+
+  var aiDisclosure = ProjectAIDisclosure(
+    id: decomposedId,
+    involvesAi: aiDisclosureRawData.involvesAi,
+    involvesFunding: aiDisclosureRawData.involvesFunding,
+    involvesGeneration: aiDisclosureRawData.involvesGeneration,
+    involvesOther: aiDisclosureRawData.involvesOther
+  )
+
+  aiDisclosure.generatedByAiConsent = aiDisclosureRawData.generatedByAiConsent
+  aiDisclosure.generatedByAiDetails = aiDisclosureRawData.generatedByAiDetails
+  aiDisclosure.fundingForAiAttribution = aiDisclosureRawData.fundingForAiAttribution
+  aiDisclosure.fundingForAiConsent = aiDisclosureRawData.fundingForAiConsent
+  aiDisclosure.fundingForAiOption = aiDisclosureRawData.fundingForAiOption
+
+  return aiDisclosure
 }

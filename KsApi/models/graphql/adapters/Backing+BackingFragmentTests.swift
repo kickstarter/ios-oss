@@ -562,6 +562,20 @@ private func backingDictionary() -> [String: Any] {
           "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTI2NTA2"
         }
       ],
+      "aiDisclosure": {
+        "__typename": "AiDisclosure",
+        "id": "QWlEaXNjbG9zdXJlLTE=",
+        "fundingForAiAttribution": true,
+        "fundingForAiConsent": false,
+        "fundingForAiOption": false,
+        "generatedByAiConsent": "Yes! You can see more information about how I went about capturing consent of the artists and photographers whose works I used on my website.",
+        "generatedByAiDetails": "For my project, the cover art for the cover of the DVD will use existing images of Paragon Park, and will leverage AI technology to simulate what the park would have looked like with attendees and visitors moving around.",
+        "involvesAi": true,
+        "involvesFunding": true,
+        "involvesGeneration": true,
+        "involvesOther": false,
+        "otherAiDetails": null
+      },
       "faqs": {
         "__typename": "ProjectFaqConnection",
         "nodes": [

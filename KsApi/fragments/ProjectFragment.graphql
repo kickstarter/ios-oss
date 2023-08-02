@@ -20,6 +20,19 @@ fragment ProjectFragment on Project {
     description
     id
   }
+  aiDisclosure {
+    id
+    fundingForAiAttribution
+    fundingForAiConsent
+    fundingForAiOption
+    generatedByAiConsent
+    generatedByAiDetails
+    involvesAi
+    involvesFunding
+    involvesGeneration
+    involvesOther
+    otherAiDetails
+  }
   faqs {
     nodes {
       question
