@@ -19,49 +19,51 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
     self.vm.outputs.updateUserDefaultsWithFeatures.observe(self.updateUserDefaultsWithFeatures.observer)
   }
 
-  /** FIXME: RemoteConfigValue is not initializing because its' OBJC intiliazer is not available
-   func testReloadWithData_AllFeaturesEnabled() {
-       let mockRemoteConfigClient = MockRemoteConfigClient()
-         |> \.features .~ [
-           RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
-           RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true
-         ]
+  func testReloadWithData_AllFeaturesEnabled() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
+        RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: true,
+        RemoteConfigFeature.useOfAIProjectTab.rawValue: true
+      ]
 
-       withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-         self.vm.inputs.viewDidLoad()
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      self.vm.inputs.viewDidLoad()
 
-         self.reloadWithData.values.forEach { featureTuples in
-           featureTuples.forEach { feature, isEnabled in
-             let isEnabledOnClient = mockRemoteConfigClient.features[feature.rawValue]
+      self.reloadWithData.values.forEach { featureTuples in
+        featureTuples.forEach { feature, isEnabled in
+          let isEnabledOnClient = mockRemoteConfigClient.features[feature.rawValue]
 
-             XCTAssertEqual(isEnabled, isEnabledOnClient)
-           }
-         }
-       }
-     }
+          XCTAssertEqual(isEnabled, isEnabledOnClient)
+        }
+      }
+    }
+  }
 
-     func testReloadWithData_FeaturesEnabledAndDisabled() {
-       let mockRemoteConfigClient = MockRemoteConfigClient()
-         |> \.features .~ [
-           RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
-           RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false
-         ]
+  func testReloadWithData_FeaturesEnabledAndDisabled() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [
+        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
+        RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
+        RemoteConfigFeature.creatorDashboardEnabled.rawValue: false,
+        RemoteConfigFeature.useOfAIProjectTab.rawValue: false
+      ]
 
-       withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-         self.vm.inputs.viewDidLoad()
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      self.vm.inputs.viewDidLoad()
 
-         self.reloadWithData.values.forEach { featureTuples in
-           featureTuples.forEach { feature, isEnabled in
-             let isEnabledOnClient = mockRemoteConfigClient.features[feature.rawValue]
+      self.reloadWithData.values.forEach { featureTuples in
+        featureTuples.forEach { feature, isEnabled in
+          let isEnabledOnClient = mockRemoteConfigClient.features[feature.rawValue]
 
-             XCTAssertEqual(isEnabled, isEnabledOnClient)
-           }
-         }
-       }
-     }
-   */
+          XCTAssertEqual(isEnabled, isEnabledOnClient)
+        }
+      }
+    }
+  }
 
-  func testUpdateUserDefaultsWithFeatures_FeaturesAreEnabled() {
+  func testUpdateUserDefaultsWithFeature_FeatureIsEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
@@ -72,13 +74,15 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      self.updateUserDefaultsWithFeatures.assertDidNotEmitValue()
+
       self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
 
       self.scheduler.advance()
 
-      let (_, isEnabled0) = self.updateUserDefaultsWithFeatures.values[0][0]
+      let (_, isEnabled1) = self.updateUserDefaultsWithFeatures.values[0][0]
 
-      XCTAssertTrue(isEnabled0)
+      XCTAssertTrue(isEnabled1)
     }
   }
 
@@ -92,6 +96,12 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
+
+      XCTAssertEqual(
+        userDefaults
+          .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
+        nil
+      )
 
       self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
 
