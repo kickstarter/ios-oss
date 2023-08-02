@@ -44,11 +44,11 @@ public class PerimeterXClient: NSObject, PerimeterXClientType {
     PerimeterX.handleResponse(response: response, data: data) { result in
       switch result {
       case .cancelled:
-        print("cancelled")
+        print("❎ Perimeter X CAPTCHA was cancelled.")
       case .solved:
-        print("solved")
+        print("❎ Perimeter X CAPTCHA was solved.")
       @unknown default:
-        fatalError()
+        print("❎ Perimeter X CAPTCHA was unknown.")
       }
     }
   }
