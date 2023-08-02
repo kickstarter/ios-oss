@@ -91,6 +91,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureFacebookLoginInterstitialEnabled()
   case .creatorDashboardEnabled:
     return featureCreatorDashboardEnabled()
+  case .useOfAIProjectTab:
+    return featureUseOfAIProjectTabEnabled()
   }
 }
 
@@ -107,6 +109,9 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .creatorDashboardEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardEnabled.rawValue]
+  case .useOfAIProjectTab:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue]
   }
 }
 
@@ -123,5 +128,8 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .creatorDashboardEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardEnabled.rawValue] = value
+  case .useOfAIProjectTab:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue] = value
   }
 }

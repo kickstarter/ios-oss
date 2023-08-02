@@ -4,6 +4,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case consentManagementDialogEnabled = "consent_management_dialog"
   case creatorDashboardEnabled = "creator_dashboard"
   case facebookLoginInterstitialEnabled = "facebook_interstitial"
+  case useOfAIProjectTab = "use_of_ai_project_tab"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -12,6 +13,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .consentManagementDialogEnabled: return "Consent Management Dialog"
     case .creatorDashboardEnabled: return "Creator Dashboard"
     case .facebookLoginInterstitialEnabled: return "Facebook Login Interstitial"
+    case .useOfAIProjectTab: return "Use of AI Project Tab"
     }
   }
 }
