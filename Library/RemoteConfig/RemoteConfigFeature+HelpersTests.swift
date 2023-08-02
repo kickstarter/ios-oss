@@ -57,7 +57,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testUseOfAIProjectAI_RemoteConfig_FeatureFlag_False() {
+  func testUseOfAIProjectTab_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.useOfAIProjectTab.rawValue: false]
 
