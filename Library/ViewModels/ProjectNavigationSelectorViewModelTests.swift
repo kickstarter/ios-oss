@@ -21,6 +21,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
       .extendedProjectProperties = ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
@@ -49,6 +50,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
         )
       ],
       faqs: [],
+      aiDisclosure: nil,
       risks: "",
       story: ProjectStoryElements(htmlViewElements: []),
       minimumPledgeAmount: 1
@@ -71,6 +73,7 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     XCTAssertEqual(NavigationSection.campaign.displayString, "Campaign")
     XCTAssertEqual(NavigationSection.faq.displayString, "FAQ")
     XCTAssertEqual(NavigationSection.risks.displayString, "Risks")
+    XCTAssertEqual(NavigationSection.aiDisclosure.displayString, "Use of AI")
     XCTAssertEqual(NavigationSection.environmentalCommitments.displayString, "Environmental commitments")
   }
 
@@ -97,6 +100,8 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.configureNavigationSelectorUI.assertDidEmitValue()
   }
+
+  // FIXME: Look at all these tests and add variations for "Use of AI" tab: https://kickstarter.atlassian.net/browse/MBL-902
 
   func testOutput_ConfigureNavigationSelectorUI_NonPrelaunch() {
     var project = Project.template

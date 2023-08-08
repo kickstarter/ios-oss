@@ -17,6 +17,7 @@ final class ProjectPageViewModelTests: TestCase {
     |> \.extendedProjectProperties .~ ExtendedProjectProperties(
       environmentalCommitments: [],
       faqs: [],
+      aiDisclosure: nil,
       risks: "",
       story: ProjectStoryElements(htmlViewElements: []),
       minimumPledgeAmount: 1
@@ -1507,6 +1508,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: [
           ImageViewElement(
@@ -1548,6 +1550,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: [
           ImageViewElement(
@@ -1603,6 +1606,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
@@ -1662,6 +1666,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: [
           expectedAudioVideoElement
@@ -1714,6 +1719,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: [
           expectedImageViewElement
@@ -1782,6 +1788,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: faqs,
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
@@ -1832,6 +1839,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: faqs,
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
@@ -1860,6 +1868,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
@@ -1884,6 +1893,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1
@@ -1919,6 +1929,7 @@ final class ProjectPageViewModelTests: TestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: ProjectStoryElements(htmlViewElements: []),
         minimumPledgeAmount: 1

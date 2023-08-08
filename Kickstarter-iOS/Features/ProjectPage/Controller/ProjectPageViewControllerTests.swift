@@ -19,6 +19,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       id: 0,
       createdAt: MockDate().timeIntervalSince1970
     )],
+    aiDisclosure: nil,
     risks: "These are the risks",
     story: ProjectStoryElements(htmlViewElements:
       [
@@ -54,6 +55,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
   private let emptyProjectProperties = ExtendedProjectProperties(
     environmentalCommitments: [],
     faqs: [],
+    aiDisclosure: nil,
     risks: "",
     story: ProjectStoryElements(htmlViewElements: []),
     minimumPledgeAmount: 1
@@ -1029,6 +1031,8 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
+  // FIXME: Add test for "Use of AI" tab: https://kickstarter.atlassian.net/browse/MBL-902
+
   func testLoggedOut_NonBacker_LiveProjectSwitchedToEnvironmentalCommitmentsTab_Success() {
     let config = Config.template
     let project = Project.cosmicSurgery
@@ -1054,7 +1058,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
         scheduler.advance()
 
         // INFO: We are not testing that the navigation selector view, just the content of the view controller after the tab selection occurs.
-        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 4)
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 5)
 
         scheduler.run()
 

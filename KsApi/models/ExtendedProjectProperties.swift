@@ -17,6 +17,22 @@ public struct ExtendedProjectProperties {
   public var risks: String
   public var story: ProjectStoryElements
   public var minimumPledgeAmount: Int
+
+  public init(
+    environmentalCommitments: [ProjectEnvironmentalCommitment],
+    faqs: [ProjectFAQ],
+    aiDisclosure: ProjectAIDisclosure?,
+    risks: String,
+    story: ProjectStoryElements,
+    minimumPledgeAmount: Int
+  ) {
+    self.environmentalCommitments = environmentalCommitments
+    self.faqs = faqs
+    self.aiDisclosure = aiDisclosure
+    self.risks = risks
+    self.story = story
+    self.minimumPledgeAmount = minimumPledgeAmount
+  }
 }
 
 public struct ProjectAIDisclosure {

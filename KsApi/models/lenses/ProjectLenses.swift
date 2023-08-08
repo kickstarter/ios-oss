@@ -8,6 +8,7 @@ extension ExtendedProjectProperties {
       set: { ExtendedProjectProperties(
         environmentalCommitments: $1.environmentalCommitments,
         faqs: $0,
+        aiDisclosure: $1.aiDisclosure,
         risks: $1.risks,
         story: $1.story,
         minimumPledgeAmount: $1.minimumPledgeAmount

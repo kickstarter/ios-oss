@@ -7,6 +7,7 @@ public enum NavigationSection: Int, CaseIterable {
   case campaign
   case faq
   case risks
+  case aiDisclosure
   case environmentalCommitments
 
   public var displayString: String {
@@ -15,6 +16,8 @@ public enum NavigationSection: Int, CaseIterable {
     case .environmentalCommitments: return Strings.Environmental_commitments()
     case .faq: return Strings.Faq()
     case .overview: return Strings.Overview()
+    case .aiDisclosure: return "Use of AI"
+      .uppercased() // FIXME: Should be `Strings.Use_Of_AI` in console once translations are done.
     case .risks: return Strings.Risks()
     }
   }
@@ -63,11 +66,14 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
       let moreTabs: [NavigationSection] = [.campaign, .faq, .risks]
 
-      guard !extendedProjectProperties.environmentalCommitments.isEmpty else {
-        return baseTabs + moreTabs
-      }
+      let includeAIDisclosure = extendedProjectProperties.aiDisclosure != nil
+      let includeEnvironmentCommitments = !extendedProjectProperties.environmentalCommitments.isEmpty
 
-      return baseTabs + moreTabs + [.environmentalCommitments]
+      let aiDisclosureTab: [NavigationSection] = includeAIDisclosure ? [.aiDisclosure] : []
+      let environmentCommitmentTab: [NavigationSection] = includeEnvironmentCommitments ?
+        [.environmentalCommitments] : []
+
+      return baseTabs + moreTabs + aiDisclosureTab + environmentCommitmentTab
     }
 
     self.configureNavigationSelectorUI = self.configureNavigationSelectorProperty.signal
