@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/PerimeterX/px-iOS-Framework",
       "state" : {
-        "revision" : "50eec61be35fcece00b4b6580367f16cc8a4f96d",
-        "version" : "1.16.3"
+        "revision" : "e02362af109f8d78dcd5588f96be3846982cbfcd",
+        "version" : "3.0.4"
       }
     },
     {
