@@ -1,5 +1,5 @@
 import Foundation
-import PerimeterX
+import PerimeterX_SDK
 
 // MARK: - PerimeterXClientType
 
@@ -7,36 +7,12 @@ public protocol PerimeterXClientType: ErrorHandler {
   /// Returns an optional `HTTPCookie` for use in authenticating web views to Perimeter X.
   var cookie: HTTPCookie? { get }
 
+  /// Returns an optional `String` cookie VID to PerimeterX
+  var vid: String? { get }
+
   /// Returns a dictionary of `[String: String]`, representing httpHeaders from Perimeter X.
   func headers() -> [String: String]
-}
 
-// MARK: - PerimeterXManagerType
-
-public protocol PerimeterXManagerType {
-  func checkError(_ responseJson: [AnyHashable: Any]!) -> PerimeterXBlockResponseType?
-  func getVid() -> String!
-  func httpHeaders() -> [AnyHashable: Any]!
-}
-
-extension PXManager: PerimeterXManagerType {
-  public func checkError(_ responseJson: [AnyHashable: Any]!) -> PerimeterXBlockResponseType? {
-    self.checkError(responseJson) as PerimeterXBlockResponseType
-  }
-}
-
-// MARK: - PerimeterXBlockResponseType
-
-public protocol PerimeterXBlockResponseType {
-  var type: PXBlockType { get }
-
-  func displayCaptcha(on vc: UIViewController?)
-}
-
-extension PXBlockResponse: PerimeterXBlockResponseType {
-  public func displayCaptcha(on vc: UIViewController?) {
-    PXManager.sharedInstance()?.handle(self, with: vc) {
-      print("❎ Perimeter X CAPTCHA was successful.")
-    }
-  }
+  /// Calls the start method to configure the SDK with allowable domains
+  func start(policyDomains: Set<String>)
 }

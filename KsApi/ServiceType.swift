@@ -526,12 +526,7 @@ extension ServiceType {
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
     headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
 
-    return headers.withAllValuesFrom(self.pxHeaders)
-  }
-
-  // PerimeterX authorization header
-  internal var pxHeaders: [String: String] {
-    return self.perimeterXClient.headers()
+    return headers
   }
 
   func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {
