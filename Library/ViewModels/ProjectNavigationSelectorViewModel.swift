@@ -16,8 +16,7 @@ public enum NavigationSection: Int, CaseIterable {
     case .environmentalCommitments: return Strings.Environmental_commitments()
     case .faq: return Strings.Faq()
     case .overview: return Strings.Overview()
-    case .aiDisclosure: return "Use of AI"
-      .uppercased() // FIXME: Should be `Strings.Use_Of_AI` in console once translations are done.
+    case .aiDisclosure: return "Use of AI" // FIXME: Should be `Strings.Use_Of_AI` in console once translations are done.
     case .risks: return Strings.Risks()
     }
   }
@@ -66,7 +65,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
       let moreTabs: [NavigationSection] = [.campaign, .faq, .risks]
 
-      let includeAIDisclosure = extendedProjectProperties.aiDisclosure != nil
+      let includeAIDisclosure = extendedProjectProperties.aiDisclosure != nil && featureUseOfAIProjectTabEnabled()
       let includeEnvironmentCommitments = !extendedProjectProperties.environmentalCommitments.isEmpty
 
       let aiDisclosureTab: [NavigationSection] = includeAIDisclosure ? [.aiDisclosure] : []
