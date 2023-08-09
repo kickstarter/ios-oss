@@ -65,7 +65,8 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
       let moreTabs: [NavigationSection] = [.campaign, .faq, .risks]
 
-      let includeAIDisclosure = extendedProjectProperties.aiDisclosure != nil && featureUseOfAIProjectTabEnabled()
+      let includeAIDisclosure = extendedProjectProperties
+        .aiDisclosure != nil && featureUseOfAIProjectTabEnabled()
       let includeEnvironmentCommitments = !extendedProjectProperties.environmentalCommitments.isEmpty
 
       let aiDisclosureTab: [NavigationSection] = includeAIDisclosure ? [.aiDisclosure] : []
