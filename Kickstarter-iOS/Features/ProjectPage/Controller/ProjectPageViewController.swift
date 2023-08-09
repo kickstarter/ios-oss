@@ -84,8 +84,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
-    self.tableView.registerCellClass(ProjectEnvironmentalCommitmentCell.self)
-    self.tableView.registerCellClass(ProjectEnvironmentalCommitmentDisclaimerCell.self)
+    self.tableView.registerCellClass(ProjectTabCategoryDescriptionCell.self)
+    self.tableView.registerCellClass(ProjectTabDisclaimerCell.self)
     self.tableView.registerCellClass(ProjectHeaderCell.self)
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.registerCellClass(TextViewElementCell.self)
@@ -821,7 +821,7 @@ extension ProjectPageViewController: UITableViewDelegate {
   }
 
   public func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if let cell = cell as? ProjectEnvironmentalCommitmentDisclaimerCell, cell.delegate == nil {
+    if let cell = cell as? ProjectTabDisclaimerCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ProjectRisksDisclaimerCell, cell.delegate == nil {
       cell.delegate = self
@@ -902,14 +902,14 @@ extension ProjectPageViewController: MessageDialogViewControllerDelegate {
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }
 
-// MARK: - ProjectEnvironmentalCommitmentDisclaimerCellDelegate
+// MARK: - ProjectTabDisclaimerCellDelegate
 
-extension ProjectPageViewController: ProjectEnvironmentalCommitmentDisclaimerCellDelegate {
-  func projectEnvironmentalCommitmentDisclaimerCell(
-    _: ProjectEnvironmentalCommitmentDisclaimerCell,
+extension ProjectPageViewController: ProjectTabDisclaimerCellDelegate {
+  func projectTabDisclaimerCell(
+    _: ProjectTabDisclaimerCell,
     didTapURL: URL
   ) {
-    self.viewModel.inputs.projectEnvironmentalCommitmentDisclaimerCellDidTapURL(didTapURL)
+    self.viewModel.inputs.projectTabDisclaimerCellDidTapURL(didTapURL)
   }
 }
 

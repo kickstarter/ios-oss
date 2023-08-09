@@ -312,8 +312,8 @@ private func extendedProjectFAQs(from projectFragment: GraphAPI
  */
 
 private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
-  .ProjectFragment) -> [ProjectEnvironmentalCommitment] {
-  var environmentalCommitments = [ProjectEnvironmentalCommitment]()
+  .ProjectFragment) -> [ProjectTabCategoryDescription] {
+  var environmentalCommitments = [ProjectTabCategoryDescription]()
 
   if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
@@ -323,7 +323,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         continue
       }
 
-      var commitmentCategory: ProjectCommitmentCategory
+      var commitmentCategory: ProjectTabCategory
 
       switch commitment?.commitmentCategory {
       case .longLastingDesign:
@@ -340,7 +340,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         commitmentCategory = .somethingElse
       }
 
-      let environmentalCommitment = ProjectEnvironmentalCommitment(
+      let environmentalCommitment = ProjectTabCategoryDescription(
         description: description,
         category: commitmentCategory,
         id: decomposedId
@@ -360,16 +360,38 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
     return nil
   }
 
+  let generatedByAIConsent = aiDisclosureRawData.generatedByAiConsent ?? ""
+  let generatedByAIDetails = aiDisclosureRawData.generatedByAiDetails ?? ""
+
+  let availableAIDetailsAndConsent = !generatedByAIConsent.isEmpty || !generatedByAIDetails.isEmpty
+
+  let generatedOtherAIDetails = aiDisclosureRawData.otherAiDetails ?? ""
+  let combinedGeneratedByAIValue = generatedByAIDetails + "\n\n" + generatedByAIConsent
+
+  let aiDisclosureConsentAndDetails = ProjectTabCategoryDescription(
+    description: combinedGeneratedByAIValue,
+    category: .aiDisclosureDetailsAndConsent,
+    id: decomposedId
+  )
+
+  let aiDisclosureOther = ProjectTabCategoryDescription(
+    description: generatedOtherAIDetails,
+    category: .aiDisclosureOtherDetails,
+    id: decomposedId + 1
+  )
+
+  let availableAIOtherDisclosure = !generatedOtherAIDetails.isEmpty
+
   var aiDisclosure = ProjectAIDisclosure(
     id: decomposedId,
+    generatedByAiConsentAndDetails: availableAIDetailsAndConsent ? aiDisclosureConsentAndDetails : nil,
     involvesAi: aiDisclosureRawData.involvesAi,
     involvesFunding: aiDisclosureRawData.involvesFunding,
     involvesGeneration: aiDisclosureRawData.involvesGeneration,
-    involvesOther: aiDisclosureRawData.involvesOther
+    involvesOther: aiDisclosureRawData.involvesOther,
+    otherAiDetails: availableAIOtherDisclosure ? aiDisclosureOther : nil
   )
 
-  aiDisclosure.generatedByAiConsent = aiDisclosureRawData.generatedByAiConsent
-  aiDisclosure.generatedByAiDetails = aiDisclosureRawData.generatedByAiDetails
   aiDisclosure.fundingForAiAttribution = aiDisclosureRawData.fundingForAiAttribution
   aiDisclosure.fundingForAiConsent = aiDisclosureRawData.fundingForAiConsent
   aiDisclosure.fundingForAiOption = aiDisclosureRawData.fundingForAiOption

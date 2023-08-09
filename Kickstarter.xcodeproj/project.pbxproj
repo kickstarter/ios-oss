@@ -377,10 +377,10 @@
 		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
 		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
 		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
-		4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */; };
-		4751A677272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */; };
-		4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */; };
-		4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */; };
+		4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift */; };
+		4751A677272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */; };
+		4751A679272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A678272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift */; };
+		4751A67B272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */; };
 		4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */; };
 		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
@@ -1939,10 +1939,10 @@
 		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
 		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelopeTests.swift; sourceTree = "<group>"; };
-		4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCell.swift; sourceTree = "<group>"; };
-		4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModel.swift; sourceTree = "<group>"; };
-		4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCell.swift; sourceTree = "<group>"; };
-		4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift; sourceTree = "<group>"; };
+		4751A674272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCategoryDescriptionCell.swift; sourceTree = "<group>"; };
+		4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCategoryDescriptionCellViewModel.swift; sourceTree = "<group>"; };
+		4751A678272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabDisclaimerCell.swift; sourceTree = "<group>"; };
+		4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabDisclaimerCellViewModel.swift; sourceTree = "<group>"; };
 		4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.swift; sourceTree = "<group>"; };
 		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
@@ -4626,8 +4626,8 @@
 				0634C2F627CFEE40003A6D6E /* ExternalSourceViewElementCell.swift */,
 				475D16F62773AD36009E4354 /* ImageViewElementCell.swift */,
 				475D16F82773AD9F009E4354 /* TextViewElementCell.swift */,
-				4751A674272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift */,
-				4751A678272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift */,
+				4751A674272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift */,
+				4751A678272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift */,
 				4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */,
 				47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */,
 				4791BDE32717604C00DFE5D5 /* ProjectFAQsCell.swift */,
@@ -6622,9 +6622,9 @@
 				A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */,
 				A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */,
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
-				4751A676272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift */,
+				4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */,
 				4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */,
-				4751A67A272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift */,
+				4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */,
 				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
@@ -7591,7 +7591,7 @@
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
 				77C9122723C4F99400F3D2C9 /* Double+Currency.swift in Sources */,
-				4751A67B272B57EE00F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModel.swift in Sources */,
+				4751A67B272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift in Sources */,
 				809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				8A13D165249566FB007E2C0B /* PledgeExpandableHeaderRewardCellViewModel.swift in Sources */,
 				59392C1E1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift in Sources */,
@@ -7621,7 +7621,7 @@
 				A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */,
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,
-				4751A677272B31D000F81DD5 /* ProjectEnvironmentalCommitmentCellViewModel.swift in Sources */,
+				4751A677272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift in Sources */,
 				8A6C58932475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
@@ -8223,7 +8223,7 @@
 				37CA16B123304DCA006044F9 /* ToggleViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
-				4751A679272B56C400F81DD5 /* ProjectEnvironmentalCommitmentDisclaimerCell.swift in Sources */,
+				4751A679272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */,
 				D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */,
@@ -8343,7 +8343,7 @@
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
-				4751A675272B317500F81DD5 /* ProjectEnvironmentalCommitmentCell.swift in Sources */,
+				4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,

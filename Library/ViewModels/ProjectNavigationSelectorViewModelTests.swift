@@ -33,17 +33,17 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   fileprivate let projectPropertiesWithEnvironmentalCommitments: ExtendedProjectProperties =
     ExtendedProjectProperties(
       environmentalCommitments: [
-        ProjectEnvironmentalCommitment(
+        ProjectTabCategoryDescription(
           description: "Environment Commitment 0",
           category: .environmentallyFriendlyFactories,
           id: 0
         ),
-        ProjectEnvironmentalCommitment(
+        ProjectTabCategoryDescription(
           description: "Environment Commitment 1",
           category: .longLastingDesign,
           id: 1
         ),
-        ProjectEnvironmentalCommitment(
+        ProjectTabCategoryDescription(
           description: "Environment Commitment 2",
           category: .reusabilityAndRecyclability,
           id: 2

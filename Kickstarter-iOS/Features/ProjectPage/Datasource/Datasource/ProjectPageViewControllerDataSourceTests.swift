@@ -11,18 +11,18 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
   private let expectedTime = CMTime(seconds: 123.4, preferredTimescale: CMTimeScale(1))
   private let environmentalCommitments = [
-    ProjectEnvironmentalCommitment(
+    ProjectTabCategoryDescription(
       description: "foo bar",
       category: .environmentallyFriendlyFactories,
       id: 0
     ),
-    ProjectEnvironmentalCommitment(description: "hello world", category: .longLastingDesign, id: 1),
-    ProjectEnvironmentalCommitment(
+    ProjectTabCategoryDescription(description: "hello world", category: .longLastingDesign, id: 1),
+    ProjectTabCategoryDescription(
       description: "Lorem ipsum",
       category: .reusabilityAndRecyclability,
       id: 2
     ),
-    ProjectEnvironmentalCommitment(description: "blah blah blah", category: .sustainableDistribution, id: 3)
+    ProjectTabCategoryDescription(description: "blah blah blah", category: .sustainableDistribution, id: 3)
   ]
 
   private let faqs = [

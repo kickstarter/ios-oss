@@ -8,7 +8,7 @@ import XCTest
 internal final class ProjectPageViewControllerTests: TestCase {
   private var project: Project = .cosmicSurgery
   private let extendedProjectProperties = ExtendedProjectProperties(
-    environmentalCommitments: [ProjectEnvironmentalCommitment(
+    environmentalCommitments: [ProjectTabCategoryDescription(
       description: "Environmental Commitment",
       category: .environmentallyFriendlyFactories,
       id: 0

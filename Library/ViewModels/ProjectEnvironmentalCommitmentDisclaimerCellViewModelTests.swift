@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 internal final class ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests: TestCase {
-  fileprivate let vm: ProjectEnvironmentalCommitmentDisclaimerCellViewModelType =
-    ProjectEnvironmentalCommitmentDisclaimerCellViewModel()
+  fileprivate let vm: ProjectTabDisclaimerCellViewModelType =
+    ProjectTabDisclaimerCellViewModel()
 
   fileprivate let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
 

@@ -3,10 +3,10 @@ import Library
 import Prelude
 import UIKit
 
-final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
+final class ProjectTabCategoryDescriptionCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = ProjectEnvironmentalCommitmentCellViewModel()
+  private let viewModel = ProjectTabCategoryDescriptionCellViewModel()
 
   private lazy var categoryLabel: UILabel = {
     UILabel(frame: .zero)
@@ -72,7 +72,7 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: ProjectEnvironmentalCommitment) {
+  func configureWith(value: ProjectTabCategoryDescription) {
     self.viewModel.inputs.configureWith(value: value)
   }
 

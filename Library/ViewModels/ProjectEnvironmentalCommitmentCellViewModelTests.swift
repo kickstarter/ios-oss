@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 internal final class ProjectEnvironmentalCommitmentCellViewModelTests: TestCase {
-  fileprivate let vm: ProjectEnvironmentalCommitmentCellViewModelType =
-    ProjectEnvironmentalCommitmentCellViewModel()
+  fileprivate let vm: ProjectTabCategoryDescriptionCellViewModelType =
+    ProjectTabCategoryDescriptionCellViewModel()
 
   fileprivate let categoryLabelText = TestObserver<String, Never>()
   fileprivate let descriptionLabelText = TestObserver<String, Never>()
@@ -19,7 +19,7 @@ internal final class ProjectEnvironmentalCommitmentCellViewModelTests: TestCase 
   }
 
   func testOutput_CategoryLabelText() {
-    let environmentalCommitment = ProjectEnvironmentalCommitment(
+    let environmentalCommitment = ProjectTabCategoryDescription(
       description: "Hello World",
       category: .environmentallyFriendlyFactories,
       id: 0
@@ -27,12 +27,12 @@ internal final class ProjectEnvironmentalCommitmentCellViewModelTests: TestCase 
 
     self.vm.inputs.configureWith(value: environmentalCommitment)
 
-    self.categoryLabelText.assertValues([ProjectCommitmentCategory.environmentallyFriendlyFactories.rawValue])
+    self.categoryLabelText.assertValues([ProjectTabCategory.environmentallyFriendlyFactories.rawValue])
   }
 
   func testOutput_DescriptionLabelText() {
     let description = "Hello World"
-    let environmentalCommitment = ProjectEnvironmentalCommitment(
+    let environmentalCommitment = ProjectTabCategoryDescription(
       description: description,
       category: .environmentallyFriendlyFactories,
       id: 0

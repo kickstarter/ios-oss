@@ -11,7 +11,7 @@ import Foundation
  */
 
 public struct ExtendedProjectProperties {
-  public var environmentalCommitments: [ProjectEnvironmentalCommitment]
+  public var environmentalCommitments: [ProjectTabCategoryDescription]
   public var faqs: [ProjectFAQ]
   public var aiDisclosure: ProjectAIDisclosure?
   public var risks: String
@@ -19,7 +19,7 @@ public struct ExtendedProjectProperties {
   public var minimumPledgeAmount: Int
 
   public init(
-    environmentalCommitments: [ProjectEnvironmentalCommitment],
+    environmentalCommitments: [ProjectTabCategoryDescription],
     faqs: [ProjectFAQ],
     aiDisclosure: ProjectAIDisclosure?,
     risks: String,
@@ -40,13 +40,12 @@ public struct ProjectAIDisclosure {
   public var fundingForAiAttribution: Bool?
   public var fundingForAiConsent: Bool?
   public var fundingForAiOption: Bool?
-  public var generatedByAiConsent: String?
-  public var generatedByAiDetails: String?
+  public var generatedByAiConsentAndDetails: ProjectTabCategoryDescription?
   public var involvesAi: Bool
   public var involvesFunding: Bool
   public var involvesGeneration: Bool
   public var involvesOther: Bool
-  public var otherAiDetails: String?
+  public var otherAiDetails: ProjectTabCategoryDescription?
 }
 
 public struct ProjectFAQ {
@@ -60,17 +59,19 @@ public struct ProjectStoryElements {
   public var htmlViewElements: [HTMLViewElement]
 }
 
-public struct ProjectEnvironmentalCommitment {
+public struct ProjectTabCategoryDescription {
   public var description: String
-  public var category: ProjectCommitmentCategory
+  public var category: ProjectTabCategory
   public var id: Int
 }
 
-public enum ProjectCommitmentCategory: String {
+public enum ProjectTabCategory: String {
   case longLastingDesign = "Long-lasting design"
   case sustainableMaterials = "Sustainable materials"
   case environmentallyFriendlyFactories = "Environmentally friendly factories"
   case sustainableDistribution = "Sustainable distribution"
   case reusabilityAndRecyclability = "Reusability and Recyclability"
+  case aiDisclosureDetailsAndConsent = "I plan to use AI-generated content in my project."
+  case aiDisclosureOtherDetails = "I am incorporating AI in my project in another way."
   case somethingElse
 }

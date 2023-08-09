@@ -18,6 +18,11 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case risksHeader
     case risks
     case risksDisclaimer
+    case aiDisclosureHeader
+    case aiDisclosureFunding
+    case aiDisclosureGenerated
+    case aiDisclosureOtherDetails
+    case aiDisclosureDisclaimer
     case environmentalCommitmentsHeader
     case environmentalCommitments
     case environmentalCommitmentsDisclaimer
@@ -29,6 +34,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case environmentalCommitments
     case faqs
     case risks
+    case aiDisclosure
 
     var description: String {
       switch self {
@@ -42,6 +48,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         return Strings.Frequently_asked_questions()
       case .risks:
         return Strings.Risks_and_challenges()
+      case .aiDisclosure:
+        return "AI Disclosure"
       }
     }
   }
@@ -207,8 +215,44 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.risksDisclaimer.rawValue
       )
     case .aiDisclosure:
-      // TODO: Doing in:  https://kickstarter.atlassian.net/browse/MBL-902
-      _ = {}
+      self.set(
+        values: [HeaderValue.aiDisclosure.description],
+        cellClass: ProjectHeaderCell.self,
+        inSection: Section.aiDisclosureHeader.rawValue
+      )
+
+      guard let aiDisclosure = project.extendedProjectProperties?.aiDisclosure else {
+        self.set(
+          values: [.environmental],
+          cellClass: ProjectTabDisclaimerCell.self,
+          inSection: Section.environmentalCommitmentsDisclaimer.rawValue
+        )
+
+        return
+      }
+
+      if let consentAndDetailAIDetailValues = aiDisclosure.generatedByAiConsentAndDetails {
+        self.set(
+          values: [consentAndDetailAIDetailValues],
+          cellClass: ProjectTabCategoryDescriptionCell.self,
+          inSection: Section.aiDisclosureGenerated.rawValue
+        )
+      }
+
+      if let otherAIDetailValues = aiDisclosure.otherAiDetails {
+        self.set(
+          values: [otherAIDetailValues],
+          cellClass: ProjectTabCategoryDescriptionCell.self,
+          inSection: Section.aiDisclosureOtherDetails.rawValue
+        )
+      }
+
+      self.set(
+        values: [.aiDisclosure],
+        cellClass: ProjectTabDisclaimerCell.self,
+        inSection: Section.environmentalCommitmentsDisclaimer.rawValue
+      )
+
     case .environmentalCommitments:
       let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
 
@@ -220,13 +264,13 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
       self.set(
         values: environmentalCommitments,
-        cellClass: ProjectEnvironmentalCommitmentCell.self,
+        cellClass: ProjectTabCategoryDescriptionCell.self,
         inSection: Section.environmentalCommitments.rawValue
       )
 
       self.set(
-        values: [()],
-        cellClass: ProjectEnvironmentalCommitmentDisclaimerCell.self,
+        values: [.environmental],
+        cellClass: ProjectTabDisclaimerCell.self,
         inSection: Section.environmentalCommitmentsDisclaimer.rawValue
       )
     }
@@ -234,10 +278,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as ProjectEnvironmentalCommitmentCell, value as ProjectEnvironmentalCommitment):
+    case let (cell as ProjectTabCategoryDescriptionCell, value as ProjectTabCategoryDescription):
       cell.configureWith(value: value)
-    case let (cell as ProjectEnvironmentalCommitmentDisclaimerCell, _):
-      cell.configureWith(value: ())
+    case let (cell as ProjectTabDisclaimerCell, value as ProjectDisclaimerType):
+      cell.configureWith(value: value)
     case let (cell as ProjectHeaderCell, value as String):
       cell.configureWith(value: value)
     case let (cell as ProjectFAQsAskAQuestionCell, _):
