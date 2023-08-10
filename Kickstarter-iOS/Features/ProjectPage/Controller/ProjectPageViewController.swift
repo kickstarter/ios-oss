@@ -86,6 +86,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
     self.tableView.registerCellClass(ProjectTabCategoryDescriptionCell.self)
     self.tableView.registerCellClass(ProjectTabDisclaimerCell.self)
+    self.tableView.registerCellClass(ProjectTabCheckmarkListCell.self)
     self.tableView.registerCellClass(ProjectHeaderCell.self)
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.registerCellClass(TextViewElementCell.self)

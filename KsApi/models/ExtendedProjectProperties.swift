@@ -37,9 +37,7 @@ public struct ExtendedProjectProperties {
 
 public struct ProjectAIDisclosure {
   public var id: Int
-  public var fundingForAiAttribution: Bool?
-  public var fundingForAiConsent: Bool?
-  public var fundingForAiOption: Bool?
+  public var funding: ProjectTabFundingOptions
   public var generatedByAiConsentAndDetails: ProjectTabCategoryDescription?
   public var involvesAi: Bool
   public var involvesFunding: Bool
@@ -65,6 +63,12 @@ public struct ProjectTabCategoryDescription {
   public var id: Int
 }
 
+public struct ProjectTabFundingOptions {
+  public var fundingForAiAttribution: Bool
+  public var fundingForAiConsent: Bool
+  public var fundingForAiOption: Bool
+}
+
 public enum ProjectTabCategory: String {
   case longLastingDesign = "Long-lasting design"
   case sustainableMaterials = "Sustainable materials"
@@ -74,4 +78,11 @@ public enum ProjectTabCategory: String {
   case aiDisclosureDetailsAndConsent = "I plan to use AI-generated content in my project."
   case aiDisclosureOtherDetails = "I am incorporating AI in my project in another way."
   case somethingElse
+}
+
+public enum ProjectTabAIFundingCategory: String {
+  case consent =
+    "For the database or source that I will use or will create, the consent of the persons whose works or information incorporated have been obtained."
+  case attribution = "The owners of those works is or will be attributed."
+  case option = "There is or will be an opt-in or opt-out for those owners."
 }

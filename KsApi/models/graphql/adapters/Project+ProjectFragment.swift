@@ -382,8 +382,19 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
 
   let availableAIOtherDisclosure = !generatedOtherAIDetails.isEmpty
 
-  var aiDisclosure = ProjectAIDisclosure(
+  let fundingForAIAttribution = aiDisclosureRawData.fundingForAiAttribution ?? false
+  let fundingForAIConsent = aiDisclosureRawData.fundingForAiConsent ?? false
+  let fundingForAIOption = aiDisclosureRawData.fundingForAiOption ?? false
+
+  let fundingOptions = ProjectTabFundingOptions(
+    fundingForAiAttribution: fundingForAIAttribution,
+    fundingForAiConsent: fundingForAIConsent,
+    fundingForAiOption: fundingForAIOption
+  )
+
+  let aiDisclosure = ProjectAIDisclosure(
     id: decomposedId,
+    funding: fundingOptions,
     generatedByAiConsentAndDetails: availableAIDetailsAndConsent ? aiDisclosureConsentAndDetails : nil,
     involvesAi: aiDisclosureRawData.involvesAi,
     involvesFunding: aiDisclosureRawData.involvesFunding,
@@ -391,10 +402,6 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
     involvesOther: aiDisclosureRawData.involvesOther,
     otherAiDetails: availableAIOtherDisclosure ? aiDisclosureOther : nil
   )
-
-  aiDisclosure.fundingForAiAttribution = aiDisclosureRawData.fundingForAiAttribution
-  aiDisclosure.fundingForAiConsent = aiDisclosureRawData.fundingForAiConsent
-  aiDisclosure.fundingForAiOption = aiDisclosureRawData.fundingForAiOption
 
   return aiDisclosure
 }

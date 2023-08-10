@@ -49,7 +49,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       case .risks:
         return Strings.Risks_and_challenges()
       case .aiDisclosure:
-        return "AI Disclosure"
+        return "Use of AI"
       }
     }
   }
@@ -231,6 +231,15 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         return
       }
 
+      if aiDisclosure.funding.fundingForAiAttribution || aiDisclosure.funding
+        .fundingForAiConsent || aiDisclosure.funding.fundingForAiOption {
+        self.set(
+          values: [aiDisclosure.funding],
+          cellClass: ProjectTabCheckmarkListCell.self,
+          inSection: Section.aiDisclosureFunding.rawValue
+        )
+      }
+
       if let consentAndDetailAIDetailValues = aiDisclosure.generatedByAiConsentAndDetails {
         self.set(
           values: [consentAndDetailAIDetailValues],
@@ -279,6 +288,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as ProjectTabCategoryDescriptionCell, value as ProjectTabCategoryDescription):
+      cell.configureWith(value: value)
+    case let (cell as ProjectTabCheckmarkListCell, value as ProjectTabFundingOptions):
       cell.configureWith(value: value)
     case let (cell as ProjectTabDisclaimerCell, value as ProjectDisclaimerType):
       cell.configureWith(value: value)

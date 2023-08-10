@@ -243,6 +243,8 @@
 		194A8E4E2A13FB010099583B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 194A8E4D2A13FB010099583B /* GoogleService-Info.plist */; };
 		194C002E2A68447200621DC3 /* TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */; };
 		194C002F2A6844B300621DC3 /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */; };
+		1950DBBE2A8445B500071862 /* ProjectTabCheckmarkListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950DBBD2A8445B500071862 /* ProjectTabCheckmarkListCell.swift */; };
+		1950DBC02A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950DBBF2A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift */; };
 		195747162A71AF0B00D43CA3 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 195747152A71AF0B00D43CA3 /* PerimeterX_SDK */; };
 		195747182A71AF1700D43CA3 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 195747172A71AF1700D43CA3 /* PerimeterX_SDK */; };
 		1957471A2A71AF3200D43CA3 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 195747192A71AF3200D43CA3 /* PerimeterX_SDK */; };
@@ -1822,6 +1824,8 @@
 		194154D228D928C9004648C8 /* CreatePaymentSourceSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceSetupIntentInputTests.swift; sourceTree = "<group>"; };
 		194154D428D92A26004648C8 /* CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceSetupIntentClientSecret+ConstructorTests.swift"; sourceTree = "<group>"; };
 		194A8E4D2A13FB010099583B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1950DBBD2A8445B500071862 /* ProjectTabCheckmarkListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCheckmarkListCell.swift; sourceTree = "<group>"; };
+		1950DBBF2A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCheckmarkListCellViewModel.swift; sourceTree = "<group>"; };
 		1996AA342A5F4ADB00AE2ED0 /* PaymentSheetPaymentOptionsDisplayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSheetPaymentOptionsDisplayData.swift; sourceTree = "<group>"; };
 		19A666602A0472A500708F8B /* RemoteConfligClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfligClient.swift; sourceTree = "<group>"; };
 		19A97CF128C7E2D30031B857 /* CategoryPillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
@@ -4627,6 +4631,7 @@
 				475D16F62773AD36009E4354 /* ImageViewElementCell.swift */,
 				475D16F82773AD9F009E4354 /* TextViewElementCell.swift */,
 				4751A674272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift */,
+				1950DBBD2A8445B500071862 /* ProjectTabCheckmarkListCell.swift */,
 				4751A678272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift */,
 				4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */,
 				47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */,
@@ -6623,6 +6628,7 @@
 				A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */,
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
 				4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */,
+				1950DBBF2A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift */,
 				4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */,
 				4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */,
 				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */,
@@ -7867,6 +7873,7 @@
 				8A32FE0624D233F000F79C72 /* EmptyStateViewModel.swift in Sources */,
 				37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */,
 				A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */,
+				1950DBC02A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift in Sources */,
 				8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */,
 				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */,
@@ -8285,6 +8292,7 @@
 				7727494923FC8C2A0065E9F2 /* CategorySelectionDataSource.swift in Sources */,
 				A75798911D6A201F0063CEEC /* DebugPushNotificationsViewController.swift in Sources */,
 				A7CC14401D00E74F00035C52 /* FindFriendsHeaderCell.swift in Sources */,
+				1950DBBE2A8445B500071862 /* ProjectTabCheckmarkListCell.swift in Sources */,
 				06BD75CD26C4322C00A12D4E /* CommentDialogViewController.swift in Sources */,
 				774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */,
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
