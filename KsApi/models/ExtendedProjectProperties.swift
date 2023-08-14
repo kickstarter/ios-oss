@@ -13,9 +13,40 @@ import Foundation
 public struct ExtendedProjectProperties {
   public var environmentalCommitments: [ProjectEnvironmentalCommitment]
   public var faqs: [ProjectFAQ]
+  public var aiDisclosure: ProjectAIDisclosure?
   public var risks: String
   public var story: ProjectStoryElements
   public var minimumPledgeAmount: Int
+
+  public init(
+    environmentalCommitments: [ProjectEnvironmentalCommitment],
+    faqs: [ProjectFAQ],
+    aiDisclosure: ProjectAIDisclosure?,
+    risks: String,
+    story: ProjectStoryElements,
+    minimumPledgeAmount: Int
+  ) {
+    self.environmentalCommitments = environmentalCommitments
+    self.faqs = faqs
+    self.aiDisclosure = aiDisclosure
+    self.risks = risks
+    self.story = story
+    self.minimumPledgeAmount = minimumPledgeAmount
+  }
+}
+
+public struct ProjectAIDisclosure {
+  public var id: Int
+  public var fundingForAiAttribution: Bool?
+  public var fundingForAiConsent: Bool?
+  public var fundingForAiOption: Bool?
+  public var generatedByAiConsent: String?
+  public var generatedByAiDetails: String?
+  public var involvesAi: Bool
+  public var involvesFunding: Bool
+  public var involvesGeneration: Bool
+  public var involvesOther: Bool
+  public var otherAiDetails: String?
 }
 
 public struct ProjectFAQ {

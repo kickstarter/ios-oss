@@ -157,8 +157,10 @@ final class ProjectNavigationSelectorView: UIView {
         sectionIndex = 2
       case .risks:
         sectionIndex = 3
-      case .environmentalCommitments:
+      case .aiDisclosure:
         sectionIndex = 4
+      case .environmentalCommitments:
+        sectionIndex = 5
       }
 
       let navigationButton = UIButton()

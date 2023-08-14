@@ -92,6 +92,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: self.faqs,
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -147,6 +148,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: self.faqs,
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -192,6 +194,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -246,6 +249,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -287,6 +291,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "These are all the risks and challenges associated with this project. Lorem Ipsum",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -334,11 +339,14 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
+  // FIXME: Add test for "Use of AI" tab: https://kickstarter.atlassian.net/browse/MBL-902
+
   func testLoadEnvironmentalCommitments() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: self.environmentalCommitments,
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -394,6 +402,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -445,6 +454,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -500,6 +510,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -549,6 +560,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: self.faqs,
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -570,6 +582,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -594,6 +607,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -617,6 +631,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -679,6 +694,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -743,6 +759,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -795,6 +812,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -848,6 +866,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -894,6 +913,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -941,6 +961,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1
@@ -993,6 +1014,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
         faqs: [],
+        aiDisclosure: nil,
         risks: "",
         story: self.storyViewableElements,
         minimumPledgeAmount: 1

@@ -206,6 +206,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectRisksDisclaimerCell.self,
         inSection: Section.risksDisclaimer.rawValue
       )
+    case .aiDisclosure:
+      // TODO: Doing in:  https://kickstarter.atlassian.net/browse/MBL-902
+      _ = {}
     case .environmentalCommitments:
       let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
 

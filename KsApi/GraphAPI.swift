@@ -11566,6 +11566,20 @@ public enum GraphAPI {
           description
           id
         }
+        aiDisclosure {
+          __typename
+          id
+          fundingForAiAttribution
+          fundingForAiConsent
+          fundingForAiOption
+          generatedByAiConsent
+          generatedByAiDetails
+          involvesAi
+          involvesFunding
+          involvesGeneration
+          involvesOther
+          otherAiDetails
+        }
         faqs {
           __typename
           nodes {
@@ -11656,6 +11670,7 @@ public enum GraphAPI {
         GraphQLField("deadlineAt", type: .scalar(String.self)),
         GraphQLField("description", type: .nonNull(.scalar(String.self))),
         GraphQLField("environmentalCommitments", type: .list(.object(EnvironmentalCommitment.selections))),
+        GraphQLField("aiDisclosure", type: .object(AiDisclosure.selections)),
         GraphQLField("faqs", type: .object(Faq.selections)),
         GraphQLField("finalCollectionDate", type: .scalar(String.self)),
         GraphQLField("fxRate", type: .nonNull(.scalar(Double.self))),
@@ -11694,8 +11709,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledged: Pledged, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledged": pledged.resultMap, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
+    public init(availableCardTypes: [CreditCardTypes], backersCount: Int, category: Category? = nil, canComment: Bool, commentsCount: Int, country: Country, creator: Creator? = nil, currency: CurrencyCode, deadlineAt: String? = nil, description: String, environmentalCommitments: [EnvironmentalCommitment?]? = nil, aiDisclosure: AiDisclosure? = nil, faqs: Faq? = nil, finalCollectionDate: String? = nil, fxRate: Double, goal: Goal? = nil, image: Image? = nil, isProjectWeLove: Bool, isProjectOfTheDay: Bool? = nil, isWatched: Bool, isLaunched: Bool, launchedAt: String? = nil, location: Location? = nil, maxPledge: Int, minPledge: Int, name: String, pid: Int, pledged: Pledged, posts: Post? = nil, prelaunchActivated: Bool, risks: String, sendMetaCapiEvents: Bool, slug: String, state: ProjectState, stateChangedAt: String, story: String, tags: [Tag?], url: String, usdExchangeRate: Double? = nil, video: Video? = nil, watchesCount: Int? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Project", "availableCardTypes": availableCardTypes, "backersCount": backersCount, "category": category.flatMap { (value: Category) -> ResultMap in value.resultMap }, "canComment": canComment, "commentsCount": commentsCount, "country": country.resultMap, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "currency": currency, "deadlineAt": deadlineAt, "description": description, "environmentalCommitments": environmentalCommitments.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, "aiDisclosure": aiDisclosure.flatMap { (value: AiDisclosure) -> ResultMap in value.resultMap }, "faqs": faqs.flatMap { (value: Faq) -> ResultMap in value.resultMap }, "finalCollectionDate": finalCollectionDate, "fxRate": fxRate, "goal": goal.flatMap { (value: Goal) -> ResultMap in value.resultMap }, "image": image.flatMap { (value: Image) -> ResultMap in value.resultMap }, "isProjectWeLove": isProjectWeLove, "isProjectOfTheDay": isProjectOfTheDay, "isWatched": isWatched, "isLaunched": isLaunched, "launchedAt": launchedAt, "location": location.flatMap { (value: Location) -> ResultMap in value.resultMap }, "maxPledge": maxPledge, "minPledge": minPledge, "name": name, "pid": pid, "pledged": pledged.resultMap, "posts": posts.flatMap { (value: Post) -> ResultMap in value.resultMap }, "prelaunchActivated": prelaunchActivated, "risks": risks, "sendMetaCapiEvents": sendMetaCapiEvents, "slug": slug, "state": state, "stateChangedAt": stateChangedAt, "story": story, "tags": tags.map { (value: Tag?) -> ResultMap? in value.flatMap { (value: Tag) -> ResultMap in value.resultMap } }, "url": url, "usdExchangeRate": usdExchangeRate, "video": video.flatMap { (value: Video) -> ResultMap in value.resultMap }, "watchesCount": watchesCount])
     }
 
     public var __typename: String {
@@ -11814,6 +11829,15 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue.flatMap { (value: [EnvironmentalCommitment?]) -> [ResultMap?] in value.map { (value: EnvironmentalCommitment?) -> ResultMap? in value.flatMap { (value: EnvironmentalCommitment) -> ResultMap in value.resultMap } } }, forKey: "environmentalCommitments")
+      }
+    }
+
+    public var aiDisclosure: AiDisclosure? {
+      get {
+        return (resultMap["aiDisclosure"] as? ResultMap).flatMap { AiDisclosure(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "aiDisclosure")
       }
     }
 
@@ -12324,6 +12348,145 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+    }
+
+    public struct AiDisclosure: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["AiDisclosure"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("fundingForAiAttribution", type: .scalar(Bool.self)),
+          GraphQLField("fundingForAiConsent", type: .scalar(Bool.self)),
+          GraphQLField("fundingForAiOption", type: .scalar(Bool.self)),
+          GraphQLField("generatedByAiConsent", type: .scalar(String.self)),
+          GraphQLField("generatedByAiDetails", type: .scalar(String.self)),
+          GraphQLField("involvesAi", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("involvesFunding", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("involvesGeneration", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("involvesOther", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("otherAiDetails", type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, fundingForAiAttribution: Bool? = nil, fundingForAiConsent: Bool? = nil, fundingForAiOption: Bool? = nil, generatedByAiConsent: String? = nil, generatedByAiDetails: String? = nil, involvesAi: Bool, involvesFunding: Bool, involvesGeneration: Bool, involvesOther: Bool, otherAiDetails: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "AiDisclosure", "id": id, "fundingForAiAttribution": fundingForAiAttribution, "fundingForAiConsent": fundingForAiConsent, "fundingForAiOption": fundingForAiOption, "generatedByAiConsent": generatedByAiConsent, "generatedByAiDetails": generatedByAiDetails, "involvesAi": involvesAi, "involvesFunding": involvesFunding, "involvesGeneration": involvesGeneration, "involvesOther": involvesOther, "otherAiDetails": otherAiDetails])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var fundingForAiAttribution: Bool? {
+        get {
+          return resultMap["fundingForAiAttribution"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "fundingForAiAttribution")
+        }
+      }
+
+      public var fundingForAiConsent: Bool? {
+        get {
+          return resultMap["fundingForAiConsent"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "fundingForAiConsent")
+        }
+      }
+
+      public var fundingForAiOption: Bool? {
+        get {
+          return resultMap["fundingForAiOption"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "fundingForAiOption")
+        }
+      }
+
+      public var generatedByAiConsent: String? {
+        get {
+          return resultMap["generatedByAiConsent"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "generatedByAiConsent")
+        }
+      }
+
+      public var generatedByAiDetails: String? {
+        get {
+          return resultMap["generatedByAiDetails"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "generatedByAiDetails")
+        }
+      }
+
+      public var involvesAi: Bool {
+        get {
+          return resultMap["involvesAi"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "involvesAi")
+        }
+      }
+
+      public var involvesFunding: Bool {
+        get {
+          return resultMap["involvesFunding"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "involvesFunding")
+        }
+      }
+
+      public var involvesGeneration: Bool {
+        get {
+          return resultMap["involvesGeneration"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "involvesGeneration")
+        }
+      }
+
+      public var involvesOther: Bool {
+        get {
+          return resultMap["involvesOther"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "involvesOther")
+        }
+      }
+
+      public var otherAiDetails: String? {
+        get {
+          return resultMap["otherAiDetails"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "otherAiDetails")
         }
       }
     }

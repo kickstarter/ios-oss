@@ -288,5 +288,23 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
       decompose(id: "UHJvamVjdEZhcS0zNzA4MDM=")
     )
     XCTAssertEqual(extendedProjectProperties.faqs.last!.createdAt!, TimeInterval(1_628_103_400))
+
+    guard let aiDisclosureRawData = extendedProjectProperties.aiDisclosure else {
+      XCTFail("AI disclosure should exist")
+
+      return
+    }
+
+    XCTAssertEqual(aiDisclosureRawData.id, decompose(id: "QWlEaXNjbG9zdXJlLTE="))
+    XCTAssertFalse(aiDisclosureRawData.fundingForAiOption!)
+    XCTAssertFalse(aiDisclosureRawData.fundingForAiConsent!)
+    XCTAssertTrue(aiDisclosureRawData.fundingForAiAttribution!)
+    XCTAssertFalse(aiDisclosureRawData.generatedByAiConsent!.isEmpty)
+    XCTAssertFalse(aiDisclosureRawData.generatedByAiDetails!.isEmpty)
+    XCTAssertTrue(aiDisclosureRawData.involvesAi)
+    XCTAssertTrue(aiDisclosureRawData.involvesFunding)
+    XCTAssertTrue(aiDisclosureRawData.involvesGeneration)
+    XCTAssertFalse(aiDisclosureRawData.involvesOther)
+    XCTAssertNil(aiDisclosureRawData.otherAiDetails)
   }
 }
