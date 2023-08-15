@@ -261,7 +261,6 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectTabDisclaimerCell.self,
         inSection: Section.environmentalCommitmentsDisclaimer.rawValue
       )
-
     case .environmentalCommitments:
       let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
 
