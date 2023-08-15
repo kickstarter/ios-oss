@@ -50,8 +50,7 @@ final class ProjectTabCheckmarkListCell: UITableViewCell, ValueCell {
         self?.fundingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         _ = options.map { [weak self] optionText in
-          let imageLabelStackView = UIStackView(frame: .zero)
-            |> imageLabelStackViewStyle
+          let imageLabelView = UIView(frame: .zero)
 
           let label = UILabel(frame: .zero)
             |> \.text .~ optionText
@@ -60,10 +59,19 @@ final class ProjectTabCheckmarkListCell: UITableViewCell, ValueCell {
           let icon = UIImageView(frame: .zero)
             |> iconImageStyle
 
-          imageLabelStackView.addArrangedSubview(icon)
-          imageLabelStackView.addArrangedSubview(label)
+          imageLabelView.addSubview(icon)
+          imageLabelView.addSubview(label)
 
-          self?.fundingStackView.addArrangedSubview(imageLabelStackView)
+          NSLayoutConstraint.activate([
+            icon.leadingAnchor.constraint(equalTo: imageLabelView.leadingAnchor),
+            icon.topAnchor.constraint(equalTo: imageLabelView.topAnchor, constant: Styles.grid(1)),
+            label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: Styles.grid(2)),
+            label.topAnchor.constraint(equalTo: imageLabelView.topAnchor),
+            label.trailingAnchor.constraint(equalTo: imageLabelView.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: imageLabelView.bottomAnchor)
+          ])
+
+          self?.fundingStackView.addArrangedSubview(imageLabelView)
         }
 
         self?.fundingStackView.setNeedsDisplay()
@@ -136,15 +144,6 @@ private let fundingStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 }
 
-private let imageLabelStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(0))
-    |> \.spacing .~ Styles.grid(2)
-    |> \.alignment .~ .top
-}
-
 private let iconImageStyle: ImageViewStyle = { imageView in
   imageView
     |> \.tintColor .~ .ksr_create_700
@@ -154,6 +153,7 @@ private let iconImageStyle: ImageViewStyle = { imageView in
     |> UIImageView.lens.contentHuggingPriority(for: .horizontal) .~ .defaultLow
     |> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
     |> UIImageView.lens.contentCompressionResistancePriority(for: .horizontal) .~ .required
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
 private let optionTextLabelStyle: LabelStyle = { label in
@@ -162,4 +162,5 @@ private let optionTextLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_body()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ .ksr_support_700
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
