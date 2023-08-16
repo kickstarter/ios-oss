@@ -116,40 +116,53 @@ final class ProjectTabDisclaimerCell: UITableViewCell, ValueCell {
       And that way could just do: `Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(environmental_resources_link: environmentLink)` after line 120.
      **/
 
-    switch type {
-    case .aiDisclosure,
-         .environmental:
-      let learnMoreString = NSMutableAttributedString(
+    let additionalText = type == .environmental ?
+      NSAttributedString(
         string: Strings.To_learn_how_Kickstarter_encourages_sustainable_practices(),
         attributes: regularFontAttribute
-      )
+      ) :
+      NSAttributedString(string: "")
 
-      guard let environmentLink = HelpType.environment
-        .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
-        return learnMoreString
+    var linkString: String
+    let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+    switch type {
+    case .aiDisclosure:
+      guard let link = HelpType.aiDisclosure
+        .url(withBaseUrl: baseUrl)?.absoluteString else {
+        return additionalText
       }
-
-      let environmentString = Strings
+      // FIXME: Use translatable string.
+      linkString = "<a href=\"\(link)\">Learn about AI policy on Kickstarter</a>"
+    case .environmental:
+      guard let environmentLink = HelpType.environment
+        .url(withBaseUrl: baseUrl)?.absoluteString else {
+        return additionalText
+      }
+      linkString = Strings
         .Visit_our_Environmental_Resources_Center_Alternative(environment_link: environmentLink)
-
-      guard let environmentAttributedString = try? NSMutableAttributedString(
-        data: Data(environmentString.utf8),
-        options: [
-          .documentType: NSAttributedString.DocumentType.html,
-          .characterEncoding: String.Encoding.utf8.rawValue
-        ],
-        documentAttributes: nil
-      ) else { return learnMoreString }
-
-      let fullRange = (environmentAttributedString.string as NSString)
-        .range(of: environmentAttributedString.string)
-      environmentAttributedString.addAttributes(coloredFontAttribute, range: fullRange)
-
-      let combinedString = environmentAttributedString + NSAttributedString(string: " ") +
-        learnMoreString
-
-      return combinedString
     }
+
+    guard let linkAttributedString = try? NSMutableAttributedString(
+      data: Data(linkString.utf8),
+      options: [
+        .documentType: NSAttributedString.DocumentType.html,
+        .characterEncoding: String.Encoding.utf8.rawValue
+      ],
+      documentAttributes: nil
+    ) else { return additionalText }
+
+    let fullRange = (linkAttributedString.string as NSString)
+      .range(of: linkAttributedString.string)
+    linkAttributedString.addAttributes(coloredFontAttribute, range: fullRange)
+
+    if additionalText.length == 0 {
+      return linkAttributedString
+    }
+
+    let combinedString = linkAttributedString + NSAttributedString(string: " ") +
+      additionalText
+
+    return combinedString
   }
 }
 

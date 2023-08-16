@@ -1,6 +1,6 @@
 import UIKit
 
-public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
+public enum HelpType: SettingsCellTypeProtocol, CaseIterable, Equatable {
   case helpCenter
   case community
   case contact
@@ -11,6 +11,7 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
   case trust
   case accessibility
   case environment
+  case aiDisclosure
 
   public static func helpType(from url: URL) -> HelpType? {
     let helpType = HelpType.allCases.filter { helpType in
@@ -54,6 +55,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
       return Strings.Accessibility_statement()
     case .environment:
       return ""
+    case .aiDisclosure:
+      return ""
     }
   }
 
@@ -92,19 +95,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
       return baseUrl.appendingPathComponent("accessibility")
     case .environment:
       return baseUrl.appendingPathComponent("environment")
+    case .aiDisclosure:
+      return baseUrl.appendingPathComponent("hc/en-us/articles/16848396410267")
     }
-  }
-}
-
-extension HelpType: Equatable {}
-public func == (lhs: HelpType, rhs: HelpType) -> Bool {
-  switch (lhs, rhs) {
-  case (.community, .community), (.contact, .contact), (.cookie, .cookie), (.helpCenter, .helpCenter),
-       (.howItWorks, .howItWorks),
-       (.privacy, .privacy), (.terms, .terms), (.trust, .trust), (.accessibility, .accessibility),
-       (.environment, .environment):
-    return true
-  default:
-    return false
   }
 }
