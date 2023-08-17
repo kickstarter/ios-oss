@@ -11,7 +11,12 @@ internal final class TextElementCellViewModelTests: TestCase {
 
   private let expectedSampleString = "sample attributed string"
   private let expectedBaseFontSize: CGFloat = 16.0
-  private let expectedHeaderFontSize: CGFloat = 20.0
+  private let expectedHeader1FontSize: CGFloat = 28.0
+  private let expectedHeader2FontSize: CGFloat = 26.0
+  private let expectedHeader3FontSize: CGFloat = 24.0
+  private let expectedHeader4FontSize: CGFloat = 22.0
+  private let expectedHeader5FontSize: CGFloat = 20.0
+  private let expectedHeader6FontSize: CGFloat = 18.0
   private var expectedBaseFont = UIFont.ksr_body()
   private var expectedParagraphStyle = NSMutableParagraphStyle()
   private var expectedHeaderFont = UIFont.ksr_body()
@@ -21,7 +26,6 @@ internal final class TextElementCellViewModelTests: TestCase {
     super.setUp()
 
     self.expectedBaseFont = UIFont.ksr_body(size: self.expectedBaseFontSize)
-    self.expectedHeaderFont = UIFont.ksr_body(size: self.expectedHeaderFontSize).bolded
     self.expectedParagraphStyle.minimumLineHeight = 22
     self.expectedFontAttributes = [
       NSAttributedString.Key.font: self.expectedBaseFont,
@@ -148,26 +152,37 @@ internal final class TextElementCellViewModelTests: TestCase {
     self.bodyText.assertValue(expectedLinkWithNoStylesAttributedText)
   }
 
-  func testHeaderElement() {
-    let headerTextComponent = TextComponent(
-      text: expectedSampleString,
-      link: nil,
-      styles: [.header]
-    )
-    let headerTextElement = TextViewElement(components: [headerTextComponent])
+  func testHeaderElements() {
+    let headerTypesToFontSizes = [
+      TextComponent.TextStyleType.header1: self.expectedHeader1FontSize,
+      TextComponent.TextStyleType.header2: self.expectedHeader2FontSize,
+      TextComponent.TextStyleType.header3: self.expectedHeader3FontSize,
+      TextComponent.TextStyleType.header4: self.expectedHeader4FontSize,
+      TextComponent.TextStyleType.header5: self.expectedHeader5FontSize,
+      TextComponent.TextStyleType.header6: self.expectedHeader6FontSize
+    ]
+    _ = headerTypesToFontSizes.map { headerType, fontSize in
+      let headerTextComponent = TextComponent(
+        text: expectedSampleString,
+        link: nil,
+        styles: [headerType]
+      )
+      let headerTextElement = TextViewElement(components: [headerTextComponent])
 
-    expectedFontAttributes[NSAttributedString.Key.font] = self.expectedHeaderFont
-    self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
-    self.expectedParagraphStyle.minimumLineHeight = 25
-    self.expectedFontAttributes[NSAttributedString.Key.paragraphStyle] = self.expectedParagraphStyle
+      self.expectedHeaderFont = UIFont.ksr_body(size: fontSize).bolded
+      expectedFontAttributes[NSAttributedString.Key.font] = self.expectedHeaderFont
+      self.expectedFontAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
+      self.expectedParagraphStyle.minimumLineHeight = 25
+      self.expectedFontAttributes[NSAttributedString.Key.paragraphStyle] = self.expectedParagraphStyle
 
-    let expectedHeaderAttributedText = NSAttributedString(
-      string: expectedSampleString,
-      attributes: expectedFontAttributes
-    )
+      let expectedHeaderAttributedText = NSAttributedString(
+        string: expectedSampleString,
+        attributes: expectedFontAttributes
+      )
 
-    self.vm.inputs.configureWith(textElement: headerTextElement)
-    self.bodyText.assertValue(expectedHeaderAttributedText)
+      self.vm.inputs.configureWith(textElement: headerTextElement)
+      self.bodyText.assertLastValue(expectedHeaderAttributedText)
+    }
   }
 
   func testListElement() {

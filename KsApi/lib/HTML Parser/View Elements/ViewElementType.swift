@@ -22,6 +22,7 @@ enum ViewElementType: String {
          TextComponent.TextBlockType.header3.rawValue,
          TextComponent.TextBlockType.header4.rawValue,
          TextComponent.TextBlockType.header5.rawValue,
+         TextComponent.TextBlockType.header6.rawValue,
          TextComponent.TextBlockType.unorderedList.rawValue,
          TextComponent.TextBlockType.orderedList.rawValue,
          TextComponent.TextBlockType.paragraph.rawValue:
