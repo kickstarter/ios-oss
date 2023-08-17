@@ -52,8 +52,28 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
     let fullRange = (componentText as NSString).localizedStandardRange(of: textItem.text)
     let baseFontSize: CGFloat = 16.0
     let baseFont = UIFont.ksr_body(size: baseFontSize)
-    let headerFontSize: CGFloat = 20.0
-    let headerFont = UIFont.ksr_body(size: headerFontSize).bolded
+    let header1FontSize: CGFloat = 28.0
+    let header1Font = UIFont.ksr_body(size: header1FontSize).bolded
+    let header2FontSize: CGFloat = 26.0
+    let header2Font = UIFont.ksr_body(size: header2FontSize).bolded
+    let header3FontSize: CGFloat = 24.0
+    let header3Font = UIFont.ksr_body(size: header3FontSize).bolded
+    let header4FontSize: CGFloat = 22.0
+    let header4Font = UIFont.ksr_body(size: header4FontSize).bolded
+    let header5FontSize: CGFloat = 20.0
+    let header5Font = UIFont.ksr_body(size: header5FontSize).bolded
+    let header6FontSize: CGFloat = 18.0
+    let header6Font = UIFont.ksr_body(size: header6FontSize).bolded
+
+    let textHeaderFonts = [
+      TextComponent.TextStyleType.header1: header1Font,
+      TextComponent.TextStyleType.header2: header2Font,
+      TextComponent.TextStyleType.header3: header3Font,
+      TextComponent.TextStyleType.header4: header4Font,
+      TextComponent.TextStyleType.header5: header5Font,
+      TextComponent.TextStyleType.header6: header6Font
+    ]
+
     paragraphStyle.minimumLineHeight = 22
     let baseFontAttributes = [
       NSAttributedString.Key.font: baseFont,
@@ -111,8 +131,8 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         if moreBulletPointsExist {
           completedAttributedText.append(NSAttributedString(string: "\n"))
         }
-      case .header:
-        combinedAttributes[NSAttributedString.Key.font] = headerFont
+      case .header1, .header2, .header3, .header4, .header5, .header6:
+        combinedAttributes[NSAttributedString.Key.font] = textHeaderFonts[textStyleType]
         combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_support_700
         paragraphStyle.minimumLineHeight = 25
         combinedAttributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
