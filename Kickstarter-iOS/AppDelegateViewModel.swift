@@ -331,17 +331,21 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map(navigation(fromPushEnvelope:))
 
-    let deepLinkFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
+    let urlFromBrazeNotification = self.remoteNotificationProperty.signal.skipNil()
       .map(BrazePushEnvelope.decodeJSONDictionary)
       .skipNil()
       .map { $0.abURI }
       .skipNil()
       .map(URL.init(string:))
       .skipNil()
-      .map(Navigation.deepLinkMatch)
 
-    let deepLinkFromBrazeInAppNotification = self.brazeInAppNotificationURLProperty.signal.skipNil()
-      .map(Navigation.deepLinkMatch)
+    let urlFromBraze = Signal
+      .merge(
+        urlFromBrazeNotification,
+        self.brazeInAppNotificationURLProperty.signal.skipNil()
+      )
+
+    let deepLinkFromBraze = urlFromBraze.map(Navigation.deepLinkMatch)
 
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
@@ -379,8 +383,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
-        deepLinkFromBrazeNotification,
-        deepLinkFromBrazeInAppNotification,
+        deepLinkFromBraze,
         deepLinkFromShortcut
       )
       .skipNil()
@@ -554,8 +557,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
-    let resolvedRedirectUrl = deepLinkUrl
-      .filter { Navigation.deepLinkMatch($0) == nil }
+    let resolvedRedirectUrl = Signal.merge(
+      deepLinkUrl,
+      urlFromBraze
+    )
+    .filter { Navigation.deepLinkMatch($0) == nil }
 
     self.goToMobileSafari = resolvedRedirectUrl
 

@@ -2527,6 +2527,19 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testGoToMobileSafari_BrazeInAppNotificaton() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let url = URL(string: "https://fake-url.com")!
+    self.vm.inputs.urlFromBrazeInAppNotification(url)
+
+    self.goToMobileSafari.assertValues([url])
+    self.presentViewController.assertValues([])
+  }
+
   func testRemoteConfigClientConfiguredNotification_Success() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
