@@ -296,6 +296,7 @@ public final class KSRAnalytics {
       case overview
       case risks
       case campaign
+      case useOfAI
       case faqs
       case environmentalCommitments
 
@@ -304,6 +305,7 @@ public final class KSRAnalytics {
         case .overview: return "overview"
         case .risks: return "risks"
         case .campaign: return "campaign"
+        case .useOfAI: return "use_of_ai"
         case .faqs: return "faq"
         case .environmentalCommitments: return "environment"
         }

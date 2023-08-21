@@ -65,8 +65,13 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
 
       let moreTabs: [NavigationSection] = [.campaign, .faq, .risks]
 
-      let includeAIDisclosure = extendedProjectProperties
-        .aiDisclosure != nil && featureUseOfAIProjectTabEnabled()
+      var includeAIDisclosure = false
+      
+      if let aiDisclosure = extendedProjectProperties
+        .aiDisclosure, aiDisclosure.involvesAi {
+        includeAIDisclosure = true
+      }
+      
       let includeEnvironmentCommitments = !extendedProjectProperties.environmentalCommitments.isEmpty
 
       let aiDisclosureTab: [NavigationSection] = includeAIDisclosure ? [.aiDisclosure] : []
@@ -121,7 +126,8 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
     case 1: return .tabSelected(.campaign)
     case 2: return .tabSelected(.faqs)
     case 3: return .tabSelected(.risks)
-    case 4: return .tabSelected(.environmentalCommitments)
+    case 4: return .tabSelected(.useOfAI)
+    case 5: return .tabSelected(.environmentalCommitments)
     default: return nil
     }
   }
