@@ -13,7 +13,7 @@
 "Add_new_card" = "Añadir una nueva tarjeta";
 "Add_ons" = "Complementos";
 "Add_ons_unavailable" = "Complementos no disponibles";
-"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "Después del 14 de agosto de 2023, este panel solo estará disponible en nuestro sitio web.";
+"After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "Después del 5 de septiembre de 2023, este panel solo estará disponible en nuestro sitio web.";
 "Alert" = "Alerta";
 "All_Art_Projects" = "Todos los proyectos";
 "All_Comics_Projects" = "Todos los proyectos";
@@ -188,6 +188,7 @@
 "Discover_more_projects" = "Descubre más proyectos.";
 "Discover_the_future_of_Design_and_Tech" = "Descubre el futuro del diseño y la tecnología.";
 "Dismiss" = "Descartar";
+"Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI" = "¿Tienes el consentimiento de los propietarios de los trabajos que se usaron (o se usarán) para producir la parte de tus proyectos generada por IA? Por favor, explica.";
 "Done" = "Listo";
 "Double_tap_to_toggle_setting" = "Toca dos veces para cambiar la configuración";
 "Download_your_personal_data" = "Descarga tus datos personales";
@@ -260,6 +261,7 @@
 "Following_Disabled_Info" = "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad.";
 "Following_More_Info" = "Más información sobre el seguimiento";
 "Follows_friend_name" = "Sigue a %{friend_name}.";
+"For_the_database_or_source_I_will_use" = "Recibí o recibiré el consentimiento de las personas cuyos trabajos o contenido incorporé a la base de datos o fuente de información que utilizaré o crearé.";
 "Frequently_asked_questions" = "Preguntas frecuentes";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Arte</i>.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Comics</i>.";
@@ -297,6 +299,8 @@
 "Hide_password" = "Ocultar contraseña";
 "Home" = "Inicio";
 "How_backers_found_your_project" = "Cómo encontraron tu proyecto los patrocinadores";
+"I_am_incorporating_AI_in_my_project" = "Voy a incorporar la IA en mi proyecto de otra manera.";
+"I_plan_to_use_AI_generated_content" = "Tengo pensado usar contenido generado por IA en mi proyecto.";
 "I_understand" = "Entiendo";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si el proyecto alcanza su meta de financiamiento, se te cobrará el %{project_deadline}.";
@@ -339,6 +343,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Kickstarter presta suma atención a las denuncias de infracción de derecho intelectual. Para encontrar más información e instrucciones sobre cómo denunciar una infracción, visita nuestra Política de copyright y nuestra Política de marca registrada. Solo se pueden procesar las denuncias presentadas por el propietario del copyright o marca registrada.";
 "Know_when_creators_and_backers_message_you" = "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones.";
+"Learn_about_AI_policy_on_Kickstarter" = "Información sobre la política de IA en Kickstarter.";
 "Learn_about_accountability_on_Kickstarter" = "Más información sobre el concepto de responsabilidad en Kickstarter";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Más información sobre las reglas de los comentarios</a>";
@@ -384,6 +389,7 @@
 "Messages" = "Mensajes";
 "Million_plus" = "Más de %{total_amount} millones";
 "More_than_number_of_items_items" = "Más de %{number_of_items} notificaciones";
+"My_project_seeks_funding_for_AI_technology" = "Mi proyecto busca financiamiento para la tecnología de IA.";
 "Name" = "Nombre";
 "Never" = "Nunca";
 "New_email" = "Nuevo correo electrónico";
@@ -661,8 +667,10 @@
 "The_live_stream_will_start_time" = "Live-Stream comienza en %{time}.";
 "The_maximum_pledge_is_max_pledge" = "La contribución máxima es %{max_pledge}.";
 "The_minimum_pledge_is_min_pledge" = "La contribución mínima es %{min_pledge}.";
+"The_owners_of_those_works" = "Los propietarios de estos trabajos han recibido o recibirán el reconocimiento por su trabajo.";
 "The_replay_will_start_soon" = "Repetición comienza en breve";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Recibe la actualidad en tu correo electrónico a través de nuevos proyectos e historias interesantes.";
+"There_is_or_will_be_an_opt" = "Esos propietarios tienen o tendrán la opción de aceptar o no.";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "These_projects_could_use_your_support" = "A estos proyectos les vendría bien tu apoyo.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Esto te permite ver la meta del proyecto y los montos de las contribuciones en la moneda de tu preferencia.";
@@ -708,6 +716,7 @@
 "Upcoming_live_streams" = "Live streams futuros";
 "Upcoming_with_creator_name" = "Próximamente: Video de <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Actualizar contribución";
+"Use_of_ai" = "Uso de la IA";
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Usa el hashtag #backeditbecause para compartir qué proyectos apoyas y por qué son importantes para ti.";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Aquí puedes ver las recompensas recibidas.";
 "Verification_email_sent" = "Te acabamos de enviar un correo electrónico de verificación. Haz clic en el enlace incluido y se verificará tu dirección.";
@@ -755,6 +764,7 @@
 "Well_help_you_find_a_project_to_back" = "Te ayudaremos a encontrar un proyecto para patrocinar.";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Importaremos tu nombre y tu foto de perfil, y tendremos acceso a tu lista de amigos. Nunca publicaremos nada sin tu permiso.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
+"What_parts_of_your_project_will_use_AI_generated_content" = "¿Qué partes de tu proyecto utilizarán contenido generado por IA? Responde con la mayor precisión posible.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "Which_categories_interest_you" = "¿Qué categorías te interesan?";

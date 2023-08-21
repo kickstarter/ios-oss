@@ -263,18 +263,18 @@ public enum Strings {
     )
   }
   /**
-   "After August 14, 2023, this Dashboard feature will only be available on our website."
+   "After September 5, 2023, this Dashboard feature will only be available on our website."
 
-   - **en**: "After August 14, 2023, this Dashboard feature will only be available on our website."
-   - **de**: "Nach dem 14. August 2023 ist das Dashboard nur noch auf unserer Website verfügbar."
-   - **es**: "Después del 14 de agosto de 2023, este panel solo estará disponible en nuestro sitio web."
-   - **fr**: "À compter du 14 août 2023, ce tableau de bord ne sera disponible que sur notre site Web."
-   - **ja**: "2023年8月14日以降、このダッシュボード機能は Kickstarter ウェブサイトでのみご利用いただけます。"
+   - **en**: "After September 5, 2023, this Dashboard feature will only be available on our website."
+   - **de**: "Nach dem 5. September 2023 ist das Dashboard nur noch auf unserer Website verfügbar."
+   - **es**: "Después del 5 de septiembre de 2023, este panel solo estará disponible en nuestro sitio web."
+   - **fr**: "À compter du 5 septembre 2023, ce tableau de bord ne sera disponible que sur notre site Web."
+   - **ja**: "2023年9月5日以降、このダッシュボード機能は Kickstarter ウェブサイトでのみご利用いただけます。"
   */
-  public static func After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website() -> String {
+  public static func After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website() -> String {
     return localizedString(
-      key: "After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website",
-      defaultValue: "After August 14, 2023, this Dashboard feature will only be available on our website.",
+      key: "After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website",
+      defaultValue: "After September 5, 2023, this Dashboard feature will only be available on our website.",
       count: nil,
       substitutions: [:]
     )
@@ -1073,7 +1073,8 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -3124,6 +3125,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "Do you have the consent of the owners of the works that were (or will be) used to produce the AI-generated portion of your projects?  Please explain."
+
+   - **en**: "Do you have the consent of the owners of the works that were (or will be) used to produce the AI-generated portion of your projects?  Please explain."
+   - **de**: "Hast du die Einwilligung der Eigentümer der Werke, die für die Produktion des KI-generierten Teils deiner Projekte verwendet wurden (oder werden)? Bitte erläutere."
+   - **es**: "¿Tienes el consentimiento de los propietarios de los trabajos que se usaron (o se usarán) para producir la parte de tus proyectos generada por IA? Por favor, explica."
+   - **fr**: "Avez-vous obtenu le consentement des propriétaires des œuvres utilisées (ou à utiliser) pour produire la partie de votre projet générée par IA ? Veuillez expliquer."
+   - **ja**: "プロジェクトの AI 生成部分に使われた（または使われる予定の）作品について、その所有者からは同意を得ていますか？以下に詳しく説明してください。"
+  */
+  public static func Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI() -> String {
+    return localizedString(
+      key: "Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI",
+      defaultValue: "Do you have the consent of the owners of the works that were (or will be) used to produce the AI-generated portion of your projects?  Please explain.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Done"
 
    - **en**: "Done"
@@ -4280,6 +4298,23 @@ Cliquez pour réessayer."
     )
   }
   /**
+   "For the database or source that I will use or will create, the consent of the persons whose works or information are incorporated has been or will be obtained."
+
+   - **en**: "For the database or source that I will use or will create, the consent of the persons whose works or information are incorporated has been or will be obtained."
+   - **de**: "Für die Datenbank oder die Quelle, die ich verwenden oder entwickeln werde, wurde oder wird die Einwilligung der Personen eingeholt, deren Werke oder Informationen miteinbezogen wurden."
+   - **es**: "Recibí o recibiré el consentimiento de las personas cuyos trabajos o contenido incorporé a la base de datos o fuente de información que utilizaré o crearé."
+   - **fr**: "J'ai obtenu ou j'obtiendrai le consentement des personnes dont les œuvres ou les informations sont incorporées à la base de données ou à la source que je compte utiliser ou créer."
+   - **ja**: "私が使用する（または作成する）データベースやソースについては、採用される作品や情報の所有者からすでに同意を得ている、または同意を得る予定です。"
+  */
+  public static func For_the_database_or_source_I_will_use() -> String {
+    return localizedString(
+      key: "For_the_database_or_source_I_will_use",
+      defaultValue: "For the database or source that I will use or will create, the consent of the persons whose works or information are incorporated has been or will be obtained.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Frequently asked questions"
 
    - **en**: "Frequently asked questions"
@@ -4904,6 +4939,40 @@ Cliquez pour réessayer."
     return localizedString(
       key: "How_backers_found_your_project",
       defaultValue: "How backers found your project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "I am incorporating AI in my project in another way."
+
+   - **en**: "I am incorporating AI in my project in another way."
+   - **de**: "Ich werde KI auf andere Weise in mein Projekt integrieren."
+   - **es**: "Voy a incorporar la IA en mi proyecto de otra manera."
+   - **fr**: "Je prévois d'incorporer une IA dans mon projet d'une autre façon."
+   - **ja**: "他の形で自分のプロジェクトに AI を取り入れる予定です。"
+  */
+  public static func I_am_incorporating_AI_in_my_project() -> String {
+    return localizedString(
+      key: "I_am_incorporating_AI_in_my_project",
+      defaultValue: "I am incorporating AI in my project in another way.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "I plan to use AI-generated content in my project."
+
+   - **en**: "I plan to use AI-generated content in my project."
+   - **de**: "Ich plane, bei meinem Projekt KI-generierte Inhalte zu nutzen."
+   - **es**: "Tengo pensado usar contenido generado por IA en mi proyecto."
+   - **fr**: "Je prévois d'utiliser du contenu généré par une IA dans mon projet."
+   - **ja**: "自分のプロジェクトで AI で生成されたコンテンツを使用する予定です。"
+  */
+  public static func I_plan_to_use_AI_generated_content() -> String {
+    return localizedString(
+      key: "I_plan_to_use_AI_generated_content",
+      defaultValue: "I plan to use AI-generated content in my project.",
       count: nil,
       substitutions: [:]
     )
@@ -5626,6 +5695,23 @@ with friends."
     )
   }
   /**
+   "Learn about AI policy on Kickstarter."
+
+   - **en**: "Learn about AI policy on Kickstarter."
+   - **de**: "Weitere Informationen zu KI-Richtlinie von Kickstarter."
+   - **es**: "Información sobre la política de IA en Kickstarter."
+   - **fr**: "Comprendre la politique sur l'IA de Kickstarter."
+   - **ja**: "Kickstarter の AI ポリシーについて詳しく見る."
+  */
+  public static func Learn_about_AI_policy_on_Kickstarter() -> String {
+    return localizedString(
+      key: "Learn_about_AI_policy_on_Kickstarter",
+      defaultValue: "Learn about AI policy on Kickstarter.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Learn about accountability on Kickstarter"
 
    - **en**: "Learn about accountability on Kickstarter"
@@ -6320,6 +6406,23 @@ with friends."
       defaultValue: "More than %{number_of_items} items",
       count: nil,
       substitutions: ["number_of_items": number_of_items]
+    )
+  }
+  /**
+   "My project seeks funding for AI technology."
+
+   - **en**: "My project seeks funding for AI technology."
+   - **de**: "Mit meinem Projekt soll KI-Technologie finanziert werden."
+   - **es**: "Mi proyecto busca financiamiento para la tecnología de IA."
+   - **fr**: "Le but de mon projet est de financer une technologie d'IA."
+   - **ja**: "私のプロジェクトの目的は、AI テクノロジーのための資金調達です。"
+  */
+  public static func My_project_seeks_funding_for_AI_technology() -> String {
+    return localizedString(
+      key: "My_project_seeks_funding_for_AI_technology",
+      defaultValue: "My project seeks funding for AI technology.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -10768,6 +10871,23 @@ catch your eye?"
     )
   }
   /**
+   "The owners of these works are or will be receiving credit for their work."
+
+   - **en**: "The owners of these works are or will be receiving credit for their work."
+   - **de**: "Die Eigentümer dieser Werke werden oder wurden namentlich genannt."
+   - **es**: "Los propietarios de estos trabajos han recibido o recibirán el reconocimiento por su trabajo."
+   - **fr**: "Les propriétaires de ces œuvres sont ou seront crédités pour leur travail."
+   - **ja**: "これら作品の所有者はクレジット表記されます（またはその予定です）。"
+  */
+  public static func The_owners_of_those_works() -> String {
+    return localizedString(
+      key: "The_owners_of_those_works",
+      defaultValue: "The owners of these works are or will be receiving credit for their work.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "The replay will start soon"
 
    - **en**: "The replay will start soon"
@@ -10797,6 +10917,23 @@ catch your eye?"
     return localizedString(
       key: "The_zeitgeist_delivered_to_your_inbox_via_new",
       defaultValue: "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "There is or will be an opt-in or opt-out for those owners."
+
+   - **en**: "There is or will be an opt-in or opt-out for those owners."
+   - **de**: "Diese Eigentümer werden die Möglichkeit haben, sich für oder gegen die Nutzung ihrer Werke oder Informationen auszusprechen."
+   - **es**: "Esos propietarios tienen o tendrán la opción de aceptar o no."
+   - **fr**: "Ces propriétaires se verront proposer un mécanisme d'acceptation ou de refus."
+   - **ja**: "これら所有者はオプトインまたはオプトアウトのいずれかを選べます。"
+  */
+  public static func There_is_or_will_be_an_opt() -> String {
+    return localizedString(
+      key: "There_is_or_will_be_an_opt",
+      defaultValue: "There is or will be an opt-in or opt-out for those owners.",
       count: nil,
       substitutions: [:]
     )
@@ -11562,6 +11699,23 @@ catch your eye?"
     return localizedString(
       key: "Update_pledge",
       defaultValue: "Update pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Use of AI"
+
+   - **en**: "Use of AI"
+   - **de**: "Nutzung von KI"
+   - **es**: "Uso de la IA"
+   - **fr**: "Utilisation de l'IA"
+   - **ja**: "AI の使用"
+  */
+  public static func Use_of_ai() -> String {
+    return localizedString(
+      key: "Use_of_ai",
+      defaultValue: "Use of AI",
       count: nil,
       substitutions: [:]
     )
@@ -12367,6 +12521,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Well_remind_you_forty_eight_hours_before_this_project_ends",
       defaultValue: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "What parts of your project will use AI-generated content? Please be as specific as possible."
+
+   - **en**: "What parts of your project will use AI-generated content? Please be as specific as possible."
+   - **de**: "Bei welchen Teilen deines Projekts kommen KI-generierte Inhalte zum Einsatz? Bitte beantworte die Frage so konkret wie möglich."
+   - **es**: "¿Qué partes de tu proyecto utilizarán contenido generado por IA? Responde con la mayor precisión posible."
+   - **fr**: "Pour quelles parties de votre projet utiliserez-vous ce contenu généré par IA ? Veuillez être aussi précis que possible."
+   - **ja**: "プロジェクトのどの部分で AI 生成のコンテンツを使用しますか？できるだけ詳しく説明してください。"
+  */
+  public static func What_parts_of_your_project_will_use_AI_generated_content() -> String {
+    return localizedString(
+      key: "What_parts_of_your_project_will_use_AI_generated_content",
+      defaultValue: "What parts of your project will use AI-generated content? Please be as specific as possible.",
       count: nil,
       substitutions: [:]
     )

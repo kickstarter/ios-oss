@@ -27,31 +27,25 @@ public final class ProjectTabCheckmarkListCellViewModel:
     let fundingOptions = self.configureWithProperty.signal
       .skipNil()
 
-    // FIXME: For translations.
     self.categoryLabelText = fundingOptions
-      .map { _ in "My project seeks funding for AI technology." }
+      .map { _ in Strings.My_project_seeks_funding_for_AI_technology() }
 
-    // FIXME: For translations.
     self.descriptionOptionsText = fundingOptions
       .map { options in
         var optionsTextValues = [String]()
 
         if options.fundingForAiConsent {
-          let consentText =
-            "For the database or source that I will use or will create, the consent of the persons whose works or information incorporated have been obtained."
-
+          let consentText = internationalizedString(for: .consent)
           optionsTextValues.append(consentText)
         }
 
         if options.fundingForAiAttribution {
-          let attributionText = "The owners of those works is or will be attributed."
-
+          let attributionText = internationalizedString(for: .attribution)
           optionsTextValues.append(attributionText)
         }
 
         if options.fundingForAiOption {
-          let ownerText = "There is or will be an opt-in or opt-out for those owners."
-
+          let ownerText = internationalizedString(for: .option)
           optionsTextValues.append(ownerText)
         }
 
@@ -73,7 +67,11 @@ public final class ProjectTabCheckmarkListCellViewModel:
 
 private func internationalizedString(for category: ProjectTabAIFundingCategory) -> String {
   switch category {
-  case .attribution, .consent, .option:
-    return category.rawValue
+  case .attribution:
+    return Strings.The_owners_of_those_works()
+  case .consent:
+    return Strings.For_the_database_or_source_I_will_use()
+  case .option:
+    return Strings.There_is_or_will_be_an_opt()
   }
 }

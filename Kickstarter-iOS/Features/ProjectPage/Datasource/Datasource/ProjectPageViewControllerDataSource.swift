@@ -49,7 +49,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       case .risks:
         return Strings.Risks_and_challenges()
       case .aiDisclosure:
-        return "Use of AI"
+        return Strings.Use_of_ai()
       }
     }
   }

@@ -59,9 +59,9 @@ private func internationalizedString(for category: ProjectTabCategory) -> String
   case .reusabilityAndRecyclability:
     return Strings.Reusability_and_recyclability()
   case .aiDisclosureDetailsAndConsent:
-    return category.rawValue
+    return Strings.I_plan_to_use_AI_generated_content()
   case .aiDisclosureOtherDetails:
-    return category.rawValue
+    return Strings.I_am_incorporating_AI_in_my_project()
   case .somethingElse:
     return Strings.Something_else()
   }

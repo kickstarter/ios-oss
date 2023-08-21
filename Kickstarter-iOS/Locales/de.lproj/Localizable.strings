@@ -13,7 +13,7 @@
 "Add_new_card" = "Kreditkarte hinzufügen";
 "Add_ons" = "Add-ons";
 "Add_ons_unavailable" = "Add-ons nicht verfügbar";
-"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "Nach dem 14. August 2023 ist das Dashboard nur noch auf unserer Website verfügbar.";
+"After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "Nach dem 5. September 2023 ist das Dashboard nur noch auf unserer Website verfügbar.";
 "Alert" = "Hinweis";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -188,6 +188,7 @@
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Discover_the_future_of_Design_and_Tech" = "Entdecke das Neueste in Design und Technologie.";
 "Dismiss" = "Verwerfen";
+"Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI" = "Hast du die Einwilligung der Eigentümer der Werke, die für die Produktion des KI-generierten Teils deiner Projekte verwendet wurden (oder werden)? Bitte erläutere.";
 "Done" = "Fertig!";
 "Double_tap_to_toggle_setting" = "Zum Umschalten zweimal tippen";
 "Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
@@ -260,6 +261,7 @@
 "Following_Disabled_Info" = "Die Funktion „Folgen“ muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz.";
 "Following_More_Info" = "Mehr Info zu Folgen";
 "Follows_friend_name" = "%{friend_name} folgen.";
+"For_the_database_or_source_I_will_use" = "Für die Datenbank oder die Quelle, die ich verwenden oder entwickeln werde, wurde oder wird die Einwilligung der Personen eingeholt, deren Werke oder Informationen miteinbezogen wurden.";
 "Frequently_asked_questions" = "Häufige Fragen";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> hat ein <i>Comics-Projekt</i> unterstützt.";
@@ -297,6 +299,8 @@
 "Hide_password" = "Passwort verbergen";
 "Home" = "Home";
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
+"I_am_incorporating_AI_in_my_project" = "Ich werde KI auf andere Weise in mein Projekt integrieren.";
+"I_plan_to_use_AI_generated_content" = "Ich plane, bei meinem Projekt KI-generierte Inhalte zu nutzen.";
 "I_understand" = "Verstanden";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Wenn das Projekt erfolgreich finanziert wird, wird deine Karte am %{project_deadline} belastet.";
@@ -339,6 +343,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Meldungen zu möglichen Verletzungen von Urheberrechten werden bei Kickstarter sehr ernst genommen. Weitere Informationen zum Melden von solchen Urheberrechtsverletzungen findest du in unserer Richtlinie zu Urheberrechten und unserer Richtlinie zu Markenrechten. Es können nur Meldungen bearbeitet werden, die vom Eigentümer des Urheberrechts oder Markenzeichens gemacht wurden.";
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
+"Learn_about_AI_policy_on_Kickstarter" = "Weitere Informationen zu KI-Richtlinie von Kickstarter.";
 "Learn_about_accountability_on_Kickstarter" = "Näheres zur Rechenschaftspflicht auf Kickstarter";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Mehr Info zu Kommentar-Richtlinien</a>";
@@ -384,6 +389,7 @@
 "Messages" = "Nachrichten";
 "Million_plus" = "Über %{total_amount} Millionen";
 "More_than_number_of_items_items" = "Mehr als %{number_of_items} Benachrichtigungen";
+"My_project_seeks_funding_for_AI_technology" = "Mit meinem Projekt soll KI-Technologie finanziert werden.";
 "Name" = "Name";
 "Never" = "Niemals";
 "New_email" = "Neue E-Mail";
@@ -661,8 +667,10 @@
 "The_live_stream_will_start_time" = "Dieser Live-Stream started in %{time}.";
 "The_maximum_pledge_is_max_pledge" = "Höchstbetrag ist %{max_pledge}.";
 "The_minimum_pledge_is_min_pledge" = "Mindestfinanzierungsbeitrag ist %{min_pledge}.";
+"The_owners_of_those_works" = "Die Eigentümer dieser Werke werden oder wurden namentlich genannt.";
 "The_replay_will_start_soon" = "Wiedergabe started in Kürze";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Hol dir den Zeitgeist direkt in deine Inbox: neue Projekte und Stories, die in aller Munde sind.";
+"There_is_or_will_be_an_opt" = "Diese Eigentümer werden die Möglichkeit haben, sich für oder gegen die Nutzung ihrer Werke oder Informationen auszusprechen.";
 "There_was_a_problem_with_this_payment" = "Es ist ein Problem bei der Zahlung aufgetreten.";
 "These_projects_could_use_your_support" = "Diese Projekte könnten mit deiner Unterstützung verwirklicht werden.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Hier kannst du das Finanzierungsziel und die Finanzierungsbeiträge in deiner bevorzugten Währung ansehen.";
@@ -708,6 +716,7 @@
 "Upcoming_live_streams" = "Zukünftige Live-Streams";
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Beitrag aktualisieren";
+"Use_of_ai" = "Nutzung von KI";
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Teile unter dem Hashtag #backeditbecause die Projekte, die du unterstützt hast und warum sie für dich wichtig sind.";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Hier kannst du nachverfolgen, welche Belohnungen du bereits erhalten hast.";
 "Verification_email_sent" = "Wir haben dir gerade eine Bestätigungs-E-Mail geschickt. Bitte klicke auf den Link in der E-Mail, um deine Adresse zu bestätigen.";
@@ -755,6 +764,7 @@
 "Well_help_you_find_a_project_to_back" = "Wir helfen dir dabei, Projekte nach deinem Geschmack zu finden.";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Wir importieren deinen Namen und dein Profilfoto und können auf die Liste deiner Freunde zugreifen. Wir werden jedoch niemals etwas ohne deine Zustimmung posten.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
+"What_parts_of_your_project_will_use_AI_generated_content" = "Bei welchen Teilen deines Projekts kommen KI-generierte Inhalte zum Einsatz? Bitte beantworte die Frage so konkret wie möglich.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen aktiviert wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion deaktiviert wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "Which_categories_interest_you" = "Welche Kategorien interessieren dich?";
