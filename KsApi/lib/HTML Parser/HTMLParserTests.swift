@@ -218,27 +218,39 @@ final class HTMLParserTests: XCTestCase {
     XCTAssertEqual(viewElement.embeddedURLContentHeight, 400)
   }
 
-  func testHTMLParser_WithTextHeadline_Success() {
-    let viewElements = self.htmlParser.parse(bodyHtml: HTMLParserTemplates.validHeaderText.data)
+  func testHTMLParser_WithTextHeadlines_Success() {
+    let viewElementsToTextStyleHeaders =
+      [
+        HTMLParserTemplates.validHeader1Text.data: TextComponent.TextStyleType.header1,
+        HTMLParserTemplates.validHeader2Text.data: TextComponent.TextStyleType.header2,
+        HTMLParserTemplates.validHeader3Text.data: TextComponent.TextStyleType.header3,
+        HTMLParserTemplates.validHeader4Text.data: TextComponent.TextStyleType.header4,
+        HTMLParserTemplates.validHeader5Text.data: TextComponent.TextStyleType.header5,
+        HTMLParserTemplates.validHeader6Text.data: TextComponent.TextStyleType.header6
+      ]
 
-    guard let viewElement = viewElements.first as? TextViewElement else {
-      XCTFail("text view element should be created.")
+    _ = viewElementsToTextStyleHeaders.map { textData, headerStyle in
+      let viewElements = self.htmlParser.parse(bodyHtml: textData)
 
-      return
+      guard let viewElement = viewElements.first as? TextViewElement else {
+        XCTFail("text view element should be created.")
+
+        return
+      }
+
+      guard viewElement.components.count == 1 else {
+        XCTFail()
+
+        return
+      }
+
+      XCTAssertEqual(
+        viewElement.components[0].text,
+        "Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute."
+      )
+      XCTAssertNil(viewElement.components[0].link)
+      XCTAssertEqual(viewElement.components[0].styles, [headerStyle])
     }
-
-    guard viewElement.components.count == 1 else {
-      XCTFail()
-
-      return
-    }
-
-    XCTAssertEqual(
-      viewElement.components[0].text,
-      "Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute."
-    )
-    XCTAssertNil(viewElement.components[0].link)
-    XCTAssertEqual(viewElement.components[0].styles, [TextComponent.TextStyleType.header])
   }
 
   func testHTMLParser_WithMultipleParagraphsLinksAndStyles_Success() {

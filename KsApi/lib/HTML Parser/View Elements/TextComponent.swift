@@ -9,6 +9,11 @@ public struct TextComponent {
   enum TextBlockType: String, CaseIterable {
     case paragraph = "p"
     case header1 = "h1"
+    case header2 = "h2"
+    case header3 = "h3"
+    case header4 = "h4"
+    case header5 = "h5"
+    case header6 = "h6"
     case unorderedList = "ul"
     case orderedList = "ol"
   }
@@ -20,6 +25,11 @@ public struct TextComponent {
     case bulletStart = "li"
     case bulletEnd = "</li>"
     case link = "a"
-    case header = "h1"
+    case header1 = "h1"
+    case header2 = "h2"
+    case header3 = "h3"
+    case header4 = "h4"
+    case header5 = "h5"
+    case header6 = "h6"
   }
 }

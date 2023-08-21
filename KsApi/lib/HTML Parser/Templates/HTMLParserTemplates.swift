@@ -11,7 +11,12 @@ public enum HTMLParserTemplates {
   case validHiddenVideo
   case validIFrame
   case validIFrameWithEmbeddedSource
-  case validHeaderText
+  case validHeader1Text
+  case validHeader2Text
+  case validHeader3Text
+  case validHeader4Text
+  case validHeader5Text
+  case validHeader6Text
   case validParagraphTextWithStyles
   case validParagraphTextWithLinksAndStyles
   case validListWithNestedLinks
@@ -39,8 +44,18 @@ public enum HTMLParserTemplates {
       return self.validExternalSource
     case .validIFrameWithEmbeddedSource:
       return self.validEmbeddedExternalSource
-    case .validHeaderText:
-      return self.validHeaderText
+    case .validHeader1Text:
+      return self.validHeader1Text
+    case .validHeader2Text:
+      return self.validHeader2Text
+    case .validHeader3Text:
+      return self.validHeader3Text
+    case .validHeader4Text:
+      return self.validHeader4Text
+    case .validHeader5Text:
+      return self.validHeader5Text
+    case .validHeader6Text:
+      return self.validHeader6Text
     case .validParagraphTextWithLinksAndStyles:
       return self.validParagraphTextWithLinksAndStyles
     case .validParagraphTextWithStyles:
@@ -74,9 +89,44 @@ public enum HTMLParserTemplates {
     """
   }
 
-  private var validHeaderText: String {
+  private var validHeader1Text: String {
     """
     <h1 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h1>
+    \n<br>\n
+    """
+  }
+
+  private var validHeader2Text: String {
+    """
+    <h2 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h2>
+    \n<br>\n
+    """
+  }
+
+  private var validHeader3Text: String {
+    """
+    <h3 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h3>
+    \n<br>\n
+    """
+  }
+
+  private var validHeader4Text: String {
+    """
+    <h4 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h4>
+    \n<br>\n
+    """
+  }
+
+  private var validHeader5Text: String {
+    """
+    <h5 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h5>
+    \n<br>\n
+    """
+  }
+
+  private var validHeader6Text: String {
+    """
+    <h6 id=\"h:please-participate-i\" class=\"page-anchor\">Please participate in helping me finish my film! Just pick a level in the right hand column and click to donate — it only takes a minute.</h6>
     \n<br>\n
     """
   }
