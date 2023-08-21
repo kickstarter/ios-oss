@@ -18,6 +18,11 @@ enum ViewElementType: String {
 
       self = childElementType
     case TextComponent.TextBlockType.header1.rawValue,
+         TextComponent.TextBlockType.header2.rawValue,
+         TextComponent.TextBlockType.header3.rawValue,
+         TextComponent.TextBlockType.header4.rawValue,
+         TextComponent.TextBlockType.header5.rawValue,
+         TextComponent.TextBlockType.header6.rawValue,
          TextComponent.TextBlockType.unorderedList.rawValue,
          TextComponent.TextBlockType.orderedList.rawValue,
          TextComponent.TextBlockType.paragraph.rawValue:
