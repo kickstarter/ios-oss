@@ -119,8 +119,7 @@ final class ProjectTabDisclaimerCell: UITableViewCell, ValueCell {
     let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
     switch type {
     case .aiDisclosure:
-      // FIXME: Use translatable string.
-      let linkText = "Learn about AI policy on Kickstarter"
+      let linkText = Strings.Learn_about_AI_policy_on_Kickstarter()
 
       let backup = NSAttributedString(string: linkText, attributes: regularFontAttribute)
       guard let link = HelpType.aiDisclosure.url(withBaseUrl: baseUrl)?.absoluteString else {

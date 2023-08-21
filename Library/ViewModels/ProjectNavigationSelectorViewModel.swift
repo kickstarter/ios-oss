@@ -16,7 +16,7 @@ public enum NavigationSection: Int, CaseIterable {
     case .environmentalCommitments: return Strings.Environmental_commitments()
     case .faq: return Strings.Faq()
     case .overview: return Strings.Overview()
-    case .aiDisclosure: return "Use of AI" // FIXME: Should be `Strings.Use_Of_AI` in console once translations are done.
+    case .aiDisclosure: return Strings.Use_of_ai()
     case .risks: return Strings.Risks()
     }
   }

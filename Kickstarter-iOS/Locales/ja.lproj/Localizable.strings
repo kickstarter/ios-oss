@@ -13,7 +13,7 @@
 "Add_new_card" = "新しいカードを追加";
 "Add_ons" = "アドオン (追加リワード)";
 "Add_ons_unavailable" = "アドオン (追加リワード) は利用できません";
-"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "2023年8月14日以降、このダッシュボード機能は Kickstarter ウェブサイトでのみご利用いただけます。";
+"After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "2023年9月5日以降、このダッシュボード機能は Kickstarter ウェブサイトでのみご利用いただけます。";
 "Alert" = "個の警告";
 "All_Art_Projects" = "全てのアートプロジェクト";
 "All_Comics_Projects" = "全てのコミックプロジェクト";
@@ -188,6 +188,7 @@
 "Discover_more_projects" = "プロジェクトをさがす";
 "Discover_the_future_of_Design_and_Tech" = "デザインとテクノロジーの未来を覗いてみよう。";
 "Dismiss" = "破棄";
+"Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI" = "プロジェクトの AI 生成部分に使われた（または使われる予定の）作品について、その所有者からは同意を得ていますか？以下に詳しく説明してください。";
 "Done" = "完了";
 "Double_tap_to_toggle_setting" = "ダブルタップして設定を切り替える";
 "Download_your_personal_data" = "自分の個人データをダウンロード";
@@ -260,6 +261,7 @@
 "Following_Disabled_Info" = "Facebook の友達を見つけるには、フォローをオンにする必要があります。フォローの設定は、「設定 > プライバシー」から変更することができます。";
 "Following_More_Info" = "フォロー 詳細";
 "Follows_friend_name" = "%{friend_name} をフォロー";
+"For_the_database_or_source_I_will_use" = "私が使用する（または作成する）データベースやソースについては、採用される作品や情報の所有者からすでに同意を得ている、または同意を得る予定です。";
 "Frequently_asked_questions" = "よくある質問";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> は<i>アート</i> プロジェクトをバックしています。";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> は<i>コミック</i> プロジェクトをバックしています。";
@@ -297,6 +299,8 @@
 "Hide_password" = "パスワードを非表示にする";
 "Home" = "ホーム";
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
+"I_am_incorporating_AI_in_my_project" = "他の形で自分のプロジェクトに AI を取り入れる予定です。";
+"I_plan_to_use_AI_generated_content" = "自分のプロジェクトで AI で生成されたコンテンツを使用する予定です。";
 "I_understand" = "理解しました";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
@@ -339,6 +343,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Kickstarterは、知的財産権侵害の報告をすべて真剣に受け止めています。違反行為の報告手順についてのさらなる情報は、著作権ポリシーおよび商標ポリシーをご参照ください。著作権者または商標権者によって提出された申し立てのみ手続きを進めることができます。";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
+"Learn_about_AI_policy_on_Kickstarter" = "Kickstarter の AI ポリシーについて詳しく見る.";
 "Learn_about_accountability_on_Kickstarter" = "Kickstarter上の説明責任について詳しく知る";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">コメントのガイドラインについてもっと詳しく</a>";
@@ -384,6 +389,7 @@
 "Messages" = "メッセージ";
 "Million_plus" = "%{total_amount},000,000 以上";
 "More_than_number_of_items_items" = "%{number_of_items} 件以上のアイテム";
+"My_project_seeks_funding_for_AI_technology" = "私のプロジェクトの目的は、AI テクノロジーのための資金調達です。";
 "Name" = "名前";
 "Never" = "通知を受けない";
 "New_email" = "新しいメールアドレス";
@@ -661,8 +667,10 @@
 "The_live_stream_will_start_time" = "%{time} にライブ配信が開始されます。";
 "The_maximum_pledge_is_max_pledge" = "最高プレッジ額は %{max_pledge} です。";
 "The_minimum_pledge_is_min_pledge" = "最低プレッジ額は %{min_pledge} です。";
+"The_owners_of_those_works" = "これら作品の所有者はクレジット表記されます（またはその予定です）。";
 "The_replay_will_start_soon" = "リプレイが始まります";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "気になる話題や最新プロジェクトなど、この時代を特徴づける思想「ツァイトガイスト」をいち早くお届けします。";
+"There_is_or_will_be_an_opt" = "これら所有者はオプトインまたはオプトアウトのいずれかを選べます。";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";
 "These_projects_could_use_your_support" = "こちらのプロジェクト達があなたのサポートを待っています！";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "これにより、プロジェクトのファンディングゴールとプレッジ金額をご希望の通貨で表示することができます。";
@@ -708,6 +716,7 @@
 "Upcoming_live_streams" = "ライブ配信が開始します";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";
 "Update_pledge" = "プレッジを更新する";
+"Use_of_ai" = "AI の使用";
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "ハッシュタグ #backeditbecause を使って、あなたがサポートするプロジェクトをシェアし、そのプロジェクトがなぜあなたにとって重要なのか、その理由を伝えましょう。 ";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "受け取ったリワードを確認するにはこちらをご利用ください。";
 "Verification_email_sent" = "認証メールを送信しました。メール内のリンクをクリックすればメールアドレスが認証済みとなります。";
@@ -755,6 +764,7 @@
 "Well_help_you_find_a_project_to_back" = "ぜひあなたがバックしたいと思えるプロジェクトを見つけましょう。";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Kickstarter はあなたの名前とプロフィール写真をインポートし、友達リストにアクセスできるようになります。Kickstarter があなたの許可なしに Facebook に投稿することは決してありません。";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
+"What_parts_of_your_project_will_use_AI_generated_content" = "プロジェクトのどの部分で AI 生成のコンテンツを使用しますか？できるだけ詳しく説明してください。";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
 "Which_categories_interest_you" = "興味のあるカテゴリーは？";
