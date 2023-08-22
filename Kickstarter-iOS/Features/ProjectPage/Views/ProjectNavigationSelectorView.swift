@@ -170,6 +170,7 @@ final class ProjectNavigationSelectorView: UIView {
           (self, #selector(buttonTapped(_:)), .touchUpInside)
         ]
         |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString.uppercased() }
+        |> UIButton.lens.accessibilityLabel %~ { _ in section.displayString }
         |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_support_400 }
         |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_trust_500 }
         |> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote().weighted(.semibold)
