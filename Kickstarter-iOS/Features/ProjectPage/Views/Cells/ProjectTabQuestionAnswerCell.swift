@@ -61,7 +61,7 @@ final class ProjectTabQuestionAnswerCell: UITableViewCell, ValueCell {
         top: 0,
         left: 0,
         bottom: 0,
-        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
+        right: .init(Styles.projectPageLeftRightInset)
       )
 
     _ = self.contentView
@@ -117,5 +117,4 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ ProjectTabQuestionAnswerCellStyles.Layout.stackViewSpacing
-    |> \.layoutMargins .~ UIEdgeInsets(top: .zero, left: Styles.grid(1), bottom: .zero, right: .zero)
 }

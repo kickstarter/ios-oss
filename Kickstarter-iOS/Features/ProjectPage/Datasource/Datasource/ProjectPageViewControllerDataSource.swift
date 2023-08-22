@@ -245,8 +245,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         return
       }
 
-      if aiDisclosure.funding.fundingForAiAttribution || aiDisclosure.funding
-        .fundingForAiConsent || aiDisclosure.funding.fundingForAiOption {
+      let aiDisclosureFundingAvailableToDisplay = aiDisclosure.funding.fundingForAiAttribution || aiDisclosure
+        .funding.fundingForAiConsent || aiDisclosure.funding.fundingForAiOption
+      let aiDisclosureShouldBeIncluded = aiDisclosure.involvesFunding
+      let includeAIFunding = aiDisclosureFundingAvailableToDisplay && aiDisclosureShouldBeIncluded
+
+      if includeAIFunding {
         self.set(
           values: [aiDisclosure.funding],
           cellClass: ProjectTabCheckmarkListCell.self,
@@ -254,39 +258,41 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         )
       }
 
-      self.appendRow(
-        value: Strings.I_plan_to_use_AI_generated_content(),
-        cellClass: ProjectTabTitleCell.self,
-        toSection: Section.aiDisclosureGenerated.rawValue
-      )
-
-      if let detailsValues = aiDisclosure.generatedByAiDetails {
-        let value = (
-          GeneratedAIQuestionHeaderValue.partsOfProjectAIGenerated.description,
-          detailsValues.description
+      if aiDisclosure.involvesGeneration {
+        self.appendRow(
+          value: Strings.I_plan_to_use_AI_generated_content(),
+          cellClass: ProjectTabTitleCell.self,
+          toSection: Section.aiDisclosureGenerated.rawValue
         )
-        self
-          .appendRow(
-            value: value,
-            cellClass: ProjectTabQuestionAnswerCell.self,
-            toSection: Section.aiDisclosureGenerated.rawValue
+
+        if let detailsValues = aiDisclosure.generatedByAiDetails {
+          let value = (
+            GeneratedAIQuestionHeaderValue.partsOfProjectAIGenerated.description,
+            detailsValues.description
           )
+          self
+            .appendRow(
+              value: value,
+              cellClass: ProjectTabQuestionAnswerCell.self,
+              toSection: Section.aiDisclosureGenerated.rawValue
+            )
+        }
+
+        if let consentValues = aiDisclosure.generatedByAiConsent {
+          let value = (
+            GeneratedAIQuestionHeaderValue.doYouHaveConsentOfOwners.description,
+            consentValues.description
+          )
+          self
+            .appendRow(
+              value: value,
+              cellClass: ProjectTabQuestionAnswerCell.self,
+              toSection: Section.aiDisclosureGenerated.rawValue
+            )
+        }
       }
 
-      if let consentValues = aiDisclosure.generatedByAiConsent {
-        let value = (
-          GeneratedAIQuestionHeaderValue.doYouHaveConsentOfOwners.description,
-          consentValues.description
-        )
-        self
-          .appendRow(
-            value: value,
-            cellClass: ProjectTabQuestionAnswerCell.self,
-            toSection: Section.aiDisclosureGenerated.rawValue
-          )
-      }
-
-      if let otherAIDetailValues = aiDisclosure.otherAiDetails {
+      if let otherAIDetailValues = aiDisclosure.otherAiDetails, aiDisclosure.involvesOther {
         self.set(
           values: [otherAIDetailValues],
           cellClass: ProjectTabCategoryDescriptionCell.self,

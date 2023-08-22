@@ -68,7 +68,7 @@ public final class ProjectNavigationSelectorViewModel: ProjectNavigationSelector
       var includeAIDisclosure = false
 
       if let aiDisclosure = extendedProjectProperties
-        .aiDisclosure, aiDisclosure.involvesAi {
+        .aiDisclosure, aiDisclosure.involvesAi, featureUseOfAIProjectTabEnabled() {
         includeAIDisclosure = true
       }
 

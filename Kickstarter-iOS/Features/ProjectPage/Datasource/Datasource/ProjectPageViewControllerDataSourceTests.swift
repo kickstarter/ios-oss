@@ -387,7 +387,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  func testUseOfAI() {
+  func testUseOfAI_AllSectionsShown_Success() {
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
         environmentalCommitments: [],
@@ -447,6 +447,90 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
       XCTAssertEqual(
         "ProjectTabCheckmarkListCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureFundingSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectTabTitleCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureGeneratedSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectTabQuestionAnswerCell",
+        self.dataSource.reusableId(item: 1, section: self.useOfAIDisclosureGeneratedSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectTabCategoryDescriptionCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureOtherDetailsSection)
+      )
+    }
+  }
+
+  func testUseOfAI_NoFundingAndDetailsSection_Success() {
+    var updatedUseOfAIDisclosure = self.useOfAIDisclosure
+
+    updatedUseOfAIDisclosure.involvesFunding = false
+    updatedUseOfAIDisclosure.generatedByAiDetails = nil
+
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: updatedUseOfAIDisclosure,
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .aiDisclosure,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+      XCTAssertEqual(17, self.dataSource.numberOfSections(in: self.tableView))
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureHeaderSection)
+      )
+
+      XCTAssertEqual(
+        0,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureFundingSection)
+      )
+
+      XCTAssertEqual(
+        2,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureGeneratedSection)
+      )
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureOtherDetailsSection)
+      )
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureDisclaimerSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectHeaderCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureHeaderSection)
+      )
+      XCTAssertEqual(
+        "ProjectTabDisclaimerCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureDisclaimerSection)
+      )
+      XCTAssertNil(
         self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureFundingSection)
       )
 
