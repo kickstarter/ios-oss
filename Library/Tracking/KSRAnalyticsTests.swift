@@ -1944,6 +1944,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("environment", segmentClient.properties.last?["context_section"] as? String)
 
+    ksrAnalytics.trackProjectViewed(.template, sectionContext: .tabSelected(.useOfAI))
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("use_of_ai", segmentClient.properties.last?["context_section"] as? String)
+
     ksrAnalytics
       .trackRewardClicked(
         project: .template,

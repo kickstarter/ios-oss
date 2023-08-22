@@ -11,7 +11,7 @@ import Foundation
  */
 
 public struct ExtendedProjectProperties {
-  public var environmentalCommitments: [ProjectEnvironmentalCommitment]
+  public var environmentalCommitments: [ProjectTabCategoryDescription]
   public var faqs: [ProjectFAQ]
   public var aiDisclosure: ProjectAIDisclosure?
   public var risks: String
@@ -19,7 +19,7 @@ public struct ExtendedProjectProperties {
   public var minimumPledgeAmount: Int
 
   public init(
-    environmentalCommitments: [ProjectEnvironmentalCommitment],
+    environmentalCommitments: [ProjectTabCategoryDescription],
     faqs: [ProjectFAQ],
     aiDisclosure: ProjectAIDisclosure?,
     risks: String,
@@ -37,16 +37,14 @@ public struct ExtendedProjectProperties {
 
 public struct ProjectAIDisclosure {
   public var id: Int
-  public var fundingForAiAttribution: Bool?
-  public var fundingForAiConsent: Bool?
-  public var fundingForAiOption: Bool?
-  public var generatedByAiConsent: String?
-  public var generatedByAiDetails: String?
+  public var funding: ProjectTabFundingOptions
+  public var generatedByAiConsent: ProjectTabCategoryDescription?
+  public var generatedByAiDetails: ProjectTabCategoryDescription?
   public var involvesAi: Bool
   public var involvesFunding: Bool
   public var involvesGeneration: Bool
   public var involvesOther: Bool
-  public var otherAiDetails: String?
+  public var otherAiDetails: ProjectTabCategoryDescription?
 }
 
 public struct ProjectFAQ {
@@ -60,17 +58,32 @@ public struct ProjectStoryElements {
   public var htmlViewElements: [HTMLViewElement]
 }
 
-public struct ProjectEnvironmentalCommitment {
+public struct ProjectTabCategoryDescription {
   public var description: String
-  public var category: ProjectCommitmentCategory
+  public var category: ProjectTabCategory
   public var id: Int
 }
 
-public enum ProjectCommitmentCategory: String {
+public struct ProjectTabFundingOptions {
+  public var fundingForAiAttribution: Bool
+  public var fundingForAiConsent: Bool
+  public var fundingForAiOption: Bool
+}
+
+public enum ProjectTabCategory: String {
   case longLastingDesign = "Long-lasting design"
   case sustainableMaterials = "Sustainable materials"
   case environmentallyFriendlyFactories = "Environmentally friendly factories"
   case sustainableDistribution = "Sustainable distribution"
   case reusabilityAndRecyclability = "Reusability and Recyclability"
+  case aiDisclosureDetails
+  case aiDisclosureConsent
+  case aiDisclosureOtherDetails
   case somethingElse
+}
+
+public enum ProjectTabAIFundingCategory: String {
+  case consent
+  case attribution
+  case option
 }

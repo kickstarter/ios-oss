@@ -40,8 +40,8 @@ public protocol ProjectPageViewModelInputs {
   /// Call for audio/video view elements that are missing a player inside `prefetchRowsAt` delegate in `ProjectPageViewController`
   func prepareAudioVideoAt(_ indexPath: IndexPath, with audioVideoViewElement: AudioVideoViewElement)
 
-  /// Call when the delegate method for the `ProjectEnvironmentalCommitmentFooterCellDelegate` is called.
-  func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ URL: URL)
+  /// Call when the delegate method for the `ProjectTabDisclaimerCellDelegate` is called.
+  func projectTabDisclaimerCellDidTapURL(_ URL: URL)
 
   /// Call when the `ProjectNavigationSelectorViewDelegate` delegate method is called
   func projectNavigationSelectorViewDidSelect(index: Int)
@@ -426,7 +426,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(self.askAQuestionCellTappedProperty.signal)
 
     let tappableCellURLs = Signal.merge(
-      self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.signal,
+      self.projectTabDisclaimerCellDidTapURLProperty.signal,
       self.projectRisksDisclaimerCellDidTapURLProperty.signal
     )
     .skipNil()
@@ -551,9 +551,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.prepareAudioVideoAtProperty.value = (audioVideoViewElement, indexPath)
   }
 
-  fileprivate let projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
-  public func projectEnvironmentalCommitmentDisclaimerCellDidTapURL(_ url: URL) {
-    self.projectEnvironmentalCommitmentDisclaimerCellDidTapURLProperty.value = url
+  fileprivate let projectTabDisclaimerCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func projectTabDisclaimerCellDidTapURL(_ url: URL) {
+    self.projectTabDisclaimerCellDidTapURLProperty.value = url
   }
 
   private let projectNavigationSelectorViewDidSelectProperty = MutableProperty<Int?>(nil)

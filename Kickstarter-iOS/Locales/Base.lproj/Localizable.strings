@@ -13,7 +13,7 @@
 "Add_new_card" = "Add new card";
 "Add_ons" = "Add-ons";
 "Add_ons_unavailable" = "Add-ons unavailable";
-"After_August_14_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "After August 14, 2023, this Dashboard feature will only be available on our website.";
+"After_September_5_2023_this_Dashboard_feature_will_only_be_available_on_our_website" = "After September 5, 2023, this Dashboard feature will only be available on our website.";
 "Alert" = "Alert";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
@@ -188,6 +188,7 @@
 "Discover_more_projects" = "Discover more projects.";
 "Discover_the_future_of_Design_and_Tech" = "Discover the future of Design and Tech.";
 "Dismiss" = "Dismiss";
+"Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI" = "Do you have the consent of the owners of the works that were (or will be) used to produce the AI-generated portion of your projects?  Please explain.";
 "Done" = "Done";
 "Double_tap_to_toggle_setting" = "Double tap to toggle setting";
 "Download_your_personal_data" = "Download your personal data";
@@ -260,6 +261,7 @@
 "Following_Disabled_Info" = "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature.";
 "Following_More_Info" = "Following More Info";
 "Follows_friend_name" = "Follows %{friend_name}.";
+"For_the_database_or_source_I_will_use" = "For the database or source that I will use or will create, the consent of the persons whose works or information are incorporated has been or will be obtained.";
 "Frequently_asked_questions" = "Frequently asked questions";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> backed an <i>Art</i> project.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> backed a <i>Comics</i> project.";
@@ -297,6 +299,8 @@
 "Hide_password" = "Hide password";
 "Home" = "Home";
 "How_backers_found_your_project" = "How backers found your project";
+"I_am_incorporating_AI_in_my_project" = "I am incorporating AI in my project in another way.";
+"I_plan_to_use_AI_generated_content" = "I plan to use AI-generated content in my project.";
 "I_understand" = "I understand";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "If the project reaches its funding goal, you will be charged on %{project_deadline}.";
@@ -339,6 +343,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Kickstarter takes claims of intellectual property infringement seriously. For more information and instructions on how to report infringement, please visit our Copyright Policy and our Trademark Policy. Only claims filed by the copyright or trademark holder can be processed.";
 "Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
+"Learn_about_AI_policy_on_Kickstarter" = "Learn about AI policy on Kickstarter.";
 "Learn_about_accountability_on_Kickstarter" = "Learn about accountability on Kickstarter";
 "Learn_more_about_accountability" = "Learn more about accountability";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Learn more about comment guidelines</a>";
@@ -384,6 +389,7 @@
 "Messages" = "Messages";
 "Million_plus" = "%{total_amount} million+";
 "More_than_number_of_items_items" = "More than %{number_of_items} items";
+"My_project_seeks_funding_for_AI_technology" = "My project seeks funding for AI technology.";
 "Name" = "Name";
 "Never" = "Never";
 "New_email" = "New email";
@@ -661,8 +667,10 @@
 "The_live_stream_will_start_time" = "The live stream will start %{time}.";
 "The_maximum_pledge_is_max_pledge" = "The maximum pledge is %{max_pledge}.";
 "The_minimum_pledge_is_min_pledge" = "The minimum pledge is %{min_pledge}.";
+"The_owners_of_those_works" = "The owners of these works are or will be receiving credit for their work.";
 "The_replay_will_start_soon" = "The replay will start soon";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.";
+"There_is_or_will_be_an_opt" = "There is or will be an opt-in or opt-out for those owners.";
 "There_was_a_problem_with_this_payment" = "There was a problem with this payment.";
 "These_projects_could_use_your_support" = "These projects could use your support.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "This allows you to see project goal and pledge amounts in your preferred currency.";
@@ -708,6 +716,7 @@
 "Upcoming_live_streams" = "Upcoming live streams";
 "Upcoming_with_creator_name" = "Upcoming with<br/><b>%{creator_name}</b>";
 "Update_pledge" = "Update pledge";
+"Use_of_ai" = "Use of AI";
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Use the hashtag #backeditbecause to share what projects you're supporting and why they're important to you.";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
 "Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
@@ -755,6 +764,7 @@
 "Well_help_you_find_a_project_to_back" = "We'll help you find a project to back.";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
+"What_parts_of_your_project_will_use_AI_generated_content" = "What parts of your project will use AI-generated content? Please be as specific as possible.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
 "Which_categories_interest_you" = "Which categories interest you?";

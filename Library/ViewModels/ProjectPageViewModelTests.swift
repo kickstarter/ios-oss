@@ -1395,7 +1395,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.showHelpWebViewController.assertDidNotEmitValue()
 
     self.vm.inputs
-      .projectEnvironmentalCommitmentDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/environment")!)
+      .projectTabDisclaimerCellDidTapURL(URL(string: "https://www.kickstarter.com/environment")!)
 
     self.showHelpWebViewController.assertValues([.environment])
 

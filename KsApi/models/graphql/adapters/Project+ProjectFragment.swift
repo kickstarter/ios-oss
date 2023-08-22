@@ -312,8 +312,8 @@ private func extendedProjectFAQs(from projectFragment: GraphAPI
  */
 
 private func extendedProjectEnvironmentalCommitments(from projectFragment: GraphAPI
-  .ProjectFragment) -> [ProjectEnvironmentalCommitment] {
-  var environmentalCommitments = [ProjectEnvironmentalCommitment]()
+  .ProjectFragment) -> [ProjectTabCategoryDescription] {
+  var environmentalCommitments = [ProjectTabCategoryDescription]()
 
   if let allEnvironmentalCommitments = projectFragment.environmentalCommitments {
     for commitment in allEnvironmentalCommitments {
@@ -323,7 +323,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         continue
       }
 
-      var commitmentCategory: ProjectCommitmentCategory
+      var commitmentCategory: ProjectTabCategory
 
       switch commitment?.commitmentCategory {
       case .longLastingDesign:
@@ -340,7 +340,7 @@ private func extendedProjectEnvironmentalCommitments(from projectFragment: Graph
         commitmentCategory = .somethingElse
       }
 
-      let environmentalCommitment = ProjectEnvironmentalCommitment(
+      let environmentalCommitment = ProjectTabCategoryDescription(
         description: description,
         category: commitmentCategory,
         id: decomposedId
@@ -360,19 +360,61 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
     return nil
   }
 
-  var aiDisclosure = ProjectAIDisclosure(
+  let generatedByAIConsent = aiDisclosureRawData
+    .generatedByAiConsent ??
+    ""
+  let generatedByAIDetails = aiDisclosureRawData
+    .generatedByAiDetails ??
+    ""
+
+  let availableAIConsent = !generatedByAIConsent.isEmpty
+  let availableAIDetails = !generatedByAIDetails.isEmpty
+
+  let generatedOtherAIDetails = aiDisclosureRawData
+    .otherAiDetails ??
+    ""
+
+  let aiDisclosureConsent = ProjectTabCategoryDescription(
+    description: generatedByAIConsent,
+    category: .aiDisclosureDetails,
+    id: decomposedId
+  )
+
+  let aiDisclosureDetails = ProjectTabCategoryDescription(
+    description: generatedByAIDetails,
+    category: .aiDisclosureConsent,
+    id: decomposedId + 1
+  )
+
+  let aiDisclosureOther = ProjectTabCategoryDescription(
+    description: generatedOtherAIDetails,
+    category: .aiDisclosureOtherDetails,
+    id: decomposedId + 2
+  )
+
+  let availableAIOtherDisclosure = !generatedOtherAIDetails.isEmpty
+
+  let fundingForAIAttribution = aiDisclosureRawData.fundingForAiAttribution ?? false
+  let fundingForAIConsent = aiDisclosureRawData.fundingForAiConsent ?? false
+  let fundingForAIOption = aiDisclosureRawData.fundingForAiOption ?? false
+
+  let fundingOptions = ProjectTabFundingOptions(
+    fundingForAiAttribution: fundingForAIAttribution,
+    fundingForAiConsent: fundingForAIConsent,
+    fundingForAiOption: fundingForAIOption
+  )
+
+  let aiDisclosure = ProjectAIDisclosure(
     id: decomposedId,
+    funding: fundingOptions,
+    generatedByAiConsent: availableAIConsent ? aiDisclosureConsent : nil,
+    generatedByAiDetails: availableAIDetails ? aiDisclosureDetails : nil,
     involvesAi: aiDisclosureRawData.involvesAi,
     involvesFunding: aiDisclosureRawData.involvesFunding,
     involvesGeneration: aiDisclosureRawData.involvesGeneration,
-    involvesOther: aiDisclosureRawData.involvesOther
+    involvesOther: aiDisclosureRawData.involvesOther,
+    otherAiDetails: availableAIOtherDisclosure ? aiDisclosureOther : nil
   )
-
-  aiDisclosure.generatedByAiConsent = aiDisclosureRawData.generatedByAiConsent
-  aiDisclosure.generatedByAiDetails = aiDisclosureRawData.generatedByAiDetails
-  aiDisclosure.fundingForAiAttribution = aiDisclosureRawData.fundingForAiAttribution
-  aiDisclosure.fundingForAiConsent = aiDisclosureRawData.fundingForAiConsent
-  aiDisclosure.fundingForAiOption = aiDisclosureRawData.fundingForAiOption
 
   return aiDisclosure
 }

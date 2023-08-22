@@ -120,11 +120,11 @@ final class Project_ProjectFragmentTests: XCTestCase {
       }
 
       XCTAssertEqual(aiDisclosureRawData.id, decompose(id: "QWlEaXNjbG9zdXJlLTE="))
-      XCTAssertTrue(aiDisclosureRawData.fundingForAiAttribution!)
-      XCTAssertFalse(aiDisclosureRawData.fundingForAiConsent!)
-      XCTAssertFalse(aiDisclosureRawData.fundingForAiOption!)
-      XCTAssertFalse(aiDisclosureRawData.generatedByAiConsent!.isEmpty)
-      XCTAssertFalse(aiDisclosureRawData.generatedByAiDetails!.isEmpty)
+      XCTAssertTrue(aiDisclosureRawData.funding.fundingForAiAttribution)
+      XCTAssertFalse(aiDisclosureRawData.funding.fundingForAiConsent)
+      XCTAssertFalse(aiDisclosureRawData.funding.fundingForAiOption)
+      XCTAssertFalse(aiDisclosureRawData.generatedByAiConsent!.description.isEmpty)
+      XCTAssertFalse(aiDisclosureRawData.generatedByAiDetails!.description.isEmpty)
       XCTAssertTrue(aiDisclosureRawData.involvesAi)
       XCTAssertTrue(aiDisclosureRawData.involvesFunding)
       XCTAssertTrue(aiDisclosureRawData.involvesGeneration)

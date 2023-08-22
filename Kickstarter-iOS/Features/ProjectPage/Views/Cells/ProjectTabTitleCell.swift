@@ -3,17 +3,11 @@ import Library
 import Prelude
 import UIKit
 
-final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
+// FIXME: There are other cells in the `ProjectPageViewControllerDataSource` that use this header/stackview combo. It would be good to replace those titles with this one (we can then remove stack view). Using SwiftUI to refactor this cell would also to remove all the UIKit and Prelude code. Good starting point to introduce SwiftUI in the project page.
+final class ProjectTabTitleCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = ProjectEnvironmentalCommitmentCellViewModel()
-
-  private lazy var categoryLabel: UILabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var descriptionLabel: UILabel = {
+  private lazy var titleLabel: UILabel = {
     UILabel(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -39,32 +33,25 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
 
   // MARK: - Bindings
 
-  override func bindViewModel() {
-    super.bindViewModel()
-
-    self.categoryLabel.rac.text = self.viewModel.outputs.categoryLabelText
-    self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
-  }
-
   override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseTableViewCellStyle()
-      |> \.separatorInset .~ .init(leftRight: Styles.projectPageLeftRightInset)
+      |> \.separatorInset .~
+      .init(
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
+      )
 
     _ = self.contentView
       |> \.layoutMargins .~
-      .init(
-        topBottom: Styles.grid(2),
-        leftRight: Styles.projectPageLeftRightInset
-      )
+      .init(topBottom: Styles.grid(2), leftRight: Styles.projectPageLeftRightInset)
 
-    _ = self.categoryLabel
-      |> categoryLabelStyle
-
-    _ = self.descriptionLabel
-      |> descriptionLabelStyle
+    _ = self.titleLabel
+      |> titleLabelStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -72,8 +59,8 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: ProjectEnvironmentalCommitment) {
-    self.viewModel.inputs.configureWith(value: value)
+  func configureWith(value: String) {
+    self.titleLabel.text = value
   }
 
   private func configureViews() {
@@ -81,25 +68,17 @@ final class ProjectEnvironmentalCommitmentCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.categoryLabel, self.descriptionLabel], self.rootStackView)
+    _ = ([self.titleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 }
 
 // MARK: - Styles
 
-private let categoryLabelStyle: LabelStyle = { label in
+private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.numberOfLines .~ 0
-    |> \.textColor .~ .ksr_support_700
-}
-
-private let descriptionLabelStyle: LabelStyle = { label in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_body()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ .ksr_support_700
 }

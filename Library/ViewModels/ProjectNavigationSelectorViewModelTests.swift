@@ -33,17 +33,17 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
   fileprivate let projectPropertiesWithEnvironmentalCommitments: ExtendedProjectProperties =
     ExtendedProjectProperties(
       environmentalCommitments: [
-        ProjectEnvironmentalCommitment(
+        ProjectTabCategoryDescription(
           description: "Environment Commitment 0",
           category: .environmentallyFriendlyFactories,
           id: 0
         ),
-        ProjectEnvironmentalCommitment(
+        ProjectTabCategoryDescription(
           description: "Environment Commitment 1",
           category: .longLastingDesign,
           id: 1
         ),
-        ProjectEnvironmentalCommitment(
+        ProjectTabCategoryDescription(
           description: "Environment Commitment 2",
           category: .reusabilityAndRecyclability,
           id: 2
@@ -100,8 +100,6 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
 
     self.configureNavigationSelectorUI.assertDidEmitValue()
   }
-
-  // FIXME: Look at all these tests and add variations for "Use of AI" tab: https://kickstarter.atlassian.net/browse/MBL-902
 
   func testOutput_ConfigureNavigationSelectorUI_NonPrelaunch() {
     var project = Project.template
@@ -265,12 +263,12 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["campaign", "faq", "risks", "environment"],
+      ["campaign", "faq", "risks", "use_of_ai"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
 
-    self.vm.inputs.buttonTapped(index: 0)
+    self.vm.inputs.buttonTapped(index: 5)
 
     self.scheduler.advance()
 
@@ -280,7 +278,22 @@ internal final class ProjectNavigationSelectorViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["campaign", "faq", "risks", "environment", "overview"],
+      ["campaign", "faq", "risks", "use_of_ai", "environment"],
+      self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
+      "The tab selected is tracked in the event."
+    )
+
+    self.vm.inputs.buttonTapped(index: 0)
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(
+      ["Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
+    )
+
+    XCTAssertEqual(
+      ["campaign", "faq", "risks", "use_of_ai", "environment", "overview"],
       self.segmentTrackingClient.properties.compactMap { $0["context_section"] as? String },
       "The tab selected is tracked in the event."
     )
