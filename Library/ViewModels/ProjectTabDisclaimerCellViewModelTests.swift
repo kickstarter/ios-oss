@@ -4,7 +4,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests: TestCase {
+internal final class ProjectTabDisclaimerCellViewModelTests: TestCase {
   fileprivate let vm: ProjectTabDisclaimerCellViewModelType =
     ProjectTabDisclaimerCellViewModel()
 
@@ -19,7 +19,7 @@ internal final class ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests:
   func testOutput_NotifyDelegateLinkTappedWithURL() {
     let url = URL(string: "https://www.foobar.com")!
 
-    self.vm.inputs.configure()
+    self.vm.inputs.configure(with: .aiDisclosure)
 
     self.notifyDelegateLinkTappedWithURL.assertDidNotEmitValue()
 

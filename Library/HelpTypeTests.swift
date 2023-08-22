@@ -40,6 +40,7 @@ final class HelpTypeTests: XCTestCase {
     XCTAssertEqual(HelpType.terms.title, Strings.profile_settings_about_terms())
     XCTAssertEqual(HelpType.trust.title, "")
     XCTAssertEqual(HelpType.environment.title, "")
+    XCTAssertEqual(HelpType.aiDisclosure.title, "")
   }
 
   func testUrlWithBaseUrl() {
@@ -81,6 +82,10 @@ final class HelpTypeTests: XCTestCase {
     XCTAssertEqual(
       HelpType.environment.url(withBaseUrl: baseURL),
       URL(string: "https://www.kickstarter.com/environment")!
+    )
+    XCTAssertEqual(
+      HelpType.aiDisclosure.url(withBaseUrl: baseURL),
+      URL(string: "https://www.kickstarter.com/hc/en-us/articles/16848396410267")!
     )
   }
 }

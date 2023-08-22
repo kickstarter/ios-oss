@@ -232,6 +232,8 @@
 		191E601F2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */; };
 		191E60212A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */; };
 		191E60232A951BF1001413B2 /* ProjectTabTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */; };
+		191E60262A953E2B001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */; };
+		191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */; };
 		19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 19338D9A2A0D4E2300075F29 /* Stripe */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
 		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
@@ -379,8 +381,8 @@
 		473DE016273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE015273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift */; };
 		473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE017273C74BA0033331D /* ProjectRisksCellViewModelTests.swift */; };
 		473DE01A273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */; };
-		4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */; };
-		4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */; };
+		4746FFF3272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF2272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift */; };
+		4746FFF5272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4746FFF4272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift */; };
 		474D732026B46412000F63DC /* ErroredBackingsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */; };
 		4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A674272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift */; };
 		4751A677272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */; };
@@ -1822,6 +1824,8 @@
 		191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCell.swift; sourceTree = "<group>"; };
 		191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCellViewModel.swift; sourceTree = "<group>"; };
 		191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabTitleCell.swift; sourceTree = "<group>"; };
+		191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCheckmarkListCellViewModelTests.swift; sourceTree = "<group>"; };
+		191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCellViewModelTests.swift; sourceTree = "<group>"; };
 		192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stripe+PaymentMethod.swift"; sourceTree = "<group>"; };
 		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
@@ -1946,8 +1950,8 @@
 		473DE015273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModel.swift; sourceTree = "<group>"; };
 		473DE017273C74BA0033331D /* ProjectRisksCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksCellViewModelTests.swift; sourceTree = "<group>"; };
 		473DE019273C757D0033331D /* ProjectRisksDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRisksDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
-		4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentCellViewModelTests.swift; sourceTree = "<group>"; };
-		4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
+		4746FFF2272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCategoryDescriptionCellViewModelTests.swift; sourceTree = "<group>"; };
+		4746FFF4272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabDisclaimerCellViewModelTests.swift; sourceTree = "<group>"; };
 		474D731F26B46412000F63DC /* ErroredBackingsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingsEnvelopeTests.swift; sourceTree = "<group>"; };
 		4751A674272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCategoryDescriptionCell.swift; sourceTree = "<group>"; };
 		4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCategoryDescriptionCellViewModel.swift; sourceTree = "<group>"; };
@@ -6637,10 +6641,12 @@
 				A7ED1F981E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift */,
 				4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */,
 				1950DBBF2A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift */,
-				4746FFF2272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift */,
+				191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */,
+				4746FFF2272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift */,
 				4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */,
 				191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */,
-				4746FFF4272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift */,
+				191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */,
+				4746FFF4272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
 				477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */,
@@ -7986,6 +7992,7 @@
 				606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */,
 				A7ED1FB81E831C5C00BFFA01 /* BackingCellViewModelTests.swift in Sources */,
 				A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */,
+				191E60262A953E2B001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */,
 				A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */,
 				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
 				A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */,
@@ -8002,7 +8009,7 @@
 				77C9123123C637FD00F3D2C9 /* DoubleCurrencyTests.swift in Sources */,
 				A7ED1FEE1E831C5C00BFFA01 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,
 				A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
-				4746FFF5272C588900EC3429 /* ProjectEnvironmentalCommitmentDisclaimerCellViewModelTests.swift in Sources */,
+				4746FFF5272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift in Sources */,
 				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
 				8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */,
 				A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
@@ -8010,6 +8017,7 @@
 				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
+				191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */,
 				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
@@ -8102,7 +8110,7 @@
 				A7ED1FB61E831C5C00BFFA01 /* MessageCellViewModelTests.swift in Sources */,
 				A7ED1F2F1E830FDC00BFFA01 /* LocalizedStringTests.swift in Sources */,
 				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
-				4746FFF3272C564C00EC3429 /* ProjectEnvironmentalCommitmentCellViewModelTests.swift in Sources */,
+				4746FFF3272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift in Sources */,
 				D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */,
 				A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
 				063BBA812799C7BA00659198 /* TextViewElementCellViewModelTests.swift in Sources */,

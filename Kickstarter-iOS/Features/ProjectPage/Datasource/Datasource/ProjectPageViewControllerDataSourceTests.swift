@@ -10,6 +10,44 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   private let tableView = UITableView()
 
   private let expectedTime = CMTime(seconds: 123.4, preferredTimescale: CMTimeScale(1))
+  private let projectTabFundingOptions = ProjectTabFundingOptions(
+    fundingForAiAttribution: true,
+    fundingForAiConsent: true,
+    fundingForAiOption: true
+  )
+
+  private let generatedByAIConsent = ProjectTabCategoryDescription(
+    description: "consent",
+    category: .aiDisclosureConsent,
+    id: 2
+  )
+
+  private let generatedByAIDetails = ProjectTabCategoryDescription(
+    description: "details",
+    category: .aiDisclosureDetails,
+    id: 3
+  )
+
+  private let generatedByAIOtherDetails = ProjectTabCategoryDescription(
+    description: "other",
+    category: .aiDisclosureOtherDetails,
+    id: 4
+  )
+
+  private var useOfAIDisclosure: ProjectAIDisclosure {
+    ProjectAIDisclosure(
+      id: 1,
+      funding: self.projectTabFundingOptions,
+      generatedByAiConsent: self.generatedByAIConsent,
+      generatedByAiDetails: self.generatedByAIDetails,
+      involvesAi: true,
+      involvesFunding: true,
+      involvesGeneration: true,
+      involvesOther: true,
+      otherAiDetails: self.generatedByAIOtherDetails
+    )
+  }
+
   private let environmentalCommitments = [
     ProjectTabCategoryDescription(
       description: "foo bar",
@@ -86,6 +124,16 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
   private let campaignHeaderSection = ProjectPageViewControllerDataSource.Section
     .campaignHeader.rawValue
   private let campaignSection = ProjectPageViewControllerDataSource.Section.campaign.rawValue
+  private let useOfAIDisclosureHeaderSection = ProjectPageViewControllerDataSource.Section.aiDisclosureHeader
+    .rawValue
+  private let useOfAIDisclosureFundingSection = ProjectPageViewControllerDataSource.Section
+    .aiDisclosureFunding.rawValue
+  private let useOfAIDisclosureGeneratedSection = ProjectPageViewControllerDataSource.Section
+    .aiDisclosureGenerated.rawValue
+  private let useOfAIDisclosureOtherDetailsSection = ProjectPageViewControllerDataSource.Section
+    .aiDisclosureOtherDetails.rawValue
+  private let useOfAIDisclosureDisclaimerSection = ProjectPageViewControllerDataSource.Section
+    .aiDisclosureDisclaimer.rawValue
 
   func testLoadFAQs_LoggedIn() {
     let project = Project.template
@@ -339,7 +387,85 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     }
   }
 
-  // FIXME: Add test for "Use of AI" tab: https://kickstarter.atlassian.net/browse/MBL-902
+  func testUseOfAI() {
+    let project = Project.template
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: self.useOfAIDisclosure,
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    withEnvironment(currentUser: .template) {
+      self.dataSource.load(
+        navigationSection: .aiDisclosure,
+        project: project,
+        refTag: nil,
+        isExpandedStates: nil
+      )
+      XCTAssertEqual(17, self.dataSource.numberOfSections(in: self.tableView))
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureHeaderSection)
+      )
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureFundingSection)
+      )
+
+      XCTAssertEqual(
+        3,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureGeneratedSection)
+      )
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureOtherDetailsSection)
+      )
+
+      XCTAssertEqual(
+        1,
+        self.dataSource
+          .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureDisclaimerSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectHeaderCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureHeaderSection)
+      )
+      XCTAssertEqual(
+        "ProjectTabDisclaimerCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureDisclaimerSection)
+      )
+      XCTAssertEqual(
+        "ProjectTabCheckmarkListCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureFundingSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectTabTitleCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureGeneratedSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectTabQuestionAnswerCell",
+        self.dataSource.reusableId(item: 1, section: self.useOfAIDisclosureGeneratedSection)
+      )
+
+      XCTAssertEqual(
+        "ProjectTabCategoryDescriptionCell",
+        self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureOtherDetailsSection)
+      )
+    }
+  }
 
   func testLoadEnvironmentalCommitments() {
     let project = Project.template
@@ -359,7 +485,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(15, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(20, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -387,11 +513,11 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsHeaderSection)
       )
       XCTAssertEqual(
-        "ProjectEnvironmentalCommitmentCell",
+        "ProjectTabCategoryDescriptionCell",
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsSection)
       )
       XCTAssertEqual(
-        "ProjectEnvironmentalCommitmentDisclaimerCell",
+        "ProjectTabDisclaimerCell",
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsDisclaimerSection)
       )
     }
@@ -415,7 +541,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(15, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(20, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -443,7 +569,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsHeaderSection)
       )
       XCTAssertEqual(
-        "ProjectEnvironmentalCommitmentDisclaimerCell",
+        "ProjectTabDisclaimerCell",
         self.dataSource.reusableId(item: 0, section: self.environmentalCommitmentsDisclaimerSection)
       )
     }

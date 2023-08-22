@@ -1031,7 +1031,131 @@ internal final class ProjectPageViewControllerTests: TestCase {
     }
   }
 
-  // FIXME: Add test for "Use of AI" tab: https://kickstarter.atlassian.net/browse/MBL-902
+  func testLoggedOut_NonBacker_LiveProjectSwitchedToUseOfAITab_Success() {
+    let config = Config.template
+
+    let projectTabFundingOptions = ProjectTabFundingOptions(
+      fundingForAiAttribution: true,
+      fundingForAiConsent: true,
+      fundingForAiOption: true
+    )
+
+    let generatedByAIConsent = ProjectTabCategoryDescription(
+      description: "consent",
+      category: .aiDisclosureConsent,
+      id: 2
+    )
+
+    let generatedByAIDetails = ProjectTabCategoryDescription(
+      description: "details",
+      category: .aiDisclosureDetails,
+      id: 3
+    )
+
+    let generatedByAIOtherDetails = ProjectTabCategoryDescription(
+      description: "other",
+      category: .aiDisclosureOtherDetails,
+      id: 4
+    )
+
+    let useOfAIDisclosure: ProjectAIDisclosure =
+      ProjectAIDisclosure(
+        id: 1,
+        funding: projectTabFundingOptions,
+        generatedByAiConsent: generatedByAIConsent,
+        generatedByAiDetails: generatedByAIDetails,
+        involvesAi: true,
+        involvesFunding: true,
+        involvesGeneration: true,
+        involvesOther: true,
+        otherAiDetails: generatedByAIOtherDetails
+      )
+
+    let useOfAIExtendedProjectProperties = ExtendedProjectProperties(
+      environmentalCommitments: [ProjectTabCategoryDescription(
+        description: "Environmental Commitment",
+        category: .environmentallyFriendlyFactories,
+        id: 0
+      )],
+      faqs: [ProjectFAQ(
+        answer: "Answer",
+        question: "Question",
+        id: 0,
+        createdAt: MockDate().timeIntervalSince1970
+      )],
+      aiDisclosure: useOfAIDisclosure,
+      risks: "These are the risks",
+      story: ProjectStoryElements(htmlViewElements:
+        [
+          TextViewElement(components: [
+            TextComponent(
+              text: "bold and emphasis",
+              link: nil,
+              styles: [.bold, .emphasis]
+            ),
+            TextComponent(
+              text: "link",
+              link: "https://ksr.com",
+              styles: [.link]
+            )
+          ]),
+          ImageViewElement(
+            src: "bad-url",
+            href: "https://ksr.com",
+            caption: "camera"
+          ),
+          AudioVideoViewElement(
+            sourceURLString: "https://source.com",
+            thumbnailURLString: nil,
+            seekPosition: .zero
+          ),
+          ExternalSourceViewElement(
+            embeddedURLString: "https://source.com",
+            embeddedURLContentHeight: 123
+          )
+        ]),
+      minimumPledgeAmount: 1
+    )
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards .~ []
+      |> \.extendedProjectProperties .~ useOfAIExtendedProjectProperties
+
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ ["use_of_ai": true]
+
+    combos(Language.allLanguages, [Device.phone4inch, Device.pad]).forEach { language, device in
+      withEnvironment(
+        config: config,
+        language: language,
+        remoteConfigClient: mockRemoteConfigClient
+      ) {
+        let vc = ProjectPageViewController.configuredWith(
+          projectOrParam: .left(project), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.advance()
+
+        // INFO: We are not testing that the navigation selector view, just the content of the view controller after the tab selection occurs.
+        vc.projectNavigationSelectorViewDidSelect(ProjectNavigationSelectorView(), index: 4)
+
+        scheduler.run()
+
+        assertSnapshot(
+          matching: parent.view,
+          as: .image(perceptualPrecision: 0.98),
+          named: "lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
 
   func testLoggedOut_NonBacker_LiveProjectSwitchedToEnvironmentalCommitmentsTab_Success() {
     let config = Config.template

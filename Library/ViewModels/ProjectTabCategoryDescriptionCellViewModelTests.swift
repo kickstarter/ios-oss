@@ -4,7 +4,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class ProjectEnvironmentalCommitmentCellViewModelTests: TestCase {
+internal final class ProjectTabCategoryDescriptionCellViewModelTests: TestCase {
   fileprivate let vm: ProjectTabCategoryDescriptionCellViewModelType =
     ProjectTabCategoryDescriptionCellViewModel()
 
