@@ -54,6 +54,20 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     }
   }
 
+  private enum GeneratedAIQuestionHeaderValue {
+    case doYouHaveConsentOfOwners
+    case partsOfProjectAIGenerated
+
+    var description: String {
+      switch self {
+      case .doYouHaveConsentOfOwners:
+        return Strings.Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI()
+      case .partsOfProjectAIGenerated:
+        return Strings.What_parts_of_your_project_will_use_AI_generated_content()
+      }
+    }
+  }
+
   private var preexistingImageViewElementsWithData = [(element: ImageViewElement, image: UIImage?)]()
   private var preexistingAudioVideoViewElementsWithPlayer =
     [(element: AudioVideoViewElement, player: AVPlayer?, image: UIImage?)]()
@@ -223,9 +237,9 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
       guard let aiDisclosure = project.extendedProjectProperties?.aiDisclosure else {
         self.set(
-          values: [.environmental],
+          values: [.aiDisclosure],
           cellClass: ProjectTabDisclaimerCell.self,
-          inSection: Section.environmentalCommitmentsDisclaimer.rawValue
+          inSection: Section.aiDisclosureDisclaimer.rawValue
         )
 
         return
@@ -240,12 +254,36 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         )
       }
 
-      if let consentAndDetailAIDetailValues = aiDisclosure.generatedByAiConsentAndDetails {
-        self.set(
-          values: [consentAndDetailAIDetailValues],
-          cellClass: ProjectTabCategoryDescriptionCell.self,
-          inSection: Section.aiDisclosureGenerated.rawValue
+      self.appendRow(
+        value: Strings.I_plan_to_use_AI_generated_content(),
+        cellClass: ProjectTabTitleCell.self,
+        toSection: Section.aiDisclosureGenerated.rawValue
+      )
+
+      if let consentValues = aiDisclosure.generatedByAiConsent {
+        let value = (
+          GeneratedAIQuestionHeaderValue.partsOfProjectAIGenerated.description,
+          consentValues.description
         )
+        self
+          .appendRow(
+            value: value,
+            cellClass: ProjectTabQuestionAnswerCell.self,
+            toSection: Section.aiDisclosureGenerated.rawValue
+          )
+      }
+
+      if let detailValues = aiDisclosure.generatedByAiDetails {
+        let value = (
+          GeneratedAIQuestionHeaderValue.doYouHaveConsentOfOwners.description,
+          detailValues.description
+        )
+        self
+          .appendRow(
+            value: value,
+            cellClass: ProjectTabQuestionAnswerCell.self,
+            toSection: Section.aiDisclosureGenerated.rawValue
+          )
       }
 
       if let otherAIDetailValues = aiDisclosure.otherAiDetails {
@@ -259,7 +297,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       self.set(
         values: [.aiDisclosure],
         cellClass: ProjectTabDisclaimerCell.self,
-        inSection: Section.environmentalCommitmentsDisclaimer.rawValue
+        inSection: Section.aiDisclosureDisclaimer.rawValue
       )
     case .environmentalCommitments:
       let environmentalCommitments = project.extendedProjectProperties?.environmentalCommitments ?? []
@@ -286,6 +324,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
+    case let (cell as ProjectTabTitleCell, value as String):
+      cell.configureWith(value: value)
+    case let (cell as ProjectTabQuestionAnswerCell, value as (String, String)):
+      cell.configureWith(value: value)
     case let (cell as ProjectTabCategoryDescriptionCell, value as ProjectTabCategoryDescription):
       cell.configureWith(value: value)
     case let (cell as ProjectTabCheckmarkListCell, value as ProjectTabFundingOptions):

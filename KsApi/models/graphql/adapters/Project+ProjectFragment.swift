@@ -360,24 +360,36 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
     return nil
   }
 
-  let generatedByAIConsent = aiDisclosureRawData.generatedByAiConsent ?? ""
-  let generatedByAIDetails = aiDisclosureRawData.generatedByAiDetails ?? ""
+  let generatedByAIConsent = aiDisclosureRawData
+    .generatedByAiConsent ??
+    ""
+  let generatedByAIDetails = aiDisclosureRawData
+    .generatedByAiDetails ??
+    ""
 
-  let availableAIDetailsAndConsent = !generatedByAIConsent.isEmpty || !generatedByAIDetails.isEmpty
+  let availableAIConsent = !generatedByAIConsent.isEmpty
+  let availableAIDetails = !generatedByAIDetails.isEmpty
 
-  let generatedOtherAIDetails = aiDisclosureRawData.otherAiDetails ?? ""
-  let combinedGeneratedByAIValue = generatedByAIDetails + "\n\n" + generatedByAIConsent
+  let generatedOtherAIDetails = aiDisclosureRawData
+    .otherAiDetails ??
+    ""
 
-  let aiDisclosureConsentAndDetails = ProjectTabCategoryDescription(
-    description: combinedGeneratedByAIValue,
-    category: .aiDisclosureDetailsAndConsent,
+  let aiDisclosureConsent = ProjectTabCategoryDescription(
+    description: generatedByAIConsent,
+    category: .aiDisclosureDetails,
     id: decomposedId
+  )
+
+  let aiDisclosureDetails = ProjectTabCategoryDescription(
+    description: generatedByAIDetails,
+    category: .aiDisclosureConsent,
+    id: decomposedId + 1
   )
 
   let aiDisclosureOther = ProjectTabCategoryDescription(
     description: generatedOtherAIDetails,
     category: .aiDisclosureOtherDetails,
-    id: decomposedId + 1
+    id: decomposedId + 2
   )
 
   let availableAIOtherDisclosure = !generatedOtherAIDetails.isEmpty
@@ -395,7 +407,8 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
   let aiDisclosure = ProjectAIDisclosure(
     id: decomposedId,
     funding: fundingOptions,
-    generatedByAiConsentAndDetails: availableAIDetailsAndConsent ? aiDisclosureConsentAndDetails : nil,
+    generatedByAiConsent: availableAIConsent ? aiDisclosureConsent : nil,
+    generatedByAiDetails: availableAIDetails ? aiDisclosureDetails : nil,
     involvesAi: aiDisclosureRawData.involvesAi,
     involvesFunding: aiDisclosureRawData.involvesFunding,
     involvesGeneration: aiDisclosureRawData.involvesGeneration,
