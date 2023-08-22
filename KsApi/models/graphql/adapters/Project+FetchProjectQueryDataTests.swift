@@ -296,11 +296,11 @@ final class Project_FetchProjectQueryDataTests: XCTestCase {
     }
 
     XCTAssertEqual(aiDisclosureRawData.id, decompose(id: "QWlEaXNjbG9zdXJlLTE="))
-    XCTAssertFalse(aiDisclosureRawData.fundingForAiOption!)
-    XCTAssertFalse(aiDisclosureRawData.fundingForAiConsent!)
-    XCTAssertTrue(aiDisclosureRawData.fundingForAiAttribution!)
-    XCTAssertFalse(aiDisclosureRawData.generatedByAiConsent!.isEmpty)
-    XCTAssertFalse(aiDisclosureRawData.generatedByAiDetails!.isEmpty)
+    XCTAssertFalse(aiDisclosureRawData.funding.fundingForAiOption)
+    XCTAssertFalse(aiDisclosureRawData.funding.fundingForAiConsent)
+    XCTAssertTrue(aiDisclosureRawData.funding.fundingForAiAttribution)
+    XCTAssertFalse(aiDisclosureRawData.generatedByAiConsent!.description.isEmpty)
+    XCTAssertFalse(aiDisclosureRawData.generatedByAiDetails!.description.isEmpty)
     XCTAssertTrue(aiDisclosureRawData.involvesAi)
     XCTAssertTrue(aiDisclosureRawData.involvesFunding)
     XCTAssertTrue(aiDisclosureRawData.involvesGeneration)
