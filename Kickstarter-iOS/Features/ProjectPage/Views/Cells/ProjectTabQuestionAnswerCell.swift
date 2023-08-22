@@ -61,7 +61,7 @@ final class ProjectTabQuestionAnswerCell: UITableViewCell, ValueCell {
         top: 0,
         left: 0,
         bottom: 0,
-        right: .init(Styles.projectPageLeftRightInset)
+        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
       )
 
     _ = self.contentView

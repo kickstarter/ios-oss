@@ -3,6 +3,7 @@ import Library
 import Prelude
 import UIKit
 
+// FIXME: There are other cells in the `ProjectPageViewControllerDataSource` that use this header/stackview combo. It would be good to replace those titles with this one (we can then remove stack view). Using SwiftUI to refactor this cell would also to remove all the UIKit and Prelude code. Good starting point to introduce SwiftUI in the project page.
 final class ProjectTabTitleCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
