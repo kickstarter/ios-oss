@@ -260,10 +260,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         toSection: Section.aiDisclosureGenerated.rawValue
       )
 
-      if let consentValues = aiDisclosure.generatedByAiConsent {
+      if let detailsValues = aiDisclosure.generatedByAiDetails {
         let value = (
           GeneratedAIQuestionHeaderValue.partsOfProjectAIGenerated.description,
-          consentValues.description
+          detailsValues.description
         )
         self
           .appendRow(
@@ -273,10 +273,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           )
       }
 
-      if let detailValues = aiDisclosure.generatedByAiDetails {
+      if let consentValues = aiDisclosure.generatedByAiConsent {
         let value = (
           GeneratedAIQuestionHeaderValue.doYouHaveConsentOfOwners.description,
-          detailValues.description
+          consentValues.description
         )
         self
           .appendRow(
