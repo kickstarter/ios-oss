@@ -8,6 +8,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   case debugConfigFeatureFlags
   case debugRemoteConfigFeatureFlags
   case debugPushNotifications
+  case systemDesign
   case changeEnvironment
   case changeLanguage
 
@@ -30,6 +31,7 @@ public enum BetaToolsRow: Int, CaseIterable {
     case .debugConfigFeatureFlags: return "Config Feature Flags"
     case .debugRemoteConfigFeatureFlags: return "Remote Config Feature Flags"
     case .debugPushNotifications: return "Debug Push Notifications"
+    case .systemDesign: return "System Design"
     case .changeEnvironment: return "Change Environment"
     case .changeLanguage: return "Change Language"
     }
@@ -38,7 +40,7 @@ public enum BetaToolsRow: Int, CaseIterable {
   public var rightIconImageName: String? {
     switch self {
     case .debugConfigFeatureFlags, .debugRemoteConfigFeatureFlags,
-         .debugPushNotifications: return "chevron-right"
+         .debugPushNotifications, .systemDesign: return "chevron-right"
     default: return nil
     }
   }
@@ -68,6 +70,7 @@ public protocol BetaToolsViewModelOutputs {
   var goToConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToRemoteConfigFeatureFlagTools: Signal<(), Never> { get }
   var goToPushNotificationTools: Signal<(), Never> { get }
+  var goToSystemDesign: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadWithData: Signal<BetaToolsData, Never> { get }
   var showChangeEnvironmentSheetWithSourceViewIndex: Signal<Int, Never> { get }
@@ -148,6 +151,11 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.debugRemoteConfigFeatureFlags }
       .ignoreValues()
 
+    self.goToSystemDesign = self.didSelectBetaToolsRowProperty.signal
+      .skipNil()
+      .filter { $0 == BetaToolsRow.systemDesign }
+      .ignoreValues()
+
     self.showChangeEnvironmentSheetWithSourceViewIndex = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
       .filter { $0 == BetaToolsRow.changeEnvironment }
@@ -200,6 +208,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
   public let goToConfigFeatureFlagTools: Signal<(), Never>
   public let goToRemoteConfigFeatureFlagTools: Signal<(), Never>
   public let goToPushNotificationTools: Signal<(), Never>
+  public let goToSystemDesign: Signal<(), Never>
   public let updateLanguage: Signal<Language, Never>
   public let updateEnvironment: Signal<EnvironmentType, Never>
   public let logoutWithParams: Signal<DiscoveryParams, Never>
