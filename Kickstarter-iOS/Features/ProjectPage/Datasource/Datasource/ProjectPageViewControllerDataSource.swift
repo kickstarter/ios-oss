@@ -273,7 +273,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           self
             .appendRow(
               value: value,
-              cellClass: ProjectTabQuestionAnswerCell.self,
+              cellClass: ProjectTabAIGenerationCell.self,
               toSection: Section.aiDisclosureGenerated.rawValue
             )
         }
@@ -286,7 +286,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           self
             .appendRow(
               value: value,
-              cellClass: ProjectTabQuestionAnswerCell.self,
+              cellClass: ProjectTabAIGenerationCell.self,
               toSection: Section.aiDisclosureGenerated.rawValue
             )
         }
@@ -332,7 +332,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProjectTabTitleCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as ProjectTabQuestionAnswerCell, value as (String, String)):
+    case let (cell as ProjectTabAIGenerationCell, value as (String, String)):
       cell.configureWith(value: value)
     case let (cell as ProjectTabCategoryDescriptionCell, value as ProjectTabCategoryDescription):
       cell.configureWith(value: value)

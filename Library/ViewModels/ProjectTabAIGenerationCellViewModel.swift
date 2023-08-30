@@ -2,12 +2,12 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol ProjectTabQuestionAnswerCellViewModelInputs {
+public protocol ProjectTabAIGenerationCellViewModelInputs {
   /// Call to configure with a value of `String`, `String`. The first `String` represents the question being asked in the cell. The second represents the answer.
   func configureWith(value: (String, String))
 }
 
-public protocol ProjectTabQuestionAnswerCellViewModelOutputs {
+public protocol ProjectTabAIGenerationCellViewModelOutputs {
   /// Emits a `String` of the question from the question itself
   var questionLabelText: Signal<String, Never> { get }
 
@@ -15,14 +15,14 @@ public protocol ProjectTabQuestionAnswerCellViewModelOutputs {
   var answerLabelText: Signal<String, Never> { get }
 }
 
-public protocol ProjectTabQuestionAnswerCellViewModelType {
-  var inputs: ProjectTabQuestionAnswerCellViewModelInputs { get }
-  var outputs: ProjectTabQuestionAnswerCellViewModelOutputs { get }
+public protocol ProjectAIGenerationAnswerCellViewModelType {
+  var inputs: ProjectTabAIGenerationCellViewModelInputs { get }
+  var outputs: ProjectTabAIGenerationCellViewModelOutputs { get }
 }
 
-public final class ProjectTabQuestionAnswerCellViewModel:
-  ProjectTabQuestionAnswerCellViewModelType, ProjectTabQuestionAnswerCellViewModelInputs,
-  ProjectTabQuestionAnswerCellViewModelOutputs {
+public final class ProjectTabAIGenerationCellViewModel:
+  ProjectAIGenerationAnswerCellViewModelType, ProjectTabAIGenerationCellViewModelInputs,
+  ProjectTabAIGenerationCellViewModelOutputs {
   public init() {
     self.questionLabelText = self.configureWithProperty.signal
       .skipNil()
@@ -41,6 +41,6 @@ public final class ProjectTabQuestionAnswerCellViewModel:
   public let questionLabelText: Signal<String, Never>
   public let answerLabelText: Signal<String, Never>
 
-  public var inputs: ProjectTabQuestionAnswerCellViewModelInputs { self }
-  public var outputs: ProjectTabQuestionAnswerCellViewModelOutputs { self }
+  public var inputs: ProjectTabAIGenerationCellViewModelInputs { self }
+  public var outputs: ProjectTabAIGenerationCellViewModelOutputs { self }
 }

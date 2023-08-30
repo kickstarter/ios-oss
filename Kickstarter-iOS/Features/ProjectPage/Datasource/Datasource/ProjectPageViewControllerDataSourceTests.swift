@@ -456,7 +456,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectTabQuestionAnswerCell",
+        "ProjectTabAIGenerationCell",
         self.dataSource.reusableId(item: 1, section: self.useOfAIDisclosureGeneratedSection)
       )
 
@@ -540,7 +540,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectTabQuestionAnswerCell",
+        "ProjectTabAIGenerationCell",
         self.dataSource.reusableId(item: 1, section: self.useOfAIDisclosureGeneratedSection)
       )
 

@@ -9,10 +9,10 @@ public enum ProjectTabQuestionAnswerCellStyles {
   }
 }
 
-final class ProjectTabQuestionAnswerCell: UITableViewCell, ValueCell {
+final class ProjectTabAIGenerationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = ProjectTabQuestionAnswerCellViewModel()
+  private let viewModel = ProjectTabAIGenerationCellViewModel()
 
   private lazy var questionLabel: UILabel = {
     UILabel(frame: .zero)

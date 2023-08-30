@@ -4,9 +4,9 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class ProjectTabQuestionAnswerCellViewModelTests: TestCase {
-  fileprivate let vm: ProjectTabQuestionAnswerCellViewModelType =
-    ProjectTabQuestionAnswerCellViewModel()
+internal final class ProjectTabAIGenerationCellViewModelTests: TestCase {
+  fileprivate let vm: ProjectAIGenerationAnswerCellViewModelType =
+    ProjectTabAIGenerationCellViewModel()
 
   fileprivate let questionLabelText = TestObserver<String, Never>()
   fileprivate let answerLabelText = TestObserver<String, Never>()
