@@ -138,18 +138,3 @@ public let readMoreButtonStyle = baseButtonStyle
 // experimental campaign button
 public let greyReadMoreButtonStyle = greyButtonStyle
   <> UIButton.lens.contentHorizontalAlignment .~ .center
-
-// MARK: - Badge Button
-public let greenBadgeButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_create_300
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_create_700
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_create_700.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_create_700.mixLighter(0.36)
-
-public let coralBadgeButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_celebrate_100
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_400
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_create_700.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_create_700.mixLighter(0.36)

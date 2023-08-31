@@ -33,7 +33,7 @@ final class SystemDesignViewController: UIViewController, NibLoading {
   private let switchControlDisabled = UISwitch(frame: .zero)
   private let stepper: UIStepper = { UIStepper(frame: .zero) }()
   // TODO: add a drop down example
-  private let needsDropdownLabel = UILabel()
+  private let dropdownButton: UIButton = { UIButton(frame: .zero) }()
 
   // MARK: - Inputs
 
@@ -48,20 +48,39 @@ final class SystemDesignViewController: UIViewController, NibLoading {
   @IBOutlet var progressStackView: UIStackView!
   private let loadingIndicator = UIActivityIndicatorView()
   private let pullToRefreshImageView = UIImageView(image: image(named: "icon--refresh-small"))
-  // TODO: shimmer view not showing
-  private lazy var shimmerLoadingView: PledgeShippingLocationShimmerLoadingView = {
-    PledgeShippingLocationShimmerLoadingView(frame: .zero)
-  }()
-  
+  private let shimmerLoadingView = DemoShimmerLoadingView(frame: .zero)
+
   // MARK: - Footers
 
   @IBOutlet var footersStackView: UIStackView!
-  
+
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
     PledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  
+
+  // MARK: - Typography
+
+  @IBOutlet var typeStackView: UIStackView!
+  private let title1Label = UILabel()
+  private let title1LabelBold = UILabel()
+  private let title2Label = UILabel()
+  private let title2LabelBold = UILabel()
+  private let title3Label = UILabel()
+  private let title3LabelBold = UILabel()
+  private let headlineLabel = UILabel()
+  private let bodyLabel = UILabel()
+  private let calloutLabel = UILabel()
+  private let calloutLabelBold = UILabel()
+  private let subheadlineLabel = UILabel()
+  private let subheadlineLabelBold = UILabel()
+  private let footnoteLabel = UILabel()
+  private let footnoteLabelBold = UILabel()
+  private let caption1Label = UILabel()
+  private let caption1LabelBold = UILabel()
+  private let caption2Label = UILabel()
+  private let caption2LabelBold = UILabel()
+
   // MARK: - Properties
 
   static func instantiate() -> SystemDesignViewController {
@@ -75,6 +94,8 @@ final class SystemDesignViewController: UIViewController, NibLoading {
 
     _ = self
       |> \.title .~ "System Design"
+
+    self.dropdownButton.setTitle("United States", for: .normal)
 
     self.configureViews()
   }
@@ -98,40 +119,68 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
-    // MARK: - Controls Stacks
+    // MARK: - Controls Stack
 
     _ = (
       [
         self.switchControlEnabled,
         self.switchControlDisabled,
         self.stepper,
-        self.needsDropdownLabel
+        self.dropdownButton
       ], self.controlsStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
 
-    // MARK: - Progress Indicators
+    // MARK: - Progress Indicators Stack
 
     _ = (
       [
-        self.shimmerLoadingView,
         self.loadingIndicator,
-        self.pullToRefreshImageView
+        self.pullToRefreshImageView,
+        self.shimmerLoadingView
       ], self.progressStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
 
-    // MARK: - Footers
+    // MARK: - Footers Stack
 
     _ = ([self.pledgeCTAContainerView], self.footersStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    // MARK: - Footers Stack
+
+    _ = (
+      [
+        self.title1Label,
+        self.title1LabelBold,
+        self.title2Label,
+        self.title2LabelBold,
+        self.title3Label,
+        self.title3LabelBold,
+        self.headlineLabel,
+        self.bodyLabel,
+        self.calloutLabel,
+        self.calloutLabelBold,
+        self.subheadlineLabel,
+        self.subheadlineLabelBold,
+        self.footnoteLabel,
+        self.footnoteLabelBold,
+        self.caption1Label,
+        self.caption1Label,
+        self.caption2Label,
+        self.caption2LabelBold
+      ], self.typeStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
+
     NSLayoutConstraint.activate([
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
+      self.shimmerLoadingView.leftAnchor.constraint(equalTo: self.progressStackView.leftAnchor),
+      self.shimmerLoadingView.rightAnchor.constraint(equalTo: self.progressStackView.rightAnchor),
       self.pullToRefreshImageView.widthAnchor.constraint(equalToConstant: 25),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.footersStackView.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.footersStackView.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.footersStackView.bottomAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.footersStackView.bottomAnchor)
     ])
   }
 
@@ -191,11 +240,10 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     _ = self.stepper
       |> checkoutStepperStyle
 
-    _ = self.needsDropdownLabel
-      |> \.text %~ { _ in "Still need to add a dropdown example here" }
-      |> \.font .~ UIFont.ksr_footnote()
-      |> \.textColor .~ .ksr_support_700
-      |> \.numberOfLines .~ 0
+    _ = self.dropdownButton
+      |> dropdownButtonStyle
+      |> checkoutWhiteBackgroundStyle
+      |> checkoutRoundedCornersStyle
 
     // MARK: - Input Styles
 
@@ -212,7 +260,7 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     _ = self.emailTextField |> emailFieldAutoFillStyle
     _ = self.passwordTextField |> passwordFieldAutoFillStyle
 
-    // MARK: - Progress
+    // MARK: - Progress Styles
 
     _ = self.loadingIndicator
       |> baseActivityIndicatorStyle
@@ -222,6 +270,98 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     _ = self.pullToRefreshImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    // MARK: - Typography Styles
+
+    _ = self.title1Label
+      |> \.font .~ UIFont.ksr_title1()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Title 1"
+
+    _ = self.title1LabelBold
+      |> \.font .~ UIFont.ksr_title1().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Title 1 Bold"
+
+    _ = self.title2Label
+      |> \.font .~ UIFont.ksr_title2()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Title 2"
+
+    _ = self.title2LabelBold
+      |> \.font .~ UIFont.ksr_title2().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Title 2 Bold"
+
+    _ = self.title3Label
+      |> \.font .~ UIFont.ksr_title3()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Title 3"
+
+    _ = self.title3LabelBold
+      |> \.font .~ UIFont.ksr_title3().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Title 3 Bold"
+
+    _ = self.headlineLabel
+      |> \.font .~ UIFont.ksr_headline()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Headline Bold"
+
+    _ = self.bodyLabel
+      |> \.font .~ UIFont.ksr_body()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Body"
+
+    _ = self.calloutLabel
+      |> \.font .~ UIFont.ksr_callout()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Callout"
+
+    _ = self.calloutLabelBold
+      |> \.font .~ UIFont.ksr_callout().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Callout Bold"
+
+    _ = self.subheadlineLabel
+      |> \.font .~ UIFont.ksr_subhead()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Subheadline"
+
+    _ = self.subheadlineLabelBold
+      |> \.font .~ UIFont.ksr_subhead().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Subheadline Bold"
+
+    _ = self.footnoteLabel
+      |> \.font .~ UIFont.ksr_footnote()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Footnote"
+
+    _ = self.footnoteLabelBold
+      |> \.font .~ UIFont.ksr_footnote().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Footnote Bold"
+
+    _ = self.caption1Label
+      |> \.font .~ UIFont.ksr_caption1()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Caption 1"
+
+    _ = self.caption1LabelBold
+      |> \.font .~ UIFont.ksr_caption1().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Caption 1 Bold"
+
+    _ = self.caption2Label
+      |> \.font .~ UIFont.ksr_caption2()
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Caption 2"
+
+    _ = self.caption2LabelBold
+      |> \.font .~ UIFont.ksr_caption2().bolded
+      |> \.textColor .~ .ksr_black
+      |> \.text .~ "Caption 2 Bold"
   }
 }
 
@@ -241,4 +381,18 @@ private func attributedTermsText() -> NSAttributedString? {
   )
 
   return checkoutAttributedLink(with: string)
+}
+
+private let dropdownButtonStyle: ButtonStyle = { (button: UIButton) in
+  button
+    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(
+      top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
+    )
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_700
+    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_create_700
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
+    |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
+    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)
+    |> UIButton.lens.layer.shadowColor .~ UIColor.ksr_black.cgColor
 }

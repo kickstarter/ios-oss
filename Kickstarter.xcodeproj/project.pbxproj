@@ -486,6 +486,7 @@
 		6049D0112A9CF6840015BB0D /* SystemDesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* SystemDesignViewController.swift */; };
 		6049D0132A9CF68E0015BB0D /* SystemDesignViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0122A9CF68E0015BB0D /* SystemDesignViewControllerTests.swift */; };
 		6049D0182A9CFA400015BB0D /* SystemDesign.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6049D0162A9CF9130015BB0D /* SystemDesign.storyboard */; };
+		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
@@ -2070,6 +2071,7 @@
 		6049D0102A9CF6840015BB0D /* SystemDesignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDesignViewController.swift; sourceTree = "<group>"; };
 		6049D0122A9CF68E0015BB0D /* SystemDesignViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDesignViewControllerTests.swift; sourceTree = "<group>"; };
 		6049D0162A9CF9130015BB0D /* SystemDesign.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SystemDesign.storyboard; sourceTree = "<group>"; };
+		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -5746,6 +5748,7 @@
 			children = (
 				6049D0152A9CF90C0015BB0D /* Storyboard */,
 				6049D00F2A9CF6610015BB0D /* Controller */,
+				6049D0192AA0EC5E0015BB0D /* Views */,
 			);
 			path = SystemDesign;
 			sourceTree = "<group>";
@@ -5765,6 +5768,14 @@
 				6049D0162A9CF9130015BB0D /* SystemDesign.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		6049D0192AA0EC5E0015BB0D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */ = {
@@ -8252,6 +8263,7 @@
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
+				6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */,
 				06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */,
 				014D63011E721D500033D2BD /* BackerDashboardProjectCell.swift in Sources */,
 				8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */,
