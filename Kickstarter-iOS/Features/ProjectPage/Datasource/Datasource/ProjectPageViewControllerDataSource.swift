@@ -258,38 +258,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         )
       }
 
-      if aiDisclosure.involvesGeneration {
-        self.appendRow(
-          value: Strings.I_plan_to_use_AI_generated_content(),
-          cellClass: ProjectTabTitleCell.self,
-          toSection: Section.aiDisclosureGenerated.rawValue
+      if aiDisclosure.involvesGeneration, let generationDisclosure = aiDisclosure.generationDisclosure {
+        self.set(
+          values: [generationDisclosure],
+          cellClass: ProjectTabAIGenerationCell.self,
+          inSection: Section.aiDisclosureGenerated.rawValue
         )
-
-        if let detailsValues = aiDisclosure.generatedByAiDetails {
-          let value = (
-            GeneratedAIQuestionHeaderValue.partsOfProjectAIGenerated.description,
-            detailsValues.description
-          )
-          self
-            .appendRow(
-              value: value,
-              cellClass: ProjectTabAIGenerationCell.self,
-              toSection: Section.aiDisclosureGenerated.rawValue
-            )
-        }
-
-        if let consentValues = aiDisclosure.generatedByAiConsent {
-          let value = (
-            GeneratedAIQuestionHeaderValue.doYouHaveConsentOfOwners.description,
-            consentValues.description
-          )
-          self
-            .appendRow(
-              value: value,
-              cellClass: ProjectTabAIGenerationCell.self,
-              toSection: Section.aiDisclosureGenerated.rawValue
-            )
-        }
       }
 
       if let otherAIDetailValues = aiDisclosure.otherAiDetails, aiDisclosure.involvesOther {
@@ -330,9 +304,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as ProjectTabTitleCell, value as String):
-      cell.configureWith(value: value)
-    case let (cell as ProjectTabAIGenerationCell, value as (String, String)):
+    case let (cell as ProjectTabAIGenerationCell, value as ProjectTabGenerationDisclosure):
       cell.configureWith(value: value)
     case let (cell as ProjectTabCategoryDescriptionCell, value as ProjectTabCategoryDescription):
       cell.configureWith(value: value)

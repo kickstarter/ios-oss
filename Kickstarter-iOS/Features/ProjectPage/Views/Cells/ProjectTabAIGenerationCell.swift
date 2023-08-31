@@ -3,25 +3,16 @@ import Library
 import Prelude
 import UIKit
 
-public enum ProjectTabQuestionAnswerCellStyles {
-  public enum Layout {
-    public static let stackViewSpacing: CGFloat = Styles.grid(2)
-  }
-}
-
 final class ProjectTabAIGenerationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = ProjectTabAIGenerationCellViewModel()
+  private var consentText: String?
+  private var detailsText: String?
 
-  private lazy var questionLabel: UILabel = {
+  private lazy var categoryLabel: UILabel = {
     UILabel(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var answerLabel: UILabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.text .~ Strings.I_plan_to_use_AI_generated_content()
   }()
 
   private lazy var rootStackView = {
@@ -45,56 +36,107 @@ final class ProjectTabAIGenerationCell: UITableViewCell, ValueCell {
 
   // MARK: - Bindings
 
-  override func bindViewModel() {
-    super.bindViewModel()
-
-    self.answerLabel.rac.text = self.viewModel.outputs.answerLabelText
-    self.questionLabel.rac.text = self.viewModel.outputs.questionLabelText
-  }
-
   override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseTableViewCellStyle()
-      |> \.separatorInset .~ .init(
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: self.bounds.size.width + ProjectHeaderCellStyles.Layout.insets
-      )
+      |> \.separatorInset .~ .init(leftRight: Styles.projectPageLeftRightInset)
 
     _ = self.contentView
       |> \.layoutMargins .~
       .init(topBottom: Styles.grid(2), leftRight: Styles.projectPageLeftRightInset)
 
-    _ = self.questionLabel
-      |> questionLabelStyle
-
-    _ = self.answerLabel
-      |> answerLabelStyle
-
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.categoryLabel
+      |> categoryLabelStyle
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (String, String)) {
-    self.viewModel.inputs.configureWith(value: value)
+  func configureWith(value: ProjectTabGenerationDisclosure) {
+    self.rootStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    self.rootStackView.addArrangedSubview(self.categoryLabel)
+
+    if let detailsText = value.details {
+      let detailsView = view(
+        question: Strings.What_parts_of_your_project_will_use_AI_generated_content(),
+        answer: detailsText
+      )
+      self.rootStackView.addArrangedSubview(detailsView)
+    }
+
+    if let consentText = value.consent {
+      let consentView = view(
+        question: Strings.Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI(),
+        answer: consentText
+      )
+      self.rootStackView.addArrangedSubview(consentView)
+    }
   }
 
   private func configureViews() {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
-
-    _ = ([self.questionLabel, self.answerLabel], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
   }
 }
 
+// MARK: - Helpers
+
+private func view(question: String, answer: String) -> UIView {
+  let container = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  let questionLabel = UILabel(frame: .zero)
+    |> questionLabelStyle
+    |> \.text .~ question
+  container.addSubview(questionLabel)
+
+  let answerLabel = UILabel(frame: .zero)
+    |> answerLabelStyle
+    |> \.text .~ answer
+  container.addSubview(answerLabel)
+
+  let answerBar = UIView(frame: .zero)
+    |> answerBarStyle
+  container.addSubview(answerBar)
+
+  NSLayoutConstraint.activate([
+    questionLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+    questionLabel.trailingAnchor
+      .constraint(equalTo: container.trailingAnchor),
+    questionLabel.topAnchor.constraint(equalTo: container.topAnchor),
+
+    answerBar.leadingAnchor.constraint(equalTo: questionLabel.leadingAnchor),
+    answerBar.widthAnchor.constraint(equalToConstant: Styles.grid(1)),
+    answerBar.topAnchor.constraint(equalTo: answerLabel.topAnchor),
+    answerBar.bottomAnchor.constraint(equalTo: answerLabel.bottomAnchor),
+
+    answerLabel.leadingAnchor
+      .constraint(equalTo: answerBar.trailingAnchor, constant: Styles.grid(2)),
+    answerLabel.topAnchor
+      .constraint(equalTo: questionLabel.bottomAnchor, constant: Styles.grid(2)),
+    answerLabel.trailingAnchor.constraint(equalTo: questionLabel.trailingAnchor),
+    answerLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+  ])
+
+  return container
+}
+
 // MARK: - Styles
+
+private let categoryLabelStyle: LabelStyle = { label in
+  label
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.font .~ UIFont.ksr_title3().bolded
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ .ksr_support_700
+}
 
 private let answerLabelStyle: LabelStyle = { label in
   label
@@ -102,6 +144,7 @@ private let answerLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_body()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ .ksr_support_700
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
 private let questionLabelStyle: LabelStyle = { label in
@@ -109,6 +152,13 @@ private let questionLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_body().bolded
     |> \.numberOfLines .~ 0
     |> \.textColor .~ .ksr_support_700
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
+
+private let answerBarStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .ksr_create_700
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
@@ -116,5 +166,5 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .vertical
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ ProjectTabQuestionAnswerCellStyles.Layout.stackViewSpacing
+    |> \.spacing .~ Styles.grid(3)
 }
