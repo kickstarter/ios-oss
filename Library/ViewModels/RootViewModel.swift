@@ -488,10 +488,6 @@ private func generateStandardViewControllers() -> [RootViewControllerData] {
 
 private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool))
   -> [RootViewControllerData] {
-  if featureCreatorDashboardEnabled() {
-    return [.dashboard(isMember: userState.isMember), .profile(isLoggedIn: userState.isLoggedIn)]
-  }
-
   return [.profile(isLoggedIn: userState.isLoggedIn)]
 }
 

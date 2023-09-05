@@ -167,11 +167,8 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToDashboard(project param: Param?) {
-    guard featureCreatorDashboardEnabled() else {
-      return
-    }
-
-    self.viewModel.inputs.switchToDashboard(project: param)
+    // FIXME: Delete this method.
+    return
   }
 
   public func switchToDiscovery(params: DiscoveryParams?) {
@@ -217,37 +214,13 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
   }
 
   public func switchToCreatorMessageThread(projectId: Param, messageThread: MessageThread) {
-    guard featureCreatorDashboardEnabled() else {
-      return
-    }
-
-    self.switchToDashboard(project: nil)
-
-    guard
-      let dashboardNav = self.selectedViewController as? UINavigationController,
-      let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
-    else { return }
-
-    self.presentedViewController?.dismiss(animated: false, completion: nil)
-
-    dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
+    // FIXME: Delete this method.
+    return
   }
 
   public func switchToProjectActivities(projectId: Param) {
-    guard featureCreatorDashboardEnabled() else {
-      return
-    }
-
-    self.switchToDashboard(project: nil)
-
-    guard
-      let dashboardNav = self.selectedViewController as? UINavigationController,
-      let dashboardVC = dashboardNav.viewControllers.first as? DashboardViewController
-    else { return }
-
-    self.presentedViewController?.dismiss(animated: false, completion: nil)
-
-    dashboardVC.navigateToProjectActivities(projectId: projectId)
+    // FIXME: Delete this method.
+    return
   }
 
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
