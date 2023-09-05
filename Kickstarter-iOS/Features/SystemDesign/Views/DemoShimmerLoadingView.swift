@@ -6,7 +6,6 @@ import UIKit
 final class DemoShimmerLoadingView: UIView {
   // MARK: - Properties
 
-  internal lazy var amountPlaceholder: UIView = { UIView(frame: .zero) }()
   private lazy var buttonPlaceholder: UIView = { UIView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
@@ -40,9 +39,6 @@ final class DemoShimmerLoadingView: UIView {
 
     _ = self.buttonPlaceholder
       |> roundedStyle(cornerRadius: Styles.gridHalf(3))
-
-    _ = self.amountPlaceholder
-      |> roundedStyle(cornerRadius: Styles.gridHalf(3))
   }
 
   // MARK: - Subviews
@@ -68,6 +64,6 @@ final class DemoShimmerLoadingView: UIView {
 
 extension DemoShimmerLoadingView: ShimmerLoading {
   func shimmerViews() -> [UIView] {
-    return [self.amountPlaceholder, self.buttonPlaceholder]
+    return [self.buttonPlaceholder]
   }
 }

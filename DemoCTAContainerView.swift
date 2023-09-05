@@ -4,7 +4,6 @@ import PassKit
 import Prelude
 import UIKit
 
-
 // Just a copy of PledgeViewCTAContainerView to demonstrate Dark Mode differences in SystemSettingsViewController
 
 private enum Layout {
@@ -168,9 +167,9 @@ private let disclaimerStackViewStyle: StackViewStyle = { stackView in
 private let layerStyle: LayerStyle = { layer in
   layer
     |> checkoutLayerCardRoundedStyle
-  |> \.backgroundColor .~ UIColor.clear.cgColor
-  |> \.shadowColor .~ adaptiveColor(.black).cgColor
-    |> \.shadowOpacity .~ 0.2
+    |> \.backgroundColor .~ adaptiveColor(.white).cgColor
+    |> \.shadowColor .~ adaptiveColor(.black).cgColor
+    |> \.shadowOpacity .~ 0.12
     |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
     |> \.shadowRadius .~ CGFloat(1.0)
     |> \.maskedCorners .~ [

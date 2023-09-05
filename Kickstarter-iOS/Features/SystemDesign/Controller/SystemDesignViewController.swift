@@ -32,7 +32,6 @@ final class SystemDesignViewController: UIViewController, NibLoading {
   private let switchControlEnabled = UISwitch(frame: .zero)
   private let switchControlDisabled = UISwitch(frame: .zero)
   private let stepper: UIStepper = { UIStepper(frame: .zero) }()
-  // TODO: add a drop down example
   private let dropdownButton: UIButton = { UIButton(frame: .zero) }()
 
   // MARK: - Inputs
@@ -54,8 +53,8 @@ final class SystemDesignViewController: UIViewController, NibLoading {
 
   @IBOutlet var footersStackView: UIStackView!
 
-  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
-    PledgeViewCTAContainerView(frame: .zero)
+  private lazy var demoCTAContainerView: DemoCTAContainerView = {
+    DemoCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -144,7 +143,7 @@ final class SystemDesignViewController: UIViewController, NibLoading {
 
     // MARK: - Footers Stack
 
-    _ = ([self.pledgeCTAContainerView], self.footersStackView)
+    _ = ([self.demoCTAContainerView], self.footersStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     // MARK: - Footers Stack
@@ -175,12 +174,13 @@ final class SystemDesignViewController: UIViewController, NibLoading {
 
     NSLayoutConstraint.activate([
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
+      self.dropdownButton.widthAnchor.constraint(equalToConstant: 200),
       self.shimmerLoadingView.leftAnchor.constraint(equalTo: self.progressStackView.leftAnchor),
       self.shimmerLoadingView.rightAnchor.constraint(equalTo: self.progressStackView.rightAnchor),
       self.pullToRefreshImageView.widthAnchor.constraint(equalToConstant: 25),
-      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.footersStackView.leftAnchor),
-      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.footersStackView.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.footersStackView.bottomAnchor)
+      self.demoCTAContainerView.leftAnchor.constraint(equalTo: self.footersStackView.leftAnchor),
+      self.demoCTAContainerView.rightAnchor.constraint(equalTo: self.footersStackView.rightAnchor),
+      self.demoCTAContainerView.bottomAnchor.constraint(equalTo: self.footersStackView.bottomAnchor)
     ])
   }
 
@@ -195,32 +195,32 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     // MARK: - Button Styles
 
     _ = self.primaryGreenButton
-      |> greenButtonStyle
+      |> adaptiveGreenButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Primary Green Button"
 
     _ = self.primaryBlueButton
-      |> blueButtonStyle
+      |> adaptiveBlueButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Primary Blue Button"
 
     _ = self.primaryBlackButton
-      |> blackButtonStyle
+      |> adaptiveBlackButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Primary Black Button"
 
     _ = self.secondaryGreyButton
-      |> greyButtonStyle
+      |> adaptiveGreyButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Secondary Grey Button"
 
     _ = self.secondaryDisabledButton
-      |> greyButtonStyle
+      |> adaptiveGreyButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Secondary Disabled Button"
       |> UIButton.lens.isEnabled .~ false
 
     _ = self.secondaryRedButton
-      |> redButtonStyle
+      |> adaptiveRedButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Secondary Red Button"
 
     _ = self.facebookButton
-      |> facebookButtonStyle
+      |> adaptiveFacebookButtonStyle
       |> UIButton.lens.title(for: .normal) .~ Strings.Continue_with_Facebook()
 
     _ = self.applePayButton
@@ -229,11 +229,11 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     // MARK: - Control Styles
 
     _ = self.switchControlEnabled
-      |> baseSwitchControlStyle
+      |> adaptiveSwitchControlStyle
       |> \.isOn .~ true
 
     _ = self.switchControlDisabled
-      |> baseSwitchControlStyle
+      |> adaptiveSwitchControlStyle
       |> \.isOn .~ false
     self.switchControlDisabled.isEnabled = false
 
@@ -248,22 +248,30 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     // MARK: - Input Styles
 
     _ = self.emailContainer
-      |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
+      |> \.layer.borderColor .~ adaptiveColor(.support200).cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 10
 
     _ = self.passwordContainer
-      |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
+      |> \.layer.borderColor .~ adaptiveColor(.support200).cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 10
 
-    _ = self.emailTextField |> emailFieldAutoFillStyle
-    _ = self.passwordTextField |> passwordFieldAutoFillStyle
+    _ = self.emailTextField
+      |> adaptiveEmailFieldStyle
+      |> \.attributedPlaceholder %~ { _ in
+        adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
+      }
+    _ = self.passwordTextField
+      |> adaptivePasswordFieldStyle
+      |> \.attributedPlaceholder %~ { _ in
+        adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
+      }
 
     // MARK: - Progress Styles
 
     _ = self.loadingIndicator
-      |> baseActivityIndicatorStyle
+      |> adaptiveActivityIndicatorStyle
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> UIActivityIndicatorView.lens.animating .~ true
 
@@ -274,93 +282,93 @@ final class SystemDesignViewController: UIViewController, NibLoading {
     // MARK: - Typography Styles
 
     _ = self.title1Label
-      |> \.font .~ UIFont.ksr_title1()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_title1()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Title 1"
 
     _ = self.title1LabelBold
-      |> \.font .~ UIFont.ksr_title1().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Title 1 Bold"
 
     _ = self.title2Label
-      |> \.font .~ UIFont.ksr_title2()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_title2()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Title 2"
 
     _ = self.title2LabelBold
-      |> \.font .~ UIFont.ksr_title2().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_title2().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Title 2 Bold"
 
     _ = self.title3Label
-      |> \.font .~ UIFont.ksr_title3()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_title3()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Title 3"
 
     _ = self.title3LabelBold
-      |> \.font .~ UIFont.ksr_title3().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_title3().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Title 3 Bold"
 
     _ = self.headlineLabel
-      |> \.font .~ UIFont.ksr_headline()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_headline()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Headline Bold"
 
     _ = self.bodyLabel
-      |> \.font .~ UIFont.ksr_body()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_body()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Body"
 
     _ = self.calloutLabel
-      |> \.font .~ UIFont.ksr_callout()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_callout()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Callout"
 
     _ = self.calloutLabelBold
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_callout().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Callout Bold"
 
     _ = self.subheadlineLabel
-      |> \.font .~ UIFont.ksr_subhead()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_subhead()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Subheadline"
 
     _ = self.subheadlineLabelBold
-      |> \.font .~ UIFont.ksr_subhead().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_subhead().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Subheadline Bold"
 
     _ = self.footnoteLabel
-      |> \.font .~ UIFont.ksr_footnote()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_footnote()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Footnote"
 
     _ = self.footnoteLabelBold
-      |> \.font .~ UIFont.ksr_footnote().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_footnote().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Footnote Bold"
 
     _ = self.caption1Label
-      |> \.font .~ UIFont.ksr_caption1()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_caption1()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Caption 1"
 
     _ = self.caption1LabelBold
-      |> \.font .~ UIFont.ksr_caption1().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_caption1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Caption 1 Bold"
 
     _ = self.caption2Label
-      |> \.font .~ UIFont.ksr_caption2()
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_caption2()
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Caption 2"
 
     _ = self.caption2LabelBold
-      |> \.font .~ UIFont.ksr_caption2().bolded
-      |> \.textColor .~ .ksr_black
+      |> \.font .~ .ksr_caption2().bolded
+      |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Caption 2 Bold"
   }
 }
@@ -389,10 +397,10 @@ private let dropdownButtonStyle: ButtonStyle = { (button: UIButton) in
       top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
     )
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_700
-    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_create_700
+    |> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.create700)
+    |> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.create700)
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
     |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
     |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)
-    |> UIButton.lens.layer.shadowColor .~ UIColor.ksr_black.cgColor
+    |> UIButton.lens.layer.shadowColor .~ adaptiveColor(.black).cgColor
 }
