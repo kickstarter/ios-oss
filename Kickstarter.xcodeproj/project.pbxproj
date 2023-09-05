@@ -487,6 +487,8 @@
 		6049D0132A9CF68E0015BB0D /* SystemDesignViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0122A9CF68E0015BB0D /* SystemDesignViewControllerTests.swift */; };
 		6049D0182A9CFA400015BB0D /* SystemDesign.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6049D0162A9CF9130015BB0D /* SystemDesign.storyboard */; };
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
+		6049D0202AA776B40015BB0D /* SystemDesignColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* SystemDesignColors.swift */; };
+		6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
@@ -2072,6 +2074,8 @@
 		6049D0122A9CF68E0015BB0D /* SystemDesignViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDesignViewControllerTests.swift; sourceTree = "<group>"; };
 		6049D0162A9CF9130015BB0D /* SystemDesign.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SystemDesign.storyboard; sourceTree = "<group>"; };
 		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
+		6049D01E2AA774130015BB0D /* SystemDesignColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDesignColors.swift; sourceTree = "<group>"; };
+		6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCTAContainerView.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -5746,6 +5750,7 @@
 		6049D00E2A9CF6530015BB0D /* SystemDesign */ = {
 			isa = PBXGroup;
 			children = (
+				6049D01D2AA774030015BB0D /* Colors */,
 				6049D0152A9CF90C0015BB0D /* Storyboard */,
 				6049D00F2A9CF6610015BB0D /* Controller */,
 				6049D0192AA0EC5E0015BB0D /* Views */,
@@ -5776,6 +5781,14 @@
 				6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6049D01D2AA774030015BB0D /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				6049D01E2AA774130015BB0D /* SystemDesignColors.swift */,
+			);
+			path = Colors;
 			sourceTree = "<group>";
 		};
 		6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */ = {
@@ -6401,6 +6414,7 @@
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
+				6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */,
 				802800561C88F62500141235 /* Configs */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
@@ -7853,6 +7867,7 @@
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
 				370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */,
 				A75C81171D210BD700B5AD03 /* ShareViewModel.swift in Sources */,
+				6049D0202AA776B40015BB0D /* SystemDesignColors.swift in Sources */,
 				A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
 				A7CC13D91D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
 				D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */,
@@ -8405,6 +8420,7 @@
 				0634C2F727CFEE40003A6D6E /* ExternalSourceViewElementCell.swift in Sources */,
 				47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */,
 				37CA16AD23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift in Sources */,
+				6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */,
