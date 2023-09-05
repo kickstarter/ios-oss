@@ -138,8 +138,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSPrefPaneIconFile</key>
-	<string></string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 </dict>
