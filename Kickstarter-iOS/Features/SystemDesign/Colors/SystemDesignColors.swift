@@ -3,31 +3,45 @@ import Prelude_UIKit
 import UIKit
 
 public enum SystemDesignColorStyle: String, CaseIterable {
-  case alert
-  case black
-  case celebrate100
-  case celebrate300
-  case celebrate500
-  case celebrate700
+  // MARK: - Greens
+
   case create100
   case create300
   case create500
   case create700
-  case facebookBlue
-  case inform
+
+  // MARK: - Greys
+
+  case black
   case support100
   case support200
   case support300
   case support400
   case support500
   case support700
+  case white
+
+  // MARK: - Blues
+
   case trust100
   case trust300
   case trust500
   case trust700
-  case warn
-  case white
+
+  // MARK: - Corals
+
+  case celebrate100
+  case celebrate300
+  case celebrate500
+  case celebrate700
+
+  // MARK: - Functional
+
+  case alert
   case cellSeparator
+  case facebookBlue
+  case inform
+  case warn
 }
 
 extension SystemDesignColorStyle {
