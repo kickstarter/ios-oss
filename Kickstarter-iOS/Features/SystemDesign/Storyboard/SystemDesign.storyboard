@@ -4,8 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -59,7 +59,7 @@
                                                     </stackView>
                                                 </subviews>
                                                 <viewLayoutGuide key="safeArea" id="efJ-ii-Dso"/>
-                                                <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="trust500"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="0RP-Ju-eVU" secondAttribute="bottom" constant="12" id="C0z-Vk-LKw"/>
@@ -76,7 +76,7 @@
                                             </view>
                                         </subviews>
                                         <viewLayoutGuide key="safeArea" id="Fwr-C3-2oy"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="oy8-1c-y5N" firstAttribute="top" secondItem="Fwr-C3-2oy" secondAttribute="top" constant="6" id="8NM-AK-C4m"/>
@@ -113,7 +113,7 @@
                                                     </stackView>
                                                 </subviews>
                                                 <viewLayoutGuide key="safeArea" id="orE-ex-fZB"/>
-                                                <color key="backgroundColor" red="0.63137254901960782" green="0.12549019607843137" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="alert"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstItem="C1I-ZV-3vQ" firstAttribute="leading" secondItem="9q1-Wh-T6L" secondAttribute="leading" constant="12" id="9wo-1Z-it8"/>
@@ -130,7 +130,7 @@
                                             </view>
                                         </subviews>
                                         <viewLayoutGuide key="safeArea" id="RUu-1M-AbZ"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="9q1-Wh-T6L" firstAttribute="top" secondItem="RUu-1M-AbZ" secondAttribute="top" constant="6" id="B7e-Fj-f7n"/>
@@ -257,6 +257,7 @@
                                         <viewLayoutGuide key="safeArea" id="BzM-1x-ufj"/>
                                     </stackView>
                                 </subviews>
+                                <color key="backgroundColor" name="white"/>
                                 <constraints>
                                     <constraint firstItem="KT3-Hd-voE" firstAttribute="leading" secondItem="R6l-k5-T3j" secondAttribute="leading" constant="8" id="09Y-gw-SsR"/>
                                     <constraint firstItem="jHf-Nk-eG8" firstAttribute="leading" secondItem="R6l-k5-T3j" secondAttribute="leading" id="1BC-Bq-olP"/>
@@ -302,14 +303,13 @@
                                     <constraint firstItem="jNG-13-XGB" firstAttribute="top" secondItem="muj-r3-bvL" secondAttribute="bottom" constant="8" id="tIJ-7B-ylB"/>
                                     <constraint firstItem="fJ2-r3-FRZ" firstAttribute="leading" secondItem="R6l-k5-T3j" secondAttribute="leading" constant="8" id="tJI-J8-j3R"/>
                                     <constraint firstItem="jNG-13-XGB" firstAttribute="leading" secondItem="R6l-k5-T3j" secondAttribute="leading" constant="8" id="wEj-Hh-UY0"/>
-                                    <constraint firstAttribute="trailing" secondItem="sPQ-cU-V7w" secondAttribute="trailing" constant="8" id="xa8-TU-CzN"/>
                                     <constraint firstAttribute="trailing" secondItem="uc7-y3-Oia" secondAttribute="trailing" constant="8" id="y2b-aN-UHm"/>
                                     <constraint firstItem="H03-pZ-mHu" firstAttribute="top" secondItem="7lR-ZR-kP2" secondAttribute="bottom" constant="24" id="yx5-sT-Ke7"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="white"/>
                         <constraints>
                             <constraint firstItem="R6l-k5-T3j" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="5fK-Ah-SXB"/>
                             <constraint firstItem="R6l-k5-T3j" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="LrH-S0-sQ1"/>
@@ -342,8 +342,14 @@
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="fix-icon" width="16" height="16"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="alert">
+            <color red="0.62745098039215685" green="0.12156862745098039" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="trust500">
+            <color red="0.33300000429153442" green="0.33300000429153442" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>
