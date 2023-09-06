@@ -540,6 +540,12 @@ final class FormatTests: TestCase {
       let date = Format.date(from: dateString, dateFormat: format, timeZone: PST)
       XCTAssertEqual(date?.description, "2018-01-01 08:00:00 +0000")
     }
+
+    // Test different format
+    withEnvironment(calendar: calEST) {
+      let date = Format.date(from: "2018-01-14", dateFormat: "yyyy-MM-dd")
+      XCTAssertEqual(date?.description, "2018-01-14 05:00:00 +0000")
+    }
   }
 
   func testDuration() {
