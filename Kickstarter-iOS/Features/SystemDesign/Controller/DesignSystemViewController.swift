@@ -5,7 +5,7 @@ import PassKit
 import Prelude
 import UIKit
 
-final class SystemDesignViewController: UIViewController, NibLoading {
+final class DesignSystemViewController: UIViewController, NibLoading {
   @IBOutlet var scrollView: UIScrollView!
 
   // MARK: - Alerts
@@ -82,8 +82,8 @@ final class SystemDesignViewController: UIViewController, NibLoading {
 
   // MARK: - Properties
 
-  static func instantiate() -> SystemDesignViewController {
-    return Storyboard.SystemDesign.instantiate(SystemDesignViewController.self)
+  static func instantiate() -> DesignSystemViewController {
+    return Storyboard.DesignSystem.instantiate(DesignSystemViewController.self)
   }
 
   // MARK: - Lifecycle

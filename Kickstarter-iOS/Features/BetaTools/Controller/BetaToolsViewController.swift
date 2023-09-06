@@ -76,10 +76,10 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToRemoteConfigFeatureFlagTools()
       }
 
-    self.viewModel.outputs.goToSystemDesign
+    self.viewModel.outputs.goToDesignSystem
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToSystemDesign()
+        self?.goToDesignSystem()
       }
 
     self.viewModel.outputs.goToBetaFeedback
@@ -177,8 +177,8 @@ internal final class BetaToolsViewController: UITableViewController {
     self.navigationController?.pushViewController(viewController, animated: true)
   }
 
-  private func goToSystemDesign() {
-    let viewController = SystemDesignViewController.instantiate()
+  private func goToDesignSystem() {
+    let viewController = DesignSystemViewController.instantiate()
 
     self.navigationController?.pushViewController(viewController, animated: true)
   }

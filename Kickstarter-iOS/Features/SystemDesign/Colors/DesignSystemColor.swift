@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public enum SystemDesignColorStyle: String, CaseIterable {
+public enum DesignSystemColor: String, CaseIterable {
   // MARK: - Greens
 
   case create100
@@ -44,13 +44,13 @@ public enum SystemDesignColorStyle: String, CaseIterable {
   case warn
 }
 
-extension SystemDesignColorStyle {
+extension DesignSystemColor {
   public func load() -> UIColor? {
     UIColor(named: self.rawValue)
   }
 }
 
-public func adaptiveColor(_ style: SystemDesignColorStyle) -> UIColor {
+public func adaptiveColor(_ style: DesignSystemColor) -> UIColor {
   style.load()! // not ideal to force unwrap. need to work on a better approach.
 }
 

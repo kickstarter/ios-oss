@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--System Design View Controller-->
+        <!--Design System View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="SystemDesignViewController" id="Y6W-OH-hqX" customClass="SystemDesignViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DesignSystemViewController" id="Y6W-OH-hqX" customClass="DesignSystemViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -343,7 +343,7 @@
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="fix-icon" width="16" height="16"/>
         <namedColor name="alert">
-            <color red="0.62745098039215685" green="0.12156862745098039" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.62699997425079346" green="0.12200000137090683" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="cellSeparator">
             <color red="0.86299997568130493" green="0.87099999189376831" blue="0.86699998378753662" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
