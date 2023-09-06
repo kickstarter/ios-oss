@@ -16,16 +16,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     fundingForAiOption: true
   )
 
-  private let generatedByAIConsent = ProjectTabCategoryDescription(
-    description: "consent",
-    category: .aiDisclosureConsent,
-    id: 2
-  )
-
-  private let generatedByAIDetails = ProjectTabCategoryDescription(
-    description: "details",
-    category: .aiDisclosureDetails,
-    id: 3
+  private let generationDisclosure = ProjectTabGenerationDisclosure(
+    consent: "consent", details: "details"
   )
 
   private let generatedByAIOtherDetails = ProjectTabCategoryDescription(
@@ -38,8 +30,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     ProjectAIDisclosure(
       id: 1,
       funding: self.projectTabFundingOptions,
-      generatedByAiConsent: self.generatedByAIConsent,
-      generatedByAiDetails: self.generatedByAIDetails,
+      generationDisclosure: self.generationDisclosure,
       involvesAi: true,
       involvesFunding: true,
       involvesGeneration: true,
@@ -420,7 +411,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        3,
+        1,
         self.dataSource
           .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureGeneratedSection)
       )
@@ -451,13 +442,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectTabTitleCell",
+        "ProjectTabAIGenerationCell",
         self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureGeneratedSection)
-      )
-
-      XCTAssertEqual(
-        "ProjectTabQuestionAnswerCell",
-        self.dataSource.reusableId(item: 1, section: self.useOfAIDisclosureGeneratedSection)
       )
 
       XCTAssertEqual(
@@ -471,7 +457,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     var updatedUseOfAIDisclosure = self.useOfAIDisclosure
 
     updatedUseOfAIDisclosure.involvesFunding = false
-    updatedUseOfAIDisclosure.generatedByAiDetails = nil
+    updatedUseOfAIDisclosure.generationDisclosure =
+      ProjectTabGenerationDisclosure(consent: "consent", details: nil)
 
     let project = Project.template
       |> \.extendedProjectProperties .~ ExtendedProjectProperties(
@@ -505,7 +492,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        2,
+        1,
         self.dataSource
           .tableView(self.tableView, numberOfRowsInSection: self.useOfAIDisclosureGeneratedSection)
       )
@@ -535,13 +522,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        "ProjectTabTitleCell",
+        "ProjectTabAIGenerationCell",
         self.dataSource.reusableId(item: 0, section: self.useOfAIDisclosureGeneratedSection)
-      )
-
-      XCTAssertEqual(
-        "ProjectTabQuestionAnswerCell",
-        self.dataSource.reusableId(item: 1, section: self.useOfAIDisclosureGeneratedSection)
       )
 
       XCTAssertEqual(

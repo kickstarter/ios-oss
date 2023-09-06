@@ -367,24 +367,9 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
     .generatedByAiDetails ??
     ""
 
-  let availableAIConsent = !generatedByAIConsent.isEmpty
-  let availableAIDetails = !generatedByAIDetails.isEmpty
-
   let generatedOtherAIDetails = aiDisclosureRawData
     .otherAiDetails ??
     ""
-
-  let aiDisclosureConsent = ProjectTabCategoryDescription(
-    description: generatedByAIConsent,
-    category: .aiDisclosureDetails,
-    id: decomposedId
-  )
-
-  let aiDisclosureDetails = ProjectTabCategoryDescription(
-    description: generatedByAIDetails,
-    category: .aiDisclosureConsent,
-    id: decomposedId + 1
-  )
 
   let aiDisclosureOther = ProjectTabCategoryDescription(
     description: generatedOtherAIDetails,
@@ -404,11 +389,16 @@ private func extendedProjectAIDisclosure(from projectFragment: GraphAPI
     fundingForAiOption: fundingForAIOption
   )
 
+  let generationDisclosure = generatedByAIConsent.isEmpty && generatedByAIDetails.isEmpty ? nil :
+    ProjectTabGenerationDisclosure(
+      consent: generatedByAIConsent,
+      details: generatedByAIDetails
+    )
+
   let aiDisclosure = ProjectAIDisclosure(
     id: decomposedId,
     funding: fundingOptions,
-    generatedByAiConsent: availableAIConsent ? aiDisclosureConsent : nil,
-    generatedByAiDetails: availableAIDetails ? aiDisclosureDetails : nil,
+    generationDisclosure: generationDisclosure,
     involvesAi: aiDisclosureRawData.involvesAi,
     involvesFunding: aiDisclosureRawData.involvesFunding,
     involvesGeneration: aiDisclosureRawData.involvesGeneration,
