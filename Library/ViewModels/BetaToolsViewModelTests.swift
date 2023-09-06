@@ -13,6 +13,7 @@ final class BetaToolsViewModelTests: TestCase {
   private let goToFeatureFlagTools = TestObserver<(), Never>()
   private let goToRemoteConfigFeatureFlagTools = TestObserver<(), Never>()
   private let goToPushNotificationTools = TestObserver<(), Never>()
+  private let goToDesignSystem = TestObserver<(), Never>()
   private let logoutWithParams = TestObserver<DiscoveryParams, Never>()
   private let reloadWithDataCurrentLanguage = TestObserver<String, Never>()
   private let reloadWithDataCurrentEnvironment = TestObserver<String, Never>()
@@ -29,6 +30,7 @@ final class BetaToolsViewModelTests: TestCase {
     self.vm.outputs.goToConfigFeatureFlagTools.observe(self.goToFeatureFlagTools.observer)
     self.vm.outputs.goToRemoteConfigFeatureFlagTools.observe(self.goToRemoteConfigFeatureFlagTools.observer)
     self.vm.outputs.goToPushNotificationTools.observe(self.goToPushNotificationTools.observer)
+    self.vm.outputs.goToDesignSystem.observe(self.goToDesignSystem.observer)
     self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.reloadWithData.map { $0.0 }.observe(self.reloadWithDataCurrentLanguage.observer)
     self.vm.outputs.reloadWithData.map { $0.1 }.observe(self.reloadWithDataCurrentEnvironment.observer)
@@ -151,5 +153,15 @@ final class BetaToolsViewModelTests: TestCase {
     self.vm.inputs.didSelectBetaToolsRow(.debugConfigFeatureFlags)
 
     self.goToFeatureFlagTools.assertValueCount(1)
+  }
+  
+  func testGoToDesignSystem() {
+    self.vm.inputs.viewDidLoad()
+
+    self.goToDesignSystem.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectBetaToolsRow(.designSystem)
+
+    self.goToDesignSystem.assertValueCount(1)
   }
 }
