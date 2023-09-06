@@ -1474,36 +1474,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
-        [.creatorDashboard, .recommendedForYou, .projectsWeLove, .search]
+        [.recommendedForYou, .projectsWeLove, .search]
       ])
     }
-  }
-
-  func testPerformShortcutItem_CreatorDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToDashboard.assertValueCount(0)
-
-    self.vm.inputs.applicationPerformActionForShortcutItem(
-      ShortcutItem.creatorDashboard.applicationShortcutItem
-    )
-
-    self.goToDashboard.assertValueCount(1)
-  }
-
-  func testLaunchShortcutItem_CreatorDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [
-        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.creatorDashboard.applicationShortcutItem
-      ]
-    )
-
-    self.goToDashboard.assertValueCount(1)
-    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
   }
 
   func testPerformShortcutItem_ProjectsWeLove() {

@@ -1047,9 +1047,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       return .project(.id(projectId), .root, refTag: .push)
     case .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
-      if envelope.forCreator == .some(true) {
-        return .tab(.dashboard(project: .id(projectId))) //INGERID: ???
-      }
       return .project(.id(projectId), .root, refTag: .push)
 
     case .update:
@@ -1076,9 +1073,10 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       }
       return .project(.id(projectId), .comments, refTag: .push)
 
+      // FIXME: Figure out if we should delete these cases instead.
     case .backingAmount, .backingCanceled, .backingDropped, .backingReward:
       guard let projectId = activity.projectId else { return nil }
-      return .tab(.dashboard(project: .id(projectId)))
+      return .project(.id(projectId), .root, refTag: .push)
 
     case .follow:
       return .tab(.activity)
@@ -1089,9 +1087,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let project = envelope.project {
-    if envelope.forCreator == .some(true) {
-      return .tab(.dashboard(project: .id(project.id)))
-    }
     return .project(.id(project.id), .root, refTag: .push)
   }
 
@@ -1121,9 +1116,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 // Figures out a `Navigation` to route the user to from a shortcut item.
 private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
   switch shortcutItem {
-  case .creatorDashboard:
-    return SignalProducer(value: .tab(.dashboard(project: nil)))
-
   case .recommendedForYou:
     let params = .defaults
       |> DiscoveryParams.lens.recommended .~ true
@@ -1172,10 +1164,6 @@ private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
   -> [ShortcutItem] {
   var items: [ShortcutItem] = []
 
-  if isProjectMember {
-    items.append(.creatorDashboard)
-  }
-
   if hasRecommendations {
     items.append(.recommendedForYou)
   }
@@ -1197,14 +1185,6 @@ private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [Stri
 extension ShortcutItem {
   public var applicationShortcutItem: UIApplicationShortcutItem {
     switch self {
-    case .creatorDashboard:
-      return .init(
-        type: self.typeString,
-        localizedTitle: Strings.accessibility_discovery_buttons_creator_dashboard(),
-        localizedSubtitle: nil,
-        icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-bars"),
-        userInfo: nil
-      )
     case .projectsWeLove:
       return .init(
         type: self.typeString,

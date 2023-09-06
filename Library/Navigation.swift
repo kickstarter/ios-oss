@@ -30,7 +30,6 @@ public enum Navigation: Equatable {
     case discovery([String: String]?)
     case search
     case activity
-    case dashboard(project: Param?)
     case login
     case me
   }
@@ -138,7 +137,6 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/checkouts/:checkout_param/thanks": thanks,
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
-  "/projects/:creator_param/:project_param/dashboard": dashboard,
   "/projects/:creator_param/:project_param/description": project,
   "/projects/:creator_param/:project_param/faqs": faqs,
   "/projects/:creator_param/:project_param/friends": friends,
@@ -170,7 +168,6 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/profile/verify_email",
     "/projects/:creator_param/:project_param",
     "/projects/:creator_param/:project_param/comments",
-    "/projects/:creator_param/:project_param/dashboard",
     "/projects/:creator_param/:project_param/posts",
     "/projects/:creator_param/:project_param/posts/:update_param",
     "/projects/:creator_param/:project_param/posts/:update_param/comments",
@@ -330,15 +327,6 @@ private func creatorBio(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .creatorBio, refTag: refTag)
-  }
-
-  return nil
-}
-
-private func dashboard(_ params: RouteParamsDecoded) -> Navigation? {
-  if let projectParam = params.projectParam() {
-    let dashboard = Navigation.Tab.dashboard(project: projectParam)
-    return .tab(dashboard)
   }
 
   return nil
