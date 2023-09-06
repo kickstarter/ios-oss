@@ -38,8 +38,7 @@ public struct ExtendedProjectProperties {
 public struct ProjectAIDisclosure {
   public var id: Int
   public var funding: ProjectTabFundingOptions
-  public var generatedByAiConsent: ProjectTabCategoryDescription?
-  public var generatedByAiDetails: ProjectTabCategoryDescription?
+  public var generationDisclosure: ProjectTabGenerationDisclosure?
   public var involvesAi: Bool
   public var involvesFunding: Bool
   public var involvesGeneration: Bool
@@ -64,6 +63,11 @@ public struct ProjectTabCategoryDescription {
   public var id: Int
 }
 
+public struct ProjectTabGenerationDisclosure: Equatable {
+  public var consent: String?
+  public var details: String?
+}
+
 public struct ProjectTabFundingOptions {
   public var fundingForAiAttribution: Bool
   public var fundingForAiConsent: Bool
@@ -76,8 +80,6 @@ public enum ProjectTabCategory: String {
   case environmentallyFriendlyFactories = "Environmentally friendly factories"
   case sustainableDistribution = "Sustainable distribution"
   case reusabilityAndRecyclability = "Reusability and Recyclability"
-  case aiDisclosureDetails
-  case aiDisclosureConsent
   case aiDisclosureOtherDetails
   case somethingElse
 }
