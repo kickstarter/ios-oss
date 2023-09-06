@@ -1043,7 +1043,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       }
       return .project(.id(projectId), .comments, refTag: .push)
 
-      // FIXME: Figure out if we should delete these cases instead.
+    // FIXME: Figure out if we should delete these cases instead.
     case .backingAmount, .backingCanceled, .backingDropped, .backingReward:
       guard let projectId = activity.projectId else { return nil }
       return .project(.id(projectId), .root, refTag: .push)
@@ -1126,7 +1126,7 @@ private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem]
 
 // Figures out which shortcut items to show to a user based on whether they are a project member and/or
 // has recommendations.
-private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
+private func shortcutItems(isProjectMember _: Bool, hasRecommendations: Bool)
   -> [ShortcutItem] {
   var items: [ShortcutItem] = []
 

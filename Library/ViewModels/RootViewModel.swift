@@ -446,9 +446,9 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
   let isMember =
     (user?.stats.memberProjectsCount ?? 0) > 0
   let items: [TabBarItem] = [
-      .home(index: 0), .activity(index: 1), .search(index: 2),
-      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
-    ]
+    .home(index: 0), .activity(index: 1), .search(index: 2),
+    .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+  ]
 
   return TabBarItemsData(
     items: items,

@@ -32,8 +32,8 @@ extension ShortcutItem: Equatable {}
 public func == (lhs: ShortcutItem, rhs: ShortcutItem) -> Bool {
   switch (lhs, rhs) {
   case (.projectsWeLove, .projectsWeLove),
-    (.recommendedForYou, .recommendedForYou),
-    (.search, .search):
+       (.recommendedForYou, .recommendedForYou),
+       (.search, .search):
     return true
   default:
     return false

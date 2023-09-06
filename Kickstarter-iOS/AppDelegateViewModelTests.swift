@@ -1279,7 +1279,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  // TODO (INGERID): Figure out what to do with this.
+  // TODO: (INGERID): Figure out what to do with this.
 //  func testOpenNotification_CreatorActivity() {
 //    let categories: [Activity.Category] = [.backingAmount, .backingCanceled, .backingDropped, .backingReward]
 //
