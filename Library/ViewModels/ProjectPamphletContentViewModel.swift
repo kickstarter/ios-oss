@@ -19,7 +19,6 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> { get }
   var goToComments: Signal<Project, Never> { get }
-  var goToDashboard: Signal<Param, Never> { get }
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
   var goToUpdates: Signal<Project, Never> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
@@ -92,10 +91,6 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
     self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
-
-    self.goToDashboard = self.tappedViewProgressProperty.signal
-      .skipNil()
-      .map { .id($0.id) }
   }
 
   fileprivate let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
@@ -145,7 +140,6 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
   public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToComments: Signal<Project, Never>
-  public let goToDashboard: Signal<Param, Never>
   public let goToRewardPledge: Signal<(Project, Reward), Never>
   public let goToUpdates: Signal<Project, Never>
   public let loadMinimalProjectIntoDataSource: Signal<Project, Never>

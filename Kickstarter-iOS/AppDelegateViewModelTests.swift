@@ -22,7 +22,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let findRedirectUrl = TestObserver<URL, Never>()
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
-  private let goToDashboard = TestObserver<Param?, Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
@@ -718,25 +717,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToActivity.assertValueCount(1)
   }
 
-  func testGoToDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToDashboard.assertValueCount(0)
-
-    let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: URL(string: url)!,
-      options: [:]
-    )
-    XCTAssertTrue(result)
-
-    self.goToDashboard.assertValueCount(1)
-  }
-
   func testGoToDiscovery() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -1211,8 +1191,6 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["activity"] = badActivityData
 
     self.vm.inputs.didReceive(remoteNotification: badPushData)
-
-    self.goToDashboard.assertValueCount(0)
   }
 
   func testOpenNotification_ProjectUpdate() {
@@ -1313,28 +1291,29 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOpenNotification_CreatorActivity() {
-    let categories: [Activity.Category] = [.backingAmount, .backingCanceled, .backingDropped, .backingReward]
-
-    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
-      .flatMap { $0["project_id"] as? Int }
-    let param = Param.id(projectId ?? -1)
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    categories.enumerated().forEach { idx, state in
-      var pushData = genericActivityPushData
-      pushData["activity"]?["category"] = state.rawValue
-
-      self.vm.inputs.didReceive(remoteNotification: pushData)
-
-      self.goToDashboard.assertValueCount(idx + 1)
-      self.goToDashboard.assertLastValue(param)
-    }
-  }
+  // TODO (INGERID): Figure out what to do with this.
+//  func testOpenNotification_CreatorActivity() {
+//    let categories: [Activity.Category] = [.backingAmount, .backingCanceled, .backingDropped, .backingReward]
+//
+//    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
+//      .flatMap { $0["project_id"] as? Int }
+//    let param = Param.id(projectId ?? -1)
+//
+//    self.vm.inputs.applicationDidFinishLaunching(
+//      application: UIApplication.shared,
+//      launchOptions: [:]
+//    )
+//
+//    categories.enumerated().forEach { idx, state in
+//      var pushData = genericActivityPushData
+//      pushData["activity"]?["category"] = state.rawValue
+//
+//      self.vm.inputs.didReceive(remoteNotification: pushData)
+//
+//      self.goToDashboard.assertValueCount(idx + 1)
+//      self.goToDashboard.assertLastValue(param)
+//    }
+//  }
 
   func testOpenNotification_PostLike() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
@@ -1368,7 +1347,6 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.vm.inputs.didReceive(remoteNotification: pushData)
 
-      self.goToDashboard.assertValueCount(0)
       self.goToDiscovery.assertValueCount(0)
       self.presentViewController.assertValueCount(0)
     }
