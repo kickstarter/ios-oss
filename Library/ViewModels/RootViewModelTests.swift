@@ -15,7 +15,6 @@ final class RootViewModelTests: TestCase {
   let setBadgeValueAtIndexValue = TestObserver<String?, Never>()
   let setBadgeValueAtIndexIndex = TestObserver<RootViewControllerIndex, Never>()
   let scrollToTopControllerName = TestObserver<String, Never>()
-  let switchDashboardProject = TestObserver<Param, Never>()
   let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
   let updateUserInEnvironment = TestObserver<User, Never>()
 

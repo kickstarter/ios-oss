@@ -25,8 +25,6 @@ final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled
           .rawValue: false,
-        RemoteConfigFeature.creatorDashboardEnabled
-          .rawValue: false
       ]
 
     withEnvironment(language: .en, mainBundle: MockBundle(), remoteConfigClient: mockRemoteConfigClient) {

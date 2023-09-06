@@ -71,8 +71,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
 private func activityItemProvider(forShareContext shareContext: ShareContext) -> UIActivityItemProvider {
   switch shareContext {
-  case let .creatorDashboard(project):
-    return ProjectActivityItemProvider(project: project)
   case let .discovery(project):
     return ProjectActivityItemProvider(project: project)
   case let .project(project):
@@ -86,8 +84,6 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
 
 private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
   switch shareContext {
-  case let .creatorDashboard(project):
-    return URL(string: project.urls.web.project)
   case let .discovery(project):
     return URL(string: project.urls.web.project)
   case let .project(project):

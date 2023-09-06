@@ -10,7 +10,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("category", RefTag.category.stringTag)
     XCTAssertEqual("category_featured", RefTag.categoryFeatured.stringTag)
     XCTAssertEqual("city", RefTag.city.stringTag)
-    XCTAssertEqual("dashboard", RefTag.dashboard.stringTag)
     XCTAssertEqual("dashboard_activity", RefTag.dashboardActivity.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
     XCTAssertEqual("ksr_email_backer_failed_transaction", RefTag.emailBackerFailedTransaction.stringTag)
@@ -38,7 +37,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.category, RefTag.category)
     XCTAssertEqual(RefTag.categoryFeatured, RefTag.categoryFeatured)
     XCTAssertEqual(RefTag.city, RefTag.city)
-    XCTAssertEqual(RefTag.dashboard, RefTag.dashboard)
     XCTAssertEqual(RefTag.dashboardActivity, RefTag.dashboardActivity)
     XCTAssertEqual(RefTag.discovery, RefTag.discovery)
     XCTAssertEqual(RefTag.messageThread, RefTag.messageThread)
@@ -101,7 +99,6 @@ public final class RefTagTests: XCTestCase {
     )
 
     XCTAssertEqual(RefTag.city, RefTag(code: RefTag.city.stringTag))
-    XCTAssertEqual(RefTag.dashboard, RefTag(code: RefTag.dashboard.stringTag))
     XCTAssertEqual(RefTag.dashboardActivity, RefTag(code: RefTag.dashboardActivity.stringTag))
 
     XCTAssertEqual(RefTag.discovery, RefTag(code: RefTag.discovery.stringTag))

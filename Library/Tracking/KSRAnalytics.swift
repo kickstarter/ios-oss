@@ -1528,9 +1528,6 @@ private func properties(
   result["share_type"] = shareActivityType.flatMap(shareTypeProperty)
 
   switch shareContext {
-  case let .creatorDashboard(project):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
-    result["context"] = "creator_dashboard"
   case let .discovery(project):
     result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
     result["context"] = "discovery"
