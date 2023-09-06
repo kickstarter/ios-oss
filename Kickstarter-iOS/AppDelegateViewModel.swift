@@ -130,9 +130,6 @@ public protocol AppDelegateViewModelOutputs {
   var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
   /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDashboard: Signal<Param?, Never> { get }
-
-  /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits when the root view controller should present the login modal.
@@ -565,13 +562,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.goToMobileSafari = resolvedRedirectUrl
 
-    self.goToDashboard = deepLink
-      .map { link -> Param?? in
-        guard case let .tab(.dashboard(param)) = link else { return nil }
-        return .some(param)
-      }
-      .skipNil()
-
     let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
       .filter { _, subpage, _, _ in subpage == .root }
       .map { _, _, vcs, _ in vcs }
@@ -952,7 +942,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
-  public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
@@ -1059,7 +1048,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     case .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
       if envelope.forCreator == .some(true) {
-        return .tab(.dashboard(project: .id(projectId)))
+        return .tab(.dashboard(project: .id(projectId))) //INGERID: ???
       }
       return .project(.id(projectId), .root, refTag: .push)
 

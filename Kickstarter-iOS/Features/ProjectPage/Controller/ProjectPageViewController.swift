@@ -635,18 +635,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
-  private func goToDashboard(param: Param) {
-    self.view.window?.rootViewController
-      .flatMap { $0 as? RootTabBarViewController }
-      .doIfSome { root in
-        UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
-          root.switchToDashboard(project: param)
-        }, completion: { [weak self] _ in
-          self?.dismiss(animated: true, completion: nil)
-        })
-      }
-  }
-
   private func goToUpdates(project: Project) {
     let vc = ProjectUpdatesViewController.configuredWith(project: project)
     self.viewModel.inputs.showNavigationBar(false)

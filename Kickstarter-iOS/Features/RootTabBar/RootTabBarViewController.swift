@@ -147,14 +147,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       .skipNil()
       .observeValues { $0.filter(with: $1) }
 
-    self.viewModel.outputs.switchDashboardProject
-      .observeForControllerAction()
-      .map { [weak self] index, param -> (DashboardViewController, Param)? in
-        self?.viewControllerAndParam(with: index, param: param)
-      }
-      .skipNil()
-      .observeValues { $0.switch(toProject: $1) }
-
     self.viewModel.outputs.setBadgeValueAtIndex
       .observeForUI()
       .observeValues { [weak self] value, index in
@@ -164,11 +156,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
   public func switchToActivities() {
     self.viewModel.inputs.switchToActivities()
-  }
-
-  public func switchToDashboard(project param: Param?) {
-    // FIXME: Delete this method.
-    return
   }
 
   public func switchToDiscovery(params: DiscoveryParams?) {
@@ -232,12 +219,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
         _ = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
       case let .search(index):
         _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
-      case let .dashboard(index):
-        let style = self
-          .isTabBarItemLastItem(for: index) ?
-          profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember) :
-          dashboardTabBarItemStyle
-        _ = tabBarItem(atIndex: index) ?|> style
       case let .profile(avatarUrl, index):
         _ = tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
@@ -306,8 +287,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
       return ActivitiesViewController.instantiate()
     case .search:
       return SearchViewController.instantiate()
-    case let .dashboard(isMember):
-      return isMember ? DashboardViewController.instantiate() : nil
     case let .profile(isLoggedIn):
       return isLoggedIn
         ? BackerDashboardViewController.instantiate()

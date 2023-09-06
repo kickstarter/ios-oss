@@ -97,10 +97,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.rootTabBarController?.switchToActivities() }
 
-    self.viewModel.outputs.goToDashboard
-      .observeForUI()
-      .observeValues { [weak self] in self?.rootTabBarController?.switchToDashboard(project: $0) }
-
     self.viewModel.outputs.goToCreatorMessageThread
       .observeForUI()
       .observeValues { [weak self] in
