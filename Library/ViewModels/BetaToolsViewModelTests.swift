@@ -154,7 +154,7 @@ final class BetaToolsViewModelTests: TestCase {
 
     self.goToFeatureFlagTools.assertValueCount(1)
   }
-  
+
   func testGoToDesignSystem() {
     self.vm.inputs.viewDidLoad()
 

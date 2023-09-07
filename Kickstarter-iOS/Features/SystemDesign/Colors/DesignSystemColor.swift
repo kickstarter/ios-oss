@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public enum DesignSystemColor: String, CaseIterable {
+public enum DesignSystemColor: String {
   // MARK: - Greens
 
   case create100
@@ -45,16 +45,16 @@ public enum DesignSystemColor: String, CaseIterable {
 }
 
 extension DesignSystemColor {
-  public func load() -> UIColor? {
-    UIColor(named: self.rawValue)
+  public func load() -> UIColor {
+    UIColor(named: self.rawValue) ?? .white
   }
 }
 
 public func adaptiveColor(_ style: DesignSystemColor) -> UIColor {
-  style.load()! // not ideal to force unwrap. need to work on a better approach.
+  style.load()
 }
 
-// MARK: - Green
+// MARK: - Buttons
 
 public let adaptiveGreenButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
@@ -63,16 +63,12 @@ public let adaptiveGreenButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.create700).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.create700).mixLighter(0.36)
 
-// MARK: - Blue
-
 public let adaptiveBlueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.trust500)
   <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.trust500).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.trust500).mixLighter(0.36)
-
-// MARK: - Grey
 
 public let adaptiveGreyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.support700)
@@ -81,8 +77,6 @@ public let adaptiveGreyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .disabled) .~ adaptiveColor(.support400)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.support300).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.support300).mixLighter(0.12)
-
-// MARK: - Black
 
 public let adaptiveBlackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
@@ -93,15 +87,11 @@ public let adaptiveBlackButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.support700).mixLighter(0.36)
   <> UIButton.lens.backgroundColor(for: .selected) .~ adaptiveColor(.support700).mixLighter(0.46)
 
-// MARK: - Red
-
 public let adaptiveRedButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.alert)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.alert).mixDarker(0.12)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.alert).mixLighter(0.36)
-
-// MARK: - Facebook
 
 public let adaptiveFacebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
@@ -116,6 +106,16 @@ public let adaptiveFacebookButtonStyle = baseButtonStyle
       ? .init(topBottom: 10.0, leftRight: 12.0)
       : .init(topBottom: 12.0, leftRight: 16.0)
   }
+
+  <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
+
+// MARK: - Icons
+
+public let adaptiveIconImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.contentMode .~ .scaleAspectFit
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
 
 // MARK: - Switch Control
 

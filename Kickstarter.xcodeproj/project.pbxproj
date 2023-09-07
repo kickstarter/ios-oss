@@ -484,7 +484,6 @@
 		6018626629A9194600EA2842 /* AppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626529A9194600EA2842 /* AppTrackingTransparency.swift */; };
 		6018626829A91B8C00EA2842 /* ThirdPartyEventInputName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */; };
 		6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
-		6049D0182A9CFA400015BB0D /* DesignSystem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6049D0162A9CF9130015BB0D /* DesignSystem.storyboard */; };
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		6049D0202AA776B40015BB0D /* DesignSystemColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColor.swift */; };
 		6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */; };
@@ -2070,7 +2069,6 @@
 		6018626529A9194600EA2842 /* AppTrackingTransparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyEventInputName.swift; sourceTree = "<group>"; };
 		6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemViewController.swift; sourceTree = "<group>"; };
-		6049D0162A9CF9130015BB0D /* DesignSystem.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DesignSystem.storyboard; sourceTree = "<group>"; };
 		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
 		6049D01E2AA774130015BB0D /* DesignSystemColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemColor.swift; sourceTree = "<group>"; };
 		6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCTAContainerView.swift; sourceTree = "<group>"; };
@@ -5749,7 +5747,6 @@
 			isa = PBXGroup;
 			children = (
 				6049D01D2AA774030015BB0D /* Colors */,
-				6049D0152A9CF90C0015BB0D /* Storyboard */,
 				6049D00F2A9CF6610015BB0D /* Controller */,
 				6049D0192AA0EC5E0015BB0D /* Views */,
 			);
@@ -5762,14 +5759,6 @@
 				6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		6049D0152A9CF90C0015BB0D /* Storyboard */ = {
-			isa = PBXGroup;
-			children = (
-				6049D0162A9CF9130015BB0D /* DesignSystem.storyboard */,
-			);
-			path = Storyboard;
 			sourceTree = "<group>";
 		};
 		6049D0192AA0EC5E0015BB0D /* Views */ = {
@@ -7499,7 +7488,6 @@
 				A73923CC1D272242004524C3 /* UpdateDraft.storyboard in Resources */,
 				77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */,
 				066A518526C598390009898C /* CommentsDialog.storyboard in Resources */,
-				6049D0182A9CFA400015BB0D /* DesignSystem.storyboard in Resources */,
 				A7986C9D1D6B85840027030D /* Thanks.storyboard in Resources */,
 				77216D6020F3D27C0061BE82 /* Settings.storyboard in Resources */,
 				A73923CB1D272242004524C3 /* Update.storyboard in Resources */,

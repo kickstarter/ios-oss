@@ -26,7 +26,6 @@ public enum Storyboard: String {
   case SettingsNewsletters
   case SettingsNotifications
   case SettingsPrivacy
-  case DesignSystem
   case Thanks
   case Update
   case UpdateDraft

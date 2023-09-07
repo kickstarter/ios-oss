@@ -5,8 +5,9 @@ import PassKit
 import Prelude
 import UIKit
 
-final class DesignSystemViewController: UIViewController, NibLoading {
-  @IBOutlet var scrollView: UIScrollView!
+final class DesignSystemViewController: UIViewController {
+  private lazy var scrollView = { UIScrollView(frame: .zero) }()
+  private lazy var rootStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Alerts
 
@@ -15,8 +16,8 @@ final class DesignSystemViewController: UIViewController, NibLoading {
 
   // MARK: - Buttons
 
-  @IBOutlet var buttonsStackView: UIStackView!
-  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let buttonsLabel = UILabel()
+  private let buttonsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let primaryGreenButton = UIButton(type: .custom)
   private let primaryBlueButton = UIButton(type: .custom)
   private let primaryBlackButton = UIButton(type: .custom)
@@ -26,9 +27,19 @@ final class DesignSystemViewController: UIViewController, NibLoading {
   private let facebookButton = UIButton(type: .custom)
   private let applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
+  // MARK: - Icons
+
+  private let iconsLabel = UILabel()
+  private let iconsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let logoIcon = { UIImageView(frame: .zero) }()
+  private let arrowDownIcon = { UIImageView(frame: .zero) }()
+  private let bookmarkIcon = { UIImageView(frame: .zero) }()
+  private let heartIcon = { UIImageView(frame: .zero) }()
+
   // MARK: - Controls
 
-  @IBOutlet var controlsStackView: UIStackView!
+  private let controlsLabel = UILabel()
+  private let controlsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let switchControlEnabled = UISwitch(frame: .zero)
   private let switchControlDisabled = UISwitch(frame: .zero)
   private let stepper: UIStepper = { UIStepper(frame: .zero) }()
@@ -36,23 +47,23 @@ final class DesignSystemViewController: UIViewController, NibLoading {
 
   // MARK: - Inputs
 
-  @IBOutlet var inputsStackView: UIStackView!
-  @IBOutlet var emailContainer: UIView!
-  @IBOutlet var emailTextField: UITextField!
-  @IBOutlet var passwordContainer: UIView!
-  @IBOutlet var passwordTextField: UITextField!
+  private let inputsLabel = UILabel()
+  private let inputsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let emailTextField: UITextField = { UITextField(frame: .zero) }()
+  private let passwordTextField: UITextField = { UITextField(frame: .zero) }()
 
   // MARK: - Progress Indicators
 
-  @IBOutlet var progressStackView: UIStackView!
+  private let progressLabel = UILabel()
+  private let progressStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let loadingIndicator = UIActivityIndicatorView()
   private let pullToRefreshImageView = UIImageView(image: image(named: "icon--refresh-small"))
   private let shimmerLoadingView = DemoShimmerLoadingView(frame: .zero)
 
   // MARK: - Footers
 
-  @IBOutlet var footersStackView: UIStackView!
-
+  private let footersLabel = UILabel()
+  private let footersStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var demoCTAContainerView: DemoCTAContainerView = {
     DemoCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -60,7 +71,8 @@ final class DesignSystemViewController: UIViewController, NibLoading {
 
   // MARK: - Typography
 
-  @IBOutlet var typeStackView: UIStackView!
+  private let typesLabel = UILabel()
+  private let typeStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let title1Label = UILabel()
   private let title1LabelBold = UILabel()
   private let title2Label = UILabel()
@@ -80,12 +92,6 @@ final class DesignSystemViewController: UIViewController, NibLoading {
   private let caption2Label = UILabel()
   private let caption2LabelBold = UILabel()
 
-  // MARK: - Properties
-
-  static func instantiate() -> DesignSystemViewController {
-    return Storyboard.DesignSystem.instantiate(DesignSystemViewController.self)
-  }
-
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -99,13 +105,39 @@ final class DesignSystemViewController: UIViewController, NibLoading {
     self.configureViews()
   }
 
+  override func viewDidLayoutSubviews() {
+//    self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 1700)
+  }
+
   // MARK: - Configuration
 
   private func configureViews() {
+    _ = (self.scrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.scrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (
+      [
+        self.buttonsStackView,
+        self.iconsStackView,
+        self.controlsStackView,
+        self.inputsStackView,
+        self.progressStackView,
+        self.footersStackView,
+        self.typeStackView
+      ], self.rootStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
+
     // MARK: - Button Stack
 
     _ = (
       [
+        self.buttonsLabel,
         self.primaryGreenButton,
         self.primaryBlueButton,
         self.primaryBlackButton,
@@ -118,10 +150,24 @@ final class DesignSystemViewController: UIViewController, NibLoading {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
+    // MARK: - Icons Stack
+
+    _ = (
+      [
+        self.iconsLabel,
+        self.logoIcon,
+        self.arrowDownIcon,
+        self.bookmarkIcon,
+        self.heartIcon
+      ], self.iconsStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
+
     // MARK: - Controls Stack
 
     _ = (
       [
+        self.controlsLabel,
         self.switchControlEnabled,
         self.switchControlDisabled,
         self.stepper,
@@ -130,10 +176,22 @@ final class DesignSystemViewController: UIViewController, NibLoading {
     )
       |> ksr_addArrangedSubviewsToStackView()
 
+    // MARK: - Inputs
+
+    _ = (
+      [
+        self.inputsLabel,
+        self.emailTextField,
+        self.passwordTextField
+      ], self.inputsStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
+
     // MARK: - Progress Indicators Stack
 
     _ = (
       [
+        self.progressLabel,
         self.loadingIndicator,
         self.pullToRefreshImageView,
         self.shimmerLoadingView
@@ -143,13 +201,14 @@ final class DesignSystemViewController: UIViewController, NibLoading {
 
     // MARK: - Footers Stack
 
-    _ = ([self.demoCTAContainerView], self.footersStackView)
+    _ = ([self.footersLabel, self.demoCTAContainerView], self.footersStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     // MARK: - Footers Stack
 
     _ = (
       [
+        self.typesLabel,
         self.title1Label,
         self.title1LabelBold,
         self.title2Label,
@@ -173,6 +232,8 @@ final class DesignSystemViewController: UIViewController, NibLoading {
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -4),
+
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
       self.dropdownButton.widthAnchor.constraint(equalToConstant: 200),
       self.shimmerLoadingView.leftAnchor.constraint(equalTo: self.progressStackView.leftAnchor),
@@ -189,10 +250,29 @@ final class DesignSystemViewController: UIViewController, NibLoading {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.view
+      |> \.backgroundColor .~ adaptiveColor(.white)
+
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
+      |> \.showsVerticalScrollIndicator .~ false
+
+    _ = self.rootStackView
+      |> verticalStackViewStyle
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+      |> \.spacing .~ 12
 
     // MARK: - Button Styles
+
+    _ = self.buttonsLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Buttons"
+
+    _ = self.buttonsStackView
+      |> verticalComponentStackViewStyle
 
     _ = self.primaryGreenButton
       |> adaptiveGreenButtonStyle
@@ -226,7 +306,45 @@ final class DesignSystemViewController: UIViewController, NibLoading {
     _ = self.applePayButton
       |> applePayButtonStyle
 
+    // MARK: - Icon Styles
+
+    _ = self.iconsLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Icons"
+
+    _ = self.iconsStackView
+      |> verticalComponentStackViewStyle
+
+    _ = self.logoIcon
+      |> adaptiveIconImageViewStyle
+      |> \.tintColor .~ adaptiveColor(.create500)
+      |> UIImageView.lens.image .~ UIImage(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
+
+    _ = self.arrowDownIcon
+      |> adaptiveIconImageViewStyle
+      |> \.tintColor .~ adaptiveColor(.create500)
+      |> UIImageView.lens.image .~ UIImage(named: "arrow-down-large")?.withRenderingMode(.alwaysTemplate)
+
+    _ = self.heartIcon
+      |> adaptiveIconImageViewStyle
+      |> \.tintColor .~ adaptiveColor(.support400)
+      |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
+
     // MARK: - Control Styles
+
+    _ = self.controlsLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Controls"
+
+    _ = self.controlsStackView
+      |> verticalStackViewStyle
+      |> \.alignment .~ .leading
+      |> \.spacing .~ Styles.grid(1)
+
+    _ = self.controlsStackView
+      |> verticalComponentStackViewStyle
 
     _ = self.switchControlEnabled
       |> adaptiveSwitchControlStyle
@@ -247,15 +365,13 @@ final class DesignSystemViewController: UIViewController, NibLoading {
 
     // MARK: - Input Styles
 
-    _ = self.emailContainer
-      |> \.layer.borderColor .~ adaptiveColor(.support200).cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.layer.cornerRadius .~ 10
+    _ = self.inputsLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Inputs"
 
-    _ = self.passwordContainer
-      |> \.layer.borderColor .~ adaptiveColor(.support200).cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.layer.cornerRadius .~ 10
+    _ = self.inputsStackView
+      |> verticalComponentStackViewStyle
 
     _ = self.emailTextField
       |> adaptiveEmailFieldStyle
@@ -270,6 +386,14 @@ final class DesignSystemViewController: UIViewController, NibLoading {
 
     // MARK: - Progress Styles
 
+    _ = self.progressLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Progress Indicators"
+
+    _ = self.progressStackView
+      |> verticalComponentStackViewStyle
+
     _ = self.loadingIndicator
       |> adaptiveActivityIndicatorStyle
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -280,6 +404,14 @@ final class DesignSystemViewController: UIViewController, NibLoading {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     // MARK: - Typography Styles
+
+    _ = self.typesLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Typography"
+
+    _ = self.typeStackView
+      |> verticalComponentStackViewStyle
 
     _ = self.title1Label
       |> \.font .~ .ksr_title1()
@@ -371,6 +503,15 @@ final class DesignSystemViewController: UIViewController, NibLoading {
       |> \.textColor .~ adaptiveColor(.black)
       |> \.text .~ "Caption 2 Bold"
   }
+}
+
+public let verticalComponentStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> verticalStackViewStyle
+    |> \.alignment .~ .leading
+    |> \.spacing .~ 8
+    |> \.distribution .~ .fill
+    |> UIStackView.lens.spacing .~ Styles.grid(2)
 }
 
 private func attributedTermsText() -> NSAttributedString? {
