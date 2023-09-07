@@ -23,7 +23,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
-  private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
@@ -74,7 +73,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
-    self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
@@ -1172,16 +1170,6 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.presentViewController.assertValueCount(1)
     }
-  }
-
-  func testOpenNotification_NewBacking_ForCreator() {
-    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
-      .flatMap { $0["project_id"] as? Int }
-    let param = Param.id(projectId ?? -1)
-
-    self.vm.inputs.didReceive(remoteNotification: backingForCreatorPushData)
-
-    self.goToProjectActivities.assertValues([param])
   }
 
   func testOpenNotification_NewBacking_ForCreator_WithBadData() {

@@ -200,16 +200,6 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     profileNav.setViewControllers([profileVC, threadsVC, messageThreadVC], animated: true)
   }
 
-  public func switchToCreatorMessageThread(projectId: Param, messageThread: MessageThread) {
-    // FIXME: Delete this method.
-    return
-  }
-
-  public func switchToProjectActivities(projectId: Param) {
-    // FIXME: Delete this method.
-    return
-  }
-
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
     data.items.forEach { item in
       switch item {

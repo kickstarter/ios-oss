@@ -126,9 +126,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
-  /// Emits when application should navigate to the creator's message thread
-  var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
-
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
@@ -140,9 +137,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), Never> { get }
-
-  /// Emits when should navigate to the project activities view
-  var goToProjectActivities: Signal<Param, Never> { get }
 
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
@@ -519,18 +513,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       goToLogin.mapConst(.generic)
     )
 
-    self.goToCreatorMessageThread = deepLink
-      .map { navigation -> (Param, Int)? in
-        guard case let .creatorMessages(projectId, messageThreadId) = navigation else { return nil }
-        return .some((projectId, messageThreadId: messageThreadId))
-      }
-      .skipNil()
-      .switchMap { projectId, messageThreadId in
-        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
-          .demoteErrors()
-          .map { (projectId, $0.messageThread) }
-      }
-
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
         guard case let .messages(messageThreadId) = navigation else { return nil }
@@ -542,13 +524,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .demoteErrors()
           .map { $0.messageThread }
       }
-
-    self.goToProjectActivities = deepLink
-      .map { navigation -> Param? in
-        guard case let .projectActivity(projectId) = navigation else { return nil }
-        return .some(projectId)
-      }
-      .skipNil()
 
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
@@ -941,12 +916,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
-  public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
-  public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
   public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
@@ -1041,9 +1014,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     switch activity.category {
     case .backing:
       guard let projectId = activity.projectId else { return nil }
-      if envelope.forCreator == true {
-        return .projectActivity(.id(projectId))
-      }
       return .project(.id(projectId), .root, refTag: .push)
     case .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
@@ -1091,11 +1061,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let message = envelope.message {
-    if envelope.forCreator == .some(true) {
-      return .creatorMessages(.id(message.projectId), messageThreadId: message.messageThreadId)
-    } else {
-      return .messages(messageThreadId: message.messageThreadId)
-    }
+    return .messages(messageThreadId: message.messageThreadId)
   }
 
   if let survey = envelope.survey {

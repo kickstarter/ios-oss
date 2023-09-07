@@ -3,8 +3,6 @@ import KsApi
 
 public enum Navigation: Equatable {
   case checkout(Int, Navigation.Checkout)
-  case creatorMessages(Param, messageThreadId: Int)
-  case projectActivity(Param)
   case emailClick
   case messages(messageThreadId: Int)
   case profile(Profile)

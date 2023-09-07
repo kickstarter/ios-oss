@@ -97,12 +97,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.rootTabBarController?.switchToActivities() }
 
-    self.viewModel.outputs.goToCreatorMessageThread
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.goToCreatorMessageThread($0, $1)
-      }
-
     self.viewModel.outputs.goToLoginWithIntent
       .observeForControllerAction()
       .observeValues { [weak self] intent in
@@ -116,12 +110,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToMessageThread
       .observeForUI()
       .observeValues { [weak self] in self?.goToMessageThread($0) }
-
-    self.viewModel.outputs.goToProjectActivities
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.goToProjectActivities($0)
-      }
 
     self.viewModel.outputs.goToSearch
       .observeForUI()
@@ -392,15 +380,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   private func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
-  }
-
-  private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {
-    self.rootTabBarController?
-      .switchToCreatorMessageThread(projectId: projectId, messageThread: messageThread)
-  }
-
-  private func goToProjectActivities(_ projectId: Param) {
-    self.rootTabBarController?.switchToProjectActivities(projectId: projectId)
   }
 
   private func findRedirectUrl(_ url: URL) {
