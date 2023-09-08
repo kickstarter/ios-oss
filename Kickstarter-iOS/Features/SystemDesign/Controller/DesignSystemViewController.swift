@@ -111,10 +111,6 @@ final class DesignSystemViewController: UIViewController {
     self.configureViews()
   }
 
-  override func viewDidLayoutSubviews() {
-    //    self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 1700)
-  }
-
   // MARK: - Configuration
 
   private func configureViews() {
@@ -264,6 +260,10 @@ final class DesignSystemViewController: UIViewController {
       self.errorSnackbarStackView.widthAnchor.constraint(equalToConstant: 351),
       self.confirmationSnackbarStackView.heightAnchor.constraint(equalToConstant: 64),
       self.confirmationSnackbarStackView.widthAnchor.constraint(equalToConstant: 351),
+      self.errorSnackbarIcon.widthAnchor.constraint(equalToConstant: 20),
+      self.errorSnackbarIcon.heightAnchor.constraint(equalToConstant: 20),
+      self.confirmationSnackbarIcon.widthAnchor.constraint(equalToConstant: 20),
+      self.confirmationSnackbarIcon.heightAnchor.constraint(equalToConstant: 20),
 
       self.primaryGreenButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
       self.primaryBlueButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
@@ -274,7 +274,12 @@ final class DesignSystemViewController: UIViewController {
       self.facebookButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
       self.applePayButton.heightAnchor.constraint(equalToConstant: 48),
       self.applePayButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-
+      
+      
+      self.heartIcon.widthAnchor.constraint(equalToConstant: 20),
+      self.heartIcon.heightAnchor.constraint(equalToConstant: 20),
+      self.arrowDownIcon.widthAnchor.constraint(equalToConstant: 20),
+      self.arrowDownIcon.heightAnchor.constraint(equalToConstant: 20),
       self.dropdownButton.widthAnchor.constraint(equalToConstant: 175),
 
       self.emailTextField.heightAnchor.constraint(equalToConstant: 48),
@@ -345,7 +350,6 @@ final class DesignSystemViewController: UIViewController {
       |> adaptiveIconImageViewStyle
       |> \.tintColor .~ adaptiveColor(.white)
       |> UIImageView.lens.image .~ UIImage(named: "icon--confirmation")?.withRenderingMode(.alwaysTemplate)
-      |> \.frame .~ CGRect(x: 0, y: 0, width: 25, height: 25)
 
     _ = self.confirmationSnackbarLabel
       |> \.font .~ .ksr_subhead()
