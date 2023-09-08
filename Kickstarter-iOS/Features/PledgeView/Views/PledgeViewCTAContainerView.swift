@@ -96,7 +96,6 @@ final class PledgeViewCTAContainerView: UIView {
 
     _ = self.submitButton
       |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_submit() }
 
     _ = self.rootStackView
       |> rootStackViewStyle

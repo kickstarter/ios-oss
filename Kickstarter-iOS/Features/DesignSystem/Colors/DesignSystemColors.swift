@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public enum DesignSystemColor: String {
+public enum DesignSystemColors: String {
   // MARK: - Greens
 
   case create100
@@ -44,13 +44,13 @@ public enum DesignSystemColor: String {
   case warn
 }
 
-extension DesignSystemColor {
+extension DesignSystemColors {
   public func load() -> UIColor {
     UIColor(named: self.rawValue) ?? .white
   }
 }
 
-public func adaptiveColor(_ style: DesignSystemColor) -> UIColor {
+public func adaptiveColor(_ style: DesignSystemColors) -> UIColor {
   style.load()
 }
 
