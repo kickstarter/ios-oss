@@ -229,11 +229,8 @@
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
-		191E601F2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */; };
-		191E60212A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */; };
-		191E60232A951BF1001413B2 /* ProjectTabTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */; };
+		191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */; };
 		191E60262A953E2B001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */; };
-		191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */; };
 		19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 19338D9A2A0D4E2300075F29 /* Stripe */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
 		1937A72628C959DD00DD732D /* FundingGraphViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */; };
@@ -1825,11 +1822,8 @@
 		19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift"; sourceTree = "<group>"; };
 		19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift"; sourceTree = "<group>"; };
 		191A2C702907350A0093B6E1 /* ChangeEmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeEmailView.swift; path = Controller/ChangeEmailView.swift; sourceTree = "<group>"; };
-		191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCell.swift; sourceTree = "<group>"; };
-		191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCellViewModel.swift; sourceTree = "<group>"; };
-		191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabTitleCell.swift; sourceTree = "<group>"; };
+		191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabAIGenerationCell.swift; sourceTree = "<group>"; };
 		191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCheckmarkListCellViewModelTests.swift; sourceTree = "<group>"; };
-		191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCellViewModelTests.swift; sourceTree = "<group>"; };
 		192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stripe+PaymentMethod.swift"; sourceTree = "<group>"; };
 		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
@@ -4658,10 +4652,9 @@
 				D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */,
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
 				A79F52FF1D8F50CE00C051B8 /* ProjectPamphletSubpageCell.swift */,
-				191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */,
+				191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */,
 				473DE013273C551C0033331D /* ProjectRisksDisclaimerCell.swift */,
 				473DE00F273C4BA90033331D /* ProjectRisksCell.swift */,
-				191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6688,8 +6681,6 @@
 				191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */,
 				4746FFF2272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift */,
 				4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */,
-				191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */,
-				191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */,
 				4746FFF4272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
@@ -7735,7 +7726,6 @@
 				370F52B3225426C700F159B9 /* UIApplication.swift in Sources */,
 				D6BD66B323CCC9A8008694BB /* NSAttributedString+Link.swift in Sources */,
 				D64DDCDD235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift in Sources */,
-				191E60212A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift in Sources */,
 				015572731E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift in Sources */,
 				203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */,
 				8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */,
@@ -8062,7 +8052,6 @@
 				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
-				191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */,
 				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
@@ -8378,7 +8367,6 @@
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
 				777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */,
-				191E60232A951BF1001413B2 /* ProjectTabTitleCell.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
@@ -8455,7 +8443,7 @@
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
 				9D14FF921D133351005F4ABB /* ProjectActivitySuccessCell.swift in Sources */,
 				473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */,
-				191E601F2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift in Sources */,
+				191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */,
 				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
