@@ -517,6 +517,13 @@ final class DesignSystemViewController: UIViewController {
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
+    // MARK: - Footer Styles
+
+    _ = self.footersLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Footers"
+
     // MARK: - Typography Styles
 
     _ = self.typesLabel
