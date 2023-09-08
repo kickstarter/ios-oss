@@ -54,6 +54,28 @@ public func adaptiveColor(_ style: DesignSystemColor) -> UIColor {
   style.load()
 }
 
+public let verticalComponentStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> verticalStackViewStyle
+    |> \.alignment .~ .leading
+    |> \.spacing .~ 8
+    |> \.distribution .~ .fill
+    |> UIStackView.lens.spacing .~ Styles.grid(2)
+}
+
+// MARK: - Alert StackView
+
+public let alertStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
+    |> \.distribution .~ .fill
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: 8, leftRight: 12)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ 12
+    |> \.tintColor .~ .white
+    |> \.layer.cornerRadius .~ 6
+}
+
 // MARK: - Buttons
 
 public let adaptiveGreenButtonStyle = baseButtonStyle
@@ -94,9 +116,9 @@ public let adaptiveRedButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.alert).mixLighter(0.36)
 
 public let adaptiveFacebookButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.facebookBlue)
-  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
+  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.facebookBlue).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.facebookBlue).mixLighter(0.36)
   <> UIButton.lens.tintColor .~ adaptiveColor(.white)
@@ -125,16 +147,31 @@ public let adaptiveSwitchControlStyle: SwitchControlStyle = { switchControl in
     |> \.tintColor .~ adaptiveColor(.support100)
 }
 
+// MARK: - Drop Down
+
+public let adaptiveDropDownButtonStyle: ButtonStyle = { (button: UIButton) in
+  button
+    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(
+      top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
+    )
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
+    |> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.create500)
+    |> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.create500)
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
+    |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
+    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)
+    |> UIButton.lens.layer.shadowColor .~ adaptiveColor(.black).cgColor
+}
+
 // MARK: - Form
 
 public let adaptiveFormFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> formTextInputStyle
     |> \.backgroundColor .~ .clear
-    |> \.borderStyle .~ UITextField.BorderStyle.none
     |> \.font .~ .ksr_body()
     |> \.textColor .~ .black
-    |> \.tintColor .~ adaptiveColor(.create700)
+    |> \.tintColor .~ adaptiveColor(.black)
 }
 
 // MARK: - Text Field
@@ -154,17 +191,6 @@ private let adaptiveEmailTextFieldPlaceholderStyle: TextFieldStyle = { (textFiel
     |> \.returnKeyType .~ UIReturnKeyType.next
     |> \.attributedPlaceholder %~ { _ in
       adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
-    }
-}
-
-public let adaptivePasswordFieldStyle = formFieldStyle
-  <> UITextField.lens.secureTextEntry .~ true
-
-private let adaptivePasswordTextFieldPlaceholderStyle: TextFieldStyle = { (textField: UITextField) in
-  textField
-    |> \.returnKeyType .~ UIReturnKeyType.done
-    |> \.attributedPlaceholder %~ { _ in
-      adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
     }
 }
 

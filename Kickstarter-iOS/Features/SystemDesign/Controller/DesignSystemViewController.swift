@@ -11,8 +11,14 @@ final class DesignSystemViewController: UIViewController {
 
   // MARK: - Alerts
 
-  @IBOutlet var errorSnackbar: UIView!
-  @IBOutlet var confirmationSnackbar: UIView!
+  private let alertsLabel = UILabel()
+  private let alertsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let errorSnackbarStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let errorSnackbarIcon = { UIImageView(frame: .zero) }()
+  private let errorSnackbarLabel = UILabel()
+  private let confirmationSnackbarStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let confirmationSnackbarIcon = { UIImageView(frame: .zero) }()
+  private let confirmationSnackbarLabel = UILabel()
 
   // MARK: - Buttons
 
@@ -106,7 +112,7 @@ final class DesignSystemViewController: UIViewController {
   }
 
   override func viewDidLayoutSubviews() {
-//    self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 1700)
+    //    self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 1700)
   }
 
   // MARK: - Configuration
@@ -122,14 +128,40 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
+        self.alertsLabel,
+        self.alertsStackView,
+        self.buttonsLabel,
         self.buttonsStackView,
+        self.iconsLabel,
         self.iconsStackView,
+        self.controlsLabel,
         self.controlsStackView,
+        self.inputsLabel,
         self.inputsStackView,
+        self.progressLabel,
         self.progressStackView,
+        self.footersLabel,
         self.footersStackView,
+        self.typesLabel,
         self.typeStackView
       ], self.rootStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
+
+    // MARK: - Alerts Stack
+
+    _ = ([self.errorSnackbarIcon, self.errorSnackbarLabel], self.errorSnackbarStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (
+      [self.confirmationSnackbarIcon, self.confirmationSnackbarLabel],
+      self.confirmationSnackbarStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (
+      [self.errorSnackbarStackView, self.confirmationSnackbarStackView],
+      self.alertsStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -137,7 +169,6 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
-        self.buttonsLabel,
         self.primaryGreenButton,
         self.primaryBlueButton,
         self.primaryBlackButton,
@@ -154,7 +185,6 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
-        self.iconsLabel,
         self.logoIcon,
         self.arrowDownIcon,
         self.bookmarkIcon,
@@ -167,7 +197,6 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
-        self.controlsLabel,
         self.switchControlEnabled,
         self.switchControlDisabled,
         self.stepper,
@@ -180,7 +209,6 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
-        self.inputsLabel,
         self.emailTextField,
         self.passwordTextField
       ], self.inputsStackView
@@ -191,7 +219,6 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
-        self.progressLabel,
         self.loadingIndicator,
         self.pullToRefreshImageView,
         self.shimmerLoadingView
@@ -201,14 +228,13 @@ final class DesignSystemViewController: UIViewController {
 
     // MARK: - Footers Stack
 
-    _ = ([self.footersLabel, self.demoCTAContainerView], self.footersStackView)
+    _ = ([self.demoCTAContainerView], self.footersStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    // MARK: - Footers Stack
+    // MARK: - Typography Stack
 
     _ = (
       [
-        self.typesLabel,
         self.title1Label,
         self.title1LabelBold,
         self.title2Label,
@@ -234,11 +260,32 @@ final class DesignSystemViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -4),
 
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
-      self.dropdownButton.widthAnchor.constraint(equalToConstant: 200),
+      self.errorSnackbarStackView.heightAnchor.constraint(equalToConstant: 64),
+      self.errorSnackbarStackView.widthAnchor.constraint(equalToConstant: 351),
+      self.confirmationSnackbarStackView.heightAnchor.constraint(equalToConstant: 64),
+      self.confirmationSnackbarStackView.widthAnchor.constraint(equalToConstant: 351),
+
+      self.primaryGreenButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.primaryBlueButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.primaryBlackButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.secondaryGreyButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.secondaryRedButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.secondaryDisabledButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.facebookButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+      self.applePayButton.heightAnchor.constraint(equalToConstant: 48),
+      self.applePayButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
+
+      self.dropdownButton.widthAnchor.constraint(equalToConstant: 175),
+
+      self.emailTextField.heightAnchor.constraint(equalToConstant: 48),
+      self.emailTextField.widthAnchor.constraint(equalTo: self.inputsStackView.widthAnchor),
+      self.passwordTextField.heightAnchor.constraint(equalToConstant: 48),
+      self.passwordTextField.widthAnchor.constraint(equalTo: self.inputsStackView.widthAnchor),
+
       self.shimmerLoadingView.leftAnchor.constraint(equalTo: self.progressStackView.leftAnchor),
       self.shimmerLoadingView.rightAnchor.constraint(equalTo: self.progressStackView.rightAnchor),
       self.pullToRefreshImageView.widthAnchor.constraint(equalToConstant: 25),
+
       self.demoCTAContainerView.leftAnchor.constraint(equalTo: self.footersStackView.leftAnchor),
       self.demoCTAContainerView.rightAnchor.constraint(equalTo: self.footersStackView.rightAnchor),
       self.demoCTAContainerView.bottomAnchor.constraint(equalTo: self.footersStackView.bottomAnchor)
@@ -262,7 +309,50 @@ final class DesignSystemViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
-      |> \.spacing .~ 12
+      |> \.spacing .~ 20
+
+    // MARK: - Alert Styles
+
+    _ = self.errorSnackbarStackView
+      |> alertStackViewStyle
+      |> \.backgroundColor .~ adaptiveColor(.alert)
+
+    _ = self.confirmationSnackbarStackView
+      |> alertStackViewStyle
+      |> \.backgroundColor .~ adaptiveColor(.trust500)
+
+    _ = self.alertsLabel
+      |> \.font .~ .ksr_title1().bolded
+      |> \.textColor .~ adaptiveColor(.black)
+      |> \.text .~ "Alerts"
+
+    _ = self.alertsStackView
+      |> verticalComponentStackViewStyle
+
+    _ = self.errorSnackbarIcon
+      |> adaptiveIconImageViewStyle
+      |> \.tintColor .~ adaptiveColor(.white)
+      |> UIImageView.lens.image .~ UIImage(named: "fix-icon")?.withRenderingMode(.alwaysTemplate)
+
+    _ = self.errorSnackbarLabel
+      |> \.font .~ .ksr_subhead()
+      |> \.textColor .~ adaptiveColor(.white)
+      |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 2
+
+    _ = self.confirmationSnackbarIcon
+      |> adaptiveIconImageViewStyle
+      |> \.tintColor .~ adaptiveColor(.white)
+      |> UIImageView.lens.image .~ UIImage(named: "icon--confirmation")?.withRenderingMode(.alwaysTemplate)
+      |> \.frame .~ CGRect(x: 0, y: 0, width: 25, height: 25)
+
+    _ = self.confirmationSnackbarLabel
+      |> \.font .~ .ksr_subhead()
+      |> \.textColor .~ adaptiveColor(.white)
+      |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 2
 
     // MARK: - Button Styles
 
@@ -301,7 +391,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.facebookButton
       |> adaptiveFacebookButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ Strings.Continue_with_Facebook()
+      |> UIButton.lens.title(for: .normal) .~ " \(Strings.Continue_with_Facebook())"
 
     _ = self.applePayButton
       |> applePayButtonStyle
@@ -359,7 +449,7 @@ final class DesignSystemViewController: UIViewController {
       |> checkoutStepperStyle
 
     _ = self.dropdownButton
-      |> dropdownButtonStyle
+      |> adaptiveDropDownButtonStyle
       |> checkoutWhiteBackgroundStyle
       |> checkoutRoundedCornersStyle
 
@@ -375,11 +465,19 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.emailTextField
       |> adaptiveEmailFieldStyle
+      |> \.leftView .~ UIView(frame: CGRect(x: 0, y: 0, width: 8, height: 8))
+      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+      |> \.layer.borderWidth .~ 1
+      |> \.layer.cornerRadius .~ 6
       |> \.attributedPlaceholder %~ { _ in
         adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
       }
     _ = self.passwordTextField
-      |> adaptivePasswordFieldStyle
+      |> adaptiveEmailFieldStyle
+      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+      |> \.layer.borderWidth .~ 1
+      |> \.layer.cornerRadius .~ 6
+      |> UITextField.lens.secureTextEntry .~ true
       |> \.attributedPlaceholder %~ { _ in
         adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
       }
@@ -505,15 +603,6 @@ final class DesignSystemViewController: UIViewController {
   }
 }
 
-public let verticalComponentStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> verticalStackViewStyle
-    |> \.alignment .~ .leading
-    |> \.spacing .~ 8
-    |> \.distribution .~ .fill
-    |> UIStackView.lens.spacing .~ Styles.grid(2)
-}
-
 private func attributedTermsText() -> NSAttributedString? {
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
 
@@ -530,18 +619,4 @@ private func attributedTermsText() -> NSAttributedString? {
   )
 
   return checkoutAttributedLink(with: string)
-}
-
-private let dropdownButtonStyle: ButtonStyle = { (button: UIButton) in
-  button
-    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(
-      top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
-    )
-    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
-    |> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.create700)
-    |> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.create700)
-    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
-    |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
-    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)
-    |> UIButton.lens.layer.shadowColor .~ adaptiveColor(.black).cgColor
 }
