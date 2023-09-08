@@ -108,6 +108,13 @@ final class DesignSystemViewController: UIViewController {
 
     self.dropdownButton.setTitle("United States", for: .normal)
 
+    let emailTextFieldpaddingView = UIView(frame: CGRectMake(0, 0, 15, self.emailTextField.frame.height))
+    let passTextFieldpaddingView = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField.frame.height))
+    self.emailTextField.leftView = emailTextFieldpaddingView
+    self.emailTextField.leftViewMode = .always
+    self.passwordTextField.leftView = passTextFieldpaddingView
+    self.passwordTextField.leftViewMode = .always
+
     self.configureViews()
   }
 
@@ -181,10 +188,10 @@ final class DesignSystemViewController: UIViewController {
 
     _ = (
       [
-        self.logoIcon,
         self.arrowDownIcon,
         self.bookmarkIcon,
-        self.heartIcon
+        self.heartIcon,
+        self.logoIcon
       ], self.iconsStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
@@ -274,10 +281,11 @@ final class DesignSystemViewController: UIViewController {
       self.facebookButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
       self.applePayButton.heightAnchor.constraint(equalToConstant: 48),
       self.applePayButton.widthAnchor.constraint(equalTo: self.buttonsStackView.widthAnchor),
-      
-      
+
       self.heartIcon.widthAnchor.constraint(equalToConstant: 20),
       self.heartIcon.heightAnchor.constraint(equalToConstant: 20),
+      self.bookmarkIcon.widthAnchor.constraint(equalToConstant: 20),
+      self.bookmarkIcon.heightAnchor.constraint(equalToConstant: 20),
       self.arrowDownIcon.widthAnchor.constraint(equalToConstant: 20),
       self.arrowDownIcon.heightAnchor.constraint(equalToConstant: 20),
       self.dropdownButton.widthAnchor.constraint(equalToConstant: 175),
@@ -425,6 +433,11 @@ final class DesignSystemViewController: UIViewController {
       |> \.tintColor .~ adaptiveColor(.support400)
       |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
 
+    _ = self.bookmarkIcon
+      |> adaptiveIconImageViewStyle
+      |> \.tintColor .~ adaptiveColor(.create700)
+      |> UIImageView.lens.image .~ UIImage(named: "icon--bookmark")?.withRenderingMode(.alwaysTemplate)
+
     // MARK: - Control Styles
 
     _ = self.controlsLabel
@@ -469,7 +482,6 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.emailTextField
       |> adaptiveEmailFieldStyle
-      |> \.leftView .~ UIView(frame: CGRect(x: 0, y: 0, width: 8, height: 8))
       |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 6

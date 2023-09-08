@@ -170,8 +170,7 @@ public let adaptiveFormFieldStyle: TextFieldStyle = { (textField: UITextField) i
     |> formTextInputStyle
     |> \.backgroundColor .~ .clear
     |> \.font .~ .ksr_body()
-    |> \.textColor .~ .black
-    |> \.tintColor .~ adaptiveColor(.black)
+    |> \.textColor .~ adaptiveColor(.black)
 }
 
 // MARK: - Text Field
