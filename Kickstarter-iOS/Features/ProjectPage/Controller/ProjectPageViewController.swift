@@ -653,7 +653,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   
   private func goToReportProject(project: Project) {
     if #available(iOS 15, *) {
-      //TODO: Push UGC Info SwiftUI View
+      let reportThisProjectInfoView = ReportThisProjectInfoView()
+      self.navigationController?.pushViewController(UIHostingController(rootView: reportThisProjectInfoView), animated: true)
     }
   }
 
