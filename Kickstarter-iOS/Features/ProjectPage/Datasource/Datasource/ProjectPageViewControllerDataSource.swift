@@ -104,7 +104,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
       let values: [ProjectPamphletSubpage] = [
         .comments(project.stats.commentsCount as Int?, .first),
-        .updates(project.stats.updatesCount as Int?, .last)
+        .updates(project.stats.updatesCount as Int?, .middle),
+        .reportProject(.last)
       ]
 
       self.set(
@@ -446,6 +447,10 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   internal func indexPathIsUpdatesSubpage(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
+  }
+  
+  internal func indexPathIsReportProject(_ indexPath: IndexPath) -> Bool {
+    return (self[indexPath] as? ProjectPamphletSubpage)?.isReportProject == true
   }
 
   internal func isExpandedValuesForFAQsSection() -> [Bool]? {
