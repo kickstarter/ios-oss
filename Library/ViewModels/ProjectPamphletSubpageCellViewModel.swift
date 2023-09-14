@@ -68,8 +68,11 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
       .map { Format.wholeNumber($0.count ?? 0) }
 
     self.countLabelTextColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_700)
-    self.countLabelBorderColor = Signal.merge(commentsSubpage, updatesSubpage, reportProjectSubpage).mapConst(.clear)
+    self.countLabelBorderColor = Signal.merge(commentsSubpage, updatesSubpage, reportProjectSubpage)
+      .mapConst(.clear)
     self.countLabelBackgroundColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_100)
+
+    // TODO: Add arrow icon in place of report this project count label
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)
@@ -140,7 +143,7 @@ public enum ProjectPamphletSubpage {
     default: return false
     }
   }
-  
+
   public var isReportProject: Bool {
     switch self {
     case .reportProject: return true

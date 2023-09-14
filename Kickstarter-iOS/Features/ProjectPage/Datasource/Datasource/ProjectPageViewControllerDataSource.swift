@@ -448,7 +448,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
   internal func indexPathIsUpdatesSubpage(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
   }
-  
+
   internal func indexPathIsReportProject(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isReportProject == true
   }

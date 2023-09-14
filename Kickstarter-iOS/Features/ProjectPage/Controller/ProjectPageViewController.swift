@@ -379,7 +379,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
         self?.goToDashboard(param: param)
       }
-    
+
     self.viewModel.outputs.goToReportProject
       .observeForControllerAction()
       .observeValues { [weak self] in

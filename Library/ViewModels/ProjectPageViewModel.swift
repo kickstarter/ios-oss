@@ -54,7 +54,7 @@ public protocol ProjectPageViewModelInputs {
 
   /// Call when didSelectRow is called on the updates cell.
   func tappedUpdates()
-  
+
   /// Call when didSelectRow is called on the report project cell.
   func tappedReportProject()
 
@@ -101,7 +101,7 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
-  
+
   /// Emits a `Project` when the report project view is to be rendered.
   var goToReportProject: Signal<Project, Never> { get }
 
@@ -349,7 +349,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
-    
+
     self.goToReportProject = project
       .takeWhen(self.tappedReportProjectProperty.signal)
 
@@ -584,7 +584,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public func tappedUpdates() {
     self.tappedUpdatesProperty.value = ()
   }
-  
+
   fileprivate let tappedReportProjectProperty = MutableProperty(())
   public func tappedReportProject() {
     self.tappedReportProjectProperty.value = ()
