@@ -28,7 +28,6 @@ struct ReportProjectInfoView: View {
         List(listItems, children: \.subItems) { item in
           RowView(item: item)
         }
-        .id(UUID())
         .navigationBarHidden(true)
         .listStyle(.inset)
         .tint(Color(.ksr_create_700))
@@ -55,9 +54,9 @@ private struct BaseRowView: View {
           .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
           .frame(maxWidth: .infinity, alignment: .leading)
       } else {
-      Text(item.subtitle)
-        .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
-        .frame(maxWidth: .infinity, alignment: .leading)
+        Text(item.subtitle)
+          .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
+          .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
   }
