@@ -50,7 +50,7 @@ private struct BaseRowView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
 
       if let hyperLink = hyperLink(in: item.subtitle) {
-        Text(html: item.subtitle, with: hyperLink)
+        Text(html: item.subtitle, with: hyperLink.stringLiteral())
           .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
           .frame(maxWidth: .infinity, alignment: .leading)
       } else {
