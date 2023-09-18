@@ -71,8 +71,6 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
     self.countLabelBorderColor = Signal.merge(commentsSubpage, updatesSubpage, reportProjectSubpage)
       .mapConst(.clear)
     self.countLabelBackgroundColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_100)
-
-    // TODO: Add arrow icon in place of report this project count label
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)
