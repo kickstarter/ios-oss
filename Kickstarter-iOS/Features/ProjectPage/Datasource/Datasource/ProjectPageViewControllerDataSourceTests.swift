@@ -817,7 +817,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       true
     )
   }
-  
+
   func testIndexPathIsReportProjectSubpage() {
     let project = Project.template
       |> \.displayPrelaunch .~ false
