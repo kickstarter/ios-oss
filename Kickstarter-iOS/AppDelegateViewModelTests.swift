@@ -1279,30 +1279,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  // TODO: (INGERID): Figure out what to do with this.
-//  func testOpenNotification_CreatorActivity() {
-//    let categories: [Activity.Category] = [.backingAmount, .backingCanceled, .backingDropped, .backingReward]
-//
-//    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
-//      .flatMap { $0["project_id"] as? Int }
-//    let param = Param.id(projectId ?? -1)
-//
-//    self.vm.inputs.applicationDidFinishLaunching(
-//      application: UIApplication.shared,
-//      launchOptions: [:]
-//    )
-//
-//    categories.enumerated().forEach { idx, state in
-//      var pushData = genericActivityPushData
-//      pushData["activity"]?["category"] = state.rawValue
-//
-//      self.vm.inputs.didReceive(remoteNotification: pushData)
-//
-//      self.goToDashboard.assertValueCount(idx + 1)
-//      self.goToDashboard.assertLastValue(param)
-//    }
-//  }
-
   func testOpenNotification_PostLike() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
       let pushData: [String: Any] = [

@@ -1043,11 +1043,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       }
       return .project(.id(projectId), .comments, refTag: .push)
 
-    // FIXME: Figure out if we should delete these cases instead.
-    case .backingAmount, .backingCanceled, .backingDropped, .backingReward:
-      guard let projectId = activity.projectId else { return nil }
-      return .project(.id(projectId), .root, refTag: .push)
-
     case .follow:
       return .tab(.activity)
 
