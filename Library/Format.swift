@@ -403,7 +403,7 @@ public enum Format {
 
 public let defaultThresholdInDays = 30 // days
 
-internal struct DateFormatterConfig {
+internal struct DateFormatterConfig: Hashable {
   let dateFormat: String?
   fileprivate let dateStyle: DateFormatter.Style?
   fileprivate let locale: Locale
@@ -437,25 +437,6 @@ internal struct DateFormatterConfig {
     self.formatters[config] = formatter
     return formatter
   }
-}
-
-extension DateFormatterConfig: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(self.template)
-    hasher.combine(self.dateStyle)
-    hasher.combine(self.locale)
-    hasher.combine(self.timeStyle)
-    hasher.combine(self.timeZone)
-  }
-}
-
-func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
-  return
-    lhs.template == rhs.template
-      && lhs.dateStyle == rhs.dateStyle
-      && lhs.locale == rhs.locale
-      && lhs.timeStyle == rhs.timeStyle
-      && lhs.timeZone == rhs.timeZone
 }
 
 private struct NumberFormatterConfig {

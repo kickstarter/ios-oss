@@ -14,6 +14,13 @@ public func featureFacebookLoginInterstitialEnabled() -> Bool {
       .isFeatureEnabled(featureKey: RemoteConfigFeature.facebookLoginInterstitialEnabled) ?? false)
 }
 
+public func featureReportThisProjectEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] ??
+    (AppEnvironment.current.remoteConfigClient?
+      .isFeatureEnabled(featureKey: RemoteConfigFeature.reportThisProjectEnabled) ?? false)
+}
+
 public func featureUseOfAIProjectTabEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue] ??

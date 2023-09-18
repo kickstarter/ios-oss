@@ -89,6 +89,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureConsentManagementDialogEnabled()
   case .facebookLoginInterstitialEnabled:
     return featureFacebookLoginInterstitialEnabled()
+  case .reportThisProjectEnabled:
+    return featureReportThisProjectEnabled()
   case .useOfAIProjectTab:
     return featureUseOfAIProjectTabEnabled()
   }
@@ -104,6 +106,9 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
+  case .reportThisProjectEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue]
   case .useOfAIProjectTab:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue]
@@ -120,6 +125,9 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
+  case .reportThisProjectEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] = value
   case .useOfAIProjectTab:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue] = value

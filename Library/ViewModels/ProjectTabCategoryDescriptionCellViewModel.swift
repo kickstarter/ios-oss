@@ -58,10 +58,6 @@ private func internationalizedString(for category: ProjectTabCategory) -> String
     return Strings.Sustainable_distribution()
   case .reusabilityAndRecyclability:
     return Strings.Reusability_and_recyclability()
-  case .aiDisclosureDetails:
-    return Strings.What_parts_of_your_project_will_use_AI_generated_content()
-  case .aiDisclosureConsent:
-    return Strings.Do_you_have_the_consent_of_the_owners_of_the_works_used_for_AI()
   case .aiDisclosureOtherDetails:
     return Strings.I_am_incorporating_AI_in_my_project()
   case .somethingElse:

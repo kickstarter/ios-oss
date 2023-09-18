@@ -215,11 +215,8 @@
 		19047FCF2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */; };
 		19047FD12889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */; };
 		191A4B4C28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 191A4B4B28FF3AF8009D62A5 /* ReactiveExtensions-TestHelpers */; };
-		191E601F2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */; };
-		191E60212A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */; };
-		191E60232A951BF1001413B2 /* ProjectTabTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */; };
+		191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */; };
 		191E60262A953E2B001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */; };
-		191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */; };
 		19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 19338D9A2A0D4E2300075F29 /* Stripe */; };
 		1937A72328C9570A00DD732D /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1937A72228C9570900DD732D /* ErroredBackingView.swift */; };
 		194154CE28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194154CD28D8ED69004648C8 /* CreatePaymentSourceSetupIntentInput.swift */; };
@@ -455,6 +452,10 @@
 		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		6018626629A9194600EA2842 /* AppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626529A9194600EA2842 /* AppTrackingTransparency.swift */; };
 		6018626829A91B8C00EA2842 /* ThirdPartyEventInputName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */; };
+		6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
+		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
+		6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColors.swift */; };
+		6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
@@ -1732,11 +1733,8 @@
 		19047FCE2889D4BC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateSetupIntentInput+CreateSetupIntentInputTests.swift"; sourceTree = "<group>"; };
 		19047FD02889D6DC00BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientSecretEnvelope+CreateSetupIntentMutation.DataTests.swift"; sourceTree = "<group>"; };
 		191A2C702907350A0093B6E1 /* ChangeEmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeEmailView.swift; path = Controller/ChangeEmailView.swift; sourceTree = "<group>"; };
-		191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCell.swift; sourceTree = "<group>"; };
-		191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCellViewModel.swift; sourceTree = "<group>"; };
-		191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabTitleCell.swift; sourceTree = "<group>"; };
+		191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabAIGenerationCell.swift; sourceTree = "<group>"; };
 		191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabCheckmarkListCellViewModelTests.swift; sourceTree = "<group>"; };
-		191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTabQuestionAnswerCellViewModelTests.swift; sourceTree = "<group>"; };
 		192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stripe+PaymentMethod.swift"; sourceTree = "<group>"; };
 		1937A72228C9570900DD732D /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingView.swift; sourceTree = "<group>"; };
@@ -1962,6 +1960,10 @@
 		6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626529A9194600EA2842 /* AppTrackingTransparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyEventInputName.swift; sourceTree = "<group>"; };
+		6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemViewController.swift; sourceTree = "<group>"; };
+		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
+		6049D01E2AA774130015BB0D /* DesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemColors.swift; sourceTree = "<group>"; };
+		6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCTAContainerView.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -4496,10 +4498,9 @@
 				D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */,
 				A7CA8BB61D8F14260086A3E9 /* ProjectPamphletMainCell.swift */,
 				A79F52FF1D8F50CE00C051B8 /* ProjectPamphletSubpageCell.swift */,
-				191E601E2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift */,
+				191E601E2A93F318001413B2 /* ProjectTabAIGenerationCell.swift */,
 				473DE013273C551C0033331D /* ProjectRisksDisclaimerCell.swift */,
 				473DE00F273C4BA90033331D /* ProjectRisksCell.swift */,
-				191E60222A951BF1001413B2 /* ProjectTabTitleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4553,6 +4554,7 @@
 				19A97CD428C79BF60031B857 /* Comments */,
 				1937A6E128C92BBD00DD732D /* CuratedProjects */,
 				1937A6E228C92BD400DD732D /* DebugPushNotifications */,
+				6049D00E2A9CF6530015BB0D /* DesignSystem */,
 				19A97D0328C7E7350031B857 /* DiscoveryFilters */,
 				19A97D0928C7EA450031B857 /* Discovery */,
 				1937A6E328C92C0100DD732D /* EmptyStates */,
@@ -5394,6 +5396,41 @@
 				3742036C22DD41BA007AA86E /* PillLayout.swift */,
 			);
 			path = Layouts;
+			sourceTree = "<group>";
+		};
+		6049D00E2A9CF6530015BB0D /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				6049D01D2AA774030015BB0D /* Colors */,
+				6049D00F2A9CF6610015BB0D /* Controller */,
+				6049D0192AA0EC5E0015BB0D /* Views */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		6049D00F2A9CF6610015BB0D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6049D0192AA0EC5E0015BB0D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */,
+				6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6049D01D2AA774030015BB0D /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				6049D01E2AA774130015BB0D /* DesignSystemColors.swift */,
+			);
+			path = Colors;
 			sourceTree = "<group>";
 		};
 		6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */ = {
@@ -6253,8 +6290,6 @@
 				191E60242A953DC7001413B2 /* ProjectTabCheckmarkListCellViewModelTests.swift */,
 				4746FFF2272C564C00EC3429 /* ProjectTabCategoryDescriptionCellViewModelTests.swift */,
 				4751A67A272B57EE00F81DD5 /* ProjectTabDisclaimerCellViewModel.swift */,
-				191E60202A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift */,
-				191E60272A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift */,
 				4746FFF4272C588900EC3429 /* ProjectTabDisclaimerCellViewModelTests.swift */,
 				4791BDE5271762E600DFE5D5 /* ProjectFAQsCellViewModel.swift */,
 				47F85270272206840050DB39 /* ProjectFAQsCellViewModelTests.swift */,
@@ -7294,7 +7329,6 @@
 				370F52B3225426C700F159B9 /* UIApplication.swift in Sources */,
 				D6BD66B323CCC9A8008694BB /* NSAttributedString+Link.swift in Sources */,
 				D64DDCDD235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift in Sources */,
-				191E60212A93F65D001413B2 /* ProjectTabQuestionAnswerCellViewModel.swift in Sources */,
 				015572731E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift in Sources */,
 				203015582666FECF0063B629 /* CommentsViewModel.swift in Sources */,
 				8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */,
@@ -7403,6 +7437,7 @@
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
 				370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */,
 				A75C81171D210BD700B5AD03 /* ShareViewModel.swift in Sources */,
+				6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */,
 				A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
 				A7CC13D91D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
 				D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */,
@@ -7599,6 +7634,7 @@
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */,
+				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
 				778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */,
@@ -7782,6 +7818,7 @@
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
+				6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */,
 				06EB4E3227B5D39D00D8BFCC /* OverlayView.swift in Sources */,
 				014D63011E721D500033D2BD /* BackerDashboardProjectCell.swift in Sources */,
 				8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */,
@@ -7886,7 +7923,6 @@
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgePaymentMethodCell.swift in Sources */,
 				777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */,
-				191E60232A951BF1001413B2 /* ProjectTabTitleCell.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,
 				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
@@ -7907,6 +7943,7 @@
 				0634C2F727CFEE40003A6D6E /* ExternalSourceViewElementCell.swift in Sources */,
 				47F95ED72672C594001365B2 /* ViewRepliesView.swift in Sources */,
 				37CA16AD23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift in Sources */,
+				6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				0616458E26696847007D8D96 /* CommentRepliesDataSource.swift in Sources */,
@@ -7952,6 +7989,8 @@
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
 				473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */,
 				191E601F2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift in Sources */,
+				191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */,
+				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */,
@@ -8004,6 +8043,7 @@
 				8A32FE0424D2336E00F79C72 /* EmpyStateView.swift in Sources */,
 				379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */,
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
+				6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

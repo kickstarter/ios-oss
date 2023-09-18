@@ -1040,17 +1040,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       fundingForAiOption: true
     )
 
-    let generatedByAIConsent = ProjectTabCategoryDescription(
-      description: "consent",
-      category: .aiDisclosureConsent,
-      id: 2
-    )
-
-    let generatedByAIDetails = ProjectTabCategoryDescription(
-      description: "details",
-      category: .aiDisclosureDetails,
-      id: 3
-    )
+    let generationDisclosure = ProjectTabGenerationDisclosure(consent: "consent", details: "details")
 
     let generatedByAIOtherDetails = ProjectTabCategoryDescription(
       description: "other",
@@ -1062,8 +1052,7 @@ internal final class ProjectPageViewControllerTests: TestCase {
       ProjectAIDisclosure(
         id: 1,
         funding: projectTabFundingOptions,
-        generatedByAiConsent: generatedByAIConsent,
-        generatedByAiDetails: generatedByAIDetails,
+        generationDisclosure: generationDisclosure,
         involvesAi: true,
         involvesFunding: true,
         involvesGeneration: true,
