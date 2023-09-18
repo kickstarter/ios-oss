@@ -49,7 +49,7 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
       updatesSubpage.mapConst(Strings.project_menu_buttons_updates()),
-      reportProjectSubpage.mapConst(Strings.Report_this_project())
+      reportProjectSubpage.mapConst(Strings.Report_this_project_to())
     )
 
     self.labelTextColor = Signal.merge(

@@ -29,10 +29,10 @@ struct ReportProjectInfoView: View {
           RowView(item: item)
         }
         .id(UUID())
+        .navigationBarHidden(true)
+        .listStyle(.inset)
+        .tint(Color(.ksr_create_700))
       }
-      .navigationBarHidden(true)
-      .listStyle(.inset)
-      .tint(Color(.ksr_create_700))
     }
   }
 }
@@ -55,9 +55,9 @@ private struct BaseRowView: View {
           .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
           .frame(maxWidth: .infinity, alignment: .leading)
       } else {
-        Text(item.subtitle)
-          .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
-          .frame(maxWidth: .infinity, alignment: .leading)
+      Text(item.subtitle)
+        .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_subhead(size: 14)))
+        .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
   }
@@ -69,10 +69,8 @@ struct RowView: View {
 
   var body: some View {
     if item.type == .child {
-      //TODO: Push Submission Form View In MBL-971(https://kickstarter.atlassian.net/browse/MBL-971)
-      NavigationLink(destination: { Text("submit report view") }, label: {
-        BaseRowView(item: item)
-            })
+      // TODO: Push Submission Form View In MBL-971(https://kickstarter.atlassian.net/browse/MBL-971)
+      NavigationLink(destination: { Text("submit report view") }, label: { BaseRowView(item: item) })
     } else {
       BaseRowView(item: item)
     }
