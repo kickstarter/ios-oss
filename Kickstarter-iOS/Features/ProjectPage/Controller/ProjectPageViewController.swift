@@ -650,11 +650,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
-  
-  private func goToReportProject(project: Project) {
+
+  private func goToReportProject(project _: Project) {
     if #available(iOS 15, *) {
-      let reportThisProjectInfoView = ReportThisProjectInfoView()
-      self.navigationController?.pushViewController(UIHostingController(rootView: reportThisProjectInfoView), animated: true)
+      let reportProjectInfoView = ReportProjectInfoView()
+      self.viewModel.inputs.showNavigationBar(false)
+      self.navigationController?
+        .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
     }
   }
 
