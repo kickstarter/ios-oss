@@ -10,6 +10,7 @@ extension Project {
    */
   static func project(
     from projectFragment: GraphAPI.ProjectFragment,
+    flagging: Bool? = nil,
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
     backing: Backing? = nil,
@@ -66,37 +67,39 @@ extension Project {
 
     let extendedProjectProperties = extendedProject(from: projectFragment)
 
-    return Project(
-      availableCardTypes: availableCardTypes,
-      blurb: projectFragment.description,
-      category: category,
-      country: country,
-      creator: creator,
-      extendedProjectProperties: extendedProjectProperties,
-      memberData: memberData,
-      dates: dates,
-      displayPrelaunch: displayPrelaunch,
-      id: projectFragment.pid,
-      location: location,
-      name: projectFragment.name,
-      personalization: projectPersonalization(
-        isStarred: projectFragment.isWatched,
-        backing: backing,
-        friends: []
-      ),
-      photo: photo,
-      prelaunchActivated: projectFragment.prelaunchActivated,
-      rewardData: RewardData(addOns: addOns, rewards: rewards),
-      sendMetaCapiEvents: projectFragment.sendMetaCapiEvents,
-      slug: generatedSlug ?? projectFragment.slug,
-      staffPick: projectFragment.isProjectWeLove,
-      state: state,
-      stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
-      tags: discoverTags,
-      urls: urls,
-      video: projectVideo(from: projectFragment),
-      watchesCount: projectFragment.watchesCount
-    )
+    return
+      Project(
+        availableCardTypes: availableCardTypes,
+        blurb: projectFragment.description,
+        category: category,
+        country: country,
+        creator: creator,
+        extendedProjectProperties: extendedProjectProperties,
+        memberData: memberData,
+        dates: dates,
+        displayPrelaunch: displayPrelaunch,
+        flagging: flagging,
+        id: projectFragment.pid,
+        location: location,
+        name: projectFragment.name,
+        personalization: projectPersonalization(
+          isStarred: projectFragment.isWatched,
+          backing: backing,
+          friends: []
+        ),
+        photo: photo,
+        prelaunchActivated: projectFragment.prelaunchActivated,
+        rewardData: RewardData(addOns: addOns, rewards: rewards),
+        sendMetaCapiEvents: projectFragment.sendMetaCapiEvents,
+        slug: generatedSlug ?? projectFragment.slug,
+        staffPick: projectFragment.isProjectWeLove,
+        state: state,
+        stats: projectStats(from: projectFragment, currentUserChosenCurrency: currentUserChosenCurrency),
+        tags: discoverTags,
+        urls: urls,
+        video: projectVideo(from: projectFragment),
+        watchesCount: projectFragment.watchesCount
+      )
   }
 }
 
