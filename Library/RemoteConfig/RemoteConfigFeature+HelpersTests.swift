@@ -57,6 +57,24 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
+  func testReportThisProject_RemoteConfig_FeatureFlag_True() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.reportThisProjectEnabled.rawValue: true]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(featureReportThisProjectEnabled())
+    }
+  }
+
+  func testReportThisProject_RemoteConfig_FeatureFlag_False() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.reportThisProjectEnabled.rawValue: false]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertFalse(featureReportThisProjectEnabled())
+    }
+  }
+
   func testUseOfAIProjectTab_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.useOfAIProjectTab.rawValue: false]
