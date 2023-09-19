@@ -89,6 +89,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a `Project` when the comments are to be rendered.
   var goToComments: Signal<Project, Never> { get }
+  
+  /// Emits a `Bool` when a project is flagged.
+  var projectFlagged: Signal<Bool, Never> { get }
 
   /// Emits a `Param` when the creator header cell progress view is tapped.
   var goToDashboard: Signal<Param, Never> { get }
@@ -197,6 +200,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let project = freshProjectAndRefTag
       .map(first)
+    
+    self.projectFlagged = project.signal
+      .map { $0.flagged }
 
     self.prefetchImageURLs = project.signal
       .skip(first: 1)
@@ -620,6 +626,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never>
   public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
   public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
+  public let projectFlagged: Signal<Bool, Never>
   public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>

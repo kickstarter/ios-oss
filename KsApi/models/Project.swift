@@ -15,6 +15,7 @@ public struct Project {
   public var id: Int
   public var location: Location
   public var name: String
+  public var flagged: Bool
   public var personalization: Personalization
   public var photo: Photo
   public var prelaunchActivated: Bool?
@@ -313,6 +314,7 @@ extension Project: Decodable {
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
     self.watchesCount = nil
+    self.flagged = false /// Any properties added to this model need to support v1 as well.
   }
 }
 

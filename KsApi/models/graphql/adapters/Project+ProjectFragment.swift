@@ -10,6 +10,7 @@ extension Project {
    */
   static func project(
     from projectFragment: GraphAPI.ProjectFragment,
+    flagging: Bool,
     rewards: [Reward] = [],
     addOns: [Reward]? = nil,
     backing: Backing? = nil,
@@ -37,7 +38,7 @@ extension Project {
     let urls = Project.UrlsEnvelope(
       web: UrlsEnvelope.WebEnvelope(project: projectFragment.url, updates: projectFragment.url + "/posts")
     )
-
+    
     let availableCardTypes = projectFragment.availableCardTypes.compactMap { $0.rawValue }
 
     let displayPrelaunch = !projectFragment.isLaunched

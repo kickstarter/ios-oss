@@ -7,5 +7,9 @@ query FetchProjectById($projectId: Int!, $withStoredCards: Boolean!) {
     backing {
       id
     }
+    flagging {
+      id
+      kind
+    }
   }
 }

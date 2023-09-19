@@ -7,5 +7,9 @@ query FetchProjectBySlug($slug: String!, $withStoredCards: Boolean!) {
     backing {
       id
     }
+    flagging {
+      id
+      kind
+    }
   }
 }
