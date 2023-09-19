@@ -1,6 +1,7 @@
 import Prelude
 import ReactiveSwift
 import UIKit
+import Combine
 
 public enum Mailbox: String {
   case inbox
@@ -58,6 +59,9 @@ public protocol ServiceType {
   /// Changes the email on a user account
   func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+  
+  /// Changes the email on a user account
+  func changeEmail(input: ChangeEmailInput) -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Changes the password on a user account
   func changePassword(input: ChangePasswordInput) ->
@@ -164,6 +168,9 @@ public protocol ServiceType {
   /// Fetches various fields of a given User using graphQL.
   func fetchGraphUser(withStoredCards: Bool)
     -> SignalProducer<UserEnvelope<GraphUser>, ErrorEnvelope>
+  
+  /// Fetches various fields of a given User using graphQL.
+  func fetchGraphUser(withStoredCards: Bool) -> AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope>
 
   /// Fetches the email of the currently logged in User.
   func fetchGraphUserEmail()
@@ -320,6 +327,10 @@ public protocol ServiceType {
   /// Sends a verification email (after updating the email from account settings).
   func sendVerificationEmail(input: EmptyInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+  
+  /// Sends a verification email (after updating the email from account settings).
+  func sendVerificationEmail(input: EmptyInput)
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)

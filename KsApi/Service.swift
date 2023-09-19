@@ -4,6 +4,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
+import Combine
 
 public extension Bundle {
   var _buildVersion: String {
@@ -131,6 +132,17 @@ public struct Service: ServiceType {
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
+  }
+  
+  public func changeEmail(input: ChangeEmailInput) ->
+    AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap { _ in
+        EmptyResponseEnvelope.envelopePublisher()
+      }
+      .eraseToAnyPublisher()
   }
 
   public func changePassword(input: ChangePasswordInput) ->
@@ -332,6 +344,15 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUserQuery(withStoredCards: withStoredCards))
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
+  }
+  
+  public func fetchGraphUser(withStoredCards: Bool) -> AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope> {
+    /// FIXME: Not the cleanest approach, but for this prototype it is easier than returning `AnyPublisher`
+    
+    GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserQuery(withStoredCards: withStoredCards))
+      .flatMap(UserEnvelope<GraphUserEmail>.envelopePublisher(from:))
+      .eraseToAnyPublisher()
   }
 
   public func fetchGraphUserEmail()
@@ -653,6 +674,16 @@ public struct Service: ServiceType {
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
+  }
+
+  public func sendVerificationEmail(input _: EmptyInput) -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput()))
+      .flatMap { _ in
+        EmptyResponseEnvelope.envelopePublisher()
+      }
+      .eraseToAnyPublisher()
   }
 
   public func signInWithApple(input: SignInWithAppleInput)

@@ -62,7 +62,7 @@ struct ChangeEmailView: View {
         if !reactiveViewModel.hideVerifyView {
           VStack(alignment: .leading, spacing: 0) {
             Button(reactiveViewModel.verifyEmailButtonTitle) {
-              reactiveViewModel.inputs.resendVerificationEmailButtonTapped()
+              reactiveViewModel.resendVerificationEmailButtonTapped()
             }
             .font(Font(UIFont.ksr_body()))
             .foregroundColor(Color(.ksr_create_700))
@@ -163,7 +163,7 @@ struct ChangeEmailView: View {
         bannerMessage = newValue
       }
       .onAppear {
-        reactiveViewModel.inputs.viewDidLoad()
+        reactiveViewModel.viewDidLoad()
       }
     }
   }
