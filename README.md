@@ -74,6 +74,7 @@ A collection of operators we like to add to ReactiveCocoa. Built on top of React
 * [Firebase](https://github.com/firebase/firebase-ios-sdk)
 * [AppCenter](https://github.com/microsoft/appcenter-sdk-apple)
 * [Appboy](https://github.com/Appboy/Appboy-segment-ios)
+* [PerimeterX](https://github.com/PerimeterX/px-iOS-Framework)
 
 Notices for 3rd party libraries in this repository are contained in
 `NOTICE.md`.
