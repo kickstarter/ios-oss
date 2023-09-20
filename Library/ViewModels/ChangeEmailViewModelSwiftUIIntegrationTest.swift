@@ -6,38 +6,42 @@ import UIKit
 public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject {
   private var cancellables = Set<AnyCancellable>()
 
-  /// Outputs
+  /// Internal & External (can be updated by view or view model)
   @Published public var hideVerifyView = false
   @Published public var verifyEmailButtonTitle = ""
   @Published public var hideMessageLabel = true
   @Published public var warningMessageWithAlert = ("", false)
 
-  /// Inputs
   public var saveButtonEnabled: AnyPublisher<Bool, Never>
   public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
-  public var retrievedEmailText: PassthroughSubject<String, Never> = .init()
-  public var newEmailText: PassthroughSubject<String, Never> = .init()
   public var currentPasswordText: PassthroughSubject<String, Never> = .init()
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
   public var resetEditableText: PassthroughSubject<Bool, Never> = .init()
+  public var newEmailText: PassthroughSubject<String, Never> = .init()
+  public var retrievedEmailText: PassthroughSubject<String, Never> = .init()
+
+  /// Internal (only updated in view model)
+  private var isEmailVerified: Publishers.Share<AnyPublisher<Bool, Never>>
+  private var isEmailDeliverable: Publishers.Share<AnyPublisher<Bool, Never>>
+  private var emailVerifiedAndDeliverable: AnyPublisher<Bool, Never>
   private var viewDidLoadProperty: PassthroughSubject<Void, Never> = .init()
   private var updateEmailAndPasswordProperty: PassthroughSubject<(String, String), Never> = .init()
-  /// Outputs
-  public var didFailToSendVerificationEmail: PassthroughSubject<String, Never> = .init()
-  public var didSendVerificationEmail: PassthroughSubject<Void, Never> = .init()
-  public var emailText: PassthroughSubject<String, Never> = .init()
-  public var messageLabelViewHidden: PassthroughSubject<Bool, Never> = .init()
-  public var resendVerificationEmailViewIsHidden: PassthroughSubject<Bool, Never> = .init()
-  public var unverifiedEmailLabelHidden: PassthroughSubject<Bool, Never> = .init()
-  public var verificationEmailButtonTitle: PassthroughSubject<String, Never> = .init()
-  public var warningMessageLabelHidden: PassthroughSubject<Bool, Never> = .init()
-  public var resendVerificationEmailButtonProperty: PassthroughSubject<Void, Never> = .init()
+  private var didFailToSendVerificationEmail: PassthroughSubject<String, Never> = .init()
+  private var didSendVerificationEmail: PassthroughSubject<Void, Never> = .init()
+  private var emailText: PassthroughSubject<String, Never> = .init()
+  private var messageLabelViewHidden: PassthroughSubject<Bool, Never> = .init()
+  private var resendVerificationEmailViewIsHidden: PassthroughSubject<Bool, Never> = .init()
+  private var unverifiedEmailLabelHidden: PassthroughSubject<Bool, Never> = .init()
+  private var verificationEmailButtonTitle: PassthroughSubject<String, Never> = .init()
+  private var warningMessageLabelHidden: PassthroughSubject<Bool, Never> = .init()
+  private var resendVerificationEmailButtonProperty: PassthroughSubject<Void, Never> = .init()
+  private var changeEmailEvent: Publishers.Share<AnyPublisher<String, ErrorEnvelope>>
+  private var userEmailEvent: Publishers.Share<AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope>>
 
-  /// Subscribers
   public init() {
-    let changeEmailEvent = self.updateEmailAndPasswordProperty
+    self.changeEmailEvent = self.updateEmailAndPasswordProperty
       .map(ChangeEmailInput.init(email:currentPassword:))
-      .compactMap { input in
+      .flatMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
           .map { _ in input.email }
           // FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
@@ -47,7 +51,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .eraseToAnyPublisher()
       .share()
 
-    let userEmailEvent = self.viewDidLoadProperty
+    self.userEmailEvent = self.viewDidLoadProperty
       .flatMap { _ in
         AppEnvironment.current
           .apiService
@@ -59,26 +63,23 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .eraseToAnyPublisher()
       .share()
 
-    let resendEmailVerificationEvent = self.resendVerificationEmailButtonProperty
-      .flatMap { _ in
-        AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
-      }
-
-    let isEmailVerified = userEmailEvent
+    self.isEmailVerified = self.userEmailEvent
       .compactMap { envelope in
         envelope.me.isEmailVerified
       }
       .replaceError(with: false)
+      .eraseToAnyPublisher()
       .share()
 
-    let isEmailDeliverable = userEmailEvent
+    self.isEmailDeliverable = self.userEmailEvent
       .compactMap { envelope in
         envelope.me.isDeliverable
       }
       .replaceError(with: false)
+      .eraseToAnyPublisher()
       .share()
 
-    let emailVerifiedAndDeliverable = Publishers.CombineLatest(isEmailVerified, isEmailDeliverable)
+    self.emailVerifiedAndDeliverable = Publishers.CombineLatest(self.isEmailVerified, self.isEmailDeliverable)
       .map { isEmailVerified, isEmailDeliverable in
         isEmailVerified && isEmailDeliverable
       }
@@ -91,7 +92,10 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .map(shouldEnableSaveButton(email:newEmail:password:))
       .eraseToAnyPublisher()
 
-    resendEmailVerificationEvent
+    self.resendVerificationEmailButtonProperty
+      .flatMap { _ in
+        AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
+      }
       .sink(receiveCompletion: { [weak self] completion in
         switch completion {
         case .finished:
@@ -105,8 +109,8 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .store(in: &self.cancellables)
 
     Publishers.Merge(
-      changeEmailEvent.flatMap { $0 },
-      userEmailEvent.map { $0.me.email ?? "" }
+      self.changeEmailEvent.eraseToAnyPublisher(),
+      self.userEmailEvent.map { $0.me.email ?? "" }
     )
     .sink(receiveCompletion: { _ in
       // Error/completion results in nothing happening.
@@ -117,7 +121,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
 
     Publishers.Merge(
       self.viewDidLoadProperty.map { _ in true },
-      emailVerifiedAndDeliverable
+      self.emailVerifiedAndDeliverable
     )
     .removeDuplicates()
     .sink(receiveCompletion: { _ in
@@ -143,7 +147,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .store(in: &self.cancellables)
 
     Publishers
-      .CombineLatest(isEmailVerified, isEmailDeliverable)
+      .CombineLatest(self.isEmailVerified, self.isEmailDeliverable)
       .sink(receiveValue: { [weak self] isEmailVerified, isEmailDeliverable in
         if !isEmailVerified {
           self?.unverifiedEmailLabelHidden.send(isEmailDeliverable)
@@ -153,10 +157,11 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       })
       .store(in: &self.cancellables)
 
-    _ = isEmailDeliverable
-      .map { [weak self] flag in
+    self.isEmailDeliverable
+      .sink(receiveValue: { [weak self] flag in
         self?.warningMessageLabelHidden.send(flag)
-      }
+      })
+      .store(in: &self.cancellables)
 
     Publishers.Merge(self.unverifiedEmailLabelHidden, self.warningMessageLabelHidden)
       .filter(isFalse)
@@ -166,9 +171,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       })
       .store(in: &self.cancellables)
 
-    // MARK: Reactive Subscribers to Combine Publishers
-
-    changeEmailEvent
+    self.changeEmailEvent
       .sink(receiveCompletion: { [weak self] completed in
         switch completed {
         case .finished:
@@ -277,7 +280,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
   }
 
   /// Input functions
-  public func updateEmail(newEmail: String, currentPassword: String) {
+  private func updateEmail(newEmail: String, currentPassword: String) {
     let emailAndPassword = (newEmail, currentPassword)
 
     self.updateEmailAndPasswordProperty.send(emailAndPassword)
