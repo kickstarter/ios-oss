@@ -23,21 +23,21 @@ struct ReportProjectInfoView: View {
   @State private var selection: Set<ReportProjectInfoListItem> = []
 
   var body: some View {
-      ScrollView {
-        ForEach(listItems) { item in
-          RowView(item: item, isExpanded: self.selection.contains(item))
-            .modifier(ListRowModifier())
-            .onTapGesture {
-              withAnimation {
-                self.selectDeselect(item)
-              }
+    ScrollView {
+      ForEach(listItems) { item in
+        RowView(item: item, isExpanded: self.selection.contains(item))
+          .modifier(ListRowModifier())
+          .onTapGesture {
+            withAnimation {
+              self.selectDeselect(item)
             }
-            .padding(5)
-            .animation(.linear(duration: 0.3))
-        }
+          }
+          .padding(5)
+          .animation(.linear(duration: 0.3))
       }
-      .navigationTitle(Strings.Report_this_project())
-      .navigationBarTitleDisplayMode(.inline)
+    }
+    .navigationTitle(Strings.Report_this_project())
+    .navigationBarTitleDisplayMode(.inline)
   }
 
   private func selectDeselect(_ item: ReportProjectInfoListItem) {
