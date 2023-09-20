@@ -38,7 +38,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToDashboard = TestObserver<Param, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
-  private let goToReportProject = TestObserver<Project, Never>()
+  private let goToReportProject = TestObserver<String, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
@@ -754,7 +754,8 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testGoToReportProject() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    let project = Project.template
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
 
     self.vm.inputs.viewDidLoad()
 
@@ -762,7 +763,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.vm.inputs.tappedReportProject()
 
-    self.goToReportProject.assertValues([.template])
+    self.goToReportProject.assertValues([project.urls.web.project])
   }
 
   func testGoToDashboard() {

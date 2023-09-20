@@ -17,6 +17,8 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
 
 @available(iOS 15, *)
 struct ReportProjectInfoView: View {
+  let projectUrl: String
+
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 10) {
@@ -94,6 +96,6 @@ private func hyperLink(in string: String) -> ReportProjectHyperLinkType? {
 @available(iOS 15, *)
 struct ReportProjectInfoView_Previews: PreviewProvider {
   static var previews: some View {
-    ReportProjectInfoView()
+    ReportProjectInfoView(projectUrl: "")
   }
 }

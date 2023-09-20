@@ -383,7 +383,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.goToReportProject
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToReportProject(project: $0)
+        self?.goToReportProject(projectUrl: $0)
       }
 
     self.viewModel.outputs.goToUpdates
@@ -651,9 +651,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
-  private func goToReportProject(project _: Project) {
+  private func goToReportProject(projectUrl: String) {
     if #available(iOS 15, *) {
-      let reportProjectInfoView = ReportProjectInfoView()
+      let reportProjectInfoView = ReportProjectInfoView(projectUrl: projectUrl)
       self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?
         .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
