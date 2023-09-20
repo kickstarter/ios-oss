@@ -6,7 +6,7 @@ enum ReportProjectInfoListItemType {
   case parent
 }
 
-struct ReportProjectInfoListItem: Identifiable {
+struct ReportProjectInfoListItem: Identifiable, Hashable {
   var type: ReportProjectInfoListItemType
   var id = UUID()
   var title: String
@@ -22,14 +22,16 @@ let listItems =
       type: .parent,
       title: Strings.This_project_breaks(),
       subtitle: Strings
-        .Projects_may_not_offer(prohibited_items: "https://www.kickstarter.com/rules/prohibited?ref=project-page-report"),
+        .Projects_may_not_offer(prohibited_items: HelpType.prohibitedItems
+          .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString ?? ""),
       subItems: thisProjecBreaksSubListItems
     ),
     ReportProjectInfoListItem(
       type: .parent,
       title: Strings.Report_spam(),
       subtitle: Strings
-        .Our(community_guidelines: "https://www.kickstarter.com/help/community?ref=project-page-report"),
+        .Our(community_guidelines: HelpType.prohibitedItems
+          .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString ?? ""),
       subItems: reportSpamSubListItems
 
     ),
