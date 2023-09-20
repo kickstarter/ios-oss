@@ -13,6 +13,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
 
       let project = Project.project(
         from: fragment,
+        flagging: false,
         currentUserChosenCurrency: nil
       )
 
@@ -60,6 +61,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
       XCTAssertTrue(project.staffPick)
       XCTAssertTrue(project.prelaunchActivated!)
       XCTAssertFalse(project.displayPrelaunch!)
+      XCTAssertEqual(project.flagging, false)
       XCTAssertNil(project.personalization.backing)
       XCTAssertNil(project.rewardData.addOns)
       XCTAssertEqual(project.sendMetaCapiEvents, false)
