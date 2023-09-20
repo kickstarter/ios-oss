@@ -174,6 +174,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .store(in: &self.cancellables)
 
     self.changeEmailEvent
+      .receive(on: DispatchQueue.main)
       .sink(receiveCompletion: { [weak self] completed in
         switch completed {
         case .finished:
