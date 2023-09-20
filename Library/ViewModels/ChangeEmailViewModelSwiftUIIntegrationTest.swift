@@ -47,6 +47,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
           // FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
           .debounce(for: .seconds(0.5), scheduler: DispatchQueue.global())
           .receive(on: DispatchQueue.global())
+          .eraseToAnyPublisher()
       }
       .eraseToAnyPublisher()
       .share()
@@ -59,6 +60,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
           // FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
           .debounce(for: .seconds(0.5), scheduler: DispatchQueue.global())
           .receive(on: DispatchQueue.global())
+          .eraseToAnyPublisher()
       }
       .eraseToAnyPublisher()
       .share()
@@ -150,7 +152,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       .CombineLatest(self.isEmailVerified, self.isEmailDeliverable)
       .sink(receiveValue: { [weak self] isEmailVerified, isEmailDeliverable in
         if !isEmailVerified {
-          self?.unverifiedEmailLabelHidden.send(isEmailDeliverable)
+          self?.unverifiedEmailLabelHidden.send(!isEmailDeliverable)
         } else {
           self?.unverifiedEmailLabelHidden.send(isEmailVerified)
         }
