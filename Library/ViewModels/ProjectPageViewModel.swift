@@ -129,7 +129,7 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `[ImageViewElement]` when the project has campaign data to download for an image row as soon as the urls are available.
   var prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never> { get }
 
-  /// Emits a `Bool`when a project is flagged.
+  /// Emits a `Bool` when a project is flagged.
   var projectFlagged: Signal<Bool, Never> { get }
 
   /// Emits a signal when an orientation change happens if the currently selected tab is campaign.

@@ -50,6 +50,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let prefetchImageURLsFirstLoad = TestObserver<[ImageViewElement], Never>()
   private let precreateAudioVideoURLs = TestObserver<(AudioVideoViewElement, IndexPath), Never>()
   private let precreateAudioVideoURLsFirstLoad = TestObserver<[AudioVideoViewElement], Never>()
+  private let projectFlagged = TestObserver<Bool, Never>()
   private let reloadCampaignData = TestObserver<(), Never>()
   private let showHelpWebViewController = TestObserver<HelpType, Never>()
   private let updateDataSourceNavigationSection = TestObserver<NavigationSection, Never>()
@@ -116,6 +117,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.precreateAudioVideoURLsOnFirstLoad.observe(self.precreateAudioVideoURLsFirstLoad.observer)
     self.vm.outputs.prefetchImageURLs.observe(self.prefetchImageURLs.observer)
     self.vm.outputs.prefetchImageURLsOnFirstLoad.observe(self.prefetchImageURLsFirstLoad.observer)
+    self.vm.outputs.projectFlagged.observe(self.projectFlagged.observer)
     self.vm.outputs.reloadCampaignData.observe(self.reloadCampaignData.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
     self.vm.outputs.updateDataSource.map { $0.0 }
@@ -1387,6 +1389,24 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.presentMessageDialog.assertValues([.template])
   }
+  
+  func testOutput_ProjectFlagged_False() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.projectFlagged.assertValue(false)
+  }
+  
+  func testOutput_ProjectFlagged_True() {
+    var project = Project.template
+    project.flagging = true
+    
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.projectFlagged.assertValue(true)
+  }
+  
 
   func testOutput_ShowHelpWebViewController() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
