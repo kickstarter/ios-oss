@@ -32,6 +32,7 @@ extension Project {
       ).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0
     ),
     displayPrelaunch: nil,
+    flagging: false,
     id: 1,
     location: .template,
     name: "The Project",
