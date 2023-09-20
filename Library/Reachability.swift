@@ -1,3 +1,4 @@
+import Combine
 import ReactiveSwift
 import SystemConfiguration
 
@@ -11,6 +12,34 @@ public enum Reachability {
   }
 
   public static let signalProducer = reachabilityProperty.producer
+
+  public static var reachabilityPublisher: AnyPublisher<Reachability, Never> {
+    let subject: CurrentValueSubject<Reachability, Never> = .init(.none)
+    var publisher: AnyPublisher<Reachability, Never> {
+      subject.eraseToAnyPublisher()
+    }
+
+    guard
+      let networkReachability = networkReachability(),
+      let reachabilityFlags = reachabilityFlags(forNetworkReachability: networkReachability)
+    else {
+      subject.send(.none)
+
+      return publisher
+    }
+
+    guard SCNetworkReachabilitySetCallback(networkReachability, callback, nil),
+      SCNetworkReachabilitySetDispatchQueue(networkReachability, queue)
+    else {
+      subject.send(.none)
+
+      return publisher
+    }
+
+    subject.send(reachability(forFlags: reachabilityFlags))
+
+    return publisher
+  }
 }
 
 private let reachabilityProperty: MutableProperty<Reachability> = {

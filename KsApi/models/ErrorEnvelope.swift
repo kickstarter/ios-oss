@@ -213,14 +213,15 @@ extension ErrorEnvelope {
     )
   }
 
-  static func graphErrorEnvelopePublisher()
+  static func graphErrorEnvelopePublisher(error: ErrorEnvelope)
     -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
     let errorSubject: PassthroughSubject<EmptyResponseEnvelope, ErrorEnvelope> = .init()
     var errorPublisher: AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
       errorSubject.eraseToAnyPublisher()
     }
+    let errorMessage = error.errorMessages.first ?? error.localizedDescription
 
-    errorSubject.send(completion: .failure(.graphError("graph error")))
+    errorSubject.send(completion: .failure(.graphError(errorMessage)))
 
     return errorPublisher
   }

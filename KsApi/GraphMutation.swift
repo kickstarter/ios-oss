@@ -22,7 +22,8 @@ extension GraphMutationInput where Self: Encodable {
 extension EmptyResponseEnvelope {
   static func envelopePublisher()
     -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
-      var userSubject: CurrentValueSubject<EmptyResponseEnvelope, ErrorEnvelope> = .init(EmptyResponseEnvelope())
+    var userSubject: CurrentValueSubject<EmptyResponseEnvelope, ErrorEnvelope> =
+      .init(EmptyResponseEnvelope())
     var userPublisher: AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
       userSubject.eraseToAnyPublisher()
     }

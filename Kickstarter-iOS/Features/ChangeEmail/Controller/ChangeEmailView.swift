@@ -24,146 +24,167 @@ struct ChangeEmailView: View {
 
   var body: some View {
     GeometryReader { proxy in
-      List {
-        Color(.ksr_support_100)
-          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
+      if reactiveViewModel.networkConnectionAvailable {
+        List {
+          Color(.ksr_support_100)
+            .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+
+          VStack(alignment: .center, spacing: 0) {
+            InputFieldView(
+              titleText: Strings.Current_email(),
+              secureField: false,
+              placeholderText: "",
+              contentPadding: contentPadding,
+              valueText: $retrievedEmailText
+            )
+            .currentEmail()
+            .onReceive(reactiveViewModel.retrievedEmailText) { newValue in
+              retrievedEmailText = newValue
+            }
+
+            Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
+          }
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
 
-        VStack(alignment: .center, spacing: 0) {
-          InputFieldView(
-            titleText: Strings.Current_email(),
-            secureField: false,
-            placeholderText: "",
-            contentPadding: contentPadding,
-            valueText: $retrievedEmailText
-          )
-          .currentEmail()
-          .onReceive(reactiveViewModel.retrievedEmailText) { newValue in
-            retrievedEmailText = newValue
+          if !reactiveViewModel.hideMessageLabel {
+            warningLabel(
+              text: reactiveViewModel.warningMessageWithAlert.0,
+              reactiveViewModel.warningMessageWithAlert.1
+            )
+            .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
+            .background(Color(.ksr_support_100))
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
           }
 
-          Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
-        }
-        .listRowSeparator(.hidden)
-        .listRowInsets(EdgeInsets())
+          if !reactiveViewModel.hideVerifyView {
+            VStack(alignment: .leading, spacing: 0) {
+              Button(reactiveViewModel.verifyEmailButtonTitle) {
+                reactiveViewModel.resendVerificationEmailButtonTapped()
+              }
+              .font(Font(UIFont.ksr_body()))
+              .foregroundColor(Color(.ksr_create_700))
+              .padding(contentPadding)
+              .disabled(showLoading)
 
-        if !reactiveViewModel.hideMessageLabel {
-          warningLabel(
-            text: reactiveViewModel.warningMessageWithAlert.0,
-            reactiveViewModel.warningMessageWithAlert.1
-          )
-          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .leading)
-          .background(Color(.ksr_support_100))
-          .listRowSeparator(.hidden)
-          .listRowInsets(EdgeInsets())
-        }
-
-        if !reactiveViewModel.hideVerifyView {
-          VStack(alignment: .leading, spacing: 0) {
-            Button(reactiveViewModel.verifyEmailButtonTitle) {
-              reactiveViewModel.resendVerificationEmailButtonTapped()
+              Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
             }
-            .font(Font(UIFont.ksr_body()))
-            .foregroundColor(Color(.ksr_create_700))
-            .padding(contentPadding)
-            .disabled(showLoading)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+          }
+
+          Color(.ksr_support_100)
+            .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+
+          VStack(alignment: .center, spacing: 0) {
+            InputFieldView(
+              titleText: Strings.New_email(),
+              secureField: false,
+              placeholderText: Strings.login_placeholder_email(),
+              contentPadding: contentPadding,
+              valueText: $newEmailText
+            )
+            .onReceive(reactiveViewModel.resetEditableText) { newValue in
+              if newValue {
+                newEmailText = ""
+              }
+            }
+            .onChange(of: newEmailText) { newValue in
+              reactiveViewModel.newEmailText.send(newValue)
+            }
+            .newEmail(editable: !showLoading)
+            .focused($focusField, equals: .newEmail)
+            .onSubmit {
+              focusField = .currentPassword
+            }
+
+            InputFieldView(
+              titleText: Strings.Current_password(),
+              secureField: true,
+              placeholderText: Strings.login_placeholder_password(),
+              contentPadding: contentPadding,
+              valueText: $newPasswordText
+            )
+            .onChange(of: newPasswordText) { newValue in
+              reactiveViewModel.currentPasswordText.send(newValue)
+            }
+            .currentPassword(editable: !showLoading)
+            .focused($focusField, equals: .currentPassword)
+            .onReceive(reactiveViewModel.resetEditableText) { resetFlag in
+              if resetFlag {
+                newPasswordText = ""
+              }
+            }
+            // FIXME: So "Done" on keyboard doesn't trigger Save --> in the future we might want to add this (was in the old `ChangeEmailViewController`)
 
             Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
           }
           .listRowSeparator(.hidden)
           .listRowInsets(EdgeInsets())
         }
-
-        Color(.ksr_support_100)
-          .frame(maxWidth: .infinity, maxHeight: minListRow, alignment: .center)
-          .listRowSeparator(.hidden)
-          .listRowInsets(EdgeInsets())
-
-        VStack(alignment: .center, spacing: 0) {
-          InputFieldView(
-            titleText: Strings.New_email(),
-            secureField: false,
-            placeholderText: Strings.login_placeholder_email(),
-            contentPadding: contentPadding,
-            valueText: $newEmailText
-          )
-          .onReceive(reactiveViewModel.resetEditableText) { newValue in
-            if newValue {
-              newEmailText = ""
+        .navigationTitle(Strings.Change_email())
+        .background(Color(.ksr_support_100))
+        .listStyle(.plain)
+        .toolbar {
+          ToolbarItem(placement: .navigationBarTrailing) {
+            LoadingBarButtonItem(
+              saveEnabled: $saveEnabled,
+              saveTriggered: $saveTriggered,
+              showLoading: $showLoading,
+              titleText: Strings.Save()
+            )
+            .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
+              saveEnabled = newValue
+            }
+            .onReceive(reactiveViewModel.resetEditableText) { newValue in
+              showLoading = !newValue
+            }
+            .onChange(of: saveTriggered) { newValue in
+              focusField = nil
+              reactiveViewModel.saveTriggered.send(newValue)
             }
           }
-          .onChange(of: newEmailText) { newValue in
-            reactiveViewModel.newEmailText.send(newValue)
-          }
-          .newEmail(editable: !showLoading)
-          .focused($focusField, equals: .newEmail)
-          .onSubmit {
-            focusField = .currentPassword
-          }
-
-          InputFieldView(
-            titleText: Strings.Current_password(),
-            secureField: true,
-            placeholderText: Strings.login_placeholder_password(),
-            contentPadding: contentPadding,
-            valueText: $newPasswordText
-          )
-          .onChange(of: newPasswordText) { newValue in
-            reactiveViewModel.currentPasswordText.send(newValue)
-          }
-          .currentPassword(editable: !showLoading)
-          .focused($focusField, equals: .currentPassword)
-          .onReceive(reactiveViewModel.resetEditableText) { resetFlag in
-            if resetFlag {
-              newPasswordText = ""
+        }
+        .overlay(alignment: .bottom) {
+          MessageBannerView(viewModel: $bannerMessage)
+            .frame(
+              minWidth: proxy.size.width,
+              idealWidth: proxy.size.width,
+              maxHeight: proxy.size.height / 5,
+              alignment: .bottom
+            )
+            .animation(.easeInOut)
+        }
+        .onReceive(reactiveViewModel.bannerMessage) { newValue in
+          bannerMessage = newValue
+        }
+        .onAppear {
+          reactiveViewModel.viewDidLoad()
+        }
+      } else {
+        if #available(iOS 17.0, *) {
+          ContentUnavailableView.init(label: {
+            VStack(alignment: .center) {
+              Image.init(systemName: "network")
+              Text(Strings.Unable_to_request())
             }
+          })
+            .animation(.easeInOut)
+        } else {
+          VStack(alignment: .center) {
+            Spacer()
+            Image.init(systemName: "network")
+            Text(Strings.Unable_to_request())
+            Spacer()
           }
-          // FIXME: So "Done" on keyboard doesn't trigger Save --> in the future we might want to add this (was in the old `ChangeEmailViewController`)
-
-          Color(.ksr_cell_separator).frame(maxWidth: .infinity, maxHeight: 1)
-        }
-        .listRowSeparator(.hidden)
-        .listRowInsets(EdgeInsets())
-      }
-      .navigationTitle(Strings.Change_email())
-      .background(Color(.ksr_support_100))
-      .listStyle(.plain)
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          LoadingBarButtonItem(
-            saveEnabled: $saveEnabled,
-            saveTriggered: $saveTriggered,
-            showLoading: $showLoading,
-            titleText: Strings.Save()
-          )
-          .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
-            saveEnabled = newValue
-          }
-          .onReceive(reactiveViewModel.resetEditableText) { newValue in
-            showLoading = !newValue
-          }
-          .onChange(of: saveTriggered) { newValue in
-            focusField = nil
-            reactiveViewModel.saveTriggered.send(newValue)
-          }
-        }
-      }
-      .overlay(alignment: .bottom) {
-        MessageBannerView(viewModel: $bannerMessage)
-          .frame(
-            minWidth: proxy.size.width,
-            idealWidth: proxy.size.width,
-            maxHeight: proxy.size.height / 5,
-            alignment: .bottom
-          )
+          .frame(width: proxy.size.width)
           .animation(.easeInOut)
-      }
-      .onReceive(reactiveViewModel.bannerMessage) { newValue in
-        bannerMessage = newValue
-      }
-      .onAppear {
-        reactiveViewModel.viewDidLoad()
+        }
       }
     }
   }

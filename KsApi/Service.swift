@@ -142,8 +142,8 @@ public struct Service: ServiceType {
       .flatMap { _ in
         EmptyResponseEnvelope.envelopePublisher()
       }
-      .catch { _ in
-        ErrorEnvelope.graphErrorEnvelopePublisher()
+      .catch { errorEnvelope in
+        ErrorEnvelope.graphErrorEnvelopePublisher(error: errorEnvelope)
       }
       .eraseToAnyPublisher()
   }
@@ -687,8 +687,8 @@ public struct Service: ServiceType {
       .flatMap { _ in
         EmptyResponseEnvelope.envelopePublisher()
       }
-      .catch { _ in
-        ErrorEnvelope.graphErrorEnvelopePublisher()
+      .catch { errorEnvelope in
+        ErrorEnvelope.graphErrorEnvelopePublisher(error: errorEnvelope)
       }
       .eraseToAnyPublisher()
   }

@@ -11,7 +11,7 @@ public struct UserEnvelope<T: Decodable>: Decodable {
 extension UserEnvelope {
   static func envelopePublisher(from data: GraphAPI.FetchUserQuery.Data)
     -> AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope> {
-    /// FIXME: This should not be a `.template` on `init`, but it always gets updated by either an error or the real user values.
+    // FIXME: This should not be a `.template` on `init`, but it always gets updated by either an error or the real user values.
     let userSubject: CurrentValueSubject<UserEnvelope<GraphUser>, ErrorEnvelope> = .init(.init(me: .template))
     var userPublisher: AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope> {
       userSubject.eraseToAnyPublisher()
@@ -19,7 +19,7 @@ extension UserEnvelope {
 
     guard let envelope = UserEnvelope.userEnvelope(from: data) else {
       return userSubject
-        .mapError { _ in ErrorEnvelope.graphError("could not parse graph data.") }
+        .mapError { _ in ErrorEnvelope.graphError("Unavailable") }
         .eraseToAnyPublisher()
     }
 
