@@ -1389,24 +1389,23 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.presentMessageDialog.assertValues([.template])
   }
-  
+
   func testOutput_ProjectFlagged_False() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.projectFlagged.assertValue(false)
   }
-  
+
   func testOutput_ProjectFlagged_True() {
     var project = Project.template
     project.flagging = true
-    
+
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
     self.vm.inputs.viewDidLoad()
 
     self.projectFlagged.assertValue(true)
   }
-  
 
   func testOutput_ShowHelpWebViewController() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
