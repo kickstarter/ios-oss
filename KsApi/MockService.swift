@@ -1,4 +1,5 @@
 #if DEBUG
+  import Combine
   import Foundation
   import Prelude
   import ReactiveSwift
@@ -553,6 +554,11 @@
       return client.performWithResult(mutation: mutation, result: self.changeEmailResult)
     }
 
+    internal func changeEmail(input _: ChangeEmailInput)
+      -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+      EmptyResponseEnvelope.envelopePublisher()
+    }
+
     internal func facebookConnect(facebookAccessToken _: String)
       -> SignalProducer<User, ErrorEnvelope> {
       if let response = facebookConnectResponse {
@@ -798,6 +804,11 @@
       let fetchGraphUserQuery = GraphAPI.FetchUserQuery(withStoredCards: withStoredCards)
 
       return client.fetchWithResult(query: fetchGraphUserQuery, result: self.fetchGraphUserResult)
+    }
+
+    internal func fetchGraphUser(withStoredCards _: Bool)
+      -> AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope> {
+      UserEnvelope<GraphUser>.envelopePublisher(from: .init())
     }
 
     internal func fetchGraphUserEmail() -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
@@ -1425,6 +1436,11 @@
 
       return client
         .performWithResult(mutation: mutationSendVerificationEmail, result: self.sendEmailVerificationResult)
+    }
+
+    func sendVerificationEmail(input _: EmptyInput)
+      -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+      EmptyResponseEnvelope.envelopePublisher()
     }
 
     internal func signInWithApple(input: SignInWithAppleInput)

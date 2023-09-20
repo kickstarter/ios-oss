@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 public protocol GraphMutationInput {
   func toInputDictionary() -> [String: Any]
@@ -21,14 +21,14 @@ extension GraphMutationInput where Self: Encodable {
 
 extension EmptyResponseEnvelope {
   static func envelopePublisher()
-    -> AnyPublisher<EmptyResponseEnvelope, Never> {
-      var userSubject: PassthroughSubject<EmptyResponseEnvelope, Never> = .init()
-      var userPublisher: AnyPublisher<EmptyResponseEnvelope, Never> {
-        userSubject.eraseToAnyPublisher()
-      }
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    var userSubject: PassthroughSubject<EmptyResponseEnvelope, ErrorEnvelope> = .init()
+    var userPublisher: AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+      userSubject.eraseToAnyPublisher()
+    }
 
-      userSubject.send(EmptyResponseEnvelope())
-      
-      return userPublisher
+    userSubject.send(EmptyResponseEnvelope())
+
+    return userPublisher
   }
 }

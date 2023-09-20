@@ -1,4 +1,4 @@
-
+import Combine
 
 public struct ErrorEnvelope {
   public let errorMessages: [String]
@@ -211,5 +211,17 @@ extension ErrorEnvelope {
       exception: nil,
       graphError: graphError
     )
+  }
+
+  static func graphErrorEnvelopePublisher()
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    let errorSubject: PassthroughSubject<EmptyResponseEnvelope, ErrorEnvelope> = .init()
+    var errorPublisher: AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+      errorSubject.eraseToAnyPublisher()
+    }
+
+    errorSubject.send(completion: .failure(.graphError("graph error")))
+
+    return errorPublisher
   }
 }

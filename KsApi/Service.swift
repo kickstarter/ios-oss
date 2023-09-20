@@ -1,10 +1,10 @@
 import Apollo
+import Combine
 import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import UIKit
-import Combine
 
 public extension Bundle {
   var _buildVersion: String {
@@ -133,7 +133,7 @@ public struct Service: ServiceType {
         SignalProducer(value: EmptyResponseEnvelope())
       }
   }
-  
+
   public func changeEmail(input: ChangeEmailInput) ->
     AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
@@ -141,6 +141,9 @@ public struct Service: ServiceType {
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
       .flatMap { _ in
         EmptyResponseEnvelope.envelopePublisher()
+      }
+      .catch { _ in
+        ErrorEnvelope.graphErrorEnvelopePublisher()
       }
       .eraseToAnyPublisher()
   }
@@ -345,10 +348,10 @@ public struct Service: ServiceType {
       .fetch(query: GraphAPI.FetchUserQuery(withStoredCards: withStoredCards))
       .flatMap(UserEnvelope<GraphUser>.envelopeProducer(from:))
   }
-  
+
   public func fetchGraphUser(withStoredCards: Bool) -> AnyPublisher<UserEnvelope<GraphUser>, ErrorEnvelope> {
-    /// FIXME: Not the cleanest approach, but for this prototype it is easier than returning `AnyPublisher`
-    
+    // FIXME: Not the cleanest approach, but for this prototype it is easier than returning `AnyPublisher`
+
     GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUserQuery(withStoredCards: withStoredCards))
       .flatMap(UserEnvelope<GraphUserEmail>.envelopePublisher(from:))
@@ -676,12 +679,16 @@ public struct Service: ServiceType {
       }
   }
 
-  public func sendVerificationEmail(input _: EmptyInput) -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+  public func sendVerificationEmail(input _: EmptyInput)
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
     GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UserSendEmailVerificationMutation(input: GraphAPI.UserSendEmailVerificationInput()))
       .flatMap { _ in
         EmptyResponseEnvelope.envelopePublisher()
+      }
+      .catch { _ in
+        ErrorEnvelope.graphErrorEnvelopePublisher()
       }
       .eraseToAnyPublisher()
   }

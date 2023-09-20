@@ -2,17 +2,16 @@ import Combine
 import KsApi
 import Prelude
 import UIKit
-import ReactiveSwift
 
 public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject {
   private var cancellables = Set<AnyCancellable>()
-  
+
   /// Outputs
   @Published public var hideVerifyView = false
   @Published public var verifyEmailButtonTitle = ""
   @Published public var hideMessageLabel = true
   @Published public var warningMessageWithAlert = ("", false)
-  
+
   /// Inputs
   public var saveButtonEnabled: AnyPublisher<Bool, Never>
   public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
@@ -33,98 +32,115 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
   public var verificationEmailButtonTitle: PassthroughSubject<String, Never> = .init()
   public var warningMessageLabelHidden: PassthroughSubject<Bool, Never> = .init()
   public var resendVerificationEmailButtonProperty: PassthroughSubject<Void, Never> = .init()
-  
+
   /// Subscribers
   public init() {
     let changeEmailEvent = self.updateEmailAndPasswordProperty
       .map(ChangeEmailInput.init(email:currentPassword:))
       .compactMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
-        /// FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
+          .map { _ in input.email }
+          // FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
           .debounce(for: .seconds(0.5), scheduler: DispatchQueue.global())
           .receive(on: DispatchQueue.global())
       }
+      .eraseToAnyPublisher()
       .share()
-    
+
     let userEmailEvent = self.viewDidLoadProperty
       .flatMap { _ in
         AppEnvironment.current
           .apiService
           .fetchGraphUser(withStoredCards: false)
-        /// FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
+          // FIXME: Ideally we're going to use - `AppEnvironment.current.apiDelayInterval` but that needs a refactoring out of `DispatchTimeInterval` to `TimeIntveral`
           .debounce(for: .seconds(0.5), scheduler: DispatchQueue.global())
           .receive(on: DispatchQueue.global())
       }
+      .eraseToAnyPublisher()
       .share()
-    
+
     let resendEmailVerificationEvent = self.resendVerificationEmailButtonProperty
       .flatMap { _ in
         AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
       }
-      .share()
-    
+
     let isEmailVerified = userEmailEvent
       .compactMap { envelope in
         envelope.me.isEmailVerified
       }
+      .replaceError(with: false)
       .share()
-    
+
     let isEmailDeliverable = userEmailEvent
       .compactMap { envelope in
         envelope.me.isDeliverable
-    }
-    .share()
-    
+      }
+      .replaceError(with: false)
+      .share()
+
     let emailVerifiedAndDeliverable = Publishers.CombineLatest(isEmailVerified, isEmailDeliverable)
       .map { isEmailVerified, isEmailDeliverable in
         isEmailVerified && isEmailDeliverable
       }
-    
+      .setFailureType(to: Never.self)
+      .eraseToAnyPublisher()
+
     self.saveButtonEnabled = Publishers
       .CombineLatest3(self.retrievedEmailText, self.newEmailText, self.currentPasswordText)
       .removeDuplicates(by: ==)
       .map(shouldEnableSaveButton(email:newEmail:password:))
       .eraseToAnyPublisher()
-    
-    _ = resendEmailVerificationEvent.values().ignoreValues()
-      .map { [weak self] in
-        self?.didSendVerificationEmail.send(())
-      }
 
-    _ = resendEmailVerificationEvent.errors()
-      .map { [weak self] error in
-        self?.didFailToSendVerificationEmail.send(error.localizedDescription)
-      }
-    
-    _ = Signal.merge(
-      changeEmailEvent.values(),
-      userEmailEvent.values().map { $0.me.email ?? "" }
+    resendEmailVerificationEvent
+      .sink(receiveCompletion: { [weak self] completion in
+        switch completion {
+        case .finished:
+          break
+        case let .failure(error):
+          self?.didFailToSendVerificationEmail.send(error.localizedDescription)
+        }
+      }, receiveValue: { [weak self] _ in
+        self?.didSendVerificationEmail.send(())
+      })
+      .store(in: &self.cancellables)
+
+    Publishers.Merge(
+      changeEmailEvent.flatMap { $0 },
+      userEmailEvent.map { $0.me.email ?? "" }
     )
-    .map { [weak self] text in
-      self?.emailText = text
-    }
-    
-    _ = Publishers.Merge(
+    .sink(receiveCompletion: { _ in
+      // Error/completion results in nothing happening.
+    }, receiveValue: { [weak self] text in
+      self?.emailText.send(text)
+    })
+    .store(in: &self.cancellables)
+
+    Publishers.Merge(
       self.viewDidLoadProperty.map { _ in true },
       emailVerifiedAndDeliverable
     )
-    .skipRepeats()
-    .map { [weak self] flag in
-      self?.resendVerificationEmailViewIsHidden = flag
-    }
-    
-    _ = self.viewDidLoadProperty
-      .map { _ in
+    .removeDuplicates()
+    .sink(receiveCompletion: { _ in
+      // Error/completion results in nothing happening.
+    }, receiveValue: { [weak self] flag in
+      self?.resendVerificationEmailViewIsHidden.send(flag)
+    })
+    .store(in: &self.cancellables)
+
+    self.viewDidLoadProperty
+      .sink(receiveValue: { [weak self] _ in
         guard let user = AppEnvironment.current.currentUser else {
-          self.verificationEmailButtonTitle.send("")
-          
+          self?.verificationEmailButtonTitle.send("")
+
           return
         }
-      
-      let verificationEmailButtonText = user.isCreator ? Strings.Resend_verification_email() : Strings.Send_verfication_email()
-        
-      self.verificationEmailButtonTitle.send(verificationEmailButtonText)
-    }
+
+        let verificationEmailButtonText = user.isCreator ? Strings.Resend_verification_email() : Strings
+          .Send_verfication_email()
+
+        self?.verificationEmailButtonTitle.send(verificationEmailButtonText)
+      })
+      .store(in: &self.cancellables)
 
     Publishers
       .CombineLatest(isEmailVerified, isEmailDeliverable)
@@ -152,22 +168,22 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
 
     // MARK: Reactive Subscribers to Combine Publishers
 
-    changeEmailEvent.errors()
-      .observeForUI()
-      .observeValues { [weak self] errorValue in
-        let messageBannerViewViewModel = MessageBannerViewViewModel((
-          type: .error,
-          message: errorValue.localizedDescription
-        ))
+    changeEmailEvent
+      .sink(receiveCompletion: { [weak self] completed in
+        switch completed {
+        case .finished:
+          break
+        case let .failure(errorValue):
+          let messageBannerViewViewModel = MessageBannerViewViewModel((
+            type: .error,
+            message: errorValue.localizedDescription
+          ))
 
-        self?.saveTriggered.send(false)
-        self?.resetEditableText.send(true)
-        self?.bannerMessage.send(messageBannerViewViewModel)
-      }
-
-    changeEmailEvent.values().ignoreValues()
-      .observeForUI()
-      .observeValues { [weak self] _ in
+          self?.saveTriggered.send(false)
+          self?.resetEditableText.send(true)
+          self?.bannerMessage.send(messageBannerViewViewModel)
+        }
+      }, receiveValue: { [weak self] _ in
         let messageBannerViewViewModel = MessageBannerViewViewModel((
           type: .success,
           message: Strings.Got_it_your_changes_have_been_saved()
@@ -176,7 +192,8 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
         self?.saveTriggered.send(false)
         self?.resetEditableText.send(true)
         self?.bannerMessage.send(messageBannerViewViewModel)
-      }
+      })
+      .store(in: &self.cancellables)
 
     Publishers
       .CombineLatest4(self.saveButtonEnabled, self.saveTriggered, self.newEmailText, self.currentPasswordText)
@@ -206,7 +223,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
         self?.bannerMessage.send(messageBannerViewViewModel)
       })
       .store(in: &self.cancellables)
-    
+
     self.didFailToSendVerificationEmail
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] message in
@@ -225,14 +242,14 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
         self?.retrievedEmailText.send(emailText)
       })
       .store(in: &self.cancellables)
-    
+
     self.verificationEmailButtonTitle
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] titleText in
         self?.verifyEmailButtonTitle = titleText
       })
       .store(in: &self.cancellables)
-    
+
     self.messageLabelViewHidden
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] isHidden in
@@ -248,7 +265,7 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
         self?.warningMessageWithAlert = (Strings.Email_unverified(), false)
       })
       .store(in: &self.cancellables)
-    
+
     self.warningMessageLabelHidden
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] isHidden in
@@ -258,11 +275,11 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ObservableObject 
       })
       .store(in: &self.cancellables)
   }
-  
+
   /// Input functions
   public func updateEmail(newEmail: String, currentPassword: String) {
     let emailAndPassword = (newEmail, currentPassword)
-    
+
     self.updateEmailAndPasswordProperty.send(emailAndPassword)
   }
 
