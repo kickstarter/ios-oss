@@ -61,6 +61,7 @@ extension Project {
       let fragment = data.project?.fragments.projectFragment,
       let project = Project.project(
         from: fragment,
+        flagging: data.project?.flagging != nil,
         rewards: [noRewardReward(from: fragment)],
         addOns: nil,
         backing: nil,
@@ -83,6 +84,7 @@ extension Project {
       let fragment = data.project?.fragments.projectFragment,
       let project = Project.project(
         from: fragment,
+        flagging: data.project?.flagging != nil,
         rewards: [noRewardReward(from: fragment)],
         addOns: nil,
         backing: nil,

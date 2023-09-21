@@ -520,6 +520,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.tableView.reloadData()
       }
+
+    self.viewModel.outputs.projectFlagged
+      .observeForUI()
+      .observeValues { _ in
+        // TODO: Use this flag to hide or show the Report this project label [MBL-983](https://kickstarter.atlassian.net/browse/MBL-983)
+      }
   }
 
   private func prepareToPlayAudioVideoURL(audioVideoURL: URL,

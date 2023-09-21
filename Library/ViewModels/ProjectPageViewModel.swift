@@ -126,6 +126,9 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits `[ImageViewElement]` when the project has campaign data to download for an image row as soon as the urls are available.
   var prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never> { get }
 
+  /// Emits a `Bool` when a project is flagged.
+  var projectFlagged: Signal<Bool, Never> { get }
+
   /// Emits a signal when an orientation change happens if the currently selected tab is campaign.
   var reloadCampaignData: Signal<Void, Never> { get }
 
@@ -194,6 +197,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     let project = freshProjectAndRefTag
       .map(first)
+
+    self.projectFlagged = project.signal
+      .map { $0.flagging ?? false }
 
     self.prefetchImageURLs = project.signal
       .skip(first: 1)
@@ -612,6 +618,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let precreateAudioVideoURLsOnFirstLoad: Signal<[AudioVideoViewElement], Never>
   public let prefetchImageURLs: Signal<([URL], IndexPath), Never>
   public let prefetchImageURLsOnFirstLoad: Signal<[ImageViewElement], Never>
+  public let projectFlagged: Signal<Bool, Never>
   public let reloadCampaignData: Signal<Void, Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
