@@ -204,14 +204,14 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     data.items.forEach { item in
       switch item {
       case let .home(index):
-        _ = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
+        _ = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle
       case let .activity(index):
-        _ = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
+        _ = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle
       case let .search(index):
         _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
       case let .profile(avatarUrl, index):
         _ = tabBarItem(atIndex: index)
-          ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
+          ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn)
 
         setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
       }
@@ -232,7 +232,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     if let imageData = try? Data(contentsOf: imageUrl) {
       let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
       _ = self.tabBarItem(atIndex: index)
-        ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
+        ?|> profileTabBarItemStyle(isLoggedIn: true)
         ?|> UITabBarItem.lens.image .~ defaultImage
         ?|> UITabBarItem.lens.selectedImage .~ selectedImage
     } else {
@@ -244,7 +244,7 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
 
         let (defaultImage, selectedImage) = tabbarAvatarImageFromData(avatarData)
         _ = self?.tabBarItem(atIndex: index)
-          ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
+          ?|> profileTabBarItemStyle(isLoggedIn: true)
           ?|> UITabBarItem.lens.image .~ defaultImage
           ?|> UITabBarItem.lens.selectedImage .~ selectedImage
       }

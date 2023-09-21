@@ -390,10 +390,9 @@ final class RootViewModelTests: TestCase {
     viewControllerNames.assertValues(
       [
         ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
         ["Discovery", "Activities", "Search", "BackerDashboard"]
       ],
-      "Don't show the creator dashboard tab."
+      "Updating the member projects does not trigger any view controller changes"
     )
 
     AppEnvironment.logout()
@@ -402,7 +401,6 @@ final class RootViewModelTests: TestCase {
     viewControllerNames.assertValues(
       [
         ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
         ["Discovery", "Activities", "Search", "BackerDashboard"],
         ["Discovery", "Activities", "Search", "LoginTout"]
       ],
@@ -554,16 +552,16 @@ final class RootViewModelTests: TestCase {
       .search(index: 2),
       .profile(avatarUrl: URL(string: user.avatar.small), index: 3)
     ]
-    let itemsMember: [TabBarItem] = [
+    let itemsCreator: [TabBarItem] = [
       .home(index: 0),
       .activity(index: 1),
       .search(index: 2),
       .profile(avatarUrl: URL(string: creator.avatar.small), index: 3)
     ]
 
-    let tabData = TabBarItemsData(items: items, isLoggedIn: false, isMember: false)
-    let tabDataLoggedIn = TabBarItemsData(items: itemsLoggedIn, isLoggedIn: true, isMember: false)
-    let tabDataMember = TabBarItemsData(items: itemsMember, isLoggedIn: true, isMember: true)
+    let tabData = TabBarItemsData(items: items, isLoggedIn: false)
+    let tabDataLoggedIn = TabBarItemsData(items: itemsLoggedIn, isLoggedIn: true)
+    let tabDataCreator = TabBarItemsData(items: itemsCreator, isLoggedIn: true)
 
     self.tabBarItemsData.assertValueCount(0)
 
@@ -588,7 +586,7 @@ final class RootViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
     self.vm.inputs.userSessionStarted()
 
-    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataMember])
+    self.tabBarItemsData.assertValues([tabData, tabDataLoggedIn, tabDataLoggedIn, tabData, tabDataCreator])
   }
 
   func testSetViewControllers_DoesNotFilterDiscovery() {
@@ -607,13 +605,10 @@ final class RootViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     self.vm.inputs.userSessionStarted()
 
-    AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
-    self.vm.inputs.currentUserUpdated()
-
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
 
-    self.viewControllerNames.assertValueCount(4)
+    self.viewControllerNames.assertValueCount(3)
     self.filterDiscovery.assertValues([params])
   }
 }

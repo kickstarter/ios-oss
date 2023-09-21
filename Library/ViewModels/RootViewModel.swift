@@ -37,7 +37,6 @@ public enum RootViewControllerData: Equatable {
 public struct TabBarItemsData {
   public let items: [TabBarItem]
   public let isLoggedIn: Bool
-  public let isMember: Bool
 }
 
 public enum TabBarItem {
@@ -133,29 +132,26 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     )
     .map { _ in AppEnvironment.current.currentUser }
 
-    let userState: Signal<(isLoggedIn: Bool, isMember: Bool), Never> = currentUser
+    let loginState: Signal<Bool, Never> = currentUser
       .map {
-        (
-          $0 != nil,
-          ($0?.stats.memberProjectsCount ?? 0) > 0
-        )
+        $0 != nil
       }
       .skipRepeats(==)
 
     let standardViewControllers = self.viewDidLoadProperty.signal.map { _ -> [RootViewControllerData] in
       generateStandardViewControllers()
     }
-    let personalizedViewControllers = userState.map { userState -> [RootViewControllerData] in
-      generatePersonalizedViewControllers(userState: (userState.isMember, userState.isLoggedIn))
+    let personalizedViewControllers = loginState.map { loginState -> [RootViewControllerData] in
+      generatePersonalizedViewControllers(isLoggedIn: loginState)
     }
 
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
-    let refreshedViewControllers = userState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
-      .map { userState -> [RootViewControllerData] in
+    let refreshedViewControllers = loginState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
+      .map { loginState -> [RootViewControllerData] in
         let standard = generateStandardViewControllers()
         let personalized = generatePersonalizedViewControllers(
-          userState: (userState.isMember, userState.isLoggedIn)
+          isLoggedIn: loginState
         )
 
         return standard + personalized
@@ -166,7 +162,6 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       refreshedViewControllers
     )
 
-    let loginState = userState.map { $0.isLoggedIn }
     let vcCount = self.setViewControllers.map { $0.count }
 
     let switchToLogin = Signal.combineLatest(vcCount, loginState)
@@ -437,14 +432,12 @@ private func generateStandardViewControllers() -> [RootViewControllerData] {
   return [.discovery, .activities, .search]
 }
 
-private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool))
+private func generatePersonalizedViewControllers(isLoggedIn: Bool)
   -> [RootViewControllerData] {
-  return [.profile(isLoggedIn: userState.isLoggedIn)]
+  return [.profile(isLoggedIn: isLoggedIn)]
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
-  let isMember =
-    (user?.stats.memberProjectsCount ?? 0) > 0
   let items: [TabBarItem] = [
     .home(index: 0), .activity(index: 1), .search(index: 2),
     .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
@@ -452,8 +445,7 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
 
   return TabBarItemsData(
     items: items,
-    isLoggedIn: user != nil,
-    isMember: isMember
+    isLoggedIn: user != nil
   )
 }
 
