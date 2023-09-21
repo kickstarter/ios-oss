@@ -358,7 +358,7 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testSetViewControllers_WhenCreatorDashboardDisabled_NoCreatorDashboard() {
+  func testSetViewControllers() {
     let viewControllerNames = TestObserver<[String], Never>()
 
     vm.outputs.setViewControllers.map(extractRootNames)
@@ -407,32 +407,6 @@ final class RootViewModelTests: TestCase {
         ["Discovery", "Activities", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
-    )
-  }
-
-  func testBackerDashboardShownWithCreatorDashboard_WhenCreatorDashboardFlagDisabled_NoCreatorDashboard() {
-    self.vm.inputs.viewDidLoad()
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-    self.vm.inputs.userSessionStarted()
-
-    self.viewControllerNames.assertValues(
-      [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
-      ],
-      "Show the BackerDashboard instead of Profile."
-    )
-
-    AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
-    self.vm.inputs.currentUserUpdated()
-
-    self.viewControllerNames.assertValues(
-      [
-        ["Discovery", "Activities", "Search", "LoginTout"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "BackerDashboard"]
-      ],
-      "Show the creator dashboard tab."
     )
   }
 
