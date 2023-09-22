@@ -23,6 +23,8 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
   // MARK: - Private Methods
 
   private func setupTableViewCellStyle(projectFlagged: Bool) {
+    let isAccessibilityElement = projectFlagged ? false : true
+    let accessibilityLabel = projectFlagged ? Strings.Report_this_project_to() : ""
     let accessibilityTraits = projectFlagged
       ? UIAccessibilityTraits.staticText
       : UIAccessibilityTraits.button
@@ -30,6 +32,8 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
       |> ReportProjectCell.lens.accessibilityTraits .~ accessibilityTraits
+      |> ReportProjectCell.lens.isAccessibilityElement .~ isAccessibilityElement
+      |> ReportProjectCell.lens.accessibilityLabel .~ accessibilityLabel
   }
 
   private func setupReportProjectLabelView(projectFlagged: Bool) {
