@@ -5,6 +5,7 @@ import SwiftUI
 enum ReportProjectHyperLinkType: String, CaseIterable {
   case prohibitedItems
   case communityGuidelines
+  case ourRules
 
   func stringLiteral() -> String {
     switch self {
@@ -12,6 +13,8 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
       return Strings.Prohibited_items()
     case .communityGuidelines:
       return "community guidelines"
+    case .ourRules:
+      return "our rules"
     }
   }
 }

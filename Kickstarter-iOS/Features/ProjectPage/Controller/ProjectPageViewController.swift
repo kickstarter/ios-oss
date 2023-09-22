@@ -95,6 +95,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ImageViewElementCell.self)
     self.tableView.registerCellClass(AudioVideoViewElementCell.self)
     self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
+    self.tableView.registerCellClass(ReportProjectCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -829,9 +830,9 @@ extension ProjectPageViewController: UITableViewDelegate {
         self.viewModel.inputs.tappedComments()
       } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
         self.viewModel.inputs.tappedUpdates()
-      } else if self.dataSource.indexPathIsReportProject(indexPath) {
-        self.viewModel.inputs.tappedReportProject()
       }
+    case ProjectPageViewControllerDataSource.Section.overviewReportProject.rawValue:
+        self.viewModel.inputs.tappedReportProject()
     case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
       self.viewModel.inputs.askAQuestionCellTapped()
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
