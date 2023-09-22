@@ -357,6 +357,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(self.tappedUpdatesProperty.signal)
 
     self.goToReportProject = project.signal
+      .filter { $0.flagging == false }
       .map { $0.urls.web.project }
       .takeWhen(self.tappedReportProjectProperty.signal)
 
