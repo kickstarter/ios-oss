@@ -3,8 +3,6 @@ import SwiftUI
 import UIKit
 
 internal final class ReportProjectCell: UITableViewCell, ValueCell {
-  var configuredWithCalled = false
-
   internal func configureWith(value projectFlagged: Bool) {
     self.setupReportProjectLabelView(projectFlagged: projectFlagged)
 
@@ -17,12 +15,6 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
   }
 
   private func setupReportProjectLabelView(projectFlagged: Bool) {
-    /** FIXME: ReportProjectLabelView (SwiftUI View) re-renders when its text labels contain hyperlinks. Since we're rendering hyperlinks with the helper in Text+HTML.swift, this seems to cause a `precondition failure: cyclic graph` crash. This check prevents that by making sure the cell is only configured once on dequeue.
-     */
-    guard !self.configuredWithCalled else { return }
-
-    self.configuredWithCalled = true
-
     if #available(iOS 15.0, *) {
       DispatchQueue.main.async {
         let hostingController = UIHostingController(rootView: ReportProjectLabelView(flagged: projectFlagged))
