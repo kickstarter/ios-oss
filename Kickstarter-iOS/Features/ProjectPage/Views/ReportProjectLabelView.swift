@@ -7,11 +7,11 @@ struct ReportProjectLabelView: View {
 
   var body: some View {
     if flagged {
-      EmptyView()
+      AlreadyReportedView()
     } else {
       HStack {
         Text(Strings.Report_this_project_to())
-          .font(Font(UIFont.ksr_subhead()))
+          .font(Font(UIFont.ksr_footnote()))
 
         Spacer()
 
@@ -25,7 +25,6 @@ struct ReportProjectLabelView: View {
   }
 
   private struct AlreadyReportedView: View {
-    
     var body: some View {
       HStack(alignment: .top, spacing: 10) {
         Image("info")
@@ -34,18 +33,17 @@ struct ReportProjectLabelView: View {
           .frame(width: 20, height: 20)
           .foregroundColor(Color(.ksr_support_500))
 
-//        Text(
-//          html: Strings.It_looks(
-//            our_rules: HelpType.prohibitedItems
-//              .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
-//              .absoluteString ?? "",
-//            community_guidelines: HelpType.prohibitedItems
-//              .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
-//              .absoluteString ?? ""
-//          ),
-//          with: ReportProjectHyperLinkType.communityGuidelines.stringLiteral()
-//        )
-        Text("")
+        Text(
+          html: Strings.It_looks(
+            our_rules: HelpType.prohibitedItems
+              .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
+              .absoluteString ?? "",
+            community_guidelines: HelpType.prohibitedItems
+              .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
+              .absoluteString ?? ""
+          ),
+          with: ReportProjectHyperLinkType.ourRules.stringLiteral()
+        )
         .font(Font(UIFont.ksr_caption1()))
       }
       .padding()
