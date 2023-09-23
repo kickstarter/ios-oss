@@ -731,7 +731,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       // overviewSubpages
       XCTAssertEqual(
-        2,
+        3,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
 
@@ -814,6 +814,31 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     XCTAssertEqual(
       self.dataSource
         .indexPathIsUpdatesSubpage(IndexPath(row: 1, section: self.overviewSubpagesSection)),
+      true
+    )
+  }
+
+  func testIndexPathIsReportProjectSubpage() {
+    let project = Project.template
+      |> \.displayPrelaunch .~ false
+      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
+        environmentalCommitments: [],
+        faqs: [],
+        aiDisclosure: nil,
+        risks: "",
+        story: self.storyViewableElements,
+        minimumPledgeAmount: 1
+      )
+
+    self.dataSource.load(
+      navigationSection: .overview,
+      project: project,
+      refTag: nil
+    )
+
+    XCTAssertEqual(
+      self.dataSource
+        .indexPathIsReportProject(IndexPath(row: 2, section: self.overviewSubpagesSection)),
       true
     )
   }

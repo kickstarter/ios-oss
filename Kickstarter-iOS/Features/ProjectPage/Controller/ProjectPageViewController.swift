@@ -3,6 +3,7 @@ import Combine
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 public enum ProjectPageViewControllerStyles {
@@ -379,6 +380,12 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToDashboard(param: param)
       }
 
+    self.viewModel.outputs.goToReportProject
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToReportProject(projectUrl: $0)
+      }
+
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -650,6 +657,15 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func goToReportProject(projectUrl: String) {
+    if #available(iOS 15, *) {
+      let reportProjectInfoView = ReportProjectInfoView(projectUrl: projectUrl)
+      self.viewModel.inputs.showNavigationBar(false)
+      self.navigationController?
+        .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
+    }
+  }
+
   private func goToDashboard(param: Param) {
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
@@ -813,6 +829,8 @@ extension ProjectPageViewController: UITableViewDelegate {
         self.viewModel.inputs.tappedComments()
       } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
         self.viewModel.inputs.tappedUpdates()
+      } else if self.dataSource.indexPathIsReportProject(indexPath) {
+        self.viewModel.inputs.tappedReportProject()
       }
     case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
       self.viewModel.inputs.askAQuestionCellTapped()

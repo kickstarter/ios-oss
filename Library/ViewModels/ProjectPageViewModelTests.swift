@@ -38,6 +38,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToDashboard = TestObserver<Param, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
+  private let goToReportProject = TestObserver<String, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
@@ -105,6 +106,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
+    self.vm.outputs.goToReportProject.observe(self.goToReportProject.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
@@ -751,6 +753,19 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.inputs.tappedComments()
 
     self.goToComments.assertValues([.template])
+  }
+
+  func testGoToReportProject() {
+    let project = Project.template
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToReportProject.assertDidNotEmitValue()
+
+    self.vm.inputs.tappedReportProject()
+
+    self.goToReportProject.assertValues([project.urls.web.project])
   }
 
   func testGoToDashboard() {
