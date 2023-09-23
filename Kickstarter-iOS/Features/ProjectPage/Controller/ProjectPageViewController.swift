@@ -832,7 +832,7 @@ extension ProjectPageViewController: UITableViewDelegate {
         self.viewModel.inputs.tappedUpdates()
       }
     case ProjectPageViewControllerDataSource.Section.overviewReportProject.rawValue:
-        self.viewModel.inputs.tappedReportProject()
+      self.viewModel.inputs.tappedReportProject()
     case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
       self.viewModel.inputs.askAQuestionCellTapped()
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
@@ -865,6 +865,8 @@ extension ProjectPageViewController: UITableViewDelegate {
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
       .overviewSubpages.rawValue ? .none : .singleLine
+
+    self.tableView.layoutIfNeeded()
   }
 
   public func tableView(
