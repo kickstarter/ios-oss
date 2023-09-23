@@ -505,7 +505,7 @@
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
 		60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */; };
-		60C996E42ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */; };
+		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
 		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
@@ -2089,7 +2089,7 @@
 		609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInputTests.swift; sourceTree = "<group>"; };
 		609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerThirdPartyEvent.graphql; sourceTree = "<group>"; };
 		60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoListItem.swift; sourceTree = "<group>"; };
-		60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThisProjectLabelView.swift; sourceTree = "<group>"; };
+		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
 		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
@@ -4640,7 +4640,7 @@
 				06E3296A270E39B300216306 /* ProjectPageNavigationBarView.swift */,
 				06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */,
 				477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */,
-				60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */,
+				60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */,
 				1965437928C814D300457EC6 /* Cells */,
 			);
 			path = Views;
@@ -8442,7 +8442,7 @@
 				4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */,
-				60C996E42ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift in Sources */,
+				60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */,

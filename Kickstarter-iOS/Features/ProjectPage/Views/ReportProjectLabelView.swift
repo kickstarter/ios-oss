@@ -2,7 +2,7 @@ import Library
 import SwiftUI
 
 @available(iOS 15.0, *)
-struct ReportThisProjectLabelView: View {
+struct ReportProjectLabelView: View {
   let flagged: Bool
 
   var body: some View {
@@ -58,6 +58,6 @@ struct ReportThisProjectLabelView: View {
 @available(iOS 15.0, *)
 struct ReportProjectView_Previews: PreviewProvider {
   static var previews: some View {
-    ReportThisProjectLabelView(flagged: false)
+    ReportProjectLabelView(flagged: false)
   }
 }
