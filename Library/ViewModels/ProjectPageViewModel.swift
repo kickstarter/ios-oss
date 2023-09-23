@@ -102,8 +102,8 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a `Project` when the updates are to be rendered.
   var goToUpdates: Signal<Project, Never> { get }
 
-  /// Emits a project URL `String` when the report project view is to be rendered.
-  var goToReportProject: Signal<String, Never> { get }
+  /// Emits a `Bool` to show if the project has been flagged and a  project URL `String` when the report project view is to be rendered.
+  var goToReportProject: Signal<(Bool, String), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -357,8 +357,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(self.tappedUpdatesProperty.signal)
 
     self.goToReportProject = project.signal
-      .filter { $0.flagging == false }
-      .map { $0.urls.web.project }
+      .map { ($0.flagging ?? false, $0.urls.web.project) }
       .takeWhen(self.tappedReportProjectProperty.signal)
 
     // Hide the custom navigation bar when pushing a new view controller
@@ -633,7 +632,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>
-  public let goToReportProject: Signal<String, Never>
+  public let goToReportProject: Signal<(Bool, String), Never>
   public let goToURL: Signal<URL, Never>
   public let navigationBarIsHidden: Signal<Bool, Never>
   public let pauseMedia: Signal<Void, Never>
