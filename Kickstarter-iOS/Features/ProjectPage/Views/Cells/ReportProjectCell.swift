@@ -21,6 +21,7 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
   }
 
   // MARK: - Private Methods
+
   private func setupTableViewCellStyle(projectFlagged: Bool) {
     let isAccessibilityElement = projectFlagged ? false : true
     let accessibilityLabel = projectFlagged ? Strings.Report_this_project_to() : ""
@@ -61,44 +62,4 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
       }
     }
   }
-}
-        let leftRightInset = self.traitCollection.isRegularRegular ? Styles.grid(16) : Styles.gridHalf(5)
-
-        NSLayoutConstraint.activate([
-          hostingController.view.topAnchor
-            .constraint(equalTo: self.contentView.topAnchor, constant: Styles.gridHalf(5)),
-          hostingController.view.bottomAnchor
-            .constraint(equalTo: self.contentView.bottomAnchor, constant: -Styles.gridHalf(5)),
-          hostingController.view.leadingAnchor
-            .constraint(equalTo: self.contentView.leadingAnchor, constant: leftRightInset),
-          hostingController.view.trailingAnchor
-            .constraint(equalTo: self.contentView.trailingAnchor, constant: -leftRightInset)
-        ])
-      }
-    }
-  }
-=======
-    if #available(iOS 15.0, *) {
-      let hostingController = UIHostingController(rootView: ReportThisProjectLabelView(flagged: projectFlagged))
-
-      hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-      hostingController.view.backgroundColor = .clear
-      
-      self.contentView.addSubview(hostingController.view)
-
-      NSLayoutConstraint.activate([
-        hostingController.view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
-        hostingController.view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-        hostingController.view.leadingAnchor
-          .constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
-        hostingController.view.trailingAnchor
-          .constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
-      ])
-    }
-
-    self.selectionStyle = .none
-
-    self.setNeedsLayout()
-  }
->>>>>>> a420d6b4a (create ReportProjectCell to display swiftui view)
 }
