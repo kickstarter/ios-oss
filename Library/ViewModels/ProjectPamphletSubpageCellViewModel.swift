@@ -44,7 +44,6 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
   public init() {
     let commentsSubpage = self.subpageProperty.signal.skipNil().filter { $0.isComments }
     let updatesSubpage = self.subpageProperty.signal.skipNil().filter { $0.isUpdates }
-//    let reportProjectSubpage = self.subpageProperty.signal.skipNil().filter { $0.isReportProject }
 
     self.labelText = Signal.merge(
       commentsSubpage.mapConst(Strings.project_menu_buttons_comments()),
