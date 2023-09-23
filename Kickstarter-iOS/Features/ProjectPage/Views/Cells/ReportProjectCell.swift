@@ -4,6 +4,7 @@ import SwiftUI
 import UIKit
 
 internal final class ReportProjectCell: UITableViewCell, ValueCell {
+
   internal func configureWith(value projectFlagged: Bool) {
     self.setupTableViewCellStyle(projectFlagged: projectFlagged)
     self.setupReportProjectLabelView(projectFlagged: projectFlagged)
