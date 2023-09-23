@@ -96,8 +96,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     .rawValue
   private let overviewSection = ProjectPageViewControllerDataSource.Section.overview.rawValue
   private let overviewSubpagesSection = ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue
-  private let overviewReportProject = ProjectPageViewControllerDataSource.Section.overviewReportProject
-    .rawValue
+  private let overviewReportProject = ProjectPageViewControllerDataSource.Section.overviewReportProject.rawValue
   private let faqsHeaderSection = ProjectPageViewControllerDataSource.Section.faqsHeader.rawValue
   private let faqsEmptySection = ProjectPageViewControllerDataSource.Section.faqsEmpty.rawValue
   private let faqsSection = ProjectPageViewControllerDataSource.Section.faqs.rawValue
@@ -736,6 +735,8 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         2,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
+      
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewReportProject))
 
       XCTAssertEqual(
         1,
@@ -750,7 +751,6 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         "ProjectPamphletSubpageCell",
         self.dataSource.reusableId(item: 0, section: self.overviewSubpagesSection)
       )
-
       XCTAssertEqual(
         "ReportProjectCell",
         self.dataSource.reusableId(item: 0, section: self.overviewReportProject)
