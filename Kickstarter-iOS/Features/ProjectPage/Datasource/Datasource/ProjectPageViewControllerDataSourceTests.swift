@@ -96,6 +96,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     .rawValue
   private let overviewSection = ProjectPageViewControllerDataSource.Section.overview.rawValue
   private let overviewSubpagesSection = ProjectPageViewControllerDataSource.Section.overviewSubpages.rawValue
+  private let overviewReportProject = ProjectPageViewControllerDataSource.Section.overviewReportProject.rawValue
   private let faqsHeaderSection = ProjectPageViewControllerDataSource.Section.faqsHeader.rawValue
   private let faqsEmptySection = ProjectPageViewControllerDataSource.Section.faqsEmpty.rawValue
   private let faqsSection = ProjectPageViewControllerDataSource.Section.faqs.rawValue
@@ -144,7 +145,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(10, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -200,7 +201,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: [false, false, false, false]
       )
-      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -245,7 +246,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         project: project,
         refTag: nil
       )
-      XCTAssertEqual(9, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(10, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -300,7 +301,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         project: project,
         refTag: nil
       )
-      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
 
       // faqsHeader
       XCTAssertEqual(
@@ -343,7 +344,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(12, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(13, self.dataSource.numberOfSections(in: self.tableView))
 
       // risksHeader
       XCTAssertEqual(
@@ -396,7 +397,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(17, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(18, self.dataSource.numberOfSections(in: self.tableView))
 
       XCTAssertEqual(
         1,
@@ -477,7 +478,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(17, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(18, self.dataSource.numberOfSections(in: self.tableView))
 
       XCTAssertEqual(
         1,
@@ -551,7 +552,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(20, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(21, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -607,7 +608,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(20, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(21, self.dataSource.numberOfSections(in: self.tableView))
 
       // environmentCommitmentsHeader
       XCTAssertEqual(
@@ -659,7 +660,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(5, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(6, self.dataSource.numberOfSections(in: self.tableView))
 
       // campaign header section
       XCTAssertEqual(
@@ -715,7 +716,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
 
       // overviewCreatorHeader
       XCTAssertEqual(
@@ -731,9 +732,11 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
 
       // overviewSubpages
       XCTAssertEqual(
-        3,
+        2,
         self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewSubpagesSection)
       )
+      
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewReportProject))
 
       XCTAssertEqual(
         "ProjectPamphletMainCell",
@@ -742,6 +745,11 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       XCTAssertEqual(
         "ProjectPamphletSubpageCell",
         self.dataSource.reusableId(item: 0, section: self.overviewSubpagesSection)
+      )
+      
+      XCTAssertEqual(
+        "ReportProjectCell",
+        self.dataSource.reusableId(item: 0, section: self.overviewReportProject)
       )
     }
   }
@@ -814,31 +822,6 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
     XCTAssertEqual(
       self.dataSource
         .indexPathIsUpdatesSubpage(IndexPath(row: 1, section: self.overviewSubpagesSection)),
-      true
-    )
-  }
-
-  func testIndexPathIsReportProjectSubpage() {
-    let project = Project.template
-      |> \.displayPrelaunch .~ false
-      |> \.extendedProjectProperties .~ ExtendedProjectProperties(
-        environmentalCommitments: [],
-        faqs: [],
-        aiDisclosure: nil,
-        risks: "",
-        story: self.storyViewableElements,
-        minimumPledgeAmount: 1
-      )
-
-    self.dataSource.load(
-      navigationSection: .overview,
-      project: project,
-      refTag: nil
-    )
-
-    XCTAssertEqual(
-      self.dataSource
-        .indexPathIsReportProject(IndexPath(row: 2, section: self.overviewSubpagesSection)),
       true
     )
   }
