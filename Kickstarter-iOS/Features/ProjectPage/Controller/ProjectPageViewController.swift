@@ -383,8 +383,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.goToReportProject
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToReportProject(projectUrl: $0)
+      .observeValues { [weak self] flagged, projectUrl in
+        guard !flagged else { return }
+        self?.goToReportProject(projectUrl: projectUrl)
       }
 
     self.viewModel.outputs.goToUpdates
