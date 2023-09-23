@@ -5,7 +5,7 @@ import UIKit
 internal final class ReportProjectCell: UITableViewCell, ValueCell {
   internal func configureWith(value projectFlagged: Bool) {
     if #available(iOS 15.0, *) {
-      let hostingController = UIHostingController(rootView: ReportThisProjectLabelView(flagged: projectFlagged))
+      let hostingController = UIHostingController(rootView: ReportProjectLabelView(flagged: projectFlagged))
 
       hostingController.view.translatesAutoresizingMaskIntoConstraints = false
       hostingController.view.backgroundColor = .clear
