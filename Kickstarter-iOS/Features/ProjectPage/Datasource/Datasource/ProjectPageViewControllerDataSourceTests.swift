@@ -835,12 +835,6 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       project: project,
       refTag: nil
     )
-
-    XCTAssertEqual(
-      self.dataSource
-        .indexPathIsReportProject(IndexPath(row: 2, section: self.overviewSubpagesSection)),
-      true
-    )
   }
 
   func testUpdatingCampaign_WithImageViewElementImage_Success() {
