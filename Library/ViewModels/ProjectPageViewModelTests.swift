@@ -764,7 +764,7 @@ final class ProjectPageViewModelTests: TestCase {
     self.goToReportProject.assertDidNotEmitValue()
 
     self.vm.inputs.tappedReportProject()
-    
+
     XCTAssertEqual(self.goToReportProject.lastValue?.0, false)
     XCTAssertEqual(self.goToReportProject.lastValue?.1, project.urls.web.project)
   }
