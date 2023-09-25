@@ -5,7 +5,7 @@ import UIKit
 
 internal final class ReportProjectCell: UITableViewCell, ValueCell {
   let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
-  
+
   internal func configureWith(value projectFlagged: Bool) {
     self.setupTableViewCellStyle(projectFlagged: projectFlagged)
     self.setupReportProjectLabelView(projectFlagged: projectFlagged)
