@@ -865,7 +865,7 @@ extension ProjectPageViewController: UITableViewDelegate {
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
-      .overviewSubpages.rawValue ? .none : .singleLine
+      .overviewReportProject.rawValue ? .none : .singleLine
 
     self.tableView.layoutIfNeeded()
   }

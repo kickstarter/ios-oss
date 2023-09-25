@@ -16,7 +16,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     let values = [
       ProjectPamphletSubpage.comments(project.stats.commentsCount as Int?, .first),
-      ProjectPamphletSubpage.updates(project.stats.updatesCount as Int?, .last)
+      ProjectPamphletSubpage.updates(project.stats.updatesCount as Int?, .middle)
     ]
 
     self.set(

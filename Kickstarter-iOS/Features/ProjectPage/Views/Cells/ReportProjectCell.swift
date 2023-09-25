@@ -7,6 +7,7 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
     self.setupReportProjectLabelView(projectFlagged: projectFlagged)
 
     self.selectionStyle = .none
+    self.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
     self.setNeedsLayout()
   }
 
