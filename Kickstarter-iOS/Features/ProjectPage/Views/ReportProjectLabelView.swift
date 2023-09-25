@@ -4,6 +4,8 @@ import SwiftUI
 @available(iOS 15.0, *)
 struct ReportProjectLabelView: View {
   let flagged: Bool
+  
+  let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
 
   var body: some View {
     if flagged {
@@ -12,6 +14,7 @@ struct ReportProjectLabelView: View {
       HStack {
         Text(Strings.Report_this_project_to())
           .font(Font(UIFont.ksr_footnote()))
+          .foregroundColor(Color(.ksr_support_700))
 
         Spacer()
 
@@ -20,7 +23,7 @@ struct ReportProjectLabelView: View {
           .scaledToFit()
           .frame(width: 10, height: 10)
       }
-      .padding(10)
+      .padding(isIpad ? 0 : 10)
     }
   }
 
