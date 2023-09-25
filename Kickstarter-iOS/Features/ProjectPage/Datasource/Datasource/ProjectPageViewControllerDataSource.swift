@@ -105,7 +105,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
       let values: [ProjectPamphletSubpage] = [
         .comments(project.stats.commentsCount as Int?, .first),
-        .updates(project.stats.updatesCount as Int?, .last)
+        .updates(project.stats.updatesCount as Int?, .middle)
       ]
 
       self.set(
