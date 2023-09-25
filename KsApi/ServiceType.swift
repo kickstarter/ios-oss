@@ -73,6 +73,10 @@ public protocol ServiceType {
 
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
+  
+  /// Sends report project data to relevant to a specific project
+  func createFlaggingInput(input: CreateFlaggingInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Creates the password on a user account
   func createPassword(input: CreatePasswordInput) ->

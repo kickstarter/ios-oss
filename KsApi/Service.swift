@@ -149,6 +149,16 @@ public struct Service: ServiceType {
       .perform(mutation: GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input)))
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
+  
+  public func createFlaggingInput(input: CreateFlaggingInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
+  }
 
   public func createPassword(input: CreatePasswordInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {

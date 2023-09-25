@@ -27,6 +27,8 @@
     fileprivate let changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
+    
+    fileprivate let createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
@@ -217,6 +219,7 @@
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
+      createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -334,6 +337,8 @@
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
 
       self.createBackingResult = createBackingResult
+      
+      self.createFlaggingResult = createFlaggingResult
 
       self.createPasswordResult = createPasswordResult
 
@@ -590,6 +595,18 @@
       let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
+    }
+    
+    internal func createFlaggingInput(input: CreateFlaggingInput) -> ReactiveSwift
+      .SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createFlaggingResult)
     }
 
     internal func createPassword(input: CreatePasswordInput)
