@@ -68,7 +68,7 @@ private struct BaseRowView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
 
         if let hyperLink = hyperLink(in: item.subtitle) {
-          Text(html: item.subtitle, with: hyperLink.stringLiteral())
+          Text(html: item.subtitle, with: [hyperLink.stringLiteral()])
             .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)

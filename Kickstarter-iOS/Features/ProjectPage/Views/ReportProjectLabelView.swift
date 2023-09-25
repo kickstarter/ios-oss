@@ -45,7 +45,10 @@ struct ReportProjectLabelView: View {
               .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
               .absoluteString ?? ""
           ),
-          with: ReportProjectHyperLinkType.ourRules.stringLiteral()
+          with: [
+            ReportProjectHyperLinkType.ourRules.stringLiteral(),
+            ReportProjectHyperLinkType.communityGuidelines.stringLiteral()
+          ]
         )
         .font(Font(UIFont.ksr_caption1()))
       }

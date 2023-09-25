@@ -101,7 +101,7 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable, Equatable {
     case .aiDisclosure:
       return baseUrl.appendingPathComponent("hc/en-us/articles/16848396410267")
     case .prohibitedItems:
-      return baseUrl.appendingPathComponent("rules/prohibited?ref=project-page-report")
+      return baseUrl.appendingPathComponent("rules/prohibited")
     }
   }
 }
