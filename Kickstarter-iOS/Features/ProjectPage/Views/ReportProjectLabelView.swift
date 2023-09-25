@@ -4,6 +4,8 @@ import SwiftUI
 @available(iOS 15.0, *)
 struct ReportProjectLabelView: View {
   let flagged: Bool
+  
+  let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
 
   @SwiftUI.Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
