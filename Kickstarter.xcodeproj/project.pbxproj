@@ -481,6 +481,7 @@
 		6018626629A9194600EA2842 /* AppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626529A9194600EA2842 /* AppTrackingTransparency.swift */; };
 		6018626829A91B8C00EA2842 /* ThirdPartyEventInputName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
+		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColors.swift */; };
@@ -2076,6 +2077,7 @@
 		6018626529A9194600EA2842 /* AppTrackingTransparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyEventInputName.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
+		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemViewController.swift; sourceTree = "<group>"; };
 		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
 		6049D01E2AA774130015BB0D /* DesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemColors.swift; sourceTree = "<group>"; };
@@ -5770,6 +5772,7 @@
 			isa = PBXGroup;
 			children = (
 				6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */,
+				60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */,
 			);
 			path = ReportProject;
 			sourceTree = "<group>";
@@ -8324,6 +8327,7 @@
 				6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */,
+				60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */,
 				D6AE3F9220EA977D00DB212F /* SettingsNotificationsViewController.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
 				8A8099F822E2156E00373E66 /* RewardPledgeNavigationController.swift in Sources */,

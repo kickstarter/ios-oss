@@ -107,8 +107,7 @@ struct RowView: View {
         if isExpanded {
           ForEach(item.subItems ?? []) { item in
             VStack(alignment: .leading, spacing: contentSpacing) {
-              // TODO: Push Submission Form View In MBL-971(https://kickstarter.atlassian.net/browse/MBL-971)
-              NavigationLink(destination: { Text("submit report view") }, label: { BaseRowView(item: item) })
+              NavigationLink(destination: { ReportProjectFormView() }, label: { BaseRowView(item: item) })
                 .buttonStyle(PlainButtonStyle())
             }
             .padding(.vertical, 5)
