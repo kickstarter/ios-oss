@@ -1,13 +1,20 @@
+import KsApi
 import SwiftUI
 
 struct ReportProjectFormView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  let projectURL: String
+  let projectFlaggingKind: GraphAPI.FlaggingKind
+
+  var body: some View {
+    VStack {
+      Text(projectURL)
+      Text(projectFlaggingKind.rawValue)
     }
+  }
 }
 
 struct ReportProjectFormView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReportProjectFormView()
-    }
+  static var previews: some View {
+    ReportProjectFormView(projectURL: "", projectFlaggingKind: .prohibitedItems)
+  }
 }

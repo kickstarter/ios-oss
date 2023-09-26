@@ -28,7 +28,7 @@ struct ReportProjectInfoView: View {
   var body: some View {
     ScrollView {
       ForEach(listItems) { item in
-        RowView(item: item, isExpanded: self.selection.contains(item))
+        RowView(item: item, isExpanded: self.selection.contains(item), projectUrl: self.projectUrl)
           .modifier(ListRowModifier())
           .onTapGesture {
             withAnimation {
@@ -95,6 +95,7 @@ private struct BaseRowView: View {
 struct RowView: View {
   var item: ReportProjectInfoListItem
   let isExpanded: Bool
+  let projectUrl: String
 
   private let contentSpacing = 10.0
   private let contentPadding = 12.0
@@ -107,8 +108,16 @@ struct RowView: View {
         if isExpanded {
           ForEach(item.subItems ?? []) { item in
             VStack(alignment: .leading, spacing: contentSpacing) {
-              NavigationLink(destination: { ReportProjectFormView() }, label: { BaseRowView(item: item) })
-                .buttonStyle(PlainButtonStyle())
+              NavigationLink(
+                destination: {
+                  ReportProjectFormView(
+                    projectURL: self.projectUrl,
+                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation
+                  )
+                },
+                label: { BaseRowView(item: item) }
+              )
+              .buttonStyle(PlainButtonStyle())
             }
             .padding(.vertical, 5)
             .padding(.leading, self.contentPadding)
