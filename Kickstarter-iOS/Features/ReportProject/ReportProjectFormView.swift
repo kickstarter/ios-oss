@@ -66,6 +66,7 @@ struct ReportProjectFormView: View {
       }
       .onAppear {
         focusField = .details
+        viewModel.inputs.viewDidLoad()
         viewModel.projectID.send(self.projectID)
         viewModel.projectFlaggingKind.send(self.projectFlaggingKind)
       }

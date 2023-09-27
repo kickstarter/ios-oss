@@ -77,7 +77,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
       .observeValues { [weak self] errorValue in
         let messageBannerViewViewModel = MessageBannerViewViewModel((
           type: .error,
-          message: errorValue.localizedDescription
+          message: Strings.Something_went_wrong_please_try_again()
         ))
 
         self?.saveTriggered.send(false)
@@ -89,7 +89,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
       .observeValues { [weak self] _ in
         let messageBannerViewViewModel = MessageBannerViewViewModel((
           type: .success,
-          message: Strings.Got_it_your_changes_have_been_saved()
+          message: Strings.Your_message_has_been_sent()
         ))
 
         self?.saveTriggered.send(false)
