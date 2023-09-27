@@ -13,7 +13,7 @@ struct ReportProjectLabelView: View {
     } else {
       HStack {
         Text(Strings.Report_this_project_to())
-          .font(Font(UIFont.ksr_footnote()))
+          .font(Font(UIFont.ksr_body(size: 14)))
           .foregroundColor(Color(.ksr_support_700))
 
         Spacer()
@@ -41,7 +41,7 @@ struct ReportProjectLabelView: View {
             our_rules: HelpType.prohibitedItems
               .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
               .absoluteString ?? "",
-            community_guidelines: HelpType.prohibitedItems
+            community_guidelines: HelpType.community
               .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?
               .absoluteString ?? ""
           ),
