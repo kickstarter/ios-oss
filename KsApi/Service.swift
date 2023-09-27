@@ -149,7 +149,7 @@ public struct Service: ServiceType {
       .perform(mutation: GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input)))
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
-  
+
   public func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

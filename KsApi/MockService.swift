@@ -27,7 +27,7 @@
     fileprivate let changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
-    
+
     fileprivate let createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -337,7 +337,7 @@
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
 
       self.createBackingResult = createBackingResult
-      
+
       self.createFlaggingResult = createFlaggingResult
 
       self.createPasswordResult = createPasswordResult
@@ -596,7 +596,7 @@
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
     }
-    
+
     internal func createFlaggingInput(input: CreateFlaggingInput) -> ReactiveSwift
       .SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {

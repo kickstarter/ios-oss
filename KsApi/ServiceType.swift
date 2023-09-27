@@ -73,8 +73,8 @@ public protocol ServiceType {
 
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
-  
-  /// Sends report project data to relevant to a specific project
+
+  /// Sends report project data for a specific project
   func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
