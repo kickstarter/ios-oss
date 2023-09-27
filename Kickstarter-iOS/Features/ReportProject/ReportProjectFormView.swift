@@ -8,6 +8,7 @@ enum ReportFormFocusField {
 
 @available(iOS 15.0, *)
 struct ReportProjectFormView: View {
+  let projectID: String
   let projectURL: String
   let projectFlaggingKind: GraphAPI.FlaggingKind
 
@@ -65,7 +66,8 @@ struct ReportProjectFormView: View {
       }
       .onAppear {
         focusField = .details
-        viewModel.projectFlaggingKind.send(projectFlaggingKind)
+        viewModel.projectID.send(self.projectID)
+        viewModel.projectFlaggingKind.send(self.projectFlaggingKind)
       }
       .onChange(of: details) { detailsText in
         viewModel.detailsText.send(detailsText)
@@ -102,6 +104,6 @@ struct ReportProjectFormView: View {
 @available(iOS 15.0, *)
 struct ReportProjectFormView_Previews: PreviewProvider {
   static var previews: some View {
-    ReportProjectFormView(projectURL: "", projectFlaggingKind: .prohibitedItems)
+    ReportProjectFormView(projectID: "", projectURL: "", projectFlaggingKind: .prohibitedItems)
   }
 }

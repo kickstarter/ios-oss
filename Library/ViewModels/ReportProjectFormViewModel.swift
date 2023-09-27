@@ -7,7 +7,12 @@ public protocol ReportProjectFormViewModelInputs {
   func viewDidLoad()
 
   /// Submits a report using the createFlagging mutation
-  func submitReport(contentId: String, kind: GraphAPI.FlaggingKind, details: String, clientMutationId: String)
+  func submitReport(
+    contentId: String,
+    kind: GraphAPI.FlaggingKind,
+    details: String,
+    clientMutationId: String?
+  )
 }
 
 public protocol ReportProjectFormViewModelOutputs {
@@ -25,6 +30,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   ReportProjectFormViewModelOutputs, ObservableObject {
   public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
   public var detailsText: PassthroughSubject<String, Never> = .init()
+  public var projectID: PassthroughSubject<String, Never> = .init()
   public var projectFlaggingKind: PassthroughSubject<GraphAPI.FlaggingKind, Never> = .init()
   public var retrievedEmail: PassthroughSubject<String, Never> = .init()
   public var saveButtonEnabled: AnyPublisher<Bool, Never>
@@ -91,13 +97,13 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
       }
 
     /// Submits report on saveTriggered when saveButtonEnabled
-    _ = Publishers
-      .CombineLatest4(self.saveButtonEnabled, self.saveTriggered, self.projectFlaggingKind, self.detailsText)
-      .filter { enabledValue, triggeredValue, _, _ in
-        enabledValue && triggeredValue
+    Publishers
+      .CombineLatest4(self.saveTriggered, self.projectID, self.projectFlaggingKind, self.detailsText)
+      .filter { triggeredValue, _, _, _ in
+        triggeredValue
       }
-      .sink(receiveValue: { [weak self] _, _, kind, details in
-        self?.submitReport(kind: kind, details: details)
+      .sink(receiveValue: { [weak self] _, projectID, kind, details in
+        self?.submitReport(contentId: projectID, kind: kind, details: details)
       })
       .store(in: &self.cancellables)
   }
@@ -117,12 +123,12 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
     return self
   }
 
-  private let submitReportProperty = MutableProperty<(String, GraphAPI.FlaggingKind, String, String)?>(nil)
+  private let submitReportProperty = MutableProperty<(String, GraphAPI.FlaggingKind, String, String?)?>(nil)
   public func submitReport(
-    contentId: String = "UHJvamVjdC0xMDA0MzcyMjky",
+    contentId: String,
     kind: GraphAPI.FlaggingKind,
     details: String,
-    clientMutationId: String = ""
+    clientMutationId: String? = nil
   ) {
     self.submitReportProperty.value = (contentId, kind, details, clientMutationId)
   }

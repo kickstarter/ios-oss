@@ -21,6 +21,7 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
 
 @available(iOS 15, *)
 struct ReportProjectInfoView: View {
+  let projectID: String
   let projectUrl: String
 
   @State private var selection: Set<ReportProjectInfoListItem> = []
@@ -28,15 +29,20 @@ struct ReportProjectInfoView: View {
   var body: some View {
     ScrollView {
       ForEach(listItems) { item in
-        RowView(item: item, isExpanded: self.selection.contains(item), projectUrl: self.projectUrl)
-          .modifier(ListRowModifier())
-          .onTapGesture {
-            withAnimation {
-              self.selectDeselect(item)
-            }
+        RowView(
+          item: item,
+          isExpanded: self.selection.contains(item),
+          projectID: self.projectID,
+          projectUrl: self.projectUrl
+        )
+        .modifier(ListRowModifier())
+        .onTapGesture {
+          withAnimation {
+            self.selectDeselect(item)
           }
-          .padding(5)
-          .animation(.linear(duration: 0.3))
+        }
+        .padding(5)
+        .animation(.linear(duration: 0.3))
       }
     }
     .navigationTitle(Strings.Report_this_project())
@@ -95,6 +101,7 @@ private struct BaseRowView: View {
 struct RowView: View {
   var item: ReportProjectInfoListItem
   let isExpanded: Bool
+  let projectID: String
   let projectUrl: String
 
   private let contentSpacing = 10.0
@@ -111,6 +118,7 @@ struct RowView: View {
               NavigationLink(
                 destination: {
                   ReportProjectFormView(
+                    projectID: self.projectID,
                     projectURL: self.projectUrl,
                     projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation
                   )
@@ -158,6 +166,6 @@ struct ListRowModifier: ViewModifier {
 @available(iOS 15, *)
 struct ReportProjectInfoView_Previews: PreviewProvider {
   static var previews: some View {
-    ReportProjectInfoView(projectUrl: "")
+    ReportProjectInfoView(projectID: "", projectUrl: "")
   }
 }
