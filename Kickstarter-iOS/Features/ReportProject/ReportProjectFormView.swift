@@ -8,23 +8,27 @@ enum ReportFormFocusField {
 
 @available(iOS 15.0, *)
 struct ReportProjectFormView: View {
-  var email: String = "asdf@asdf.com"
   let projectURL: String
   let projectFlaggingKind: GraphAPI.FlaggingKind
   
-  @State var details: String = ""
-  @State var saveEnabled: Bool = false
-  @State var saveTriggered: Bool = false
-  @State var showLoading: Bool = false
+  @ObservedObject private var viewModel = ReportProjectFormViewModel()
+  
+  @State private var retrievedEmail = ""
+  @State private var details: String = ""
+  @State private var saveEnabled: Bool = false
+  @State private var saveTriggered: Bool = false
+  @State private var showLoading: Bool = false
   @FocusState private var focusField: ReportFormFocusField?
   
   var body: some View {
     Form {
-      SwiftUI.Section(Strings.Email()) {
-        Text(email)
-          .font(Font(UIFont.ksr_body()))
-          .foregroundColor(Color(.ksr_support_400))
-          .disabled(true)
+      if !retrievedEmail.isEmpty {
+        SwiftUI.Section(Strings.Email()) {
+          Text(retrievedEmail)
+            .font(Font(UIFont.ksr_body()))
+            .foregroundColor(Color(.ksr_support_400))
+            .disabled(true)
+        }        
       }
       
       SwiftUI.Section(Strings.Project_url()) {
@@ -64,6 +68,9 @@ struct ReportProjectFormView: View {
     }
     .onChange(of: saveTriggered) { _ in
       focusField = nil
+    }
+    .onReceive(viewModel.retrievedEmail) { email in
+      retrievedEmail = email
     }
   }
   
