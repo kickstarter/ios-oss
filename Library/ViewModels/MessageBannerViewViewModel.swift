@@ -24,7 +24,7 @@ public final class MessageBannerViewViewModel: ObservableObject, Equatable {
     self.messageTextAlignment = configuration.type == .info ? .center : .leading
     self.messageTextColor = Color(configuration.type.textColor)
   }
-  
+
   public static func == (lhs: MessageBannerViewViewModel, rhs: MessageBannerViewViewModel) -> Bool {
     lhs.bannerMessage == rhs.bannerMessage
   }

@@ -82,11 +82,11 @@ struct ReportProjectFormView: View {
         viewModel.saveTriggered.send(triggered)
       }
       .onChange(of: bannerMessage) { newValue in
-        ///bannerMessage is set to nil when its done presenting. When it is done, and submit was successful, let's dismiss this view.
-        if newValue == nil && self.submitSuccess {
+        /// bannerMessage is set to nil when its done presenting. When it is done, and submit was successful,  dismiss this view.
+        if newValue == nil, self.submitSuccess {
           dismiss()
           popToRoot = true
-        } else {
+        } else if newValue?.bannerBackgroundColor == Color(.ksr_alert) {
           saveEnabled = true
         }
       }

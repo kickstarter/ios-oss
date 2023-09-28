@@ -75,7 +75,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
     _ = submitReportEvent.errors()
       .observeForUI()
-      .observeValues { [weak self] errorValue in
+      .observeValues { [weak self] _ in
         let messageBannerViewViewModel = MessageBannerViewViewModel((
           type: .error,
           message: Strings.Something_went_wrong_please_try_again()

@@ -23,7 +23,8 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
 struct ReportProjectInfoView: View {
   let projectID: String
   let projectUrl: String
-  
+  let onSuccessfulSubmit: () -> Void
+
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @State private var selection: Set<ReportProjectInfoListItem> = []
   @State private var popToRoot = false
@@ -53,6 +54,7 @@ struct ReportProjectInfoView: View {
     .onChange(of: popToRoot) { newValue in
       if newValue == true {
         dismiss()
+        onSuccessfulSubmit()
       }
     }
   }
@@ -111,7 +113,7 @@ struct RowView: View {
   let isExpanded: Bool
   let projectID: String
   let projectUrl: String
-  
+
   @Binding var popToRoot: Bool
 
   private let contentSpacing = 10.0
@@ -169,14 +171,5 @@ struct ListRowModifier: ViewModifier {
       content
       Divider()
     }.offset(x: 20)
-  }
-}
-
-// MARK: - Preview
-
-@available(iOS 15, *)
-struct ReportProjectInfoView_Previews: PreviewProvider {
-  static var previews: some View {
-    ReportProjectInfoView(projectID: "", projectUrl: "")
   }
 }
