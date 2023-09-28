@@ -95,6 +95,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ImageViewElementCell.self)
     self.tableView.registerCellClass(AudioVideoViewElementCell.self)
     self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
+    self.tableView.registerCellClass(ReportProjectCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -382,8 +383,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
     self.viewModel.outputs.goToReportProject
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToReportProject(projectUrl: $0)
+      .observeValues { [weak self] flagged, projectUrl in
+        guard !flagged else { return }
+        self?.goToReportProject(projectUrl: projectUrl)
       }
 
     self.viewModel.outputs.goToUpdates
@@ -829,9 +831,9 @@ extension ProjectPageViewController: UITableViewDelegate {
         self.viewModel.inputs.tappedComments()
       } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
         self.viewModel.inputs.tappedUpdates()
-      } else if self.dataSource.indexPathIsReportProject(indexPath) {
-        self.viewModel.inputs.tappedReportProject()
       }
+    case ProjectPageViewControllerDataSource.Section.overviewReportProject.rawValue:
+      self.viewModel.inputs.tappedReportProject()
     case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
       self.viewModel.inputs.askAQuestionCellTapped()
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
@@ -863,7 +865,9 @@ extension ProjectPageViewController: UITableViewDelegate {
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
-      .overviewSubpages.rawValue ? .none : .singleLine
+      .overviewReportProject.rawValue ? .none : .singleLine
+
+    self.tableView.layoutIfNeeded()
   }
 
   public func tableView(

@@ -9,6 +9,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case overviewCreatorHeader
     case overview
     case overviewSubpages
+    case overviewReportProject
     case campaignHeader
     case campaign
     case faqsHeader
@@ -104,14 +105,19 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
       let values: [ProjectPamphletSubpage] = [
         .comments(project.stats.commentsCount as Int?, .first),
-        .updates(project.stats.updatesCount as Int?, .middle),
-        .reportProject(.last)
+        .updates(project.stats.updatesCount as Int?, .middle)
       ]
 
       self.set(
         values: values,
         cellClass: ProjectPamphletSubpageCell.self,
         inSection: Section.overviewSubpages.rawValue
+      )
+
+      self.set(
+        values: [project.flagging ?? false],
+        cellClass: ReportProjectCell.self,
+        inSection: Section.overviewReportProject.rawValue
       )
     case .campaign:
       self.set(
@@ -339,6 +345,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ExternalSourceViewElementCell, value as ExternalSourceViewElement):
       cell.configureWith(value: value)
+    case let (cell as ReportProjectCell, value as Bool):
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
@@ -447,10 +455,6 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
   internal func indexPathIsUpdatesSubpage(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
-  }
-
-  internal func indexPathIsReportProject(_ indexPath: IndexPath) -> Bool {
-    return (self[indexPath] as? ProjectPamphletSubpage)?.isReportProject == true
   }
 
   internal func isExpandedValuesForFAQsSection() -> [Bool]? {

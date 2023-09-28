@@ -5,6 +5,7 @@ import SwiftUI
 enum ReportProjectHyperLinkType: String, CaseIterable {
   case prohibitedItems
   case communityGuidelines
+  case ourRules
 
   func stringLiteral() -> String {
     switch self {
@@ -12,6 +13,8 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
       return Strings.Prohibited_items()
     case .communityGuidelines:
       return "community guidelines"
+    case .ourRules:
+      return "our rules"
     }
   }
 }
@@ -65,7 +68,7 @@ private struct BaseRowView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
 
         if let hyperLink = hyperLink(in: item.subtitle) {
-          Text(html: item.subtitle, with: hyperLink.stringLiteral())
+          Text(html: item.subtitle, with: [hyperLink.stringLiteral()])
             .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)

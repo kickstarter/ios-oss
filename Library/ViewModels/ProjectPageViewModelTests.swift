@@ -38,7 +38,7 @@ final class ProjectPageViewModelTests: TestCase {
   private let goToDashboard = TestObserver<Param, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
-  private let goToReportProject = TestObserver<String, Never>()
+  private let goToReportProject = TestObserver<(Bool, String), Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToUpdates = TestObserver<Project, Never>()
@@ -765,7 +765,8 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.vm.inputs.tappedReportProject()
 
-    self.goToReportProject.assertValues([project.urls.web.project])
+    XCTAssertEqual(self.goToReportProject.lastValue?.0, false)
+    XCTAssertEqual(self.goToReportProject.lastValue?.1, project.urls.web.project)
   }
 
   func testGoToDashboard() {
