@@ -63,7 +63,7 @@ struct ReportProjectFormView: View {
             saveEnabled: $saveEnabled,
             saveTriggered: $saveTriggered,
             showLoading: $showLoading,
-            titleText: Strings.Save()
+            titleText: Strings.Send()
           )
         }
       }
