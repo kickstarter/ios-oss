@@ -30,11 +30,6 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
       |> ReportProjectCell.lens.accessibilityTraits .~ accessibilityTraits
-      |> ReportProjectCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.gridHalf(5), leftRight: Styles.grid(16))
-          : .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
-      }
   }
 
   private func setupReportProjectLabelView(projectFlagged: Bool) {
@@ -48,14 +43,17 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
 
         self.contentView.addSubview(hostingController.view)
 
+        let leftRightInset = self.traitCollection.isRegularRegular ? Styles.grid(16) : Styles.gridHalf(5)
+
         NSLayoutConstraint.activate([
-          hostingController.view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
+          hostingController.view.topAnchor
+            .constraint(equalTo: self.contentView.topAnchor, constant: Styles.gridHalf(5)),
           hostingController.view.bottomAnchor
-            .constraint(equalTo: self.contentView.bottomAnchor, constant: -12),
+            .constraint(equalTo: self.contentView.bottomAnchor, constant: -Styles.gridHalf(5)),
           hostingController.view.leadingAnchor
-            .constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
+            .constraint(equalTo: self.contentView.leadingAnchor, constant: leftRightInset),
           hostingController.view.trailingAnchor
-            .constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
+            .constraint(equalTo: self.contentView.trailingAnchor, constant: -leftRightInset)
         ])
       }
     }
