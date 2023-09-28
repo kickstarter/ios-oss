@@ -113,8 +113,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectPamphletSubpageCell.self,
         inSection: Section.overviewSubpages.rawValue
       )
-      
-      if featureReportThisProjectEnabled() && AppEnvironment.current.currentUser != nil {
+
+      if featureReportThisProjectEnabled(), AppEnvironment.current.currentUser != nil {
         self.set(
           values: [project.flagging ?? false],
           cellClass: ReportProjectCell.self,

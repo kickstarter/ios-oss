@@ -7,8 +7,6 @@ struct ReportProjectLabelView: View {
 
   @SwiftUI.Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-  @SwiftUI.Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
   var body: some View {
     if flagged {
       AlreadyReportedView()
