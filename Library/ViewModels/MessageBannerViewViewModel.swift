@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-public final class MessageBannerViewViewModel: ObservableObject {
+public final class MessageBannerViewViewModel: ObservableObject, Equatable {
   @Published public var bannerBackgroundColor: Color
   @Published public var bannerMessage: String
   @Published public var bannerMessageAccessibilityLabel: String
@@ -23,5 +23,9 @@ public final class MessageBannerViewViewModel: ObservableObject {
     self.iconTintColor = Color(configuration.type.iconImageTintColor ?? .ksr_white)
     self.messageTextAlignment = configuration.type == .info ? .center : .leading
     self.messageTextColor = Color(configuration.type.textColor)
+  }
+  
+  public static func == (lhs: MessageBannerViewViewModel, rhs: MessageBannerViewViewModel) -> Bool {
+    lhs.bannerMessage == rhs.bannerMessage
   }
 }

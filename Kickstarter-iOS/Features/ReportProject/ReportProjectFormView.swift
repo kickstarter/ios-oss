@@ -12,6 +12,7 @@ struct ReportProjectFormView: View {
   let projectURL: String
   let projectFlaggingKind: GraphAPI.FlaggingKind
 
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject private var viewModel = ReportProjectFormViewModel()
 
   @State private var retrievedEmail = ""
@@ -20,6 +21,7 @@ struct ReportProjectFormView: View {
   @State private var saveTriggered: Bool = false
   @State private var showLoading: Bool = false
   @State private var showBannerMessage = false
+  @State private var submitSuccess = false
   @State private var bannerMessage: MessageBannerViewViewModel?
   @FocusState private var focusField: ReportFormFocusField?
 
@@ -78,14 +80,26 @@ struct ReportProjectFormView: View {
         showLoading = triggered
         viewModel.saveTriggered.send(triggered)
       }
+      .onChange(of: bannerMessage) { newValue in
+        ///bannerMessage is set to nil when its done presenting. When it is done, and submit was successful, let's dismiss this view.
+        if newValue == nil && self.submitSuccess {
+          dismiss()
+        } else {
+          saveEnabled = true
+        }
+      }
       .onReceive(viewModel.saveButtonEnabled) { newValue in
         saveEnabled = newValue
+      }
+      .onReceive(viewModel.submitSuccess) { _ in
+        submitSuccess = true
       }
       .onReceive(viewModel.retrievedEmail) { email in
         retrievedEmail = email
       }
       .onReceive(viewModel.bannerMessage) { newValue in
         showLoading = false
+        saveEnabled = false
         bannerMessage = newValue
       }
       .overlay(alignment: .bottom) {

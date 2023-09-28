@@ -35,6 +35,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   public var retrievedEmail: PassthroughSubject<String, Never> = .init()
   public var saveButtonEnabled: AnyPublisher<Bool, Never>
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
+  public var submitSuccess: PassthroughSubject<Void, Never> = .init()
 
   private var cancellables = Set<AnyCancellable>()
 
@@ -94,6 +95,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
         self?.saveTriggered.send(false)
         self?.bannerMessage.send(messageBannerViewViewModel)
+        self?.submitSuccess.send()
       }
 
     /// Submits report on saveTriggered when saveButtonEnabled
