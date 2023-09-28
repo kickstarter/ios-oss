@@ -717,7 +717,7 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
         refTag: nil,
         isExpandedStates: nil
       )
-      XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
 
       // overviewCreatorHeader
       XCTAssertEqual(
@@ -738,26 +738,12 @@ final class ProjectPageViewControllerDataSourceTests: XCTestCase {
       )
 
       XCTAssertEqual(
-        1,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewReportProject)
-      )
-
-      XCTAssertEqual(
-        1,
-        self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.overviewReportProject)
-      )
-
-      XCTAssertEqual(
         "ProjectPamphletMainCell",
         self.dataSource.reusableId(item: 0, section: self.overviewSection)
       )
       XCTAssertEqual(
         "ProjectPamphletSubpageCell",
         self.dataSource.reusableId(item: 0, section: self.overviewSubpagesSection)
-      )
-      XCTAssertEqual(
-        "ReportProjectCell",
-        self.dataSource.reusableId(item: 0, section: self.overviewReportProject)
       )
     }
   }
