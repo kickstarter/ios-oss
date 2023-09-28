@@ -23,8 +23,10 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
 struct ReportProjectInfoView: View {
   let projectID: String
   let projectUrl: String
-
+  
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @State private var selection: Set<ReportProjectInfoListItem> = []
+  @State private var popToRoot = false
 
   var body: some View {
     ScrollView {
@@ -33,7 +35,8 @@ struct ReportProjectInfoView: View {
           item: item,
           isExpanded: self.selection.contains(item),
           projectID: self.projectID,
-          projectUrl: self.projectUrl
+          projectUrl: self.projectUrl,
+          popToRoot: self.$popToRoot
         )
         .modifier(ListRowModifier())
         .onTapGesture {
@@ -47,6 +50,11 @@ struct ReportProjectInfoView: View {
     }
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
+    .onChange(of: popToRoot) { newValue in
+      if newValue == true {
+        dismiss()
+      }
+    }
   }
 
   private func selectDeselect(_ item: ReportProjectInfoListItem) {
@@ -103,6 +111,8 @@ struct RowView: View {
   let isExpanded: Bool
   let projectID: String
   let projectUrl: String
+  
+  @Binding var popToRoot: Bool
 
   private let contentSpacing = 10.0
   private let contentPadding = 12.0
@@ -120,7 +130,8 @@ struct RowView: View {
                   ReportProjectFormView(
                     projectID: self.projectID,
                     projectURL: self.projectUrl,
-                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation
+                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation,
+                    popToRoot: $popToRoot
                   )
                 },
                 label: { BaseRowView(item: item) }

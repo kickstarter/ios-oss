@@ -11,6 +11,7 @@ struct ReportProjectFormView: View {
   let projectID: String
   let projectURL: String
   let projectFlaggingKind: GraphAPI.FlaggingKind
+  @Binding var popToRoot: Bool
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject private var viewModel = ReportProjectFormViewModel()
@@ -84,6 +85,7 @@ struct ReportProjectFormView: View {
         ///bannerMessage is set to nil when its done presenting. When it is done, and submit was successful, let's dismiss this view.
         if newValue == nil && self.submitSuccess {
           dismiss()
+          popToRoot = true
         } else {
           saveEnabled = true
         }
@@ -113,12 +115,5 @@ struct ReportProjectFormView: View {
           .animation(.easeInOut)
       }
     }
-  }
-}
-
-@available(iOS 15.0, *)
-struct ReportProjectFormView_Previews: PreviewProvider {
-  static var previews: some View {
-    ReportProjectFormView(projectID: "", projectURL: "", projectFlaggingKind: .prohibitedItems)
   }
 }
