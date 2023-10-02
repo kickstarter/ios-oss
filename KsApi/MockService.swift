@@ -3,7 +3,8 @@
   import Prelude
   import ReactiveSwift
 
-  internal struct MockService: ServiceType {
+internal struct MockService: ServiceType {
+    
     internal let apolloClient: ApolloClientType?
     internal let appId: String
     internal let serverConfig: ServerConfigType
@@ -90,6 +91,9 @@
     fileprivate let removeAttachmentError: ErrorEnvelope?
 
     fileprivate let publishUpdateError: ErrorEnvelope?
+  
+    fileprivate let fetchBackerSavedProjectsResponse: FetchProjectsEnvelope?
+    fileprivate let fetchBackerBackedProjectsResponse: FetchProjectsEnvelope?
 
     fileprivate let fetchManagePledgeViewBackingResult:
       Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
@@ -179,6 +183,7 @@
       WatchProjectResponseEnvelope,
       ErrorEnvelope
     >?
+  
 
     internal init(
       appId: String = "com.kickstarter.kickstarter.mock",
@@ -233,6 +238,8 @@
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
+      fetchBackerSavedProjectsResponse: FetchProjectsEnvelope? = nil,
+      fetchBackerBackedProjectsResponse: FetchProjectsEnvelope? = nil,
       fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>? = nil,
       fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>? = nil,
       fetchCommentsResponse _: [ActivityComment]? = nil,
@@ -361,6 +368,9 @@
       self.fetchActivitiesError = fetchActivitiesError
 
       self.fetchBackingResponse = fetchBackingResponse
+      
+      self.fetchBackerSavedProjectsResponse = fetchBackerSavedProjectsResponse
+      self.fetchBackerBackedProjectsResponse = fetchBackerBackedProjectsResponse
 
       self.backingUpdate = backingUpdate
 
@@ -1029,6 +1039,21 @@
     internal func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
       return SignalProducer(value: self.fetchProjectNotificationsResponse)
     }
+    
+    public func fetchSavedProjects(cursor: String? = nil, limit: Int? = nil) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+      guard let result = self.fetchBackerSavedProjectsResponse else {
+        return .empty
+      }
+      return SignalProducer(value: result)
+    }
+    
+    public func fetchBackedProjects(cursor: String? = nil, limit: Int? = nil) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+      guard let result = self.fetchBackerBackedProjectsResponse else {
+        return .empty
+      }
+      return SignalProducer(value: result)
+    }
+
 
     internal func fetchProject(param _: Param) -> SignalProducer<Project, ErrorEnvelope> {
       guard let result = self.fetchProjectEnvelopeResult else {

@@ -516,7 +516,7 @@ public struct Service: ServiceType {
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
     return request(.projectStats(projectId: projectId))
   }
-
+    
   public func fetchRewardAddOnsSelectionViewRewards(
     slug: String,
     shippingEnabled: Bool,
@@ -535,7 +535,24 @@ public struct Service: ServiceType {
       .fetch(query: query)
       .flatMap(Project.projectProducer(from:))
   }
+  
+  public func fetchBackedProjects(cursor: String? = nil, limit: Int? = nil) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+    
+    let query = GraphAPI.FetchBackerProjectsQuery(backed: true, first: limit, after: cursor)
 
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap(FetchProjectsEnvelope.fetchProjectsEnvelope(from:))
+  }
+
+  public func fetchSavedProjects(cursor: String? = nil, limit: Int? = nil) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+    let query = GraphAPI.FetchBackerProjectsQuery(starred: true, first: limit, after: cursor)
+
+    return GraphQL.shared.client
+      .fetch(query: query)
+      .flatMap(FetchProjectsEnvelope.fetchProjectsEnvelope(from:))
+  }
+  
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
     return request(.shippingRules(projectId: projectId, rewardId: rewardId))
