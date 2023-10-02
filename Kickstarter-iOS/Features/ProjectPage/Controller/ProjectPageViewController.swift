@@ -3,6 +3,7 @@ import Combine
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 public enum ProjectPageViewControllerStyles {
@@ -94,6 +95,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.tableView.registerCellClass(ImageViewElementCell.self)
     self.tableView.registerCellClass(AudioVideoViewElementCell.self)
     self.tableView.registerCellClass(ExternalSourceViewElementCell.self)
+    self.tableView.registerCellClass(ReportProjectCell.self)
     self.tableView.register(nib: .ProjectPamphletMainCell)
     self.tableView.register(nib: .ProjectPamphletSubpageCell)
     self.tableView.registerCellClass(ProjectRisksCell.self)
@@ -792,6 +794,8 @@ extension ProjectPageViewController: UITableViewDelegate {
       } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
         self.viewModel.inputs.tappedUpdates()
       }
+    case ProjectPageViewControllerDataSource.Section.overviewReportProject.rawValue:
+      self.viewModel.inputs.tappedReportProject()
     case ProjectPageViewControllerDataSource.Section.faqsAskAQuestion.rawValue:
       self.viewModel.inputs.askAQuestionCellTapped()
     case ProjectPageViewControllerDataSource.Section.faqs.rawValue:
@@ -823,7 +827,9 @@ extension ProjectPageViewController: UITableViewDelegate {
 
     /// If we are displaying the `ProjectPamphletSubpageCell` we do not want to show the cells separator.
     self.tableView.separatorStyle = indexPath.section == ProjectPageViewControllerDataSource.Section
-      .overviewSubpages.rawValue ? .none : .singleLine
+      .overviewReportProject.rawValue ? .none : .singleLine
+
+    self.tableView.layoutIfNeeded()
   }
 
   public func tableView(

@@ -606,6 +606,33 @@
             "deprecationReason": null
           },
           {
+            "name": "order",
+            "description": "Fetches an order given its id.",
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Order",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "post",
             "description": "Fetches a post given its ID.",
             "args": [
@@ -2033,6 +2060,16 @@
           {
             "kind": "OBJECT",
             "name": "Checkout",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Order",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "OrderAddress",
             "ofType": null
           },
           {
@@ -3666,6 +3703,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "taxConfig",
+            "description": "Tax related configuration",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ItemTaxConfig",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -4622,6 +4671,30 @@
             "deprecationReason": null
           },
           {
+            "name": "fulfillmentToolOptions",
+            "description": "List of fulfillment tools available to creator based on hrc status",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "FulfillmentPlatformEnum",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fundingRatio",
             "description": "The ratio of funding progress.",
             "args": [],
@@ -5393,6 +5466,22 @@
             "deprecationReason": null
           },
           {
+            "name": "projectUsdExchangeRate",
+            "description": "Exchange rate to US Dollars (USD) for the project's currency",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recommendations",
             "description": null,
             "args": [],
@@ -5670,7 +5759,44 @@
           },
           {
             "name": "story",
-            "description": "The story behind the project.",
+            "description": "The story behind the project, parsed for presentation.",
+            "args": [
+              {
+                "name": "first",
+                "description": "The number of visible characters to fetch (does not include HTML markup).",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "assetWidth",
+                "description": "The width of embedded assets in pixels.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "HTML",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "storyForEditor",
+            "description": "The project description without conversion for usage by Rich Text Editors.",
             "args": [
               {
                 "name": "first",
@@ -7298,30 +7424,6 @@
               "kind": "OBJECT",
               "name": "UserFollowingConnection",
               "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "fulfillmentToolOptions",
-            "description": "List of fulfillment tools available to creator based on hrc status",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "ENUM",
-                    "name": "FulfillmentPlatformEnum",
-                    "ofType": null
-                  }
-                }
-              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -12034,12 +12136,6 @@
             "deprecationReason": null
           },
           {
-            "name": "beta_business_locations_2023",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "ckeditor_project_story",
             "description": null,
             "isDeprecated": false,
@@ -12058,7 +12154,31 @@
             "deprecationReason": null
           },
           {
-            "name": "fork_ui_2023",
+            "name": "project_story_sidebar_2023",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "midas_beta_2023",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ckeditor_product_marketing",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ccp_search_projects",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "global_nav_2023",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -12253,35 +12373,6 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "FulfillmentPlatformEnum",
-        "description": "Top level fulfillment platform types, e.g. kickstarter, pledgemanager, or other",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "kickstarter",
-            "description": "kickstarter",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pledgemanager",
-            "description": "pledgemanager",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "other",
-            "description": "other",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {
@@ -15558,6 +15649,18 @@
             "deprecationReason": null
           },
           {
+            "name": "goalHelperLimit",
+            "description": "Advised maximum goal limit in USD",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -16365,6 +16468,26 @@
                 "kind": "SCALAR",
                 "name": "ID",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "items",
+            "description": "Items associated with the address.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "RewardItem",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -17203,6 +17326,22 @@
             "deprecationReason": null
           },
           {
+            "name": "position",
+            "description": "position",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "question",
             "description": "Faq question",
             "args": [],
@@ -17214,6 +17353,18 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": "When faq was updated",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -17866,6 +18017,35 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "FulfillmentPlatformEnum",
+        "description": "Top level fulfillment platform types, e.g. kickstarter, pledgemanager, or other",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "kickstarter",
+            "description": "kickstarter",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledgemanager",
+            "description": "pledgemanager",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "other",
+            "description": "other",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -24301,6 +24481,187 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "ItemTaxConfig",
+        "description": "Tax configuration data related to an item",
+        "fields": [
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "item",
+            "description": "The associated item",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "RewardItem",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "itemType",
+            "description": "Item type, e.g. physical, digital, event, etc",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "ItemTypeEnum",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "localAddress",
+            "description": "Where will the item be picked up or where is the event?",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "BusinessAddress",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "marketValue",
+            "description": "Value of item pre any bundling discounts",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shipFromAddress",
+            "description": "Where will the item ship from?",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "BusinessAddress",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingPreference",
+            "description": "Item shipping preference",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "TaxConfigShippingPreference",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "taxCode",
+            "description": "Third party tax code",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ItemTypeEnum",
+        "description": "Item types related to tax concerns, e.g. is the item physical, tax-exempt, an event, etc",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "digital",
+            "description": "digital",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "physical",
+            "description": "physical",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "experience_event_service",
+            "description": "experience_event_service",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tax_exempt",
+            "description": "tax_exempt",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "TaxConfigShippingPreference",
+        "description": "Item level shipping preferences, e.g. shipping, local, shipping_and_local, none",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "shipping",
+            "description": "shipping",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "local",
+            "description": "local",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shipping_and_local",
+            "description": "shipping_and_local",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "none",
+            "description": "none",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
         "name": "RewardType",
         "description": "Describes the purpose of the reward",
@@ -25682,6 +26043,11 @@
             "kind": "OBJECT",
             "name": "EditorialRichText",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "SurveyEmbed",
+            "ofType": null
           }
         ]
       },
@@ -25824,6 +26190,18 @@
                 "name": "ID",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "newsletterSource",
+            "description": "The source that should be recorded for the newsletter signup",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -27678,6 +28056,61 @@
       },
       {
         "kind": "OBJECT",
+        "name": "SurveyEmbed",
+        "description": "An embedded iframe containing a Survey",
+        "fields": [
+          {
+            "name": "embedUrl",
+            "description": "The url of the survey being embedded",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "height",
+            "description": "Height of the embedded iframe",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "EditorialPage",
         "description": "An Editorial Page",
         "fields": [
@@ -29142,6 +29575,353 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "Order",
+        "description": "An order.",
+        "fields": [
+          {
+            "name": "address",
+            "description": "The delivery or home address associated with the order.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "OrderAddress",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "backer",
+            "description": "The associated backer",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "backing",
+            "description": "The associated backing",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Backing",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fundsCaptureKey",
+            "description": "The funds capture key",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rewardItemTax",
+            "description": "The cost of tax on reward items",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingAmount",
+            "description": "The cost of shipping",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "shippingTax",
+            "description": "The cost of tax on shipping",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "state",
+            "description": "The order's state, e.g. draft, submitted, successful, errored, missed",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "OrderStateEnum",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total",
+            "description": "The total cost for the order including taxes and shipping",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "totalTax",
+            "description": "The total tax amount for the order",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Money",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "OrderAddress",
+        "description": "An address associated with an order",
+        "fields": [
+          {
+            "name": "addressLine1",
+            "description": "The first address line",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "addressLine2",
+            "description": "The second address line",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "city",
+            "description": "The address city",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contactName",
+            "description": "The address contact name",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "country",
+            "description": "The address country, e.g. US",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "phoneNumber",
+            "description": "The address contact's phone number",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "postalCode",
+            "description": "The address postal code",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "region",
+            "description": "The address region, e.g. North Dakota",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "OrderStateEnum",
+        "description": "The state of the order, e.g. draft, submitted, successful, errored, missed.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "draft",
+            "description": "draft",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "submitted",
+            "description": "submitted",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "successful",
+            "description": "successful",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "errored",
+            "description": "errored",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "missed",
+            "description": "missed",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
         "name": "GoalBuckets",
         "description": "Buckets of project goals",
@@ -30576,6 +31356,60 @@
             "type": {
               "kind": "OBJECT",
               "name": "CreateFreeformPostPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createOrUpdateItemTaxConfig",
+            "description": "Sets tax related info for an item",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrUpdateItemTaxConfigInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateOrUpdateItemTaxConfigPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createOrUpdateOrderAddress",
+            "description": "Assign an address to an order",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrUpdateOrderAddressInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateOrUpdateOrderAddressPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -32736,6 +33570,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "UpdateCreatorInterviewPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateOrderState",
+            "description": "Update the state of an order, e.g. draft, submitted, successful, errored, missed.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateOrderStateInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateOrderStatePayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -35422,6 +36283,12 @@
             "description": "EditorialRichText",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "SurveyEmbed",
+            "description": "SurveyEmbed",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -35787,6 +36654,326 @@
               "kind": "OBJECT",
               "name": "FreeformPost",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateOrUpdateItemTaxConfigInput",
+        "description": "Autogenerated input type of CreateOrUpdateItemTaxConfig",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "itemId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "itemType",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "ItemTypeEnum",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "taxCode",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "marketValue",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "shippingPreference",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "TaxConfigShippingPreference",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "shipFromAddressId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "localAddressId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateOrUpdateItemTaxConfigPayload",
+        "description": "Autogenerated return type of CreateOrUpdateItemTaxConfig",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "item",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RewardItem",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateOrUpdateOrderAddressInput",
+        "description": "Autogenerated input type of CreateOrUpdateOrderAddress",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "orderId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "contactName",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "addressLine1",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "addressLine2",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "city",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "region",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "country",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "postalCode",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "phoneNumber",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateOrUpdateOrderAddressPayload",
+        "description": "Autogenerated return type of CreateOrUpdateOrderAddress",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "clientSecret",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "orderAddress",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "OrderAddress",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -38467,6 +39654,20 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -43448,6 +44649,20 @@
             "defaultValue": null
           },
           {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -43728,6 +44943,94 @@
               "kind": "OBJECT",
               "name": "CreatorInterview",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UpdateOrderStateInput",
+        "description": "Autogenerated input type of UpdateOrderState",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "ID of the order being updated",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "state",
+            "description": "New state of the order",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "OrderStateEnum",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateOrderStatePayload",
+        "description": "Autogenerated return type of UpdateOrderState",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "order",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Order",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -44063,6 +45366,24 @@
             "defaultValue": null
           },
           {
+            "name": "faqs",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "FaqInput",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -44184,6 +45505,69 @@
           },
           {
             "name": "description",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "FaqInput",
+        "description": "A FAQ question and answer for a project.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "position",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "question",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "answer",
             "description": null,
             "type": {
               "kind": "NON_NULL",

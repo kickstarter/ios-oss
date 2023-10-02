@@ -9,6 +9,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case overviewCreatorHeader
     case overview
     case overviewSubpages
+    case overviewReportProject
     case campaignHeader
     case campaign
     case faqsHeader
@@ -104,7 +105,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
 
       let values: [ProjectPamphletSubpage] = [
         .comments(project.stats.commentsCount as Int?, .first),
-        .updates(project.stats.updatesCount as Int?, .last)
+        .updates(project.stats.updatesCount as Int?, .middle)
       ]
 
       self.set(
@@ -112,6 +113,14 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         cellClass: ProjectPamphletSubpageCell.self,
         inSection: Section.overviewSubpages.rawValue
       )
+
+      if featureReportThisProjectEnabled(), AppEnvironment.current.currentUser != nil {
+        self.set(
+          values: [project.flagging ?? false],
+          cellClass: ReportProjectCell.self,
+          inSection: Section.overviewReportProject.rawValue
+        )
+      }
     case .campaign:
       self.set(
         values: [HeaderValue.campaign.description],
@@ -337,6 +346,8 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     case let (cell as AudioVideoViewElementCell, value as (AudioVideoViewElement, AVPlayer?, UIImage?)):
       cell.configureWith(value: value)
     case let (cell as ExternalSourceViewElementCell, value as ExternalSourceViewElement):
+      cell.configureWith(value: value)
+    case let (cell as ReportProjectCell, value as Bool):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

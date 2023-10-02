@@ -12,6 +12,7 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable, Equatable {
   case accessibility
   case environment
   case aiDisclosure
+  case prohibitedItems
 
   public static func helpType(from url: URL) -> HelpType? {
     let helpType = HelpType.allCases.filter { helpType in
@@ -57,6 +58,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable, Equatable {
       return ""
     case .aiDisclosure:
       return ""
+    case .prohibitedItems:
+      return ""
     }
   }
 
@@ -97,6 +100,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable, Equatable {
       return baseUrl.appendingPathComponent("environment")
     case .aiDisclosure:
       return baseUrl.appendingPathComponent("hc/en-us/articles/16848396410267")
+    case .prohibitedItems:
+      return baseUrl.appendingPathComponent("rules/prohibited")
     }
   }
 }
