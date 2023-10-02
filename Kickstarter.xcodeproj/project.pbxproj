@@ -481,6 +481,9 @@
 		6018626629A9194600EA2842 /* AppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626529A9194600EA2842 /* AppTrackingTransparency.swift */; };
 		6018626829A91B8C00EA2842 /* ThirdPartyEventInputName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
+		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
+		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
+		60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */; };
 		6049D0112A9CF6840015BB0D /* DesignSystemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */; };
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColors.swift */; };
@@ -512,6 +515,9 @@
 		60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */; };
 		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
 		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
+		60C996E42ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */; };
+		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
+		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
@@ -2073,6 +2079,9 @@
 		6018626529A9194600EA2842 /* AppTrackingTransparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyEventInputName.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
+		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
+		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
+		60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModelTests.swift; sourceTree = "<group>"; };
 		6049D0102A9CF6840015BB0D /* DesignSystemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemViewController.swift; sourceTree = "<group>"; };
 		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
 		6049D01E2AA774130015BB0D /* DesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemColors.swift; sourceTree = "<group>"; };
@@ -2101,6 +2110,9 @@
 		60C996EB2AC1FF0C006BE4F4 /* CreateFlagging.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateFlagging.graphql; sourceTree = "<group>"; };
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
+		60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThisProjectLabelView.swift; sourceTree = "<group>"; };
+		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
+		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		60DF50962A434E6B002C771F /* DashboardDeprecationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDeprecationView.swift; sourceTree = "<group>"; };
@@ -4651,6 +4663,7 @@
 				06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */,
 				477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */,
 				60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */,
+				60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */,
 				1965437928C814D300457EC6 /* Cells */,
 			);
 			path = Views;
@@ -5763,6 +5776,7 @@
 			isa = PBXGroup;
 			children = (
 				6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */,
+				60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */,
 			);
 			path = ReportProject;
 			sourceTree = "<group>";
@@ -6751,6 +6765,8 @@
 				A7ED1FA11E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift */,
 				47F4CA57267A7AD100356DBF /* RemoteConfigFeatureFlagToolsViewModel.swift */,
 				47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */,
+				60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */,
+				60368E6B2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift */,
 				A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */,
 				A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */,
 				8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */,
@@ -7718,6 +7734,7 @@
 				8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */,
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
 				A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */,
+				60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
 				D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */,
@@ -8220,6 +8237,7 @@
 				A7ED1FE51E831C5C00BFFA01 /* MessageDialogViewModelTests.swift in Sources */,
 				776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */,
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
+				60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */,
 				A7ED1FCA1E831C5C00BFFA01 /* DashboardProjectsDrawerViewModelTests.swift in Sources */,
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
 				D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
@@ -8317,6 +8335,7 @@
 				6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */,
+				60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */,
 				D6AE3F9220EA977D00DB212F /* SettingsNotificationsViewController.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
 				8A8099F822E2156E00373E66 /* RewardPledgeNavigationController.swift in Sources */,
@@ -8459,6 +8478,7 @@
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */,
 				60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */,
+				60C996E42ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */,

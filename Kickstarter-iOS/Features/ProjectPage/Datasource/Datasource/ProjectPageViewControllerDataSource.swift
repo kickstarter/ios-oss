@@ -114,11 +114,13 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
         inSection: Section.overviewSubpages.rawValue
       )
 
-      self.set(
-        values: [project.flagging ?? false],
-        cellClass: ReportProjectCell.self,
-        inSection: Section.overviewReportProject.rawValue
-      )
+      if featureReportThisProjectEnabled(), AppEnvironment.current.currentUser != nil {
+        self.set(
+          values: [project.flagging ?? false],
+          cellClass: ReportProjectCell.self,
+          inSection: Section.overviewReportProject.rawValue
+        )
+      }
     case .campaign:
       self.set(
         values: [HeaderValue.campaign.description],

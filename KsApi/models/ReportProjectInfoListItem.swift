@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 
 enum ReportProjectInfoListItemType {
@@ -7,8 +8,9 @@ enum ReportProjectInfoListItemType {
 }
 
 struct ReportProjectInfoListItem: Identifiable, Hashable {
-  var type: ReportProjectInfoListItemType
   var id = UUID()
+  var type: ReportProjectInfoListItemType
+  var flaggingKind: GraphAPI.FlaggingKind?
   var title: String
   var subtitle: String
   var subItems: [ReportProjectInfoListItem]?
@@ -48,21 +50,25 @@ let thisProjecBreaksSubListItems =
   [
     ReportProjectInfoListItem(
       type: .child,
+      flaggingKind: .plagiarism,
       title: Strings.Copying_reselling(),
       subtitle: Strings.Projects_cannot_plagiarize()
     ),
     ReportProjectInfoListItem(
       type: .child,
+      flaggingKind: .guidelinesViolation,
       title: Strings.Prototype_misrepresentation(),
       subtitle: Strings.Creators_must_be_transparent()
     ),
     ReportProjectInfoListItem(
       type: .child,
+      flaggingKind: .guidelinesViolation,
       title: Strings.Suspicious_creator_behavior(),
       subtitle: Strings.Project_creators_and_their()
     ),
     ReportProjectInfoListItem(
       type: .child,
+      flaggingKind: .guidelinesViolation,
       title: Strings.Not_raising_funds(),
       subtitle: Strings.Projects_on()
     )
@@ -72,11 +78,13 @@ let thisProjecBreaksSubListItems =
 let reportSpamSubListItems = [
   ReportProjectInfoListItem(
     type: .child,
+    flaggingKind: .spam,
     title: Strings.Spam(),
     subtitle: Strings.Ex_using()
   ),
   ReportProjectInfoListItem(
     type: .child,
+    flaggingKind: .abuse,
     title: Strings.Abuse(),
     subtitle: Strings.Ex_posting()
   )
@@ -86,6 +94,7 @@ let reportSpamSubListItems = [
 let intellectualProperySubListItems = [
   ReportProjectInfoListItem(
     type: .child,
+    flaggingKind: .notProjectOther,
     title: Strings.Intellectual_property_violation(),
     subtitle: Strings.Kickstarter_takes_claims()
   )

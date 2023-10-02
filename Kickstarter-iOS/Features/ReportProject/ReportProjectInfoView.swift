@@ -21,26 +21,42 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
 
 @available(iOS 15, *)
 struct ReportProjectInfoView: View {
+  let projectID: String
   let projectUrl: String
+  let onSuccessfulSubmit: () -> Void
 
+  @SwiftUI.Environment(\.dismiss) private var dismiss
   @State private var selection: Set<ReportProjectInfoListItem> = []
+  @State private var popToRoot = false
 
   var body: some View {
     ScrollView {
       ForEach(listItems) { item in
-        RowView(item: item, isExpanded: self.selection.contains(item))
-          .modifier(ListRowModifier())
-          .onTapGesture {
-            withAnimation {
-              self.selectDeselect(item)
-            }
+        RowView(
+          item: item,
+          isExpanded: self.selection.contains(item),
+          projectID: self.projectID,
+          projectUrl: self.projectUrl,
+          popToRoot: self.$popToRoot
+        )
+        .modifier(ListRowModifier())
+        .onTapGesture {
+          withAnimation {
+            self.selectDeselect(item)
           }
-          .padding(5)
-          .animation(.linear(duration: 0.3))
+        }
+        .padding(5)
+        .animation(.linear(duration: 0.3))
       }
     }
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
+    .onChange(of: popToRoot) { newValue in
+      if newValue == true {
+        dismiss()
+        onSuccessfulSubmit()
+      }
+    }
   }
 
   private func selectDeselect(_ item: ReportProjectInfoListItem) {
@@ -95,6 +111,10 @@ private struct BaseRowView: View {
 struct RowView: View {
   var item: ReportProjectInfoListItem
   let isExpanded: Bool
+  let projectID: String
+  let projectUrl: String
+
+  @Binding var popToRoot: Bool
 
   private let contentSpacing = 10.0
   private let contentPadding = 12.0
@@ -107,9 +127,18 @@ struct RowView: View {
         if isExpanded {
           ForEach(item.subItems ?? []) { item in
             VStack(alignment: .leading, spacing: contentSpacing) {
-              // TODO: Push Submission Form View In MBL-971(https://kickstarter.atlassian.net/browse/MBL-971)
-              NavigationLink(destination: { Text("submit report view") }, label: { BaseRowView(item: item) })
-                .buttonStyle(PlainButtonStyle())
+              NavigationLink(
+                destination: {
+                  ReportProjectFormView(
+                    projectID: self.projectID,
+                    projectURL: self.projectUrl,
+                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation,
+                    popToRoot: $popToRoot
+                  )
+                },
+                label: { BaseRowView(item: item) }
+              )
+              .buttonStyle(PlainButtonStyle())
             }
             .padding(.vertical, 5)
             .padding(.leading, self.contentPadding)
@@ -142,14 +171,5 @@ struct ListRowModifier: ViewModifier {
       content
       Divider()
     }.offset(x: 20)
-  }
-}
-
-// MARK: - Preview
-
-@available(iOS 15, *)
-struct ReportProjectInfoView_Previews: PreviewProvider {
-  static var previews: some View {
-    ReportProjectInfoView(projectUrl: "")
   }
 }
