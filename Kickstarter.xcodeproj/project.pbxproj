@@ -7660,6 +7660,7 @@
 		};
 		8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
