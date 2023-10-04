@@ -58,9 +58,6 @@ public protocol ProjectPageViewModelInputs {
   /// Call when didSelectRow is called on the report project cell.
   func tappedReportProject()
 
-  /// Call when the creator header cell progress view is tapped.
-  func tappedViewProgress(of project: Project)
-
   /// Call when the user session starts and we want to reload the data source.
   func userSessionStarted()
 
@@ -588,11 +585,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let tappedReportProjectProperty = MutableProperty(())
   public func tappedReportProject() {
     self.tappedReportProjectProperty.value = ()
-  }
-
-  fileprivate let tappedViewProgressProperty = MutableProperty<Project?>(nil)
-  public func tappedViewProgress(of project: Project) {
-    self.tappedViewProgressProperty.value = project
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
