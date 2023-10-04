@@ -34,6 +34,7 @@ base_job: &base_job
 
 test_job: &test_job
   steps:
+    - macos/install-rosetta
     - attach_workspace:
         at: .
     - run:
@@ -55,6 +56,7 @@ test_job: &test_job
 
 distribute_job: &distribute_job
   steps:
+    - macos/install-rosetta
     - attach_workspace:
         at: .
     - aws-cli/setup:
@@ -165,6 +167,7 @@ jobs:
     environment:
       - *default_environment
     steps:
+      - macos/install-rosetta
       - checkout
       - aws-cli/setup:
           <<: *aws_cli_setup
