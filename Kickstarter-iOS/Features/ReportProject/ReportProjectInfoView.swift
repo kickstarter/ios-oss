@@ -30,24 +30,13 @@ struct ReportProjectInfoView: View {
   @State private var popToRoot = false
 
   var body: some View {
-    ScrollView {
-      ForEach(listItems) { item in
-        RowView(
-          item: item,
-          isExpanded: self.selection.contains(item),
-          projectID: self.projectID,
-          projectUrl: self.projectUrl,
-          popToRoot: self.$popToRoot
-        )
-        .modifier(ListRowModifier())
-        .onTapGesture {
-          withAnimation {
-            self.selectDeselect(item)
-          }
-        }
-        .padding(5)
-        .animation(.linear(duration: 0.3))
-      }
+    List(listItems, children: \.subItems) { item in
+      RowView(
+        item: item,
+        projectID: self.projectID,
+        projectUrl: self.projectUrl,
+        popToRoot: self.$popToRoot
+      )
     }
     .navigationTitle(Strings.Report_this_project())
     .navigationBarTitleDisplayMode(.inline)
@@ -57,6 +46,8 @@ struct ReportProjectInfoView: View {
         onSuccessfulSubmit()
       }
     }
+    .listStyle(.plain)
+    .listItemTint(Color(.ksr_create_700))
   }
 
   private func selectDeselect(_ item: ReportProjectInfoListItem) {
@@ -73,80 +64,52 @@ struct ReportProjectInfoView: View {
 @available(iOS 15, *)
 private struct BaseRowView: View {
   var item: ReportProjectInfoListItem
-  var isExpanded: Bool = false
 
   var body: some View {
-    HStack {
-      VStack(spacing: 5) {
-        Text(item.title)
-          .font(item.type == .parent ? Font(UIFont.ksr_body()) : Font(UIFont.ksr_callout()))
-          .bold()
+    VStack(spacing: 5) {
+      Text(item.title)
+        .font(item.type == .parent ? Font(UIFont.ksr_body()) : Font(UIFont.ksr_callout()))
+        .bold()
+        .frame(maxWidth: .infinity, alignment: .leading)
+
+      if let hyperLink = hyperLink(in: item.subtitle) {
+        Text(html: item.subtitle, with: [hyperLink.stringLiteral()])
+          .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
           .frame(maxWidth: .infinity, alignment: .leading)
-
-        if let hyperLink = hyperLink(in: item.subtitle) {
-          Text(html: item.subtitle, with: [hyperLink.stringLiteral()])
-            .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .multilineTextAlignment(.leading)
-        } else {
-          Text(item.subtitle)
-            .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .multilineTextAlignment(.leading)
-        }
+          .multilineTextAlignment(.leading)
+      } else {
+        Text(item.subtitle)
+          .font(item.type == .parent ? Font(UIFont.ksr_subhead()) : Font(UIFont.ksr_footnote()))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .multilineTextAlignment(.leading)
       }
-
-      Spacer()
-
-      Image(isExpanded ? "arrow-down" : "chevron-right")
-        .resizable()
-        .scaledToFit()
-        .frame(width: 15, height: 15)
-        .foregroundColor(item.type == .parent ? Color(.ksr_create_700) : Color(.ksr_support_400))
     }
+    .accessibilityElement(children: .combine)
   }
 }
 
 @available(iOS 15, *)
 struct RowView: View {
   var item: ReportProjectInfoListItem
-  let isExpanded: Bool
   let projectID: String
   let projectUrl: String
 
   @Binding var popToRoot: Bool
 
-  private let contentSpacing = 10.0
-  private let contentPadding = 12.0
-
   var body: some View {
-    HStack {
-      VStack(alignment: .leading) {
-        BaseRowView(item: item, isExpanded: isExpanded)
-
-        if isExpanded {
-          ForEach(item.subItems ?? []) { item in
-            VStack(alignment: .leading, spacing: contentSpacing) {
-              NavigationLink(
-                destination: {
-                  ReportProjectFormView(
-                    projectID: self.projectID,
-                    projectURL: self.projectUrl,
-                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation,
-                    popToRoot: $popToRoot
-                  )
-                },
-                label: { BaseRowView(item: item) }
-              )
-              .buttonStyle(PlainButtonStyle())
-            }
-            .padding(.vertical, 5)
-            .padding(.leading, self.contentPadding)
-          }
-        }
+    VStack(alignment: .leading) {
+      if let subItems = item.subItems, subItems.count > 0 {
+        BaseRowView(item: item)
+      } else {
+        NavigationLink(destination: { ReportProjectFormView(
+          projectID: self.projectID,
+          projectURL: self.projectUrl,
+          projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation,
+          popToRoot: $popToRoot
+        ) }, label: { BaseRowView(item: item) })
+          .buttonStyle(PlainButtonStyle())
       }
     }
-    .padding(.trailing, 30)
   }
 }
 
@@ -161,15 +124,4 @@ private func hyperLink(in string: String) -> ReportProjectHyperLinkType? {
   }
 
   return nil
-}
-
-// MARK: - Modifiers
-
-struct ListRowModifier: ViewModifier {
-  func body(content: Content) -> some View {
-    Group {
-      content
-      Divider()
-    }.offset(x: 20)
-  }
 }
