@@ -768,65 +768,6 @@ public final class KSRAnalytics {
     )
   }
 
-  // MARK: - Creator Dashboard Events
-
-  /**
-   Call when the creator dashboard page is viewed and the first page is loaded.
-   */
-
-  public func trackCreatorDashboardPageViewed() {
-    let props = contextProperties(
-      ctaContext: .creatorDashboard,
-      page: .creatorDashboard,
-      sectionContext: .dashboard
-    )
-    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
-  }
-
-  /**
-   Call when a project is switched via dropdown at the top of the creator dashboard
-
-   - parameter project: The `Project` that the creator switched to.
-   - parameter refTag: The ref tag used when switching projects.
-   */
-
-  public func trackCreatorDashboardSwitchProjectClicked(project: Project, refTag: RefTag?) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(
-        ctaContext: .projectSelect,
-        page: .creatorDashboard,
-        sectionContext: .dashboard
-      ))
-
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props,
-      refTag: refTag?.stringTag
-    )
-  }
-
-  /**
-   Call when 'Post Update' is tapped in the creator dashboard
-
-   - parameter project: The `Project` corresponding to the update.
-   - parameter refTag: The ref tag used when switching projects.
-   */
-
-  public func trackCreatorDashboardPostUpdateClicked(project: Project, refTag: RefTag?) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(
-        ctaContext: .projectUpdateCreateDraft,
-        page: .creatorDashboard,
-        sectionContext: .dashboard
-      ))
-
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props,
-      refTag: refTag?.stringTag
-    )
-  }
-
   // MARK: - Pledge Events
 
   public func trackAddOnsContinueButtonClicked(
@@ -1528,9 +1469,6 @@ private func properties(
   result["share_type"] = shareActivityType.flatMap(shareTypeProperty)
 
   switch shareContext {
-  case let .creatorDashboard(project):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
-    result["context"] = "creator_dashboard"
   case let .discovery(project):
     result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
     result["context"] = "discovery"

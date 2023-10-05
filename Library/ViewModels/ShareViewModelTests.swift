@@ -43,13 +43,6 @@ internal final class ShareViewModelTests: TestCase {
     self.showShareSheet.assertValueCount(1)
   }
 
-  func testShowShareSheet_CreatorDashboard() {
-    self.vm.inputs.configureWith(shareContext: .creatorDashboard(.template), shareContextView: nil)
-    self.vm.inputs.shareButtonTapped()
-
-    self.showShareSheet.assertValueCount(1)
-  }
-
   func testShowShareSheet_Update() {
     self.vm.inputs.configureWith(shareContext: .update(.template, .template), shareContextView: nil)
     self.vm.inputs.shareButtonTapped()

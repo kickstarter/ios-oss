@@ -93,9 +93,6 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a `Project` when the comments are to be rendered.
   var goToComments: Signal<Project, Never> { get }
 
-  /// Emits a `Param` when the creator header cell progress view is tapped.
-  var goToDashboard: Signal<Param, Never> { get }
-
   /// Emits `ManagePledgeViewParamConfigData` to take the user to the `ManagePledgeViewController`
   var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
@@ -348,10 +345,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToComments = project
       .takeWhen(self.tappedCommentsProperty.signal)
-
-    self.goToDashboard = self.tappedViewProgressProperty.signal
-      .skipNil()
-      .map { .id($0.id) }
 
     self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
@@ -628,7 +621,6 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let configureProjectNavigationSelectorView: Signal<(Project, RefTag?), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToComments: Signal<Project, Never>
-  public let goToDashboard: Signal<Param, Never>
   public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToUpdates: Signal<Project, Never>

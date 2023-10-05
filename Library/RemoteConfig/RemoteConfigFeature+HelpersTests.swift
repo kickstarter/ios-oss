@@ -39,24 +39,6 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
-  func testCreatorDashboard_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featureCreatorDashboardEnabled())
-    }
-  }
-
-  func testCreatorDashboard_RemoteConfig_FeatureFlag_False() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.creatorDashboardEnabled.rawValue: false]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureCreatorDashboardEnabled())
-    }
-  }
-
   func testReportThisProject_RemoteConfig_FeatureFlag_True() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.reportThisProjectEnabled.rawValue: true]

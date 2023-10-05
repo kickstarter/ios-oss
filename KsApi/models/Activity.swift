@@ -13,10 +13,6 @@ public struct Activity {
 
   public enum Category: String {
     case backing
-    case backingAmount = "backing-amount"
-    case backingCanceled = "backing-canceled"
-    case backingDropped = "backing-dropped"
-    case backingReward = "backing-reward"
     case cancellation
     case commentPost = "comment-post"
     case commentProject = "comment-project"

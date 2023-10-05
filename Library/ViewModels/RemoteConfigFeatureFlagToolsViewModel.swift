@@ -89,8 +89,6 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureConsentManagementDialogEnabled()
   case .facebookLoginInterstitialEnabled:
     return featureFacebookLoginInterstitialEnabled()
-  case .creatorDashboardEnabled:
-    return featureCreatorDashboardEnabled()
   case .reportThisProjectEnabled:
     return featureReportThisProjectEnabled()
   case .useOfAIProjectTab:
@@ -108,9 +106,6 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
-  case .creatorDashboardEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardEnabled.rawValue]
   case .reportThisProjectEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue]
@@ -130,9 +125,6 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
-  case .creatorDashboardEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.creatorDashboardEnabled.rawValue] = value
   case .reportThisProjectEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] = value

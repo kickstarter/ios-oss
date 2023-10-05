@@ -11,7 +11,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let goToBackingProjectParam = TestObserver<Param, Never>()
   fileprivate let goToBackingBackingParam = TestObserver<Param?, Never>()
   fileprivate let goToComments = TestObserver<Project, Never>()
-  fileprivate let goToDashboard = TestObserver<Param, Never>()
   fileprivate let goToRewardPledgeProject = TestObserver<Project, Never>()
   fileprivate let goToRewardPledgeReward = TestObserver<Reward, Never>()
   fileprivate let goToUpdates = TestObserver<Project, Never>()
@@ -25,7 +24,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.outputs.goToBacking.map(first).observe(self.goToBackingProjectParam.observer)
     self.vm.outputs.goToBacking.map(second).observe(self.goToBackingBackingParam.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
-    self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToRewardPledge.map(first).observe(self.goToRewardPledgeProject.observer)
     self.vm.outputs.goToRewardPledge.map(second).observe(self.goToRewardPledgeReward.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
@@ -68,15 +66,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.tappedComments()
 
     self.goToComments.assertValues([project])
-  }
-
-  func testGoToDashboard() {
-    let project = Project.template
-    let param: Param = .id(project.id)
-
-    self.vm.inputs.tappedViewProgress(of: project)
-
-    self.goToDashboard.assertValue(param)
   }
 
   func testGoToRewardPledge_LiveProject_NoReward() {

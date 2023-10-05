@@ -371,16 +371,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         self?.goToComments(project: $0)
       }
 
-    self.viewModel.outputs.goToDashboard
-      .observeForControllerAction()
-      .observeValues { [weak self] param in
-        guard featureCreatorDashboardEnabled() else {
-          return
-        }
-
-        self?.goToDashboard(param: param)
-      }
-
     self.viewModel.outputs.goToReportProject
       .observeForControllerAction()
       .observeValues { [weak self] flagged, projectID, projectUrl in
@@ -672,18 +662,6 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       self.navigationController?
         .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
     }
-  }
-
-  private func goToDashboard(param: Param) {
-    self.view.window?.rootViewController
-      .flatMap { $0 as? RootTabBarViewController }
-      .doIfSome { root in
-        UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
-          root.switchToDashboard(project: param)
-        }, completion: { [weak self] _ in
-          self?.dismiss(animated: true, completion: nil)
-        })
-      }
   }
 
   private func goToUpdates(project: Project) {

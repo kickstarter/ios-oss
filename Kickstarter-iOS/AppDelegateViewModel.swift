@@ -126,13 +126,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
-  /// Emits when application should navigate to the creator's message thread
-  var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
-
-  /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDashboard: Signal<Param?, Never> { get }
-
-  /// Emits when the root view controller should navigate to the creator dashboard.
+  /// Emits when the root view controller should navigate to the discovery screen.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits when the root view controller should present the login modal.
@@ -143,9 +137,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), Never> { get }
-
-  /// Emits when should navigate to the project activities view
-  var goToProjectActivities: Signal<Param, Never> { get }
 
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
@@ -522,18 +513,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       goToLogin.mapConst(.generic)
     )
 
-    self.goToCreatorMessageThread = deepLink
-      .map { navigation -> (Param, Int)? in
-        guard case let .creatorMessages(projectId, messageThreadId) = navigation else { return nil }
-        return .some((projectId, messageThreadId: messageThreadId))
-      }
-      .skipNil()
-      .switchMap { projectId, messageThreadId in
-        AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: messageThreadId)
-          .demoteErrors()
-          .map { (projectId, $0.messageThread) }
-      }
-
     self.goToMessageThread = deepLink
       .map { navigation -> Int? in
         guard case let .messages(messageThreadId) = navigation else { return nil }
@@ -546,13 +525,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { $0.messageThread }
       }
 
-    self.goToProjectActivities = deepLink
-      .map { navigation -> Param? in
-        guard case let .projectActivity(projectId) = navigation else { return nil }
-        return .some(projectId)
-      }
-      .skipNil()
-
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
       .ignoreValues()
@@ -564,13 +536,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .filter { Navigation.deepLinkMatch($0) == nil }
 
     self.goToMobileSafari = resolvedRedirectUrl
-
-    self.goToDashboard = deepLink
-      .map { link -> Param?? in
-        guard case let .tab(.dashboard(param)) = link else { return nil }
-        return .some(param)
-      }
-      .skipNil()
 
     let projectRootLink = Signal.merge(projectLink, projectPreviewLink)
       .filter { _, subpage, _, _ in subpage == .root }
@@ -951,13 +916,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
-  public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
-  public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
-  public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
   public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
@@ -1052,15 +1014,9 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     switch activity.category {
     case .backing:
       guard let projectId = activity.projectId else { return nil }
-      if envelope.forCreator == true {
-        return .projectActivity(.id(projectId))
-      }
       return .project(.id(projectId), .root, refTag: .push)
     case .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
-      if envelope.forCreator == .some(true) {
-        return .tab(.dashboard(project: .id(projectId)))
-      }
       return .project(.id(projectId), .root, refTag: .push)
 
     case .update:
@@ -1087,10 +1043,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
       }
       return .project(.id(projectId), .comments, refTag: .push)
 
-    case .backingAmount, .backingCanceled, .backingDropped, .backingReward:
-      guard let projectId = activity.projectId else { return nil }
-      return .tab(.dashboard(project: .id(projectId)))
-
     case .follow:
       return .tab(.activity)
 
@@ -1100,18 +1052,11 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let project = envelope.project {
-    if envelope.forCreator == .some(true) {
-      return .tab(.dashboard(project: .id(project.id)))
-    }
     return .project(.id(project.id), .root, refTag: .push)
   }
 
   if let message = envelope.message {
-    if envelope.forCreator == .some(true) {
-      return .creatorMessages(.id(message.projectId), messageThreadId: message.messageThreadId)
-    } else {
-      return .messages(messageThreadId: message.messageThreadId)
-    }
+    return .messages(messageThreadId: message.messageThreadId)
   }
 
   if let survey = envelope.survey {
@@ -1132,9 +1077,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 // Figures out a `Navigation` to route the user to from a shortcut item.
 private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
   switch shortcutItem {
-  case .creatorDashboard:
-    return SignalProducer(value: .tab(.dashboard(project: nil)))
-
   case .recommendedForYou:
     let params = .defaults
       |> DiscoveryParams.lens.recommended .~ true
@@ -1179,13 +1121,9 @@ private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem]
 
 // Figures out which shortcut items to show to a user based on whether they are a project member and/or
 // has recommendations.
-private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
+private func shortcutItems(isProjectMember _: Bool, hasRecommendations: Bool)
   -> [ShortcutItem] {
   var items: [ShortcutItem] = []
-
-  if isProjectMember {
-    items.append(.creatorDashboard)
-  }
 
   if hasRecommendations {
     items.append(.recommendedForYou)
@@ -1208,14 +1146,6 @@ private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [Stri
 extension ShortcutItem {
   public var applicationShortcutItem: UIApplicationShortcutItem {
     switch self {
-    case .creatorDashboard:
-      return .init(
-        type: self.typeString,
-        localizedTitle: Strings.accessibility_discovery_buttons_creator_dashboard(),
-        localizedSubtitle: nil,
-        icon: UIApplicationShortcutIcon(templateImageName: "shortcut-icon-bars"),
-        userInfo: nil
-      )
     case .projectsWeLove:
       return .init(
         type: self.typeString,

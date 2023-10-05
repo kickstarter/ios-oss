@@ -7,7 +7,6 @@ public enum RefTag {
   case categoryFeatured
   case categoryWithSort(DiscoveryParams.Sort)
   case city
-  case dashboard
   case dashboardActivity
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
@@ -52,7 +51,6 @@ public enum RefTag {
     case "category_newest": self = .categoryWithSort(.newest)
     case "category_popular": self = .categoryWithSort(.popular)
     case "city": self = .city
-    case "dashboard": self = .dashboard
     case "dashboard_activity": self = .dashboardActivity
     case "discovery": self = .discovery
     case "discovery_ending_soon": self = .discoveryWithSort(.endingSoon)
@@ -110,8 +108,6 @@ public enum RefTag {
       return "category" + sortRefTagSuffix(sort)
     case .city:
       return "city"
-    case .dashboard:
-      return "dashboard"
     case .dashboardActivity:
       return "dashboard_activity"
     case .discovery:

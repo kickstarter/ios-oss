@@ -22,9 +22,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let findRedirectUrl = TestObserver<URL, Never>()
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
-  private let goToDashboard = TestObserver<Param?, Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
-  private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
@@ -71,12 +69,10 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
-    self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
-    self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
@@ -719,25 +715,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToActivity.assertValueCount(1)
   }
 
-  func testGoToDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToDashboard.assertValueCount(0)
-
-    let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: URL(string: url)!,
-      options: [:]
-    )
-    XCTAssertTrue(result)
-
-    self.goToDashboard.assertValueCount(1)
-  }
-
   func testGoToDiscovery() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -1195,16 +1172,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOpenNotification_NewBacking_ForCreator() {
-    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
-      .flatMap { $0["project_id"] as? Int }
-    let param = Param.id(projectId ?? -1)
-
-    self.vm.inputs.didReceive(remoteNotification: backingForCreatorPushData)
-
-    self.goToProjectActivities.assertValues([param])
-  }
-
   func testOpenNotification_NewBacking_ForCreator_WithBadData() {
     var badPushData = backingForCreatorPushData
     var badActivityData = badPushData["activity"] as? [String: AnyObject]
@@ -1212,8 +1179,6 @@ final class AppDelegateViewModelTests: TestCase {
     badPushData["activity"] = badActivityData
 
     self.vm.inputs.didReceive(remoteNotification: badPushData)
-
-    self.goToDashboard.assertValueCount(0)
   }
 
   func testOpenNotification_ProjectUpdate() {
@@ -1314,29 +1279,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOpenNotification_CreatorActivity() {
-    let categories: [Activity.Category] = [.backingAmount, .backingCanceled, .backingDropped, .backingReward]
-
-    let projectId = (backingForCreatorPushData["activity"] as? [String: AnyObject])
-      .flatMap { $0["project_id"] as? Int }
-    let param = Param.id(projectId ?? -1)
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    categories.enumerated().forEach { idx, state in
-      var pushData = genericActivityPushData
-      pushData["activity"]?["category"] = state.rawValue
-
-      self.vm.inputs.didReceive(remoteNotification: pushData)
-
-      self.goToDashboard.assertValueCount(idx + 1)
-      self.goToDashboard.assertLastValue(param)
-    }
-  }
-
   func testOpenNotification_PostLike() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
       let pushData: [String: Any] = [
@@ -1369,7 +1311,6 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.vm.inputs.didReceive(remoteNotification: pushData)
 
-      self.goToDashboard.assertValueCount(0)
       self.goToDiscovery.assertValueCount(0)
       self.presentViewController.assertValueCount(0)
     }
@@ -1475,36 +1416,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.setApplicationShortcutItems.assertValues([
-        [.creatorDashboard, .recommendedForYou, .projectsWeLove, .search]
+        [.recommendedForYou, .projectsWeLove, .search]
       ])
     }
-  }
-
-  func testPerformShortcutItem_CreatorDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    self.goToDashboard.assertValueCount(0)
-
-    self.vm.inputs.applicationPerformActionForShortcutItem(
-      ShortcutItem.creatorDashboard.applicationShortcutItem
-    )
-
-    self.goToDashboard.assertValueCount(1)
-  }
-
-  func testLaunchShortcutItem_CreatorDashboard() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [
-        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.creatorDashboard.applicationShortcutItem
-      ]
-    )
-
-    self.goToDashboard.assertValueCount(1)
-    XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
   }
 
   func testPerformShortcutItem_ProjectsWeLove() {

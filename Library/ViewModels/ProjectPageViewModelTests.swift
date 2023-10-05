@@ -35,7 +35,6 @@ final class ProjectPageViewModelTests: TestCase {
   private let configureProjectNavigationSelectorView = TestObserver<(Project, RefTag?), Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToComments = TestObserver<Project, Never>()
-  private let goToDashboard = TestObserver<Param, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
   private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToReportProject = TestObserver<(Bool, String, String), Never>()
@@ -103,7 +102,6 @@ final class ProjectPageViewModelTests: TestCase {
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
-    self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
     self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToReportProject.observe(self.goToReportProject.observer)
@@ -768,18 +766,6 @@ final class ProjectPageViewModelTests: TestCase {
     XCTAssertEqual(self.goToReportProject.lastValue?.0, false)
     XCTAssertEqual(self.goToReportProject.lastValue?.1, project.graphID)
     XCTAssertEqual(self.goToReportProject.lastValue?.2, project.urls.web.project)
-  }
-
-  func testGoToDashboard() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
-
-    self.vm.inputs.viewDidLoad()
-
-    self.goToDashboard.assertDidNotEmitValue()
-
-    self.vm.inputs.tappedViewProgress(of: .template)
-
-    self.goToDashboard.assertValues([.id(Project.template.id)])
   }
 
   func testGoToRewards() {
