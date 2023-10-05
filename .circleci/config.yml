@@ -95,6 +95,7 @@ jobs:
     environment:
       - *default_environment
     steps:
+      - macos/install-rosetta
       - checkout
       - run:
           name: SPM SSH Workaround
