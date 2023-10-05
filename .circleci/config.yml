@@ -30,12 +30,14 @@ base_job: &base_job
   macos:
     xcode: *xcode_version
   working_directory: ~/kickstarter
+  resource_class: macos.m1.medium.gen1
 
 test_job: &test_job
   steps:
+    - macos/install-rosetta
     - attach_workspace:
         at: .
-    - run: 
+    - run:
           name: Create iPhone 8 iOS 15.5 Simulator
           command: xcrun simctl create "iPhone 8" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
     - macos/preboot-simulator:
@@ -54,6 +56,7 @@ test_job: &test_job
 
 distribute_job: &distribute_job
   steps:
+    - macos/install-rosetta
     - attach_workspace:
         at: .
     - aws-cli/setup:
@@ -80,7 +83,7 @@ distribute_job: &distribute_job
         path: output
 
 all_jobs: &all_jobs
-  - kickstarter-tests  
+  - kickstarter-tests
   - library-tests
   - ksapi-tests
 
@@ -119,7 +122,7 @@ jobs:
           command: bin/danger.sh
       - persist_to_workspace:
           root: .
-          paths: 
+          paths:
             - .
 
   # Kickstarter tests
@@ -164,6 +167,7 @@ jobs:
     environment:
       - *default_environment
     steps:
+      - macos/install-rosetta
       - checkout
       - aws-cli/setup:
           <<: *aws_cli_setup

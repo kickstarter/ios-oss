@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -121,7 +121,6 @@
 		06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC12807A4C300950F60 /* ApolloUtils */; };
 		06634FC52807A4EB00950F60 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC42807A4EB00950F60 /* Prelude */; };
 		06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06634FC62807A4EB00950F60 /* Prelude_UIKit */; };
-		06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		06643F3C26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06643F3B26A61338002C5997 /* GraphAPI.UpdateUserAccountInput+UpdateUserAccountInput.swift */; };
 		0665C74926E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74826E9302100A0EDA1 /* Project+FetchProjectQueryDataTests.swift */; };
 		0665C74B26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665C74A26E930BC00A0EDA1 /* FetchProjectQueryTemplate.swift */; };
@@ -137,7 +136,6 @@
 		066C0AEB26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066C0AEA26CC22180048F4D8 /* UpdateBackingMutationTemplate.swift */; };
 		067A445026F9135D00A65F46 /* ExtendedProjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067A444F26F9135D00A65F46 /* ExtendedProjectProperties.swift */; };
 		067E7EC927BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067E7EC827BF0F2B00F02B33 /* AudioVideoViewElementCellViewModel.swift */; };
-		06813BA426E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */; };
 		068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2ED2761250400F69798 /* FetchCommentReplies.graphql */; };
 		068CD2F027615F3500F69798 /* CommentWithRepliesFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 068CD2EF27615F3500F69798 /* CommentWithRepliesFragment.graphql */; };
 		06962F8B273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962F8A273B32D900FB0B3D /* PostCommentEnvelope+PostCommentMutationDataTests.swift */; };
@@ -157,7 +155,6 @@
 		06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4226AF465000735908 /* UserCreditCards+UserFragmentTests.swift */; };
 		06B9AF4E26AF79DD00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
 		06B9AF4F26AF79DF00735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B9AF4426AF781000735908 /* UserEnvelope+GraphUserEnvelopeTemplates.swift */; };
-		06BD057626F15CFB00C44E36 /* FetchProjectFriendsById.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
 		06BD057826F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057726F15D3500C44E36 /* FetchProjectFriendsBySlug.graphql */; };
 		06BD75C126C42D5700A12D4E /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BD26C42D5600A12D4E /* ActivityComment.swift */; };
 		06BD75C226C42D5700A12D4E /* ActivityCommentAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD75BE26C42D5600A12D4E /* ActivityCommentAuthor.swift */; };
@@ -349,6 +346,10 @@
 		37FDAFAC2273BA4700662CC8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAF702273B7FF00662CC8 /* UIStackView.swift */; };
 		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
+		399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
+		399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
+		399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
+		399DAD8B2ACD163800238BA1 /* FetchProjectBySlugQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06813BA326E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql */; };
 		4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */; };
 		470B771A26FCDC8900EBD5CA /* RiskMessagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */; };
 		470B771C26FD022900EBD5CA /* RiskMessagingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B771B26FD022900EBD5CA /* RiskMessagingViewModelTests.swift */; };
@@ -389,7 +390,6 @@
 		47733001268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47733000268252C800E84915 /* RemoteConfigFeatureFlagToolsViewModelTests.swift */; };
 		4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4778EE1E26A1E8230059EA69 /* FetchUser.graphql */; };
 		4778EE2126A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4778EE2026A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift */; };
-		478E31C126C1C4C6004BF898 /* UnwatchProject.graphql in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
 		478E31C326C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C226C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift */; };
 		478E31C526C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */; };
 		478E31C726C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */; };
@@ -487,9 +487,6 @@
 		60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */; };
 		60C996F12AC2043A006BE4F4 /* CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */; };
 		60C996F22AC20487006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */; };
-		60C996E42ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */; };
-		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
-		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
 		60DA50EB28B689A4002E2DF1 /* SetYourPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */; };
 		60DA50F128B6953A002E2DF1 /* SetYourPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */; };
 		60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 60DA50FD28C38DDB002E2DF1 /* AlamofireImage */; };
@@ -2008,9 +2005,6 @@
 		60C996EB2AC1FF0C006BE4F4 /* CreateFlagging.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateFlagging.graphql; sourceTree = "<group>"; };
 		60C996ED2AC2030C006BE4F4 /* CreateFlaggingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInput.swift; sourceTree = "<group>"; };
 		60C996EF2AC20314006BE4F4 /* CreateFlaggingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFlaggingInputTests.swift; sourceTree = "<group>"; };
-		60C996E32ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportThisProjectLabelView.swift; sourceTree = "<group>"; };
-		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
-		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
 		60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		60DA50EF28B69534002E2DF1 /* SetYourPasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		701160D2291ECB250095BF24 /* LoadingBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItem.swift; sourceTree = "<group>"; };
@@ -7218,12 +7212,15 @@
 				06DAAE5526AA3CC800194E58 /* MoneyFragment.graphql in Resources */,
 				8AC3E0F5269F48A400168BF8 /* UpdateBacking.graphql in Resources */,
 				8A1556FF26939F4B00017845 /* FetchBackingQuery.graphql in Resources */,
+				399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */,
+				399DAD8B2ACD163800238BA1 /* FetchProjectBySlugQuery.graphql in Resources */,
 				06DAAE5D26AA3CF500194E58 /* UserStoredCardsFragment.graphql in Resources */,
 				068CD2F027615F3500F69798 /* CommentWithRepliesFragment.graphql in Resources */,
 				061A64FD26C3037600A5DDCA /* UserSendEmailVerification.graphql in Resources */,
 				06DAAE5A26AA3CD500194E58 /* CategoryFragment.graphql in Resources */,
 				06DAAE5126AA3CBF00194E58 /* UserFragment.graphql in Resources */,
 				6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */,
+				399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
 				6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
@@ -7231,6 +7228,7 @@
 				4778EE1F26A1E8230059EA69 /* FetchUser.graphql in Resources */,
 				47D8619926B9E4F700A31F9A /* ClearUserUnseenActivity.graphql in Resources */,
 				06DAAE5726AA3CCD00194E58 /* CreditCardFragment.graphql in Resources */,
+				399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */,
 				068CD2EE2761250400F69798 /* FetchCommentReplies.graphql in Resources */,
 				60C996EC2AC1FF0C006BE4F4 /* CreateFlagging.graphql in Resources */,
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
@@ -8035,7 +8033,7 @@
 				4751A675272B317500F81DD5 /* ProjectTabCategoryDescriptionCell.swift in Sources */,
 				06EB4E3127B5D32000D8BFCC /* PinchToZoom.swift in Sources */,
 				60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */,
-				60C996E42ABCA5E5006BE4F4 /* ReportThisProjectLabelView.swift in Sources */,
+				60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
 				D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */,
@@ -8295,7 +8293,6 @@
 				06232D422795EC3C00A81755 /* AudioVideoViewElement.swift in Sources */,
 				D01588D91EEB2ED7006E7684 /* User.AvatarLenses.swift in Sources */,
 				8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */,
-				06BD057626F15CFB00C44E36 /* FetchProjectFriendsById.graphql in Sources */,
 				D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */,
 				D01588371EEB2ED7006E7684 /* EncodableType.swift in Sources */,
 				065E6BAA26B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift in Sources */,
@@ -8420,12 +8417,10 @@
 				D63BBD31217F7212007E01F0 /* UserCreditCards.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
-				478E31C126C1C4C6004BF898 /* UnwatchProject.graphql in Sources */,
 				84264EEC25387B0500D8DF81 /* Param.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
-				06813BA426E2779C006BDFB2 /* FetchProjectBySlugQuery.graphql in Sources */,
 				062868E826B99E9F00EC5052 /* GraphAPI.DeletePaymentSourceInput+DeletePaymentSourceInput.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
@@ -8463,7 +8458,6 @@
 				D0158A201EEB30A2006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift in Sources */,
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
 				06261605273B10BC00389981 /* GraphAPI.PostCommentInput+PostCommentInput.swift in Sources */,
-				06643F3A26A5FF1C002C5997 /* UpdateUserAccount.graphql in Sources */,
 				60C996EE2AC2030C006BE4F4 /* CreateFlaggingInput.swift in Sources */,
 				06D23BC226F2533800F76122 /* Project+FetchProjectFriendsQueryData.swift in Sources */,
 				D015890B1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift in Sources */,
