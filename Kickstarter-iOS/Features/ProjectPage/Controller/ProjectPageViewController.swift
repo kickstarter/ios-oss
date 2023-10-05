@@ -370,6 +370,13 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.goToComments(project: $0)
       }
+    
+    self.viewModel.outputs.goToReportProject
+      .observeForControllerAction()
+      .observeValues { [weak self] flagged, projectID, projectUrl in
+        guard !flagged else { return }
+        self?.goToReportProject(projectID: projectID, projectUrl: projectUrl)
+      }
 
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
@@ -639,6 +646,21 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     } else {
       self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+  
+  private func goToReportProject(projectID: String, projectUrl: String) {
+    if #available(iOS 15, *) {
+      let reportProjectInfoView = ReportProjectInfoView(
+        projectID: projectID,
+        projectUrl: projectUrl,
+        onSuccessfulSubmit: { [weak self] in
+          self?.viewModel.inputs.viewDidLoad()
+        }
+      )
+      self.viewModel.inputs.showNavigationBar(false)
+      self.navigationController?
+        .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
     }
   }
 

@@ -752,6 +752,21 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.goToComments.assertValues([.template])
   }
+  
+  func testGoToReportProject() {
+    let project = Project.template
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.goToReportProject.assertDidNotEmitValue()
+
+    self.vm.inputs.tappedReportProject()
+
+    XCTAssertEqual(self.goToReportProject.lastValue?.0, false)
+    XCTAssertEqual(self.goToReportProject.lastValue?.1, project.graphID)
+    XCTAssertEqual(self.goToReportProject.lastValue?.2, project.urls.web.project)
+  }
 
   func testGoToRewards() {
     withEnvironment(config: .template, mainBundle: self.releaseBundle) {
