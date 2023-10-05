@@ -126,7 +126,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
-  /// Emits when the root view controller should navigate to the creator dashboard.
+  /// Emits when the root view controller should navigate to the discovery screen.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits when the root view controller should present the login modal.
