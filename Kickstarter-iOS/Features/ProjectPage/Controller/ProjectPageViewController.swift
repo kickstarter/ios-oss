@@ -370,7 +370,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] in
         self?.goToComments(project: $0)
       }
-    
+
     self.viewModel.outputs.goToReportProject
       .observeForControllerAction()
       .observeValues { [weak self] flagged, projectID, projectUrl in
@@ -648,7 +648,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
-  
+
   private func goToReportProject(projectID: String, projectUrl: String) {
     if #available(iOS 15, *) {
       let reportProjectInfoView = ReportProjectInfoView(

@@ -752,7 +752,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.goToComments.assertValues([.template])
   }
-  
+
   func testGoToReportProject() {
     let project = Project.template
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
