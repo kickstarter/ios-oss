@@ -96,7 +96,9 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
-      - checkout
+      - run:
+          name: Fast Checkout
+          command: git clone -b --single-branch "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL"
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
