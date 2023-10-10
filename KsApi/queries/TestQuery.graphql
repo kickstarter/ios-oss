@@ -1,0 +1,7 @@
+query TestQuery {
+  projects(starred: true, sort: END_DATE) {
+    nodes {
+      ...TestFragment
+    }
+  }
+}

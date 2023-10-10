@@ -1,0 +1,4 @@
+fragment TestFragment on Project {
+  name
+  backersCount
+}

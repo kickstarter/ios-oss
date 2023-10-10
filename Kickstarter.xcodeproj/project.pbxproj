@@ -1485,6 +1485,8 @@
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
+		E10D06842AD5D8EF00470B5C /* TestFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E10D06832AD5D8EF00470B5C /* TestFragment.graphql */; };
+		E10D06862AD5D93400470B5C /* TestQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E10D06852AD5D93400470B5C /* TestQuery.graphql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3027,6 +3029,8 @@
 		D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateType.swift; sourceTree = "<group>"; };
 		D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IsTruncated.swift"; sourceTree = "<group>"; };
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
+		E10D06832AD5D8EF00470B5C /* TestFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestFragment.graphql; sourceTree = "<group>"; };
+		E10D06852AD5D93400470B5C /* TestQuery.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestQuery.graphql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5496,14 +5500,6 @@
 			path = "SwiftUI+Extensions";
 			sourceTree = "<group>";
 		};
-		60DF50952A434E30002C771F /* DashboardDeprecationBanner */ = {
-			isa = PBXGroup;
-			children = (
-				60DF50962A434E6B002C771F /* DashboardDeprecationView.swift */,
-			);
-			path = DashboardDeprecationBanner;
-			sourceTree = "<group>";
-		};
 		7061848A29BE4C1E008F9941 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -5582,6 +5578,7 @@
 				6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */,
 				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
 				0655C7292732FDE00087281F /* FetchCategory.graphql */,
+				E10D06852AD5D93400470B5C /* TestQuery.graphql */,
 			);
 			path = queries;
 			sourceTree = "<group>";
@@ -5695,6 +5692,7 @@
 				6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */,
 				8A1556F1269398CB00017845 /* UserFragment.graphql */,
 				06DAAE5C26AA3CF500194E58 /* UserStoredCardsFragment.graphql */,
+				E10D06832AD5D8EF00470B5C /* TestFragment.graphql */,
 			);
 			path = fragments;
 			sourceTree = "<group>";
@@ -7234,8 +7232,10 @@
 				8AC3E0ED269F485100168BF8 /* CheckoutFragment.graphql in Resources */,
 				4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */,
 				06DAAE5426AA3CC600194E58 /* ProjectFragment.graphql in Resources */,
+				E10D06862AD5D93400470B5C /* TestQuery.graphql in Resources */,
 				475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */,
 				8AC3E08E2698CE8200168BF8 /* ShippingRuleFragment.graphql in Resources */,
+				E10D06842AD5D8EF00470B5C /* TestFragment.graphql in Resources */,
 				06DAAE5626AA3CCB00194E58 /* LocationFragment.graphql in Resources */,
 				06DAAE5326AA3CC300194E58 /* RewardFragment.graphql in Resources */,
 				47A662F126AF1FCC001CE7B1 /* WatchProject.graphql in Resources */,
@@ -7702,8 +7702,6 @@
 				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
 				77319C7E2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
-				191E60282A953FAB001413B2 /* ProjectTabQuestionAnswerCellViewModelTests.swift in Sources */,
-				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
 				8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */,
 				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
 				778F891E22D5414F00D095C5 /* Feature+HelpersTests.swift in Sources */,
@@ -7817,7 +7815,6 @@
 				776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */,
 				A7ED1FB11E831C5C00BFFA01 /* ActivitySampleProjectCellViewModelTests.swift in Sources */,
 				60368E6C2AC35BE3005EE9A5 /* ReportProjectFormViewModelTests.swift in Sources */,
-				A7ED1FCA1E831C5C00BFFA01 /* DashboardProjectsDrawerViewModelTests.swift in Sources */,
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
 				D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
@@ -8065,9 +8062,8 @@
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
 				473632A426EBAC6A001B0D39 /* RiskMessagingViewController.swift in Sources */,
-				191E601F2A93F318001413B2 /* ProjectTabQuestionAnswerCell.swift in Sources */,
 				191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */,
-				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
+				191E601F2A93F318001413B2 /* ProjectTabAIGenerationCell.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
 				19F91B0E289C1DD6000AEC6A /* PledgePaymentSheetPaymentMethodCell.swift in Sources */,
