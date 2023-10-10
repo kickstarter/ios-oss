@@ -841,8 +841,6 @@ extension ProjectPageViewController: UITableViewDelegate {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletMainCell, playbackDelegate == nil {
       playbackDelegate = cell
-    } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
-      cell.delegate = self
     } else if let cell = cell as? ImageViewElementCell {
       cell.pinchToZoomDelegate = self
     }
@@ -971,17 +969,6 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       self.viewModel.inputs.showNavigationBar(false)
       self.navigationController?.pushViewController(vc, animated: true)
     }
-  }
-}
-
-// MARK: ProjectPamphletCreatorHeaderCellDelegate
-
-extension ProjectPageViewController: ProjectPamphletCreatorHeaderCellDelegate {
-  func projectPamphletCreatorHeaderCellDidTapViewProgress(
-    _: ProjectPamphletCreatorHeaderCell,
-    with project: Project
-  ) {
-    self.viewModel.inputs.tappedViewProgress(of: project)
   }
 }
 
