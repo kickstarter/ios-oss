@@ -367,6 +367,12 @@ public protocol ServiceType {
   /// Watches (also known as favoriting) a project.
   func watchProject(input: WatchProjectInput) ->
     SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope>
+
+  func fetchSavedProjects(cursor: String?, limit: Int?)
+    -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope>
+
+  func fetchBackedProjects(cursor: String?, limit: Int?)
+    -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope>
 }
 
 extension ServiceType {

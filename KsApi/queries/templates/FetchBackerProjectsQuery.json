@@ -1,0 +1,709 @@
+{
+  "data": {
+    "projects": {
+      "__typename": "ProjectsConnectionWithTotalCount",
+      "nodes": [
+        {
+          "__typename": "Project",
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX",
+            "DISCOVER",
+            "JCB",
+            "DINERS",
+            "UNION_PAY"
+          ],
+          "backersCount": 70,
+          "category": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMjUw",
+            "name": "Comic Books",
+            "analyticsName": "Comic Books",
+            "parentCategory": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMw==",
+              "name": "Comics",
+              "analyticsName": "Comics"
+            }
+          },
+          "canComment": false,
+          "commentsCount": 0,
+          "country": {
+            "__typename": "Country",
+            "code": "US",
+            "name": "the United States"
+          },
+          "creator": {
+            "__typename": "User",
+            "backings": null,
+            "backingsCount": 31,
+            "chosenCurrency": null,
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            },
+            "email": "threepiecesuite@hotmail.com.ksr",
+            "hasPassword": null,
+            "hasUnreadMessages": null,
+            "hasUnseenActivity": null,
+            "id": "VXNlci0zMzIxMDY2OTY=",
+            "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/041/261/296/f95be006d709e2e9d704291aa206901b_original.jpg?ixlib=rb-4.1.0&blur=false&w=1024&h=1024&fit=crop&v=1686520977&auto=format&frame=1&q=92&s=e96dc247fe9883cde91116b508a9c599",
+            "isAppleConnected": null,
+            "isCreator": null,
+            "isDeliverable": null,
+            "isEmailVerified": true,
+            "isFacebookConnected": false,
+            "isKsrAdmin": null,
+            "isFollowing": false,
+            "isSocializing": null,
+            "location": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Fort Worth, TX",
+              "id": "TG9jYXRpb24tMjQwNjA4MA==",
+              "name": "Fort Worth"
+            },
+            "name": "Brandon Hayman",
+            "needsFreshFacebookToken": null,
+            "newsletterSubscriptions": null,
+            "notifications": null,
+            "optedOutOfRecommendations": null,
+            "showPublicProfile": null,
+            "savedProjects": null,
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            },
+            "surveyResponses": null,
+            "uid": "332106696"
+          },
+          "currency": "USD",
+          "deadlineAt": 1690840800,
+          "description": "Just because you're dead, doesn't mean you don't have problems.",
+          "environmentalCommitments": [],
+          "aiDisclosure": null,
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": []
+          },
+          "finalCollectionDate": null,
+          "fxRate": 7.08453723,
+          "goal": {
+            "__typename": "Money",
+            "amount": "3000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDE1NDkyODA=",
+            "url": "https://ksr-qa-ugc.imgix.net/assets/041/549/280/936952c9ae46dfa3802363db2dcc3b85_original.jpg?ixlib=rb-4.1.0&crop=faces&w=1024&h=576&fit=crop&v=1688834608&auto=format&frame=1&q=92&s=8ea5798606b8def2f88478bc9a677b52"
+          },
+          "isProjectWeLove": true,
+          "isProjectOfTheDay": false,
+          "isWatched": true,
+          "isLaunched": true,
+          "launchedAt": 1688139967,
+          "location": {
+            "__typename": "Location",
+            "country": "US",
+            "countryName": "United States",
+            "displayableName": "Fort Worth, TX",
+            "id": "TG9jYXRpb24tMjQwNjA4MA==",
+            "name": "Fort Worth"
+          },
+          "maxPledge": 10000,
+          "minPledge": 1,
+          "name": "The After Death Book One",
+          "pid": 1371912831,
+          "pledged": {
+            "__typename": "Money",
+            "amount": "2071.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 1
+          },
+          "prelaunchActivated": true,
+          "risks": "The pages and artwork for this book are already finished. Except for some extra artwork for stretch goals and other perks, none of which should slow this project down. Every project comes with unexpected hiccups that sometimes can't be avoided. If they should arise I'll be sure to be as transparent as possible and keep everyone on the same page. But, this should be a simple print run and done on a small scale as to avoid major overseas shipping fees, international challenges, and the like.",
+          "sendMetaCapiEvents": false,
+          "slug": "afterdeathbook1/the-after-death-book-one",
+          "state": "LIVE",
+          "stateChangedAt": 1688139969,
+          "story": "<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41286167\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/286/167/28e64859a05467a045bf5479f9d4d72d_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686694600&amp;gif-q=50&amp;q=92&amp;s=a1754aed5ffb53cac2bedb38a3252244\">\n</figure>\n\n</div>\n\n\n<p>Death is just the birth of a ghostie.</p>\n<p><em>The After Death</em> is the ongoing story about two ghosts, Spencer and Reggie. Reggie's been dead for some time now. Nothing really phases him. But Spencer...that's <em>another</em> story. Actually it isn't, that's <em>this</em> story. <em>The After Death</em> is Spencer figuring out-the hard way-that death doesn't solve all your problems. It might even create a few. In fact, it's not so different than life, except you don't eat and you don't sleep and, well...if you back the project, you can read all about it. </p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41286198\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/286/198/4deff7560f32fdc156526699499a7a49_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686694858&amp;gif-q=50&amp;q=92&amp;s=98c30f0086fc874a0c31b6c0c24a7046\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41286199\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/286/199/0876cb1db98c3426cd009e9edb38361c_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686694880&amp;gif-q=50&amp;q=92&amp;s=eddaabbe28f475a96de4d452374716c3\">\n</figure>\n\n</div>\n\n\n<p><em>The After Death</em> began in 2019 during a year spent writing short comic stories and zines once a month. It was only after I started writing, drawing, and sharing the entire journey of <em>The After Death</em> zine did people go out of their way to tell me how much they loved \"the ghosts!\" And so, I kept telling their story. What began as a zine, was then turned into a comic strip. But soon it outgrew that iteration and demanded to become the epic story that's being told today. Which is sort of the thing. This story's not done!</p>\n<p>And it won't be for some time now. But, if I wait to print <em>that</em> story, it'll be huge and much more expensive. So I'm breaking it down into manageble chunks. This Kickstarter will be the start of it all: Book One. Which will cover the first two major story arcs and bring the reader up against the third that will be continued into Book Two-to be Kickstarted later.</p>\n<p>Since I've been working on this comic since 2019 the good news is, this part of the story-Book One-is done. It's finished, and ready to be printed. Besides ordering some extra goodies such as stickers, perks and guest art prints, this things ready to be brought into the world and shared with you. All we need is your help to get this project to the printer, and then into your hands. </p>\n<h1 id=\"h:A-note-about-style\" class=\"page-anchor\">A note about style</h1>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41339419\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/339/419/57cd7aa0d018dc44a2afd657a240a6d5_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687130714&amp;gif-q=50&amp;q=92&amp;s=44b0580caaefc3f76d15ea6cbe3c9587\">\n</figure>\n\n</div>\n\n\n<p><em>The After Death</em> is all drawn traditionally using pencil, ink and paper. The color is done using color pencils. The only thing digital is the lettering and word balloons that I add in afterword. I know this is a cartooning no-no, but it's how I've always worked. The use of color pencil as well as the traditional drawing method tends to tug on readers nostalgic strings as they often reference <em>Calvin and Hobbes</em> or <em>Peanuts</em>, etc. when trying to pin down the style. But let me be the first to tell you I do not want to be compared to the likes of those two comic greats. My style came simply because I really love to sit at the desk and play. It's not that I can't make the leap to digital comic-making, but rather I don't want to. Traditional methods has been my wheelhouse for some time now, and I think I'll stick to it. Similarly, when it came to decide how to add color to these comics, I wanted to stick with my traditional methods and so color pencils seemed a natural choice. All of the comics are drawn on color pencil paper that has a nice toothy texture throughout, which adds to the charming style that's the hallmark of <em>The After Death</em> comics. Huh, and here I was thinking it was the writing.</p>\n<h1 id=\"h:Book-One-\" class=\"page-anchor\">Book One.</h1>\n<p><em>The After Death-Book One</em>, is the first two major story arcs, but it also leans into the third a bit more before the book ends. It took me a while to figure exactly where a good stopping point would be. It's not exactly a cliff-hanger, but it does leave the reader excited for what may come next. This first book should be between 56-60 pages. Not including end papers, title pages, etc. Its a softcover edition and will measure 8 1/2 inches x 8 1/2 inches square. It's been a labor of love to write, draw and color this whole story and I'm very excited to create a real, bound book and put it out into the world!</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Cover image for Book One-the actual cover may have minor changes.\" data-id=\"41286308\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/286/308/7cd453c34584b76aed68c23b49878687_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686695964&amp;gif-q=50&amp;q=92&amp;s=a5c515224b10f8595fcaf6ff8834b33d\">\n<figcaption class=\"px2\">Cover image for Book One-the actual cover may have minor changes.</figcaption>\n</figure>\n\n</div>\n\n\n<h1 id=\"h:-On-to-the-good-stuff-rewards-\" class=\"page-anchor\">\n<strong>On</strong> <strong>to the good stuff: rewards!</strong>\n</h1>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41324627\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/324/627/a8cb52b2b713d278b746d10c9da60b77_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686961035&amp;gif-q=50&amp;q=92&amp;s=90104dc54051eba245d15fdaf8d93970\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41324632\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/324/632/5a38332436c35f92f873dce8cc51cbec_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686961074&amp;gif-q=50&amp;q=92&amp;s=e37013844937cffdc32d8992d28df6b5\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41324638\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/324/638/6742d401ac6fa145f811ec64c47c6306_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686961114&amp;gif-q=50&amp;q=92&amp;s=8fc3bade672b6fb8458444c7fa3f0bf3\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41432944\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/432/944/01433a8cbbd7676ff74e00b0fd42c360_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687882820&amp;gif-q=50&amp;q=92&amp;s=4a6f280d2ad2d41f0aae50ec32725482\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41432835\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/432/835/4d9ac66e564d22a5053a3a90097b4cea_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687882305&amp;gif-q=50&amp;q=92&amp;s=ee018bc7eb842fdf5e617b21f0008137\">\n</figure>\n\n</div>\n\n\n<p><em>*I've also have itemized add-ons where you can pick your favorite reward package and then add on extras a-la cart if there's something missing that you really want!</em></p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41339132\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/339/132/81ac9206e05d91b004e89b3ed102368c_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687127139&amp;gif-q=50&amp;q=92&amp;s=f6a84888a52e8a081a6e7ef2ead49c0a\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41339134\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/339/134/ce549bc08438e49e85d34853c4ef5cd6_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687127157&amp;gif-q=50&amp;q=92&amp;s=448a7bd7a8a7d2fc43b4e2e5bcc03667\">\n</figure>\n\n</div>\n\n\n<p>Once the Kickstarter is complete everything will ship from Fort Worth, Texas to all over the continental United States. Due to the extreme price of international shipping, and the unpredictability and fluctuation in shipping prices I've elected to keep all Kickstarter rewards confined to the United States. After the Kickstarter is over, however, please contact me personally if you want to make arrangements for me to ship a book over seas on a case by case basis. I will be able to better handle and estimate shipping costs this way. My apologies for any inconvenience.</p>",
+          "tags": [],
+          "url": "https://staging.kickstarter.com/projects/afterdeathbook1/the-after-death-book-one",
+          "usdExchangeRate": 1,
+          "video": null,
+          "watchesCount": 116
+        },
+        {
+          "__typename": "Project",
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX",
+            "DISCOVER",
+            "JCB",
+            "DINERS",
+            "UNION_PAY"
+          ],
+          "backersCount": 954,
+          "category": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMzQ=",
+            "name": "Tabletop Games",
+            "analyticsName": "Tabletop Games",
+            "parentCategory": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMTI=",
+              "name": "Games",
+              "analyticsName": "Games"
+            }
+          },
+          "canComment": false,
+          "commentsCount": 142,
+          "country": {
+            "__typename": "Country",
+            "code": "US",
+            "name": "the United States"
+          },
+          "creator": {
+            "__typename": "User",
+            "backings": {
+              "__typename": "UserBackingsConnection",
+              "nodes": []
+            },
+            "backingsCount": 2,
+            "chosenCurrency": null,
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 1
+            },
+            "email": "coll@thegamerspark.com.ksr",
+            "hasPassword": null,
+            "hasUnreadMessages": null,
+            "hasUnseenActivity": null,
+            "id": "VXNlci05ODA0NjYwOTY=",
+            "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/041/519/861/0db0ad333fdfa3552388faa3cc9f054f_original.png?ixlib=rb-4.1.0&blur=false&w=1024&h=1024&fit=crop&v=1688592933&auto=format&frame=1&q=92&s=ae7c99afac702bbfe0051b9deab3dd92",
+            "isAppleConnected": null,
+            "isCreator": true,
+            "isDeliverable": null,
+            "isEmailVerified": true,
+            "isFacebookConnected": false,
+            "isKsrAdmin": null,
+            "isFollowing": false,
+            "isSocializing": null,
+            "location": {
+              "__typename": "Location",
+              "country": "US",
+              "countryName": "United States",
+              "displayableName": "Long Beach, CA",
+              "id": "TG9jYXRpb24tMjQ0MTQ3Mg==",
+              "name": "Long Beach"
+            },
+            "name": "The GamerSpark",
+            "needsFreshFacebookToken": null,
+            "newsletterSubscriptions": null,
+            "notifications": null,
+            "optedOutOfRecommendations": null,
+            "showPublicProfile": null,
+            "savedProjects": null,
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            },
+            "surveyResponses": null,
+            "uid": "980466096"
+          },
+          "currency": "USD",
+          "deadlineAt": 1691213400,
+          "description": "🎃 Join the Halloween fun! Collect candy sets, manage resources, masterfully use your cards and out-prank the little trick-or-treaters!",
+          "environmentalCommitments": [
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "environmentally_friendly_factories",
+              "description": "We will try to combine production quality with a minimum environmental footprint.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTk5NjE2"
+            },
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "long_lasting_design",
+              "description": "Every component has been the subject of careful design and will be produced according to high-quality\nmanufacturing standards. Especially wooden components which are made from wood, which guarantee long\nlife & playability. Whenever possible we guarantee to look for and use recycled & recyclable materials to\nminimize our environmental footprint. The same also applies to the production factory.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTk5NjE1"
+            },
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "reusability_and_recyclability",
+              "description": "Cardboard on tokens and boards can be recycled.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTk5NjE3"
+            },
+            {
+              "__typename": "EnvironmentalCommitment",
+              "commitmentCategory": "something_else",
+              "description": "Most of the demo prototypes and test components were made using only recycled and upcycled materials,\ncardboard leftovers, salvaged wood, etc.",
+              "id": "RW52aXJvbm1lbnRhbENvbW1pdG1lbnQtMTk5NjE4"
+            }
+          ],
+          "aiDisclosure": null,
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": [
+              {
+                "__typename": "ProjectFaq",
+                "question": "[COMPONENTS] I want to use sleeves for the cards. How many cards are in the box and what are the sizes of these cards?",
+                "answer": "The main box has 61 cards (sized 63 x 88mm / 2.5 x 3.5 inch), and the expansion adds another 44 so the deluxe includes 105 cards. Although, some Stretch Goals are extra cards, and their exact number will only be determined at the end of the campaign. You will have the opportunity of getting the exact number of sleeves you need from the pledge manager.",
+                "id": "UHJvamVjdEZhcS00MzU3MzU=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[PLEDGE] Can I make a group pledge and how can I add multiple copies of the game?",
+                "answer": "We don't offer group pledges. After the Pledge Manager opens, you will be able to add more copies of the game to your order. We will offer reduced shipping costs for more than one copy.",
+                "id": "UHJvamVjdEZhcS00MzU3Mzc=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[RETAIL] Will the game be available in retail?",
+                "answer": "We're searching for localization partners that will help us translate the game into even more languages and publish Ding Dong in their respective countries. We are offering the Retails Pledge in English, which you can back now to support us or wait to order from your local distributor once we close the deal, but we cannot guarantee that a copy will reach your local retailer shop.",
+                "id": "UHJvamVjdEZhcS00MzU3Mzg=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[DIGITAL VERSION] Can I try the game on TTS?",
+                "answer": "We have a \"Tabletop Simulator\" version available on the campaign’s page.",
+                "id": "UHJvamVjdEZhcS00MzU3Mzk=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[OTHER] My question isn’t answered here, what do I do?",
+                "answer": "Feel free to ask any questions in the Comments section. You can also reach us on our social media, linked at the bottom of the KS page, and we also have a Facebook page where you can reach us; all links can be found and accessed at the bottom of the campaign’s Story page.",
+                "id": "UHJvamVjdEZhcS00MzU3NDA=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[SHIPPING] Is VAT and Customs Fees included in shipping costs?",
+                "answer": "You will be asked to pay for shipping and VAT in countries where it is applicable in the Pledge Manager. Custom Fees are always included in the shipping costs.",
+                "id": "UHJvamVjdEZhcS00MzU3NDE=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[SHIPPING] I’m backing from the EU. Will I have to pay VAT?",
+                "answer": "Yes, according to your country's laws.",
+                "id": "UHJvamVjdEZhcS00MzU3NDI=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[SHIPPING] Is there an extra VAT cost added to my pledge level?",
+                "answer": "All prices shown during this campaign do not include any applicable sales tax. Where applicable, VAT will be paid separately to the Pledge Manager.",
+                "id": "UHJvamVjdEZhcS00MzU3NDM=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[SHIPPING] How is UK shipping calculated?",
+                "answer": "Our backers from the UK will be asked to pay the shipping costs and VAT. The customs fees are included in the shipping costs.",
+                "id": "UHJvamVjdEZhcS00MzU3NDQ=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[PLEDGE MANAGER] Will you offer late pledges?",
+                "answer": "Yes! At the end of the campaign, late pledges will be available.",
+                "id": "UHJvamVjdEZhcS00MzU3NDU=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[PLEDGE MANAGER] How can I have access to Pledge Manager?",
+                "answer": "Anyone who pledges at least $5/4€ will have access to Pledge Manager.",
+                "id": "UHJvamVjdEZhcS00MzU3NDY=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[GAMEPLAY] Can the game be played solo?",
+                "answer": "No, Ding Dong is a party game and has a minimum player count of 2.",
+                "id": "UHJvamVjdEZhcS00MzU3NDc=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[GAMEPLAY] Do I have to discard all the Decorations depicted on a kid to score it or just one of them?",
+                "answer": "Just one of the Decorations that scare them is enough to score the kid!",
+                "id": "UHJvamVjdEZhcS00MzU3NDg=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[GAMEPLAY] When is a kid discarded?",
+                "answer": "A kid card is discarded when it performs a prank or when it returns to the player with the first player token.",
+                "id": "UHJvamVjdEZhcS00MzU3NDk=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[GAMEPLAY] How exactly is \"Plastic Surgery\" ability of Dr Naveen useful?",
+                "answer": "Dr. Naveen ability allows you to exchange a kid you have already scored with one from the discard pile. Since only the first kid of each costume gives you points it is an excellent way to get some value out of a duplicate costume you might have.",
+                "id": "UHJvamVjdEZhcS00MzU3NTA=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[GAMEPLAY] Can I use Mrs. Jackson’s ability even if my Neighbors have not prank tokens?",
+                "answer": "Unfortunately, not. You must wait until one of your neighbors gets a prank before you use it.",
+                "id": "UHJvamVjdEZhcS00MzU3NTE=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "[GAMEPLAY] When I play the card Revelation only, I see the player’s weakness or everybody does?",
+                "answer": "The weakness is revealed to everyone.",
+                "id": "UHJvamVjdEZhcS00MzU3NTI=",
+                "createdAt": 1689087778
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Return policy",
+                "answer": "Unfortunately, there are no refunds after the campaign ends",
+                "id": "UHJvamVjdEZhcS00MzU3NTM=",
+                "createdAt": 1689087778
+              }
+            ]
+          },
+          "finalCollectionDate": null,
+          "fxRate": 7.08453723,
+          "goal": {
+            "__typename": "Money",
+            "amount": "3000.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDE3MTgyMDI=",
+            "url": "https://ksr-qa-ugc.imgix.net/assets/041/718/202/cd673f146cee6de575dd1612fdc01ea6_original.jpg?ixlib=rb-4.1.0&crop=faces&w=1024&h=576&fit=crop&v=1690214001&auto=format&frame=1&q=92&s=936ae80b0f73762d83f7641aceb6a6a1"
+          },
+          "isProjectWeLove": false,
+          "isProjectOfTheDay": false,
+          "isWatched": true,
+          "isLaunched": true,
+          "launchedAt": 1689085686,
+          "location": {
+            "__typename": "Location",
+            "country": "US",
+            "countryName": "United States",
+            "displayableName": "Garden Grove, CA",
+            "id": "TG9jYXRpb24tMjQwODc4NA==",
+            "name": "Garden Grove"
+          },
+          "maxPledge": 10000,
+          "minPledge": 1,
+          "name": "Ding Dong",
+          "pid": 1878005955,
+          "pledged": {
+            "__typename": "Money",
+            "amount": "28089.0",
+            "currency": "USD",
+            "symbol": "$"
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 6
+          },
+          "prelaunchActivated": true,
+          "risks": "Ding Dong has already been developed and tested extensively by playtesters, early reviewers, dedicated friends, family, and fans. The game is close to completion; final designs and stretch goals remain to be tested, according to the goals met. However, we are certain that we will be able to keep the deadlines we have promised on the project’s timeline and bring our game to you in time.",
+          "sendMetaCapiEvents": true,
+          "slug": "thegamerspark/ding-dong",
+          "state": "LIVE",
+          "stateChangedAt": 1689085690,
+          "story": "<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41682896\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/682/896/8f2966f272fa9f0ecf4ce80f88544d74_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689865720&amp;gif-q=50&amp;q=92&amp;s=2db693e7e4646100c987c3a75fccf89a\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41682912\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/682/912/c3cf2cbcff83ff42d5d7046fc6560164_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689865784&amp;gif-q=50&amp;q=92&amp;s=7804ced37b0beb8ef2719f55821ea6d7\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41577143\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/577/143/95d08a3613b4e9368b1bc3159e590b8b_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689068359&amp;gif-q=50&amp;q=92&amp;s=d49b49a28acacf5fbc518f326341a555\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41654079\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/654/079/31b380b2f3a7002742ba0ca0e5a3ef82_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689666119&amp;gif-q=50&amp;q=92&amp;s=388c8c2b3138bc8231cbffd65d508131\">\n</figure>\n\n</div>\n\n\n<br>\n<br>\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41577149\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/577/149/ec10e37482f9d99bc6ac01f438ae0466_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689068385&amp;gif-q=50&amp;q=92&amp;s=0a798c9837443d04f68971a64e232b9c\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41615231\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/615/231/b640fcf5a3598ebc6ecae8ccc4966e3a_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689329666&amp;gif-q=50&amp;q=92&amp;s=69bbad69f4057e9c578447a506e77e2f\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41429818\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/429/818/cc609f7862810517c0575de3b09fac8f_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687866015&amp;gif-q=50&amp;q=92&amp;s=7b56df3efd435dee33c2b78d6c2d6940\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/429/818/cc609f7862810517c0575de3b09fac8f_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687866015&amp;auto=format&amp;frame=1&amp;q=92&amp;s=69cacdbd8712af14b08aedfd06436ca6\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41580142\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/580/142/7549e2a07eb31e9d78fd6d1974c27eab_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689085560&amp;gif-q=50&amp;q=92&amp;s=003b5370558978e988102220fdc0ea83\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Please contact us to arrange a game with us in TTS\" data-id=\"41536099\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/536/099/88c65ab52c689431f275589a01492102_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688713594&amp;gif-q=50&amp;q=92&amp;s=80598c93b04d4fd3c550d14f3cfbf9cb\">\n<figcaption class=\"px2\">Please contact us to arrange a game with us in TTS</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41381766\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/766/bbe972417e41985248e013e4eec66a4b_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687433476&amp;gif-q=50&amp;q=92&amp;s=e80b3722b93739ac2edda6f40fa5b029\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Use each Character's asymmetrical ability for amazing bonuses\" data-id=\"41380626\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/626/84edbd62b512de9d435e22b7ba4bdbb7_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687423890&amp;gif-q=50&amp;q=92&amp;s=43ab7afdee63c8346f1e235d9221a91a\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/626/84edbd62b512de9d435e22b7ba4bdbb7_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687423890&amp;auto=format&amp;frame=1&amp;q=92&amp;s=80ffa8aa476d9abd4b313a58d46b1255\">\n<figcaption class=\"px2\">Use each Character's asymmetrical ability for amazing bonuses</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Bribe the pranksters with some candy of their liking to make them someone else's problem!\" data-id=\"41380645\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/645/6ba200c8ca11bea8ba1e18eb7b9f7694_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687424043&amp;gif-q=50&amp;q=92&amp;s=7f088bcf556d096cf83f493b505eec78\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/645/6ba200c8ca11bea8ba1e18eb7b9f7694_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687424043&amp;auto=format&amp;frame=1&amp;q=92&amp;s=4160a252fac48d019fa1e88647f32b40\">\n<figcaption class=\"px2\">Bribe the pranksters with some candy of their liking to make them someone else's problem!</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Gather many scary decorations to make them run in fear!\" data-id=\"41380659\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/659/bb3fde69dc94b9fff81c5871065fe693_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687424173&amp;gif-q=50&amp;q=92&amp;s=c87917cc70b2a8403888cebb949e3099\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/659/bb3fde69dc94b9fff81c5871065fe693_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687424173&amp;auto=format&amp;frame=1&amp;q=92&amp;s=715331ed8ad8919621f1d3b4cadb5ec2\">\n<figcaption class=\"px2\">Gather many scary decorations to make them run in fear!</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"If you can't bribe or scare them, you will get pranked!\" data-id=\"41380706\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/706/b92c4597aff8ae004d892b767047f305_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687424647&amp;gif-q=50&amp;q=92&amp;s=f8b6ccae68dac4347a18e1c6eb823ca5\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/380/706/b92c4597aff8ae004d892b767047f305_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687424647&amp;auto=format&amp;frame=1&amp;q=92&amp;s=21352ce95cbc41561e4007da4ba8e172\">\n<figcaption class=\"px2\">If you can't bribe or scare them, you will get pranked!</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"You shouldn't be above doing some harm to your neighbours, let them deal with all the pranks and mischief!\" data-id=\"41381447\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/447/d0fd91a4b5c7d0eee667c149f732c5fd_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687430696&amp;gif-q=50&amp;q=92&amp;s=18abd75005c53f94e304580ff421c4e2\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/447/d0fd91a4b5c7d0eee667c149f732c5fd_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687430696&amp;auto=format&amp;frame=1&amp;q=92&amp;s=324983cf54c11e70b5a62453a9a346ed\">\n<figcaption class=\"px2\">You shouldn't be above doing some harm to your neighbours, let them deal with all the pranks and mischief!</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"Do not forget to arm yourselves with precious candy and scary decorations!\" data-id=\"41381475\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/475/19160b748f3843c917edba301e27acd1_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687430966&amp;gif-q=50&amp;q=92&amp;s=afe73bf28898d9564d937ab966f1e2e6\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/475/19160b748f3843c917edba301e27acd1_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687430966&amp;auto=format&amp;frame=1&amp;q=92&amp;s=d18a07fb8404ada5dd62a7df2569adde\">\n<figcaption class=\"px2\">Do not forget to arm yourselves with precious candy and scary decorations!</figcaption>\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41580148\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/580/148/d8a8b9b0430a970caea2625a7a550330_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689085596&amp;gif-q=50&amp;q=92&amp;s=ed2afd3c788d9c342d7e7e90f424813c\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41428790\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/428/790/8ab12ff9437850b1e0bc6152ca50ce64_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687858724&amp;gif-q=50&amp;q=92&amp;s=7f5b2f742f86cc7d98f74bde6b4248a4\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41590518\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/590/518/16d14a9974a282eac12045857049ec5a_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689154627&amp;gif-q=50&amp;q=92&amp;s=bfa3ac7b9faeaf6fd1f292162a0b507c\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41657351\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/657/351/b0369afff297c936ba1872b435d0e41f_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689687566&amp;gif-q=50&amp;q=92&amp;s=aeb7432250746946081548e03491cccd\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41657363\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/657/363/e7d71819e71e5a49ad07f79b61bca288_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689687632&amp;gif-q=50&amp;q=92&amp;s=abf2e644df406a1ad94347f6b614655d\">\n</figure>\n\n</div>\n\n\n<br>\n<br>\n<br>\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41580155\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/580/155/71016a29e89e8fb2404653cbf0eebe98_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689085618&amp;gif-q=50&amp;q=92&amp;s=6add8d3e0df9455abc26c624c2be9506\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41576710\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/576/710/e4e460cd35a4c951907f4c93d0e71d10_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689065114&amp;gif-q=50&amp;q=92&amp;s=a070e273477fdf4db71608729e6990e0\">\n</figure>\n\n</div>\n\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=4OtG_YyNvsU\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/4OtG_YyNvsU?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Ding Dong Preview - Sometimes Being A Grumpy Old Man Is A Good Thing\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=keU52N8dyEw&amp;t=1s\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/keU52N8dyEw?start=1&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Ding Dong! - Prototype Unboxing &amp; Impressions (EN) by Epitrapaizoume\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=5XgJhuqLxno&amp;t=2s\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/5XgJhuqLxno?start=2&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"DING DONG (prototipo) - Cómo se juega - Tutorial Juego de Mesa - unna\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=Ps6RIXEqx8g\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/Ps6RIXEqx8g?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"DING DONG - ein interaktives Familien- und Partiespiel mit Handmanagement &amp; Card Conflict Resolution\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=xnQ65UwPOLc\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/xnQ65UwPOLc?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"[🎲 (P)Review] Ding-Dong! - Alors, on joue?\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=4uYKSQSK564\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/4uYKSQSK564?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Out of the Box: Ding Dong\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=jrS8I8_ao8Q\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/jrS8I8_ao8Q?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Futura Perla Ludica 020 - Ding Dong\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=zXl02IP583A\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/zXl02IP583A?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Ding Dong - Halloween Trick-or-Treaters | Παρουσίαση επιτραπέζιο παιχνίδι - Board Games\"></iframe>\n\n</div>\n\n          \n\n<br>\n\n<a href=\"https://www.dropbox.com/s/banwu7hi1mdtcxs/rulebookversion247.pdf?dl=0\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41429980\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/429/980/e56159592537fd249d40ac3d478134c4_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687867455&amp;gif-q=50&amp;q=92&amp;s=315edbb19549dfd1dc9fd57894985828\">\n</figure>\n\n</div>\n</a>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41579740\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/579/740/f2c96d2960ecd2d334959bc43b0d8519_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689083699&amp;gif-q=50&amp;q=92&amp;s=ff974b14e8b27e5baebef8913775ffa3\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41576552\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/576/552/d716197f09e82bcef1e364f434ff7c97_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689064021&amp;gif-q=50&amp;q=92&amp;s=61bc7ef5dca792079f8faefd2a57754b\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41391796\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/391/796/92d29348c576f966fa22f2756afab35f_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687512272&amp;gif-q=50&amp;q=92&amp;s=e8f1a54e61f6660e22c74ab6b88ebbc4\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41656453\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/656/453/bccf55d8de2270407f22ab3e45236491_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689681333&amp;gif-q=50&amp;lossless=true&amp;s=fff559254928012d95cab30fcb9e2f16\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41656456\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/656/456/4d7270725aa6942ccddd506032fd0742_original.jpg?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689681353&amp;gif-q=50&amp;q=92&amp;s=0ae9a6dadcdfcce7c899f83d0314c9ac\">\n</figure>\n\n</div>\n\n\n<br>\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41597723\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/597/723/725979743fbef57be425d85f610c109e_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689197751&amp;gif-q=50&amp;q=92&amp;s=c07acafaa7142d1ab56da0013c636a60\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/597/723/725979743fbef57be425d85f610c109e_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689197751&amp;auto=format&amp;frame=1&amp;q=92&amp;s=062af37d76144236491b38971ad66be5\">\n</figure>\n\n</div>\n",
+          "tags": [],
+          "url": "https://staging.kickstarter.com/projects/thegamerspark/ding-dong",
+          "usdExchangeRate": 1,
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTIzNDQyNg==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1696878485-WX1IKC4bEFBQzwAZDTasmZOqRSNjWWY82d9DO0vVt9g%3D/projects/4543030/video-1234426-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1696878485-WX1IKC4bEFBQzwAZDTasmZOqRSNjWWY82d9DO0vVt9g%3D/projects/4543030/video-1234426-hls_playlist.m3u8"
+              }
+            }
+          },
+          "watchesCount": 2190
+        },
+        {
+          "__typename": "Project",
+          "availableCardTypes": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX",
+            "UNION_PAY"
+          ],
+          "backersCount": 6511,
+          "category": {
+            "__typename": "Category",
+            "id": "Q2F0ZWdvcnktMzQ=",
+            "name": "Tabletop Games",
+            "analyticsName": "Tabletop Games",
+            "parentCategory": {
+              "__typename": "Category",
+              "id": "Q2F0ZWdvcnktMTI=",
+              "name": "Games",
+              "analyticsName": "Games"
+            }
+          },
+          "canComment": false,
+          "commentsCount": 5816,
+          "country": {
+            "__typename": "Country",
+            "code": "FR",
+            "name": "France"
+          },
+          "creator": {
+            "__typename": "User",
+            "backings": {
+              "__typename": "UserBackingsConnection",
+              "nodes": []
+            },
+            "backingsCount": 5,
+            "chosenCurrency": null,
+            "createdProjects": {
+              "__typename": "UserCreatedProjectsConnection",
+              "totalCount": 2
+            },
+            "email": "contact@open-sesame.games.ksr",
+            "hasPassword": null,
+            "hasUnreadMessages": null,
+            "hasUnseenActivity": null,
+            "id": "VXNlci0zMTA4NTI2NDA=",
+            "imageUrl": "https://ksr-qa-ugc.imgix.net/assets/029/057/666/1ef821063faf9e67d2896bcff259f07c_original.png?ixlib=rb-4.1.0&blur=false&w=1024&h=1024&fit=crop&v=1589301425&auto=format&frame=1&q=92&s=603956b951f7b6ba3b3ad30e92847ef9",
+            "isAppleConnected": null,
+            "isCreator": true,
+            "isDeliverable": null,
+            "isEmailVerified": true,
+            "isFacebookConnected": false,
+            "isKsrAdmin": null,
+            "isFollowing": false,
+            "isSocializing": null,
+            "location": {
+              "__typename": "Location",
+              "country": "FR",
+              "countryName": "France",
+              "displayableName": "Paris, France",
+              "id": "TG9jYXRpb24tNjE1NzAy",
+              "name": "Paris"
+            },
+            "name": "Open Sesame Games",
+            "needsFreshFacebookToken": null,
+            "newsletterSubscriptions": null,
+            "notifications": null,
+            "optedOutOfRecommendations": null,
+            "showPublicProfile": null,
+            "savedProjects": null,
+            "storedCards": {
+              "__typename": "UserCreditCardTypeConnection",
+              "nodes": [],
+              "totalCount": 0
+            },
+            "surveyResponses": null,
+            "uid": "310852640"
+          },
+          "currency": "EUR",
+          "deadlineAt": 1691524800,
+          "description": "Join the Ultimate evolution of this famous development, territory control and auction board game by Bruno Cathala and Ludovic Maublanc.",
+          "environmentalCommitments": [],
+          "aiDisclosure": null,
+          "faqs": {
+            "__typename": "ProjectFaqConnection",
+            "nodes": [
+              {
+                "__typename": "ProjectFaq",
+                "question": "Will you be offering a conversion/upgrade kit for Cyclades First Edition?",
+                "answer": "No. The Cyclades Legendary Edition's set of rule changes and, above all, its hardware, do not allow for the evolution or conversion of the Cyclades First Edition game.\r\nWhat's more, the 2 versions of the game are not compatible enough to be played together.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDA=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Does the game features a solo mod ?",
+                "answer": "No. The authors believe that creating a single-player mode for Cyclades Legendary Edition distorts the very basis of the auction concept, which is a crucial game mechanic. Everyone is free to invent their own single-player rules.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDE=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Will Cyclades Legendary Edition have a retail version ?",
+                "answer": "Cyclades Legendary Edition will definitely hit retail at some point, in a retail adapted version. We will focus on shipping every pledge to their backers before the game comes to retail.",
+                "id": "UHJvamVjdEZhcS00MzQ3Mzk=",
+                "createdAt": 1688041699
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Will KS edition be available in retail at some point ?",
+                "answer": "This game edition could hit retail in a very limited quantity depending on eventual retailers pledging to this campaign.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDI=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Are grouped pledge possible in this campaign ?",
+                "answer": "We are looking at several options to allow you to pay less shipping costs, in particular the possibility of being able to manage grouped deliveries in our Pledge.\r\nContact Open Sesame Games in a Private Message to discuss this.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDM=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Is the gameplay the same as in the first Cyclades?",
+                "answer": "Cyclades Legendary Edition is a Director's Cut version of the original Cyclades. The core of the game remains the same (auctions, territory control, resource management), but all its mechanics have been reworked to make the game more dynamic, shorter and more intense. See all the changes made to this new version of the game in the \"What's New\" section of this campaign page.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDQ=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Does the game include all former Cyclades' expansions?",
+                "answer": "No, Cyclades Legendary Edition does not include all the extensions from Cyclades first edition.\r\nSome of the innovative mechanics brought by the first edition's expansions have been reworked and naturally introduced into the evolved rules of Cyclades Legendary Edition.\r\nNevertheless, its evolution would not have benefited from all the gameplay additions of the Cyclades expansions, so some of them have not and will not be integrated here.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDU=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "What size are the figurines?",
+                "answer": "Cyclades Legendary Edition miniatures come in a variety of sizes.\r\nTroops have an 18mm base and are around 30mm high.\r\nFleets are around 32mm long and 25mm high.\r\nHeroes have a 24mm base and are around 35mm high.\r\nCreatures have a base of variable dimensions, larger than Heroes, and their height varies around 50-60mm.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDY=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Is there still that card which lets you teleport your whole army which is the most usual thing why the game of Cyclades ends?",
+                "answer": "The Pegasus Creature card still exists. Although its effect often triggered an endgame in Cyclades First Edition, the reworking of the mechanics in Cyclades Legendary Edition makes it less powerful.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDc=",
+                "createdAt": 1688042384
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Will the 1€ reward tier allows for a post-survey tool access ?",
+                "answer": "YES.\r\nThough this reward tier won't bring you any physical counterpart, it will give you access to the post-campaign survey tool for late pledge.\r\n\r\nRewards' amounts presented during this campaign may fluctuate.\r\nWe do not warranty them to be the same for late pledgers and backers from the \"Support Open Sesame Games\" tier alike.",
+                "id": "UHJvamVjdEZhcS00MzQ3NDg=",
+                "createdAt": 1688045187
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Will the Miniatures box hold the 3D Buildings from the Ultimate pledge, as well as sleeved cards?",
+                "answer": "Yes, the Miniature version of the box will provide storage space for Ultimate pledge 3D buildings and sleeved cards.",
+                "id": "UHJvamVjdEZhcS00MzQ3Nzg=",
+                "createdAt": 1688065168
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "Why does some Creature come without a Miniature (or a token)?",
+                "answer": "Creatures work in 2 different ways in a game of Cyclades:\r\n- It has a zone persistent effet -> This Creature needs a Miniature (or a token) to notify every player of its position and its appropriate effect radius.\r\n\r\n- It has a ponctual instant effect -> This Creature doesn't need any miniature since you buyr their card and discard it after its effect has been used.",
+                "id": "UHJvamVjdEZhcS00MzUwOTY=",
+                "createdAt": 1688478740
+              },
+              {
+                "__typename": "ProjectFaq",
+                "question": "What size will every game box be ?",
+                "answer": "At this time, we can't bring any size precision for every game boxes. Their dimensions will evolve with the number of Stretch Goals unlocked.\r\nWhat we are aiming for though:\r\n\r\n- Ultimate & Miniatures pledge boxes will be bigger than the Meeples pledge one.\r\n- Every box will fit in a Kallax shelf",
+                "id": "UHJvamVjdEZhcS00MzY4NjA=",
+                "createdAt": 1690271072
+              }
+            ]
+          },
+          "finalCollectionDate": null,
+          "fxRate": 7.45663838,
+          "goal": {
+            "__typename": "Money",
+            "amount": "150000.0",
+            "currency": "EUR",
+            "symbol": "€"
+          },
+          "image": {
+            "__typename": "Photo",
+            "id": "UGhvdG8tNDE0NTYzNzI=",
+            "url": "https://ksr-qa-ugc.imgix.net/assets/041/456/372/ae7284301bdc9d4215d13b2d691dfa52_original.png?ixlib=rb-4.1.0&crop=faces&w=1024&h=576&fit=crop&v=1688049314&auto=format&frame=1&q=92&s=9e72abae0bb4afed97466839e1ee6caa"
+          },
+          "isProjectWeLove": true,
+          "isProjectOfTheDay": false,
+          "isWatched": true,
+          "isLaunched": true,
+          "launchedAt": 1688040064,
+          "location": {
+            "__typename": "Location",
+            "country": "FR",
+            "countryName": "France",
+            "displayableName": "France, France",
+            "id": "TG9jYXRpb24tMjkzMzI2MzQ=",
+            "name": "France"
+          },
+          "maxPledge": 8500,
+          "minPledge": 1,
+          "name": "🔱Cyclades Legendary Edition",
+          "pid": 771488256,
+          "pledged": {
+            "__typename": "Money",
+            "amount": "702940.0",
+            "currency": "EUR",
+            "symbol": "€"
+          },
+          "posts": {
+            "__typename": "PostConnection",
+            "totalCount": 18
+          },
+          "prelaunchActivated": true,
+          "risks": "For its second Kickstarter campaign, Open Sesame Games has teamed up with renowned collaborators and partners, true veterans of the game development and publishing industry. They bring years of experience in both editing and managing crowdfunding campaigns. The visuals presented in this campaign are still prototypes, and are likely to evolve in shape, number, color and contrast between now and the pledges' production phase. As mentioned in the FAQ, the development of Cyclades Legendary Edition, although well advanced, is still ongoing. We also worked very early on the development of the game, before the launch of the Cyclades campaign, in order to minimize the delay before the launch of production and shipping of your pledges. The experience gained from the successful edition of Northgard: Uncharted Lands comforts us with our ability to successfully and timely complete a project of this magnitude. This first campaign provided us with the necessary insight to deal with any potential setbacks inherent in any crowdfunding project. Our experience also allows us to anticipate certain potential points of friction in the smooth progress of production and the delivery of your pledges. However, the publication of a game of this caliber may encounter unforeseen circumstances beyond our control. If such a situation were to occur, we would promptly and transparently address it with you. We will do everything necessary to minimize the risks of setbacks and production delays. It is our utmost priority to provide our community with a high-quality product that meets their expectations in the shortest possible time. We are eagerly looking forward to seeing you play the game!",
+          "sendMetaCapiEvents": true,
+          "slug": "opensesamegames/cyclades-legendary-edition",
+          "state": "LIVE",
+          "stateChangedAt": 1688040067,
+          "story": "<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41419977\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/419/977/5a764f5b002ae442fff800de17b03261_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687795535&amp;gif-q=50&amp;lossless=true&amp;s=c5ca01ac6bec32557764f3b2e0c37095\">\n</figure>\n\n</div>\n\n\n<br>\n<p>(<a href=\"https://open-sesame.games/cyclades-legendary-edition-page-kickstarter-en-francais/\" target=\"_blank\" rel=\"noopener\">Accédez à la version française en cliquant ici</a>)</p>\n<br>\n<br>\n<p><strong>Cyclades Legendary Edition</strong> is an <strong>iconic cornerstone</strong> of the board game world that combines <strong>bidding</strong>, <strong>development</strong> and <strong>conquest </strong>mechanics. </p>\n<p>Each player leads their <strong>faction </strong>to impose their hegemony on the <strong>Cyclades isles </strong>in the time of a <strong>fantasy mythological Greece</strong>. Players will <strong>place bets</strong> to gain the<strong> gods favors</strong>, <strong>hire creatures</strong> and <strong>heroes </strong>to achieve their goals. </p>\n<p><strong>Cyclades </strong>is an<strong> epic, tense and lively game</strong> that is easy to understand. Thanks to a <strong>smooth</strong> and <strong>intuitive </strong>gameplay, epic actions follow one another at a fast pace. <strong>Simple rules</strong> and a<strong> clear iconography </strong>allow for a <strong>quick </strong>immersion in the game for beginners. Fans of the first edition of <strong>Cyclades </strong>will rediscover this legendary game with brand new eyes thanks to <strong>gameplay modifications</strong> and <strong>numerous improvements </strong>added by its two successful authors. </p>\n<p>Prepare your cities, reinforce your Hoplites, manage your Tetradrachms and refine your tactics... bring the unforgiving world of this fantasy mythological Greece to your gaming table.</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41456650\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/456/650/cda5b720ead0969c19407acc375436f1_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688051304&amp;gif-q=50&amp;lossless=true&amp;s=62e9b231589ad5e17d9e1894649d2898\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720124\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/124/8f579d70c80b73b932c8d878d85bf075_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224441&amp;gif-q=50&amp;lossless=true&amp;s=3b01d8d68bb9c463589232c4d79ddab4\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720132\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/132/6be61e71f58105adb2a39e3b4dbf89ef_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224497&amp;gif-q=50&amp;lossless=true&amp;s=97f93e3885a9264b83a2d9cae7d6bcee\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41548027\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/548/027/2ae8b16269ddf8b59d6666f7ac6a5a76_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688823049&amp;gif-q=50&amp;lossless=true&amp;s=749dbe3b00696aac88e1e70d035ba6fc\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41277069\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/277/069/e115a5189e34fc6a9c2fd8a431a268a5_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686646444&amp;gif-q=50&amp;lossless=true&amp;s=c51e960df60069d5ed1bd0fd13ede223\">\n</figure>\n\n</div>\n\n\n<a href=\"https://tabletopia.com/games/cyclades-legendary-edition\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41318558\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/318/558/608903b3114efa50b5c4b82f1dd396c7_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686922086&amp;gif-q=50&amp;lossless=true&amp;s=459e204f413aeff60be351988333451e\">\n</figure>\n\n</div>\n</a>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276930\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/930/d225213a6d60b1c1151643ce982aef5f_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645784&amp;gif-q=50&amp;lossless=true&amp;s=cbcb4cc6c5716e93d6aff162d8080bf6\">\n</figure>\n\n</div>\n\n\n<br>\n<ul>\n  <li>\n<strong>A Director’s Cut</strong> of the game by the 2 world-famous authors : <strong>Bruno Cathala &amp; Ludovic Maublanc</strong>\n</li>\n</ul>\n<br>\n<ul>\n  <li>An <strong>epic</strong>, <strong>tense </strong>and levelygame that is <strong>simple to explain</strong>, full of <strong>opportunism </strong>and <strong>interactions</strong>\n</li>\n</ul>\n<br>\n<ul>\n  <li>A<strong> territory control</strong> game with an everchanging setup thanks to modular board tiles</li>\n</ul>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41319268\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/319/268/167098910437c7d56b12fc0e0ce43806_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686926088&amp;gif-q=50&amp;q=92&amp;s=c44c001a8aa10c2bbac1ed1eae918974\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/319/268/167098910437c7d56b12fc0e0ce43806_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686926088&amp;auto=format&amp;frame=1&amp;q=92&amp;s=fcfe1eaafb3f6891fd803de2efc0c5b6\">\n</figure>\n\n</div>\n\n\n<ul>\n  <li>A <strong>smooth </strong>and <strong>intuitive </strong>gameplay leading to <strong>epic</strong> <strong>actions</strong> following one another at a fast pace</li>\n</ul>\n<br>\n<ul>\n  <li>A <strong>thrilling auction mechanic</strong> that defines players’ actions in the race for their goal</li>\n</ul>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41358712\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/358/712/5481ba883ccd6548db36b71b2ffc2321_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687269537&amp;gif-q=50&amp;q=92&amp;s=5a837c620666b32d9e7a8d7bc9a28938\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/358/712/5481ba883ccd6548db36b71b2ffc2321_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687269537&amp;auto=format&amp;frame=1&amp;q=92&amp;s=b403e60b700547f0308b747b43efc143\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276946\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/946/0f910fb62582560a21bd43dc3cdb6b67_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645863&amp;gif-q=50&amp;lossless=true&amp;s=79a29def3551a7018b54aebd1d7dbd7c\">\n</figure>\n\n</div>\n\n\n<p>More than just an aesthetic facelift, <strong>Cyclades Legendary Edition</strong> takes the original game to a whole new level. The <strong>Director's cut</strong> by Bruno Cathala and <strong>Ludovic Maublanc</strong> combines the original game and its many expansions into a renewed, more epic, more thrilling gaming experience through an updated gameplay.</p>\n<p>Among the major changes :</p>\n<p><strong>⚙️3 game configurations</strong>:</p>\n<ul>\n  <li>A \"<strong>Classic</strong>\" mode for <strong>3 to 5</strong> players in which each player defends their own interests</li>\n  <li>A \"<strong>Teamplay</strong>\" mode for <strong>4 or 6</strong> players, offering the possibility to play as <strong>teams of 2</strong>, mixing cooperation between teammates and confrontation against opponents.</li>\n  <li>An enhanced and improved <strong>“2-players”</strong> mode<br>\n</li>\n</ul>\n<p>🗺️A <strong>modular game board</strong> is now built with landscape tiles assembled by the players during the setup of the game, allowing for<strong> everchanging maps</strong> and game strategies, bringing a constantly <strong>renewed </strong>gaming experience</p>\n<p>🙏<strong>6 gods</strong> instead of the 5 originals are now available, increasing players <strong>variety of actions</strong></p>\n<p>🛠️<strong>New free mandatory construction actions</strong> for the gods that considerably <strong>speed up </strong>the overall game time and the <strong>interaction </strong>between players</p>\n<p>⚔️<strong>Mercenaries</strong>, a <strong>new </strong>unit that comes with the new goddess: <strong>Hera</strong>, who enforces your troops during battles.</p>\n<p>🐍<strong>New Creatures and Heroes</strong> are now available in the base game and have been reworked to offer<strong> new strategic opportunities</strong> in building metropolises and gaining decisive advantages on the battlefield.</p>\n<p>💰<strong>Shorter </strong>and <strong>more dynamic bidding phases</strong> thanks to a new exponential bidding scale.</p>\n<p>🏙️The <strong>new </strong>metropolis system provides for <strong>bonuses </strong>that will boost your assets.</p>\n<p>🎨All gaming elements and illustrations have been <strong>redesigned </strong>by the original artist <strong>Miguel Coimbra</strong>.</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276960\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/960/af2b9e271393a56d35e93089343a2515_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645961&amp;gif-q=50&amp;lossless=true&amp;s=b6c4cbfdf2c1e3ec7190516e4d92afea\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41356315\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/356/315/77a0b4cd443536e2facc77b0900bd94d_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687254159&amp;gif-q=50&amp;lossless=true&amp;s=b1d8ae09e0e33381b708766f88431f9b\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41726436\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/726/436/3914f9ff307f2f3a281c99a49fd944fa_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690277316&amp;gif-q=50&amp;lossless=true&amp;s=454563acc4368682c02806ecedc46e0f\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41590952\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/590/952/bab5c6d52fda8719f21ad1ba25ebad1a_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689157317&amp;gif-q=50&amp;lossless=true&amp;s=46f5c14d63d1767f22c3623c38c1b760\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41318322\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/318/322/909c96ddd515b8e439e98db2b39e16c0_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686920653&amp;gif-q=50&amp;lossless=true&amp;s=a21cfa97cc9f6e6a82c01c0a423c3e75\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41515858\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/515/858/67ea54a23590e5d68a607100a484ef00_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688569905&amp;gif-q=50&amp;lossless=true&amp;s=e41cb98bdbec1fbfa99420448aaa1b81\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41356343\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/356/343/ff7c00510a907116625b4e6660082d9b_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687254322&amp;gif-q=50&amp;lossless=true&amp;s=1f2167bf61f47aea669269f8921ca197\">\n</figure>\n\n</div>\n\n\n<br>\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276818\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/818/0ccc4dbca3645346ec5aa60f4107dca2_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645110&amp;gif-q=50&amp;lossless=true&amp;s=c78b91574951fe7d098b64543d6fd77a\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41597273\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/597/273/1ea4410dec07616deb3ca4346363da65_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689195246&amp;gif-q=50&amp;lossless=true&amp;s=ef0a6e8aae8553094ecfecd5866360a0\">\n</figure>\n\n</div>\n\n\n<br>\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41428092\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/428/092/0e979477978302411f966c0ecd8bb99d_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687853539&amp;gif-q=50&amp;lossless=true&amp;s=acca63a893cfc41911fa748a7cb0a054\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41456676\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/456/676/1684d40dcecdacdc4a39b84801c6b076_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688051494&amp;gif-q=50&amp;lossless=true&amp;s=8aa8074f7280ff9b29ac090c14a4ef52\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41456944\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/456/944/19fc48963207d8d970b8136236bebc9e_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688053069&amp;gif-q=50&amp;lossless=true&amp;s=1c9063b0acfbc5868e73ead8f6a4e086\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41457758\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/457/758/5781159b01e83efe0858bfa1c038b6ff_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688056960&amp;gif-q=50&amp;lossless=true&amp;s=400a3e1016d72a3045899cbff5ce1daf\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41458013\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/458/013/bd39622d0891297a9573c38c59c6f35a_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688058097&amp;gif-q=50&amp;lossless=true&amp;s=17dd909d415ea2e4d4ce730b51b1bc34\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41459067\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/459/067/75a4f0cff1bc5c12039b6d4c0ebd47d2_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688064172&amp;gif-q=50&amp;lossless=true&amp;s=c7de31e9cdb4f07340d1a052c4141d3f\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41460711\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/460/711/7ddc8957b6cde0877b5bcd15b7cd565b_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688074739&amp;gif-q=50&amp;lossless=true&amp;s=e0a0ed82e8333b1335aaa41c46074a81\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41465255\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/465/255/b4c5daa70305d53d0da3419d9f0b16a2_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688115908&amp;gif-q=50&amp;lossless=true&amp;s=86794e366e13a8933eff33f14cdb82b6\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41464286\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/464/286/e33698d10d0af2dbf3a771338ced64f1_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688108297&amp;gif-q=50&amp;lossless=true&amp;s=45010712947728a9c54e42694357237a\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41465767\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/465/767/31a5e2443c923d606618596435d4f99d_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688119401&amp;gif-q=50&amp;lossless=true&amp;s=416c13f53e300e1bdea77cff093ece81\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41466376\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/466/376/a7ad1cff61a8be020dd02fd7aa6f0a2c_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688124036&amp;gif-q=50&amp;lossless=true&amp;s=37e6fd51f30e1684118949085e362d54\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41603772\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/603/772/6990409c2aeef22909e101a4b66e1d55_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689245926&amp;gif-q=50&amp;lossless=true&amp;s=7551b2c9b9d22f8bfa0244d40128cc61\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41479913\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/479/913/3b8da1de869f99065abbee03bff84f26_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688238204&amp;gif-q=50&amp;lossless=true&amp;s=40e72c6a50da43a08b158ed57a7f559c\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41493510\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/493/510/19bd41ae9244cc18dbdb04ec36492813_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688387397&amp;gif-q=50&amp;lossless=true&amp;s=cfc2488d759ca33259f6d54782c6830a\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41680164\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/680/164/07c122a1fb108e9248c1242b46d9b890_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689844566&amp;gif-q=50&amp;q=92&amp;s=c0916168b7ece9c75782f09b76014ed9\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/680/164/07c122a1fb108e9248c1242b46d9b890_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689844566&amp;auto=format&amp;frame=1&amp;q=92&amp;s=2971b52924b15fef1755a95d37146039\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41495799\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/495/799/1c2d59f78ff8ac4d05e23da9b2ea6d67_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688401411&amp;gif-q=50&amp;lossless=true&amp;s=3c153d31c391d64441323e71021b1b40\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41512209\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/512/209/e6738800f32477c4fc39318d26352ba2_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688542163&amp;gif-q=50&amp;lossless=true&amp;s=c6c427f260c4ef7cf3dbe35242bc647e\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41512855\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/512/855/16b72a709b87d0e32db4ddea2d6380bd_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688548441&amp;gif-q=50&amp;lossless=true&amp;s=0fae4831e330ac049bc152eeaa6e2ee7\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41515866\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/515/866/1c9250cfa5ee9ac6e1326ba2bd49a588_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688569955&amp;gif-q=50&amp;lossless=true&amp;s=bb94d111ef572415bfd0ac92bf5e68c9\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41541590\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/541/590/b5607e5eaf366b3aa677eb58a4e3574d_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688753388&amp;gif-q=50&amp;lossless=true&amp;s=a31f7811a17d9abb5f1ce72ad9a21f46\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41680155\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/680/155/c678e584bf3988af166ed0376155f3fd_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689844528&amp;gif-q=50&amp;q=92&amp;s=7f765278a949e965fa2c202b634bc5ac\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/680/155/c678e584bf3988af166ed0376155f3fd_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689844528&amp;auto=format&amp;frame=1&amp;q=92&amp;s=33361a1b6fd34b6d389f417307f016c8\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41546208\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/546/208/1028601b54b7e2ebf41c27bde5e05618_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688798020&amp;gif-q=50&amp;lossless=true&amp;s=3b77f376da3fab2a5c0a62cbc4202a27\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41549085\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/549/085/71d9093cdcf7463fd5486c8898968cbd_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688833528&amp;gif-q=50&amp;lossless=true&amp;s=0e725a7732235a5ed1fe63feb8e62fea\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41584483\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/584/483/918217cfcffab076fa0580f791c40079_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689108347&amp;gif-q=50&amp;lossless=true&amp;s=a4210bcb00040dc8b9e6f7ab88987252\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41605757\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/605/757/066c61858dcf2e2a44848813dcb82b7a_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689259443&amp;gif-q=50&amp;lossless=true&amp;s=d26c7da9248dcc9b439dfeb46f9001e2\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41610134\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/610/134/16213a99c7c222fbc29a4152bd7a58e2_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689282716&amp;gif-q=50&amp;lossless=true&amp;s=0a103952f8c8739bf96ebf8f38274986\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41667348\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/667/348/7935473f7fa58cf06d003c19c5a16b13_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689747988&amp;gif-q=50&amp;lossless=true&amp;s=679377e63fc90221a2d44d972026310f\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41680181\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/680/181/355850ecb48de7f63d73f35d6a09068e_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689844646&amp;gif-q=50&amp;q=92&amp;s=5b823df77c1bb9478a48ae06446ecc6d\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/680/181/355850ecb48de7f63d73f35d6a09068e_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689844646&amp;auto=format&amp;frame=1&amp;q=92&amp;s=1a007a650adbcd1f80a77f5d0dc7e420\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41671615\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/671/615/770c4252af0f445b547b2f9af7562a50_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689780190&amp;gif-q=50&amp;lossless=true&amp;s=c983463affba4d68e9c19060252c3933\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41691849\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/691/849/e7a8dbbae149987359a4afa20d5fcde3_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689939298&amp;gif-q=50&amp;lossless=true&amp;s=4f0eeadf44af6305426c823869bb1d27\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720152\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/152/ed153c0689348acbb4ac2e8bcb2df8cc_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224607&amp;gif-q=50&amp;lossless=true&amp;s=7ba9590a8c56f54e3e066429319e8442\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720155\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/155/8f579d70c80b73b932c8d878d85bf075_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224629&amp;gif-q=50&amp;lossless=true&amp;s=d1b4564d3619e9b5acffcdc2ad1b59b9\">\n</figure>\n\n</div>\n\n\n<br>\n<br>\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276842\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/842/b7034819dafbdf771d428cecea52f8f1_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645220&amp;gif-q=50&amp;lossless=true&amp;s=849ac78cd89b935783a96845c3a2518a\">\n</figure>\n\n</div>\n\n\n<p>Cyclades Legendary Edition features over 150 finely detailed miniatures by talented sculptors Valerio Carbone and Thierry Masson. Each faction will shine through its unique design!</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276850\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/850/6bc853dc3ababc34ac29e007db0c9f6e_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645268&amp;gif-q=50&amp;lossless=true&amp;s=18cbd37ced6d1796c1aa941d7d92c3a1\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276857\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/857/c791cf49468bd90396fc543887cc4e61_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645302&amp;gif-q=50&amp;lossless=true&amp;s=3ce5ca7ce6d0d19f2d48f7f5ba86d8d5\">\n</figure>\n\n</div>\n\n\n<p>By praying to the new Cyclades Legendary Edition goddess, <strong>Hera</strong>, you can recruit a new type of Troop to take the advantage on the battlefield: <strong>Mercenaries</strong>.</p>\n<p>They'll fight your opponents alongside your own troops. </p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41318382\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/318/382/74a17fb67ac0c4e87490c3e604481b1b_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686920990&amp;gif-q=50&amp;lossless=true&amp;s=6a8e1c4a949b7541ca6c13e2f39e6112\">\n</figure>\n\n</div>\n\n\n<br>\n<p>By taming the phenomenal power of the f<strong>antastic Creatures</strong> of the <strong>Cyclades</strong>, you'll shake the courage of your opponents' armies, on land and at sea.</p>\n<p>Can you harness these ferocious creatures long enough to deliver a decisive blow to your opponents?</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41318496\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/318/496/9ecbfff82d2676b0f3e8a36982329a35_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686921653&amp;gif-q=50&amp;lossless=true&amp;s=3e2a0c39249e85bd725fccb5e260d346\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276867\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/867/2f548b0b41a89c309d63318fb50c42b1_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645384&amp;gif-q=50&amp;lossless=true&amp;s=17ad7a9eed38afd7a75155f1b6d79062\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276869\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/869/5d26d4059231c6e2c111e93bb6efc820_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686645407&amp;gif-q=50&amp;lossless=true&amp;s=263f31ab0d89a9592d2462d5a7850d14\">\n</figure>\n\n</div>\n\n\n<p><strong>Hera</strong> has more than one trick up her sleeve.</p>\n<p>She'll allow the player who earns her blessing to recruit valiant <strong>Heroes</strong> to lead your troops into battle.</p>\n<p>Will they <strong>galvanize</strong> your troops on the battlefield, or <strong>sacrifice </strong>themselves in a masterly coup to your glory?</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41318507\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/318/507/11799384b1722723144ac99001e30415_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686921728&amp;gif-q=50&amp;lossless=true&amp;s=609b5537e08a07946a2ee133d42d7e5f\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41276975\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/276/975/4b67f0e4154a289d3ff4b7f458d5c535_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686646054&amp;gif-q=50&amp;lossless=true&amp;s=12d1a8dbfbe4925c92d8beaf68b897b1\">\n</figure>\n\n</div>\n\n\n<p>🇬🇧 English Version</p>\n<p>Learn while playing by JonGetsGames: <a href=\"https://www.youtube.com/watch?v=dioQv6mmXZo\" target=\"_blank\" rel=\"noopener\">https://www.youtube.com/watch?v=dioQv6mmXZo</a></p>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=dioQv6mmXZo\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/dioQv6mmXZo?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Cyclades: Legendary Edition - Learn While Playing\"></iframe>\n\n</div>\n\n          \n\n<p>🇫🇷 French Version</p>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/fDSDXdXpRcQ\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/fDSDXdXpRcQ?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Cyclades, on explique et on joue\"></iframe>\n\n</div>\n\n          \n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/iTXI4YrJHYA\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/iTXI4YrJHYA?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Ludochrono - Cyclades : Legendary Edition\"></iframe>\n\n</div>\n\n          \n\n<br>\n<br>\n<br>\n<p>🔱 <strong>Victory Condition</strong></p>\n<p><strong>The goal of the game is for any player to control his third metropolis at the end of a round</strong>.</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41381862\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/862/23c02b7371497c1ed2bea1b7d18130d8_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687434125&amp;gif-q=50&amp;q=92&amp;s=6c0c667c87bb5a339334482f28425bc8\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/862/23c02b7371497c1ed2bea1b7d18130d8_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687434125&amp;auto=format&amp;frame=1&amp;q=92&amp;s=bc31f27648a1aa6f4cffce1140d65714\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41381875\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/875/53af6cfbc585ca093449d0a133fcec29_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687434210&amp;gif-q=50&amp;q=92&amp;s=7bbf3f1378b439eb76eb1e9e7fae6a86\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/875/53af6cfbc585ca093449d0a133fcec29_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687434210&amp;auto=format&amp;frame=1&amp;q=92&amp;s=1aeb7ddfd8a6d43edc898dde6b72feab\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41381881\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/881/d4146c56652844ee6f6622a7b30f5689_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687434241&amp;gif-q=50&amp;q=92&amp;s=828246d42be32df62aeeea6d11f13141\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/381/881/d4146c56652844ee6f6622a7b30f5689_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687434241&amp;auto=format&amp;frame=1&amp;q=92&amp;s=1557807c5a535e5f1d40bf880dda626b\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41429569\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/429/569/9852e1e6c9f403d65b32cd815c96859e_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687864040&amp;gif-q=50&amp;q=92&amp;s=b55e12f6423ac0497cf6999f95eba327\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/429/569/9852e1e6c9f403d65b32cd815c96859e_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687864040&amp;auto=format&amp;frame=1&amp;q=92&amp;s=6529536ba45e508c31a90b169638ac58\">\n</figure>\n\n</div>\n\n\n<p><strong>Activate your God’s favors &amp; deploy your strategy</strong></p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41441429\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/429/395d94884f0f835d7dd9434eddc638f9_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945087&amp;gif-q=50&amp;q=92&amp;s=4db5c93807898605d5946600ca86f495\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/429/395d94884f0f835d7dd9434eddc638f9_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945087&amp;auto=format&amp;frame=1&amp;q=92&amp;s=4024513414295870260799122e5b6446\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41441443\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/443/55304433a9ccd740a9e284d808ac4eaa_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945205&amp;gif-q=50&amp;q=92&amp;s=bd1b6b677051ab0f59914f5396c7a979\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/443/55304433a9ccd740a9e284d808ac4eaa_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945205&amp;auto=format&amp;frame=1&amp;q=92&amp;s=4a8d71e216eb16bdaa7c0c9fda02ae96\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41441452\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/452/8ef3cdde99fb131b93bcb99fb8cfc7e9_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945261&amp;gif-q=50&amp;q=92&amp;s=f04c370ce9c1c5951e4766cd257d801f\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/452/8ef3cdde99fb131b93bcb99fb8cfc7e9_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945261&amp;auto=format&amp;frame=1&amp;q=92&amp;s=f409739589f705442c511b888777a336\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41441456\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/456/a86894570998b207d8aef1315ce7a9bb_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945303&amp;gif-q=50&amp;q=92&amp;s=1b8f8b6ba07b77519985ca5d8b366c01\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/456/a86894570998b207d8aef1315ce7a9bb_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945303&amp;auto=format&amp;frame=1&amp;q=92&amp;s=e5f35316ddb92f436ce14f665c27ef20\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41441468\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/468/8ff7f9595335179722d9afb73431da0d_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945360&amp;gif-q=50&amp;q=92&amp;s=97bf8249476c99c5c64c162853f96ef2\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/441/468/8ff7f9595335179722d9afb73431da0d_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687945360&amp;auto=format&amp;frame=1&amp;q=92&amp;s=8991050c270ceac320a82985798ed4ea\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41464811\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/464/811/ad8d43269307640d6a6b4c03981af1e1_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688112899&amp;gif-q=50&amp;q=92&amp;s=3946867983faef6dd439d1834af355ce\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/464/811/ad8d43269307640d6a6b4c03981af1e1_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688112899&amp;auto=format&amp;frame=1&amp;q=92&amp;s=c9b835f95abe7262e9d6013a8fa64ab8\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41427952\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit js-lazy-image\" data-src=\"https://ksr-qa-ugc.imgix.net/assets/041/427/952/b32facdc8afc6f257fa8b172605ce013_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687852417&amp;gif-q=50&amp;q=92&amp;s=c5acf82c292f80b91f0ad41b95c1b415\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/427/952/b32facdc8afc6f257fa8b172605ce013_original.gif?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687852417&amp;auto=format&amp;frame=1&amp;q=92&amp;s=0cf82e03dfa2151523f0fa9e1d207299\">\n</figure>\n\n</div>\n\n\n<p>In a <strong>whirlwind </strong>of <strong>tactical </strong>possibilities, maneuver with <strong>cunning </strong>and <strong>surprise </strong>your opponents in <strong>legendary</strong> <strong>coups</strong> to etch your name in the  <strong>pantheon </strong>of <strong>great strategists</strong>.</p>\n\n<a href=\"https://drive.google.com/drive/folders/1DHydcoTfm-93X2aVQqX5sYsaoCp6u6ns?usp=sharing\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41318543\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/318/543/f699ed6b714a9e71ccd6fac0ddedf899_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686921952&amp;gif-q=50&amp;lossless=true&amp;s=f6a1885f1d190647e5bc9510d4dd4d8a\">\n</figure>\n\n</div>\n</a>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41277034\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/277/034/24e741af8cac7dad8caf1e18d330fbd7_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686646314&amp;gif-q=50&amp;lossless=true&amp;s=849e78f2b84e413397aa5ccf2759f408\">\n</figure>\n\n</div>\n\n\n<p>🇬🇧 English Reviews</p>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/Ur-ZmUgfNxE\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/Ur-ZmUgfNxE?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Cyclades Legendary Edition Review - What It Is, What's Different And Is It Better?\"></iframe>\n\n</div>\n\n          \n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/xT0rgXWoBq4\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/xT0rgXWoBq4?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Cyclades:  Legendary Edition - DT Preview with Mark Streed\"></iframe>\n\n</div>\n\n          \n\n<p>🇫🇷 French Reviews</p>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/lXuloz8veSw\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/lXuloz8veSw?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Cyclades Legendary Edition (Dégustation du jeu)\"></iframe>\n\n</div>\n\n          \n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://www.youtube.com/watch?v=EvIDewfZz4Q&amp;t=518s\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/EvIDewfZz4Q?start=518&amp;feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"CYCLADES, l'édition Légendaire !\"></iframe>\n\n</div>\n\n          \n\n<p>🇩🇪 German Reviews</p>\n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/BcggL1o0u_w\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/BcggL1o0u_w?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"Cyclades: Legendary Edition – Brettspiel – Preview mit Alex &amp; Peat\"></iframe>\n\n</div>\n\n          \n\n            <div class=\"template oembed\" contenteditable=\"false\" data-href=\"https://youtu.be/LYS9VavyMYc\">\n<iframe width=\"356\" height=\"200\" src=\"https://www.youtube.com/embed/LYS9VavyMYc?feature=oembed&amp;wmode=transparent\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen title=\"😎Brett im Check: Cyclades Legendary Edition - Klassiker im neuen Gewand ⭐\"></iframe>\n\n</div>\n\n          \n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720161\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/161/d2faaac5d765678a510e8afc4e931411_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224676&amp;gif-q=50&amp;lossless=true&amp;s=a5a53afcd3bfe6f19914e487ccb9a966\">\n</figure>\n\n</div>\n\n\n<a href=\"https://www.instagram.com/opensesamegames/?hl=fr\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720281\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/281/b9957d0c0cd3f39a21759cf4a42082f0_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225439&amp;gif-q=50&amp;lossless=true&amp;s=41bf2a44edef6d542f7b797c8461aa36\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://www.facebook.com/opensesamegames.USFR\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41726777\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/726/777/b96e2ce67ad579d136eff9519104fdc9_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690280397&amp;gif-q=50&amp;lossless=true&amp;s=1f435708de9e6c1b4014b05ff4129f06\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://www.facebook.com/watch/?v=6565263066828526\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720256\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/256/ec7e6634a46588a82c7cd63e31125f9d_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225298&amp;gif-q=50&amp;lossless=true&amp;s=bd97005b4019a56af7f31ee6e44c88be\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://boardgamegeek.com/boardgame/380619/cyclades-legendary-edition\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720250\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/250/ae78e9b71da9fadd0078def14272e06b_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225258&amp;gif-q=50&amp;lossless=true&amp;s=0bdef2e1b60d07c139b3e0c349e95289\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://open-sesame.games/cyclades-legendary-edition/#newsletter\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720239\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/239/cbb07d1f2ce39e1a289dabadcc94cfd3_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225219&amp;gif-q=50&amp;lossless=true&amp;s=93223e341455409b2f7c3d0f823deca1\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"http://kicktraq.com/projects/opensesamegames/cyclades-legendary-edition/\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720232\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/232/822fa97c7d064145d18cab441991c99b_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225165&amp;gif-q=50&amp;lossless=true&amp;s=3da46911e8491c7a4f8a61d424301671\">\n</figure>\n\n</div>\n</a>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41726774\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/726/774/259c6e87d924b88d3d3f9539e8656377_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690280364&amp;gif-q=50&amp;lossless=true&amp;s=ded21723e292a3cd4491e60d49992cf0\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41725887\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/725/887/d64552c8d16773818626d19282467139_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690272231&amp;gif-q=50&amp;lossless=true&amp;s=c1c28c81cb83c5b6afc9f7ed5a485317\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720223\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/223/25b37aee5bfd810787c9a7fbc84fc185_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225111&amp;gif-q=50&amp;lossless=true&amp;s=6c97c7a6dad2406e3633a4488025fdb9\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720213\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/213/97f86e5af4176b42f855a2114a2b70b1_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690225043&amp;gif-q=50&amp;lossless=true&amp;s=65b5dd0e6b564590a9fb806792083500\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720198\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/198/5ce3699d678ab6f14be5996281beeef3_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224957&amp;gif-q=50&amp;lossless=true&amp;s=c19832199a9d6a5688d032360b35a0a1\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720187\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/187/6c9be81e808d89e66fc07d571b90fd84_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224846&amp;gif-q=50&amp;lossless=true&amp;s=097ba887f7e080a58f2f580ce96b66bf\">\n</figure>\n\n</div>\n\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41720168\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/720/168/52ed5fd6c1527036b66c06d84ba176c4_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1690224747&amp;gif-q=50&amp;lossless=true&amp;s=dffe8a824c118ec1e63cfc67a84a8ab9\">\n</figure>\n\n</div>\n\n\n<br>\n\n<a href=\"http://kicktraq.com/projects/opensesamegames/cyclades-legendary-edition/\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41504035\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/504/035/85a16cb7989e9c265daf0610918f930f_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688470428&amp;gif-q=50&amp;lossless=true&amp;s=e0ae499d63c83d936dffdfd0bbf5e829\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://www.facebook.com/watch/?v=6565263066828526\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41591031\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/591/031/b689b2dd55b16d3d069f716a81832014_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689157789&amp;gif-q=50&amp;lossless=true&amp;s=bd8d37ee906f5a848cb5d0431734ca8f\">\n</figure>\n\n</div>\n</a>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41681511\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/681/511/ac7973405fe3e8c20eaab5baec91eb7a_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689856494&amp;gif-q=50&amp;lossless=true&amp;s=90b290c783cbe3df27f7312e7aeebbde\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41512581\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/512/581/485c8f132d28b02ebef19e1deba89b3a_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688545786&amp;gif-q=50&amp;lossless=true&amp;s=c5ddc9304faf7a3e1cd04ef0d0e3f5c1\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41658541\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/658/541/77884e717639ad09c0b2dba8ed0c4607_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1689694151&amp;gif-q=50&amp;lossless=true&amp;s=16e80dbb0e2a6a92389a8406115b00f1\">\n</figure>\n\n</div>\n\n\n<a href=\"https://boardgamegeek.com/boardgame/380619/cyclades-legendary-edition\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41504721\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/504/721/cde4956da122c9e4b5dbbb958d063027_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688476699&amp;gif-q=50&amp;lossless=true&amp;s=57c60db87690a52b831cdd4d3f48998c\">\n</figure>\n\n</div>\n</a>\n\n<br>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41277086\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/277/086/bcf4c6c47116a2dfab42c67be99841da_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686646541&amp;gif-q=50&amp;lossless=true&amp;s=ec146abfdc21978a8a3768ee5bcdf60b\">\n</figure>\n\n</div>\n\n\n<a href=\"https://boardgamegeek.com/boardgame/380619/cyclades-legendary-edition\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41419207\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/419/207/90c2cf8c8f959abe88e69f6d2559fa09_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687791873&amp;gif-q=50&amp;lossless=true&amp;s=3265ab68d9b5590117c7077e25574918\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://open-sesame.games/cyclades-legendary-edition/\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41419217\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/419/217/4b70f7064fbf87944a0ee706ad516ad9_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687791908&amp;gif-q=50&amp;lossless=true&amp;s=1865eca4c66de015bdeb1841b64748de\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://www.facebook.com/opensesamegames.USFR\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41419243\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/419/243/5e6f5042b9e8820bdd409910518aa596_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687791999&amp;gif-q=50&amp;lossless=true&amp;s=b05db9a2f34e0b51523b75776aff527c\">\n</figure>\n\n</div>\n</a>\n\n<a href=\"https://www.instagram.com/opensesamegames/\" target=\"_blank\" rel=\"noopener\"><div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41419249\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/419/249/e0adca600978922a01d8d962b4972ac8_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687792031&amp;gif-q=50&amp;lossless=true&amp;s=a802267197bfb4d5b03fe3ac950b39a5\">\n</figure>\n\n</div>\n</a>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41277017\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/277/017/dba1a36249b3dc73c9ae4ce96a849c96_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686646255&amp;gif-q=50&amp;lossless=true&amp;s=cb4f9bb97d9947c27c906d15fd6616de\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41459269\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/459/269/a29add3f601932a3f05eb36105ea79d4_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1688065369&amp;gif-q=50&amp;lossless=true&amp;s=df7c64616924c56168e4d8445c628590\">\n</figure>\n\n</div>\n\n\n<br>\n<p>Our prices include <strong>VAT </strong>and <strong>Sales Taxes </strong>for <strong>USA</strong>, <strong>European Union</strong>, <strong>Canada</strong>, <strong>UK</strong>, <strong>China </strong>and <strong>Australia</strong>.</p>\n<p>Rewards prices are guaranteed during this campaign only. By choosing a Meeples, Miniatures, or Ultimate pledge now, <strong>you are guaranteed a price when it's time to fill the Pledge Manager, even if you wish to change your pledge after the campaign or add some new elements</strong>.  </p>\n<p>However for the \"Support Open Sesame Games\" reward, <strong>we do not guarantee that the price will not have changed</strong> due to a potential increase in production costs if you want to evolve your pledge or add new elements to it.</p>\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41373152\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/373/152/132d807dc09ac333eca5b58f5d9d45b9_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1687363501&amp;gif-q=50&amp;lossless=true&amp;s=47bce534c93d17b5dfaaea5b69ec5eac\">\n</figure>\n\n</div>\n\n\n<div class=\"template asset\" contenteditable=\"false\" data-alt-text=\"\" data-caption=\"\" data-id=\"41277052\">\n<figure class=\"image\">\n<img alt=\"\" class=\"fit\" src=\"https://ksr-qa-ugc.imgix.net/assets/041/277/052/58dc957501958242bd58278ab6dd8422_original.png?ixlib=rb-4.1.0&amp;w=700&amp;fit=max&amp;v=1686646374&amp;gif-q=50&amp;lossless=true&amp;s=4c1b5a32c6fb5c2f33467f34c755a28a\">\n</figure>\n\n</div>\n\n\n<p>There is a <strong>legitimate</strong> question that comes up often: what is the point of pledging immediately rather than waiting for the game to be released in retail stores?</p>\n<p>The first reason is common to all Kickstarters campaigns: pledging immediately <strong>supports the</strong> <strong>project </strong>directly and <strong>helps </strong>the team <strong>succeed</strong>.</p>\n<p>This <strong>Kickstarter </strong>edition and some <strong>Stretch Goal</strong> <strong>features </strong>remain <strong>exclusive </strong>to this <strong>Kickstarter</strong>. If you want to get them, you must back the campaign.</p>\n<p>To benefit from these <strong>exclusive features</strong>, <strong>Stretch Goals</strong> have to be <strong>unlocked during </strong>the <strong>campaign</strong>. That's why pledging to the game <strong>during the Kickstarter</strong> campaign remains the best moment.</p>",
+          "tags": [],
+          "url": "https://staging.kickstarter.com/projects/opensesamegames/cyclades-legendary-edition",
+          "usdExchangeRate": 1.052523,
+          "video": {
+            "__typename": "Video",
+            "id": "VmlkZW8tMTIzNDYyNg==",
+            "videoSources": {
+              "__typename": "VideoSources",
+              "high": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1696878486-l9xKrhqF44HhSDLkzNBptbsRqK5Z86SKST1RIcYxY3o%3D/projects/4479642/video-1234626-h264_high.mp4"
+              },
+              "hls": {
+                "__typename": "VideoSourceInfo",
+                "src": "https://v2.kickstarter.com/1696878486-l9xKrhqF44HhSDLkzNBptbsRqK5Z86SKST1RIcYxY3o%3D/projects/4479642/video-1234626-hls_playlist.m3u8"
+              }
+            }
+          },
+          "watchesCount": 22053
+        }
+      ],
+      "pageInfo": {
+        "__typename": "PageInfo",
+        "hasNextPage": false,
+        "endCursor": "eyJpbmRleCI6Miwic2VlZCI6MjgyODEzMH0=",
+        "hasPreviousPage": false,
+        "startCursor": "eyJpbmRleCI6MCwic2VlZCI6MjgyODEzMH0="
+      },
+      "totalCount": 3
+    }
+  }
+}
