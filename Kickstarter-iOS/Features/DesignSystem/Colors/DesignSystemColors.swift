@@ -3,8 +3,8 @@ import Prelude_UIKit
 import UIKit
 
 public enum DesignSystemColorSet: String {
-  case old = "old-colors"
-  case newcolors = "new-colors"
+  case old = "colors-old"
+  case newcolors = "colors-new"
 }
 
 public enum DesignSystemColors: String {
