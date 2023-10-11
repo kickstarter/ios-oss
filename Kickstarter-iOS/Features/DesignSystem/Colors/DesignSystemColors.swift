@@ -8,6 +8,8 @@ public enum DesignSystemColorSet: String {
 }
 
 public enum DesignSystemColors: String {
+  // MARK: - OLD COLORS
+
   // MARK: - Greens
 
   case create100
@@ -47,6 +49,99 @@ public enum DesignSystemColors: String {
   case facebookBlue
   case inform
   case warn
+
+  // MARK: NEW COLORS
+
+  // MARK: Blues
+
+  case blue1
+  case blue2
+  case blue3
+  case blue4
+  case blue5
+  case blue6
+  case blue7
+  case blue8
+  case blue9
+  case blue10
+
+  // MARK: Greens
+
+  case green1
+  case green2
+  case green3
+  case green4
+  case green5
+  case green6
+  case green7
+  case green8
+  case green9
+  case green10
+
+  // MARK: Greys
+
+  case grey1
+  case grey2
+  case grey3
+  case grey4
+  case grey5
+  case grey6
+  case grey7
+  case grey8
+  case grey9
+  case grey10
+
+  // MARK: Oranges
+
+  case orange1
+  case orange2
+  case orange3
+  case orange4
+  case orange5
+  case orange6
+  case orange7
+  case orange8
+  case orange9
+  case orange10
+
+  // MARK: Purples
+
+  case purple1
+  case purple2
+  case purple3
+  case purple4
+  case purple5
+  case purple6
+  case purple7
+  case purple8
+  case purple9
+  case purple10
+
+  // MARK: Reds
+
+  case red1
+  case red2
+  case red3
+  case red4
+  case red5
+  case red6
+  case red7
+  case red8
+  case red9
+  case red10
+
+  // MARK: Yellows
+
+  case yellow1
+  case yellow2
+  case yellow3
+  case yellow4
+  case yellow5
+  case yellow6
+  case yellow7
+  case yellow8
+  case yellow9
+  case yellow10
 }
 
 extension DesignSystemColors {
