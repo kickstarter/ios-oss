@@ -23,6 +23,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
+        RemoteConfigFeature.darkModeEnabled.rawValue: true,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: true,
         RemoteConfigFeature.useOfAIProjectTab.rawValue: true
@@ -45,6 +46,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
+        RemoteConfigFeature.darkModeEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: false,
         RemoteConfigFeature.useOfAIProjectTab.rawValue: false
