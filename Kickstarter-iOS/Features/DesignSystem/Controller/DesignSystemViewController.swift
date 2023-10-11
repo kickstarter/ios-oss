@@ -311,7 +311,7 @@ final class DesignSystemViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ adaptiveColor(.white)
+      |> \.backgroundColor .~ adaptiveColor(.old, .white)
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
@@ -328,15 +328,15 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.errorSnackbarStackView
       |> alertStackViewStyle
-      |> \.backgroundColor .~ adaptiveColor(.alert)
+      |> \.backgroundColor .~ adaptiveColor(.old, .alert)
 
     _ = self.confirmationSnackbarStackView
       |> alertStackViewStyle
-      |> \.backgroundColor .~ adaptiveColor(.trust500)
+      |> \.backgroundColor .~ adaptiveColor(.old, .trust500)
 
     _ = self.alertsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Alerts"
 
     _ = self.alertsStackView
@@ -344,24 +344,24 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.errorSnackbarIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.white)
+      |> \.tintColor .~ adaptiveColor(.old, .white)
       |> UIImageView.lens.image .~ UIImage(named: "fix-icon")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.errorSnackbarLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.white)
+      |> \.textColor .~ adaptiveColor(.old, .white)
       |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 2
 
     _ = self.confirmationSnackbarIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.white)
+      |> \.tintColor .~ adaptiveColor(.old, .white)
       |> UIImageView.lens.image .~ UIImage(named: "icon--confirmation")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.confirmationSnackbarLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.white)
+      |> \.textColor .~ adaptiveColor(.old, .white)
       |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 2
@@ -370,7 +370,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.buttonsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Buttons"
 
     _ = self.buttonsStackView
@@ -412,7 +412,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.iconsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Icons"
 
     _ = self.iconsStackView
@@ -420,29 +420,29 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.logoIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create500)
+      |> \.tintColor .~ adaptiveColor(.old, .create500)
       |> UIImageView.lens.image .~ UIImage(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.arrowDownIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create500)
+      |> \.tintColor .~ adaptiveColor(.old, .create500)
       |> UIImageView.lens.image .~ UIImage(named: "arrow-down-large")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.heartIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.support400)
+      |> \.tintColor .~ adaptiveColor(.old, .support400)
       |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.bookmarkIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create700)
+      |> \.tintColor .~ adaptiveColor(.old, .create700)
       |> UIImageView.lens.image .~ UIImage(named: "icon--bookmark")?.withRenderingMode(.alwaysTemplate)
 
     // MARK: - Control Styles
 
     _ = self.controlsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Controls"
 
     _ = self.controlsStackView
@@ -474,7 +474,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.inputsLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Inputs"
 
     _ = self.inputsStackView
@@ -482,7 +482,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.emailTextField
       |> adaptiveEmailFieldStyle
-      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+      |> \.layer.borderColor .~ adaptiveColor(.old, .support500).cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 6
       |> \.attributedPlaceholder %~ { _ in
@@ -490,7 +490,7 @@ final class DesignSystemViewController: UIViewController {
       }
     _ = self.passwordTextField
       |> adaptiveEmailFieldStyle
-      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+      |> \.layer.borderColor .~ adaptiveColor(.old, .support500).cgColor
       |> \.layer.borderWidth .~ 1
       |> \.layer.cornerRadius .~ 6
       |> UITextField.lens.secureTextEntry .~ true
@@ -502,7 +502,7 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.progressLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Progress Indicators"
 
     _ = self.progressStackView
@@ -521,14 +521,14 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.footersLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Footers"
 
     // MARK: - Typography Styles
 
     _ = self.typesLabel
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Typography"
 
     _ = self.typeStackView
@@ -536,92 +536,92 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.title1Label
       |> \.font .~ .ksr_title1()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Title 1"
 
     _ = self.title1LabelBold
       |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Title 1 Bold"
 
     _ = self.title2Label
       |> \.font .~ .ksr_title2()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Title 2"
 
     _ = self.title2LabelBold
       |> \.font .~ .ksr_title2().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Title 2 Bold"
 
     _ = self.title3Label
       |> \.font .~ .ksr_title3()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Title 3"
 
     _ = self.title3LabelBold
       |> \.font .~ .ksr_title3().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Title 3 Bold"
 
     _ = self.headlineLabel
       |> \.font .~ .ksr_headline()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Headline Bold"
 
     _ = self.bodyLabel
       |> \.font .~ .ksr_body()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Body"
 
     _ = self.calloutLabel
       |> \.font .~ .ksr_callout()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Callout"
 
     _ = self.calloutLabelBold
       |> \.font .~ .ksr_callout().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Callout Bold"
 
     _ = self.subheadlineLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Subheadline"
 
     _ = self.subheadlineLabelBold
       |> \.font .~ .ksr_subhead().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Subheadline Bold"
 
     _ = self.footnoteLabel
       |> \.font .~ .ksr_footnote()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Footnote"
 
     _ = self.footnoteLabelBold
       |> \.font .~ .ksr_footnote().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Footnote Bold"
 
     _ = self.caption1Label
       |> \.font .~ .ksr_caption1()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Caption 1"
 
     _ = self.caption1LabelBold
       |> \.font .~ .ksr_caption1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Caption 1 Bold"
 
     _ = self.caption2Label
       |> \.font .~ .ksr_caption2()
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Caption 2"
 
     _ = self.caption2LabelBold
       |> \.font .~ .ksr_caption2().bolded
-      |> \.textColor .~ adaptiveColor(.black)
+      |> \.textColor .~ adaptiveColor(.old, .black)
       |> \.text .~ "Caption 2 Bold"
   }
 }

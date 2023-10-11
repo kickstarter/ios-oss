@@ -2,6 +2,11 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+public enum DesignSystemColorSet: String {
+  case old = "old-colors"
+  case newcolors = "new-colors"
+}
+
 public enum DesignSystemColors: String {
   // MARK: - Greens
 
@@ -45,13 +50,13 @@ public enum DesignSystemColors: String {
 }
 
 extension DesignSystemColors {
-  public func load() -> UIColor {
-    UIColor(named: self.rawValue) ?? .white
+  public func load(_ colorSet: DesignSystemColorSet) -> UIColor {
+    UIColor(named: "\(colorSet.rawValue)/\(self.rawValue)") ?? .white
   }
 }
 
-public func adaptiveColor(_ style: DesignSystemColors) -> UIColor {
-  style.load()
+public func adaptiveColor(_ colorSet: DesignSystemColorSet, _ style: DesignSystemColors) -> UIColor {
+  style.load(colorSet)
 }
 
 public let verticalComponentStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
@@ -79,49 +84,49 @@ public let alertStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 // MARK: - Buttons
 
 public let adaptiveGreenButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.create700)
-  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.create700).mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.create700).mixLighter(0.36)
+  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.old, .create700)
+  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.old, .create700).mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.old, .create700).mixLighter(0.36)
 
 public let adaptiveBlueButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.trust500)
-  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.trust500).mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.trust500).mixLighter(0.36)
+  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.old, .trust500)
+  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.old, .trust500).mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.old, .trust500).mixLighter(0.36)
 
 public let adaptiveGreyButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.support700)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.support300)
-  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.support700)
-  <> UIButton.lens.titleColor(for: .disabled) .~ adaptiveColor(.support400)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.support300).mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.support300).mixLighter(0.12)
+  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.old, .support700)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.old, .support300)
+  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.old, .support700)
+  <> UIButton.lens.titleColor(for: .disabled) .~ adaptiveColor(.old, .support400)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.old, .support300).mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.old, .support300).mixLighter(0.12)
 
 public let adaptiveBlackButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
-  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
-  <> UIButton.lens.titleColor(for: .disabled) .~ adaptiveColor(.support100)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.support700)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.support700).mixDarker(0.66)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.support700).mixLighter(0.36)
-  <> UIButton.lens.backgroundColor(for: .selected) .~ adaptiveColor(.support700).mixLighter(0.46)
+  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.titleColor(for: .disabled) .~ adaptiveColor(.old, .support100)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.old, .support700)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.old, .support700).mixDarker(0.66)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.old, .support700).mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .selected) .~ adaptiveColor(.old, .support700).mixLighter(0.46)
 
 public let adaptiveRedButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.alert)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.alert).mixDarker(0.12)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.alert).mixLighter(0.36)
+  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.old, .white)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.old, .alert)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.old, .alert).mixDarker(0.12)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.old, .alert).mixLighter(0.36)
 
 public let adaptiveFacebookButtonStyle = baseButtonStyle
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.facebookBlue)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.old, .facebookBlue)
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.facebookBlue).mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.facebookBlue).mixLighter(0.36)
-  <> UIButton.lens.tintColor .~ adaptiveColor(.white)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.old, .facebookBlue).mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.old, .facebookBlue).mixLighter(0.36)
+  <> UIButton.lens.tintColor .~ adaptiveColor(.old, .white)
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
     button.traitCollection.verticalSizeClass == .compact
@@ -143,8 +148,8 @@ public let adaptiveIconImageViewStyle: ImageViewStyle = { imageView in
 
 public let adaptiveSwitchControlStyle: SwitchControlStyle = { switchControl in
   switchControl
-    |> \.onTintColor .~ adaptiveColor(.create700)
-    |> \.tintColor .~ adaptiveColor(.support100)
+    |> \.onTintColor .~ adaptiveColor(.old, .create700)
+    |> \.tintColor .~ adaptiveColor(.old, .support100)
 }
 
 // MARK: - Drop Down
@@ -155,12 +160,12 @@ public let adaptiveDropDownButtonStyle: ButtonStyle = { (button: UIButton) in
       top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
     )
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
-    |> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.create500)
-    |> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.create500)
+    |> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.old, .create500)
+    |> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.old, .create500)
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
     |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
     |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)
-    |> UIButton.lens.layer.shadowColor .~ adaptiveColor(.black).cgColor
+    |> UIButton.lens.layer.shadowColor .~ adaptiveColor(.old, .black).cgColor
 }
 
 // MARK: - Form
@@ -170,7 +175,7 @@ public let adaptiveFormFieldStyle: TextFieldStyle = { (textField: UITextField) i
     |> formTextInputStyle
     |> \.backgroundColor .~ .clear
     |> \.font .~ .ksr_body()
-    |> \.textColor .~ adaptiveColor(.black)
+    |> \.textColor .~ adaptiveColor(.old, .black)
 }
 
 // MARK: - Text Field
@@ -181,7 +186,7 @@ public let adaptiveEmailFieldStyle = adaptiveFormFieldStyle
 public func adaptiveAttributedPlaceholder(_ string: String) -> NSAttributedString {
   return NSAttributedString(
     string: string,
-    attributes: [NSAttributedString.Key.foregroundColor: adaptiveColor(.support400)]
+    attributes: [NSAttributedString.Key.foregroundColor: adaptiveColor(.old, .support400)]
   )
 }
 
@@ -199,7 +204,7 @@ public func adaptiveActivityIndicatorStyle(indicator: UIActivityIndicatorView) -
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
     |> UIActivityIndicatorView.lens.style .~ .medium
-    |> UIActivityIndicatorView.lens.color .~ adaptiveColor(.support700)
+    |> UIActivityIndicatorView.lens.color .~ adaptiveColor(.old, .support700)
 }
 
 // MARK: - Links
@@ -215,7 +220,7 @@ public let adaptiveTappableLinksViewStyle: TextViewStyle = { (textView: UITextVi
     |> \.textContainerInset .~ UIEdgeInsets.zero
     |> \.textContainer.lineFragmentPadding .~ 0
     |> \.linkTextAttributes .~ [
-      .foregroundColor: adaptiveColor(.create700)
+      .foregroundColor: adaptiveColor(.old, .create700)
     ]
 
   return textView
