@@ -87,6 +87,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
   switch feature {
   case .consentManagementDialogEnabled:
     return featureConsentManagementDialogEnabled()
+  case .darkModeEnabled:
+    return featureDarkModeEnabled()
   case .facebookLoginInterstitialEnabled:
     return featureFacebookLoginInterstitialEnabled()
   case .reportThisProjectEnabled:
@@ -103,6 +105,9 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .consentManagementDialogEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue]
+  case .darkModeEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.darkModeEnabled.rawValue]
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
@@ -122,6 +127,9 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .consentManagementDialogEnabled:
     AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue] = value
+  case .darkModeEnabled:
+    AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.darkModeEnabled.rawValue] = value
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
