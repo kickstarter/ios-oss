@@ -91,6 +91,9 @@
 
     fileprivate let publishUpdateError: ErrorEnvelope?
 
+    fileprivate let fetchBackerSavedProjectsResponse: FetchProjectsEnvelope?
+    fileprivate let fetchBackerBackedProjectsResponse: FetchProjectsEnvelope?
+
     fileprivate let fetchManagePledgeViewBackingResult:
       Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
 
@@ -233,6 +236,8 @@
       fetchActivitiesError: ErrorEnvelope? = nil,
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
+      fetchBackerSavedProjectsResponse: FetchProjectsEnvelope? = nil,
+      fetchBackerBackedProjectsResponse: FetchProjectsEnvelope? = nil,
       fetchGraphCategoryResult: Result<CategoryEnvelope, ErrorEnvelope>? = nil,
       fetchGraphCategoriesResult: Result<RootCategoriesEnvelope, ErrorEnvelope>? = nil,
       fetchCommentsResponse _: [ActivityComment]? = nil,
@@ -361,6 +366,9 @@
       self.fetchActivitiesError = fetchActivitiesError
 
       self.fetchBackingResponse = fetchBackingResponse
+
+      self.fetchBackerSavedProjectsResponse = fetchBackerSavedProjectsResponse
+      self.fetchBackerBackedProjectsResponse = fetchBackerBackedProjectsResponse
 
       self.backingUpdate = backingUpdate
 
@@ -1028,6 +1036,27 @@
 
     internal func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
       return SignalProducer(value: self.fetchProjectNotificationsResponse)
+    }
+
+    public func fetchSavedProjects(
+      cursor _: String? = nil,
+      limit _: Int? = nil
+    ) -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope> {
+      guard let result = self.fetchBackerSavedProjectsResponse else {
+        return .empty
+      }
+      return SignalProducer(value: result)
+    }
+
+    public func fetchBackedProjects(cursor _: String? = nil,
+                                    limit _: Int? = nil) -> SignalProducer<
+      FetchProjectsEnvelope,
+                                      ErrorEnvelope
+                                    > {
+      guard let result = self.fetchBackerBackedProjectsResponse else {
+        return .empty
+      }
+      return SignalProducer(value: result)
     }
 
     internal func fetchProject(param _: Param) -> SignalProducer<Project, ErrorEnvelope> {
