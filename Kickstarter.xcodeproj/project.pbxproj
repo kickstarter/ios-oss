@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -473,6 +473,7 @@
 		60732F962AD83FD600C74ED3 /* DesignSystemFontColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F952AD83FD600C74ED3 /* DesignSystemFontColors.swift */; };
 		60732F982AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F972AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift */; };
 		60732F9A2AD8448300C74ED3 /* DesignSystemBorderColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F992AD8448300C74ED3 /* DesignSystemBorderColors.swift */; };
+		60732F9C2AD849F700C74ED3 /* DesignSystemIconColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F9B2AD849F700C74ED3 /* DesignSystemIconColors.swift */; };
 		6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106A2A0419130050D4F7 /* FirebaseCrashlytics */; };
 		6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106C2A0419170050D4F7 /* FirebasePerformance */; };
 		6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106E2A04191C0050D4F7 /* FirebaseAnalytics */; };
@@ -2002,6 +2003,7 @@
 		60732F952AD83FD600C74ED3 /* DesignSystemFontColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemFontColors.swift; sourceTree = "<group>"; };
 		60732F972AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemBackgroundColors.swift; sourceTree = "<group>"; };
 		60732F992AD8448300C74ED3 /* DesignSystemBorderColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemBorderColors.swift; sourceTree = "<group>"; };
+		60732F9B2AD849F700C74ED3 /* DesignSystemIconColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemIconColors.swift; sourceTree = "<group>"; };
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
@@ -5490,6 +5492,7 @@
 				60732F992AD8448300C74ED3 /* DesignSystemBorderColors.swift */,
 				6049D01E2AA774130015BB0D /* DesignSystemCoreColors.swift */,
 				60732F952AD83FD600C74ED3 /* DesignSystemFontColors.swift */,
+				60732F9B2AD849F700C74ED3 /* DesignSystemIconColors.swift */,
 			);
 			path = Colors;
 			sourceTree = "<group>";
@@ -7586,6 +7589,7 @@
 				063D2D0C2846779100CEDE33 /* PledgeLocalPickupViewModel.swift in Sources */,
 				8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */,
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
+				60732F9C2AD849F700C74ED3 /* DesignSystemIconColors.swift in Sources */,
 				777C60A82420154100820C59 /* PersonalizationCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
