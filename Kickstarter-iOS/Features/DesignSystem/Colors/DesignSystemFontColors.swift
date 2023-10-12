@@ -21,37 +21,37 @@ public enum DesignSystemFontColors {
   var rawValue: String {
     switch self {
     case .textPrimary:
-      return DesignSystemColors.grey10.rawValue
+      return DesignSystemCoreColors.grey10.rawValue
     case .textInversePrimary:
-      return DesignSystemColors.white.rawValue
+      return DesignSystemCoreColors.white.rawValue
     case .textSecondary:
-      return DesignSystemColors.grey7.rawValue
+      return DesignSystemCoreColors.grey7.rawValue
     case .textInverseSecondary:
-      return DesignSystemColors.grey3.rawValue
+      return DesignSystemCoreColors.grey3.rawValue
     case .textDisabled:
-      return DesignSystemColors.grey5.rawValue
+      return DesignSystemCoreColors.grey5.rawValue
     case .textAccentGrey:
-      return DesignSystemColors.grey10.rawValue
+      return DesignSystemCoreColors.grey10.rawValue
     case .textAccentRed:
-      return DesignSystemColors.red6.rawValue
+      return DesignSystemCoreColors.red6.rawValue
     case .textAccentRedBold:
-      return DesignSystemColors.red8.rawValue
+      return DesignSystemCoreColors.red8.rawValue
     case .textAccentGreen:
-      return DesignSystemColors.green6.rawValue
+      return DesignSystemCoreColors.green6.rawValue
     case .textAccentGreenBold:
-      return DesignSystemColors.green8.rawValue
+      return DesignSystemCoreColors.green8.rawValue
     case .textAccentBlue:
-      return DesignSystemColors.blue6.rawValue
+      return DesignSystemCoreColors.blue6.rawValue
     case .textAccentBlueBold:
-      return DesignSystemColors.blue8.rawValue
+      return DesignSystemCoreColors.blue8.rawValue
     case .textAccentPurple:
-      return DesignSystemColors.purple6.rawValue
+      return DesignSystemCoreColors.purple6.rawValue
     case .textAccentPurpleBold:
-      return DesignSystemColors.purple8.rawValue
+      return DesignSystemCoreColors.purple8.rawValue
     case .textAccentYellow:
-      return DesignSystemColors.yellow6.rawValue
+      return DesignSystemCoreColors.yellow6.rawValue
     case .textAccentYellowBold:
-      return DesignSystemColors.yellow8.rawValue
+      return DesignSystemCoreColors.yellow8.rawValue
     }
   }
 }

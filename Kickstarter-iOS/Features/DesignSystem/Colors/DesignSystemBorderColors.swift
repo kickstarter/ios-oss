@@ -19,33 +19,33 @@ public enum DesignSystemBorderColors {
   var rawValue: String {
     switch self {
     case .borderAccentBlueBold:
-      return DesignSystemColors.blue8.rawValue
+      return DesignSystemCoreColors.blue8.rawValue
     case .borderAccentBlueSubtle:
-      return DesignSystemColors.blue4.rawValue
+      return DesignSystemCoreColors.blue4.rawValue
     case .borderAccentGreenSubtle:
-      return DesignSystemColors.green4.rawValue
+      return DesignSystemCoreColors.green4.rawValue
     case .borderWarningBold:
-      return DesignSystemColors.yellow8.rawValue
+      return DesignSystemCoreColors.yellow8.rawValue
     case .borderWarningSubtle:
-      return DesignSystemColors.yellow4.rawValue
+      return DesignSystemCoreColors.yellow4.rawValue
     case .borderDisabled:
-      return DesignSystemColors.grey2.rawValue
+      return DesignSystemCoreColors.grey2.rawValue
     case .borderBoldHover:
-      return DesignSystemColors.grey8.rawValue
+      return DesignSystemCoreColors.grey8.rawValue
     case .borderSubtleHover:
-      return DesignSystemColors.grey5.rawValue
+      return DesignSystemCoreColors.grey5.rawValue
     case .borderActive:
-      return DesignSystemColors.grey8.rawValue
+      return DesignSystemCoreColors.grey8.rawValue
     case .borderBold:
-      return DesignSystemColors.grey4.rawValue
+      return DesignSystemCoreColors.grey4.rawValue
     case .borderDangerBold:
-      return DesignSystemColors.red8.rawValue
+      return DesignSystemCoreColors.red8.rawValue
     case .borderDangerSubtle:
-      return DesignSystemColors.red4.rawValue
+      return DesignSystemCoreColors.red4.rawValue
     case .borderSubtle:
-      return DesignSystemColors.grey3.rawValue
+      return DesignSystemCoreColors.grey3.rawValue
     case .borderFocus:
-      return DesignSystemColors.blue5.rawValue
+      return DesignSystemCoreColors.blue5.rawValue
     }
   }
 }

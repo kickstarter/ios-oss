@@ -30,55 +30,55 @@ public enum DesignSystemBackgroundColors {
   var rawValue: String {
     switch self {
     case .backgroundSurfacePrimary:
-      return DesignSystemColors.white.rawValue
+      return DesignSystemCoreColors.white.rawValue
     case .backgroundSurfaceInverse:
-      return DesignSystemColors.grey10.rawValue
+      return DesignSystemCoreColors.grey10.rawValue
     case .backgroundDisabled:
-      return DesignSystemColors.grey4.rawValue
+      return DesignSystemCoreColors.grey4.rawValue
     case .backgroundInverse:
-      return DesignSystemColors.white.rawValue
+      return DesignSystemCoreColors.white.rawValue
     case .backgroundInverseHover:
-      return DesignSystemColors.grey2.rawValue
+      return DesignSystemCoreColors.grey2.rawValue
     case .backgroundInversePressed:
-      return DesignSystemColors.grey3.rawValue
+      return DesignSystemCoreColors.grey3.rawValue
     case .backgroundSelected:
-      return DesignSystemColors.grey9.rawValue
+      return DesignSystemCoreColors.grey9.rawValue
     case .backgroundAction:
-      return DesignSystemColors.grey10.rawValue
+      return DesignSystemCoreColors.grey10.rawValue
     case .backgroundActionHover:
-      return DesignSystemColors.black.rawValue
+      return DesignSystemCoreColors.black.rawValue
     case .backgroundActionDisabled:
-      return DesignSystemColors.grey5.rawValue
+      return DesignSystemCoreColors.grey5.rawValue
     case .backgroundActionPressed:
-      return DesignSystemColors.grey9.rawValue
+      return DesignSystemCoreColors.grey9.rawValue
     case .backgroundAccentGreenBold:
-      return DesignSystemColors.green6.rawValue
+      return DesignSystemCoreColors.green6.rawValue
     case .backgroundAccentGreenSubtle:
-      return DesignSystemColors.green2.rawValue
+      return DesignSystemCoreColors.green2.rawValue
     case .backgroundAccentBlueBold:
-      return DesignSystemColors.blue6.rawValue
+      return DesignSystemCoreColors.blue6.rawValue
     case .backgroundAccentBlueSubtle:
-      return DesignSystemColors.blue2.rawValue
+      return DesignSystemCoreColors.blue2.rawValue
     case .backgroundAccentPurpleSubtle:
-      return DesignSystemColors.purple2.rawValue
+      return DesignSystemCoreColors.purple2.rawValue
     case .backgroundDangerBold:
-      return DesignSystemColors.red6.rawValue
+      return DesignSystemCoreColors.red6.rawValue
     case .backgroundDangerSubtle:
-      return DesignSystemColors.red2.rawValue
+      return DesignSystemCoreColors.red2.rawValue
     case .backgroundDangerBoldPressed:
-      return DesignSystemColors.red8.rawValue
+      return DesignSystemCoreColors.red8.rawValue
     case .backgroundDangerBoldHovered:
-      return DesignSystemColors.red7.rawValue
+      return DesignSystemCoreColors.red7.rawValue
     case .backgroundDangerSubtleHovered:
-      return DesignSystemColors.red3.rawValue
+      return DesignSystemCoreColors.red3.rawValue
     case .backgroundAccentGrayBold:
-      return DesignSystemColors.grey6.rawValue
+      return DesignSystemCoreColors.grey6.rawValue
     case .backgroundAccentGraySubtle:
-      return DesignSystemColors.grey2.rawValue
+      return DesignSystemCoreColors.grey2.rawValue
     case .backgroundWarningBold:
-      return DesignSystemColors.yellow6.rawValue
+      return DesignSystemCoreColors.yellow6.rawValue
     case .backgroundWarningSubtle:
-      return DesignSystemColors.yellow2.rawValue
+      return DesignSystemCoreColors.yellow2.rawValue
     }
   }
 }

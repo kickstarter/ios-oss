@@ -7,7 +7,7 @@ public enum DesignSystemColorSet: String {
   case new = "colors-new"
 }
 
-public enum DesignSystemColors: String {
+public enum DesignSystemCoreColors: String {
   // MARK: - OLD COLORS
 
   // MARK: - Greens
@@ -144,13 +144,13 @@ public enum DesignSystemColors: String {
   case yellow10
 }
 
-extension DesignSystemColors {
+extension DesignSystemCoreColors {
   public func load(_ colorSet: DesignSystemColorSet) -> UIColor {
     UIColor(named: "\(colorSet.rawValue)/\(self.rawValue)") ?? .white
   }
 }
 
-public func adaptiveColor(_ colorSet: DesignSystemColorSet, _ style: DesignSystemColors) -> UIColor {
+public func adaptiveColor(_ colorSet: DesignSystemColorSet, _ style: DesignSystemCoreColors) -> UIColor {
   style.load(colorSet)
 }
 
