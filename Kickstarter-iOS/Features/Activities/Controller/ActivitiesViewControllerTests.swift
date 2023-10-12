@@ -32,7 +32,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let follow = .template
       |> Activity.lens.id .~ 84
       |> Activity.lens.user .~ (.template
-        |> \.name .~ "Brandon Williams"
+        |> \.name .~ "Fail This Test"
         |> \.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .follow
