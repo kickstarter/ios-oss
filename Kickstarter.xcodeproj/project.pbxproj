@@ -470,6 +470,9 @@
 		606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */; };
 		606C45F829FACD9F001BA067 /* RemoteConfigFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */; };
 		606C45FA29FACE17001BA067 /* MockRemoteConfigClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */; };
+		60732F962AD83FD600C74ED3 /* DesignSystemFontColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F952AD83FD600C74ED3 /* DesignSystemFontColors.swift */; };
+		60732F982AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F972AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift */; };
+		60732F9A2AD8448300C74ED3 /* DesignSystemBorderColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60732F992AD8448300C74ED3 /* DesignSystemBorderColors.swift */; };
 		6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106A2A0419130050D4F7 /* FirebaseCrashlytics */; };
 		6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106C2A0419170050D4F7 /* FirebasePerformance */; };
 		6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6078106E2A04191C0050D4F7 /* FirebaseAnalytics */; };
@@ -1996,6 +1999,9 @@
 		606C45F429FACD78001BA067 /* RemoteConfigFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+Helpers.swift"; sourceTree = "<group>"; };
 		606C45F629FACD94001BA067 /* RemoteConfigFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfigFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		606C45F929FACE17001BA067 /* MockRemoteConfigClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteConfigClient.swift; sourceTree = "<group>"; };
+		60732F952AD83FD600C74ED3 /* DesignSystemFontColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemFontColors.swift; sourceTree = "<group>"; };
+		60732F972AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemBackgroundColors.swift; sourceTree = "<group>"; };
+		60732F992AD8448300C74ED3 /* DesignSystemBorderColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemBorderColors.swift; sourceTree = "<group>"; };
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
@@ -5480,7 +5486,10 @@
 		6049D01D2AA774030015BB0D /* Colors */ = {
 			isa = PBXGroup;
 			children = (
+				60732F972AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift */,
+				60732F992AD8448300C74ED3 /* DesignSystemBorderColors.swift */,
 				6049D01E2AA774130015BB0D /* DesignSystemColors.swift */,
+				60732F952AD83FD600C74ED3 /* DesignSystemFontColors.swift */,
 			);
 			path = Colors;
 			sourceTree = "<group>";
@@ -7361,6 +7370,7 @@
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
 				D79A01A52242E91E004BC6A8 /* PushNotificationDialogType.swift in Sources */,
+				60732F962AD83FD600C74ED3 /* DesignSystemFontColors.swift in Sources */,
 				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
@@ -7500,6 +7510,7 @@
 				D04AAC24218BB70D00CF713E /* DiscoveryProjectCategoryViewModel.swift in Sources */,
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
 				8A417DF025AE37D200A2C406 /* Segment.swift in Sources */,
+				60732F9A2AD8448300C74ED3 /* DesignSystemBorderColors.swift in Sources */,
 				D6534D3C22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				D63BBD37217FC224007E01F0 /* CreditCardCellViewModel.swift in Sources */,
@@ -7597,6 +7608,7 @@
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				19462F6B29D4893500868694 /* ChangeEmailViewModelSwiftUIIntegrationTest.swift in Sources */,
 				606C45F529FACD78001BA067 /* RemoteConfigFeature+Helpers.swift in Sources */,
+				60732F982AD83FFA00C74ED3 /* DesignSystemBackgroundColors.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
 				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,

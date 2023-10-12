@@ -4,7 +4,7 @@ import UIKit
 
 public enum DesignSystemColorSet: String {
   case old = "colors-old"
-  case newcolors = "colors-new"
+  case new = "colors-new"
 }
 
 public enum DesignSystemColors: String {
@@ -154,6 +154,10 @@ public func adaptiveColor(_ colorSet: DesignSystemColorSet, _ style: DesignSyste
   style.load(colorSet)
 }
 
+// MARK: Component Styles
+
+/// New component style examples.
+/// Essentially a copy/paste of how we're currently using Prelude to set component styles. These just take advantage of the new adaptiveColor pattern above.
 public let verticalComponentStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> verticalStackViewStyle
