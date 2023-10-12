@@ -80,6 +80,11 @@
             value = "$(SOURCE_ROOT)/Screenshots/FailureDiffs"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "SNAPSHOT_ARTIFACTS"
+            value = "$(SOURCE_ROOT)/Failed_Snapshot_Tests"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
