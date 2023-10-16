@@ -53,6 +53,8 @@ test_job: &test_job
         command: bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
     - codecov/upload:
         file: cobertura.xml
+    - store_artifacts:
+        path: ./Failed_Snapshot_Tests
 
 distribute_job: &distribute_job
   steps:
