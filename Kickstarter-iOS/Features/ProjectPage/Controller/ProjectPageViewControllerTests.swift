@@ -41,12 +41,12 @@ internal final class ProjectPageViewControllerTests: TestCase {
           caption: "camera"
         ),
         AudioVideoViewElement(
-          sourceURLString: "https://source.com",
+          sourceURLString: "https://not-a-real-url-dot-com",
           thumbnailURLString: nil,
           seekPosition: .zero
         ),
         ExternalSourceViewElement(
-          embeddedURLString: "https://source.com",
+          embeddedURLString: "https://not-a-real-url-dot-com",
           embeddedURLContentHeight: 123
         )
       ]),
