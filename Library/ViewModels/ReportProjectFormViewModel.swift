@@ -15,10 +15,7 @@ public protocol ReportProjectFormViewModelInputs {
   )
 }
 
-public protocol ReportProjectFormViewModelOutputs {
-  /// Emits the currently logged in user's email
-  var userEmail: Signal<String, Never> { get }
-}
+public protocol ReportProjectFormViewModelOutputs {}
 
 public protocol ReportProjectFormViewModelType {
   var inputs: ReportProjectFormViewModelInputs { get }
@@ -26,26 +23,28 @@ public protocol ReportProjectFormViewModelType {
 }
 
 public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
-  ReportProjectFormViewModelInputs,
-  ReportProjectFormViewModelOutputs, ObservableObject {
+  ReportProjectFormViewModelInputs, ReportProjectFormViewModelOutputs, ObservableObject {
+  /// Emits the currently logged in user's email
+  @Published public var retrievedEmail: String? = nil
+  @Published public var saveButtonEnabled: Bool = false
+
   public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
   public var detailsText: PassthroughSubject<String, Never> = .init()
   public var projectID: PassthroughSubject<String, Never> = .init()
   public var projectFlaggingKind: PassthroughSubject<GraphAPI.FlaggingKind, Never> = .init()
-  public var retrievedEmail: PassthroughSubject<String, Never> = .init()
-  public var saveButtonEnabled: AnyPublisher<Bool, Never>
   public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
   public var submitSuccess: PassthroughSubject<Void, Never> = .init()
 
   private var cancellables = Set<AnyCancellable>()
 
   public init() {
-    self.saveButtonEnabled = Publishers
+    Publishers
       .CombineLatest(self.projectFlaggingKind, self.detailsText)
       .map { !$0.1.isEmpty }
       .eraseToAnyPublisher()
+      .assign(to: &$saveButtonEnabled)
 
-    let userEmailEvent = self.viewDidLoadProperty.signal
+    self.viewDidLoadProperty.signal
       .switchMap { _ in
         AppEnvironment.current
           .apiService
@@ -53,14 +52,11 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
-
-    self.userEmail = userEmailEvent.values().map { $0.me.email ?? "" }
-
-    _ = self.userEmail
-      .observeForUI()
-      .observeValues { [weak self] email in
-        self?.retrievedEmail.send(email)
+      .map { event in
+        event.value?.me.email
       }
+      .skipNil()
+      .assign(toCombine: &$retrievedEmail)
 
     let submitReportEvent = self.submitReportProperty.signal.skipNil()
       .map(CreateFlaggingInput.init(contentId:kind:details:clientMutationId:))
@@ -114,8 +110,6 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
-  public var userEmail: Signal<String, Never>
 
   public var inputs: ReportProjectFormViewModelInputs {
     return self

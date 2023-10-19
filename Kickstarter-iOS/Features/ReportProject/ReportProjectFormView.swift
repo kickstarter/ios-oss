@@ -16,9 +16,7 @@ struct ReportProjectFormView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @ObservedObject private var viewModel = ReportProjectFormViewModel()
 
-  @State private var retrievedEmail = ""
   @State private var details: String = ""
-  @State private var saveEnabled: Bool = false
   @State private var saveTriggered: Bool = false
   @State private var showLoading: Bool = false
   @State private var showBannerMessage = false
@@ -29,7 +27,7 @@ struct ReportProjectFormView: View {
   var body: some View {
     GeometryReader { proxy in
       Form {
-        if !retrievedEmail.isEmpty {
+        if let retrievedEmail = viewModel.retrievedEmail, !retrievedEmail.isEmpty {
           SwiftUI.Section(Strings.Email()) {
             Text(retrievedEmail)
               .font(Font(UIFont.ksr_body()))
@@ -60,7 +58,7 @@ struct ReportProjectFormView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
-            saveEnabled: $saveEnabled,
+            saveEnabled: $viewModel.saveButtonEnabled,
             saveTriggered: $saveTriggered,
             showLoading: $showLoading,
             titleText: Strings.Send()
@@ -87,21 +85,15 @@ struct ReportProjectFormView: View {
           dismiss()
           popToRoot = true
         } else if newValue?.bannerBackgroundColor == Color(.ksr_alert) {
-          saveEnabled = true
+          viewModel.saveButtonEnabled = true
         }
-      }
-      .onReceive(viewModel.saveButtonEnabled) { newValue in
-        saveEnabled = newValue
       }
       .onReceive(viewModel.submitSuccess) { _ in
         submitSuccess = true
       }
-      .onReceive(viewModel.retrievedEmail) { email in
-        retrievedEmail = email
-      }
       .onReceive(viewModel.bannerMessage) { newValue in
         showLoading = false
-        saveEnabled = false
+        viewModel.saveButtonEnabled = false
         bannerMessage = newValue
       }
       .overlay(alignment: .bottom) {
