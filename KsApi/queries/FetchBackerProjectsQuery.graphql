@@ -1,0 +1,14 @@
+query FetchBackerProjects($starred: Boolean, $backed: Boolean, $first: Int = null, $after: String = null, $withStoredCards: Boolean = false) {
+  projects(starred: $starred, backed: $backed, first: $first, after: $after, sort: END_DATE) {
+    nodes {
+      ...ProjectFragment
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
+  }
+}

@@ -21,6 +21,24 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
+  func testDarkMode_RemoteConfig_FeatureFlag_False() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.darkModeEnabled.rawValue: false]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertFalse(featureDarkModeEnabled())
+    }
+  }
+
+  func testDarkMode_RemoteConfig_FeatureFlag_True() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.darkModeEnabled.rawValue: true]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(featureDarkModeEnabled())
+    }
+  }
+
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_True() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
