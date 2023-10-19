@@ -5,20 +5,9 @@ import ReactiveSwift
 
 public protocol ReportProjectFormViewModelInputs {
   func viewDidLoad()
-
-  /// Submits a report using the createFlagging mutation
-  func submitReport(
-    contentId: String,
-    kind: GraphAPI.FlaggingKind,
-    details: String,
-    clientMutationId: String?
-  )
 }
 
-public protocol ReportProjectFormViewModelOutputs {
-  /// Emits the currently logged in user's email
-  var userEmail: Signal<String, Never> { get }
-}
+public protocol ReportProjectFormViewModelOutputs {}
 
 public protocol ReportProjectFormViewModelType {
   var inputs: ReportProjectFormViewModelInputs { get }
@@ -26,96 +15,98 @@ public protocol ReportProjectFormViewModelType {
 }
 
 public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
-  ReportProjectFormViewModelInputs,
-  ReportProjectFormViewModelOutputs, ObservableObject {
-  public var bannerMessage: PassthroughSubject<MessageBannerViewViewModel, Never> = .init()
-  public var detailsText: PassthroughSubject<String, Never> = .init()
-  public var projectID: PassthroughSubject<String, Never> = .init()
-  public var projectFlaggingKind: PassthroughSubject<GraphAPI.FlaggingKind, Never> = .init()
-  public var retrievedEmail: PassthroughSubject<String, Never> = .init()
-  public var saveButtonEnabled: AnyPublisher<Bool, Never>
-  public var saveTriggered: PassthroughSubject<Bool, Never> = .init()
-  public var submitSuccess: PassthroughSubject<Void, Never> = .init()
+  ReportProjectFormViewModelInputs, ReportProjectFormViewModelOutputs, ObservableObject {
+  @Published public var retrievedEmail: String? = nil
+  @Published public var saveButtonEnabled: Bool = false
+  @Published public var detailsText: String = ""
+  @Published public var saveTriggered: Bool = false
+  @Published public var bannerMessage: MessageBannerViewViewModel? = nil
+
+  @Published public var submitSuccess: Bool = false
+
+  private let viewDidLoadSubject = PassthroughSubject<Bool, Never>()
 
   private var cancellables = Set<AnyCancellable>()
 
-  public init() {
-    self.saveButtonEnabled = Publishers
-      .CombineLatest(self.projectFlaggingKind, self.detailsText)
-      .map { !$0.1.isEmpty }
-      .eraseToAnyPublisher()
+  public let projectID: String
+  public let projectURL: String
+  public let projectFlaggingKind: GraphAPI.FlaggingKind
 
-    let userEmailEvent = self.viewDidLoadProperty.signal
-      .switchMap { _ in
+  public init(projectID: String,
+              projectURL: String,
+              projectFlaggingKind: GraphAPI.FlaggingKind) {
+    self.projectID = projectID
+    self.projectURL = projectURL
+    self.projectFlaggingKind = projectFlaggingKind
+
+    /// Only enable the save button if the user has entered detail text
+    self.$detailsText
+      .map { !$0.isEmpty }
+      .assign(to: &$saveButtonEnabled)
+
+    /// Load the current user's e-mail on page load
+    self.viewDidLoadSubject
+      .flatMap { _ in
         AppEnvironment.current
           .apiService
-          .fetchGraphUser(withStoredCards: false)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
+          .fetchGraphUserEmailCombine()
       }
-
-    self.userEmail = userEmailEvent.values().map { $0.me.email ?? "" }
-
-    _ = self.userEmail
-      .observeForUI()
-      .observeValues { [weak self] email in
-        self?.retrievedEmail.send(email)
+      .compactMap { envelope in
+        envelope.me.email
       }
-
-    let submitReportEvent = self.submitReportProperty.signal.skipNil()
-      .map(CreateFlaggingInput.init(contentId:kind:details:clientMutationId:))
-      .switchMap { input in
-        AppEnvironment
-          .current
-          .apiService
-          .createFlaggingInput(input: input)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
+      .catch { _ in
+        CurrentValueSubject("")
       }
+      .assign(to: &$retrievedEmail)
 
-    _ = submitReportEvent.errors()
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        let messageBannerViewViewModel = MessageBannerViewViewModel((
+    /// Submits report on saveTriggered
+    self.$saveTriggered
+      .filter { $0 } // only save if saveTriggered is true
+      .compactMap { [weak self] _ in
+        self?.createFlaggingInput()
+      }
+      .flatMap { $0 }
+      .sink { [weak self] _ in
+        // An error happens
+
+        self?.saveTriggered = false
+        self?.bannerMessage = MessageBannerViewViewModel((
           type: .error,
           message: Strings.Something_went_wrong_please_try_again()
         ))
+        self?.saveButtonEnabled = true
 
-        self?.saveTriggered.send(false)
-        self?.bannerMessage.send(messageBannerViewViewModel)
-      }
+      } receiveValue: { [weak self] _ in
+        // Submitted successfully
 
-    _ = submitReportEvent.values().ignoreValues()
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        let messageBannerViewViewModel = MessageBannerViewViewModel((
+        self?.saveTriggered = false
+        self?.saveButtonEnabled = false
+        self?.bannerMessage = MessageBannerViewViewModel((
           type: .success,
           message: Strings.Your_message_has_been_sent()
         ))
-
-        self?.saveTriggered.send(false)
-        self?.bannerMessage.send(messageBannerViewViewModel)
-        self?.submitSuccess.send()
+        self?.submitSuccess = true
       }
-
-    /// Submits report on saveTriggered when saveButtonEnabled
-    Publishers
-      .CombineLatest4(self.saveTriggered, self.projectID, self.projectFlaggingKind, self.detailsText)
-      .filter { triggeredValue, _, _, _ in
-        triggeredValue
-      }
-      .sink(receiveValue: { [weak self] _, projectID, kind, details in
-        self?.submitReport(contentId: projectID, kind: kind, details: details)
-      })
       .store(in: &self.cancellables)
   }
 
-  private let viewDidLoadProperty = MutableProperty(())
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+  private func createFlaggingInput() -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    let input = CreateFlaggingInput(
+      contentId: projectID,
+      kind: projectFlaggingKind,
+      details: detailsText,
+      clientMutationId: nil
+    )
+
+    return AppEnvironment
+      .current
+      .apiService
+      .createFlaggingInputCombine(input: input)
   }
 
-  public var userEmail: Signal<String, Never>
+  public func viewDidLoad() {
+    self.viewDidLoadSubject.send(true)
+  }
 
   public var inputs: ReportProjectFormViewModelInputs {
     return self
@@ -123,15 +114,5 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
   public var outputs: ReportProjectFormViewModelOutputs {
     return self
-  }
-
-  private let submitReportProperty = MutableProperty<(String, GraphAPI.FlaggingKind, String, String?)?>(nil)
-  public func submitReport(
-    contentId: String,
-    kind: GraphAPI.FlaggingKind,
-    details: String,
-    clientMutationId: String? = nil
-  ) {
-    self.submitReportProperty.value = (contentId, kind, details, clientMutationId)
   }
 }
