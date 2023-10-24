@@ -177,9 +177,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       firstPageParams.takeWhen(self.pulledToRefreshProperty.signal)
     )
 
-    let paginatedProjects: Signal<[Project], Never>
+    let rawProjects: Signal<[Project], Never>
     let isLoading: Signal<Bool, Never>
-    (paginatedProjects, isLoading, _, _) = paginate(
+    (rawProjects, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -190,6 +190,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() }
     )
+    
+    let paginatedProjects = rawProjects
+      .map { $0.filter { $0.category.name == "Tabletop Games" }}
 
     let projects = Signal.merge(
       paginatedProjects,
