@@ -25,7 +25,7 @@ commands:
           diskutil erasevolume HFS+ RAM_Disk_8GB $RAM_DISK
           echo "using $RAM_DISK"
           cd /Volumes/RAM_Disk_8GB
-          pwd
+          export CIRCLE_WORKING_DIRECTORY=$(pwd)
 
 
 # Templates
