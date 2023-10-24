@@ -113,7 +113,7 @@ jobs:
     steps:
       - macos/install-rosetta
       - use_ram_disk
-      - checkout
+      - checkout:
           path: /Volumes/RAM_Disk_8GB
       - run:
           name: SPM SSH Workaround
