@@ -14,6 +14,17 @@ iphone_name: &iphone_name iPhone 8
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
 spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
 
+# Custom commands
+commands:
+  use_ram_disk:
+    description: "Mounts and changes the working directory to an 8 GB RAM disk"
+    steps:
+      - run: |
+          RAM_DISK=$(hdiutil attach -nomount ram://16777216)
+          echo "created 8 GB RAM disk at $RAM_DISK"
+
+
+
 # Templates
 
 default_environment: &default_environment
@@ -30,10 +41,11 @@ base_job: &base_job
   macos:
     xcode: *xcode_version
   working_directory: ~/kickstarter
-  resource_class: macos.m1.medium.gen1
+  resource_class: macos.m1.large.gen1
 
 test_job: &test_job
   steps:
+    - use_ram_disk
     - macos/install-rosetta
     - attach_workspace:
         at: .
@@ -98,6 +110,7 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
+      - use_ram_disk
       - checkout
       - run:
           name: SPM SSH Workaround
