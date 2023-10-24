@@ -24,7 +24,7 @@ commands:
           echo "created 8 GB RAM disk at $RAM_DISK"
           diskutil erasevolume HFS+ RAM_Disk_8GB $RAM_DISK
           echo "using $RAM_DISK"
-          cd $RAM_DISK
+          cd /Volumes/RAM_Disk_8GB
           pwd
 
 
