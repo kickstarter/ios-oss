@@ -22,6 +22,7 @@ final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
   func testRemoteConfigFeatureFlagToolsViewController() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
+        RemoteConfigFeature.blockUsersEnabled.rawValue: false,
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
         RemoteConfigFeature.darkModeEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled

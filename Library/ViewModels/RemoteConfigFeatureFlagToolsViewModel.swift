@@ -85,6 +85,8 @@ public final class RemoteConfigFeatureFlagToolsViewModel: RemoteConfigFeatureFla
 
 private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
   switch feature {
+  case .blockUsersEnabled:
+    return featureBlockUsersEnabled()
   case .consentManagementDialogEnabled:
     return featureConsentManagementDialogEnabled()
   case .darkModeEnabled:
@@ -102,6 +104,9 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
  */
 private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool? {
   switch feature {
+  case .blockUsersEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.blockUsersEnabled.rawValue]
   case .consentManagementDialogEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue]
@@ -124,6 +129,9 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
  */
 private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value: Bool) {
   switch feature {
+  case .blockUsersEnabled:
+    AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.blockUsersEnabled.rawValue] = value
   case .consentManagementDialogEnabled:
     AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue] = value
