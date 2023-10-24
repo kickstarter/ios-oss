@@ -3,6 +3,24 @@ import Prelude
 import XCTest
 
 final class RemoteConfigFeatureHelpersTests: TestCase {
+  func testBlockUsers_RemoteConfig_FeatureFlag_False() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.blockUsersEnabled.rawValue: false]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertFalse(featureBlockUsersEnabled())
+    }
+  }
+
+  func testBlockUsers_RemoteConfig_FeatureFlag_True() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.blockUsersEnabled.rawValue: true]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(featureBlockUsersEnabled())
+    }
+  }
+  
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false]

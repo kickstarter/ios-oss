@@ -22,6 +22,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   func testReloadWithData_AllFeaturesEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
+        RemoteConfigFeature.blockUsersEnabled.rawValue: true,
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
         RemoteConfigFeature.darkModeEnabled.rawValue: true,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
@@ -45,6 +46,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   func testReloadWithData_FeaturesEnabledAndDisabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
+        RemoteConfigFeature.blockUsersEnabled.rawValue: false,
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
         RemoteConfigFeature.darkModeEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
@@ -91,7 +93,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
   func testUpdateUserDefaultsWithFeatures_ReloadWithData_UserDefaultsIsUpdated() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false
+        RemoteConfigFeature.blockUsersEnabled.rawValue: false
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient, userDefaults: userDefaults) {
@@ -117,7 +119,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         userDefaults
           .dictionary(forKey: "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags") as? [String: Bool],
         [
-          RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true
+          RemoteConfigFeature.blockUsersEnabled.rawValue: true
         ]
       )
     }

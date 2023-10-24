@@ -1,6 +1,7 @@
 import Foundation
 
 public enum RemoteConfigFeature: String, CaseIterable {
+  case blockUsersEnabled = "block_users"
   case consentManagementDialogEnabled = "consent_management_dialog"
   case darkModeEnabled = "dark_mode"
   case facebookLoginInterstitialEnabled = "facebook_interstitial"
@@ -11,6 +12,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
 extension RemoteConfigFeature: CustomStringConvertible {
   public var description: String {
     switch self {
+    case .blockUsersEnabled: return "Block Users"
     case .consentManagementDialogEnabled: return "Consent Management Dialog"
     case .darkModeEnabled: return "Dark Mode"
     case .facebookLoginInterstitialEnabled: return "Facebook Login Interstitial"
