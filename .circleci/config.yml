@@ -114,29 +114,29 @@ jobs:
       - macos/install-rosetta
       - use_ram_disk
       - checkout:
-          path: /Volumes/RAM_Disk_8GB
+          path: /Volumes/RAM_Disk_8GB/ios-oss
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
       - run:
           name: Store Xcode Version
           command: | 
-            cd /Volumes/RAM_Disk_8GB
+            cd /Volumes/RAM_Disk_8GB/ios-oss
             xcodebuild -version > xcode_version.txt
       - run:
           name: Bootstrap SPM
           command: | 
-            cd /Volumes/RAM_Disk_8GB
+            cd /Volumes/RAM_Disk_8GB/ios-oss
             xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
       - run:
           name: Bootstrap
           command: |
-            cd /Volumes/RAM_Disk_8GB
+            cd /Volumes/RAM_Disk_8GB/ios-oss
             make bootstrap
       - run:
           name: Install Bundler
           command: |
-            cd /Volumes/RAM_Disk_8GB
+            cd /Volumes/RAM_Disk_8GB/ios-oss
             bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
@@ -144,15 +144,15 @@ jobs:
       - run:
           name: Download GraphQL Schema
           command: |
-            cd /Volumes/RAM_Disk_8GB
+            cd /Volumes/RAM_Disk_8GB/ios-oss
             bin/apollo-schema-download.sh
       - run:
           name: Danger
           command: |
-            cd /Volumes/RAM_Disk_8GB
+            cd /Volumes/RAM_Disk_8GB/ios-oss
             bin/danger.sh
       - persist_to_workspace:
-          root: /Volumes/RAM_Disk_8GB
+          root: /Volumes/RAM_Disk_8GB/ios-oss
           paths:
             - .
 
