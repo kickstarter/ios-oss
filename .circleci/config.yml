@@ -4,6 +4,7 @@ orbs:
   macos: circleci/macos@2
   aws-cli: circleci/aws-cli@3.1
   codecov: codecov/codecov@1.1.3
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.8.0
 
 aws_cli_setup: &aws_cli_setup
   role-arn: $AWS_ROLE_ARN
@@ -98,7 +99,7 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
-      - checkout
+      - git-shallow-clone/checkout
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
@@ -159,7 +160,7 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
-      - checkout
+      - git-shallow-clone/checkout
       - aws-cli/setup:
           <<: *aws_cli_setup
       - run:
@@ -172,7 +173,7 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
-      - checkout
+      - git-shallow-clone/checkout
       - aws-cli/setup:
           <<: *aws_cli_setup
       - run:
