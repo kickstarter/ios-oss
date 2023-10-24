@@ -23,9 +23,8 @@ commands:
           RAM_DISK=$(hdiutil attach -nomount ram://16777216)
           echo "created 8 GB RAM disk at $RAM_DISK"
           diskutil erasevolume HFS+ RAM_Disk_8GB $RAM_DISK
-          echo "using $RAM_DISK"
-          cd /Volumes/RAM_Disk_8GB
-          export CIRCLE_WORKING_DIRECTORY=$(pwd)
+          export RAM_DISK="/Volumes/RAM_Disk_8GB"
+          echo "set up $RAM_DISK"
 
 
 # Templates
@@ -115,32 +114,45 @@ jobs:
       - macos/install-rosetta
       - use_ram_disk
       - checkout
+        - path: /Volumes/RAM_Disk_8GB
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
       - run:
           name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
+          command: | 
+            cd /Volumes/RAM_Disk_8GB
+            xcodebuild -version > xcode_version.txt
       - run:
           name: Bootstrap SPM
-          command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+          command: | 
+            cd /Volumes/RAM_Disk_8GB
+            xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
       - run:
           name: Bootstrap
-          command: make bootstrap
+          command: |
+            cd /Volumes/RAM_Disk_8GB
+            make bootstrap
       - run:
           name: Install Bundler
-          command: bundle check || bundle install
+          command: |
+            cd /Volumes/RAM_Disk_8GB
+            bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - run:
           name: Download GraphQL Schema
-          command: bin/apollo-schema-download.sh
+          command: |
+            cd /Volumes/RAM_Disk_8GB
+            bin/apollo-schema-download.sh
       - run:
           name: Danger
-          command: bin/danger.sh
+          command: |
+            cd /Volumes/RAM_Disk_8GB
+            bin/danger.sh
       - persist_to_workspace:
-          root: .
+          root: /Volumes/RAM_Disk_8GB
           paths:
             - .
 
