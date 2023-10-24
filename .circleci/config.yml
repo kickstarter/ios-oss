@@ -50,25 +50,31 @@ test_job: &test_job
     - use_ram_disk
     - macos/install-rosetta
     - attach_workspace:
-        at: .
+        at: /Volumes/RAM_Disk_8GB/ios-oss
     - run:
           name: Create iPhone 8 iOS 15.5 Simulator
-          command: xcrun simctl create "iPhone 8" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
+          command: |
+            cd /Volumes/RAM_Disk_8GB/ios-oss
+            xcrun simctl create "iPhone 8" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
     - macos/preboot-simulator:
         version: "15.5"
         platform: "iOS"
         device: "iPhone 8"
     - run:
         name: Run tests
-        command: make test
+        command: |
+          cd /Volumes/RAM_Disk_8GB/ios-oss
+          make test
         no_output_timeout: "20m" # 20 minutes
     - run:
         name: Generate Slather coverage report
-        command: bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
+        command: |
+          cd /Volumes/RAM_Disk_8GB/ios-oss
+          bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
     - codecov/upload:
         file: cobertura.xml
     - store_artifacts:
-        path: ./Failed_Snapshot_Tests
+        path: /Volumes/RAM_Disk_8GB/ios-oss/Failed_Snapshot_Tests
 
 distribute_job: &distribute_job
   steps:
