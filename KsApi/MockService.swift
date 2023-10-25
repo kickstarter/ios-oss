@@ -1,4 +1,5 @@
 #if DEBUG
+  import Combine
   import Foundation
   import Prelude
   import ReactiveSwift
@@ -609,6 +610,18 @@
       .SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
         return .empty
+      }
+
+      let mutation = GraphAPI
+        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createFlaggingResult)
+    }
+
+    internal func createFlaggingInputCombine(input: CreateFlaggingInput)
+      -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
       }
 
       let mutation = GraphAPI

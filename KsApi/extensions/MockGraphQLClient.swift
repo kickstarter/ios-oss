@@ -1,4 +1,5 @@
 import Apollo
+import Combine
 import Foundation
 import ReactiveSwift
 
@@ -43,6 +44,21 @@ extension ApolloClientType {
     result: Result<Data, ErrorEnvelope>?
   ) -> SignalProducer<Data, ErrorEnvelope> {
     producer(for: result)
+  }
+
+  public func performWithResult<Mutation: GraphQLMutation, Data: Decodable>(
+    mutation _: Mutation,
+    result: Result<Data, ErrorEnvelope>?
+  ) -> AnyPublisher<Data, ErrorEnvelope> {
+    switch result {
+    case let .success(data):
+      return CurrentValueSubject(data).eraseToAnyPublisher()
+    case .failure:
+      assertionFailure("Need to implement this behavior. I think the Fail() subject is what we want, possibly with a deferred?")
+      return Empty(completeImmediately: false).eraseToAnyPublisher()
+    case .none:
+      return Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
   }
 
   public func data<Data: Decodable>(from producer: SignalProducer<Data, ErrorEnvelope>) -> Data? {

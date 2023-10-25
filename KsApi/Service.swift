@@ -1,4 +1,5 @@
 import Apollo
+import Combine
 import Foundation
 import Prelude
 import ReactiveExtensions
@@ -158,6 +159,17 @@ public struct Service: ServiceType {
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
+  }
+
+  public func createFlaggingInputCombine(input: CreateFlaggingInput)
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input)))
+      .map { _ in
+        EmptyResponseEnvelope()
+      }
+      .eraseToAnyPublisher()
   }
 
   public func createPassword(input: CreatePasswordInput)
