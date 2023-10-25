@@ -848,6 +848,15 @@
       return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
     }
 
+    func fetchGraphUserEmailCombine() -> AnyPublisher<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
+      }
+
+      let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
+      return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
+    }
+
     // TODO: Refactor this test to use `self.apolloClient`, `ErroredBackingsEnvelope` needs to be `Decodable` and tested in-app.
     internal func fetchErroredUserBackings(status _: BackingState)
       -> SignalProducer<ErroredBackingsEnvelope, ErrorEnvelope> {
