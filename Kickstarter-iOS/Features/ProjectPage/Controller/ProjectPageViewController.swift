@@ -726,6 +726,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func blockUser() {
+    // TODO: call viewmodel.inputs.blockUser
+  }
+
+  private func goToCreatorProfile(forProject project: Project) {
+    let vc = ProjectCreatorViewController.configuredWith(project: project)
+
+    if self.traitCollection.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      self.present(nav, animated: true, completion: nil)
+    } else {
+      self.viewModel.inputs.showNavigationBar(false)
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+
   // MARK: - Selectors
 
   @objc private func didBackProject() {
@@ -959,15 +976,20 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     _: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
   ) {
-    let vc = ProjectCreatorViewController.configuredWith(project: project)
+    guard featureBlockUsersEnabled() else {
+      self.goToCreatorProfile(forProject: project)
+      return
+    }
 
-    if self.traitCollection.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
-      self.present(nav, animated: true, completion: nil)
-    } else {
-      self.viewModel.inputs.showNavigationBar(false)
-      self.navigationController?.pushViewController(vc, animated: true)
+    if #available(iOS 15.0, *) {
+      let actionSheet =
+        UIHostingController(rootView: BlockUserActionSheetView(
+          blockUser: { self.blockUser() },
+          viewProfile: { self.goToCreatorProfile(forProject: project) }
+        ))
+
+      _ = (actionSheet.view, self.view)
+        |> ksr_addSubviewToParent()
     }
   }
 }
