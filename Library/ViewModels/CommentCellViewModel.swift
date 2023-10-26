@@ -13,6 +13,9 @@ public protocol CommentCellViewModelInputs {
   /// Call when the textView delegate method for shouldInteractWith url is called
   func linkTapped(url: URL)
 
+  /// Call when the comment header is tapped
+  func cellHeaderTapped()
+
   /// Call when the reply button is tapped
   func replyButtonTapped()
 
@@ -35,6 +38,9 @@ public protocol CommentCellViewModelOutputs {
 
   /// Emits a Bool determining if the bottomRowStackView is hidden.
   var bottomRowStackViewIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits the `Author` for the tapped cell.
+  var cellAuthor: Signal<Comment.Author, Never> { get }
 
   /// Emits the current status of a comment
   var commentStatus: Signal<Comment.Status, Never> { get }
@@ -148,6 +154,9 @@ public final class CommentCellViewModel:
     self.viewRepliesViewHidden = comment.map(\.replyCount)
       .map(viewRepliesStackViewHidden)
 
+    self.cellAuthor = comment
+      .takeWhen(self.cellHeaderTappedProperty.signal)
+      .map(\.author)
     self.replyCommentTapped = comment.takeWhen(self.replyButtonTappedProperty.signal)
     self.viewCommentReplies = comment.takeWhen(self.viewRepliesButtonTappedProperty.signal)
 
@@ -170,6 +179,11 @@ public final class CommentCellViewModel:
     self.linkTappedProperty.value = url
   }
 
+  private var cellHeaderTappedProperty = MutableProperty(())
+  public func cellHeaderTapped() {
+    self.cellHeaderTappedProperty.value = ()
+  }
+
   private var replyButtonTappedProperty = MutableProperty(())
   public func replyButtonTapped() {
     self.replyButtonTappedProperty.value = ()
@@ -185,6 +199,7 @@ public final class CommentCellViewModel:
   public let authorName: Signal<String, Never>
   public let body: Signal<String, Never>
   public let bottomRowStackViewIsHidden: Signal<Bool, Never>
+  public let cellAuthor: Signal<Comment.Author, Never>
   public let commentStatus: Signal<Comment.Status, Never>
   public let flagButtonIsHidden: Signal<Bool, Never>
   public let notifyDelegateLinkTappedWithURL: Signal<URL, Never>

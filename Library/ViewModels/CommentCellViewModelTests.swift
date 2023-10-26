@@ -13,6 +13,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let authorName = TestObserver<String, Never>()
   private let body = TestObserver<String, Never>()
   private let bottomRowStackViewIsHidden = TestObserver<Bool, Never>()
+  private let cellAuthor = TestObserver<Comment.Author, Never>()
   private let commentStatus = TestObserver<Comment.Status, Never>()
   private let flagButtonIsHidden = TestObserver<Bool, Never>()
   private let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
@@ -31,6 +32,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.authorName.observe(self.authorName.observer)
     self.vm.outputs.body.observe(self.body.observer)
     self.vm.outputs.bottomRowStackViewIsHidden.observe(self.bottomRowStackViewIsHidden.observer)
+    self.vm.outputs.cellAuthor.observe(self.cellAuthor.observer)
     self.vm.outputs.commentStatus.observe(self.commentStatus.observer)
     self.vm.outputs.flagButtonIsHidden.observe(self.flagButtonIsHidden.observer)
     self.vm.outputs.notifyDelegateLinkTappedWithURL.observe(self.notifyDelegateLinkTappedWithURL.observer)
@@ -73,6 +75,19 @@ internal final class CommentCellViewModelTests: TestCase {
 
       self.replyCommentTapped
         .assertValue(comment, "The that should be replied to was emmited")
+    }
+  }
+
+  func testOutput_CellHeaderTapped_EmitsCellAuthor() {
+    let comment = Comment.template
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: comment, project: .template)
+      self.cellAuthor.assertDidNotEmitValue()
+
+      self.vm.inputs.cellHeaderTapped()
+
+      self.cellAuthor
+        .assertValue(comment.author)
     }
   }
 
