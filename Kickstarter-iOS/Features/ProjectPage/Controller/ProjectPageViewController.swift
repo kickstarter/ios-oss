@@ -61,6 +61,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private var pinchToZoomData: PinchToZoomData?
   internal var overlayView: OverlayView? = OverlayView(frame: .zero)
 
+  private let actionSheetTag: Int = 1
+
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
     refTag: RefTag?
@@ -727,7 +729,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func blockUser() {
-    // TODO: call viewmodel.inputs.blockUser
+    // Scott TODO: present popup ui
   }
 
   private func goToCreatorProfile(forProject project: Project) {
@@ -976,17 +978,21 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     _: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
   ) {
-    guard featureBlockUsersEnabled() else {
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
       self.goToCreatorProfile(forProject: project)
       return
     }
 
     if #available(iOS 15.0, *) {
-      let actionSheet =
-        UIHostingController(rootView: BlockUserActionSheetView(
-          blockUser: { self.blockUser() },
-          viewProfile: { self.goToCreatorProfile(forProject: project) }
-        ))
+      if let sheet = self.view.filter({ $0.tag == actionSheetTag }) {
+        sheet.removeFromSuperview()
+      }
+
+      let actionSheet = UIHostingController(rootView: BlockUserActionSheetView(
+        blockUser: { self.blockUser() },
+        viewProfile: { self.goToCreatorProfile(forProject: project) }
+      ))
+      actionSheet.view.tag = actionSheetTag
 
       _ = (actionSheet.view, self.view)
         |> ksr_addSubviewToParent()
