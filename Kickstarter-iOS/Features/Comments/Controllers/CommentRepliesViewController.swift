@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import SwiftUI
 import UIKit
 
 private enum Layout {
@@ -21,6 +22,8 @@ final class CommentRepliesViewController: UITableViewController {
     let view = CommentComposerView(frame: frame)
     return view
   }()
+
+  private let actionSheetTag: Int = 1
 
   // MARK: - Accessors
 
@@ -160,6 +163,10 @@ final class CommentRepliesViewController: UITableViewController {
         }
       }
   }
+
+  private func blockUser() {
+    // Scott TODO: present popup UI
+  }
 }
 
 // MARK: - UITableViewDelegate
@@ -179,6 +186,10 @@ extension CommentRepliesViewController {
       self.viewModel.inputs.didSelectComment(comment)
     }
   }
+
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
+    (cell as? CommentCell)?.delegate = self
+  }
 }
 
 // MARK: - CommentComposerViewDelegate
@@ -187,6 +198,33 @@ extension CommentRepliesViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
     self.viewModel.inputs.commentComposerDidSubmitText(text)
   }
+}
+
+// MARK: - CommentCellDelegate
+
+extension CommentRepliesViewController: CommentCellDelegate {
+  func commentCellDidTapHeader(author _: Comment.Author) {
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+
+    if #available(iOS 15.0, *) {
+      if let sheet = self.view.filter({ $0.tag == actionSheetTag }) {
+        sheet.removeFromSuperview()
+      }
+
+      let actionSheet =
+        UIHostingController(rootView: BlockUserActionSheetView(
+          blockUser: { self.blockUser() }
+      ))
+      actionSheet.view.tag = actionSheetTag
+
+      _ = (actionSheet.view, self.view)
+        |> ksr_addSubviewToParent()
+    }
+  }
+
+  func commentCellDidTapReply(_: CommentCell, comment _: Comment) {}
+
+  func commentCellDidTapViewReplies(_: CommentCell, comment _: Comment) {}
 }
 
 // MARK: - Styles
