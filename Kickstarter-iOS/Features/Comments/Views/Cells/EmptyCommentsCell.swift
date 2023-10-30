@@ -29,16 +29,18 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseTableViewCellStyle()
+    /*
+     _ = self
+       |> baseTableViewCellStyle()
 
-    _ = self.noCommentsLabel
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.font .~ UIFont.ksr_callout()
-      |> \.textAlignment .~ .center
-      |> \.textColor .~ UIColor.ksr_support_400
+     _ = self.noCommentsLabel
+       |> \.lineBreakMode .~ .byWordWrapping
+       |> \.numberOfLines .~ 0
+       |> \.adjustsFontForContentSizeCategory .~ true
+       |> \.font .~ UIFont.ksr_callout()
+       |> \.textAlignment .~ .center
+       |> \.textColor .~ UIColor.ksr_support_400
+     */
   }
 
   // MARK: - Configuration

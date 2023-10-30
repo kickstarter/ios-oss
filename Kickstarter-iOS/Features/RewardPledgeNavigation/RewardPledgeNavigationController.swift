@@ -8,11 +8,15 @@ final class RewardPledgeNavigationController: UINavigationController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self.navigationBar
-      ?|> \.standardAppearance .~ self.navigationBarAppearance
-      ?|> \.scrollEdgeAppearance .~ self.navigationBarAppearance
-      ?|> \.isTranslucent .~ false
-      ?|> \.shadowImage .~ UIImage()
+    /*
+
+     _ = self.navigationBar
+       ?|> \.standardAppearance .~ self.navigationBarAppearance
+       ?|> \.scrollEdgeAppearance .~ self.navigationBarAppearance
+       ?|> \.isTranslucent .~ false
+       ?|> \.shadowImage .~ UIImage()
+
+     */
   }
 
   private var navigationBarAppearance: UINavigationBarAppearance {

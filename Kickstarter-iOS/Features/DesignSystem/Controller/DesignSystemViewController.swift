@@ -310,319 +310,321 @@ final class DesignSystemViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> \.backgroundColor .~ adaptiveColor(.white)
-
-    _ = self.scrollView
-      |> \.alwaysBounceVertical .~ true
-      |> \.showsVerticalScrollIndicator .~ false
-
-    _ = self.rootStackView
-      |> verticalStackViewStyle
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
-      |> \.spacing .~ 20
-
-    // MARK: - Alert Styles
-
-    _ = self.errorSnackbarStackView
-      |> alertStackViewStyle
-      |> \.backgroundColor .~ adaptiveColor(.alert)
-
-    _ = self.confirmationSnackbarStackView
-      |> alertStackViewStyle
-      |> \.backgroundColor .~ adaptiveColor(.trust500)
-
-    _ = self.alertsLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Alerts"
-
-    _ = self.alertsStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.errorSnackbarIcon
-      |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.white)
-      |> UIImageView.lens.image .~ UIImage(named: "fix-icon")?.withRenderingMode(.alwaysTemplate)
-
-    _ = self.errorSnackbarLabel
-      |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.white)
-      |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 2
-
-    _ = self.confirmationSnackbarIcon
-      |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.white)
-      |> UIImageView.lens.image .~ UIImage(named: "icon--confirmation")?.withRenderingMode(.alwaysTemplate)
-
-    _ = self.confirmationSnackbarLabel
-      |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.white)
-      |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 2
-
-    // MARK: - Button Styles
-
-    _ = self.buttonsLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Buttons"
-
-    _ = self.buttonsStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.primaryGreenButton
-      |> adaptiveGreenButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Primary Green Button"
-
-    _ = self.primaryBlueButton
-      |> adaptiveBlueButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Primary Blue Button"
-
-    _ = self.primaryBlackButton
-      |> adaptiveBlackButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Primary Black Button"
-
-    _ = self.secondaryGreyButton
-      |> adaptiveGreyButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Secondary Grey Button"
-
-    _ = self.secondaryDisabledButton
-      |> adaptiveGreyButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Secondary Disabled Button"
-      |> UIButton.lens.isEnabled .~ false
-
-    _ = self.secondaryRedButton
-      |> adaptiveRedButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Secondary Red Button"
-
-    _ = self.facebookButton
-      |> adaptiveFacebookButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ " \(Strings.Continue_with_Facebook())"
-
-    _ = self.applePayButton
-      |> applePayButtonStyle
-
-    // MARK: - Icon Styles
-
-    _ = self.iconsLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Icons"
-
-    _ = self.iconsStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.logoIcon
-      |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create500)
-      |> UIImageView.lens.image .~ UIImage(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-
-    _ = self.arrowDownIcon
-      |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create500)
-      |> UIImageView.lens.image .~ UIImage(named: "arrow-down-large")?.withRenderingMode(.alwaysTemplate)
-
-    _ = self.heartIcon
-      |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.support400)
-      |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
-
-    _ = self.bookmarkIcon
-      |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create700)
-      |> UIImageView.lens.image .~ UIImage(named: "icon--bookmark")?.withRenderingMode(.alwaysTemplate)
-
-    // MARK: - Control Styles
-
-    _ = self.controlsLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Controls"
-
-    _ = self.controlsStackView
-      |> verticalStackViewStyle
-      |> \.alignment .~ .leading
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.controlsStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.switchControlEnabled
-      |> adaptiveSwitchControlStyle
-      |> \.isOn .~ true
-
-    _ = self.switchControlDisabled
-      |> adaptiveSwitchControlStyle
-      |> \.isOn .~ false
-    self.switchControlDisabled.isEnabled = false
-
-    _ = self.stepper
-      |> checkoutStepperStyle
-
-    _ = self.dropdownButton
-      |> adaptiveDropDownButtonStyle
-      |> checkoutWhiteBackgroundStyle
-      |> checkoutRoundedCornersStyle
-
-    // MARK: - Input Styles
-
-    _ = self.inputsLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Inputs"
-
-    _ = self.inputsStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.emailTextField
-      |> adaptiveEmailFieldStyle
-      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.layer.cornerRadius .~ 6
-      |> \.attributedPlaceholder %~ { _ in
-        adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
-      }
-    _ = self.passwordTextField
-      |> adaptiveEmailFieldStyle
-      |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.layer.cornerRadius .~ 6
-      |> UITextField.lens.secureTextEntry .~ true
-      |> \.attributedPlaceholder %~ { _ in
-        adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
-      }
-
-    // MARK: - Progress Styles
-
-    _ = self.progressLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Progress Indicators"
-
-    _ = self.progressStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.loadingIndicator
-      |> adaptiveActivityIndicatorStyle
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIActivityIndicatorView.lens.animating .~ true
-
-    _ = self.pullToRefreshImageView
-      |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
-    // MARK: - Footer Styles
-
-    _ = self.footersLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Footers"
-
-    // MARK: - Typography Styles
-
-    _ = self.typesLabel
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Typography"
-
-    _ = self.typeStackView
-      |> verticalComponentStackViewStyle
-
-    _ = self.title1Label
-      |> \.font .~ .ksr_title1()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 1"
-
-    _ = self.title1LabelBold
-      |> \.font .~ .ksr_title1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 1 Bold"
-
-    _ = self.title2Label
-      |> \.font .~ .ksr_title2()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 2"
-
-    _ = self.title2LabelBold
-      |> \.font .~ .ksr_title2().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 2 Bold"
-
-    _ = self.title3Label
-      |> \.font .~ .ksr_title3()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 3"
-
-    _ = self.title3LabelBold
-      |> \.font .~ .ksr_title3().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Title 3 Bold"
-
-    _ = self.headlineLabel
-      |> \.font .~ .ksr_headline()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Headline Bold"
-
-    _ = self.bodyLabel
-      |> \.font .~ .ksr_body()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Body"
-
-    _ = self.calloutLabel
-      |> \.font .~ .ksr_callout()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Callout"
-
-    _ = self.calloutLabelBold
-      |> \.font .~ .ksr_callout().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Callout Bold"
-
-    _ = self.subheadlineLabel
-      |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Subheadline"
-
-    _ = self.subheadlineLabelBold
-      |> \.font .~ .ksr_subhead().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Subheadline Bold"
-
-    _ = self.footnoteLabel
-      |> \.font .~ .ksr_footnote()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Footnote"
-
-    _ = self.footnoteLabelBold
-      |> \.font .~ .ksr_footnote().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Footnote Bold"
-
-    _ = self.caption1Label
-      |> \.font .~ .ksr_caption1()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 1"
-
-    _ = self.caption1LabelBold
-      |> \.font .~ .ksr_caption1().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 1 Bold"
-
-    _ = self.caption2Label
-      |> \.font .~ .ksr_caption2()
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 2"
-
-    _ = self.caption2LabelBold
-      |> \.font .~ .ksr_caption2().bolded
-      |> \.textColor .~ adaptiveColor(.black)
-      |> \.text .~ "Caption 2 Bold"
+    /*
+     _ = self.view
+       |> \.backgroundColor .~ adaptiveColor(.white)
+
+     _ = self.scrollView
+       |> \.alwaysBounceVertical .~ true
+       |> \.showsVerticalScrollIndicator .~ false
+
+     _ = self.rootStackView
+       |> verticalStackViewStyle
+       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+       |> \.isLayoutMarginsRelativeArrangement .~ true
+       |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+       |> \.spacing .~ 20
+
+     // MARK: - Alert Styles
+
+     _ = self.errorSnackbarStackView
+       |> alertStackViewStyle
+       |> \.backgroundColor .~ adaptiveColor(.alert)
+
+     _ = self.confirmationSnackbarStackView
+       |> alertStackViewStyle
+       |> \.backgroundColor .~ adaptiveColor(.trust500)
+
+     _ = self.alertsLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Alerts"
+
+     _ = self.alertsStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.errorSnackbarIcon
+       |> adaptiveIconImageViewStyle
+       |> \.tintColor .~ adaptiveColor(.white)
+       |> UIImageView.lens.image .~ UIImage(named: "fix-icon")?.withRenderingMode(.alwaysTemplate)
+
+     _ = self.errorSnackbarLabel
+       |> \.font .~ .ksr_subhead()
+       |> \.textColor .~ adaptiveColor(.white)
+       |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
+       |> \.lineBreakMode .~ .byWordWrapping
+       |> \.numberOfLines .~ 2
+
+     _ = self.confirmationSnackbarIcon
+       |> adaptiveIconImageViewStyle
+       |> \.tintColor .~ adaptiveColor(.white)
+       |> UIImageView.lens.image .~ UIImage(named: "icon--confirmation")?.withRenderingMode(.alwaysTemplate)
+
+     _ = self.confirmationSnackbarLabel
+       |> \.font .~ .ksr_subhead()
+       |> \.textColor .~ adaptiveColor(.white)
+       |> \.text .~ "Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada."
+       |> \.lineBreakMode .~ .byWordWrapping
+       |> \.numberOfLines .~ 2
+
+     // MARK: - Button Styles
+
+     _ = self.buttonsLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Buttons"
+
+     _ = self.buttonsStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.primaryGreenButton
+       |> adaptiveGreenButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ "Primary Green Button"
+
+     _ = self.primaryBlueButton
+       |> adaptiveBlueButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ "Primary Blue Button"
+
+     _ = self.primaryBlackButton
+       |> adaptiveBlackButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ "Primary Black Button"
+
+     _ = self.secondaryGreyButton
+       |> adaptiveGreyButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ "Secondary Grey Button"
+
+     _ = self.secondaryDisabledButton
+       |> adaptiveGreyButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ "Secondary Disabled Button"
+       |> UIButton.lens.isEnabled .~ false
+
+     _ = self.secondaryRedButton
+       |> adaptiveRedButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ "Secondary Red Button"
+
+     _ = self.facebookButton
+       |> adaptiveFacebookButtonStyle
+       |> UIButton.lens.title(for: .normal) .~ " \(Strings.Continue_with_Facebook())"
+
+     _ = self.applePayButton
+       |> applePayButtonStyle
+
+     // MARK: - Icon Styles
+
+     _ = self.iconsLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Icons"
+
+     _ = self.iconsStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.logoIcon
+       |> adaptiveIconImageViewStyle
+       |> \.tintColor .~ adaptiveColor(.create500)
+       |> UIImageView.lens.image .~ UIImage(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
+
+     _ = self.arrowDownIcon
+       |> adaptiveIconImageViewStyle
+       |> \.tintColor .~ adaptiveColor(.create500)
+       |> UIImageView.lens.image .~ UIImage(named: "arrow-down-large")?.withRenderingMode(.alwaysTemplate)
+
+     _ = self.heartIcon
+       |> adaptiveIconImageViewStyle
+       |> \.tintColor .~ adaptiveColor(.support400)
+       |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
+
+     _ = self.bookmarkIcon
+       |> adaptiveIconImageViewStyle
+       |> \.tintColor .~ adaptiveColor(.create700)
+       |> UIImageView.lens.image .~ UIImage(named: "icon--bookmark")?.withRenderingMode(.alwaysTemplate)
+
+     // MARK: - Control Styles
+
+     _ = self.controlsLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Controls"
+
+     _ = self.controlsStackView
+       |> verticalStackViewStyle
+       |> \.alignment .~ .leading
+       |> \.spacing .~ Styles.grid(1)
+
+     _ = self.controlsStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.switchControlEnabled
+       |> adaptiveSwitchControlStyle
+       |> \.isOn .~ true
+
+     _ = self.switchControlDisabled
+       |> adaptiveSwitchControlStyle
+       |> \.isOn .~ false
+     self.switchControlDisabled.isEnabled = false
+
+     _ = self.stepper
+       |> checkoutStepperStyle
+
+     _ = self.dropdownButton
+       |> adaptiveDropDownButtonStyle
+       |> checkoutWhiteBackgroundStyle
+       |> checkoutRoundedCornersStyle
+
+     // MARK: - Input Styles
+
+     _ = self.inputsLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Inputs"
+
+     _ = self.inputsStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.emailTextField
+       |> adaptiveEmailFieldStyle
+       |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+       |> \.layer.borderWidth .~ 1
+       |> \.layer.cornerRadius .~ 6
+       |> \.attributedPlaceholder %~ { _ in
+         adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
+       }
+     _ = self.passwordTextField
+       |> adaptiveEmailFieldStyle
+       |> \.layer.borderColor .~ adaptiveColor(.support500).cgColor
+       |> \.layer.borderWidth .~ 1
+       |> \.layer.cornerRadius .~ 6
+       |> UITextField.lens.secureTextEntry .~ true
+       |> \.attributedPlaceholder %~ { _ in
+         adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
+       }
+
+     // MARK: - Progress Styles
+
+     _ = self.progressLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Progress Indicators"
+
+     _ = self.progressStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.loadingIndicator
+       |> adaptiveActivityIndicatorStyle
+       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+       |> UIActivityIndicatorView.lens.animating .~ true
+
+     _ = self.pullToRefreshImageView
+       |> UIImageView.lens.contentMode .~ .scaleAspectFit
+       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+     // MARK: - Footer Styles
+
+     _ = self.footersLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Footers"
+
+     // MARK: - Typography Styles
+
+     _ = self.typesLabel
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Typography"
+
+     _ = self.typeStackView
+       |> verticalComponentStackViewStyle
+
+     _ = self.title1Label
+       |> \.font .~ .ksr_title1()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Title 1"
+
+     _ = self.title1LabelBold
+       |> \.font .~ .ksr_title1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Title 1 Bold"
+
+     _ = self.title2Label
+       |> \.font .~ .ksr_title2()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Title 2"
+
+     _ = self.title2LabelBold
+       |> \.font .~ .ksr_title2().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Title 2 Bold"
+
+     _ = self.title3Label
+       |> \.font .~ .ksr_title3()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Title 3"
+
+     _ = self.title3LabelBold
+       |> \.font .~ .ksr_title3().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Title 3 Bold"
+
+     _ = self.headlineLabel
+       |> \.font .~ .ksr_headline()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Headline Bold"
+
+     _ = self.bodyLabel
+       |> \.font .~ .ksr_body()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Body"
+
+     _ = self.calloutLabel
+       |> \.font .~ .ksr_callout()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Callout"
+
+     _ = self.calloutLabelBold
+       |> \.font .~ .ksr_callout().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Callout Bold"
+
+     _ = self.subheadlineLabel
+       |> \.font .~ .ksr_subhead()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Subheadline"
+
+     _ = self.subheadlineLabelBold
+       |> \.font .~ .ksr_subhead().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Subheadline Bold"
+
+     _ = self.footnoteLabel
+       |> \.font .~ .ksr_footnote()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Footnote"
+
+     _ = self.footnoteLabelBold
+       |> \.font .~ .ksr_footnote().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Footnote Bold"
+
+     _ = self.caption1Label
+       |> \.font .~ .ksr_caption1()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Caption 1"
+
+     _ = self.caption1LabelBold
+       |> \.font .~ .ksr_caption1().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Caption 1 Bold"
+
+     _ = self.caption2Label
+       |> \.font .~ .ksr_caption2()
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Caption 2"
+
+     _ = self.caption2LabelBold
+       |> \.font .~ .ksr_caption2().bolded
+       |> \.textColor .~ adaptiveColor(.black)
+       |> \.text .~ "Caption 2 Bold"
+     */
   }
 }
 
