@@ -729,7 +729,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func blockUser() {
-    // Scott TODO: present popup ui
+    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
   }
 
   private func goToCreatorProfile(forProject project: Project) {

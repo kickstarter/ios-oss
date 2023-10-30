@@ -148,7 +148,7 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   private func blockUser() {
-    // Scott  TODO: present popup ui
+    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
   }
 }
 
