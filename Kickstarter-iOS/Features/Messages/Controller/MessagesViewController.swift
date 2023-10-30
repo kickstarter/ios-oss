@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 internal final class MessagesViewController: UITableViewController {
@@ -8,6 +9,8 @@ internal final class MessagesViewController: UITableViewController {
 
   fileprivate let viewModel: MessagesViewModelType = MessagesViewModel()
   fileprivate let dataSource = MessagesDataSource()
+
+  private let actionSheetTag: Int = 1
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
@@ -103,9 +106,8 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
-    if let cell = cell as? BackingCell, cell.delegate == nil {
-      cell.delegate = self
-    }
+    (cell as? BackingCell)?.delegate = self
+    (cell as? MessageCell)?.delegate = self
   }
 
   @IBAction fileprivate func replyButtonPressed() {
@@ -144,6 +146,10 @@ internal final class MessagesViewController: UITableViewController {
     let vc = ManagePledgeViewController.controller(with: params)
     self.present(vc, animated: true)
   }
+
+  private func blockUser() {
+    // Scott  TODO: present popup ui
+  }
 }
 
 extension MessagesViewController: MessageDialogViewControllerDelegate {
@@ -156,8 +162,33 @@ extension MessagesViewController: MessageDialogViewControllerDelegate {
   }
 }
 
+// MARK: - BackingCellDelegate
+
 extension MessagesViewController: BackingCellDelegate {
   func backingCellGoToBackingInfo() {
     self.viewModel.inputs.backingInfoPressed()
+  }
+}
+
+// MARK: - MessageCellDelegate
+
+extension MessagesViewController: MessageCellDelegate {
+  func messageCellDidTapHeader(sender _: User) {
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+
+    if #available(iOS 15.0, *) {
+      if let sheet = self.view.filter({ $0.tag == actionSheetTag }) {
+        sheet.removeFromSuperview()
+      }
+
+      let actionSheet =
+        UIHostingController(rootView: BlockUserActionSheetView(
+          blockUser: { self.blockUser() }
+      ))
+      actionSheet.view.tag = actionSheetTag
+
+      _ = (actionSheet.view, self.view)
+        |> ksr_addSubviewToParent()
+    }
   }
 }

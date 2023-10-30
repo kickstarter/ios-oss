@@ -12,6 +12,7 @@ internal final class MessageCellViewModelTests: TestCase {
   fileprivate let _name = TestObserver<String, Never>()
   fileprivate let timestamp = TestObserver<String, Never>()
   fileprivate let timestampAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let messageSender = TestObserver<User, Never>()
 
   override func setUp() {
     super.setUp()
@@ -21,6 +22,7 @@ internal final class MessageCellViewModelTests: TestCase {
     self.vm.outputs.timestamp.observe(self.timestamp.observer)
     self.vm.outputs.timestampAccessibilityLabel.observe(self.timestampAccessibilityLabel.observer)
     self.vm.outputs.body.observe(self.body.observer)
+    self.vm.outputs.messageSender.observe(self.messageSender.observer)
   }
 
   func testOutputs() {
@@ -32,5 +34,18 @@ internal final class MessageCellViewModelTests: TestCase {
     self.timestamp.assertValueCount(1)
     self.timestampAccessibilityLabel.assertValueCount(1)
     self.body.assertValues([message.body])
+  }
+
+  func testOutput_CellHeaderTapped_EmitsCellAuthor() {
+    let message = Message.template
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(message: message)
+      self.messageSender.assertDidNotEmitValue()
+
+      self.vm.inputs.cellHeaderTapped()
+
+      self.messageSender
+        .assertValue(message.sender)
+    }
   }
 }
