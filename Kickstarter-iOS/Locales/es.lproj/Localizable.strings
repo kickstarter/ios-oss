@@ -72,6 +72,12 @@
 "Big_Kickstarter_news_and_events_near_you" = "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Importantes novedades de Kickstarter, además de proyectos y eventos ocasionales elegidos especialmente para ti.";
 "Biography" = "Biografía";
+"Block_this_user" = "Block this user";
+"Block_user_fail" = "Your request did not go through. Try again.";
+"Block_user_success" = "This user has been successfully blocked";
+"Block_username" = "Block %{username}?";
+"Blocked_user" = "Blocked User";
+"Blocked_user_confirmation" = "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.";
 "Bonus" = "Extra";
 "Bonus_support" = "Apoyo extra";
 "Bookmarks" = "Marcadores";
@@ -343,7 +349,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Kickstarter presta suma atención a las denuncias de infracción de derecho intelectual. Para encontrar más información e instrucciones sobre cómo denunciar una infracción, visita nuestra Política de copyright y nuestra Política de marca registrada. Solo se pueden procesar las denuncias presentadas por el propietario del copyright o marca registrada.";
 "Know_when_creators_and_backers_message_you" = "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones.";
-"Learn_about_AI_policy_on_Kickstarter" = "Información sobre la política de IA en Kickstarter.";
+"Learn_about_AI_policy_on_Kickstarter" = "Información sobre la política de IA en Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "Más información sobre el concepto de responsabilidad en Kickstarter";
 "Learn_more_about_accountability" = "Más información sobre las responsabilidades";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Más información sobre las reglas de los comentarios</a>";
@@ -686,6 +692,7 @@
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Este proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo a tu método de pago.";
 "This_project_has_a_set_currency_that_cant_process_this_option" = "Dado que este proyecto tiene una moneda establecida, no se puede procesar esta opción.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}.";
+"This_user_has_been_blocked" = "This user has been blocked";
 "Time_left_left" = "%{time_left} restantes";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
 "To_learn_how_Kickstarter_encourages_sustainable_practices" = "para conocer cómo Kickstarter incentiva las prácticas sustentables.";
@@ -725,6 +732,7 @@
 "View" = "Ver";
 "View_dashboard" = "Ver panel";
 "View_more_replies" = "Ver más respuestas";
+"View_profile" = "View profile";
 "View_progress" = "Ver progreso";
 "View_project" = "Ver proyecto";
 "View_replies" = "Ver respuestas";
@@ -786,7 +794,7 @@
 "You_canceled_your_pledge_for_this_project" = "Has cancelado tu contribución a este proyecto.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
-"You_launched_this_project_on_launch_date" = "Publicaste el proyecto el: %{launch_date}.";
+"You_launched_this_project_on_launch_date" = "Publicaste el proyecto el %{launch_date}. Encuentra las herramientas para creadores en nuestro sitio web.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Debes contribuir, al menos, %{reward_minimum} para obtener esta recompensa.";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
 "You_pledged_without_a_reward" = "Contribuiste sin recompensa";

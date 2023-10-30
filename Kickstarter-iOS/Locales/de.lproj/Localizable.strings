@@ -72,6 +72,12 @@
 "Big_Kickstarter_news_and_events_near_you" = "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Das Neueste von Kickstarter plus gelegentlich für dich ausgewählte Projekte und Events.";
 "Biography" = "Biografie";
+"Block_this_user" = "Block this user";
+"Block_user_fail" = "Your request did not go through. Try again.";
+"Block_user_success" = "This user has been successfully blocked";
+"Block_username" = "Block %{username}?";
+"Blocked_user" = "Blocked User";
+"Blocked_user_confirmation" = "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus-Unterstützung";
 "Bookmarks" = "Bookmarks";
@@ -343,7 +349,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Meldungen zu möglichen Verletzungen von Urheberrechten werden bei Kickstarter sehr ernst genommen. Weitere Informationen zum Melden von solchen Urheberrechtsverletzungen findest du in unserer Richtlinie zu Urheberrechten und unserer Richtlinie zu Markenrechten. Es können nur Meldungen bearbeitet werden, die vom Eigentümer des Urheberrechts oder Markenzeichens gemacht wurden.";
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
-"Learn_about_AI_policy_on_Kickstarter" = "Weitere Informationen zu KI-Richtlinie von Kickstarter.";
+"Learn_about_AI_policy_on_Kickstarter" = "Weitere Informationen zur KI-Richtlinie von Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "Näheres zur Rechenschaftspflicht auf Kickstarter";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Mehr Info zu Kommentar-Richtlinien</a>";
@@ -686,6 +692,7 @@
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Bei diesem Projekt wurde das Finanzierungsziel nicht erreicht. Daher wurde deine Zahlungsmethode nicht belastet.";
 "This_project_has_a_set_currency_that_cant_process_this_option" = "Diese Option ist für die Währung dieses Projekts nicht verfügbar.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden.";
+"This_user_has_been_blocked" = "This user has been blocked";
 "Time_left_left" = "%{time_left} übrig";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben.";
 "To_learn_how_Kickstarter_encourages_sustainable_practices" = "um mehr über die von Kickstarter empfohlenen Umweltschutzmaßnahmen zu erfahren.";
@@ -725,6 +732,7 @@
 "View" = "Anzeigen";
 "View_dashboard" = "Dashboard ansehen";
 "View_more_replies" = "Weitere Antworten ansehen";
+"View_profile" = "View profile";
 "View_progress" = "Verlauf ansehen";
 "View_project" = "Projekt ansehen";
 "View_replies" = "Antworten ansehen";
@@ -786,7 +794,7 @@
 "You_canceled_your_pledge_for_this_project" = "Du hast den Finanzierungsbeitrag für dieses Projekt zurückgezogen.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Diese Karte kann nicht verwendet werden, um ein Projekt aus dem folgenden Land zu unterstützen: %{project_country}.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
-"You_launched_this_project_on_launch_date" = "Du hast dieses Projekt am %{launch_date} veröffentlicht.";
+"You_launched_this_project_on_launch_date" = "Du hast dieses Projekt am %{launch_date} veröffentlicht. Tools für Projektgründer findest du auf unserer Website.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Diese Belohnung hat einen Mindestfinanzierungsbeitrag von %{reward_minimum}.";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
 "You_pledged_without_a_reward" = "Unterstützt ohne Belohnung";
