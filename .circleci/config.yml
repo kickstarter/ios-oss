@@ -133,6 +133,7 @@ jobs:
   kickstarter-tests:
     <<: *base_job
     <<: *test_job
+    resource_class: macos.m1.large.gen1
     environment:
       - *default_environment
       - SCHEME=Kickstarter-Framework-iOS
