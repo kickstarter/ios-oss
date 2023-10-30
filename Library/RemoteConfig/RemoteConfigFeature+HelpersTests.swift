@@ -20,7 +20,7 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       XCTAssertTrue(featureBlockUsersEnabled())
     }
   }
-  
+
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_False() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false]

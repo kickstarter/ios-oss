@@ -83,7 +83,8 @@ public final class FacebookResetPasswordViewController: UIViewController {
       |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
       |> \.layer.borderWidth .~ 1
       |> \.accessibilityLabel .~ self.emailLabel.text
-      |> \.attributedPlaceholder %~ { _ in settingsAttributedPlaceholder("") }
+
+    self.emailTextField.attributedPlaceholder = settingsAttributedPlaceholder("")
 
     _ = self.setPasswordButton
       |> resetPasswordButtonStyle
