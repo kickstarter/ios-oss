@@ -100,7 +100,7 @@ jobs:
     steps:
       - macos/install-rosetta
       - git-shallow-clone/checkout:
-          depth: 100 # This is for Danger
+          fetch_depth: 25 # This is for Danger
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
