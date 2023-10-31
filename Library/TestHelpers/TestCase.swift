@@ -91,8 +91,8 @@ internal class TestCase: XCTestCase {
     let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
     let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
 
-    guard #available(iOS 14.5, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
-      fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 14.5")
+    guard #available(iOS 15, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
+      fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 15.5")
     }
   }
 }
