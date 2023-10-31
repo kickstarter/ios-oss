@@ -356,4 +356,32 @@ public extension UIAlertController {
 
     return alertController
   }
+
+  static func blockUserActionSheet(
+    viewProfileHandler: ((UIAlertAction) -> Void)? = nil,
+    blockUserHandler: ((UIAlertAction) -> Void)? = nil,
+    sourceView: UIView? = nil
+  ) -> UIAlertController {
+    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+    if let profileHandler = viewProfileHandler {
+      // Scott TODO: Use localized strings once translations are done
+      alertController
+        .addAction(UIAlertAction(title: "View Profile", style: .default, handler: profileHandler))
+    }
+
+    // Scott TODO: Use localized strings once translations are done
+    alertController
+      .addAction(UIAlertAction(title: "Block this user", style: .destructive, handler: blockUserHandler))
+
+    alertController
+      .addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil))
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      alertController.modalPresentationStyle = .popover
+      alertController.popoverPresentationController?.sourceView = sourceView
+    }
+
+    return alertController
+  }
 }

@@ -1,7 +1,6 @@
 import KsApi
 import Library
 import Prelude
-import SwiftUI
 import UIKit
 
 internal final class MessagesViewController: UITableViewController {
@@ -173,22 +172,15 @@ extension MessagesViewController: BackingCellDelegate {
 // MARK: - MessageCellDelegate
 
 extension MessagesViewController: MessageCellDelegate {
-  func messageCellDidTapHeader(sender _: User) {
+  func messageCellDidTapHeader(_ cell: MessageCell, sender _: User) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
-    if #available(iOS 15.0, *) {
-      if let sheet = self.view.filter({ $0.tag == actionSheetTag }) {
-        sheet.removeFromSuperview()
-      }
+    let actionSheet = UIAlertController
+      .blockUserActionSheet(
+        blockUserHandler: { _ in self.blockUser() },
+        sourceView: cell
+      )
 
-      let actionSheet =
-        UIHostingController(rootView: BlockUserActionSheetView(
-          blockUser: { self.blockUser() }
-      ))
-      actionSheet.view.tag = actionSheetTag
-
-      _ = (actionSheet.view, self.view)
-        |> ksr_addSubviewToParent()
-    }
+    self.present(actionSheet, animated: true)
   }
 }

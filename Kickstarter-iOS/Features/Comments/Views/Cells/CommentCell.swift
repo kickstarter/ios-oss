@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 protocol CommentCellDelegate: AnyObject {
-  func commentCellDidTapHeader(author: Comment.Author)
+  func commentCellDidTapHeader(_ cell: CommentCell, author: Comment.Author)
   func commentCellDidTapReply(_ cell: CommentCell, comment: Comment)
   func commentCellDidTapViewReplies(_ cell: CommentCell, comment: Comment)
 }
@@ -141,7 +141,7 @@ final class CommentCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] author in
         guard let self = self else { return }
-        self.delegate?.commentCellDidTapHeader(author: author)
+        self.delegate?.commentCellDidTapHeader(self, author: author)
       }
 
     self.viewModel.outputs.replyCommentTapped
