@@ -189,13 +189,8 @@ extension SettingsAccountViewController {
     case .createPassword:
       return CreatePasswordViewController.instantiate()
     case .changeEmail:
-      if #available(iOS 15, *) {
-        let changeEmailView = ChangeEmailView()
-
-        return UIHostingController(rootView: changeEmailView)
-      } else {
-        return ChangeEmailViewController.instantiate()
-      }
+      let changeEmailView = ChangeEmailView()
+      return UIHostingController(rootView: changeEmailView)
     case .changePassword:
       return ChangePasswordViewController.instantiate()
     case .paymentMethods:

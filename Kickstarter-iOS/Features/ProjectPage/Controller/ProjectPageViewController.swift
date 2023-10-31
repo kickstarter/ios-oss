@@ -650,18 +650,16 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   }
 
   private func goToReportProject(projectID: String, projectUrl: String) {
-    if #available(iOS 15, *) {
-      let reportProjectInfoView = ReportProjectInfoView(
-        projectID: projectID,
-        projectUrl: projectUrl,
-        onSuccessfulSubmit: { [weak self] in
-          self?.viewModel.inputs.viewDidLoad()
-        }
-      )
-      self.viewModel.inputs.showNavigationBar(false)
-      self.navigationController?
-        .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
-    }
+    let reportProjectInfoView = ReportProjectInfoView(
+      projectID: projectID,
+      projectUrl: projectUrl,
+      onSuccessfulSubmit: { [weak self] in
+        self?.viewModel.inputs.viewDidLoad()
+      }
+    )
+    self.viewModel.inputs.showNavigationBar(false)
+    self.navigationController?
+      .pushViewController(UIHostingController(rootView: reportProjectInfoView), animated: true)
   }
 
   private func goToUpdates(project: Project) {
