@@ -99,7 +99,9 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
-      - git-shallow-clone/checkout
+      - git-shallow-clone/checkout:
+          # This is for Danger, which requires a bit more git history
+          fetch_depth: 100 
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
