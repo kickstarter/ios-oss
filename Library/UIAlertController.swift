@@ -365,12 +365,12 @@ public extension UIAlertController {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     if let profileHandler = viewProfileHandler {
-      // Scott TODO: Use localized strings once translations are done
+      // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
       alertController
         .addAction(UIAlertAction(title: "View Profile", style: .default, handler: profileHandler))
     }
 
-    // Scott TODO: Use localized strings once translations are done
+    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
     alertController
       .addAction(UIAlertAction(title: "Block this user", style: .destructive, handler: blockUserHandler))
 
@@ -381,6 +381,11 @@ public extension UIAlertController {
       alertController.modalPresentationStyle = .popover
       alertController.popoverPresentationController?.sourceView = sourceView
     }
+
+    // Accessibility
+    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
+    alertController.view.accessibilityIdentifier = "block_user_action_sheet"
+    alertController.view.accessibilityValue = "User Menu"
 
     return alertController
   }
