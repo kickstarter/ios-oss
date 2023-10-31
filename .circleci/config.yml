@@ -99,10 +99,8 @@ jobs:
       - *default_environment
     steps:
       - macos/install-rosetta
-      - git-shallow-clone/checkout
-      - run:
-          name: Fetch current branch for Danger
-          command: git fetch origin $CIRCLE_BRANCH
+      - git-shallow-clone/checkout:
+          depth: 100 # This is for Danger
       - run:
           name: SPM SSH Workaround
           command: *spm_ssh_workaround
