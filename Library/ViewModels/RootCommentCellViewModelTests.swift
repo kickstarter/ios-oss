@@ -12,6 +12,7 @@ internal final class RootCommentCellViewModelTests: TestCase {
   private let authorImageURL = TestObserver<URL, Never>()
   private let authorName = TestObserver<String, Never>()
   private let body = TestObserver<String, Never>()
+  private let commentAuthor = TestObserver<Comment.Author, Never>()
   private let postTime = TestObserver<String, Never>()
 
   override func setUp() {
@@ -20,6 +21,7 @@ internal final class RootCommentCellViewModelTests: TestCase {
     self.vm.outputs.authorImageURL.observe(self.authorImageURL.observer)
     self.vm.outputs.authorName.observe(self.authorName.observer)
     self.vm.outputs.body.observe(self.body.observer)
+    self.vm.outputs.commentAuthor.observe(self.commentAuthor.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
   }
 
@@ -86,5 +88,18 @@ internal final class RootCommentCellViewModelTests: TestCase {
     self.vm.inputs.bindStyles()
 
     self.authorBadge.assertValues([.creator, .creator], "The author's badge is emitted.")
+  }
+  
+  func testOutput_CellHeaderTapped_EmitsCellAuthor() {
+    let comment = Comment.backerTemplate
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: comment)
+      self.commentAuthor.assertDidNotEmitValue()
+
+      self.vm.inputs.commentCellHeaderTapped()
+
+      self.commentAuthor
+        .assertValue(comment.author)
+    }
   }
 }

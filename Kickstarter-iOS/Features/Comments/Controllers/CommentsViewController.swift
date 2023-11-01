@@ -241,7 +241,7 @@ extension CommentsViewController {
 // MARK: - CommentCellDelegate
 
 extension CommentsViewController: CommentCellDelegate {
-  func commentCellDidTapHeader(_ cell: CommentCell, author _: Comment.Author) {
+  func commentCellDidTapHeader(_ cell: CommentCell, _: Comment.Author) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController

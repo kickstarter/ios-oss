@@ -170,7 +170,7 @@ extension MessagesViewController: BackingCellDelegate {
 // MARK: - MessageCellDelegate
 
 extension MessagesViewController: MessageCellDelegate {
-  func messageCellDidTapHeader(_ cell: MessageCell, sender _: User) {
+  func messageCellDidTapHeader(_ cell: MessageCell, _: User) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController

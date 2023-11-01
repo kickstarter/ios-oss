@@ -5,7 +5,7 @@ import ReactiveExtensions
 import UIKit
 
 protocol MessageCellDelegate: AnyObject {
-  func messageCellDidTapHeader(_ cell: MessageCell, sender: User)
+  func messageCellDidTapHeader(_ cell: MessageCell, _ sender: User)
 }
 
 internal final class MessageCell: UITableViewCell, ValueCell {
@@ -88,7 +88,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] sender in
         guard let self = self else { return }
-        self.delegate?.messageCellDidTapHeader(self, sender: sender)
+        self.delegate?.messageCellDidTapHeader(self, sender)
       }
   }
 
