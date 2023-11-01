@@ -8,25 +8,15 @@ enum ReportFormFocusField {
 
 struct ReportProjectFormView: View {
   @Binding var popToRoot: Bool
+  let projectID: String
+  let projectURL: String
+  let projectFlaggingKind: GraphAPI.FlaggingKind
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
-  @ObservedObject private var viewModel: ReportProjectFormViewModel
+  @StateObject private var viewModel = ReportProjectFormViewModel()
 
   @State private var showLoading: Bool = false
   @FocusState private var focusField: ReportFormFocusField?
-
-  init(projectID: String,
-       projectURL: String,
-       projectFlaggingKind: GraphAPI.FlaggingKind,
-       popToRoot: Binding<Bool>) {
-    self._popToRoot = popToRoot
-
-    self.viewModel = ReportProjectFormViewModel(
-      projectID: projectID,
-      projectURL: projectURL,
-      projectFlaggingKind: projectFlaggingKind
-    )
-  }
 
   var body: some View {
     GeometryReader { proxy in
@@ -47,7 +37,7 @@ struct ReportProjectFormView: View {
         }
 
         SwiftUI.Section(Strings.Project_url()) {
-          Text(viewModel.projectURL)
+          Text(projectURL)
             .font(Font(UIFont.ksr_body()))
             .foregroundColor(Color(.ksr_support_400))
             .disabled(true)
@@ -77,6 +67,10 @@ struct ReportProjectFormView: View {
       }
       .onAppear {
         focusField = .details
+
+        viewModel.projectID = projectID
+        viewModel.projectFlaggingKind = projectFlaggingKind
+
         viewModel.inputs.viewDidLoad()
       }
       .onReceive(viewModel.$bannerMessage) { newValue in

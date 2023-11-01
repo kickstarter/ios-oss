@@ -28,17 +28,10 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
   private var cancellables = Set<AnyCancellable>()
 
-  public let projectID: String
-  public let projectURL: String
-  public let projectFlaggingKind: GraphAPI.FlaggingKind
+  public var projectID: String?
+  public var projectFlaggingKind: GraphAPI.FlaggingKind?
 
-  public init(projectID: String,
-              projectURL: String,
-              projectFlaggingKind: GraphAPI.FlaggingKind) {
-    self.projectID = projectID
-    self.projectURL = projectURL
-    self.projectFlaggingKind = projectFlaggingKind
-
+  public init() {
     /// Only enable the save button if the user has entered detail text
     self.$detailsText
       .map { !$0.isEmpty }
@@ -92,8 +85,8 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
   private func createFlaggingInput() -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
     let input = CreateFlaggingInput(
-      contentId: projectID,
-      kind: projectFlaggingKind,
+      contentId: projectID!,
+      kind: projectFlaggingKind!,
       details: detailsText,
       clientMutationId: nil
     )

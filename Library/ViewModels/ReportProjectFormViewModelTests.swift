@@ -22,10 +22,9 @@ final class ReportProjectFormViewModelTests: TestCase {
   }
 
   func testEmailText_AfterFetchingUsersEmail() {
-    let vm = ReportProjectFormViewModel(
-      projectID: "123", projectURL: "https://www.kickstarter.com/projects/foo/bar",
-      projectFlaggingKind: GraphAPI.FlaggingKind.commentDoxxing
-    )
+    let vm = ReportProjectFormViewModel()
+    vm.projectID = "123"
+    vm.projectFlaggingKind = GraphAPI.FlaggingKind.commentDoxxing
 
     withEnvironment(apiService: self.userEmailSuccessMockService) {
       let userEmail = CombineTestObserver<String?, Never>()
@@ -43,10 +42,9 @@ final class ReportProjectFormViewModelTests: TestCase {
   }
 
   func test_submitIsDisabled_untilDetailTextIsNotEmpty() {
-    let vm = ReportProjectFormViewModel(
-      projectID: "123", projectURL: "https://www.kickstarter.com/projects/foo/bar",
-      projectFlaggingKind: GraphAPI.FlaggingKind.commentDoxxing
-    )
+    let vm = ReportProjectFormViewModel()
+    vm.projectID = "123"
+    vm.projectFlaggingKind = GraphAPI.FlaggingKind.commentDoxxing
 
     let saveButtonEnabled = CombineTestObserver<Bool, Never>()
     saveButtonEnabled.observe(vm.$saveButtonEnabled)
