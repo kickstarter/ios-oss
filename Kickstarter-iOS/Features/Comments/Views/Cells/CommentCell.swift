@@ -49,6 +49,8 @@ final class CommentCell: UITableViewCell, ValueCell {
       target: self,
       action: #selector(self.commentCellHeaderTapped)
     ))
+
+    self.configureAccessibilityElements()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -124,6 +126,26 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     let viewRepliesGesture = UITapGestureRecognizer(target: self, action: #selector(self.viewRepliesTapped))
     self.viewRepliesView.addGestureRecognizer(viewRepliesGesture)
+  }
+
+  private func configureAccessibilityElements() {
+    self.isAccessibilityElement = false
+    self.accessibilityContainerType = .semanticGroup
+    self.accessibilityElements = [
+      self.commentCellHeaderStackView,
+      self.commentCellHeaderStackView.postTimeLabel,
+      self.bodyTextView,
+      self.viewRepliesView,
+      self.replyButton
+    ]
+    self.viewRepliesView.isAccessibilityElement = true
+    self.viewRepliesView.accessibilityTraits.insert(.button)
+    self.commentCellHeaderStackView.isAccessibilityElement = true
+    if featureBlockUsersEnabled() {
+      self.commentCellHeaderStackView.accessibilityTraits.insert(.button)
+    }
+    self.commentCellHeaderStackView.postTimeLabel.isAccessibilityElement = true
+    self.bodyTextView.isAccessibilityElement = true
   }
 
   // MARK: - View model
