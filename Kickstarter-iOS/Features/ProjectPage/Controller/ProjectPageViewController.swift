@@ -983,9 +983,10 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
         blockUserHandler: { _ in self.blockUser() },
-        sourceView: cell
+        viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
+        sourceView: cell,
+        isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
 
     self.present(actionSheet, animated: true)

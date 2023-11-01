@@ -206,7 +206,8 @@ extension CommentRepliesViewController: CommentCellDelegate {
     let actionSheet = UIAlertController
       .blockUserActionSheet(
         blockUserHandler: { _ in self.blockUser() },
-        sourceView: cell
+        sourceView: cell,
+        isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
 
     self.present(actionSheet, animated: true)

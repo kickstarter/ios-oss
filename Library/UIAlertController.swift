@@ -358,9 +358,10 @@ public extension UIAlertController {
   }
 
   static func blockUserActionSheet(
+    blockUserHandler: @escaping (UIAlertAction) -> Void,
     viewProfileHandler: ((UIAlertAction) -> Void)? = nil,
-    blockUserHandler: ((UIAlertAction) -> Void)? = nil,
-    sourceView: UIView? = nil
+    sourceView: UIView? = nil,
+    isIPad: Bool
   ) -> UIAlertController {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -377,15 +378,10 @@ public extension UIAlertController {
     alertController
       .addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil))
 
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+    if isIPad {
       alertController.modalPresentationStyle = .popover
       alertController.popoverPresentationController?.sourceView = sourceView
     }
-
-    // Accessibility
-    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
-    alertController.view.accessibilityIdentifier = "block_user_action_sheet"
-    alertController.view.accessibilityValue = "User Menu"
 
     return alertController
   }
