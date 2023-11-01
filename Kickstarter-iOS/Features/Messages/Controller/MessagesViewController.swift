@@ -9,8 +9,6 @@ internal final class MessagesViewController: UITableViewController {
   fileprivate let viewModel: MessagesViewModelType = MessagesViewModel()
   fileprivate let dataSource = MessagesDataSource()
 
-  private let actionSheetTag: Int = 1
-
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
     vc.viewModel.inputs.configureWith(data: .left(messageThread))
