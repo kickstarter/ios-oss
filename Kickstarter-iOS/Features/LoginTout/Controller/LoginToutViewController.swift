@@ -12,7 +12,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   ProcessingViewPresenting {
   // MARK: - Properties
 
-  @available(iOS 13.0, *)
   private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
     ASAuthorizationAppleIDButton(type: .continue, style: .black)
   }()
@@ -384,7 +383,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
   }
 
-  @available(iOS 13, *)
   private func attemptAppleLogin() {
     let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
       |> \.requestedScopes .~ [.fullName, .email]
@@ -568,7 +566,6 @@ private let separatorViewStyle: ViewStyle = { view in
 
 // MARK: - ASAuthorizationControllerDelegate
 
-@available(iOS 13, *)
 extension LoginToutViewController: ASAuthorizationControllerDelegate {
   public func authorizationController(
     controller _: ASAuthorizationController,
@@ -618,7 +615,6 @@ extension LoginToutViewController: SetYourPasswordViewControllerDelegate {
 
 // MARK: - ASAuthorizationControllerPresentationContextProviding
 
-@available(iOS 13.0, *)
 extension LoginToutViewController: ASAuthorizationControllerPresentationContextProviding {
   public func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
     guard let window = self.view.window else {

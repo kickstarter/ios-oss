@@ -19,7 +19,6 @@ enum ReportProjectHyperLinkType: String, CaseIterable {
   }
 }
 
-@available(iOS 15, *)
 struct ReportProjectInfoView: View {
   let projectID: String
   let projectUrl: String
@@ -70,7 +69,6 @@ struct ReportProjectInfoView: View {
 
 // MARK: - Views
 
-@available(iOS 15, *)
 private struct BaseRowView: View {
   var item: ReportProjectInfoListItem
   var isExpanded: Bool = false
@@ -107,7 +105,6 @@ private struct BaseRowView: View {
   }
 }
 
-@available(iOS 15, *)
 struct RowView: View {
   var item: ReportProjectInfoListItem
   let isExpanded: Bool
