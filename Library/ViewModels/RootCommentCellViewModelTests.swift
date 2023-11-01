@@ -89,7 +89,7 @@ internal final class RootCommentCellViewModelTests: TestCase {
 
     self.authorBadge.assertValues([.creator, .creator], "The author's badge is emitted.")
   }
-  
+
   func testOutput_CellHeaderTapped_EmitsCellAuthor() {
     let comment = Comment.backerTemplate
     withEnvironment(currentUser: .template) {
