@@ -7,7 +7,6 @@ import SwiftUI
  Let's keep this file just for text field modifiers. As you can see there are several applications of the same modifier to different input field parameters (functions below).
  */
 
-@available(iOS 15.0, *)
 struct TextInputFieldModifier: ViewModifier {
   let keyboardType: UIKeyboardType
   let textColor: Color
@@ -37,7 +36,6 @@ struct TextInputFieldModifier: ViewModifier {
   }
 }
 
-@available(iOS 15.0, *)
 extension View {
   func currentEmail(keyboardType: UIKeyboardType = .default,
                     textColor: Color = Color(.ksr_support_700),

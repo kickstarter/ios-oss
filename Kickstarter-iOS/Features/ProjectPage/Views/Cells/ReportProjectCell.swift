@@ -37,29 +37,27 @@ internal final class ReportProjectCell: UITableViewCell, ValueCell {
   }
 
   private func setupReportProjectLabelView(projectFlagged: Bool) {
-    if #available(iOS 15.0, *) {
-      DispatchQueue.main.async {
-        let hostingController =
-          UIHostingController(rootView: ReportProjectLabelView(flagged: projectFlagged))
+    DispatchQueue.main.async {
+      let hostingController =
+        UIHostingController(rootView: ReportProjectLabelView(flagged: projectFlagged))
 
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostingController.view.backgroundColor = .clear
+      hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+      hostingController.view.backgroundColor = .clear
 
-        self.contentView.addSubview(hostingController.view)
+      self.contentView.addSubview(hostingController.view)
 
-        let leftRightInset = self.traitCollection.isRegularRegular ? Styles.grid(16) : Styles.gridHalf(5)
+      let leftRightInset = self.traitCollection.isRegularRegular ? Styles.grid(16) : Styles.gridHalf(5)
 
-        NSLayoutConstraint.activate([
-          hostingController.view.topAnchor
-            .constraint(equalTo: self.contentView.topAnchor, constant: Styles.gridHalf(5)),
-          hostingController.view.bottomAnchor
-            .constraint(equalTo: self.contentView.bottomAnchor, constant: -Styles.gridHalf(5)),
-          hostingController.view.leadingAnchor
-            .constraint(equalTo: self.contentView.leadingAnchor, constant: leftRightInset),
-          hostingController.view.trailingAnchor
-            .constraint(equalTo: self.contentView.trailingAnchor, constant: -leftRightInset)
-        ])
-      }
+      NSLayoutConstraint.activate([
+        hostingController.view.topAnchor
+          .constraint(equalTo: self.contentView.topAnchor, constant: Styles.gridHalf(5)),
+        hostingController.view.bottomAnchor
+          .constraint(equalTo: self.contentView.bottomAnchor, constant: -Styles.gridHalf(5)),
+        hostingController.view.leadingAnchor
+          .constraint(equalTo: self.contentView.leadingAnchor, constant: leftRightInset),
+        hostingController.view.trailingAnchor
+          .constraint(equalTo: self.contentView.trailingAnchor, constant: -leftRightInset)
+      ])
     }
   }
 }

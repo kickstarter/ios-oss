@@ -12,7 +12,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   ProcessingViewPresenting {
   // MARK: - Properties
 
-  @available(iOS 13.0, *)
   private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
     ASAuthorizationAppleIDButton(type: .continue, style: .black)
   }()
@@ -112,10 +111,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     _ = self.backgroundImageView
       |> backgroundImageViewStyle
 
-    if #available(iOS 13.0, *) {
-      _ = self.appleLoginButton
-        |> roundedStyle(cornerRadius: Styles.grid(2))
-    }
+    _ = self.appleLoginButton
+      |> roundedStyle(cornerRadius: Styles.grid(2))
 
     _ = self.bringCreativeProjectsToLifeLabel
       |> baseLabelStyle
@@ -305,9 +302,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.viewModel.outputs.attemptAppleLogin
       .observeForUI()
       .observeValues { [weak self] in
-        if #available(iOS 13, *) {
-          self?.attemptAppleLogin()
-        }
+        self?.attemptAppleLogin()
       }
 
     self.viewModel.outputs.showAppleErrorAlert
@@ -353,13 +348,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     ], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    if #available(iOS 13.0, *) {
-      _ = ([self.appleLoginButton, self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-    } else {
-      _ = ([self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-    }
+    _ = ([self.appleLoginButton, self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.signupButton, self.loginButton], self.emailLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -374,21 +364,17 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       self.signupButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
-    if #available(iOS 13.0, *) {
-      NSLayoutConstraint.activate([
-        self.appleLoginButton.heightAnchor
-          .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ])
-    }
+    NSLayoutConstraint.activate([
+      self.appleLoginButton.heightAnchor
+        .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
   }
 
   private func configureTargets() {
-    if #available(iOS 13.0, *) {
-      self.appleLoginButton.addTarget(
-        self, action: #selector(self.appleLoginButtonPressed(_:)),
-        for: .touchUpInside
-      )
-    }
+    self.appleLoginButton.addTarget(
+      self, action: #selector(self.appleLoginButtonPressed(_:)),
+      for: .touchUpInside
+    )
     self.fbLoginButton.addTarget(
       self, action: #selector(self.facebookLoginButtonPressed(_:)),
       for: .touchUpInside
@@ -397,7 +383,6 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
   }
 
-  @available(iOS 13, *)
   private func attemptAppleLogin() {
     let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
       |> \.requestedScopes .~ [.fullName, .email]
@@ -581,7 +566,6 @@ private let separatorViewStyle: ViewStyle = { view in
 
 // MARK: - ASAuthorizationControllerDelegate
 
-@available(iOS 13, *)
 extension LoginToutViewController: ASAuthorizationControllerDelegate {
   public func authorizationController(
     controller _: ASAuthorizationController,
@@ -631,7 +615,6 @@ extension LoginToutViewController: SetYourPasswordViewControllerDelegate {
 
 // MARK: - ASAuthorizationControllerPresentationContextProviding
 
-@available(iOS 13.0, *)
 extension LoginToutViewController: ASAuthorizationControllerPresentationContextProviding {
   public func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
     guard let window = self.view.window else {

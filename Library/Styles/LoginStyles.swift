@@ -101,11 +101,8 @@ public func passwordFieldAutoFillStyle(_ textField: UITextField) -> UITextField 
 public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
   let style = passwordFieldAutoFillStyle(textField)
 
-  if #available(iOS 12, *) {
-    return style
-      |> \.textContentType .~ .newPassword
-  }
   return style
+    |> \.textContentType .~ .newPassword
 }
 
 public let resetPasswordButtonStyle = greenButtonStyle
@@ -198,11 +195,8 @@ public func tfaCodeFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
   let style = textField
     |> tfaCodeFieldStyle
 
-  if #available(iOS 12, *) {
-    return style
-      |> \.textContentType .~ .oneTimeCode
-  }
   return style
+    |> \.textContentType .~ .oneTimeCode
 }
 
 public let twoFactorControllerStyle = UIViewController.lens.title %~ { _ in Strings.two_factor_title() }

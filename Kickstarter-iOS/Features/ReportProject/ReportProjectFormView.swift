@@ -6,7 +6,6 @@ enum ReportFormFocusField {
   case details
 }
 
-@available(iOS 15.0, *)
 struct ReportProjectFormView: View {
   let projectID: String
   let projectURL: String

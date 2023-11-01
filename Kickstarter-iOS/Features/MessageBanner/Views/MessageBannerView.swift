@@ -1,7 +1,6 @@
 import Library
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct MessageBannerView: View {
   @Binding var viewModel: MessageBannerViewViewModel?
 
