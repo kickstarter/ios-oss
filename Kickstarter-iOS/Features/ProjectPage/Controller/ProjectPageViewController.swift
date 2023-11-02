@@ -727,12 +727,8 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   private func presentBlockUserAlert(username: String) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
     self.present(alert, animated: true)
-  }
-
-  private func blockUser() {
-    // Scott TODO: call viewModel.inputs.blockUser
   }
 
   private func goToCreatorProfile(forProject project: Project) {
@@ -985,8 +981,6 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       self.goToCreatorProfile(forProject: project)
       return
     }
-//      return
-//    }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
