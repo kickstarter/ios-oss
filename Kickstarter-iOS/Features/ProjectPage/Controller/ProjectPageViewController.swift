@@ -536,6 +536,20 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { _ in
         // TODO: Use this flag to hide or show the Report this project label [MBL-983](https://kickstarter.atlassian.net/browse/MBL-983)
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: "This user has been successfully blocked")
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: "Your request did not go through. Try again.")
+        }
+
+        self?.view.isUserInteractionEnabled = false
+      }
   }
 
   private func prepareToPlayAudioVideoURL(audioVideoURL: URL,
