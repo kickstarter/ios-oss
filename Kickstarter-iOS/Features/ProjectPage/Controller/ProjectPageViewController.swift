@@ -82,6 +82,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.configureNavigationSelectorView()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -984,6 +985,8 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
       self.goToCreatorProfile(forProject: project)
       return
     }
+//      return
+//    }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
@@ -1077,5 +1080,13 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
       self?.hideOverlayView()
       completionHandler()
     })
+  }
+}
+
+extension ProjectPageViewController: MessageBannerViewControllerDelegate {
+  public func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.dismiss(animated: true)
+    }
   }
 }
