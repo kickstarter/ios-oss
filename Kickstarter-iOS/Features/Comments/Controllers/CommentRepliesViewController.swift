@@ -160,6 +160,23 @@ final class CommentRepliesViewController: UITableViewController {
         }
       }
   }
+
+  private func blockUser() {
+    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  }
+
+  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _: Comment.Author) {
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+
+    let actionSheet = UIAlertController
+      .blockUserActionSheet(
+        blockUserHandler: { _ in self.blockUser() },
+        sourceView: cell,
+        isIPad: self.traitCollection.horizontalSizeClass == .regular
+      )
+
+    self.present(actionSheet, animated: true)
+  }
 }
 
 // MARK: - UITableViewDelegate
@@ -179,6 +196,11 @@ extension CommentRepliesViewController {
       self.viewModel.inputs.didSelectComment(comment)
     }
   }
+
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
+    (cell as? RootCommentCell)?.delegate = self
+    (cell as? CommentCell)?.delegate = self
+  }
 }
 
 // MARK: - CommentComposerViewDelegate
@@ -186,6 +208,26 @@ extension CommentRepliesViewController {
 extension CommentRepliesViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
     self.viewModel.inputs.commentComposerDidSubmitText(text)
+  }
+}
+
+// MARK: - CommentCellDelegate
+
+extension CommentRepliesViewController: CommentCellDelegate {
+  func commentCellDidTapHeader(_ cell: CommentCell, _ author: Comment.Author) {
+    self.handleCommentCellHeaderTapped(in: cell, author)
+  }
+
+  func commentCellDidTapReply(_: CommentCell, comment _: Comment) {}
+
+  func commentCellDidTapViewReplies(_: CommentCell, comment _: Comment) {}
+}
+
+// MARK: - RootCommentCellDelegate
+
+extension CommentRepliesViewController: RootCommentCellDelegate {
+  func commentCellDidTapHeader(_ cell: RootCommentCell, _ author: Comment.Author) {
+    self.handleCommentCellHeaderTapped(in: cell, author)
   }
 }
 

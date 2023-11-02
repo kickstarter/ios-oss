@@ -9,8 +9,14 @@ private enum Layout {
   }
 }
 
+protocol RootCommentCellDelegate: AnyObject {
+  func commentCellDidTapHeader(_ cell: RootCommentCell, _ author: Comment.Author)
+}
+
 final class RootCommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+
+  weak var delegate: RootCommentCellDelegate?
 
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var bottomBorder: UIView = {
@@ -38,6 +44,11 @@ final class RootCommentCell: UITableViewCell, ValueCell {
     self.bindStyles()
     self.configureViews()
     self.bindViewModel()
+
+    self.commentCellHeaderStackView.addGestureRecognizer(UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.commentCellHeaderTapped)
+    ))
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -95,5 +106,18 @@ final class RootCommentCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
+
+    self.viewModel.outputs.commentAuthor
+      .observeForUI()
+      .observeValues { [weak self] author in
+        guard let self = self else { return }
+        self.delegate?.commentCellDidTapHeader(self, author)
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc private func commentCellHeaderTapped() {
+    self.viewModel.inputs.commentCellHeaderTapped()
   }
 }

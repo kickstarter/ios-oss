@@ -7,6 +7,9 @@ public protocol RootCommentCellViewModelInputs {
   /// Call when bindStyles is called.
   func bindStyles()
 
+  /// Call when the comment header is tapped
+  func commentCellHeaderTapped()
+
   /// Call to configure with a Comment
   func configureWith(comment: Comment)
 }
@@ -23,6 +26,9 @@ public protocol RootCommentCellViewModelOutputs {
 
   /// Emits text containing comment body.
   var body: Signal<String, Never> { get }
+
+  /// Emits the `Author` for the tapped cell.
+  var commentAuthor: Signal<Comment.Author, Never> { get }
 
   /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
@@ -61,11 +67,20 @@ public final class RootCommentCellViewModel:
       badge,
       badge.takeWhen(self.bindStylesProperty.signal)
     )
+
+    self.commentAuthor = comment
+      .takeWhen(self.cellHeaderTappedProperty.signal)
+      .map(\.author)
   }
 
   private var bindStylesProperty = MutableProperty(())
   public func bindStyles() {
     self.bindStylesProperty.value = ()
+  }
+
+  private var cellHeaderTappedProperty = MutableProperty(())
+  public func commentCellHeaderTapped() {
+    self.cellHeaderTappedProperty.value = ()
   }
 
   fileprivate let comment = MutableProperty<(Comment)?>(nil)
@@ -77,6 +92,7 @@ public final class RootCommentCellViewModel:
   public var authorImageURL: Signal<URL, Never>
   public let authorName: Signal<String, Never>
   public let body: Signal<String, Never>
+  public let commentAuthor: Signal<Comment.Author, Never>
   public let postTime: Signal<String, Never>
 
   public var inputs: RootCommentCellViewModelInputs { self }

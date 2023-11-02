@@ -103,9 +103,8 @@ internal final class MessagesViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
-    if let cell = cell as? BackingCell, cell.delegate == nil {
-      cell.delegate = self
-    }
+    (cell as? BackingCell)?.delegate = self
+    (cell as? MessageCell)?.delegate = self
   }
 
   @IBAction fileprivate func replyButtonPressed() {
@@ -144,6 +143,10 @@ internal final class MessagesViewController: UITableViewController {
     let vc = ManagePledgeViewController.controller(with: params)
     self.present(vc, animated: true)
   }
+
+  private func blockUser() {
+    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  }
 }
 
 extension MessagesViewController: MessageDialogViewControllerDelegate {
@@ -156,8 +159,27 @@ extension MessagesViewController: MessageDialogViewControllerDelegate {
   }
 }
 
+// MARK: - BackingCellDelegate
+
 extension MessagesViewController: BackingCellDelegate {
   func backingCellGoToBackingInfo() {
     self.viewModel.inputs.backingInfoPressed()
+  }
+}
+
+// MARK: - MessageCellDelegate
+
+extension MessagesViewController: MessageCellDelegate {
+  func messageCellDidTapHeader(_ cell: MessageCell, _: User) {
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+
+    let actionSheet = UIAlertController
+      .blockUserActionSheet(
+        blockUserHandler: { _ in self.blockUser() },
+        sourceView: cell,
+        isIPad: self.traitCollection.horizontalSizeClass == .regular
+      )
+
+    self.present(actionSheet, animated: true)
   }
 }

@@ -4,6 +4,10 @@ import Prelude
 import ReactiveExtensions
 import UIKit
 
+protocol MessageCellDelegate: AnyObject {
+  func messageCellDidTapHeader(_ cell: MessageCell, _ sender: User)
+}
+
 internal final class MessageCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: MessageCellViewModelType = MessageCellViewModel()
 
@@ -12,6 +16,9 @@ internal final class MessageCell: UITableViewCell, ValueCell {
   @IBOutlet private var nameLabel: UILabel!
   @IBOutlet private var timestampLabel: UILabel!
   @IBOutlet private var bodyTextView: UITextView!
+  @IBOutlet var participantStackView: UIStackView!
+
+  weak var delegate: MessageCellDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -19,6 +26,11 @@ internal final class MessageCell: UITableViewCell, ValueCell {
     // NB: removes the default padding around UITextView.
     self.bodyTextView.textContainerInset = UIEdgeInsets.zero
     self.bodyTextView.textContainer.lineFragmentPadding = 0
+
+    self.participantStackView.addGestureRecognizer(UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.messageCellHeaderTapped)
+    ))
   }
 
   internal func configureWith(value message: Message) {
@@ -71,5 +83,16 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         self?.avatarImageView.af.setImage(withURL: $0)
       }
+
+    self.viewModel.outputs.messageSender
+      .observeForUI()
+      .observeValues { [weak self] sender in
+        guard let self = self else { return }
+        self.delegate?.messageCellDidTapHeader(self, sender)
+      }
+  }
+
+  @objc private func messageCellHeaderTapped() {
+    self.viewModel.inputs.cellHeaderTapped()
   }
 }

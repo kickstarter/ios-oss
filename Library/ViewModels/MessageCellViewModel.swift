@@ -4,6 +4,9 @@ import ReactiveSwift
 
 public protocol MessageCellViewModelInputs {
   func configureWith(message: Message)
+
+  /// Call when the cell header is tapped
+  func cellHeaderTapped()
 }
 
 public protocol MessageCellViewModelOutputs {
@@ -12,6 +15,9 @@ public protocol MessageCellViewModelOutputs {
   var timestamp: Signal<String, Never> { get }
   var timestampAccessibilityLabel: Signal<String, Never> { get }
   var body: Signal<String, Never> { get }
+
+  /// Emits the message's `Sender` of the tapped message.
+  var messageSender: Signal<User, Never> { get }
 }
 
 public protocol MessageCellViewModelType {
@@ -37,6 +43,10 @@ public final class MessageCellViewModel: MessageCellViewModelType, MessageCellVi
     }
 
     self.body = message.map { $0.body }
+
+    self.messageSender = message
+      .takeWhen(self.cellHeaderTappedProperty.signal)
+      .map(\.sender)
   }
 
   fileprivate let messageProperty = MutableProperty<Message?>(nil)
@@ -44,11 +54,17 @@ public final class MessageCellViewModel: MessageCellViewModelType, MessageCellVi
     self.messageProperty.value = message
   }
 
+  fileprivate let cellHeaderTappedProperty = MutableProperty(())
+  public func cellHeaderTapped() {
+    self.cellHeaderTappedProperty.value = ()
+  }
+
   public let avatarURL: Signal<URL?, Never>
   public let name: Signal<String, Never>
   public let timestamp: Signal<String, Never>
   public var timestampAccessibilityLabel: Signal<String, Never>
   public let body: Signal<String, Never>
+  public let messageSender: Signal<User, Never>
 
   public var inputs: MessageCellViewModelInputs { return self }
   public var outputs: MessageCellViewModelOutputs { return self }

@@ -179,6 +179,10 @@ internal final class CommentsViewController: UITableViewController {
       }
   }
 
+  private func blockUser() {
+    // Scott  TODO: present popup ui
+  }
+
   // MARK: - Actions
 
   @objc private func refresh() {
@@ -237,6 +241,19 @@ extension CommentsViewController {
 // MARK: - CommentCellDelegate
 
 extension CommentsViewController: CommentCellDelegate {
+  func commentCellDidTapHeader(_ cell: CommentCell, _: Comment.Author) {
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+
+    let actionSheet = UIAlertController
+      .blockUserActionSheet(
+        blockUserHandler: { _ in self.blockUser() },
+        sourceView: cell,
+        isIPad: self.traitCollection.horizontalSizeClass == .regular
+      )
+
+    self.present(actionSheet, animated: true)
+  }
+
   func commentCellDidTapReply(_: CommentCell, comment: Comment) {
     self.viewModel.inputs.commentCellDidTapReply(comment: comment)
   }

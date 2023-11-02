@@ -724,6 +724,23 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func blockUser() {
+    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  }
+
+  private func goToCreatorProfile(forProject project: Project) {
+    let vc = ProjectCreatorViewController.configuredWith(project: project)
+
+    if self.traitCollection.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: vc)
+      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+      self.present(nav, animated: true, completion: nil)
+    } else {
+      self.viewModel.inputs.showNavigationBar(false)
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+  }
+
   // MARK: - Selectors
 
   @objc private func didBackProject() {
@@ -954,19 +971,23 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
   }
 
   internal func projectPamphletMainCell(
-    _: ProjectPamphletMainCell,
+    _ cell: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
   ) {
-    let vc = ProjectCreatorViewController.configuredWith(project: project)
-
-    if self.traitCollection.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
-      self.present(nav, animated: true, completion: nil)
-    } else {
-      self.viewModel.inputs.showNavigationBar(false)
-      self.navigationController?.pushViewController(vc, animated: true)
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
+      self.goToCreatorProfile(forProject: project)
+      return
     }
+
+    let actionSheet = UIAlertController
+      .blockUserActionSheet(
+        blockUserHandler: { _ in self.blockUser() },
+        viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
+        sourceView: cell,
+        isIPad: self.traitCollection.horizontalSizeClass == .regular
+      )
+
+    self.present(actionSheet, animated: true)
   }
 }
 

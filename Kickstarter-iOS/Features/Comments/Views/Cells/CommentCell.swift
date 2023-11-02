@@ -4,6 +4,7 @@ import Prelude
 import UIKit
 
 protocol CommentCellDelegate: AnyObject {
+  func commentCellDidTapHeader(_ cell: CommentCell, _ author: Comment.Author)
   func commentCellDidTapReply(_ cell: CommentCell, comment: Comment)
   func commentCellDidTapViewReplies(_ cell: CommentCell, comment: Comment)
 }
@@ -44,6 +45,10 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bindViewModel()
 
     self.replyButton.addTarget(self, action: #selector(self.replyButtonTapped), for: .touchUpInside)
+    self.commentCellHeaderStackView.addGestureRecognizer(UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.commentCellHeaderTapped)
+    ))
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -58,6 +63,10 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   @objc func viewRepliesTapped() {
     self.viewModel.inputs.viewRepliesButtonTapped()
+  }
+
+  @objc private func commentCellHeaderTapped() {
+    self.viewModel.inputs.cellHeaderTapped()
   }
 
   // MARK: - Styles
@@ -127,6 +136,13 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
+
+    self.viewModel.outputs.cellAuthor
+      .observeForUI()
+      .observeValues { [weak self] author in
+        guard let self = self else { return }
+        self.delegate?.commentCellDidTapHeader(self, author)
+      }
 
     self.viewModel.outputs.replyCommentTapped
       .observeForUI()
