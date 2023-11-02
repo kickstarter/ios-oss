@@ -538,11 +538,7 @@ final class PledgeViewController: UIViewController,
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
     let navigationBarHeight = navigationController.navigationBar.bounds.height
 
-    if #available(iOS 13.0, *) {
-      self.present(navigationController, animated: true)
-    } else {
-      self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
-    }
+    self.present(navigationController, animated: true)
   }
 
   private func beginSCAFlow(withClientSecret secret: String) {

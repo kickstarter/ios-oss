@@ -7,7 +7,6 @@ enum FocusField {
   case currentPassword
 }
 
-@available(iOS 15.0, *)
 struct ChangeEmailView: View {
   @SwiftUI.Environment(\.defaultMinListRowHeight) var minListRow
   @FocusState private var focusField: FocusField?

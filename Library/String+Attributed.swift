@@ -39,7 +39,6 @@ public extension String {
   }
 
   /// Returns an AttributedString that allows us to display html <a> tags as tappable links.
-  @available(iOS 15, *)
   func htmlToAttributedString() throws -> AttributedString {
     try .init(
       .init(
