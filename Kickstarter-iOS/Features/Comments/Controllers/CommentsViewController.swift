@@ -179,8 +179,14 @@ internal final class CommentsViewController: UITableViewController {
       }
   }
 
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+    self.present(alert, animated: true)
+  }
+
   private func blockUser() {
-    // Scott  TODO: present popup ui
+    // Scott TODO: call viewModel.inputs.blockUser
   }
 
   // MARK: - Actions
@@ -241,12 +247,12 @@ extension CommentsViewController {
 // MARK: - CommentCellDelegate
 
 extension CommentsViewController: CommentCellDelegate {
-  func commentCellDidTapHeader(_ cell: CommentCell, _: Comment.Author) {
+  func commentCellDidTapHeader(_ cell: CommentCell, _ author: Comment.Author) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )

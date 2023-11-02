@@ -144,8 +144,14 @@ internal final class MessagesViewController: UITableViewController {
     self.present(vc, animated: true)
   }
 
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+    self.present(alert, animated: true)
+  }
+
   private func blockUser() {
-    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+    // Scott TODO: call viewModel.inputs.blockUser
   }
 }
 
@@ -170,12 +176,12 @@ extension MessagesViewController: BackingCellDelegate {
 // MARK: - MessageCellDelegate
 
 extension MessagesViewController: MessageCellDelegate {
-  func messageCellDidTapHeader(_ cell: MessageCell, _: User) {
+  func messageCellDidTapHeader(_ cell: MessageCell, _ author: User) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )

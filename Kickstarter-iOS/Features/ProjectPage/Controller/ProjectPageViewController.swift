@@ -724,8 +724,14 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+    self.present(alert, animated: true)
+  }
+
   private func blockUser() {
-    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+    // Scott TODO: call viewModel.inputs.blockUser
   }
 
   private func goToCreatorProfile(forProject project: Project) {
@@ -981,7 +987,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: project.creator.name) },
         viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
