@@ -93,6 +93,7 @@ private func producer<T, E>(for property: Result<T, E>?) -> AnyPublisher<T, E> {
   case let .success(data):
     return CurrentValueSubject(data).eraseToAnyPublisher()
   case .failure:
+    // TODO(MBL-1015) Implement this as part of further networking code updates for SwiftUI.
     assertionFailure("Need to implement this behavior. I think the Fail() subject is what we want, possibly with a deferred?")
     return Empty(completeImmediately: false).eraseToAnyPublisher()
   case .none:
