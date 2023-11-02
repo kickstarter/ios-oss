@@ -19,7 +19,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
+  private(set) lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = CommentCellViewModel()
 
   override init(frame: CGRect) {
@@ -142,6 +142,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
     self.authorNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
+    self.rac.accessibilityLabel = self.viewModel.authorName
   }
 }
 

@@ -31,6 +31,20 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       target: self,
       action: #selector(self.messageCellHeaderTapped)
     ))
+
+    self.configureAccessibilityElements()
+  }
+
+  private func configureAccessibilityElements() {
+    self.participantStackView.isAccessibilityElement = true
+    if featureBlockUsersEnabled() {
+      self.participantStackView.accessibilityTraits.insert(.button)
+    }
+    self.timestampLabel.isAccessibilityElement = true
+    self.bodyTextView.isAccessibilityElement = true
+    self.isAccessibilityElement = false
+    self.accessibilityContainerType = .semanticGroup
+    self.accessibilityElements = [self.participantStackView!, self.timestampLabel!, self.bodyTextView!]
   }
 
   internal func configureWith(value message: Message) {
@@ -69,6 +83,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.nameLabel.rac.text = self.viewModel.outputs.name
+    self.participantStackView.rac.accessibilityLabel = self.viewModel.outputs.name
     self.timestampLabel.rac.text = self.viewModel.outputs.timestamp
     self.timestampLabel.rac.accessibilityLabel = self.viewModel.outputs.timestampAccessibilityLabel
     self.bodyTextView.rac.text = self.viewModel.outputs.body
