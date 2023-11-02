@@ -1,4 +1,5 @@
 import Apollo
+import Combine
 import Foundation
 import Prelude
 import ReactiveExtensions
@@ -158,6 +159,17 @@ public struct Service: ServiceType {
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
+  }
+
+  public func createFlaggingInputCombine(input: CreateFlaggingInput)
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input)))
+      .map { _ in
+        EmptyResponseEnvelope()
+      }
+      .eraseToAnyPublisher()
   }
 
   public func createPassword(input: CreatePasswordInput)
@@ -349,6 +361,30 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUserEmailQuery())
       .flatMap(UserEnvelope<GraphUserEmail>.envelopeProducer(from:))
+  }
+
+  public func fetchGraphUserEmailCombine()
+    -> AnyPublisher<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
+    GraphQL.shared.client
+      .fetch(query: GraphAPI.FetchUserEmailQuery())
+      // TODO: make this a custom extension, we'll want to reuse this pattern
+      .tryMap { (data: GraphAPI.FetchUserEmailQuery.Data) -> UserEnvelope<GraphUserEmail> in
+        guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: data) else {
+          throw ErrorEnvelope.couldNotParseJSON
+        }
+
+        return envelope
+      }
+      .mapError { rawError in
+
+        if let error = rawError as? ErrorEnvelope {
+          return error
+        }
+
+        return ErrorEnvelope.couldNotParseJSON
+      }
+
+      .eraseToAnyPublisher()
   }
 
   public func fetchGraphUserSelf()

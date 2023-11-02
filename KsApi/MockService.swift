@@ -1,4 +1,5 @@
 #if DEBUG
+  import Combine
   import Foundation
   import Prelude
   import ReactiveSwift
@@ -617,6 +618,18 @@
       return client.performWithResult(mutation: mutation, result: self.createFlaggingResult)
     }
 
+    internal func createFlaggingInputCombine(input: CreateFlaggingInput)
+      -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
+      }
+
+      let mutation = GraphAPI
+        .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createFlaggingResult)
+    }
+
     internal func createPassword(input: CreatePasswordInput)
       -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
@@ -832,6 +845,15 @@
 
       let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
 
+      return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
+    }
+
+    func fetchGraphUserEmailCombine() -> AnyPublisher<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
+      }
+
+      let fetchGraphUserEmailQuery = GraphAPI.FetchUserEmailQuery()
       return client.fetchWithResult(query: fetchGraphUserEmailQuery, result: self.fetchGraphUserEmailResult)
     }
 
