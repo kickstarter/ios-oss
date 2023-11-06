@@ -6,6 +6,9 @@ public protocol MessagesViewModelInputs {
   /// Call when the backing button is pressed.
   func backingInfoPressed()
 
+  /// Call when block user is tapped
+  func blockUser()
+
   /// Configures the view model with either a message thread or a project and a backing.
   func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>)
 
@@ -52,6 +55,9 @@ public protocol MessagesViewModelOutputs {
 
   /// Emits when the thread has been marked as read.
   var successfullyMarkedAsRead: Signal<(), Never> { get }
+
+  /// Emits when a request to block a user has been made
+  var userBlocked: Signal<Bool, Never> { get }
 }
 
 public protocol MessagesViewModelType {
@@ -182,11 +188,19 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
           .demoteErrors()
       }
       .ignoreValues()
+
+    // TODO: Call blocking GraphQL mutation
+    self.userBlocked = self.blockUserProperty.signal.map { true }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
   public func backingInfoPressed() {
     self.backingInfoPressedProperty.value = ()
+  }
+
+  private let blockUserProperty = MutableProperty(())
+  public func blockUser() {
+    self.blockUserProperty.value = ()
   }
 
   private let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
@@ -223,6 +237,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let project: Signal<Project, Never>
   public let replyButtonIsEnabled: Signal<Bool, Never>
   public let successfullyMarkedAsRead: Signal<(), Never>
+  public let userBlocked: Signal<Bool, Never>
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }

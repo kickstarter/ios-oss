@@ -3,11 +3,13 @@ import Library
 import Prelude
 import UIKit
 
-internal final class MessagesViewController: UITableViewController {
+internal final class MessagesViewController: UITableViewController, MessageBannerViewControllerPresenting {
   @IBOutlet fileprivate var replyBarButtonItem: UIBarButtonItem!
 
   fileprivate let viewModel: MessagesViewModelType = MessagesViewModel()
   fileprivate let dataSource = MessagesDataSource()
+
+  public var messageBannerViewController: MessageBannerViewController?
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
@@ -28,6 +30,7 @@ internal final class MessagesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
     self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.dataSource = self.dataSource
 
@@ -87,6 +90,18 @@ internal final class MessagesViewController: UITableViewController {
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
       .observeValues { [weak self] params in self?.goToBacking(with: params) }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: "This user has been successfully blocked")
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: "Your request did not go through. Try again.")
+        }
+      }
   }
 
   internal override func tableView(_: UITableView, estimatedHeightForRowAt _: IndexPath)
@@ -146,12 +161,8 @@ internal final class MessagesViewController: UITableViewController {
 
   private func presentBlockUserAlert(username: String) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
     self.present(alert, animated: true)
-  }
-
-  private func blockUser() {
-    // Scott TODO: call viewModel.inputs.blockUser
   }
 }
 
