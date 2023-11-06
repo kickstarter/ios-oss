@@ -10,11 +10,13 @@ private enum Layout {
   }
 }
 
-final class CommentRepliesViewController: UITableViewController {
+final class CommentRepliesViewController: UITableViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
   private let dataSource = CommentRepliesDataSource()
   internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
+
+  public var messageBannerViewController: MessageBannerViewController?
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
@@ -72,6 +74,8 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.navigationItem.title = Strings.Replies()
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
@@ -159,16 +163,26 @@ final class CommentRepliesViewController: UITableViewController {
           self?.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        self?.commentComposer.isHidden = true
+
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: "This user has been successfully blocked")
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: "Your request did not go through. Try again.")
+        }
+      }
   }
 
   private func presentBlockUserAlert(username: String) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
     self.present(alert, animated: true)
-  }
-
-  private func blockUser() {
-    // Scott TODO: call viewModel.inputs.blockUser
   }
 
   private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _ author: Comment.Author) {
@@ -234,6 +248,14 @@ extension CommentRepliesViewController: CommentCellDelegate {
 extension CommentRepliesViewController: RootCommentCellDelegate {
   func commentCellDidTapHeader(_ cell: RootCommentCell, _ author: Comment.Author) {
     self.handleCommentCellHeaderTapped(in: cell, author)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension CommentRepliesViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type _: MessageBannerType) {
+    self.commentComposer.isHidden = false
   }
 }
 
