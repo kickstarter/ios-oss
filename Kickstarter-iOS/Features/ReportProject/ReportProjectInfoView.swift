@@ -127,10 +127,10 @@ struct RowView: View {
               NavigationLink(
                 destination: {
                   ReportProjectFormView(
+                    popToRoot: $popToRoot,
                     projectID: self.projectID,
                     projectURL: self.projectUrl,
-                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation,
-                    popToRoot: $popToRoot
+                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation
                   )
                 },
                 label: { BaseRowView(item: item) }

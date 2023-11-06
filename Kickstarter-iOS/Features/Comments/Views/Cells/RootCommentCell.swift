@@ -49,6 +49,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
       target: self,
       action: #selector(self.commentCellHeaderTapped)
     ))
+    self.configureAccessibilityElements()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -100,6 +101,22 @@ final class RootCommentCell: UITableViewCell, ValueCell {
       self.bottomBorder.bottomAnchor.constraint(equalTo: self.rootStackView.bottomAnchor),
       self.bottomBorder.heightAnchor.constraint(equalToConstant: Layout.Border.height)
     ])
+  }
+
+  private func configureAccessibilityElements() {
+    self.isAccessibilityElement = false
+    self.accessibilityContainerType = .semanticGroup
+    self.accessibilityElements = [
+      self.commentCellHeaderStackView,
+      self.commentCellHeaderStackView.postTimeLabel,
+      self.bodyTextView
+    ]
+    self.commentCellHeaderStackView.isAccessibilityElement = true
+    if featureBlockUsersEnabled() {
+      self.commentCellHeaderStackView.accessibilityTraits.insert(.button)
+    }
+    self.commentCellHeaderStackView.postTimeLabel.isAccessibilityElement = true
+    self.bodyTextView.isAccessibilityElement = true
   }
 
   // MARK: - View model

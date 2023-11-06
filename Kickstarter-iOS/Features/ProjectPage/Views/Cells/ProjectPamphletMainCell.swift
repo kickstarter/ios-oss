@@ -179,9 +179,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.creatorImageView
       |> ignoresInvertColorsImageViewStyle
 
-    _ = self.creatorButton
-      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_creator_profile() }
-
     _ = self.creatorImageView
       |> UIImageView.lens.clipsToBounds .~ true
       |> UIImageView.lens.contentMode .~ .scaleAspectFill

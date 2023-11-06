@@ -1,3 +1,4 @@
+import Combine
 import Prelude
 import ReactiveSwift
 import UIKit
@@ -77,6 +78,9 @@ public protocol ServiceType {
   /// Sends report project data for a specific project
   func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+
+  func createFlaggingInputCombine(input: CreateFlaggingInput)
+    -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope>
 
   /// Creates the password on a user account
   func createPassword(input: CreatePasswordInput) ->
@@ -172,6 +176,9 @@ public protocol ServiceType {
   /// Fetches the email of the currently logged in User.
   func fetchGraphUserEmail()
     -> SignalProducer<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
+
+  func fetchGraphUserEmailCombine()
+    -> AnyPublisher<UserEnvelope<GraphUserEmail>, ErrorEnvelope>
 
   /// Fetches GraphQL user fragment and returns User instance.
   func fetchGraphUserSelf()

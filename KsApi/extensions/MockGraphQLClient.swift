@@ -1,4 +1,5 @@
 import Apollo
+import Combine
 import Foundation
 import ReactiveSwift
 
@@ -45,6 +46,20 @@ extension ApolloClientType {
     producer(for: result)
   }
 
+  public func fetchWithResult<Query: GraphQLQuery, Data: Decodable>(
+    query _: Query,
+    result: Result<Data, ErrorEnvelope>?
+  ) -> AnyPublisher<Data, ErrorEnvelope> {
+    return producer(for: result)
+  }
+
+  public func performWithResult<Mutation: GraphQLMutation, Data: Decodable>(
+    mutation _: Mutation,
+    result: Result<Data, ErrorEnvelope>?
+  ) -> AnyPublisher<Data, ErrorEnvelope> {
+    return producer(for: result)
+  }
+
   public func data<Data: Decodable>(from producer: SignalProducer<Data, ErrorEnvelope>) -> Data? {
     switch producer.first() {
     case let .success(data):
@@ -70,6 +85,19 @@ private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E>
   switch result {
   case let .success(value): return .init(value: value)
   case let .failure(error): return .init(error: error)
+  }
+}
+
+private func producer<T, E>(for property: Result<T, E>?) -> AnyPublisher<T, E> {
+  switch property {
+  case let .success(data):
+    return CurrentValueSubject(data).eraseToAnyPublisher()
+  case .failure:
+    // TODO(MBL-1015) Implement this as part of further networking code updates for SwiftUI.
+    assertionFailure("Need to implement this behavior. I think the Fail() subject is what we want, possibly with a deferred?")
+    return Empty(completeImmediately: false).eraseToAnyPublisher()
+  case .none:
+    return Empty(completeImmediately: false).eraseToAnyPublisher()
   }
 }
 

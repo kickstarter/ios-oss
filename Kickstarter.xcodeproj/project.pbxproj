@@ -1492,6 +1492,8 @@
 		E1A149222ACE013100F49709 /* FetchProjectsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */; };
 		E1A149242ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */; };
 		E1A149272ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */; };
+		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
+		E1FDB1E82AEAAC6100285F93 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3041,6 +3043,8 @@
 		E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProjectsEnvelope.swift; sourceTree = "<group>"; };
 		E1A149232ACE02B300F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryDataTests.swift"; sourceTree = "<group>"; };
 		E1A149262ACE063400F49709 /* FetchBackerProjectsQueryDataTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBackerProjectsQueryDataTemplate.swift; sourceTree = "<group>"; };
+		E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+Combine.swift"; sourceTree = "<group>"; };
+		E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -6486,6 +6490,7 @@
 				D01588281EEB2ED7006E7684 /* ServiceTests.swift */,
 				D01588291EEB2ED7006E7684 /* ServiceType.swift */,
 				D015882A1EEB2ED7006E7684 /* ServiceTypeTests.swift */,
+				E1AA8ABE2AEABB1900AC98BF /* combine */,
 				D01587691EEB2ED6006E7684 /* extensions */,
 				8ADCCDAA2656BC020079D308 /* fragments */,
 				D015876B1EEB2ED6006E7684 /* lib */,
@@ -6825,6 +6830,15 @@
 				E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */,
 			);
 			path = templates;
+			sourceTree = "<group>";
+		};
+		E1AA8ABE2AEABB1900AC98BF /* combine */ = {
+			isa = PBXGroup;
+			children = (
+				E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */,
+				E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */,
+			);
+			path = combine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -8427,6 +8441,7 @@
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				47D7D09A26C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift in Sources */,
+				E1FDB1E82AEAAC6100285F93 /* CombineTestObserver.swift in Sources */,
 				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
 				06232D3F2795EC3000A81755 /* TextNode+Helpers.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
@@ -8573,6 +8588,7 @@
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				8A4E953B2450FE1500A578CF /* Money.swift in Sources */,
+				E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */,
 				4758485026B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
 				8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */,
