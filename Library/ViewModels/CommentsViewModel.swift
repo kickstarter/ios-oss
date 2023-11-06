@@ -5,6 +5,9 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
+  /// Call when block user is tapped
+  func blockUser()
+
   /// Call when the delegate method for the CommentCellDelegate is called.
   func commentCellDidTapReply(comment: Comment)
 
@@ -64,6 +67,9 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
+
+  /// Emits when a request to block a user has been made
+  var userBlocked: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -350,12 +356,20 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.showHelpWebViewController = self.commentRemovedCellDidTapURLProperty.signal.skipNil()
       .map(HelpType.helpType)
       .skipNil()
+
+    // TODO: Call blocking GraphQL mutation
+    self.userBlocked = self.blockUserProperty.signal.map { true }
   }
 
   // Properties to assist with injecting these values into the existing data streams.
   private let currentComments = MutableProperty<[Comment]?>(nil)
   private let retryingComment = MutableProperty<(Comment, String)?>(nil)
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
+
+  private let blockUserProperty = MutableProperty(())
+  public func blockUser() {
+    self.blockUserProperty.value = ()
+  }
 
   private let commentCellDidTapViewRepliesProperty = MutableProperty<Comment?>(nil)
   public func commentCellDidTapViewReplies(_ comment: Comment) {
@@ -418,6 +432,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
+  public let userBlocked: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

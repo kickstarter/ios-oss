@@ -14,7 +14,7 @@ private enum Layout {
   }
 }
 
-internal final class CommentsViewController: UITableViewController {
+internal final class CommentsViewController: UITableViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   private lazy var commentComposer: CommentComposerView = {
@@ -43,6 +43,8 @@ internal final class CommentsViewController: UITableViewController {
   internal let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
+  public var messageBannerViewController: MessageBannerViewController?
+
   // MARK: - Accessors
 
   internal static func configuredWith(project: Project? = nil,
@@ -62,6 +64,8 @@ internal final class CommentsViewController: UITableViewController {
 
     self.commentComposer.delegate = self
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
@@ -177,16 +181,26 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] helpType in
         self?.presentHelpWebViewController(with: helpType)
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        self?.commentComposer.isHidden = true
+
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: "This user has been successfully blocked")
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: "Your request did not go through. Try again.")
+        }
+      }
   }
 
   private func presentBlockUserAlert(username: String) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
     self.present(alert, animated: true)
-  }
-
-  private func blockUser() {
-    // Scott TODO: call viewModel.inputs.blockUser
   }
 
   // MARK: - Actions
@@ -274,6 +288,14 @@ extension CommentsViewController: CommentCellDelegate {
 extension CommentsViewController: CommentRemovedCellDelegate {
   func commentRemovedCell(_: CommentRemovedCell, didTapURL: URL) {
     self.viewModel.inputs.commentRemovedCellDidTapURL(didTapURL)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension CommentsViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type _: MessageBannerType) {
+    self.commentComposer.isHidden = false
   }
 }
 
