@@ -42,6 +42,12 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
 
     _ = self.replyBarButtonItem
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_reply() }
+
+    if let banner = messageBannerViewController?.view {
+      NSLayoutConstraint.activate([
+        banner.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      ])
+    }
   }
 
   internal override func bindViewModel() {

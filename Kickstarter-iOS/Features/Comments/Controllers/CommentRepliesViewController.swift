@@ -51,6 +51,12 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
     super.bindStyles()
 
     _ = self.tableView |> tableViewStyle
+
+    if let banner = messageBannerViewController?.view {
+      NSLayoutConstraint.activate([
+        banner.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      ])
+    }
   }
 
   // MARK: Lifecycle
