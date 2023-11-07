@@ -1485,6 +1485,8 @@
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
+		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
+		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */; };
 		E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */; };
 		E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */; };
@@ -1539,6 +1541,13 @@
 			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
 			remoteInfo = KsApi;
 		};
+		E10BE8D22B02975C00F73DC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10BE8CC2B02975C00F73DC9;
+			remoteInfo = RichPushNotifications;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1572,6 +1581,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E10BE8D52B02975C00F73DC9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -3036,6 +3056,9 @@
 		D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateType.swift; sourceTree = "<group>"; };
 		D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IsTruncated.swift"; sourceTree = "<group>"; };
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
+		E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RichPushNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchBackerProjectsQuery.json; sourceTree = "<group>"; };
 		E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackerProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchBackerProjectsQuery.graphql; sourceTree = "<group>"; };
@@ -3120,6 +3143,13 @@
 				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
 				1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */,
 				60DA511428C96A65002E2DF1 /* SwiftSoup in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E10BE8CA2B02975C00F73DC9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6112,6 +6142,7 @@
 			isa = PBXGroup;
 			children = (
 				802800561C88F62500141235 /* Configs */,
+				E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
 				D01587511EEB2DE4006E7684 /* KsApi */,
@@ -6133,6 +6164,7 @@
 				A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */,
 				D01587501EEB2DE4006E7684 /* KsApi.framework */,
 				D01587581EEB2DE4006E7684 /* KsApiTests.xctest */,
+				E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6822,6 +6854,15 @@
 			path = inputs;
 			sourceTree = "<group>";
 		};
+		E10BE8CE2B02975C00F73DC9 /* RichPushNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */,
+				E10BE8D12B02975C00F73DC9 /* Info.plist */,
+			);
+			path = RichPushNotifications;
+			sourceTree = "<group>";
+		};
 		E1A149252ACE060E00F49709 /* templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -6953,12 +6994,14 @@
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
 				8A86D7C124FDB7A000037A7B /* Firebase Crashlytics */,
+				E10BE8D52B02975C00F73DC9 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				A73923FF1D272302004524C3 /* PBXTargetDependency */,
 				D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */,
+				E10BE8D32B02975C00F73DC9 /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-iOS";
 			packageProductDependencies = (
@@ -7041,6 +7084,23 @@
 			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E10BE8DA2B02975C00F73DC9 /* Build configuration list for PBXNativeTarget "RichPushNotifications" */;
+			buildPhases = (
+				E10BE8C92B02975C00F73DC9 /* Sources */,
+				E10BE8CA2B02975C00F73DC9 /* Frameworks */,
+				E10BE8CB2B02975C00F73DC9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RichPushNotifications;
+			productName = RichPushNotifications;
+			productReference = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -7048,7 +7108,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
@@ -7095,6 +7155,9 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
+					E10BE8CC2B02975C00F73DC9 = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
 				};
 			};
 			buildConfigurationList = A7E06C741C5A6EB300EBDCC2 /* Build configuration list for PBXProject "Kickstarter" */;
@@ -7136,6 +7199,7 @@
 				A7D1F9591C850B7C000D41D5 /* Kickstarter-Framework-iOSTests */,
 				D015874F1EEB2DE4006E7684 /* KsApi */,
 				D01587571EEB2DE4006E7684 /* KsApiTests */,
+				E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */,
 			);
 		};
 /* End PBXProject section */
@@ -7285,6 +7349,13 @@
 			files = (
 				E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */,
 				E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E10BE8CB2B02975C00F73DC9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8734,6 +8805,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E10BE8C92B02975C00F73DC9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -8766,6 +8845,11 @@
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
 			targetProxy = D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */;
+		};
+		E10BE8D32B02975C00F73DC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E10BE8CC2B02975C00F73DC9 /* RichPushNotifications */;
+			targetProxy = E10BE8D22B02975C00F73DC9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -8857,6 +8941,7 @@
 		A745D1D51CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPCENTER_SCHEME_NAME = BETA;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
 				CLANG_ENABLE_MODULES = YES;
@@ -9201,6 +9286,7 @@
 		A7D1F9621C850B7C000D41D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPCENTER_SCHEME_NAME = DEBUG;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
 				CLANG_ENABLE_MODULES = YES;
@@ -9233,6 +9319,7 @@
 		A7D1F9631C850B7C000D41D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPCENTER_SCHEME_NAME = RELEASE;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon";
 				CLANG_ENABLE_MODULES = YES;
@@ -9722,6 +9809,7 @@
 		D083B1041F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPCENTER_SCHEME_NAME = ALPHA;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-alpha";
 				CLANG_ENABLE_MODULES = YES;
@@ -9940,6 +10028,171 @@
 			};
 			name = "AppCenter Alpha";
 		};
+		E10BE8D62B02975C00F73DC9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RichPushNotifications/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RichPushNotifications;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Kickstarter. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.RichPushNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E10BE8D72B02975C00F73DC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RichPushNotifications/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RichPushNotifications;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Kickstarter. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.RichPushNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E10BE8D82B02975C00F73DC9 /* AppCenter Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RichPushNotifications/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RichPushNotifications;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Kickstarter. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.RichPushNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "AppCenter Beta";
+		};
+		E10BE8D92B02975C00F73DC9 /* AppCenter Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RichPushNotifications/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RichPushNotifications;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Kickstarter. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.RichPushNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "AppCenter Alpha";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -10027,6 +10280,17 @@
 				D01587671EEB2DE4006E7684 /* Release */,
 				D01587681EEB2DE4006E7684 /* AppCenter Beta */,
 				D083B10A1F27EF0400BEC742 /* AppCenter Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E10BE8DA2B02975C00F73DC9 /* Build configuration list for PBXNativeTarget "RichPushNotifications" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E10BE8D62B02975C00F73DC9 /* Debug */,
+				E10BE8D72B02975C00F73DC9 /* Release */,
+				E10BE8D82B02975C00F73DC9 /* AppCenter Beta */,
+				E10BE8D92B02975C00F73DC9 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
