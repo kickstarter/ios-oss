@@ -192,6 +192,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
       .observeForUI()
       .observeValues { [weak self] success in
         self?.commentComposer.isHidden = true
+        self?.view.isUserInteractionEnabled = false
 
         if success {
           self?.messageBannerViewController?
@@ -302,6 +303,7 @@ extension CommentsViewController: CommentRemovedCellDelegate {
 extension CommentsViewController: MessageBannerViewControllerDelegate {
   func messageBannerViewDidHide(type _: MessageBannerType) {
     self.commentComposer.isHidden = false
+    self.view.isUserInteractionEnabled = true
   }
 }
 

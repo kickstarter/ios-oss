@@ -31,6 +31,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     super.viewDidLoad()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.dataSource = self.dataSource
 
@@ -100,9 +101,11 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     self.viewModel.outputs.userBlocked
       .observeForUI()
       .observeValues { [weak self] success in
+
         if success {
           self?.messageBannerViewController?
             .showBanner(with: .success, message: "This user has been successfully blocked")
+          self?.view.isUserInteractionEnabled = false
         } else {
           self?.messageBannerViewController?
             .showBanner(with: .error, message: "Your request did not go through. Try again.")
@@ -204,5 +207,15 @@ extension MessagesViewController: MessageCellDelegate {
       )
 
     self.present(actionSheet, animated: true)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension MessagesViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
 }

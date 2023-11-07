@@ -178,6 +178,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
         if success {
           self?.messageBannerViewController?
             .showBanner(with: .success, message: "This user has been successfully blocked")
+          self?.view.isUserInteractionEnabled = false
         } else {
           self?.messageBannerViewController?
             .showBanner(with: .error, message: "Your request did not go through. Try again.")
@@ -262,6 +263,7 @@ extension CommentRepliesViewController: RootCommentCellDelegate {
 extension CommentRepliesViewController: MessageBannerViewControllerDelegate {
   func messageBannerViewDidHide(type _: MessageBannerType) {
     self.commentComposer.isHidden = false
+    self.view.isUserInteractionEnabled = true
   }
 }
 
