@@ -65,7 +65,6 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
     self.commentComposer.delegate = self
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
-    self.messageBannerViewController?.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
@@ -186,7 +185,6 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
       .observeForUI()
       .observeValues { [weak self] success in
         self?.commentComposer.isHidden = true
-        self?.view.isUserInteractionEnabled = false
 
         if success {
           self?.messageBannerViewController?
@@ -289,15 +287,6 @@ extension CommentsViewController: CommentCellDelegate {
 extension CommentsViewController: CommentRemovedCellDelegate {
   func commentRemovedCell(_: CommentRemovedCell, didTapURL: URL) {
     self.viewModel.inputs.commentRemovedCellDidTapURL(didTapURL)
-  }
-}
-
-// MARK: - MessageBannerViewControllerDelegate
-
-extension CommentsViewController: MessageBannerViewControllerDelegate {
-  func messageBannerViewDidHide(type _: MessageBannerType) {
-    self.commentComposer.isHidden = false
-    self.view.isUserInteractionEnabled = true
   }
 }
 

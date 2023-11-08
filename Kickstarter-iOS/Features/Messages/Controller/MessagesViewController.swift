@@ -99,7 +99,6 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
         if success {
           self?.messageBannerViewController?
             .showBanner(with: .success, message: "This user has been successfully blocked")
-          self?.view.isUserInteractionEnabled = false
         } else {
           self?.messageBannerViewController?
             .showBanner(with: .error, message: "Your request did not go through. Try again.")

@@ -75,7 +75,6 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
     self.navigationItem.title = Strings.Replies()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
-    self.messageBannerViewController?.delegate = self
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
@@ -249,15 +248,6 @@ extension CommentRepliesViewController: CommentCellDelegate {
 extension CommentRepliesViewController: RootCommentCellDelegate {
   func commentCellDidTapHeader(_ cell: RootCommentCell, _ author: Comment.Author) {
     self.handleCommentCellHeaderTapped(in: cell, author)
-  }
-}
-
-// MARK: - MessageBannerViewControllerDelegate
-
-extension CommentRepliesViewController: MessageBannerViewControllerDelegate {
-  func messageBannerViewDidHide(type _: MessageBannerType) {
-    self.commentComposer.isHidden = false
-    self.view.isUserInteractionEnabled = true
   }
 }
 

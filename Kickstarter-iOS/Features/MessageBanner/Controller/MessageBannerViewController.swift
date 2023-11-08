@@ -108,6 +108,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
 
     if !isHidden {
       self.view.superview?.bringSubviewToFront(self.view)
+      self.view.superview?.isUserInteractionEnabled = false
 
       self.view.isHidden = isHidden
 
@@ -150,6 +151,8 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
             )
           }
         } else {
+          self?.view.superview?.isUserInteractionEnabled = true
+
           if let type = self?.bannerType {
             self?.delegate?.messageBannerViewDidHide(type: type)
           }
