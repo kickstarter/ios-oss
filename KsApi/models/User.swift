@@ -8,6 +8,7 @@ public struct User {
   public var isAdmin: Bool?
   public var isEmailVerified: Bool?
   public var isFriend: Bool?
+  public var isBlocked: Bool?
   public var location: Location?
   public var name: String
   public var needsFreshFacebookToken: Bool?
@@ -119,6 +120,7 @@ extension User: Decodable {
     self.isAdmin = try values.decodeIfPresent(Bool.self, forKey: .isAdmin)
     self.isEmailVerified = try values.decodeIfPresent(Bool.self, forKey: .isEmailVerified)
     self.isFriend = try values.decodeIfPresent(Bool.self, forKey: .isFriend)
+    self.isBlocked = try values.decodeIfPresent(Bool.self, forKey: .isBlocked)
     self.location = try? values.decodeIfPresent(Location.self, forKey: .location)
     self.name = try values.decode(String.self, forKey: .name)
     self.needsFreshFacebookToken = try values.decodeIfPresent(Bool.self, forKey: .needsFreshFacebookToken)
@@ -140,6 +142,7 @@ extension User: Decodable {
     case isAdmin = "is_admin"
     case isEmailVerified = "is_email_verified"
     case isFriend = "is_friend"
+    case isBlocked = "is_blocked"
     case location
     case name
     case needsFreshFacebookToken = "needs_fresh_facebook_token"
@@ -160,6 +163,7 @@ extension User: EncodableType {
     result["is_admin"] = self.isAdmin ?? false
     result["is_email_verified"] = self.isEmailVerified ?? false
     result["is_friend"] = self.isFriend ?? false
+    result["is_blocked"] = self.isBlocked ?? false
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["needs_password"] = self.needsPassword ?? false
