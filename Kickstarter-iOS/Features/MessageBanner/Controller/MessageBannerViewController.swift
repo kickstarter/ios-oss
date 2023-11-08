@@ -219,8 +219,7 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     parentViewController.view.addConstraints([
       bottomViewBannerConstraint,
-      messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
-      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
+      messageBannerView.widthAnchor.constraint(equalTo: parentViewController.view.widthAnchor)
     ])
 
     return messageBannerViewController

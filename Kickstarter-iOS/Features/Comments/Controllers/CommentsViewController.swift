@@ -107,12 +107,6 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
     _ = self.tableView
       |> \.tableFooterView .~ self.footerView
       |> tableViewStyle
-
-    if let banner = messageBannerViewController?.view {
-      NSLayoutConstraint.activate([
-        banner.widthAnchor.constraint(equalTo: self.view.widthAnchor)
-      ])
-    }
   }
 
   // MARK: - View Model
