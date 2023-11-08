@@ -540,10 +540,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.viewModel.outputs.userBlocked
       .observeForUI()
       .observeValues { [weak self] success in
+        // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
         if success {
           self?.messageBannerViewController?
             .showBanner(with: .success, message: "This user has been successfully blocked")
-          self?.view.isUserInteractionEnabled = false
         } else {
           self?.messageBannerViewController?
             .showBanner(with: .error, message: "Your request did not go through. Try again.")

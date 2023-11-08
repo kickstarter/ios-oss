@@ -96,6 +96,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
       .observeForUI()
       .observeValues { [weak self] success in
 
+        // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
         if success {
           self?.messageBannerViewController?
             .showBanner(with: .success, message: "This user has been successfully blocked")
@@ -189,12 +190,12 @@ extension MessagesViewController: BackingCellDelegate {
 // MARK: - MessageCellDelegate
 
 extension MessagesViewController: MessageCellDelegate {
-  func messageCellDidTapHeader(_ cell: MessageCell, _ author: User) {
+  func messageCellDidTapHeader(_ cell: MessageCell, _ user: User) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: user.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
