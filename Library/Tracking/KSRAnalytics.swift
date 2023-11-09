@@ -580,12 +580,12 @@ public final class KSRAnalytics {
   // MARK: - Block User Events
 
   /**
-   Call when the user taps "block this user" from the block user action sheet and is shown the block user confirmation popup
+   Call when the user taps "block this user" from the block user action sheet and is shown the block user confirmation alert popup
 
    - parameter page: The `KSRAnalytics.PageContext` that the popup was presented on..
    */
 
-  public func trackblockUserAlertViewed(page: KSRAnalytics.PageContext? = nil) {
+  public func trackblockUserAlertViewed(page: KSRAnalytics.PageContext) {
     let props = contextProperties(
       ctaContext: .blockUser,
       page: page
@@ -599,7 +599,7 @@ public final class KSRAnalytics {
    - parameter page: The `KSRAnalytics.PageContext` that the request was triggered from..
    */
 
-  public func trackBlockUserClicked(page: KSRAnalytics.PageContext? = nil) {
+  public func trackBlockUserClicked(page: KSRAnalytics.PageContext) {
     let props = contextProperties(
       ctaContext: .blockUser,
       page: page
