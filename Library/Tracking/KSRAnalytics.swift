@@ -33,13 +33,15 @@ public final class KSRAnalytics {
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
     case campaign // ProjectDescriptionViewController
     case changePayment = "change_payment" // PledgeViewController
-    case checkout // // PledgeViewController
-    case creatorDashboard = "creator_dashboard" // DashboardViewController
+    case checkout // PledgeViewController
+    case comments // CommentsViewController
+    case commentReplies // CommentRepliesViewController
     case discovery = "discover" // DiscoveryViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case login = "log_in" // LoginViewController
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
+    case messages // MessagesViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card"
     case pledgeScreen = "pledge" // PledgeViewController
@@ -138,8 +140,8 @@ public final class KSRAnalytics {
    */
   public enum CTAContext {
     case addOnsContinue
+    case blockUser
     case campaignDetails
-    case creatorDashboard
     case creatorDetails
     case discover
     case discoverFilter
@@ -153,7 +155,6 @@ public final class KSRAnalytics {
     case pledgeSubmit
     case project
     case projectSelect
-    case projectUpdateCreateDraft
     case rewardContinue
     case search
     case signUpInitiate
@@ -163,8 +164,8 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .addOnsContinue: return "add_ons_continue"
+      case .blockUser: return "block_user"
       case .campaignDetails: return "campaign_details"
-      case .creatorDashboard: return "creator_dashboard"
       case .creatorDetails: return "creator_details"
       case .discover: return "discover"
       case .discoverFilter: return "discover_filter"
@@ -175,7 +176,6 @@ public final class KSRAnalytics {
       case .pledgeSubmit: return "pledge_submit"
       case .project: return "project"
       case .projectSelect: return "creator_project_select"
-      case .projectUpdateCreateDraft: return "creator_project_update_create_draft"
       case .logInInitiate: return "log_in_initiate"
       case .logInOrSignUp: return "log_in_or_sign_up"
       case .logInSubmit: return "log_in_submit"
@@ -273,7 +273,6 @@ public final class KSRAnalytics {
     case backed
     case campaign
     case comments
-    case dashboard
     case overview
     case updates
     case watched
@@ -284,7 +283,6 @@ public final class KSRAnalytics {
       case .backed: return "backed"
       case .campaign: return "campaign"
       case .comments: return "comments"
-      case .dashboard: return "dashboard"
       case .overview: return "overview"
       case .updates: return "updates"
       case .watched: return "watched"
@@ -577,6 +575,36 @@ public final class KSRAnalytics {
     default:
       return
     }
+  }
+
+  // MARK: - Block User Events
+
+  /**
+   Call when the user taps "block this user" from the block user action sheet and is shown the block user confirmation popup
+
+   - parameter page: The `KSRAnalytics.PageContext` that the popup was presented on..
+   */
+
+  public func trackBlockUserPopupViewed(page: KSRAnalytics.PageContext? = nil) {
+    let props = contextProperties(
+      ctaContext: .blockUser,
+      page: page
+    )
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
+  }
+
+  /**
+   Call when the user taps "block" from the block confirmation popup.
+
+   - parameter page: The `KSRAnalytics.PageContext` that the request was triggered from..
+   */
+
+  public func trackBlockUserClicked(page: KSRAnalytics.PageContext? = nil) {
+    let props = contextProperties(
+      ctaContext: .blockUser,
+      page: page
+    )
+    self.track(event: SegmentEvent.ctaClicked.rawValue, properties: props)
   }
 
   /**

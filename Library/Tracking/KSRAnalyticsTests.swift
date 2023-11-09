@@ -1804,6 +1804,40 @@ final class KSRAnalyticsTests: TestCase {
     self.assertCheckoutProperties(segmentClientProps)
   }
 
+  // MARK: - Block User Properties Tests
+
+  func testTrackBlockUserPopupViewed() {
+    let segmentClient = MockTrackingClient()
+    let loggedInUser = User.template |> \.id .~ 23
+    let ksrAnalytics = KSRAnalytics(
+      loggedInUser: loggedInUser,
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackBlockUserPopupViewed(page: .projectPage)
+
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual(["block_user"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["project"], segmentClient.properties(forKey: "context_page"))
+  }
+
+  func testTrackBlockUserClicked() {
+    let segmentClient = MockTrackingClient()
+    let loggedInUser = User.template |> \.id .~ 23
+    let ksrAnalytics = KSRAnalytics(
+      loggedInUser: loggedInUser,
+      segmentClient: segmentClient,
+      appTrackingTransparency: self.appTrackingTransparency
+    )
+
+    ksrAnalytics.trackBlockUserClicked(page: .messages)
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual(["block_user"], segmentClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["messages"], segmentClient.properties(forKey: "context_page"))
+  }
+
   func testContextProperties() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
