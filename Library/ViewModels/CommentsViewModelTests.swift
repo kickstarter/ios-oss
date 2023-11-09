@@ -1065,4 +1065,49 @@ internal final class CommentsViewModelTests: TestCase {
       }
     }
   }
+
+  func testTrackBlockUserAlertViewed_EventTracked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    withEnvironment(
+      currentUser: User.template,
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs.blockUserAlertViewed()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["Page Viewed"])
+      XCTAssertEqual(["block_user"], segmentClient.properties(forKey: "context_cta"))
+      XCTAssertEqual(["comments"], segmentClient.properties(forKey: "context_page"))
+    }
+  }
+
+  func testTrackBlockUserClicked_EventTracked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    withEnvironment(
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs.blockUser()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["CTA Clicked"])
+      XCTAssertEqual(["block_user"], segmentClient.properties(forKey: "context_cta"))
+      XCTAssertEqual(["comments"], segmentClient.properties(forKey: "context_page"))
+    }
+  }
 }

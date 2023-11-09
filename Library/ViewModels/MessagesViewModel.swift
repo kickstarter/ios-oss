@@ -198,7 +198,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     // MARK: Tracking
 
     _ = self.blockUserAlertViewedProperty.signal.observeValues { _ in
-      AppEnvironment.current.ksrAnalytics.trackblockUserAlertViewed(page: .commentReplies)
+      AppEnvironment.current.ksrAnalytics.trackblockUserAlertViewed(page: .messages)
     }
 
     _ = self.blockUserProperty.signal.observeValues { _ in
