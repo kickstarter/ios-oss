@@ -9,6 +9,9 @@ public protocol MessagesViewModelInputs {
   /// Call when block user is tapped
   func blockUser()
 
+  /// Call when the block user alert popup is presented
+  func blockUserAlertViewed()
+
   /// Configures the view model with either a message thread or a project and a backing.
   func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>)
 
@@ -192,6 +195,12 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
 
+    // MARK: Tracking
+
+    _ = self.blockUserAlertViewedProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackblockUserAlertViewed(page: .commentReplies)
+    }
+
     _ = self.blockUserProperty.signal.observeValues { _ in
       AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .messages)
     }
@@ -200,6 +209,11 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   private let backingInfoPressedProperty = MutableProperty(())
   public func backingInfoPressed() {
     self.backingInfoPressedProperty.value = ()
+  }
+
+  fileprivate let blockUserAlertViewedProperty = MutableProperty(())
+  public func blockUserAlertViewed() {
+    self.blockUserAlertViewedProperty.value = ()
   }
 
   private let blockUserProperty = MutableProperty(())

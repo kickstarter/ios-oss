@@ -585,7 +585,7 @@ public final class KSRAnalytics {
    - parameter page: The `KSRAnalytics.PageContext` that the popup was presented on..
    */
 
-  public func trackBlockUserPopupViewed(page: KSRAnalytics.PageContext? = nil) {
+  public func trackblockUserAlertViewed(page: KSRAnalytics.PageContext? = nil) {
     let props = contextProperties(
       ctaContext: .blockUser,
       page: page

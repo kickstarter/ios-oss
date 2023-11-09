@@ -8,6 +8,9 @@ public protocol CommentsViewModelInputs {
   /// Call when block user is tapped
   func blockUser()
 
+  /// Call when the block user alert popup is presented
+  func blockUserAlertViewed()
+
   /// Call when the delegate method for the CommentCellDelegate is called.
   func commentCellDidTapReply(comment: Comment)
 
@@ -360,6 +363,12 @@ public final class CommentsViewModel: CommentsViewModelType,
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
 
+    // MARK: Tracking
+
+    _ = self.blockUserAlertViewedProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackblockUserAlertViewed(page: .comments)
+    }
+
     _ = self.blockUserProperty.signal.observeValues { _ in
       AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .comments)
     }
@@ -369,6 +378,11 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let currentComments = MutableProperty<[Comment]?>(nil)
   private let retryingComment = MutableProperty<(Comment, String)?>(nil)
   private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
+
+  fileprivate let blockUserAlertViewedProperty = MutableProperty(())
+  public func blockUserAlertViewed() {
+    self.blockUserAlertViewedProperty.value = ()
+  }
 
   private let blockUserProperty = MutableProperty(())
   public func blockUser() {

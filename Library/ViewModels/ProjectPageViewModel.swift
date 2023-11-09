@@ -13,6 +13,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call when block user is tapped
   func blockUser()
 
+  /// Call when the block user alert popup is presented
+  func blockUserAlertViewed()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -504,6 +507,12 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.userBlocked = self.blockUserProperty.signal.map { false }
 
+    // MARK: Tracking
+
+    _ = self.blockUserAlertViewedProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackblockUserAlertViewed(page: .projectPage)
+    }
+
     _ = self.blockUserProperty.signal.observeValues { _ in
       AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .projectPage)
     }
@@ -522,6 +531,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let blockUserProperty = MutableProperty(())
   public func blockUser() {
     self.blockUserProperty.value = ()
+  }
+
+  fileprivate let blockUserAlertViewedProperty = MutableProperty(())
+  public func blockUserAlertViewed() {
+    self.blockUserAlertViewedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)

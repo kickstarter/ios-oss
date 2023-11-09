@@ -8,6 +8,9 @@ public protocol CommentRepliesViewModelInputs {
   /// Call when block user is tapped
   func blockUser()
 
+  /// Call when the block user alert popup is presented
+  func blockUserAlertViewed()
+
   /**
     Call with the comment and project that we are viewing replies for. `Comment` can be provided to minimize
     the number of API requests made (ie. no need to find the comment id), but this is for viewing the replies for the root comment.
@@ -251,9 +254,20 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
 
+    // MARK: Tracking
+
+    _ = self.blockUserAlertViewedProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackblockUserAlertViewed(page: .commentReplies)
+    }
+
     _ = self.blockUserProperty.signal.observeValues { _ in
       AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .commentReplies)
     }
+  }
+
+  fileprivate let blockUserAlertViewedProperty = MutableProperty(())
+  public func blockUserAlertViewed() {
+    self.blockUserAlertViewedProperty.value = ()
   }
 
   private let blockUserProperty = MutableProperty(())

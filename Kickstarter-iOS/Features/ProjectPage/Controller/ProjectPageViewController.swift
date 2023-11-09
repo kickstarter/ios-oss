@@ -741,6 +741,9 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   private func presentBlockUserAlert(username: String) {
     let alert = UIAlertController
       .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+
+    self.viewModel.inputs.blockUserAlertViewed()
+
     self.present(alert, animated: true)
   }
 
