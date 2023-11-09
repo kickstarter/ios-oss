@@ -10,11 +10,13 @@ private enum Layout {
   }
 }
 
-final class CommentRepliesViewController: UITableViewController {
+final class CommentRepliesViewController: UITableViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
   private let dataSource = CommentRepliesDataSource()
   internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
+
+  public var messageBannerViewController: MessageBannerViewController?
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
@@ -72,6 +74,7 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.navigationItem.title = Strings.Replies()
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
@@ -159,18 +162,35 @@ final class CommentRepliesViewController: UITableViewController {
           self?.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        self?.commentComposer.isHidden = true
+
+        // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: "This user has been successfully blocked")
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: "Your request did not go through. Try again.")
+        }
+      }
   }
 
-  private func blockUser() {
-    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+    self.present(alert, animated: true)
   }
 
-  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _: Comment.Author) {
+  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _ author: Comment.Author) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
