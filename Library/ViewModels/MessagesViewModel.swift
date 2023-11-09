@@ -191,6 +191,10 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
+
+    _ = self.blockUserProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .messages)
+    }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())

@@ -359,6 +359,10 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
+
+    _ = self.blockUserProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .comments)
+    }
   }
 
   // Properties to assist with injecting these values into the existing data streams.

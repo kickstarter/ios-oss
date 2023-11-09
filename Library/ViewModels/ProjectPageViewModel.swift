@@ -503,6 +503,10 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
 
     self.userBlocked = self.blockUserProperty.signal.map { false }
+
+    _ = self.blockUserProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackBlockUserClicked(page: .projectPage)
+    }
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
