@@ -25,6 +25,8 @@ public struct Comment {
   public struct Author: Decodable, Equatable {
     public var id: String
     public var imageUrl: String
+    /// TODO(MBL-1025): Get isBlocked status from the backend instead.
+    public var isBlocked: Bool = true
     public var isCreator: Bool
     public var name: String
   }
@@ -60,6 +62,7 @@ extension Comment {
     let author = Author(
       id: "\(user.id)",
       imageUrl: user.avatar.medium,
+      isBlocked: user.isBlocked ?? false,
       isCreator: project.creator == user,
       name: user.name
     )
