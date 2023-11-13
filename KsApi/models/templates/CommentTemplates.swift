@@ -132,6 +132,23 @@ extension Comment {
     status: .success
   )
 
+  public static let blockedTemplate = Comment(
+    author: Author(
+      id: "ADG8hYbp7gsDAZ==",
+      imageUrl: "https://ks/img/cordero.jpg",
+      isBlocked: true,
+      isCreator: false,
+      name: "Cordero"
+    ),
+    authorBadges: [.superbacker],
+    body: "Since the author is blocked, this comment text should never be seen.",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_115).timeIntervalSince1970,
+    id: "BOD5af89jdDA4fG==",
+    isDeleted: false,
+    replyCount: 0,
+    status: .success
+  )
+
   public static let failedTemplate = Comment(
     author: Author(
       id: "AKLEhYbp7CDO6E==",

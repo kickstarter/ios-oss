@@ -92,7 +92,7 @@ public final class CommentCellViewModel:
           return $0.author.imageUrl
         }
       }
-      .map( { URL.init(string: $0) } )
+      .map(URL.init)
 
     self.body = comment.map {
       if $0.author.isBlocked {
@@ -129,7 +129,8 @@ public final class CommentCellViewModel:
       .skipNil()
       .map { comment, _ in
         if comment.author.isBlocked { return Comment.AuthorBadge.backer }
-        return comment.author.id == AppEnvironment.current.currentUser?.id.description ? .you : comment.authorBadge
+        return comment.author.id == AppEnvironment.current.currentUser?.id.description ? .you : comment
+          .authorBadge
       }
 
     self.authorBadge = Signal.merge(

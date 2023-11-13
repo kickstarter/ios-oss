@@ -26,7 +26,7 @@ public struct Comment {
     public var id: String
     public var imageUrl: String
     /// TODO(MBL-1025): Get isBlocked status from the backend instead.
-    public var isBlocked: Bool = true
+    public var isBlocked: Bool = false
     public var isCreator: Bool
     public var name: String
   }
