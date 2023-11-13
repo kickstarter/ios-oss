@@ -165,8 +165,9 @@ final class CommentRepliesViewController: UITableViewController {
     // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
   }
 
-  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _: Comment.Author) {
+  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _ author: Comment.Author) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+    guard author.isBlocked == false else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
