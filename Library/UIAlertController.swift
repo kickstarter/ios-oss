@@ -357,6 +357,35 @@ public extension UIAlertController {
     return alertController
   }
 
+  static func blockUserAlert(username: String,
+                             blockUserHandler: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
+    let alertController = UIAlertController(
+      title: "Block \(username)",
+      message: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.",
+      preferredStyle: .alert
+    )
+
+    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
+    alertController.addAction(
+      UIAlertAction(
+        title: "Block",
+        style: .destructive,
+        handler: blockUserHandler
+      )
+    )
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Cancel(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    return alertController
+  }
+
   static func blockUserActionSheet(
     blockUserHandler: @escaping (UIAlertAction) -> Void,
     viewProfileHandler: ((UIAlertAction) -> Void)? = nil,

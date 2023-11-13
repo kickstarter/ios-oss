@@ -5,6 +5,9 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentRepliesViewModelInputs {
+  /// Call when block user is tapped
+  func blockUser()
+
   /**
     Call with the comment and project that we are viewing replies for. `Comment` can be provided to minimize
     the number of API requests made (ie. no need to find the comment id), but this is for viewing the replies for the root comment.
@@ -61,6 +64,9 @@ public protocol CommentRepliesViewModelOutputs {
 
   /// Emits when a pagination error has occurred.
   var showPaginationErrorState: Signal<(), Never> { get }
+
+  /// Emits when a request to block a user has been made
+  var userBlocked: Signal<Bool, Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -241,6 +247,14 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.scrollToReply = self.replyIdProperty.signal
       .skipNil()
       .takeWhen(self.dataSourceLoadedProperty.signal)
+
+    // TODO: Call blocking GraphQL mutation
+    self.userBlocked = self.blockUserProperty.signal.map { true }
+  }
+
+  private let blockUserProperty = MutableProperty(())
+  public func blockUser() {
+    self.blockUserProperty.value = ()
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
@@ -300,6 +314,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   public let resetCommentComposer: Signal<(), Never>
   public let scrollToReply: Signal<String, Never>
   public let showPaginationErrorState: Signal<(), Never>
+  public let userBlocked: Signal<Bool, Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }

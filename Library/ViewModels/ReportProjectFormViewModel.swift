@@ -18,13 +18,14 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   ReportProjectFormViewModelInputs, ReportProjectFormViewModelOutputs, ObservableObject {
   @Published public var retrievedEmail: String? = nil
   @Published public var saveButtonEnabled: Bool = false
+  @Published public var saveButtonLoading: Bool = false
   @Published public var detailsText: String = ""
-  @Published public var saveTriggered: Bool = false
   @Published public var bannerMessage: MessageBannerViewViewModel? = nil
 
   @Published public var submitSuccess: Bool = false
 
   private let viewDidLoadSubject = PassthroughSubject<Bool, Never>()
+  private let saveTriggeredSubject = PassthroughSubject<(), Never>()
 
   private var cancellables = Set<AnyCancellable>()
 
@@ -53,33 +54,40 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
       .assign(to: &$retrievedEmail)
 
     /// Submits report on saveTriggered
-    self.$saveTriggered
-      .filter { $0 } // only save if saveTriggered is true
+    self.saveTriggeredSubject
       .compactMap { [weak self] _ in
         self?.createFlaggingInput()
       }
-      .flatMap { $0 }
-      .sink { [weak self] _ in
-        // An error happens
+      .flatMap { [weak self] createFlaggingInput in
+        createFlaggingInput.catch { _ in
+          // An API error happens.
+          // We need to catch this up here in flatMap, instead of in sink,
+          // because we don't want an API failure to cancel this pipeline.
+          // If the pipeline gets canceled, you can't re-submit after a failure.
 
-        self?.saveTriggered = false
-        self?.bannerMessage = MessageBannerViewViewModel((
-          type: .error,
-          message: Strings.Something_went_wrong_please_try_again()
-        ))
-        self?.saveButtonEnabled = true
+          self?.bannerMessage = MessageBannerViewViewModel((
+            type: .error,
+            message: Strings.Something_went_wrong_please_try_again()
+          ))
+          self?.saveButtonEnabled = true
+          self?.saveButtonLoading = false
 
-      } receiveValue: { [weak self] _ in
+          return Empty<EmptyResponseEnvelope, Never>()
+        }
+      }
+      .sink(receiveValue: { [weak self] _ in
         // Submitted successfully
 
-        self?.saveTriggered = false
         self?.saveButtonEnabled = false
+        self?.saveButtonLoading = false
+
         self?.bannerMessage = MessageBannerViewViewModel((
           type: .success,
           message: Strings.Your_message_has_been_sent()
         ))
         self?.submitSuccess = true
-      }
+
+      })
       .store(in: &self.cancellables)
   }
 
@@ -99,6 +107,10 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
 
   public func viewDidLoad() {
     self.viewDidLoadSubject.send(true)
+  }
+
+  public func didTapSave() {
+    self.saveTriggeredSubject.send(())
   }
 
   public var inputs: ReportProjectFormViewModelInputs {
