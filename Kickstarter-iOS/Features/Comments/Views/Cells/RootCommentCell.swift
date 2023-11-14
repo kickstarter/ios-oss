@@ -34,7 +34,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = RootCommentCellViewModel()
+  private let viewModel = CommentCellViewModel()
 
   // MARK: - Lifecycle
 
@@ -76,7 +76,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
   internal func configureWith(value: Comment) {
     self.commentCellHeaderStackView
       .configureWith(comment: value)
-    self.viewModel.inputs.configureWith(comment: value)
+    self.viewModel.inputs.configureWith(comment: value, project: nil)
   }
 
   private func configureViews() {
@@ -124,7 +124,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
 
-    self.viewModel.outputs.commentAuthor
+    self.viewModel.outputs.cellAuthor
       .observeForUI()
       .observeValues { [weak self] author in
         guard let self = self else { return }
@@ -135,6 +135,6 @@ final class RootCommentCell: UITableViewCell, ValueCell {
   // MARK: - Actions
 
   @objc private func commentCellHeaderTapped() {
-    self.viewModel.inputs.commentCellHeaderTapped()
+    self.viewModel.inputs.cellHeaderTapped()
   }
 }

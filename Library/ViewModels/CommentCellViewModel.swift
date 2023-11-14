@@ -28,7 +28,7 @@ public protocol CommentCellViewModelOutputs {
   var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 
   /// Emits a url to the comment author's image.
-  var authorImageURL: Signal<URL, Never> { get }
+  var authorImageURL: Signal<URL?, Never> { get }
 
   /// Emits text containing author's fullname or username.
   var authorName: Signal<String, Never> { get }
@@ -85,13 +85,32 @@ public final class CommentCellViewModel:
       .map { comment, _ in comment }
 
     self.authorImageURL = comment
-      .map(\.author.imageUrl)
+      .map {
+        if $0.author.isBlocked {
+          return "" // Use placeholder avatar instead of URL.
+        } else {
+          return $0.author.imageUrl
+        }
+      }
       .map(URL.init)
-      .skipNil()
 
-    self.body = comment.map(\.body)
+    self.body = comment.map {
+      if $0.author.isBlocked {
+        // TODO(MBL-1026): Use translated string once available.
+        return "This user has been blocked"
+      } else {
+        return $0.body
+      }
+    }
 
-    self.authorName = comment.map(\.author.name)
+    self.authorName = comment.map {
+      if $0.author.isBlocked {
+        // TODO(MBL-1026): Use translated string once available.
+        return "Blocked User"
+      } else {
+        return $0.author.name
+      }
+    }
 
     let status = comment.map(\.status)
 
@@ -109,7 +128,9 @@ public final class CommentCellViewModel:
     let badge = self.commentAndProject.signal
       .skipNil()
       .map { comment, _ in
-        comment.author.id == AppEnvironment.current.currentUser?.id.description ? .you : comment.authorBadge
+        if comment.author.isBlocked { return Comment.AuthorBadge.backer }
+        return comment.author.id == AppEnvironment.current.currentUser?.id.description ? .you : comment
+          .authorBadge
       }
 
     self.authorBadge = Signal.merge(
@@ -195,7 +216,7 @@ public final class CommentCellViewModel:
   }
 
   public let authorBadge: Signal<Comment.AuthorBadge, Never>
-  public var authorImageURL: Signal<URL, Never>
+  public var authorImageURL: Signal<URL?, Never>
   public let authorName: Signal<String, Never>
   public let body: Signal<String, Never>
   public let bottomRowStackViewIsHidden: Signal<Bool, Never>
