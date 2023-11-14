@@ -87,7 +87,7 @@ public final class CommentCellViewModel:
     self.authorImageURL = comment
       .map {
         if $0.author.isBlocked {
-          return "" // Use default avatar.
+          return "" // Use placeholder avatar instead of URL.
         } else {
           return $0.author.imageUrl
         }
