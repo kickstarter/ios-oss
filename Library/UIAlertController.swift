@@ -359,10 +359,9 @@ public extension UIAlertController {
 
   static func blockUserAlert(username: String,
                              blockUserHandler: @escaping (UIAlertAction) -> Void) -> UIAlertController {
-    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
     let alertController = UIAlertController(
-      title: "Block \(username)",
-      message: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.",
+      title: Strings.Block_username(username: username),
+      message: Strings.Blocked_user_confirmation(),
       preferredStyle: .alert
     )
 
@@ -395,14 +394,12 @@ public extension UIAlertController {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     if let profileHandler = viewProfileHandler {
-      // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
       alertController
-        .addAction(UIAlertAction(title: "View Profile", style: .default, handler: profileHandler))
+        .addAction(UIAlertAction(title: Strings.View_profile(), style: .default, handler: profileHandler))
     }
 
-    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
     alertController
-      .addAction(UIAlertAction(title: "Block this user", style: .destructive, handler: blockUserHandler))
+      .addAction(UIAlertAction(title: Strings.Block_this_user(), style: .destructive, handler: blockUserHandler))
 
     alertController
       .addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil))
