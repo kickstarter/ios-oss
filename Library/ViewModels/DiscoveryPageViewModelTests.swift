@@ -1193,11 +1193,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.projectsAreLoading.assertValueCount(2)
 
-      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
+      self.vm.inputs.blockedUser()
 
       self.scheduler.advance()
 
-      self.projectsAreLoading.assertValueCount(6)
+      self.projectsAreLoading.assertValueCount(4)
     }
   }
 }
