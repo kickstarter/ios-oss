@@ -18,6 +18,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   private var configUpdatedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
+  private var blockedUserObserver: Any?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
@@ -75,6 +76,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.configUpdatedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_configUpdated, object: nil, queue: nil, using: { [weak self] _ in
         self?.viewModel.inputs.configUpdated(config: AppEnvironment.current.config)
+      })
+
+    self.blockedUserObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_blockedUser, object: nil, queue: nil, using: { [weak self] _ in
+        self?.viewModel.inputs.blockedUser()
       })
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
