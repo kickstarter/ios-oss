@@ -17,6 +17,7 @@ public enum CurrentUserNotifications {
   public static let sessionStarted = "CurrentUserNotifications.sessionStarted"
   public static let showNotificationsDialog = "CurrentUserNotifications.showNotificationsDialog"
   public static let userUpdated = "CurrentUserNotifications.userUpdated"
+  public static let blockedUser = "CurrentUserNotifications.blockedUser"
 }
 
 public enum AppStateNotifications {
@@ -61,4 +62,5 @@ extension Notification.Name {
     CurrentUserNotifications.localePreferencesChanged
   )
   public static let ksr_userUpdated = Notification.Name(rawValue: CurrentUserNotifications.userUpdated)
+  public static let ksr_blockedUser = Notification.Name(rawValue: CurrentUserNotifications.blockedUser)
 }

@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -191,6 +192,11 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
+
+    self.userBlocked.observeValues { didBlock in
+      guard didBlock == true else { return }
+      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
+    }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())

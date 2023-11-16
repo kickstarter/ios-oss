@@ -14,6 +14,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
+  /// Call when the logged in user has blocked another user
+  func blockedUser()
+
   /// Call when onboarding has been completed
   func onboardingCompleted()
 
@@ -174,7 +177,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let requestFirstPageWith = Signal.merge(
       firstPageParams,
       firstPageParams.takeWhen(environmentChanged),
-      firstPageParams.takeWhen(self.pulledToRefreshProperty.signal)
+      firstPageParams.takeWhen(self.pulledToRefreshProperty.signal),
+      firstPageParams.takeWhen(self.blockedUserProperty.signal)
     )
 
     let paginatedProjects: Signal<[Project], Never>
@@ -376,6 +380,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
+  }
+
+  fileprivate let blockedUserProperty = MutableProperty(())
+  public func blockedUser() {
+    self.blockedUserProperty.value = ()
   }
 
   fileprivate let onboardingCompletedProperty = MutableProperty(())
