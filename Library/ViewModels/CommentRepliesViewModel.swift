@@ -250,6 +250,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     // TODO: Call blocking GraphQL mutation
     self.userBlocked = self.blockUserProperty.signal.map { true }
+
+    self.userBlocked.observeValues { didBlock in
+      guard didBlock == true else { return }
+      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
+    }
   }
 
   private let blockUserProperty = MutableProperty(())
