@@ -399,7 +399,11 @@ public extension UIAlertController {
     }
 
     alertController
-      .addAction(UIAlertAction(title: Strings.Block_this_user(), style: .destructive, handler: blockUserHandler))
+      .addAction(UIAlertAction(
+        title: Strings.Block_this_user(),
+        style: .destructive,
+        handler: blockUserHandler
+      ))
 
     alertController
       .addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil))
