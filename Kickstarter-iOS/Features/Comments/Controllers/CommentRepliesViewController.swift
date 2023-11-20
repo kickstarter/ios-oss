@@ -10,6 +10,10 @@ private enum Layout {
   }
 }
 
+protocol CommentRepliesViewControllerDelegate: AnyObject {
+  func commentRepliesViewControllerDidBlockUser(_: CommentRepliesViewController)
+}
+
 final class CommentRepliesViewController: UITableViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
@@ -17,6 +21,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
   internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
 
   public var messageBannerViewController: MessageBannerViewController?
+  weak var delegate: CommentRepliesViewControllerDelegate?
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
@@ -75,6 +80,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
     self.navigationItem.title = Strings.Replies()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
@@ -166,13 +172,15 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
     self.viewModel.outputs.userBlocked
       .observeForUI()
       .observeValues { [weak self] success in
-        self?.commentComposer.isHidden = true
+        guard let self else { return }
+        self.commentComposer.isHidden = true
 
         if success {
-          self?.messageBannerViewController?
+          self.messageBannerViewController?
             .showBanner(with: .success, message: Strings.Block_user_success())
+          self.delegate?.commentRepliesViewControllerDidBlockUser(self)
         } else {
-          self?.messageBannerViewController?
+          self.messageBannerViewController?
             .showBanner(with: .error, message: Strings.Block_user_fail())
         }
       }
@@ -248,6 +256,16 @@ extension CommentRepliesViewController: CommentCellDelegate {
 extension CommentRepliesViewController: RootCommentCellDelegate {
   func commentCellDidTapHeader(_ cell: RootCommentCell, _ author: Comment.Author) {
     self.handleCommentCellHeaderTapped(in: cell, author)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension CommentRepliesViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
 }
 
