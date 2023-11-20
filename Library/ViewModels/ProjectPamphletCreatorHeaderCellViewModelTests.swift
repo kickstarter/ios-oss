@@ -36,7 +36,8 @@ final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: project)
 
-      self.launchDateLabelAttributedText.assertValue("You launched this project on November 7, 2019.")
+      self.launchDateLabelAttributedText
+        .assertValue("You launched this project on November 7, 2019. For creator tools, head to our website!")
     }
   }
 }

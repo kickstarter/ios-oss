@@ -72,6 +72,12 @@
 "Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Big Kickstarter news, plus occasional projects and events chosen just for you.";
 "Biography" = "Biography";
+"Block_this_user" = "Block this user";
+"Block_user_fail" = "Your request did not go through. Try again.";
+"Block_user_success" = "This user has been successfully blocked";
+"Block_username" = "Block %{username}?";
+"Blocked_user" = "Blocked User";
+"Blocked_user_confirmation" = "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus support";
 "Bookmarks" = "Bookmarks";
@@ -343,7 +349,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Kickstarter takes claims of intellectual property infringement seriously. For more information and instructions on how to report infringement, please visit our Copyright Policy and our Trademark Policy. Only claims filed by the copyright or trademark holder can be processed.";
 "Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
-"Learn_about_AI_policy_on_Kickstarter" = "Learn about AI policy on Kickstarter.";
+"Learn_about_AI_policy_on_Kickstarter" = "Learn about AI policy on Kickstarter";
 "Learn_about_accountability_on_Kickstarter" = "Learn about accountability on Kickstarter";
 "Learn_more_about_accountability" = "Learn more about accountability";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Learn more about comment guidelines</a>";
@@ -686,6 +692,7 @@
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "This project didn’t reach its funding goal, so your payment method was never charged.";
 "This_project_has_a_set_currency_that_cant_process_this_option" = "This project has a set currency that can't process this option.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
+"This_user_has_been_blocked" = "This user has been blocked";
 "Time_left_left" = "%{time_left} left";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_learn_how_Kickstarter_encourages_sustainable_practices" = "to learn how Kickstarter encourages sustainable practices.";
@@ -725,6 +732,7 @@
 "View" = "View";
 "View_dashboard" = "View dashboard";
 "View_more_replies" = "View more replies";
+"View_profile" = "View profile";
 "View_progress" = "View progress";
 "View_project" = "View project";
 "View_replies" = "View replies";
@@ -786,7 +794,7 @@
 "You_canceled_your_pledge_for_this_project" = "You canceled your pledge for this project.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "You can’t use this credit card to back a project from %{project_country}.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
-"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
+"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}. For creator tools, head to our website!";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "You need to pledge at least %{reward_minimum} for this reward.";
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
 "You_pledged_without_a_reward" = "You pledged without a reward";

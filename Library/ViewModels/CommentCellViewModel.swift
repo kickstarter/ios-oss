@@ -96,8 +96,7 @@ public final class CommentCellViewModel:
 
     self.body = comment.map {
       if $0.author.isBlocked {
-        // TODO(MBL-1026): Use translated string once available.
-        return "This user has been blocked"
+        return Strings.This_user_has_been_blocked()
       } else {
         return $0.body
       }
@@ -105,8 +104,7 @@ public final class CommentCellViewModel:
 
     self.authorName = comment.map {
       if $0.author.isBlocked {
-        // TODO(MBL-1026): Use translated string once available.
-        return "Blocked User"
+        return Strings.Blocked_user()
       } else {
         return $0.author.name
       }
