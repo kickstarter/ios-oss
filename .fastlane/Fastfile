@@ -37,7 +37,8 @@ platform :ios do
   private_lane :match_development do
     match(
       app_identifier: [
-        "com.kickstarter.kickstarter.debug"
+        "com.kickstarter.kickstarter.debug",
+        "com.kickstarter.kickstarter.debug.RichPushNotifications"
       ],
       type: "development",
       git_url: "git@github.com:kickstarter/ios-certificates",
