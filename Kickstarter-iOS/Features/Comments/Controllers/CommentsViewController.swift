@@ -65,6 +65,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
     self.commentComposer.delegate = self
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
@@ -147,6 +148,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
           inputAreaBecomeFirstResponder: becomeFirstResponder,
           replyId: nil
         )
+        vc.delegate = self
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -284,11 +286,30 @@ extension CommentsViewController: CommentCellDelegate {
   }
 }
 
+// MARK: - CommentRepliesViewControllerDelegate
+
+extension CommentsViewController: CommentRepliesViewControllerDelegate {
+  func commentRepliesViewControllerDidBlockUser(_: CommentRepliesViewController) {
+    self.tableView.scrollToTop()
+    self.viewModel.inputs.refresh()  }
+}
+
 // MARK: - CommentRemovedCellDelegate
 
 extension CommentsViewController: CommentRemovedCellDelegate {
   func commentRemovedCell(_: CommentRemovedCell, didTapURL: URL) {
     self.viewModel.inputs.commentRemovedCellDidTapURL(didTapURL)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension CommentsViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.tableView.scrollToTop()
+      self.viewModel.inputs.refresh()
+    }
   }
 }
 
