@@ -45,16 +45,16 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     self.updateTableViewBottomContentInset()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    self.showUserBlockedBanner()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -103,6 +103,14 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.participantIsBlocked
+      .observeForControllerAction()
+      .observeValues { [weak self] isBlocked in
+        guard let self, isBlocked == true else { return }
+
+        self.showUserBlockedBanner()
+      }
+
     self.viewModel.outputs.presentMessageDialog
       .observeForControllerAction()
       .observeValues { [weak self] messageThread, context in
@@ -117,7 +125,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
       .observeForControllerAction()
       .observeValues { [weak self] params in self?.goToBacking(with: params) }
 
-    self.viewModel.outputs.userBlocked
+    self.viewModel.outputs.userHasBeenBlocked
       .observeForUI()
       .observeValues { [weak self] success in
 

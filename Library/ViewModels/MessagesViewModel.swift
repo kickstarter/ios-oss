@@ -24,6 +24,9 @@ public protocol MessagesViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
+
+  /// Call when the view will appear.
+  func viewWillAppear()
 }
 
 public protocol MessagesViewModelOutputs {
@@ -45,6 +48,9 @@ public protocol MessagesViewModelOutputs {
   /// Emits a list of messages to be displayed.
   var messages: Signal<[Message], Never> { get }
 
+  /// Emits a bool whether the message participant has been blocked on viewWillAppear
+  var participantIsBlocked: Signal<Bool, Never> { get }
+
   /// Emits when we should show the message dialog.
   var presentMessageDialog: Signal<(MessageThread, KSRAnalytics.MessageDialogContext), Never> { get }
 
@@ -58,7 +64,7 @@ public protocol MessagesViewModelOutputs {
   var successfullyMarkedAsRead: Signal<(), Never> { get }
 
   /// Emits when a request to block a user has been made
-  var userBlocked: Signal<Bool, Never> { get }
+  var userHasBeenBlocked: Signal<Bool, Never> { get }
 }
 
 public protocol MessagesViewModelType {
@@ -161,7 +167,8 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     self.replyButtonIsEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      self.messages.map { !$0.isEmpty }
+      self.messages.map { !$0.isEmpty },
+      participant.signal.map { $0.isBlocked == false }
     )
 
     self.presentMessageDialog = messageThreadEnvelope
@@ -191,12 +198,16 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       .ignoreValues()
 
     // TODO: Call blocking GraphQL mutation
-    self.userBlocked = self.blockUserProperty.signal.map { true }
+    self.userHasBeenBlocked = self.blockUserProperty.signal.map { true }
 
-    self.userBlocked.observeValues { didBlock in
+    self.userHasBeenBlocked.observeValues { didBlock in
       guard didBlock == true else { return }
       NotificationCenter.default.post(.init(name: .ksr_blockedUser))
     }
+
+    /// TODO(MBL-1025): Get isBlocked status from the backend instead.
+    self.participantIsBlocked = self.viewWillAppearProperty.signal
+      .mapConst(true)
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
@@ -234,16 +245,22 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.viewDidLoadProperty.value = ()
   }
 
+  private let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
   public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
   public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
   public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let messages: Signal<[Message], Never>
+  public let participantIsBlocked: Signal<Bool, Never>
   public let presentMessageDialog: Signal<(MessageThread, KSRAnalytics.MessageDialogContext), Never>
   public let project: Signal<Project, Never>
   public let replyButtonIsEnabled: Signal<Bool, Never>
   public let successfullyMarkedAsRead: Signal<(), Never>
-  public let userBlocked: Signal<Bool, Never>
+  public let userHasBeenBlocked: Signal<Bool, Never>
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }
