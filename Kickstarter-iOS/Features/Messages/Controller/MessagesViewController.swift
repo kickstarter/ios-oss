@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 internal final class MessagesViewController: UITableViewController, MessageBannerViewControllerPresenting {
@@ -10,6 +11,12 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   fileprivate let dataSource = MessagesDataSource()
 
   public var messageBannerViewController: MessageBannerViewController?
+
+  private var userBlockedBannerHostingController: UIViewController? {
+    self.tabBarController?.children.first { viewController in
+      viewController is UIHostingController<UserBlockedBannerView>
+    }
+  }
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
@@ -36,6 +43,24 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.updateTableViewBottomContentInset()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.showUserBlockedBanner()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    self.removeUserBlockedBanner()
   }
 
   internal override func bindStyles() {
@@ -159,6 +184,48 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   fileprivate func goToBacking(with params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.controller(with: params)
     self.present(vc, animated: true)
+  }
+
+  private func updateTableViewBottomContentInset() {
+    if let userBlockedBannerHostingController = userBlockedBannerHostingController {
+      self.tableView.contentInset
+        .bottom = userBlockedBannerHostingController.view.bounds
+        .height
+    }
+  }
+
+  private func removeUserBlockedBanner() {
+    self.userBlockedBannerHostingController?.removeFromParent()
+
+    let userBlockedBannerView = self.tabBarController?.view.subviews.first(where: { view in
+      view.viewWithTag(-99) != nil
+      })
+
+    userBlockedBannerView?.removeFromSuperview()
+  }
+
+  private func showUserBlockedBanner() {
+    let userBlockedBannerHostingController = UIHostingController(rootView: UserBlockedBannerView())
+
+    guard let tabController = self.tabBarController as? RootTabBarViewController,
+      let userBlockedBannerView = userBlockedBannerHostingController.view else { return }
+
+    userBlockedBannerView.tag = -99
+    tabController.addChild(userBlockedBannerHostingController)
+    tabController.view.addSubview(userBlockedBannerView)
+
+    userBlockedBannerHostingController.didMove(toParent: tabController)
+
+    userBlockedBannerView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint
+      .activate([
+        userBlockedBannerView.leftAnchor.constraint(equalTo: tabController.view.leftAnchor),
+        userBlockedBannerView.rightAnchor
+          .constraint(equalTo: tabController.view.rightAnchor),
+        userBlockedBannerView.bottomAnchor.constraint(
+          equalTo: tabController.tabBar.safeAreaLayoutGuide.topAnchor)
+      ])
   }
 
   private func presentBlockUserAlert(username: String) {

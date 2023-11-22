@@ -458,6 +458,7 @@
 		6049D01C2AA0ECAC0015BB0D /* DemoShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */; };
 		6049D0202AA776B40015BB0D /* DesignSystemColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D01E2AA774130015BB0D /* DesignSystemColors.swift */; };
 		6049D0242AA7940E0015BB0D /* DemoCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */; };
+		6065B5FE2B0E529A00E8E7DF /* UserBlockedBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6065B5FD2B0E529A00E8E7DF /* UserBlockedBannerView.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
@@ -1986,6 +1987,7 @@
 		6049D01A2AA0EC700015BB0D /* DemoShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoShimmerLoadingView.swift; sourceTree = "<group>"; };
 		6049D01E2AA774130015BB0D /* DesignSystemColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemColors.swift; sourceTree = "<group>"; };
 		6049D0232AA7940E0015BB0D /* DemoCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCTAContainerView.swift; sourceTree = "<group>"; };
+		6065B5FD2B0E529A00E8E7DF /* UserBlockedBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockedBannerView.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -4649,6 +4651,7 @@
 				1937A70C28C93C7B00DD732D /* Toggle */,
 				1937A70B28C93C6900DD732D /* TwoFactorAuthentication */,
 				1937A71128C93D7900DD732D /* Update */,
+				6065B5FC2B0E527A00E8E7DF /* UserBlockedBanner */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -5483,6 +5486,14 @@
 				6049D01E2AA774130015BB0D /* DesignSystemColors.swift */,
 			);
 			path = Colors;
+			sourceTree = "<group>";
+		};
+		6065B5FC2B0E527A00E8E7DF /* UserBlockedBanner */ = {
+			isa = PBXGroup;
+			children = (
+				6065B5FD2B0E529A00E8E7DF /* UserBlockedBannerView.swift */,
+			);
+			path = UserBlockedBanner;
 			sourceTree = "<group>";
 		};
 		6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */ = {
@@ -8029,6 +8040,7 @@
 				A757EBB31D1B084F00A5C978 /* DiscoveryOnboardingCell.swift in Sources */,
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
 				19462F6A29D4892300868694 /* ChangeEmailView.swift in Sources */,
+				6065B5FE2B0E529A00E8E7DF /* UserBlockedBannerView.swift in Sources */,
 				8A08B521249C3352009CF74E /* EasyButton.swift in Sources */,
 				20C186ED26726612008046D8 /* CommentsDataSource.swift in Sources */,
 				3767EDA722CFFE6C0088E8E4 /* ShippingRulesDataSource.swift in Sources */,
