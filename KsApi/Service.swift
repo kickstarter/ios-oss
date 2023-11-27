@@ -791,10 +791,10 @@ public struct Service: ServiceType {
       .flatMap(WatchProjectResponseEnvelope.producer(from:))
   }
 
-  public func blockUser(userId: String)
+  public func blockUser(input: BlockUserInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI.BlockUserMutation(input: GraphAPI.BlockUserInput(blockUserId: userId)))
+      .perform(mutation: GraphAPI.BlockUserMutation(input: GraphAPI.BlockUserInput.from(input)))
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }

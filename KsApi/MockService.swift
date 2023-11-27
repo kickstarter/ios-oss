@@ -1681,7 +1681,7 @@
       return SignalProducer(value: self.fetchUpdateResponse)
     }
 
-    func blockUser(userId _: String) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    func blockUser(input _: BlockUserInput) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       return SignalProducer(value: EmptyResponseEnvelope())
     }
 

@@ -1486,6 +1486,10 @@
 		E10BE8D02B02975C00F73DC9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */; };
 		E10BE8D42B02975C00F73DC9 /* RichPushNotifications.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E10BE8CD2B02975C00F73DC9 /* RichPushNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E10BE8DC2B14F1C100F73DC9 /* BlockUser.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E10BE8DB2B14F1C100F73DC9 /* BlockUser.graphql */; };
+		E10BE8DE2B1516DB00F73DC9 /* BlockUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8DD2B1516DB00F73DC9 /* BlockUserInput.swift */; };
+		E10BE8E02B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8DF2B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift */; };
+		E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */; };
+		E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */; };
 		E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */; };
 		E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */; };
 		E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */; };
@@ -3057,6 +3061,10 @@
 		E10BE8CF2B02975C00F73DC9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E10BE8D12B02975C00F73DC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E10BE8DB2B14F1C100F73DC9 /* BlockUser.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BlockUser.graphql; sourceTree = "<group>"; };
+		E10BE8DD2B1516DB00F73DC9 /* BlockUserInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserInput.swift; sourceTree = "<group>"; };
+		E10BE8DF2B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BlockUserInput+BlockUserInput.swift"; sourceTree = "<group>"; };
+		E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BlockUserInput+BlockUserInputTests.swift"; sourceTree = "<group>"; };
+		E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserInputTests.swift; sourceTree = "<group>"; };
 		E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchBackerProjectsQuery.json; sourceTree = "<group>"; };
 		E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackerProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchBackerProjectsQuery.graphql; sourceTree = "<group>"; };
@@ -5798,6 +5806,8 @@
 				478E31C626C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift */,
 				478E31C426C1CB93004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInputTests.swift */,
 				47A662F226AF43DE001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInput.swift */,
+				E10BE8DF2B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift */,
+				E10BE8E32B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift */,
 				47A662F626AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift */,
 				47A662F426AF65DA001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.Data.swift */,
 				47A662FA26AF792A001CE7B1 /* WatchProjectResponseEnvelope+WatchProjectMutation.DataTests.swift */,
@@ -6847,6 +6857,8 @@
 				609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */,
 				4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */,
 				4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */,
+				E10BE8DD2B1516DB00F73DC9 /* BlockUserInput.swift */,
+				E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */,
 			);
 			path = inputs;
 			sourceTree = "<group>";
@@ -8486,6 +8498,7 @@
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
 				8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */,
+				E10BE8E02B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,
 				8A4E95392450FBB500A578CF /* CreditCardType.swift in Sources */,
 				D0158A2F1EEB30A2006E7684 /* User.MemberDataTemplates.swift in Sources */,
@@ -8628,6 +8641,7 @@
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
 				8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
+				E10BE8DE2B1516DB00F73DC9 /* BlockUserInput.swift in Sources */,
 				8A1F155624DB609D00E0C000 /* DateFormatter+ISOFormatter.swift in Sources */,
 				8AC3E046269791D400168BF8 /* Project.Category+CategoryFragment.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
@@ -8691,6 +8705,7 @@
 				06BD75C526C42D6600A12D4E /* ActivityCommentAuthorTests.swift in Sources */,
 				066C0AE726CC17610048F4D8 /* WatchProjectMutationTemplate.swift in Sources */,
 				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
+				E10BE8E72B151D2700F73DC9 /* BlockUserInputTests.swift in Sources */,
 				06962F8D273B36A700FB0B3D /* PostCommentMutationTemplate.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
 				8A15574326951A4B00017845 /* Backing+BackingFragmentTests.swift in Sources */,
@@ -8723,6 +8738,7 @@
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
+				E10BE8E42B151A0B00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInputTests.swift in Sources */,
 				064AEF13270CFB53006605DD /* Project+FetchProjectRewardsByIdQueryDataTests.swift in Sources */,
 				06962F8F273B3DF200FB0B3D /* GraphAPI.PostCommentInput+PostCommentInputTests.swift in Sources */,
 				8AC3E0DA269E524800168BF8 /* CreateBackingEnvelope+CreateBackingMutation.DataTests.swift in Sources */,

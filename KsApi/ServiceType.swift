@@ -381,7 +381,7 @@ public protocol ServiceType {
   func fetchBackedProjects(cursor: String?, limit: Int?)
     -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope>
 
-  func blockUser(userId: String) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+  func blockUser(input: BlockUserInput) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 }
 
 extension ServiceType {
