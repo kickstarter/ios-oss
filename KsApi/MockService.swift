@@ -1681,6 +1681,10 @@
       return SignalProducer(value: self.fetchUpdateResponse)
     }
 
+    func blockUser(userId _: String) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      return SignalProducer(value: EmptyResponseEnvelope())
+    }
+
     internal func previewUrl(forDraft draft: UpdateDraft) -> URL? {
       return URL(
         string: "https://\(Secrets.Api.Endpoint.production)/projects/\(draft.update.projectId)/updates/"
