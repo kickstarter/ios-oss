@@ -16,10 +16,12 @@ internal final class MessagesViewModelTests: TestCase {
   fileprivate let goToProject = TestObserver<Project, Never>()
   fileprivate let goToRefTag = TestObserver<RefTag, Never>()
   fileprivate let messages = TestObserver<[Message], Never>()
+  fileprivate let participantIsBlocked = TestObserver<Bool, Never>()
   fileprivate let presentMessageDialog = TestObserver<MessageThread, Never>()
   fileprivate let project = TestObserver<Project, Never>()
   fileprivate let replyButtonIsEnabled = TestObserver<Bool, Never>()
   fileprivate let successfullyMarkedAsRead = TestObserver<(), Never>()
+  fileprivate let userHasBeenBlocked = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -33,10 +35,12 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToRefTag.observer)
     self.vm.outputs.messages.observe(self.messages.observer)
+    self.vm.outputs.participantIsBlocked.observe(self.participantIsBlocked.observer)
     self.vm.outputs.presentMessageDialog.map { $0.0 }.observe(self.presentMessageDialog.observer)
     self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.replyButtonIsEnabled.observe(self.replyButtonIsEnabled.observer)
     self.vm.outputs.successfullyMarkedAsRead.observe(self.successfullyMarkedAsRead.observer)
+    self.vm.outputs.userHasBeenBlocked.observe(self.userHasBeenBlocked.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
   }
@@ -235,7 +239,7 @@ internal final class MessagesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.messages.assertValueCount(1)
-      self.replyButtonIsEnabled.assertValues([false, true])
+      self.replyButtonIsEnabled.assertValues([false, false, true])
       self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
 
       self.vm.inputs.replyButtonPressed()
@@ -247,6 +251,27 @@ internal final class MessagesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.messages.assertValueCount(2)
+    }
+  }
+
+  func testParticipantIsBlockedFlow() {
+    let project = Project.template |> Project.lens.id .~ 42
+    let backing = Backing.template
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
+
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
+
+    withEnvironment(apiService: apiService, currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+      self.participantIsBlocked.assertValueCount(0)
+
+      self.vm.inputs.viewWillAppear()
+
+      /// TODO(MBL-1025): Once we are getting isBlocked status from backend we need to update this use that. This is hardcoded for now.
+      self.participantIsBlocked.assertValues([true])
     }
   }
 
