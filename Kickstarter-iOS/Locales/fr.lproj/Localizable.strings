@@ -72,12 +72,13 @@
 "Big_Kickstarter_news_and_events_near_you" = "Les grandes nouvelles et les événements près de chez vous, quelques fois par an.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Les grandes actualités Kickstarter et quelques projets et événements de temps et temps, rien que pour vous.";
 "Biography" = "Biographie";
+"Block" = "Bloquer";
 "Block_this_user" = "Bloquer cet utilisateur";
 "Block_user_fail" = "Votre demande a échoué. Veuillez réessayer.";
 "Block_user_success" = "Cet utilisateur a bien été bloqué.";
 "Block_username" = "Bloquer %{username} ?";
 "Blocked_user" = "Utilisateur bloqué";
-"Blocked_user_confirmation" = "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets et que vous souhaitez retirer votre soutien, vous devez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance.";
+"Blocked_user_confirmation" = "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets, veuillez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Coup de pouce";
 "Bookmarks" = "Signets";
@@ -443,6 +444,7 @@
 "Opens_rewards" = "Ouvre les récompenses.";
 "Opens_shipping_options" = "Ouvre les options de livraison.";
 "Opens_update" = "Ouvre l'actu.";
+"Opens_user_menu" = "Ouvre le menu utilisateur.";
 "Or_select_a_different_reward_below_colon" = "Ou sélectionner une autre récompense ci-dessous :";
 "Other_payment_methods" = "Autres moyens de paiement";
 "Other_projects_you_might_like" = "Autre projets qui pourraient vous intéresser";

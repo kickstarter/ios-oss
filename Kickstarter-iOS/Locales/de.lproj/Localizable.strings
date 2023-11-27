@@ -72,6 +72,7 @@
 "Big_Kickstarter_news_and_events_near_you" = "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Das Neueste von Kickstarter plus gelegentlich für dich ausgewählte Projekte und Events.";
 "Biography" = "Biografie";
+"Block" = "Block";
 "Block_this_user" = "Diesen Nutzer blockieren";
 "Block_user_fail" = "Deine Anfrage konnte nicht verarbeitet werden. Bitte versuche es noch einmal.";
 "Block_user_success" = "Dieser Nutzer wurde erfolgreich blockiert";
@@ -443,6 +444,7 @@
 "Opens_rewards" = "Öffnet Belohnungen.";
 "Opens_shipping_options" = "Öffnet Versandoptionen.";
 "Opens_update" = "Öffnet Update.";
+"Opens_user_menu" = "Opens user menu.";
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
