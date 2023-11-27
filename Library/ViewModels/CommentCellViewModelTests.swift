@@ -328,9 +328,9 @@ internal final class CommentCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(comment: comment, project: .template)
     self.authorBadge.assertValues([.backer], "The default badge is emitted.")
-    self.authorName.assertValue("Blocked User", "The author's name is hidden.")
+    self.authorName.assertValue(Strings.Blocked_user(), "The author's name is hidden.")
     self.authorImageURL.assertValue(nil, "The author's avatar is hidden.")
-    self.body.assertValue("This user has been blocked", "The comment text is hidden.")
+    self.body.assertValue(Strings.This_user_has_been_blocked(), "The comment text is hidden.")
   }
 
   func testBindStylesEmitsAuthorBadge() {
