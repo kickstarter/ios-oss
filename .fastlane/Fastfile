@@ -24,7 +24,10 @@ platform :ios do
   desc "Fastlane Match - App Store"
   private_lane :match_appstore do
     match(
-      app_identifier: ["com.kickstarter.kickstarter"],
+      app_identifier: [
+        "com.kickstarter.kickstarter",
+        "com.kickstarter.kickstarter.RichPushNotifications"
+      ],
       type: "appstore",
       git_url: "git@github.com:kickstarter/ios-certificates",
       team_id: "48YBP49Y5N",
@@ -54,7 +57,9 @@ platform :ios do
     match(
       app_identifier: [
         "com.kickstarter.kickstarter.beta",
-        "com.kickstarter.kickstarter.kickalpha"
+        "com.kickstarter.kickstarter.beta.RichPushNotifications",
+        "com.kickstarter.kickstarter.kickalpha",
+        "com.kickstarter.kickstarter.kickalpha.RichPushNotifications",
       ],
       type: "enterprise",
       git_url: "git@github.com:kickstarter/ios-certificates",
