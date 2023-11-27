@@ -63,7 +63,7 @@ public protocol MessagesViewModelOutputs {
   /// Emits when the thread has been marked as read.
   var successfullyMarkedAsRead: Signal<(), Never> { get }
 
-  /// Emits when a request to block a user has been made
+  /// Emits whether arequest to block a user was successful.
   var userHasBeenBlocked: Signal<Bool, Never> { get }
 }
 

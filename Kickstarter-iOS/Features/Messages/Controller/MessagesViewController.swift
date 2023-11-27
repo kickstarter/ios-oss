@@ -203,9 +203,12 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   }
 
   private func removeUserBlockedBanner() {
-    self.userBlockedBannerHostingController?.removeFromParent()
+    guard let bannerHostingController = self.userBlockedBannerHostingController,
+      let tabBarController = self.tabBarController else { return }
 
-    let userBlockedBannerView = self.tabBarController?.view.subviews.first(where: { view in
+    bannerHostingController.removeFromParent()
+
+    let userBlockedBannerView = tabBarController.view.subviews.first(where: { view in
       view.viewWithTag(-99) != nil
       })
 
