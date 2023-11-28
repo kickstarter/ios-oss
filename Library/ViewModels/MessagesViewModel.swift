@@ -198,7 +198,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       .ignoreValues()
 
     // TODO: Call blocking GraphQL mutation
-    self.didBlockUser = self.blockUserProperty.signal.map { true }
+    self.didBlockUser = self.blockUserProperty.signal.map { false }
 
     self.didBlockUser.observeValues { didBlock in
       guard didBlock == true else { return }
@@ -207,7 +207,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     /// TODO(MBL-1025): Get isBlocked status from the backend instead.
     self.participantPreviouslyBlocked = self.viewWillAppearProperty.signal
-      .mapConst(true)
+      .mapConst(false)
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
