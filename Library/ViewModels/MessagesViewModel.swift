@@ -205,9 +205,9 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       NotificationCenter.default.post(.init(name: .ksr_blockedUser))
     }
 
-    /// TODO(MBL-1025): Get isBlocked status from the backend instead.
-    self.participantPreviouslyBlocked = self.viewWillAppearProperty.signal
-      .mapConst(false)
+    self.participantPreviouslyBlocked = self.project
+      .map { $0.creator.isBlocked ?? false }
+      .takeWhen(self.viewWillAppearProperty.signal)
   }
 
   private let backingInfoPressedProperty = MutableProperty(())

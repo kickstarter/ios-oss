@@ -129,6 +129,7 @@ internal final class MessagesViewModelTests: TestCase {
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+      self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -254,23 +255,47 @@ internal final class MessagesViewModelTests: TestCase {
     }
   }
 
-  func testparticipantPreviouslyBlockedFlow() {
-    let project = Project.template |> Project.lens.id .~ 42
-    let backing = Backing.template
-    let messageThread = .template
-      |> MessageThread.lens.project .~ project
-      |> MessageThread.lens.participant .~ .template
+  func testParticipantPreviouslyBlockedFlow_True() {
+    let creator = User.template
+      |> \.isBlocked .~ true
 
-    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
+    let project = Project.template
+      |> Project.lens.id .~ 42
+      |> Project.lens.creator .~ creator
 
-    withEnvironment(apiService: apiService, currentUser: .template) {
-      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: Backing.template)))
 
       self.participantPreviouslyBlocked.assertValueCount(0)
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
 
-      /// TODO(MBL-1025): Once we are getting isBlocked status from backend we need to update this use that. This is hardcoded for now.
+      self.scheduler.advance()
+
+      self.participantPreviouslyBlocked.assertValues([true])
+    }
+  }
+
+  func testParticipantPreviouslyBlockedFlow_False() {
+    let creator = User.template
+      |> \.id .~ 20
+      |> \.isBlocked .~ false
+
+    let project = Project.template
+      |> Project.lens.id .~ 42
+      |> Project.lens.creator .~ creator
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: Backing.template)))
+
+      self.participantPreviouslyBlocked.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+
+      self.scheduler.advance()
+
       self.participantPreviouslyBlocked.assertValues([false])
     }
   }
