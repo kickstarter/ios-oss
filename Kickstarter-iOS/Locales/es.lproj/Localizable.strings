@@ -72,12 +72,13 @@
 "Big_Kickstarter_news_and_events_near_you" = "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Importantes novedades de Kickstarter, además de proyectos y eventos ocasionales elegidos especialmente para ti.";
 "Biography" = "Biografía";
+"Block" = "Bloquear";
 "Block_this_user" = "Bloquear a este usuario";
 "Block_user_fail" = "Tu solicitud no se procesó. Intenta otra vez.";
 "Block_user_success" = "Este usuario se bloqueó con éxito.";
 "Block_username" = "¿Bloquear a %{username}?";
 "Blocked_user" = "Usuario bloqueado";
-"Blocked_user_confirmation" = "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario y quieres revertir tu apoyo, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda.";
+"Blocked_user_confirmation" = "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda.";
 "Bonus" = "Extra";
 "Bonus_support" = "Apoyo extra";
 "Bookmarks" = "Marcadores";
@@ -443,6 +444,7 @@
 "Opens_rewards" = "Abre recompensas.";
 "Opens_shipping_options" = "Abre las opciones de envío.";
 "Opens_update" = "Abre actualización.";
+"Opens_user_menu" = "Abre el menú del usuario.";
 "Or_select_a_different_reward_below_colon" = "También puedes seleccionar una de las siguientes recompensas:";
 "Other_payment_methods" = "Otros métodos de pago";
 "Other_projects_you_might_like" = "Otros proyectos que te pueden gustar.";

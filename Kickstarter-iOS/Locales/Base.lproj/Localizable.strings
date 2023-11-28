@@ -72,12 +72,13 @@
 "Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Big Kickstarter news, plus occasional projects and events chosen just for you.";
 "Biography" = "Biography";
+"Block" = "Block";
 "Block_this_user" = "Block this user";
 "Block_user_fail" = "Your request did not go through. Try again.";
 "Block_user_success" = "This user has been successfully blocked";
 "Block_username" = "Block %{username}?";
 "Blocked_user" = "Blocked User";
-"Blocked_user_confirmation" = "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.";
+"Blocked_user_confirmation" = "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus support";
 "Bookmarks" = "Bookmarks";
@@ -443,6 +444,7 @@
 "Opens_rewards" = "Opens rewards.";
 "Opens_shipping_options" = "Opens shipping options.";
 "Opens_update" = "Opens update.";
+"Opens_user_menu" = "Opens user menu.";
 "Or_select_a_different_reward_below_colon" = "Or select a different reward below:";
 "Other_payment_methods" = "Other payment methods";
 "Other_projects_you_might_like" = "Other projects you might like.";
