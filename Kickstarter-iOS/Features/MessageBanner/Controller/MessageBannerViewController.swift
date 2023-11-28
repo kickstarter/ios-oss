@@ -19,7 +19,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate var messageLabel: UILabel!
 
   private var bannerType: MessageBannerType?
-  private var dissmissable: Bool = true
+  private var dismissible: Bool = true
 
   internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
@@ -69,7 +69,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
       .observeValues { [weak self] isHidden in
         guard let self else { return }
 
-        if isHidden, !self.dissmissable {
+        if isHidden, !self.dismissible {
           return
         }
 
@@ -102,15 +102,15 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
       }
   }
 
-  public func showBanner(with type: MessageBannerType, message: String, dissmissable: Bool = true) {
+  public func showBanner(with type: MessageBannerType, message: String, dismissible: Bool = true) {
     self.bannerType = type
-    self.dissmissable = dissmissable
+    self.dismissible = dismissible
     self.viewModel.inputs.update(with: (type, message))
     self.viewModel.inputs.bannerViewWillShow(true)
   }
 
   private func showViewAndAnimate(_ isHidden: Bool) {
-    if !isHidden, !self.view.isHidden, !self.dissmissable { return }
+    if !isHidden, !self.view.isHidden, !self.dismissible { return }
 
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
@@ -119,7 +119,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
     if !isHidden {
       self.view.superview?.bringSubviewToFront(self.view)
 
-      if self.dissmissable {
+      if self.dismissible {
         self.view.superview?.isUserInteractionEnabled = false
       }
 
@@ -175,7 +175,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
-    guard self.dissmissable, let view = sender.view else {
+    guard self.dismissible, let view = sender.view else {
       return
     }
 
@@ -204,7 +204,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewTapped(_: Any) {
-    guard self.dissmissable else { return }
+    guard self.dismissible else { return }
 
     self.viewModel.inputs.bannerViewWillShow(false)
   }

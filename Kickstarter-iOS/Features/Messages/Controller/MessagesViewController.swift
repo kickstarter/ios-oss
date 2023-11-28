@@ -97,7 +97,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
         guard let self, isBlocked == true else { return }
 
         self.messageBannerViewController?
-          .showBanner(with: .error, message: Strings.This_user_has_been_blocked(), dissmissable: false)
+          .showBanner(with: .error, message: Strings.This_user_has_been_blocked(), dismissible: false)
       }
 
     self.viewModel.outputs.presentMessageDialog
