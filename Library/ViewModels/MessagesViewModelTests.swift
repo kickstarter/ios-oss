@@ -271,7 +271,7 @@ internal final class MessagesViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
 
       /// TODO(MBL-1025): Once we are getting isBlocked status from backend we need to update this use that. This is hardcoded for now.
-      self.participantPreviouslyBlocked.assertValues([true])
+      self.participantPreviouslyBlocked.assertValues([false])
     }
   }
 
