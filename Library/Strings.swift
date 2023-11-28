@@ -1209,6 +1209,23 @@ contributeurs"
     )
   }
   /**
+   "Block"
+
+   - **en**: "Block"
+   - **de**: "Block"
+   - **es**: "Bloquear"
+   - **fr**: "Bloquer"
+   - **ja**: "Block"
+  */
+  public static func Block() -> String {
+    return localizedString(
+      key: "Block",
+      defaultValue: "Block",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Block this user"
 
    - **en**: "Block this user"
@@ -1294,18 +1311,18 @@ contributeurs"
     )
   }
   /**
-   "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
+   "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
 
-   - **en**: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
+   - **en**: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
    - **de**: "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast und deine Unterstützung zurückziehen möchtest, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter."
-   - **es**: "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario y quieres revertir tu apoyo, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda."
-   - **fr**: "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets et que vous souhaitez retirer votre soutien, vous devez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance."
+   - **es**: "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda."
+   - **fr**: "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets, veuillez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance."
    - **ja**: "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがあり、そのサポートを撤回したい場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。"
   */
   public static func Blocked_user_confirmation() -> String {
     return localizedString(
       key: "Blocked_user_confirmation",
-      defaultValue: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.",
+      defaultValue: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.",
       count: nil,
       substitutions: [:]
     )
@@ -7325,6 +7342,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Opens_update",
       defaultValue: "Opens update.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Opens user menu."
+
+   - **en**: "Opens user menu."
+   - **de**: "Opens user menu."
+   - **es**: "Abre el menú del usuario."
+   - **fr**: "Ouvre le menu utilisateur."
+   - **ja**: "Opens user menu."
+  */
+  public static func Opens_user_menu() -> String {
+    return localizedString(
+      key: "Opens_user_menu",
+      defaultValue: "Opens user menu.",
       count: nil,
       substitutions: [:]
     )
