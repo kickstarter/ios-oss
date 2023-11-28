@@ -9,7 +9,7 @@ internal final class CommentCellViewModelTests: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
   private let authorBadge = TestObserver<Comment.AuthorBadge, Never>()
-  private let authorImageURL = TestObserver<URL, Never>()
+  private let authorImageURL = TestObserver<URL?, Never>()
   private let authorName = TestObserver<String, Never>()
   private let body = TestObserver<String, Never>()
   private let bottomRowStackViewIsHidden = TestObserver<Bool, Never>()
@@ -321,6 +321,16 @@ internal final class CommentCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(comment: comment, project: .template)
     self.authorBadge.assertValues([.backer], "The author's badge is emitted.")
+  }
+
+  func testBlockedAuthor() {
+    let comment = Comment.blockedTemplate
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+    self.authorBadge.assertValues([.backer], "The default badge is emitted.")
+    self.authorName.assertValue("Blocked User", "The author's name is hidden.")
+    self.authorImageURL.assertValue(nil, "The author's avatar is hidden.")
+    self.body.assertValue("This user has been blocked", "The comment text is hidden.")
   }
 
   func testBindStylesEmitsAuthorBadge() {

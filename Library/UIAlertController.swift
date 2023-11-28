@@ -357,6 +357,34 @@ public extension UIAlertController {
     return alertController
   }
 
+  static func blockUserAlert(username: String,
+                             blockUserHandler: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+    let alertController = UIAlertController(
+      title: Strings.Block_username(username: username),
+      message: Strings.Blocked_user_confirmation(),
+      preferredStyle: .alert
+    )
+
+    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
+    alertController.addAction(
+      UIAlertAction(
+        title: "Block",
+        style: .destructive,
+        handler: blockUserHandler
+      )
+    )
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Cancel(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    return alertController
+  }
+
   static func blockUserActionSheet(
     blockUserHandler: @escaping (UIAlertAction) -> Void,
     viewProfileHandler: ((UIAlertAction) -> Void)? = nil,
@@ -366,14 +394,16 @@ public extension UIAlertController {
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     if let profileHandler = viewProfileHandler {
-      // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
       alertController
-        .addAction(UIAlertAction(title: "View Profile", style: .default, handler: profileHandler))
+        .addAction(UIAlertAction(title: Strings.View_profile(), style: .default, handler: profileHandler))
     }
 
-    // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
     alertController
-      .addAction(UIAlertAction(title: "Block this user", style: .destructive, handler: blockUserHandler))
+      .addAction(UIAlertAction(
+        title: Strings.Block_this_user(),
+        style: .destructive,
+        handler: blockUserHandler
+      ))
 
     alertController
       .addAction(UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil))

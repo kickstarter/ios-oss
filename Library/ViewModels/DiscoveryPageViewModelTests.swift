@@ -1175,4 +1175,29 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     XCTAssertEqual("ending_soon", segmentClientProps?["discover_sort"] as? String)
   }
+
+  func testBlockedUserNotification_RefreshesProjects() {
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.projectsAreLoading.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.projectsAreLoading.assertValueCount(2)
+
+      self.vm.inputs.blockedUser()
+
+      self.scheduler.advance()
+
+      self.projectsAreLoading.assertValueCount(4)
+    }
+  }
 }

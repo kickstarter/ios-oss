@@ -10,11 +10,18 @@ private enum Layout {
   }
 }
 
-final class CommentRepliesViewController: UITableViewController {
+protocol CommentRepliesViewControllerDelegate: AnyObject {
+  func commentRepliesViewControllerDidBlockUser(_: CommentRepliesViewController)
+}
+
+final class CommentRepliesViewController: UITableViewController, MessageBannerViewControllerPresenting {
   // MARK: Properties
 
   private let dataSource = CommentRepliesDataSource()
   internal let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
+
+  public var messageBannerViewController: MessageBannerViewController?
+  weak var delegate: CommentRepliesViewControllerDelegate?
 
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
@@ -72,6 +79,8 @@ final class CommentRepliesViewController: UITableViewController {
 
     self.navigationItem.title = Strings.Replies()
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
@@ -159,18 +168,37 @@ final class CommentRepliesViewController: UITableViewController {
           self?.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        guard let self else { return }
+        self.commentComposer.isHidden = true
+
+        if success {
+          self.messageBannerViewController?
+            .showBanner(with: .success, message: Strings.Block_user_success())
+          self.delegate?.commentRepliesViewControllerDidBlockUser(self)
+        } else {
+          self.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Block_user_fail())
+        }
+      }
   }
 
-  private func blockUser() {
-    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+    self.present(alert, animated: true)
   }
 
-  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _: Comment.Author) {
+  private func handleCommentCellHeaderTapped(in cell: UITableViewCell, _ author: Comment.Author) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+    guard author.isBlocked == false else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
@@ -228,6 +256,16 @@ extension CommentRepliesViewController: CommentCellDelegate {
 extension CommentRepliesViewController: RootCommentCellDelegate {
   func commentCellDidTapHeader(_ cell: RootCommentCell, _ author: Comment.Author) {
     self.handleCommentCellHeaderTapped(in: cell, author)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension CommentRepliesViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
 }
 

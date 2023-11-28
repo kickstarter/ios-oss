@@ -3,11 +3,13 @@ import Library
 import Prelude
 import UIKit
 
-internal final class MessagesViewController: UITableViewController {
+internal final class MessagesViewController: UITableViewController, MessageBannerViewControllerPresenting {
   @IBOutlet fileprivate var replyBarButtonItem: UIBarButtonItem!
 
   fileprivate let viewModel: MessagesViewModelType = MessagesViewModel()
   fileprivate let dataSource = MessagesDataSource()
+
+  public var messageBannerViewController: MessageBannerViewController?
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
@@ -28,6 +30,8 @@ internal final class MessagesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.dataSource = self.dataSource
 
@@ -87,6 +91,19 @@ internal final class MessagesViewController: UITableViewController {
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
       .observeValues { [weak self] params in self?.goToBacking(with: params) }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: Strings.Block_user_success())
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Block_user_fail())
+        }
+      }
   }
 
   internal override func tableView(_: UITableView, estimatedHeightForRowAt _: IndexPath)
@@ -144,8 +161,10 @@ internal final class MessagesViewController: UITableViewController {
     self.present(vc, animated: true)
   }
 
-  private func blockUser() {
-    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+    self.present(alert, animated: true)
   }
 }
 
@@ -170,16 +189,26 @@ extension MessagesViewController: BackingCellDelegate {
 // MARK: - MessageCellDelegate
 
 extension MessagesViewController: MessageCellDelegate {
-  func messageCellDidTapHeader(_ cell: MessageCell, _: User) {
+  func messageCellDidTapHeader(_ cell: MessageCell, _ user: User) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: user.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
 
     self.present(actionSheet, animated: true)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension MessagesViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
 }

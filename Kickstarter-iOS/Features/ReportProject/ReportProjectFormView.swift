@@ -15,7 +15,6 @@ struct ReportProjectFormView: View {
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ReportProjectFormViewModel()
 
-  @State private var showLoading: Bool = false
   @FocusState private var focusField: ReportFormFocusField?
 
   var body: some View {
@@ -59,10 +58,11 @@ struct ReportProjectFormView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
             saveEnabled: $viewModel.saveButtonEnabled,
-            saveTriggered: $viewModel.saveTriggered,
-            showLoading: $showLoading,
+            showLoading: $viewModel.saveButtonLoading,
             titleText: Strings.Send()
-          )
+          ) {
+            viewModel.didTapSave()
+          }
         }
       }
       .onAppear {
@@ -74,16 +74,11 @@ struct ReportProjectFormView: View {
         viewModel.inputs.viewDidLoad()
       }
       .onReceive(viewModel.$bannerMessage) { newValue in
-        showLoading = false
-
         /// bannerMessage is set to nil when its done presenting. When it is done, and submit was successful,  dismiss this view.
         if newValue == nil, viewModel.submitSuccess {
           dismiss()
           popToRoot = true
         }
-      }
-      .onReceive(viewModel.$saveTriggered) { triggered in
-        showLoading = triggered
       }
       .overlay(alignment: .bottom) {
         MessageBannerView(viewModel: $viewModel.bannerMessage)

@@ -8,6 +8,7 @@ public protocol ChangeEmailViewModelInputsSwiftUIIntegrationTest {
   func resendVerificationEmailButtonTapped()
   func viewDidLoad()
   func updateEmail(newEmail: String, currentPassword: String)
+  func didTapSaveButton()
 }
 
 public protocol ChangeEmailViewModelOutputsSwiftUIIntegrationTest {
@@ -241,6 +242,10 @@ public final class ChangeEmailViewModelSwiftUIIntegrationTest: ChangeEmailViewMo
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  public func didTapSaveButton() {
+    self.saveTriggered.send(true)
   }
 
   public let didFailToSendVerificationEmail: Signal<String, Never>

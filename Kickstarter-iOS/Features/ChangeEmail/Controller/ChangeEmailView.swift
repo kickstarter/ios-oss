@@ -16,7 +16,6 @@ struct ChangeEmailView: View {
   @State private var newEmailText = ""
   @State private var newPasswordText = ""
   @State private var saveEnabled = false
-  @State private var saveTriggered = false
   @State private var showLoading = false
   @State private var showBannerMessage = false
   @State private var bannerMessage: MessageBannerViewViewModel?
@@ -132,19 +131,17 @@ struct ChangeEmailView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
           LoadingBarButtonItem(
             saveEnabled: $saveEnabled,
-            saveTriggered: $saveTriggered,
             showLoading: $showLoading,
             titleText: Strings.Save()
-          )
+          ) {
+            focusField = nil
+            reactiveViewModel.didTapSaveButton()
+          }
           .onReceive(reactiveViewModel.saveButtonEnabled) { newValue in
             saveEnabled = newValue
           }
           .onReceive(reactiveViewModel.resetEditableText) { newValue in
             showLoading = !newValue
-          }
-          .onChange(of: saveTriggered) { newValue in
-            focusField = nil
-            reactiveViewModel.saveTriggered.send(newValue)
           }
         }
       }

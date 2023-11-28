@@ -10,6 +10,9 @@ public protocol ProjectPageViewModelInputs {
   /// Call when `AppDelegate`'s `applicationDidEnterBackground` is triggered.
   func applicationDidEnterBackground()
 
+  /// Call when block user is tapped
+  func blockUser()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -146,6 +149,9 @@ public protocol ProjectPageViewModelOutputs {
 
   /// Emits a prelaunch save state that updates the navigation bar's watch project state.
   var updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never> { get }
+
+  /// Emits when a request to block a user has been made
+  var userBlocked: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -495,6 +501,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .ignoreValues()
 
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
+
+    // TODO: Call blocking GraphQL mutation
+    self.userBlocked = self.blockUserProperty.signal.map { true }
+
+    self.userBlocked.observeValues { didBlock in
+      guard didBlock == true else { return }
+      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
+    }
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
@@ -505,6 +519,11 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   fileprivate let applicationDidEnterBackgroundProperty = MutableProperty(())
   public func applicationDidEnterBackground() {
     self.applicationDidEnterBackgroundProperty.value = ()
+  }
+
+  fileprivate let blockUserProperty = MutableProperty(())
+  public func blockUser() {
+    self.blockUserProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -632,6 +651,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
   public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
+  public let userBlocked: Signal<Bool, Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }

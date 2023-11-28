@@ -14,7 +14,7 @@ private enum Layout {
   }
 }
 
-internal final class CommentsViewController: UITableViewController {
+internal final class CommentsViewController: UITableViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   private lazy var commentComposer: CommentComposerView = {
@@ -43,6 +43,8 @@ internal final class CommentsViewController: UITableViewController {
   internal let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
+  public var messageBannerViewController: MessageBannerViewController?
+
   // MARK: - Accessors
 
   internal static func configuredWith(project: Project? = nil,
@@ -62,6 +64,8 @@ internal final class CommentsViewController: UITableViewController {
 
     self.commentComposer.delegate = self
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
@@ -144,6 +148,7 @@ internal final class CommentsViewController: UITableViewController {
           inputAreaBecomeFirstResponder: becomeFirstResponder,
           replyId: nil
         )
+        vc.delegate = self
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -177,10 +182,26 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] helpType in
         self?.presentHelpWebViewController(with: helpType)
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        self?.commentComposer.isHidden = true
+
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: Strings.Block_user_success())
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Block_user_fail())
+        }
+      }
   }
 
-  private func blockUser() {
-    // Scott  TODO: present popup ui
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+    self.present(alert, animated: true)
   }
 
   // MARK: - Actions
@@ -241,12 +262,13 @@ extension CommentsViewController {
 // MARK: - CommentCellDelegate
 
 extension CommentsViewController: CommentCellDelegate {
-  func commentCellDidTapHeader(_ cell: CommentCell, _: Comment.Author) {
+  func commentCellDidTapHeader(_ cell: CommentCell, _ author: Comment.Author) {
     guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+    guard author.isBlocked == false else { return }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )
@@ -263,11 +285,31 @@ extension CommentsViewController: CommentCellDelegate {
   }
 }
 
+// MARK: - CommentRepliesViewControllerDelegate
+
+extension CommentsViewController: CommentRepliesViewControllerDelegate {
+  func commentRepliesViewControllerDidBlockUser(_: CommentRepliesViewController) {
+    self.tableView.scrollToTop()
+    self.viewModel.inputs.refresh()
+  }
+}
+
 // MARK: - CommentRemovedCellDelegate
 
 extension CommentsViewController: CommentRemovedCellDelegate {
   func commentRemovedCell(_: CommentRemovedCell, didTapURL: URL) {
     self.viewModel.inputs.commentRemovedCellDidTapURL(didTapURL)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension CommentsViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.tableView.scrollToTop()
+      self.viewModel.inputs.refresh()
+    }
   }
 }
 

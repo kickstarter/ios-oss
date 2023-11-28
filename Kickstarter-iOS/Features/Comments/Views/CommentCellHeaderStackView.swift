@@ -132,8 +132,10 @@ internal final class CommentCellHeaderStackView: UIStackView {
         self?.circleAvatarImageView.image = nil
       })
       .observeValues { [weak self] url in
-        self?.circleAvatarImageView
-          .ksr_setImageWithURL(url)
+        if let url {
+          self?.circleAvatarImageView
+            .ksr_setImageWithURL(url)
+        }
       }
 
     self.viewModel.outputs.authorBadge

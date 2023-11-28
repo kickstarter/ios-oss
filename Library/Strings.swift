@@ -1209,6 +1209,108 @@ contributeurs"
     )
   }
   /**
+   "Block this user"
+
+   - **en**: "Block this user"
+   - **de**: "Diesen Nutzer blockieren"
+   - **es**: "Bloquear a este usuario"
+   - **fr**: "Bloquer cet utilisateur"
+   - **ja**: "このユーザーをブロックする"
+  */
+  public static func Block_this_user() -> String {
+    return localizedString(
+      key: "Block_this_user",
+      defaultValue: "Block this user",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your request did not go through. Try again."
+
+   - **en**: "Your request did not go through. Try again."
+   - **de**: "Deine Anfrage konnte nicht verarbeitet werden. Bitte versuche es noch einmal."
+   - **es**: "Tu solicitud no se procesó. Intenta otra vez."
+   - **fr**: "Votre demande a échoué. Veuillez réessayer."
+   - **ja**: "リクエストを処理できませんでした。もう一度お試しください。"
+  */
+  public static func Block_user_fail() -> String {
+    return localizedString(
+      key: "Block_user_fail",
+      defaultValue: "Your request did not go through. Try again.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This user has been successfully blocked"
+
+   - **en**: "This user has been successfully blocked"
+   - **de**: "Dieser Nutzer wurde erfolgreich blockiert"
+   - **es**: "Este usuario se bloqueó con éxito."
+   - **fr**: "Cet utilisateur a bien été bloqué."
+   - **ja**: "このユーザーをブロックしました"
+  */
+  public static func Block_user_success() -> String {
+    return localizedString(
+      key: "Block_user_success",
+      defaultValue: "This user has been successfully blocked",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Block %{username}?"
+
+   - **en**: "Block %{username}?"
+   - **de**: "%{username} blockieren?"
+   - **es**: "¿Bloquear a %{username}?"
+   - **fr**: "Bloquer %{username} ?"
+   - **ja**: "%{username} をブロックしますか？"
+  */
+  public static func Block_username(username: String) -> String {
+    return localizedString(
+      key: "Block_username",
+      defaultValue: "Block %{username}?",
+      count: nil,
+      substitutions: ["username": username]
+    )
+  }
+  /**
+   "Blocked User"
+
+   - **en**: "Blocked User"
+   - **de**: "Blockierter Nutzer"
+   - **es**: "Usuario bloqueado"
+   - **fr**: "Utilisateur bloqué"
+   - **ja**: "ブロックされたユーザー"
+  */
+  public static func Blocked_user() -> String {
+    return localizedString(
+      key: "Blocked_user",
+      defaultValue: "Blocked User",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
+
+   - **en**: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
+   - **de**: "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast und deine Unterstützung zurückziehen möchtest, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter."
+   - **es**: "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario y quieres revertir tu apoyo, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda."
+   - **fr**: "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets et que vous souhaitez retirer votre soutien, vous devez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance."
+   - **ja**: "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがあり、そのサポートを撤回したい場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。"
+  */
+  public static func Blocked_user_confirmation() -> String {
+    return localizedString(
+      key: "Blocked_user_confirmation",
+      defaultValue: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user and would like to withdraw your support, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Bonus"
 
    - **en**: "Bonus"
@@ -5695,18 +5797,18 @@ with friends."
     )
   }
   /**
-   "Learn about AI policy on Kickstarter."
+   "Learn about AI policy on Kickstarter"
 
-   - **en**: "Learn about AI policy on Kickstarter."
-   - **de**: "Weitere Informationen zu KI-Richtlinie von Kickstarter."
-   - **es**: "Información sobre la política de IA en Kickstarter."
-   - **fr**: "Comprendre la politique sur l'IA de Kickstarter."
-   - **ja**: "Kickstarter の AI ポリシーについて詳しく見る."
+   - **en**: "Learn about AI policy on Kickstarter"
+   - **de**: "Weitere Informationen zur KI-Richtlinie von Kickstarter"
+   - **es**: "Información sobre la política de IA en Kickstarter"
+   - **fr**: "Comprendre la politique sur l'IA de Kickstarter"
+   - **ja**: "Kickstarter の AI ポリシーについて詳しく見る"
   */
   public static func Learn_about_AI_policy_on_Kickstarter() -> String {
     return localizedString(
       key: "Learn_about_AI_policy_on_Kickstarter",
-      defaultValue: "Learn about AI policy on Kickstarter.",
+      defaultValue: "Learn about AI policy on Kickstarter",
       count: nil,
       substitutions: [:]
     )
@@ -11194,6 +11296,23 @@ catch your eye?"
     )
   }
   /**
+   "This user has been blocked"
+
+   - **en**: "This user has been blocked"
+   - **de**: "Dieser Nutzer wurde blockiert"
+   - **es**: "Este usuario se bloqueó."
+   - **fr**: "Cet utilisateur a été bloqué."
+   - **ja**: "このユーザーはブロックされました"
+  */
+  public static func This_user_has_been_blocked() -> String {
+    return localizedString(
+      key: "This_user_has_been_blocked",
+      defaultValue: "This user has been blocked",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{time_left} left"
 
    - **en**: "%{time_left} left"
@@ -11852,6 +11971,23 @@ catch your eye?"
     return localizedString(
       key: "View_more_replies",
       defaultValue: "View more replies",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View profile"
+
+   - **en**: "View profile"
+   - **de**: "Profil anzeigen"
+   - **es**: "Ver perfil"
+   - **fr**: "Afficher le profil"
+   - **ja**: "プロフィールを表示"
+  */
+  public static func View_profile() -> String {
+    return localizedString(
+      key: "View_profile",
+      defaultValue: "View profile",
       count: nil,
       substitutions: [:]
     )
@@ -12900,18 +13036,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "You launched this project on %{launch_date}."
+   "You launched this project on %{launch_date}. For creator tools, head to our website!"
 
-   - **en**: "You launched this project on %{launch_date}."
-   - **de**: "Du hast dieses Projekt am %{launch_date} veröffentlicht."
-   - **es**: "Publicaste el proyecto el: %{launch_date}."
-   - **fr**: "Vous avez lancé ce projet le %{launch_date}."
-   - **ja**: "このプロジェクトを %{launch_date} にローンチしました。"
+   - **en**: "You launched this project on %{launch_date}. For creator tools, head to our website!"
+   - **de**: "Du hast dieses Projekt am %{launch_date} veröffentlicht. Tools für Projektgründer findest du auf unserer Website."
+   - **es**: "Publicaste el proyecto el %{launch_date}. Encuentra las herramientas para creadores en nuestro sitio web."
+   - **fr**: "Vous avez lancé ce projet le %{launch_date}. Rendez-vous sur notre site Web pour accéder aux outils du créateur !"
+   - **ja**: "%{launch_date} にこのプロジェクトをローンチしました。クリエイター向けツールにアクセスするには、Kickstarter ウェブサイトにアクセスしてください！"
   */
   public static func You_launched_this_project_on_launch_date(launch_date: String) -> String {
     return localizedString(
       key: "You_launched_this_project_on_launch_date",
-      defaultValue: "You launched this project on %{launch_date}.",
+      defaultValue: "You launched this project on %{launch_date}. For creator tools, head to our website!",
       count: nil,
       substitutions: ["launch_date": launch_date]
     )

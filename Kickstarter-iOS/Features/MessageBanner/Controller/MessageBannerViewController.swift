@@ -9,13 +9,21 @@ public protocol MessageBannerViewControllerPresenting {
     -> MessageBannerViewController?
 }
 
+public protocol MessageBannerViewControllerDelegate: AnyObject {
+  func messageBannerViewDidHide(type: MessageBannerType)
+}
+
 public final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate var backgroundView: UIView!
   @IBOutlet fileprivate var iconImageView: UIImageView!
   @IBOutlet fileprivate var messageLabel: UILabel!
 
+  private var bannerType: MessageBannerType?
+
   internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
+
+  weak var delegate: MessageBannerViewControllerDelegate?
 
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25
@@ -88,6 +96,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   public func showBanner(with type: MessageBannerType, message: String) {
+    self.bannerType = type
     self.viewModel.inputs.update(with: (type, message))
     self.viewModel.inputs.bannerViewWillShow(true)
   }
@@ -99,6 +108,7 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
 
     if !isHidden {
       self.view.superview?.bringSubviewToFront(self.view)
+      self.view.superview?.isUserInteractionEnabled = false
 
       self.view.isHidden = isHidden
 
@@ -139,6 +149,12 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
               notification: UIAccessibility.Notification.layoutChanged,
               argument: self?.backgroundView
             )
+          }
+        } else {
+          self?.view.superview?.isUserInteractionEnabled = true
+
+          if let type = self?.bannerType {
+            self?.delegate?.messageBannerViewDidHide(type: type)
           }
         }
       }
@@ -206,8 +222,7 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     parentViewController.view.addConstraints([
       bottomViewBannerConstraint,
-      messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
-      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
+      messageBannerView.widthAnchor.constraint(equalTo: parentViewController.view.widthAnchor)
     ])
 
     return messageBannerViewController

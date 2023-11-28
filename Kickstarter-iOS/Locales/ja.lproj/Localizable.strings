@@ -72,6 +72,12 @@
 "Big_Kickstarter_news_and_events_near_you" = "Kickstarter に関するビッグニュースやお近くのイベントについて、年に数回お届け。";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Kickstarter のニュースに加え、あなたにピッタリのおすすめプロジェクトやイベントを随時お送りします.";
 "Biography" = "自己紹介";
+"Block_this_user" = "このユーザーをブロックする";
+"Block_user_fail" = "リクエストを処理できませんでした。もう一度お試しください。";
+"Block_user_success" = "このユーザーをブロックしました";
+"Block_username" = "%{username} をブロックしますか？";
+"Blocked_user" = "ブロックされたユーザー";
+"Blocked_user_confirmation" = "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがあり、そのサポートを撤回したい場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。";
 "Bonus" = "ボーナス";
 "Bonus_support" = "ボーナスサポート";
 "Bookmarks" = "ブックマーク";
@@ -343,7 +349,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Kickstarter_takes_claims" = "Kickstarterは、知的財産権侵害の報告をすべて真剣に受け止めています。違反行為の報告手順についてのさらなる情報は、著作権ポリシーおよび商標ポリシーをご参照ください。著作権者または商標権者によって提出された申し立てのみ手続きを進めることができます。";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
-"Learn_about_AI_policy_on_Kickstarter" = "Kickstarter の AI ポリシーについて詳しく見る.";
+"Learn_about_AI_policy_on_Kickstarter" = "Kickstarter の AI ポリシーについて詳しく見る";
 "Learn_about_accountability_on_Kickstarter" = "Kickstarter上の説明責任について詳しく知る";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
 "Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">コメントのガイドラインについてもっと詳しく</a>";
@@ -686,6 +692,7 @@
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "このプロジェクトはファンディングゴールに到達しなかったため、お支払い方法への請求は行われませんでした。";
 "This_project_has_a_set_currency_that_cant_process_this_option" = "このプロジェクトには、このオプションを処理できない通貨が設定されています。";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "%{date} までに %{amount} 以上のプレッジが集まれば、このプロジェクトは資金を得ることができます。";
+"This_user_has_been_blocked" = "このユーザーはブロックされました";
 "Time_left_left" = "あと%{time_left}";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "上部の「さがす」をタップし、お気に入りカテゴリにアクセス。";
 "To_learn_how_Kickstarter_encourages_sustainable_practices" = "して、Kickstarter がどのようにして持続可能なプロジェクトを促進しているか、その様子をチェックしてみてください。";
@@ -725,6 +732,7 @@
 "View" = "みる";
 "View_dashboard" = "ダッシュボードを表示";
 "View_more_replies" = "他の返信を表示";
+"View_profile" = "プロフィールを表示";
 "View_progress" = "進捗状況を表示";
 "View_project" = "プロジェクトを見る";
 "View_replies" = "返信を表示";
@@ -786,7 +794,7 @@
 "You_canceled_your_pledge_for_this_project" = "このプロジェクトのプレッジはキャンセルされました。";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "%{project_country} のプロジェクトをバックするのにこのクレジットカードを利用することはできません。";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
-"You_launched_this_project_on_launch_date" = "このプロジェクトを %{launch_date} にローンチしました。";
+"You_launched_this_project_on_launch_date" = "%{launch_date} にこのプロジェクトをローンチしました。クリエイター向けツールにアクセスするには、Kickstarter ウェブサイトにアクセスしてください！";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "このリワードには、最低%{reward_minimum}のプレッジが必要です。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_pledged_without_a_reward" = "リワードなしでプレッジしました";

@@ -82,6 +82,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     self.configureNavigationSelectorView()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
     self.tableView.registerCellClass(ProjectFAQsAskAQuestionCell.self)
     self.tableView.registerCellClass(ProjectFAQsCell.self)
     self.tableView.registerCellClass(ProjectFAQsEmptyStateCell.self)
@@ -535,6 +536,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { _ in
         // TODO: Use this flag to hide or show the Report this project label [MBL-983](https://kickstarter.atlassian.net/browse/MBL-983)
       }
+
+    self.viewModel.outputs.userBlocked
+      .observeForUI()
+      .observeValues { [weak self] success in
+        if success {
+          self?.messageBannerViewController?
+            .showBanner(with: .success, message: Strings.Block_user_success())
+        } else {
+          self?.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Block_user_fail())
+        }
+      }
   }
 
   private func prepareToPlayAudioVideoURL(audioVideoURL: URL,
@@ -724,8 +737,10 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
-  private func blockUser() {
-    // Scott TODO: present popup UI [mbl-1036](https://kickstarter.atlassian.net/browse/MBL-1036)
+  private func presentBlockUserAlert(username: String) {
+    let alert = UIAlertController
+      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+    self.present(alert, animated: true)
   }
 
   private func goToCreatorProfile(forProject project: Project) {
@@ -981,7 +996,7 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.blockUser() },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: project.creator.name) },
         viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
@@ -1071,5 +1086,13 @@ extension ProjectPageViewController: PinchToZoomDelegate, OverlayViewPresenting 
       self?.hideOverlayView()
       completionHandler()
     })
+  }
+}
+
+extension ProjectPageViewController: MessageBannerViewControllerDelegate {
+  public func messageBannerViewDidHide(type: MessageBannerType) {
+    if type == .success {
+      self.dismiss(animated: true)
+    }
   }
 }
