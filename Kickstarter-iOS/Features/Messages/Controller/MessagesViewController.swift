@@ -12,6 +12,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
 
   public var messageBannerViewController: MessageBannerViewController?
 
+  private let userBlockedBannerTag: Int = -99
   private var userBlockedBannerHostingController: UIViewController? {
     self.tabBarController?.children.first { viewController in
       viewController is UIHostingController<UserBlockedBannerView>
@@ -103,7 +104,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.participantIsBlocked
+    self.viewModel.outputs.participantPreviouslyBlocked
       .observeForControllerAction()
       .observeValues { [weak self] isBlocked in
         guard let self, isBlocked == true else { return }
@@ -125,7 +126,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
       .observeForControllerAction()
       .observeValues { [weak self] params in self?.goToBacking(with: params) }
 
-    self.viewModel.outputs.userHasBeenBlocked
+    self.viewModel.outputs.didBlockUser
       .observeForUI()
       .observeValues { [weak self] success in
 
@@ -209,7 +210,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     bannerHostingController.removeFromParent()
 
     let userBlockedBannerView = tabBarController.view.subviews.first(where: { view in
-      view.viewWithTag(-99) != nil
+      view.viewWithTag(userBlockedBannerTag) != nil
       })
 
     userBlockedBannerView?.removeFromSuperview()
@@ -221,7 +222,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     guard let tabController = self.tabBarController as? RootTabBarViewController,
       let userBlockedBannerView = userBlockedBannerHostingController.view else { return }
 
-    userBlockedBannerView.tag = -99
+    userBlockedBannerView.tag = self.userBlockedBannerTag
     tabController.addChild(userBlockedBannerHostingController)
     tabController.view.addSubview(userBlockedBannerView)
 

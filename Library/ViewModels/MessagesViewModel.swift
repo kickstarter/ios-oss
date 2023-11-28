@@ -48,8 +48,8 @@ public protocol MessagesViewModelOutputs {
   /// Emits a list of messages to be displayed.
   var messages: Signal<[Message], Never> { get }
 
-  /// Emits a bool whether the message participant has been blocked on viewWillAppear
-  var participantIsBlocked: Signal<Bool, Never> { get }
+  /// Emits a bool whether the message participant has previously been blocked on viewWillAppear
+  var participantPreviouslyBlocked: Signal<Bool, Never> { get }
 
   /// Emits when we should show the message dialog.
   var presentMessageDialog: Signal<(MessageThread, KSRAnalytics.MessageDialogContext), Never> { get }
@@ -63,8 +63,8 @@ public protocol MessagesViewModelOutputs {
   /// Emits when the thread has been marked as read.
   var successfullyMarkedAsRead: Signal<(), Never> { get }
 
-  /// Emits whether arequest to block a user was successful.
-  var userHasBeenBlocked: Signal<Bool, Never> { get }
+  /// Emits whether a request to block a user was successful.
+  var didBlockUser: Signal<Bool, Never> { get }
 }
 
 public protocol MessagesViewModelType {
@@ -198,15 +198,15 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       .ignoreValues()
 
     // TODO: Call blocking GraphQL mutation
-    self.userHasBeenBlocked = self.blockUserProperty.signal.map { true }
+    self.didBlockUser = self.blockUserProperty.signal.map { true }
 
-    self.userHasBeenBlocked.observeValues { didBlock in
+    self.didBlockUser.observeValues { didBlock in
       guard didBlock == true else { return }
       NotificationCenter.default.post(.init(name: .ksr_blockedUser))
     }
 
     /// TODO(MBL-1025): Get isBlocked status from the backend instead.
-    self.participantIsBlocked = self.viewWillAppearProperty.signal
+    self.participantPreviouslyBlocked = self.viewWillAppearProperty.signal
       .mapConst(true)
   }
 
@@ -255,12 +255,12 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let messages: Signal<[Message], Never>
-  public let participantIsBlocked: Signal<Bool, Never>
+  public let participantPreviouslyBlocked: Signal<Bool, Never>
   public let presentMessageDialog: Signal<(MessageThread, KSRAnalytics.MessageDialogContext), Never>
   public let project: Signal<Project, Never>
   public let replyButtonIsEnabled: Signal<Bool, Never>
   public let successfullyMarkedAsRead: Signal<(), Never>
-  public let userHasBeenBlocked: Signal<Bool, Never>
+  public let didBlockUser: Signal<Bool, Never>
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }
