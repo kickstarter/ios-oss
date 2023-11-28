@@ -72,6 +72,7 @@
 "Big_Kickstarter_news_and_events_near_you" = "Kickstarter に関するビッグニュースやお近くのイベントについて、年に数回お届け。";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Kickstarter のニュースに加え、あなたにピッタリのおすすめプロジェクトやイベントを随時お送りします.";
 "Biography" = "自己紹介";
+"Block" = "Block";
 "Block_this_user" = "このユーザーをブロックする";
 "Block_user_fail" = "リクエストを処理できませんでした。もう一度お試しください。";
 "Block_user_success" = "このユーザーをブロックしました";
@@ -443,6 +444,7 @@
 "Opens_rewards" = "リワードをみる";
 "Opens_shipping_options" = "配送方法をみる";
 "Opens_update" = "アップデートをみる";
+"Opens_user_menu" = "Opens user menu.";
 "Or_select_a_different_reward_below_colon" = "別のリワードをみる：";
 "Other_payment_methods" = "その他の支払方法";
 "Other_projects_you_might_like" = "おすすめをさらに見る";

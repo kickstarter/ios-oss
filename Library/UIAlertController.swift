@@ -368,7 +368,7 @@ public extension UIAlertController {
     // Scott TODO: Use localized strings once translations can be done [mbl-1037](https://kickstarter.atlassian.net/browse/MBL-1037)
     alertController.addAction(
       UIAlertAction(
-        title: "Block",
+        title: Strings.Block(),
         style: .destructive,
         handler: blockUserHandler
       )
