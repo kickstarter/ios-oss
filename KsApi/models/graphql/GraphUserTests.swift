@@ -11,6 +11,7 @@ final class GraphUserTests: XCTestCase {
       "hasPassword": true,
       "id": "VXNlci0yMDY5MTc2OTk5",
       "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+      "isBlocked": true,
       "isAppleConnected": false,
       "isDeliverable": true,
       "isEmailVerified": true,
@@ -50,6 +51,7 @@ final class GraphUserTests: XCTestCase {
       XCTAssertEqual(true, user.hasPassword)
       XCTAssertEqual(true, user.isDeliverable)
       XCTAssertEqual(true, user.isEmailVerified)
+      XCTAssertEqual(true, user.isBlocked)
       XCTAssertEqual(false, user.isAppleConnected)
     } catch {
       XCTFail("Failed to decode \(error)")
@@ -64,6 +66,7 @@ final class GraphUserTests: XCTestCase {
       "hasPassword": null,
       "id": "VXNlci0yMDY5MTc2OTk5",
       "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+      "isBlocked": null,
       "isAppleConnected": null,
       "isDeliverable": null,
       "isEmailVerified": null,
@@ -103,6 +106,7 @@ final class GraphUserTests: XCTestCase {
       XCTAssertEqual(user.uid, "45454545")
       XCTAssertNil(user.isDeliverable)
       XCTAssertNil(user.isEmailVerified)
+      XCTAssertNil(user.isBlocked)
       XCTAssertNil(user.isAppleConnected)
     } catch {
       XCTFail("Failed to decode \(error)")
