@@ -240,7 +240,7 @@ internal final class MessagesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.messages.assertValueCount(1)
-      self.replyButtonIsEnabled.assertValues([false, false, true])
+      self.replyButtonIsEnabled.assertValues([false, true, true])
       self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
 
       self.vm.inputs.replyButtonPressed()
