@@ -4545,6 +4545,7 @@ public enum GraphAPI {
               __typename
               id
               imageUrl(width: 200)
+              isBlocked
               isCreator
               name
             }
@@ -4765,6 +4766,7 @@ public enum GraphAPI {
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                 GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
                 GraphQLField("imageUrl", arguments: ["width": 200], type: .nonNull(.scalar(String.self))),
+                GraphQLField("isBlocked", type: .scalar(Bool.self)),
                 GraphQLField("isCreator", type: .scalar(Bool.self)),
                 GraphQLField("name", type: .nonNull(.scalar(String.self))),
               ]
@@ -4776,8 +4778,8 @@ public enum GraphAPI {
               self.resultMap = unsafeResultMap
             }
 
-            public init(id: GraphQLID, imageUrl: String, isCreator: Bool? = nil, name: String) {
-              self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isCreator": isCreator, "name": name])
+            public init(id: GraphQLID, imageUrl: String, isBlocked: Bool? = nil, isCreator: Bool? = nil, name: String) {
+              self.init(unsafeResultMap: ["__typename": "User", "id": id, "imageUrl": imageUrl, "isBlocked": isBlocked, "isCreator": isCreator, "name": name])
             }
 
             public var __typename: String {
@@ -4805,6 +4807,16 @@ public enum GraphAPI {
               }
               set {
                 resultMap.updateValue(newValue, forKey: "imageUrl")
+              }
+            }
+
+            /// Is user blocked by current user
+            public var isBlocked: Bool? {
+              get {
+                return resultMap["isBlocked"] as? Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "isBlocked")
               }
             }
 
