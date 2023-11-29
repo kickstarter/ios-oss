@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import SwiftUI
 import UIKit
 
 internal final class MessagesViewController: UITableViewController, MessageBannerViewControllerPresenting {
@@ -36,6 +37,18 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.updateTableViewBottomContentInset()
   }
 
   internal override func bindStyles() {
@@ -78,6 +91,15 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.participantPreviouslyBlocked
+      .observeForControllerAction()
+      .observeValues { [weak self] isBlocked in
+        guard let self, isBlocked == true else { return }
+
+        self.messageBannerViewController?
+          .showBanner(with: .error, message: Strings.This_user_has_been_blocked(), dismissible: false)
+      }
+
     self.viewModel.outputs.presentMessageDialog
       .observeForControllerAction()
       .observeValues { [weak self] messageThread, context in
@@ -92,7 +114,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
       .observeForControllerAction()
       .observeValues { [weak self] params in self?.goToBacking(with: params) }
 
-    self.viewModel.outputs.userBlocked
+    self.viewModel.outputs.didBlockUser
       .observeForUI()
       .observeValues { [weak self] success in
 
@@ -159,6 +181,12 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   fileprivate func goToBacking(with params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.controller(with: params)
     self.present(vc, animated: true)
+  }
+
+  private func updateTableViewBottomContentInset() {
+    if let messageBannerView = messageBannerViewController?.view {
+      self.tableView.contentInset.bottom = messageBannerView.bounds.height
+    }
   }
 
   private func presentBlockUserAlert(username: String) {
