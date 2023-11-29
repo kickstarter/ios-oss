@@ -18,6 +18,7 @@ final class PostCommentMutationTests: XCTestCase {
             author {
               id
               imageUrl(width: 200)
+              isBlocked
               isCreator
               name
             }
@@ -57,6 +58,7 @@ final class PostCommentMutationTests: XCTestCase {
             author {
               id
               imageUrl(width: 200)
+              isBlocked
               isCreator
               name
             }

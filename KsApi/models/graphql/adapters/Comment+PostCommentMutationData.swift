@@ -14,6 +14,7 @@ extension Comment {
     let commentAuthor = Comment.Author(
       id: "\(decomposedAuthorId)",
       imageUrl: author.imageUrl,
+      isBlocked: author.isBlocked ?? false,
       isCreator: author.isCreator ?? false,
       name: author.name
     )

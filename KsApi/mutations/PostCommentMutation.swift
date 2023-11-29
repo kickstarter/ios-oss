@@ -15,6 +15,7 @@ public struct PostCommentMutation<T: GraphMutationInput>: GraphMutation {
           author {
             id
             imageUrl(width: \(Constants.previewImageWidth))
+            isBlocked
             isCreator
             name
           }

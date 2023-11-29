@@ -17,6 +17,7 @@ final class GraphCommentTests: XCTestCase {
       [
         "author": [
           "id": expectedAuthorId,
+          "isBlocked": nil,
           "isCreator": nil,
           "name": expectedAuthorName,
           "imageUrl": expectedImageURL
@@ -45,6 +46,7 @@ final class GraphCommentTests: XCTestCase {
     XCTAssertEqual(comment!.id, expectedCommentId)
     XCTAssertEqual(comment!.replyCount, 5)
     XCTAssertEqual(comment!.author.id, decompose(id: expectedAuthorId)?.description)
+    XCTAssertEqual(comment!.author.isBlocked, false)
     XCTAssertEqual(comment!.author.isCreator, false)
     XCTAssertEqual(comment!.author.name, expectedAuthorName)
     XCTAssertEqual(comment!.author.imageUrl, expectedImageURL)

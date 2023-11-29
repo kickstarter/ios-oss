@@ -5,6 +5,7 @@ extension Comment {
     author: Author(
       id: "AFD8hsfh7gsSf9==",
       imageUrl: "https://ks_.imag/fedrico.jpg",
+      isBlocked: false,
       isCreator: true,
       name: "Federico Fellini"
     ),
@@ -21,6 +22,7 @@ extension Comment {
     author: Author(
       id: "ERShsfh7gsS34==",
       imageUrl: "https://ks_.imag/fedrico.jpg",
+      isBlocked: false,
       isCreator: false,
       name: "Dre' Anata"
     ),
@@ -37,6 +39,7 @@ extension Comment {
     author: Author(
       id: "1",
       imageUrl: "http://www.kickstarter.com/medium.jpg",
+      isBlocked: false,
       isCreator: true,
       name: "Blob"
     ),
@@ -54,6 +57,7 @@ extension Comment {
     author: Author(
       id: "1",
       imageUrl: "http://www.kickstarter.com/medium.jpg",
+      isBlocked: false,
       isCreator: true,
       name: "Blob"
     ),
@@ -71,6 +75,7 @@ extension Comment {
     author: Author(
       id: "AFD8hsfh7gsSf9==",
       imageUrl: "https://ks_.imag/fedrico.jpg",
+      isBlocked: false,
       isCreator: true,
       name: "Federico Fellini"
     ),
@@ -88,6 +93,7 @@ extension Comment {
     author: Author(
       id: "AFD8hsfh7gsSf9==",
       imageUrl: "https://ks_.imag/fedrico.jpg",
+      isBlocked: false,
       isCreator: true,
       name: "Nandi Adams"
     ),
@@ -104,6 +110,7 @@ extension Comment {
     author: Author(
       id: "ADG8hsfh7gsSf7==",
       imageUrl: "https://ks_.imag/lemwer.jpg",
+      isBlocked: false,
       isCreator: true,
       name: "KmewrcW"
     ),
@@ -120,6 +127,7 @@ extension Comment {
     author: Author(
       id: "ADG8hYbp7gsDAZ==",
       imageUrl: "https://ks/img/cordero.jpg",
+      isBlocked: false,
       isCreator: false,
       name: "Cordero"
     ),
@@ -153,6 +161,7 @@ extension Comment {
     author: Author(
       id: "AKLEhYbp7CDO6E==",
       imageUrl: "https://ks_.img/johnson.jpg",
+      isBlocked: false,
       isCreator: false,
       name: "Maribeth Bainbridge"
     ),
@@ -169,6 +178,7 @@ extension Comment {
     author: Author(
       id: "AKLEhYbp7CDO6E==",
       imageUrl: "https://ks_.img/johnson.jpg",
+      isBlocked: false,
       isCreator: false,
       name: "Maribeth Bainbridge"
     ),
@@ -185,6 +195,7 @@ extension Comment {
     author: Author(
       id: "AKLEhYbp7CDO6E==",
       imageUrl: "https://ks_.img/johnson.jpg",
+      isBlocked: false,
       isCreator: false,
       name: "Maribeth Bainbridge"
     ),
@@ -227,6 +238,7 @@ extension Comment.Author {
   public static let template = Comment.Author(
     id: "1",
     imageUrl: "http://www.kickstarter.com/large.jpg",
+    isBlocked: false,
     isCreator: false,
     name: "Nino Teixeira"
   )
