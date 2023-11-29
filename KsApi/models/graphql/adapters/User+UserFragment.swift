@@ -29,6 +29,7 @@ extension User {
       isAdmin: self.isAdmin(userFragment: userFragment),
       isEmailVerified: self.isEmailVerified(userFragment: userFragment),
       isFriend: userFragment.isFollowing,
+      isBlocked: userFragment.isBlocked ?? false,
       location: self.location(userFragment: userFragment),
       name: userFragment.name,
       needsFreshFacebookToken: userFragment.needsFreshFacebookToken,

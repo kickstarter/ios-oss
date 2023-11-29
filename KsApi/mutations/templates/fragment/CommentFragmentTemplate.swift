@@ -61,6 +61,7 @@ public enum CommentFragmentTemplate {
         "optedOutOfRecommendations":true,
         "email": "mubarak@kickstarter.com",
         "isAppleConnected": true,
+        "isBlocked": false,
         "isEmailVerified": false,
         "isDeliverable": true,
         "isFacebookConnected": true,

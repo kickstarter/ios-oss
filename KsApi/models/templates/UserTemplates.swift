@@ -8,6 +8,7 @@ extension User {
     isAdmin: false,
     isEmailVerified: false,
     isFriend: nil,
+    isBlocked: false,
     location: nil,
     name: "Blob",
     needsFreshFacebookToken: false,

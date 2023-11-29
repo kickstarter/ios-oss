@@ -8,7 +8,7 @@ public struct User {
   public var isAdmin: Bool?
   public var isEmailVerified: Bool?
   public var isFriend: Bool?
-  public var isBlocked: Bool?
+  public var isBlocked: Bool
   public var location: Location?
   public var name: String
   public var needsFreshFacebookToken: Bool?
@@ -120,7 +120,7 @@ extension User: Decodable {
     self.isAdmin = try values.decodeIfPresent(Bool.self, forKey: .isAdmin)
     self.isEmailVerified = try values.decodeIfPresent(Bool.self, forKey: .isEmailVerified)
     self.isFriend = try values.decodeIfPresent(Bool.self, forKey: .isFriend)
-    self.isBlocked = try values.decodeIfPresent(Bool.self, forKey: .isBlocked)
+    self.isBlocked = try values.decodeIfPresent(Bool.self, forKey: .isBlocked) ?? false
     self.location = try? values.decodeIfPresent(Location.self, forKey: .location)
     self.name = try values.decode(String.self, forKey: .name)
     self.needsFreshFacebookToken = try values.decodeIfPresent(Bool.self, forKey: .needsFreshFacebookToken)

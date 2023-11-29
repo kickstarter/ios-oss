@@ -329,6 +329,7 @@ final class Project_ProjectFragmentTests: XCTestCase {
           "id":"VXNlci0xMDA3NTM5MDAy",
           "imageUrl":"https://ksr-qa-ugc.imgix.net/assets/033/589/257/1202c14c958cc40645e67f7792a8b10a_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1621524013&auto=format&frame=1&q=92&s=9466c13d19f3870da6565cea4170f752",
           "isAppleConnected":null,
+          "isBlocked":false,
           "isCreator":true,
           "isDeliverable":null,
           "isEmailVerified":true,

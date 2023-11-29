@@ -10,6 +10,7 @@ public struct GraphUserEnvelopeTemplates {
         "id": "VXNlci0xNDcwOTUyNTQ1",
         "imageUrl": "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=&auto=format&frame=1&q=92&s=e17a7b6f853aa6320cfe67ee783eb3d8",
         "isAppleConnected": false,
+        "isBlocked": false,
         "isCreator": false,
         "isDeliverable": true,
         "isEmailVerified": true,

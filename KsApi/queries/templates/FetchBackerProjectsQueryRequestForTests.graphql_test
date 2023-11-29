@@ -50,6 +50,7 @@
         id
         imageUrl: imageUrl(blur: false, width: 1024)
         isAppleConnected
+        isBlocked
         isCreator
         isDeliverable
         isEmailVerified
