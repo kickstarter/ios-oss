@@ -790,4 +790,13 @@ public struct Service: ServiceType {
       .perform(mutation: GraphAPI.WatchProjectMutation(input: GraphAPI.WatchProjectInput.from(input)))
       .flatMap(WatchProjectResponseEnvelope.producer(from:))
   }
+
+  public func blockUser(input: BlockUserInput)
+    -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.BlockUserMutation(input: GraphAPI.BlockUserInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
+  }
 }

@@ -1,0 +1,5 @@
+mutation blockUser($input: BlockUserInput!) {
+  blockUser(input: $input) {
+    success
+  }
+}
