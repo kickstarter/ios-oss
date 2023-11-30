@@ -744,6 +744,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .blockUserAlert(username: username, blockUserHandler: { _ in
         self.viewModel.inputs.blockUser(id: "\(userId)")
       })
+
     self.present(alert, animated: true)
   }
 
@@ -993,10 +994,10 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     _ cell: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
   ) {
-//    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
-//      self.goToCreatorProfile(forProject: project)
-//      return
-//    }
+    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
+      self.goToCreatorProfile(forProject: project)
+      return
+    }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
