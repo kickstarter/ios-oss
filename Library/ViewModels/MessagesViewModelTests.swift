@@ -21,7 +21,8 @@ internal final class MessagesViewModelTests: TestCase {
   fileprivate let project = TestObserver<Project, Never>()
   fileprivate let replyButtonIsEnabled = TestObserver<Bool, Never>()
   fileprivate let successfullyMarkedAsRead = TestObserver<(), Never>()
-  fileprivate let didBlockUser = TestObserver<Bool, Never>()
+  fileprivate let didBlockUser = TestObserver<(), Never>()
+  fileprivate let didBlockUserError = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -41,6 +42,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.outputs.replyButtonIsEnabled.observe(self.replyButtonIsEnabled.observer)
     self.vm.outputs.successfullyMarkedAsRead.observe(self.successfullyMarkedAsRead.observer)
     self.vm.outputs.didBlockUser.observe(self.didBlockUser.observer)
+    self.vm.outputs.didBlockUserError.observe(self.didBlockUser.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
   }

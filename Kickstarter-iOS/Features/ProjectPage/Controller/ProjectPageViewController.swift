@@ -537,16 +537,18 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
         // TODO: Use this flag to hide or show the Report this project label [MBL-983](https://kickstarter.atlassian.net/browse/MBL-983)
       }
 
-    self.viewModel.outputs.userBlocked
+    self.viewModel.outputs.didBlockUser
       .observeForUI()
-      .observeValues { [weak self] success in
-        if success {
-          self?.messageBannerViewController?
-            .showBanner(with: .success, message: Strings.Block_user_success())
-        } else {
-          self?.messageBannerViewController?
-            .showBanner(with: .error, message: Strings.Block_user_fail())
-        }
+      .observeValues { [weak self] _ in
+        self?.messageBannerViewController?
+          .showBanner(with: .success, message: Strings.Block_user_success())
+      }
+
+    self.viewModel.outputs.didBlockUserError
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.messageBannerViewController?
+          .showBanner(with: .error, message: Strings.Block_user_fail())
       }
   }
 
@@ -737,9 +739,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
     }
   }
 
-  private func presentBlockUserAlert(username: String) {
+  private func presentBlockUserAlert(username: String, userId: Int) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in
+        self.viewModel.inputs.blockUser(id: "\(userId)")
+      })
     self.present(alert, animated: true)
   }
 
@@ -989,14 +993,16 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     _ cell: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
   ) {
-    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
-      self.goToCreatorProfile(forProject: project)
-      return
-    }
+//    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
+//      self.goToCreatorProfile(forProject: project)
+//      return
+//    }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.presentBlockUserAlert(username: project.creator.name) },
+        blockUserHandler: { _ in
+          self.presentBlockUserAlert(username: project.creator.name, userId: project.creator.id)
+        },
         viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
