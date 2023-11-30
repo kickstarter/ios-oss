@@ -13,6 +13,7 @@ struct GraphComment: Decodable {
 
   struct GraphAuthor: Decodable {
     var id: String
+    var isBlocked: Bool
     var isCreator: Bool
     var name: String
     var imageUrl: String
@@ -57,6 +58,7 @@ extension GraphComment {
 extension GraphComment.GraphAuthor {
   private enum CodingKeys: String, CodingKey {
     case id
+    case isBlocked
     case isCreator
     case name
     case imageUrl
@@ -68,6 +70,7 @@ extension GraphComment.GraphAuthor {
     let decomposedRawId = decompose(id: rawId) ?? -1
 
     self.id = decomposedRawId.description
+    self.isBlocked = try values.decodeIfPresent(Bool.self, forKey: .isBlocked) ?? false
     self.isCreator = try values.decodeIfPresent(Bool.self, forKey: .isCreator) ?? false
     self.name = try values.decode(String.self, forKey: .name)
     self.imageUrl = try values.decode(String.self, forKey: .imageUrl)

@@ -4,6 +4,7 @@ mutation PostComment($input: PostCommentInput!) {
       author {
         id
         imageUrl(width: 200)
+        isBlocked
         isCreator
         name
       }

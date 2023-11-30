@@ -20,6 +20,7 @@ extension Comment {
       author: Author(
         id: "\(decomposedAuthorId)",
         imageUrl: authorImageUrl,
+        isBlocked: commentFragment.author?.fragments.userFragment.isBlocked ?? false,
         isCreator: commentFragment.author?.fragments.userFragment.isCreator ?? false,
         name: authorName
       ),

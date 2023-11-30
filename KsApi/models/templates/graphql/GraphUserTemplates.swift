@@ -6,6 +6,7 @@ extension GraphUser {
     email: "nativesquad@ksr.com",
     hasPassword: true,
     id: "VXNlci0xNTQ2MjM2ODI=",
+    isBlocked: false,
     imageUrl: "http://www.kickstarter.com/image.jpg",
     isAppleConnected: false,
     isEmailVerified: true,

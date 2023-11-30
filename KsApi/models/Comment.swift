@@ -25,8 +25,7 @@ public struct Comment {
   public struct Author: Decodable, Equatable {
     public var id: String
     public var imageUrl: String
-    /// TODO(MBL-1025): Get isBlocked status from the backend instead.
-    public var isBlocked: Bool = false
+    public var isBlocked: Bool
     public var isCreator: Bool
     public var name: String
   }

@@ -76,6 +76,7 @@ public enum FetchProjectQueryTemplate {
              "id":"VXNlci0xNTMyMzU3OTk3",
              "imageUrl":"https://ksr-qa-ugc.imgix.net/assets/033/846/528/69cae8b2ccc2403e233b5715cb1f869f_original.png?ixlib=rb-4.0.2&blur=false&w=1024&h=1024&fit=crop&v=1623351187&auto=format&frame=1&q=92&s=d0d5f5993e64056e5ddf7e42b56e50cd",
              "isAppleConnected":null,
+             "isBlocked":false,
              "isCreator":true,
              "isDeliverable":null,
              "isEmailVerified":true,
