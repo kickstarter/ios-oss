@@ -117,15 +117,17 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     self.viewModel.outputs.didBlockUser
       .observeForUI()
       .observeValues { [weak self] _ in
-        self?.messageBannerViewController?
-          .showBanner(with: .success, message: Strings.Block_user_success())
+        guard let self, let messageBanner = self.messageBannerViewController else { return }
+
+        messageBanner.showBanner(with: .success, message: Strings.Block_user_success())
       }
 
     self.viewModel.outputs.didBlockUserError
       .observeForUI()
       .observeValues { [weak self] _ in
-        self?.messageBannerViewController?
-          .showBanner(with: .error, message: Strings.Block_user_fail())
+        guard let self, let messageBanner = self.messageBannerViewController else { return }
+
+        messageBanner.showBanner(with: .error, message: Strings.Block_user_fail())
       }
   }
 

@@ -6,7 +6,7 @@ import ReactiveSwift
 
 public protocol CommentRepliesViewModelInputs {
   /// Call when block user is tapped
-  func blockUser()
+  func blockUser(id: String)
 
   /**
     Call with the comment and project that we are viewing replies for. `Comment` can be provided to minimize
@@ -65,8 +65,11 @@ public protocol CommentRepliesViewModelOutputs {
   /// Emits when a pagination error has occurred.
   var showPaginationErrorState: Signal<(), Never> { get }
 
-  /// Emits when a request to block a user has been made
-  var userBlocked: Signal<Bool, Never> { get }
+  /// Emits when a block a user request is successful.
+  var didBlockUser: Signal<(), Never> { get }
+
+  /// Emits when a block a user request fails.
+  var didBlockUserError: Signal<(), Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -248,18 +251,25 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .skipNil()
       .takeWhen(self.dataSourceLoadedProperty.signal)
 
-    // TODO: Call blocking GraphQL mutation
-    self.userBlocked = self.blockUserProperty.signal.map { true }
+    let blockUserEvent = self.blockUserProperty.signal
+      .map(BlockUserInput.init(blockUserId:))
+      .switchMap { input in
+        AppEnvironment.current.apiService
+          .blockUser(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
 
-    self.userBlocked.observeValues { didBlock in
-      guard didBlock == true else { return }
-      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
-    }
+    self.didBlockUser = blockUserEvent.values().ignoreValues()
+      .map { _ in NotificationCenter.default.post(.init(name: .ksr_blockedUser)) }
+
+    // TODO: Display proper error messaging from the backend
+    self.didBlockUserError = blockUserEvent.errors().ignoreValues()
   }
 
-  private let blockUserProperty = MutableProperty(())
-  public func blockUser() {
-    self.blockUserProperty.value = ()
+  private let blockUserProperty = MutableProperty<String>("")
+  public func blockUser(id: String) {
+    self.blockUserProperty.value = id
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
@@ -319,7 +329,8 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   public let resetCommentComposer: Signal<(), Never>
   public let scrollToReply: Signal<String, Never>
   public let showPaginationErrorState: Signal<(), Never>
-  public let userBlocked: Signal<Bool, Never>
+  public var didBlockUser: Signal<(), Never>
+  public var didBlockUserError: Signal<(), Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }
