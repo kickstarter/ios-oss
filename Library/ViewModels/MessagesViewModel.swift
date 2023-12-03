@@ -63,10 +63,10 @@ public protocol MessagesViewModelOutputs {
   /// Emits when the thread has been marked as read.
   var successfullyMarkedAsRead: Signal<(), Never> { get }
 
-  /// Emits when a block a user request is successful.
+  /// Emits when a block user request is successful.
   var didBlockUser: Signal<(), Never> { get }
 
-  /// Emits when a block a user request fails.
+  /// Emits when a block user request fails.
   var didBlockUserError: Signal<(), Never> { get }
 }
 
