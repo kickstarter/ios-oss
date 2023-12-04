@@ -33,6 +33,8 @@ final class ProjectPageViewModelTests: TestCase {
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let configureProjectNavigationSelectorView = TestObserver<(Project, RefTag?), Never>()
+  private let didBlockUser = TestObserver<(), Never>()
+  private let didBlockUserError = TestObserver<(), Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToComments = TestObserver<Project, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
@@ -99,6 +101,8 @@ final class ProjectPageViewModelTests: TestCase {
 
     self.vm.outputs.configurePledgeCTAView.map(second).observe(self.configurePledgeCTAViewIsLoading.observer)
     self.vm.outputs.configurePledgeCTAView.map(third).observe(self.configurePledgeCTAViewContext.observer)
+    self.vm.outputs.didBlockUser.observe(self.didBlockUser.observer)
+    self.vm.outputs.didBlockUserError.observe(self.didBlockUserError.observer)
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
@@ -312,6 +316,51 @@ final class ProjectPageViewModelTests: TestCase {
         self.configureDataSourceProject.lastValue?.country,
         Project.Country.us
       )
+    }
+  }
+
+  func testDidBlockUser_EmitsOnSuccess() {
+    let envelope = EmptyResponseEnvelope()
+
+    withEnvironment(apiService: MockService(blockUserResult: .success(envelope)), currentUser: .template) {
+      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(0)
+
+      self.vm.inputs.blockUser(id: "\(User.template.id)")
+
+      self.scheduler.advance()
+
+      self.didBlockUser.assertValueCount(1)
+      self.didBlockUserError.assertValueCount(0)
+    }
+  }
+
+  func testDidBlockUserError_EmitsOnFailure() {
+    let error = ErrorEnvelope(
+      errorMessages: ["block user request error"],
+      ksrCode: .GraphQLError,
+      httpCode: 401,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(blockUserResult: .failure(error)), currentUser: .template) {
+      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(0)
+
+      self.vm.inputs.blockUser(id: "\(User.template.id)")
+
+      self.scheduler.advance()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(1)
     }
   }
 
