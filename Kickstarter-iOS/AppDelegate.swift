@@ -49,6 +49,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       )
     )
 
+    if true {
+      print("Do something")
+      print("\(1) + \(1) = \(2)")
+      print("More lines of untested code")
+    }
+
     #if DEBUG
       if KsApi.Secrets.isOSS {
         AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
