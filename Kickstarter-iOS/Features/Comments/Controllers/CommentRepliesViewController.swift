@@ -169,26 +169,31 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
         }
       }
 
-    self.viewModel.outputs.userBlocked
+    self.viewModel.outputs.didBlockUser
       .observeForUI()
-      .observeValues { [weak self] success in
-        guard let self else { return }
-        self.commentComposer.isHidden = true
+      .observeValues { [weak self] _ in
+        guard let self, let messageBanner = self.messageBannerViewController else { return }
 
-        if success {
-          self.messageBannerViewController?
-            .showBanner(with: .success, message: Strings.Block_user_success())
-          self.delegate?.commentRepliesViewControllerDidBlockUser(self)
-        } else {
-          self.messageBannerViewController?
-            .showBanner(with: .error, message: Strings.Block_user_fail())
-        }
+        self.commentComposer.isHidden = true
+        self.delegate?.commentRepliesViewControllerDidBlockUser(self)
+
+        messageBanner.showBanner(with: .success, message: Strings.Block_user_success())
+      }
+
+    self.viewModel.outputs.didBlockUserError
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let self, let messageBanner = self.messageBannerViewController else { return }
+
+        messageBanner.showBanner(with: .error, message: Strings.Block_user_fail())
       }
   }
 
-  private func presentBlockUserAlert(username: String) {
+  private func presentBlockUserAlert(username: String, userId: String) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in
+        self.viewModel.inputs.blockUser(id: userId)
+      })
     self.present(alert, animated: true)
   }
 
@@ -198,7 +203,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name) },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name, userId: author.id) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )

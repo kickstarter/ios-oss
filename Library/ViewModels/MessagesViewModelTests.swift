@@ -21,7 +21,8 @@ internal final class MessagesViewModelTests: TestCase {
   fileprivate let project = TestObserver<Project, Never>()
   fileprivate let replyButtonIsEnabled = TestObserver<Bool, Never>()
   fileprivate let successfullyMarkedAsRead = TestObserver<(), Never>()
-  fileprivate let didBlockUser = TestObserver<Bool, Never>()
+  fileprivate let didBlockUser = TestObserver<(), Never>()
+  fileprivate let didBlockUserError = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -41,6 +42,7 @@ internal final class MessagesViewModelTests: TestCase {
     self.vm.outputs.replyButtonIsEnabled.observe(self.replyButtonIsEnabled.observer)
     self.vm.outputs.successfullyMarkedAsRead.observe(self.successfullyMarkedAsRead.observer)
     self.vm.outputs.didBlockUser.observe(self.didBlockUser.observer)
+    self.vm.outputs.didBlockUserError.observe(self.didBlockUserError.observer)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
   }
@@ -274,6 +276,51 @@ internal final class MessagesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.participantPreviouslyBlocked.assertValues([true])
+    }
+  }
+
+  func testDidBlockUser_EmitsOnSuccess() {
+    let envelope = EmptyResponseEnvelope()
+
+    withEnvironment(apiService: MockService(blockUserResult: .success(envelope)), currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: .template, backing: .template)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(0)
+
+      self.vm.inputs.blockUser(id: "\(User.template.id)")
+
+      self.scheduler.advance()
+
+      self.didBlockUser.assertValueCount(1)
+      self.didBlockUserError.assertValueCount(0)
+    }
+  }
+
+  func testDidBlockUserError_EmitsOnFailure() {
+    let error = ErrorEnvelope(
+      errorMessages: ["block user request error"],
+      ksrCode: .GraphQLError,
+      httpCode: 401,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(blockUserResult: .failure(error)), currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: .template, backing: .template)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(0)
+
+      self.vm.inputs.blockUser(id: "\(User.template.id)")
+
+      self.scheduler.advance()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(1)
     }
   }
 
