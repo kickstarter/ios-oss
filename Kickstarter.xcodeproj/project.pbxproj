@@ -7002,8 +7002,8 @@
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
-				8A86D7C124FDB7A000037A7B /* Firebase Crashlytics */,
 				E10BE8D52B02975C00F73DC9 /* Embed Foundation Extensions */,
+				8A86D7C124FDB7A000037A7B /* Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
