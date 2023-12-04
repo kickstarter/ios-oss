@@ -59,6 +59,14 @@ public struct Service: ServiceType {
     )
   }
 
+  public func anUntestedFunction() {
+    print("Hi, I'm untested!")
+    print("1 + 1 = \(1 + 1)")
+    if true {
+      print("I'm true!")
+    }
+  }
+
   public func login(_ oauthToken: OauthTokenAuthType) -> Service {
     return Service(
       appId: self.appId,
