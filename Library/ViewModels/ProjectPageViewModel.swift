@@ -11,7 +11,7 @@ public protocol ProjectPageViewModelInputs {
   func applicationDidEnterBackground()
 
   /// Call when block user is tapped
-  func blockUser(id: String)
+  func blockUser(id: Int)
 
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
@@ -506,7 +506,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
 
     let blockUserEvent = self.blockUserProperty.signal
-      .map(BlockUserInput.init(blockUserId:))
+      .map { BlockUserInput.init(blockUserId: "\($0)") }
       .switchMap { input in
         AppEnvironment.current.apiService
           .blockUser(input: input)
@@ -531,8 +531,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.applicationDidEnterBackgroundProperty.value = ()
   }
 
-  fileprivate let blockUserProperty = MutableProperty<String>("")
-  public func blockUser(id: String) {
+  fileprivate let blockUserProperty = MutableProperty<Int>(0)
+  public func blockUser(id: Int) {
     self.blockUserProperty.value = id
   }
 

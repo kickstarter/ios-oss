@@ -330,7 +330,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.didBlockUser.assertValueCount(0)
       self.didBlockUserError.assertValueCount(0)
 
-      self.vm.inputs.blockUser(id: "\(User.template.id)")
+      self.vm.inputs.blockUser(id: User.template.id)
 
       self.scheduler.advance()
 
@@ -355,7 +355,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.didBlockUser.assertValueCount(0)
       self.didBlockUserError.assertValueCount(0)
 
-      self.vm.inputs.blockUser(id: "\(User.template.id)")
+      self.vm.inputs.blockUser(id: User.template.id)
 
       self.scheduler.advance()
 
