@@ -989,7 +989,11 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
     _ cell: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
   ) {
-    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else {
+    guard
+      AppEnvironment.current.currentUser != nil,
+      featureBlockUsersEnabled(),
+      !project.creator.isBlocked
+    else {
       self.goToCreatorProfile(forProject: project)
       return
     }
