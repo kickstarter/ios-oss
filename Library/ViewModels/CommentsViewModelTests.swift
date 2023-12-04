@@ -15,6 +15,8 @@ internal final class CommentsViewModelTests: TestCase {
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
   private let configureFooterViewWithState = TestObserver<CommentTableViewFooterViewState, Never>()
+  private let didBlockUser = TestObserver<(), Never>()
+  private let didBlockUserError = TestObserver<(), Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
   private let goToCommentRepliesProject = TestObserver<Project, Never>()
   private let goToCommentRepliesUpdate = TestObserver<Update?, Never>()
@@ -35,6 +37,8 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
+    self.vm.outputs.didBlockUser.observe(self.didBlockUser.observer)
+    self.vm.outputs.didBlockUserError.observe(self.didBlockUserError.observer)
     self.vm.outputs.configureFooterViewWithState.observe(self.configureFooterViewWithState.observer)
     self.vm.outputs.goToRepliesWithCommentProjectUpdateAndBecomeFirstResponder.map { $0.0 }
       .observe(self.goToCommentRepliesComment.observer)
@@ -139,6 +143,51 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.commentComposerViewHidden.assertValue(false)
+    }
+  }
+
+  func testDidBlockUser_EmitsOnSuccess() {
+    let envelope = EmptyResponseEnvelope()
+
+    withEnvironment(apiService: MockService(blockUserResult: .success(envelope)), currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, update: nil)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(0)
+
+      self.vm.inputs.blockUser(id: "\(User.template.id)")
+
+      self.scheduler.advance()
+
+      self.didBlockUser.assertValueCount(1)
+      self.didBlockUserError.assertValueCount(0)
+    }
+  }
+
+  func testDidBlockUserError_EmitsOnFailure() {
+    let error = ErrorEnvelope(
+      errorMessages: ["block user request error"],
+      ksrCode: .GraphQLError,
+      httpCode: 401,
+      exception: nil
+    )
+
+    withEnvironment(apiService: MockService(blockUserResult: .failure(error)), currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, update: nil)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(0)
+
+      self.vm.inputs.blockUser(id: "\(User.template.id)")
+
+      self.scheduler.advance()
+
+      self.didBlockUser.assertValueCount(0)
+      self.didBlockUserError.assertValueCount(1)
     }
   }
 
