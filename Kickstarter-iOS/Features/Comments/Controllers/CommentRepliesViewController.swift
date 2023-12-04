@@ -174,6 +174,9 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
       .observeValues { [weak self] _ in
         guard let self, let messageBanner = self.messageBannerViewController else { return }
 
+        self.commentComposer.isHidden = true
+        self.delegate?.commentRepliesViewControllerDidBlockUser(self)
+
         messageBanner.showBanner(with: .success, message: Strings.Block_user_success())
       }
 

@@ -188,6 +188,7 @@ internal final class CommentsViewController: UITableViewController, MessageBanne
       .observeValues { [weak self] _ in
         guard let self, let messageBanner = self.messageBannerViewController else { return }
 
+        self.commentComposer.isHidden = true
         messageBanner.showBanner(with: .success, message: Strings.Block_user_success())
       }
 
@@ -267,7 +268,7 @@ extension CommentsViewController {
 
 extension CommentsViewController: CommentCellDelegate {
   func commentCellDidTapHeader(_ cell: CommentCell, _ author: Comment.Author) {
-    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+//    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
     guard author.isBlocked == false else { return }
 
     let actionSheet = UIAlertController
