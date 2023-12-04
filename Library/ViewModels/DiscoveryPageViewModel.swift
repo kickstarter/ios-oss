@@ -372,6 +372,14 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }
   }
 
+  public func anUntestedFunction() {
+    print("Hi, I'm untested!")
+    print("1 + 1 = \(1 + 1)")
+    if true {
+      print("I'm true!")
+    }
+  }
+
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
   public func configUpdated(config: Config?) {
     self.configUpdatedProperty.value = config
