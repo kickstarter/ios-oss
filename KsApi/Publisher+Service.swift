@@ -22,4 +22,27 @@ extension Publisher {
     }
     .eraseToAnyPublisher()
   }
+
+  /// A convenience method for gracefully catching API failures.
+  /// If you handle your API failure in receiveCompletion:, that will actually cancel the entire pipeline, which means the failed request can't be retried.
+  /// This is a wrapper around the .catch operator, which just makes it a bit easier to read.
+  ///
+  /// An example:
+  /// ```
+  /// self.somethingHappened
+  ///    .flatMap() { _ in
+  ///        self.doAnAPIRequest
+  ///            .handleFailureAndAllowRetry() { e in
+  ///               showTheError(e)
+  ///            }
+  ///    }
+
+  public func handleFailureAndAllowRetry(_ onFailure: @escaping (Self.Failure) -> Void)
+    -> AnyPublisher<Self.Output, Never> {
+    return self.catch { e in
+      onFailure(e)
+      return Empty<Self.Output, Never>()
+    }
+    .eraseToAnyPublisher()
+  }
 }
