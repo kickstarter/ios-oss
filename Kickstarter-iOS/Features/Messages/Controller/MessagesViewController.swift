@@ -223,7 +223,13 @@ extension MessagesViewController: BackingCellDelegate {
 
 extension MessagesViewController: MessageCellDelegate {
   func messageCellDidTapHeader(_ cell: MessageCell, _ user: User) {
-    guard AppEnvironment.current.currentUser != nil, featureBlockUsersEnabled() else { return }
+    guard
+      AppEnvironment.current.currentUser != nil,
+      featureBlockUsersEnabled(),
+      !user.isBlocked
+    else {
+      return
+    }
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
