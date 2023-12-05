@@ -19,6 +19,8 @@
 
     fileprivate let addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
+    fileprivate let blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
+
     fileprivate let cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -219,6 +221,7 @@
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       addPaymentSheetPaymentSourceResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>? = nil,
       apolloClient: ApolloClientType? = nil,
+      blockUserResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -331,6 +334,8 @@
       self.addPaymentSheetPaymentSourceResult = addPaymentSheetPaymentSourceResult
 
       self.apolloClient = apolloClient ?? MockGraphQLClient.shared.client
+
+      self.blockUserResult = blockUserResult
 
       self.cancelBackingResult = cancelBackingResult
 
@@ -541,6 +546,18 @@
         .CreatePaymentSourceMutation(input: GraphAPI.CreatePaymentSourceInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.addPaymentSheetPaymentSourceResult)
+    }
+
+    public func blockUser(input: BlockUserInput)
+      -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .BlockUserMutation(input: GraphAPI.BlockUserInput(blockUserId: input.blockUserId))
+
+      return client.performWithResult(mutation: mutation, result: self.blockUserResult)
     }
 
     public func cancelBacking(input: CancelBackingInput)
@@ -1679,10 +1696,6 @@
       }
 
       return SignalProducer(value: self.fetchUpdateResponse)
-    }
-
-    func blockUser(input _: BlockUserInput) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
-      return SignalProducer(value: EmptyResponseEnvelope())
     }
 
     internal func previewUrl(forDraft draft: UpdateDraft) -> URL? {

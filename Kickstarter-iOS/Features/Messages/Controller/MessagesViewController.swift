@@ -116,15 +116,18 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
 
     self.viewModel.outputs.didBlockUser
       .observeForUI()
-      .observeValues { [weak self] success in
+      .observeValues { [weak self] _ in
+        guard let self, let messageBanner = self.messageBannerViewController else { return }
 
-        if success {
-          self?.messageBannerViewController?
-            .showBanner(with: .success, message: Strings.Block_user_success())
-        } else {
-          self?.messageBannerViewController?
-            .showBanner(with: .error, message: Strings.Block_user_fail())
-        }
+        messageBanner.showBanner(with: .success, message: Strings.Block_user_success())
+      }
+
+    self.viewModel.outputs.didBlockUserError
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let self, let messageBanner = self.messageBannerViewController else { return }
+
+        messageBanner.showBanner(with: .error, message: Strings.Block_user_fail())
       }
   }
 
@@ -189,9 +192,11 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
     }
   }
 
-  private func presentBlockUserAlert(username: String) {
+  private func presentBlockUserAlert(username: String, userId: Int) {
     let alert = UIAlertController
-      .blockUserAlert(username: username, blockUserHandler: { _ in self.viewModel.inputs.blockUser() })
+      .blockUserAlert(username: username, blockUserHandler: { _ in
+        self.viewModel.inputs.blockUser(id: "\(userId)")
+      })
     self.present(alert, animated: true)
   }
 }
@@ -228,7 +233,7 @@ extension MessagesViewController: MessageCellDelegate {
 
     let actionSheet = UIAlertController
       .blockUserActionSheet(
-        blockUserHandler: { _ in self.presentBlockUserAlert(username: user.name) },
+        blockUserHandler: { _ in self.presentBlockUserAlert(username: user.name, userId: user.id) },
         sourceView: cell,
         isIPad: self.traitCollection.horizontalSizeClass == .regular
       )

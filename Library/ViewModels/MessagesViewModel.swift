@@ -8,7 +8,7 @@ public protocol MessagesViewModelInputs {
   func backingInfoPressed()
 
   /// Call when block user is tapped
-  func blockUser()
+  func blockUser(id: String)
 
   /// Configures the view model with either a message thread or a project and a backing.
   func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>)
@@ -63,8 +63,11 @@ public protocol MessagesViewModelOutputs {
   /// Emits when the thread has been marked as read.
   var successfullyMarkedAsRead: Signal<(), Never> { get }
 
-  /// Emits whether a request to block a user was successful.
-  var didBlockUser: Signal<Bool, Never> { get }
+  /// Emits when a block user request is successful.
+  var didBlockUser: Signal<(), Never> { get }
+
+  /// Emits when a block user request fails.
+  var didBlockUserError: Signal<(), Never> { get }
 }
 
 public protocol MessagesViewModelType {
@@ -197,16 +200,23 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       }
       .ignoreValues()
 
-    // TODO: Call blocking GraphQL mutation
-    self.didBlockUser = self.blockUserProperty.signal.map { false }
+    let blockUserEvent = self.blockUserProperty.signal
+      .map(BlockUserInput.init(blockUserId:))
+      .switchMap { input in
+        AppEnvironment.current.apiService
+          .blockUser(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
 
-    self.didBlockUser.observeValues { didBlock in
-      guard didBlock == true else { return }
-      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
-    }
+    self.didBlockUser = blockUserEvent.values().ignoreValues()
+      .map { _ in NotificationCenter.default.post(.init(name: .ksr_blockedUser)) }
+
+    // TODO: Display proper error messaging from the backend
+    self.didBlockUserError = blockUserEvent.errors().ignoreValues()
 
     self.participantPreviouslyBlocked = self.project
-      .map { $0.creator.isBlocked ?? false }
+      .map { $0.creator.isBlocked }
       .takeWhen(self.viewWillAppearProperty.signal)
   }
 
@@ -215,9 +225,9 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
     self.backingInfoPressedProperty.value = ()
   }
 
-  private let blockUserProperty = MutableProperty(())
-  public func blockUser() {
-    self.blockUserProperty.value = ()
+  private let blockUserProperty = MutableProperty<String>("")
+  public func blockUser(id: String) {
+    self.blockUserProperty.value = id
   }
 
   private let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
@@ -260,7 +270,8 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let project: Signal<Project, Never>
   public let replyButtonIsEnabled: Signal<Bool, Never>
   public let successfullyMarkedAsRead: Signal<(), Never>
-  public let didBlockUser: Signal<Bool, Never>
+  public let didBlockUser: Signal<(), Never>
+  public let didBlockUserError: Signal<(), Never>
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }

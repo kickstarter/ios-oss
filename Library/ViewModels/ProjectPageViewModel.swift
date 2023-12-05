@@ -11,7 +11,7 @@ public protocol ProjectPageViewModelInputs {
   func applicationDidEnterBackground()
 
   /// Call when block user is tapped
-  func blockUser()
+  func blockUser(id: Int)
 
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
@@ -150,8 +150,11 @@ public protocol ProjectPageViewModelOutputs {
   /// Emits a prelaunch save state that updates the navigation bar's watch project state.
   var updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never> { get }
 
-  /// Emits when a request to block a user has been made
-  var userBlocked: Signal<Bool, Never> { get }
+  /// Emits when a block user request is successful.
+  var didBlockUser: Signal<(), Never> { get }
+
+  /// Emits when a block user request fails.
+  var didBlockUserError: Signal<(), Never> { get }
 }
 
 public protocol ProjectPageViewModelType {
@@ -502,13 +505,20 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     self.goToURL = self.didSelectCampaignImageLinkProperty.signal.skipNil()
 
-    // TODO: Call blocking GraphQL mutation
-    self.userBlocked = self.blockUserProperty.signal.map { true }
+    let blockUserEvent = self.blockUserProperty.signal
+      .map { BlockUserInput.init(blockUserId: "\($0)") }
+      .switchMap { input in
+        AppEnvironment.current.apiService
+          .blockUser(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
 
-    self.userBlocked.observeValues { didBlock in
-      guard didBlock == true else { return }
-      NotificationCenter.default.post(.init(name: .ksr_blockedUser))
-    }
+    self.didBlockUser = blockUserEvent.values().ignoreValues()
+      .map { _ in NotificationCenter.default.post(.init(name: .ksr_blockedUser)) }
+
+    // TODO: Display proper error messaging from the backend
+    self.didBlockUserError = blockUserEvent.errors().ignoreValues()
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
@@ -521,9 +531,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.applicationDidEnterBackgroundProperty.value = ()
   }
 
-  fileprivate let blockUserProperty = MutableProperty(())
-  public func blockUser() {
-    self.blockUserProperty.value = ()
+  fileprivate let blockUserProperty = MutableProperty<Int>(0)
+  public func blockUser(id: Int) {
+    self.blockUserProperty.value = id
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -651,7 +661,8 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
   public let updateDataSource: Signal<(NavigationSection, Project, RefTag?, [Bool], [URL]), Never>
   public let updateFAQsInDataSource: Signal<(Project, RefTag?, [Bool]), Never>
   public let updateWatchProjectWithPrelaunchProjectState: Signal<PledgeCTAPrelaunchState, Never>
-  public let userBlocked: Signal<Bool, Never>
+  public let didBlockUser: Signal<(), Never>
+  public let didBlockUserError: Signal<(), Never>
 
   public var inputs: ProjectPageViewModelInputs { return self }
   public var outputs: ProjectPageViewModelOutputs { return self }
