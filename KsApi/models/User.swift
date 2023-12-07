@@ -142,7 +142,7 @@ extension User: Decodable {
     case isAdmin = "is_admin"
     case isEmailVerified = "is_email_verified"
     case isFriend = "is_friend"
-    case isBlocked = "is_blocked"
+    case isBlocked
     case location
     case name
     case needsFreshFacebookToken = "needs_fresh_facebook_token"
@@ -163,7 +163,7 @@ extension User: EncodableType {
     result["is_admin"] = self.isAdmin ?? false
     result["is_email_verified"] = self.isEmailVerified ?? false
     result["is_friend"] = self.isFriend ?? false
-    result["is_blocked"] = self.isBlocked ?? false
+    result["isBlocked"] = self.isBlocked ?? false
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["needs_password"] = self.needsPassword ?? false

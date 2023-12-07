@@ -40,7 +40,7 @@ final class UserTests: XCTestCase {
       "is_admin": false,
       "is_email_verified": false,
       "is_friend": false,
-      "is_blocked": false,
+      "isBlocked": false,
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
       "social": true
@@ -99,7 +99,7 @@ final class UserTests: XCTestCase {
       "is_admin": false,
       "is_email_verified": false,
       "is_friend": false,
-      "is_blocked": true,
+      "isBlocked": true,
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
       "social": true
