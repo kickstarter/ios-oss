@@ -142,7 +142,7 @@ extension User: Decodable {
     case isAdmin = "is_admin"
     case isEmailVerified = "is_email_verified"
     case isFriend = "is_friend"
-    case isBlocked = "is_blocked"
+    case isBlocked
     case location
     case name
     case needsFreshFacebookToken = "needs_fresh_facebook_token"
