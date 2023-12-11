@@ -1,7 +1,6 @@
 import Library
 import SwiftUI
 
-// TODO(MBL-1039) - Refactor this so that saveTriggered takes a closure, not a binding
 struct LoadingBarButtonItem: View {
   @Binding var saveEnabled: Bool
   @Binding var showLoading: Bool

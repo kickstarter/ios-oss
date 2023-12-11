@@ -367,24 +367,9 @@ public struct Service: ServiceType {
     -> AnyPublisher<UserEnvelope<GraphUserEmail>, ErrorEnvelope> {
     GraphQL.shared.client
       .fetch(query: GraphAPI.FetchUserEmailQuery())
-      // TODO: make this a custom extension, we'll want to reuse this pattern
-      .tryMap { (data: GraphAPI.FetchUserEmailQuery.Data) -> UserEnvelope<GraphUserEmail> in
-        guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: data) else {
-          throw ErrorEnvelope.couldNotParseJSON
-        }
-
-        return envelope
+      .mapFetchResults { (data: GraphAPI.FetchUserEmailQuery.Data) -> UserEnvelope<GraphUserEmail>? in
+        UserEnvelope<GraphUserEmail>.userEnvelope(from: data)
       }
-      .mapError { rawError in
-
-        if let error = rawError as? ErrorEnvelope {
-          return error
-        }
-
-        return ErrorEnvelope.couldNotParseJSON
-      }
-
-      .eraseToAnyPublisher()
   }
 
   public func fetchGraphUserSelf()

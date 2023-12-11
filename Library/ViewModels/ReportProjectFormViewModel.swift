@@ -57,24 +57,16 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
     self.saveTriggeredSubject
       .compactMap { [weak self] _ in
         self?.createFlaggingInput()
+          .handleFailureAndAllowRetry { _ in
+            self?.bannerMessage = MessageBannerViewViewModel((
+              type: .error,
+              message: Strings.Something_went_wrong_please_try_again()
+            ))
+            self?.saveButtonEnabled = true
+            self?.saveButtonLoading = false
+          }
       }
-      .flatMap { [weak self] createFlaggingInput in
-        createFlaggingInput.catch { _ in
-          // An API error happens.
-          // We need to catch this up here in flatMap, instead of in sink,
-          // because we don't want an API failure to cancel this pipeline.
-          // If the pipeline gets canceled, you can't re-submit after a failure.
-
-          self?.bannerMessage = MessageBannerViewViewModel((
-            type: .error,
-            message: Strings.Something_went_wrong_please_try_again()
-          ))
-          self?.saveButtonEnabled = true
-          self?.saveButtonLoading = false
-
-          return Empty<EmptyResponseEnvelope, Never>()
-        }
-      }
+      .flatMap { $0 }
       .sink(receiveValue: { [weak self] _ in
         // Submitted successfully
 
