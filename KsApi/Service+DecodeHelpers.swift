@@ -43,4 +43,13 @@ extension Service {
     return SignalProducer(value: json)
       .map { json in try? JSONDecoder().decode(T.self, from: json) }
   }
+
+  func decodeModel<T: Decodable>(data json: Data, ofType type: T.Type) -> Result<T?, ErrorEnvelope> {
+    do {
+      let decodedObject = try JSONDecoder().decode(type, from: json)
+      return .success(decodedObject)
+    } catch {
+      return .failure(.couldNotDecodeJSON(error))
+    }
+  }
 }
