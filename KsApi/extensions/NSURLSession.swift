@@ -96,20 +96,6 @@ internal extension URLSession {
       }.eraseToAnyPublisher()
   }
 
-  // Converts an URLSessionTask into a signal producer of raw JSON data. If the JSON does not parse
-  // successfully, an `ErrorEnvelope.errorJSONCouldNotParse()` error is emitted.
-  func rac_JSONResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil)
-    -> SignalProducer<Any, ErrorEnvelope> {
-    return self.rac_dataResponse(request, uploading: file)
-      .map(parseJSONData)
-      .flatMap { json -> SignalProducer<Any, ErrorEnvelope> in
-        guard let json = json else {
-          return .init(error: .couldNotParseJSON)
-        }
-        return .init(value: json)
-      }
-  }
-
   fileprivate static let sanitationRules = [
     "oauth_token=[REDACTED]":
       try! NSRegularExpression(pattern: "oauth_token=([a-zA-Z0-9]*)", options: .caseInsensitive),
