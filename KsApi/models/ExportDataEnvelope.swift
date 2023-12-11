@@ -16,7 +16,7 @@ public struct ExportDataEnvelope {
     case failed
     case expired
     case unknown // Default value if server response can't be parsed.
-    
+
     // Throws error if the value isn't a valid string. If the value is a valid string, it maps to
     // its corresponding enum case, if it exists, and to `unknown` otherwise.
     public init(from decoder: Decoder) throws {
