@@ -5,7 +5,7 @@ public struct ExportDataEnvelope {
   public var state: State
   public let dataUrl: String?
 
-  public enum State: String, Decodable {
+  public enum State: String, Decodable, Equatable {
     case none
     case created
     case queued
