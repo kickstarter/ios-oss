@@ -31,13 +31,21 @@ final class ReportProjectFormViewModelTests: TestCase {
       userEmail.observe(vm.$retrievedEmail)
 
       XCTAssertEqual(userEmail.events.count, 1)
-      XCTAssertEqual(userEmail.events.last, Optional.some(nil))
+
+      if case let .value(value) = userEmail.events.last {
+        XCTAssertEqual(value, nil)
+      }
 
       vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
       XCTAssertEqual(userEmail.events.count, 2)
-      XCTAssertEqual(userEmail.events.last, Optional("nativesquad@ksr.com"))
+
+      if case let .value(value) = userEmail.events.last {
+        XCTAssertEqual(value, "nativesquad@ksr.com")
+      } else {
+        XCTFail()
+      }
     }
   }
 
@@ -50,14 +58,28 @@ final class ReportProjectFormViewModelTests: TestCase {
     saveButtonEnabled.observe(vm.$saveButtonEnabled)
 
     XCTAssertEqual(saveButtonEnabled.events.count, 1)
-    XCTAssertEqual(saveButtonEnabled.events.last, false)
+
+    if case let .value(value) = saveButtonEnabled.events.last {
+      XCTAssertEqual(value, false)
+    } else {
+      XCTFail()
+    }
 
     vm.detailsText = "This is my report. I don't like this project very much."
     XCTAssertEqual(saveButtonEnabled.events.count, 2)
-    XCTAssertEqual(saveButtonEnabled.events.last, true)
+    if case let .value(value) = saveButtonEnabled.events.last {
+      XCTAssertEqual(value, true)
+    } else {
+      XCTFail()
+    }
 
     vm.detailsText = ""
+
     XCTAssertEqual(saveButtonEnabled.events.count, 3)
-    XCTAssertEqual(saveButtonEnabled.events.last, false)
+    if case let .value(value) = saveButtonEnabled.events.last {
+      XCTAssertEqual(value, false)
+    } else {
+      XCTFail()
+    }
   }
 }
