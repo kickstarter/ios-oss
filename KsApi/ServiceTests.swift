@@ -119,4 +119,55 @@ final class ServiceTests: XCTestCase {
     let result = try! model.single()?.get()
     XCTAssertNil(result)
   }
+
+  func testSwiftDecodeModel_ValidModel_Combine() {
+    let expectedResult = MySwiftModel(
+      array: ["string1", "string2"],
+      bool: true,
+      dict: ["key1": "value1", "key2": "value2"],
+      id: 5,
+      name: "Swift Name"
+    )
+
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+
+    let data = jsonData.data(using: .utf8)!
+    let result: Result<MySwiftModel?, ErrorEnvelope> = Service()
+      .decodeModel(data: data, ofType: MySwiftModel.self)
+
+    switch result {
+    case let .success(decodedModel):
+      if let decodedModelUnwrapped = decodedModel {
+        XCTAssertEqual(expectedResult, decodedModelUnwrapped)
+      } else {
+        XCTFail("Decoded model is nil")
+      }
+    case .failure: XCTFail("Failed to decode model")
+    }
+  }
+
+  func testSwiftDecodeModel_InvalidModel_Combine() {
+    let jsonData: String = """
+    {
+        "notAValidKey": "foo"
+    }
+    """
+
+    let data = jsonData.data(using: .utf8)!
+    let result: Result<MySwiftModel?, ErrorEnvelope> = Service()
+      .decodeModel(data: data, ofType: MySwiftModel.self)
+
+    switch result {
+    case .success: XCTFail("Decode should have failed.")
+    case let .failure(error): XCTAssertNotNil(error)
+    }
+  }
 }
