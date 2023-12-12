@@ -47,10 +47,11 @@ extension Service {
       case let .failure(error):
         throw error
       }
-    }.compactMap { $0 }
-      .mapError { error in
-        error as! ErrorEnvelope
-      }.eraseToAnyPublisher()
+    }
+    .compactMap { $0 }
+    .mapError { error in
+      error as! ErrorEnvelope
+    }.eraseToAnyPublisher()
   }
 
   func requestPaginationDecodable<M: Decodable>(_ paginationUrl: String)

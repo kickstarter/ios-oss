@@ -170,4 +170,64 @@ final class ServiceTests: XCTestCase {
     case let .failure(error): XCTAssertNotNil(error)
     }
   }
+
+  /*
+   These two tests shouldn't actually *run* in our testing environment, because we don't want to make real network requests
+   in our real tests. But it's a useful little utility for comparing the Combine and ReactiveSwift version of the
+   API V1 call Request.
+   */
+
+  /*
+   func testCompareRequest_Successful_RAC_vs_Combine() {
+     let service = Service(serverConfig: ServerConfig.production)
+     var project = Project.template
+     project.id = 152885112
+
+     let rac_publisher = service.fetchProject(project: project)
+     let combine_publisher = service.fetchProject_combine(project: project)
+
+     let combine_observer = CombineTestObserver<Project, ErrorEnvelope>()
+     combine_observer.observe(combine_publisher)
+
+     _ = XCTWaiter.wait(for: [expectation(description: "Wait 10 seconds for the server call.")], timeout: 10.0)
+
+     let r1 = rac_publisher.first()
+     let r2 = combine_observer.events.first
+
+     if case let .success(p1) = r1 {
+       if case let .value(p2) = r2 {
+         XCTAssertEqual(p1, p2)
+         return
+       }
+     }
+
+     XCTFail()
+   }
+
+   func testCompareRequest_Failure_RAC_vs_Combine() {
+     let service = Service(serverConfig: ServerConfig.production)
+     var project = Project.template
+     project.id = 1 //Not a real project ID
+
+     let rac_publisher = service.fetchProject(project: project)
+     let combine_publisher = service.fetchProject_combine(project: project)
+
+     let combine_observer = CombineTestObserver<Project, ErrorEnvelope>()
+     combine_observer.observe(combine_publisher)
+
+     _ = XCTWaiter.wait(for: [expectation(description: "Wait 10 seconds for the server call.")], timeout: 10.0)
+
+     let r1 = rac_publisher.first()
+     let r2 = combine_observer.events.first
+
+     if case let .failure(e1) = r1 {
+       if case let .error(e2) = r2 {
+         XCTAssertEqual(e1.errorMessages, e2.errorMessages)
+         return
+       }
+     }
+
+     XCTFail()
+   }
+   */
 }

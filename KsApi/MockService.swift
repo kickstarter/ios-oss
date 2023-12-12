@@ -1277,6 +1277,10 @@
         .fetchWithResult(query: fetchProjectCommentsQuery, result: projectOnlyResult)
     }
 
+    internal func fetchProject_combine(project _: Project) -> AnyPublisher<Project, ErrorEnvelope> {
+      fatalError("Sorry, this is unimplemented!")
+    }
+
     internal func fetchProjectActivities(forProject _: Project) ->
       SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
       if let error = fetchProjectActivitiesError {

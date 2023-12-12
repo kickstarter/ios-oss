@@ -227,6 +227,9 @@ public protocol ServiceType {
   /// Fetch the newest data for a particular project from its project value.
   func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope>
 
+  /// Fetch the newest data for a particular project from its project value.
+  func fetchProject_combine(project: Project) -> AnyPublisher<Project, ErrorEnvelope>
+
   /// Fetch a page of activities for a project.
   func fetchProjectActivities(forProject project: Project) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope>
