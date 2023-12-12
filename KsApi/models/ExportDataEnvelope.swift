@@ -2,29 +2,10 @@
 
 public struct ExportDataEnvelope {
   public let expiresAt: String?
+  public var state: State
   public let dataUrl: String?
-  public var state: State {
-    guard let rawState, let state = State(rawValue: rawState) else {
-      return .unknown
-    }
-    return state
-  }
 
-  private let rawState: String?
-
-  public init(expiresAt: String?, state: State, dataUrl: String?) {
-    self.expiresAt = expiresAt
-    self.dataUrl = dataUrl
-    self.rawState = state.rawValue
-  }
-
-  public init(expiresAt: String?, rawState: String?, dataUrl: String?) {
-    self.expiresAt = expiresAt
-    self.dataUrl = dataUrl
-    self.rawState = rawState
-  }
-
-  public enum State: String, Decodable {
+  public enum State: String, Decodable, Equatable {
     case none
     case created
     case queued
@@ -35,13 +16,20 @@ public struct ExportDataEnvelope {
     case failed
     case expired
     case unknown // Default value if server response can't be parsed.
+
+    // Throws error if the value isn't a valid string. If the value is a valid string, it maps to
+    // its corresponding enum case, if it exists, and to `unknown` otherwise.
+    public init(from decoder: Decoder) throws {
+      let rawSelf = try decoder.singleValueContainer().decode(String.self)
+      self = .init(rawValue: rawSelf) ?? .unknown
+    }
   }
 }
 
 extension ExportDataEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case expiresAt = "expires_at"
-    case rawState = "state"
+    case state
     case dataUrl = "data_url"
   }
 }

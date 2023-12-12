@@ -344,6 +344,7 @@
 		37FDAFAC2273BA4700662CC8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAF702273B7FF00662CC8 /* UIStackView.swift */; };
 		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
+		39742BBF2B27AA8D004944E6 /* ExportDataEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39742BBD2B27A91C004944E6 /* ExportDataEnvelopeTests.swift */; };
 		399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
 		399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
@@ -1889,6 +1890,7 @@
 		37FDAF702273B7FF00662CC8 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tests.swift"; sourceTree = "<group>"; };
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
+		39742BBD2B27A91C004944E6 /* ExportDataEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelopeTests.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4705D8972742E20900A13BBE /* ProjectHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCell.swift; sourceTree = "<group>"; };
 		470B771926FCDC8900EBD5CA /* RiskMessagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewModel.swift; sourceTree = "<group>"; };
@@ -6642,6 +6644,7 @@
 				D015878F1EEB2ED6006E7684 /* ErrorEnvelope.swift */,
 				D01587901EEB2ED6006E7684 /* ErrorEnvelopeTests.swift */,
 				D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */,
+				39742BBD2B27A91C004944E6 /* ExportDataEnvelopeTests.swift */,
 				D01587911EEB2ED6006E7684 /* FindFriendsEnvelope.swift */,
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
@@ -8788,6 +8791,7 @@
 				47A662F726AF75B7001CE7B1 /* GraphAPI.WatchProjectInput+WatchProjectInputTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
 				069CD29726B08C170076045F /* GraphAPI.UpdateUserProfileInput+UpdateUserProfileInputTests.swift in Sources */,
+				39742BBF2B27AA8D004944E6 /* ExportDataEnvelopeTests.swift in Sources */,
 				064AEF11270CF867006605DD /* FetchProjectRewardsByIdQueryTemplate.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
 				0620176E276956D600818A47 /* GraphCommentTests.swift in Sources */,
