@@ -168,11 +168,18 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       }
     )
 
-    self.replyButtonIsEnabled = Signal.merge(
+    self.participantPreviouslyBlocked = self.project
+      .map { $0.creator.isBlocked }
+      .takeWhen(self.viewWillAppearProperty.signal)
+
+    self.replyButtonIsEnabled = Signal.combineLatest(
       self.viewDidLoadProperty.signal.mapConst(false),
       self.messages.map { !$0.isEmpty },
-      participant.signal.map { $0.isBlocked == false }
+      self.participantPreviouslyBlocked
     )
+    .map { _, messages, isBlocked in
+      messages && !isBlocked
+    }
 
     self.presentMessageDialog = messageThreadEnvelope
       .map { ($0.messageThread, .messages) }
@@ -214,10 +221,6 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     // TODO: Display proper error messaging from the backend
     self.didBlockUserError = blockUserEvent.errors().ignoreValues()
-
-    self.participantPreviouslyBlocked = self.project
-      .map { $0.creator.isBlocked }
-      .takeWhen(self.viewWillAppearProperty.signal)
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
