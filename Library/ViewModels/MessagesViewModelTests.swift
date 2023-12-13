@@ -218,8 +218,10 @@ internal final class MessagesViewModelTests: TestCase {
     }
   }
 
-  func testReplyFlow() {
-    let project = Project.template |> Project.lens.id .~ 42
+  func testReplyFlow_participantIsNotBlocked() {
+    let project = Project.template
+      |> Project.lens.id .~ 42
+      |> \.creator.isBlocked .~ false
     let backing = Backing.template
     let messageThread = .template
       |> MessageThread.lens.project .~ project
@@ -234,15 +236,17 @@ internal final class MessagesViewModelTests: TestCase {
       self.emptyStateIsVisible.assertValueCount(0)
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
 
       self.messages.assertValueCount(0)
-      self.replyButtonIsEnabled.assertValues([false])
+      self.participantPreviouslyBlocked.assertValueCount(1)
+      self.replyButtonIsEnabled.assertValues([])
       self.emptyStateIsVisible.assertValues([false])
 
       self.scheduler.advance()
 
       self.messages.assertValueCount(1)
-      self.replyButtonIsEnabled.assertValues([false, true, true])
+      self.replyButtonIsEnabled.assertValues([true])
       self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
 
       self.vm.inputs.replyButtonPressed()
@@ -254,6 +258,39 @@ internal final class MessagesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.messages.assertValueCount(2)
+    }
+  }
+
+  func testReplyFlow_participantIsBlocked() {
+    let project = Project.template
+      |> Project.lens.id .~ 42
+      |> \.creator.isBlocked .~ true
+    let backing = Backing.template
+    let messageThread = .template
+      |> MessageThread.lens.project .~ project
+      |> MessageThread.lens.participant .~ .template
+
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
+
+    withEnvironment(apiService: apiService, currentUser: .template) {
+      self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
+
+      self.replyButtonIsEnabled.assertValueCount(0)
+      self.emptyStateIsVisible.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+
+      self.messages.assertValueCount(0)
+      self.participantPreviouslyBlocked.assertValueCount(1)
+      self.replyButtonIsEnabled.assertValues([])
+      self.emptyStateIsVisible.assertValues([false])
+
+      self.scheduler.advance()
+
+      self.messages.assertValueCount(1)
+      self.replyButtonIsEnabled.assertValues([false])
+      self.emptyStateIsVisible.assertValues([false], "Empty state does not emit again.")
     }
   }
 
