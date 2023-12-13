@@ -173,11 +173,10 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       .takeWhen(self.viewWillAppearProperty.signal)
 
     self.replyButtonIsEnabled = Signal.combineLatest(
-      self.viewDidLoadProperty.signal.mapConst(false),
       self.messages.map { !$0.isEmpty },
       self.participantPreviouslyBlocked
     )
-    .map { _, messages, isBlocked in
+    .map { messages, isBlocked in
       messages && !isBlocked
     }
 
