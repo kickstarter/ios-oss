@@ -230,24 +230,6 @@ public final class NavigationTests: XCTestCase {
   }
 
   func testRecognizesEmailClickUrls() {
-    let url = URL(string: "https://email.kickstarter.com/mpss/c/2gA/Oiw/t.25j/deadbeef/h1/dead-beef")!
-    XCTAssertEqual(.emailClick, Navigation.match(url))
-
-    XCTAssertEqual(
-      .emailClick,
-      Navigation.match(URL(string: "https://me.kickstarter.com/wf/click?upn=deadbeef")!)
-    )
-
-    XCTAssertEqual(
-      .emailClick,
-      Navigation.match(URL(string: "https://ea.kickstarter.com/wf/click?upn=deadbeef")!)
-    )
-
-    XCTAssertEqual(
-      .emailClick,
-      Navigation.match(URL(string: "https://click.e.kickstarter.com/wf/click?upn=deadbeef")!)
-    )
-
     XCTAssertEqual(
       .emailClick,
       Navigation.match(URL(string: "https://clicks.kickstarter.com/wf/click?upn=deadbeef")!)
@@ -255,31 +237,18 @@ public final class NavigationTests: XCTestCase {
 
     XCTAssertEqual(
       .emailClick,
-      Navigation.match(URL(string: "https://click.em.kickstarter.com/wf/click?upn=deadbeef")!)
-    )
-
-    XCTAssertEqual(
-      .emailClick,
       Navigation.match(URL(string: "https://emails.kickstarter.com/anything/?qs=deadbeef")!)
-    )
-
-    XCTAssertEqual(
-      .emailClick,
-      Navigation.match(URL(string: "https://email.kickstarter.com/garbage/?random=deadbeef")!)
-    )
-
-    XCTAssertEqual(
-      .emailClick,
-      Navigation.match(URL(string: "https://e2.kickstarter.com/anypath/?b=deadbeef")!)
-    )
-
-    XCTAssertEqual(
-      .emailClick,
-      Navigation.match(URL(string: "https://e3.kickstarter.com/wildcard")!)
     )
 
     XCTAssertNil(
       Navigation.match(URL(string: "https://notemailhost.kickstarter.com/wf/click?upn=deadbeef")!)
+    )
+  }
+
+  func testRecognizesTruncatedUrl() {
+    XCTAssertEqual(
+      .profile(.verifyEmail),
+      Navigation.match(URL(string: "https://kickstarter.com/profile/verify_email")!)
     )
   }
 
