@@ -506,7 +506,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="pUe-X9-gXs">
-                        <barButtonItem key="rightBarButtonItem" id="mFf-pV-0Nc">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" id="mFf-pV-0Nc">
                             <connections>
                                 <action selector="replyButtonPressed" destination="KOm-AI-SFW" id="Cxt-yR-ytl"/>
                             </connections>
@@ -647,15 +647,15 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="OMa-kG-hIb">
                         <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" misplaced="YES" id="3ac-Dg-U5u" userLabel="Title view">
+                        <view key="titleView" contentMode="scaleToFill" id="3ac-Dg-U5u" userLabel="Title view">
                             <rect key="frame" x="16" y="5.5" width="343" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DrS-Lz-KGw">
-                                    <rect key="frame" x="12" y="0.0" width="335" height="33"/>
+                                    <rect key="frame" x="12" y="0.0" width="319" height="33"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="E9A-bD-5Mg" userLabel="Search">
-                                            <rect key="frame" x="0.0" y="5.5" width="307" height="22"/>
+                                            <rect key="frame" x="0.0" y="5.5" width="291" height="22"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <userDefinedRuntimeAttributes>
@@ -667,7 +667,7 @@
                                             </connections>
                                         </textField>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Kwa-lS-ZfK" userLabel="Loading">
-                                            <rect key="frame" x="315" y="6.5" width="20" height="20"/>
+                                            <rect key="frame" x="299" y="6.5" width="20" height="20"/>
                                         </activityIndicatorView>
                                     </subviews>
                                 </stackView>
