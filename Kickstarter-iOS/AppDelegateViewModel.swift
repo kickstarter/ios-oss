@@ -118,6 +118,7 @@ public protocol AppDelegateViewModelOutputs {
   var emailVerificationCompleted: Signal<(String, Bool), Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
+  /// Required in order to handle email links.
   var findRedirectUrl: Signal<URL, Never> { get }
 
   /// Emits when opening the app with an invalid access token.
@@ -315,7 +316,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
 
-    // Deep links
+    // Deep links. For more information, see
+    // https://app.getguru.com/card/cyRdjqgi/How-iOS-Universal-Links-work
 
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
       .map(PushEnvelope.decodeJSONDictionary)

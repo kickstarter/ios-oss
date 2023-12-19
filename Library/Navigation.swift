@@ -115,7 +115,7 @@ extension Navigation {
 }
 
 private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
-  "/": emailClick,
+  "/": emailClick, // Email clicks require a redirect in order to find the actual path.
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -500,15 +500,8 @@ private func settingsNotifications(_ params: RouteParamsDecoded) -> Navigation? 
 
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParamsDecoded? {
   let recognizedEmailHosts = [
-    "me.kickstarter.com",
-    "ea.kickstarter.com",
     "clicks.kickstarter.com",
-    "click.e.kickstarter.com",
-    "click.em.kickstarter.com",
-    "emails.kickstarter.com",
-    "email.kickstarter.com",
-    "e2.kickstarter.com",
-    "e3.kickstarter.com"
+    "emails.kickstarter.com"
   ]
 
   let hostRecognizer = { accum, host in
@@ -519,7 +512,9 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
 
   let recognizedHosts = [
     AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
-    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host,
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host?
+      .replacingOccurrences(of: "www.", with: "")
   ].compact()
 
   let isRecognizedHost = recognizedHosts.reduce(false, hostRecognizer)

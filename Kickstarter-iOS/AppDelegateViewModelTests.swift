@@ -1681,7 +1681,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testEmailDeepLinking() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
-      let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+      let emailUrl = URL(string: "https://clicks.kickstarter.com/?qs=deadbeef")!
 
       // The application launches.
       self.vm.inputs.applicationDidFinishLaunching(
@@ -1718,7 +1718,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testEmailDeepLinking_ContinuedUserActivity() {
     withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
-      let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+      let emailUrl = URL(string: "https://emails.kickstarter.com/?qs=deadbeef")!
       let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
       userActivity.webpageURL = emailUrl
 
@@ -1752,7 +1752,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testEmailDeepLinking_UnrecognizedUrl() {
-    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    let emailUrl = URL(string: "https://clicks.kickstarter.com/?qs=deadbeef")!
 
     // The application launches.
     self.vm.inputs.applicationDidFinishLaunching(
@@ -1788,7 +1788,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testEmailDeepLinking_UnrecognizedUrl_ProjectPreview() {
-    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    let emailUrl = URL(string: "https://emails.kickstarter.com/?qs=deadbeef")!
 
     // The application launches.
     self.vm.inputs.applicationDidFinishLaunching(
@@ -1821,43 +1821,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
     self.presentViewController.assertValues([], "Do not present controller since the url was unrecognizable.")
     self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
-  }
-
-  func testOtherEmailDeepLink() {
-    withEnvironment(apiService: MockService(fetchProjectResult: .success(.template))) {
-      let emailUrl = URL(string: "https://email.kickstarter.com/mpss/a/b/c/d/e/f/g")!
-
-      // The application launches.
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.findRedirectUrl.assertValues([])
-      self.presentViewController.assertValues([])
-      self.goToMobileSafari.assertValues([])
-
-      // We deep-link to an email url.
-      self.vm.inputs.applicationDidEnterBackground()
-      self.vm.inputs.applicationWillEnterForeground()
-      let result = self.vm.inputs.applicationOpenUrl(
-        application: UIApplication.shared,
-        url: emailUrl,
-        options: [:]
-      )
-      XCTAssertTrue(result)
-
-      self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
-      self.presentViewController.assertValues([], "No view controller is presented yet.")
-      self.goToMobileSafari.assertValues([])
-
-      // We find the redirect to be a project url.
-      self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
-
-      self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
-      self.presentViewController.assertValueCount(1, "Present the project view controller.")
-      self.goToMobileSafari.assertValues([])
-    }
   }
 
   func testProjectSurveyDeepLink() {
