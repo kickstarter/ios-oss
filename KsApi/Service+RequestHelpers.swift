@@ -22,7 +22,7 @@ extension Service {
       uploading: properties.file.map { ($1, $0.rawValue) },
       and: self.perimeterXClient
     )
-    .flatMap(self.decodeModel)
+    .flatMap(self.decodeModelToSignal)
   }
 
   func request<M: Decodable>(_ route: Route) -> AnyPublisher<M, ErrorEnvelope> {
@@ -39,7 +39,7 @@ extension Service {
       uploading: properties.file.map { ($1, $0.rawValue) },
       and: self.perimeterXClient
     ).tryMap { data in
-      let result: Result<M?, ErrorEnvelope> = self.decodeModel(data: data, ofType: M.self)
+      let result: Result<M?, ErrorEnvelope> = self.decodeModelToResult(data: data, ofType: M.self)
 
       switch result {
       case let .success(value):
@@ -62,6 +62,6 @@ extension Service {
 
     return Service.session
       .rac_dataResponse(preparedRequest(forURL: paginationUrl), and: self.perimeterXClient)
-      .flatMap(self.decodeModel)
+      .flatMap(self.decodeModelToSignal)
   }
 }

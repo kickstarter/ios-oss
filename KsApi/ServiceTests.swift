@@ -67,7 +67,7 @@ final class ServiceTests: XCTestCase {
     let expectedResult = try! JSONDecoder().decode(MySwiftModel.self, from: jsonData.data(using: .utf8)!)
 
     let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
-      .decodeModel(jsonData.data(using: .utf8)!)
+      .decodeModelToSignal(jsonData.data(using: .utf8)!)
     let result = try! model.single()?.get()
     XCTAssertEqual(result, expectedResult)
   }
@@ -84,7 +84,7 @@ final class ServiceTests: XCTestCase {
     """
 
     let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
-      .decodeModel(jsonData.data(using: .utf8)!)
+      .decodeModelToSignal(jsonData.data(using: .utf8)!)
     XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
   }
 
@@ -100,7 +100,7 @@ final class ServiceTests: XCTestCase {
     """
 
     let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
-      .decodeModel(jsonData.data(using: .utf8)!)
+      .decodeModelToSignal(jsonData.data(using: .utf8)!)
     XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
   }
 
@@ -115,7 +115,7 @@ final class ServiceTests: XCTestCase {
     }
     """
     let data = jsonData.data(using: .utf8)!
-    let model: SignalProducer<MySwiftModel?, ErrorEnvelope> = Service().decodeModel(data: data)
+    let model: SignalProducer<MySwiftModel?, ErrorEnvelope> = Service().decodeModelToSignal(data: data)
     let result = try! model.single()?.get()
     XCTAssertNil(result)
   }
@@ -141,7 +141,7 @@ final class ServiceTests: XCTestCase {
 
     let data = jsonData.data(using: .utf8)!
     let result: Result<MySwiftModel?, ErrorEnvelope> = Service()
-      .decodeModel(data: data, ofType: MySwiftModel.self)
+      .decodeModelToResult(data: data, ofType: MySwiftModel.self)
 
     switch result {
     case let .success(decodedModel):
@@ -163,7 +163,7 @@ final class ServiceTests: XCTestCase {
 
     let data = jsonData.data(using: .utf8)!
     let result: Result<MySwiftModel?, ErrorEnvelope> = Service()
-      .decodeModel(data: data, ofType: MySwiftModel.self)
+      .decodeModelToResult(data: data, ofType: MySwiftModel.self)
 
     switch result {
     case .success: XCTFail("Decode should have failed.")
