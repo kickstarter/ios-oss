@@ -130,8 +130,8 @@ private let defaultSessionError =
 private let boundary = "k1ck574r73r154c0mp4ny"
 
 extension URLSession {
-  fileprivate func addFileUploadToRequest(_ request: URLRequest, uploading file: URL,
-                                          named name: String) -> URLRequest {
+  fileprivate func requestWithFileUpload(_ request: URLRequest, uploading file: URL,
+                                         named name: String) -> URLRequest {
     var mutableRequest = request
 
     guard
@@ -157,7 +157,7 @@ extension URLSession {
   // Returns a producer that will execute the given upload once for each invocation of start().
   fileprivate func rac_requestWithFileUpload(_ request: URLRequest, uploading file: URL, named name: String)
     -> SignalProducer<(Data, URLResponse), Error> {
-    let finalRequest = self.addFileUploadToRequest(request, uploading: file, named: name)
+    let finalRequest = self.requestWithFileUpload(request, uploading: file, named: name)
 
     return SignalProducer { observer, disposable in
       let task = self.dataTask(with: finalRequest) { data, response, error in
@@ -180,7 +180,7 @@ extension URLSession {
     (data: Data, response: URLResponse),
                                                    URLError
                                                  > {
-    let finalRequest = self.addFileUploadToRequest(request, uploading: file, named: name)
+    let finalRequest = self.requestWithFileUpload(request, uploading: file, named: name)
 
     let subject = PassthroughSubject<(Data, URLResponse), Error>()
 
