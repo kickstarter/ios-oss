@@ -115,7 +115,7 @@ extension Navigation {
 }
 
 private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
-  "/": emailClick,
+  "/": emailClick, // Email clicks require a redirect in order to find the actual path.
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
