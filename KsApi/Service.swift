@@ -511,6 +511,10 @@ public struct Service: ServiceType {
     return request(.project(.id(project.id)))
   }
 
+  public func fetchProject_combine(project: Project) -> AnyPublisher<Project, ErrorEnvelope> {
+    return request(.project(.id(project.id)))
+  }
+
   public func fetchProjectActivities(forProject project: Project) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
     return request(.projectActivities(project))
