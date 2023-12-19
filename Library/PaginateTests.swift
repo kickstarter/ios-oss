@@ -1,8 +1,12 @@
+import Combine
+import KsApi
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
+
+struct ConcreteError: Error {}
 
 final class PaginateTests: TestCase {
   let (newRequest, newRequestObserver) = Signal<Int, Never>.pipe()
@@ -234,6 +238,116 @@ final class PaginateTests: TestCase {
       [true, false, true, false, true, false, true, false, true, false],
       "Loading finishes."
     )
+  }
+
+  func testPaginateFlow_combine() {
+    let newRequest_combine = PassthroughSubject<Int, Never>()
+    let nextPage_combine = PassthroughSubject<(), Never>()
+    let requestFromParams_combine: (Int) -> any Publisher<[Int], ConcreteError> = { p in
+      Just([p]).setFailureType(to: ConcreteError.self)
+    }
+    let requestFromCursor_combine: (Int) -> any Publisher<[Int], ConcreteError> = { c in
+      Just(c <= 2 ? [c] : []).setFailureType(to: ConcreteError.self)
+    }
+
+    let (values, loading, _, _) = paginate_combine(
+      requestFirstPageWith: newRequest_combine,
+      requestNextPageWhen: nextPage_combine,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams_combine,
+      requestFromCursor: requestFromCursor_combine
+    )
+
+    let valuesTest = CombineTestObserver<[Int], Never>()
+    valuesTest.observe(values)
+
+    let loadingTest = CombineTestObserver<Bool, Never>()
+    loadingTest.observe(loading)
+
+    valuesTest.assertDidNotEmitValue("No values emit immediately.")
+    valuesTest.assertDidNotFinish()
+    loadingTest.assertDidNotEmitValue("No loading happens immediately.")
+    loadingTest.assertDidNotFinish()
+
+    // Here's all the implementation that isn't actually finished yet.
+    // The new paginate method, and this test method, are stubs.
+
+    /*
+
+     // Start request for new set of values.
+     newRequest_combine.send(1)
+
+     valuesTest.assertDidNotEmitValue("No values emit immediately.")
+     loadingTest.assertValues([true], "Loading starts.")
+
+     // Wait enough time for request to finish.
+     self.scheduler.advance()
+
+     valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
+     loadingTest.assertValues([true, false], "Loading stops.")
+
+     // Request next page of values.
+     self.nextPageObserver.send(value: ())
+
+     valuesTest.assertValues([[1]], "No values emit immediately.")
+     loadingTest.assertValues([true, false, true], "Loading starts.")
+
+     // Wait enough time for request to finish.
+     self.scheduler.advance()
+
+     valuesTest.assertValues([[1], [1, 2]], "New page of values emit after waiting enough time.")
+     loadingTest.assertValues([true, false, true, false], "Loading stops.")
+
+     // Request next page of results (this page is empty since the last request exhausted the results.)
+     self.nextPageObserver.send(value: ())
+
+     valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
+     loadingTest.assertValues([true, false, true, false, true], "Loading starts.")
+
+     // Wait enough time for request to finish.
+     self.scheduler.advance()
+
+     valuesTest.assertValues([[1], [1, 2]], "No values emit since we exhausted all pages.")
+     loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
+
+     // Try request for yet another page of values.
+     self.nextPageObserver.send(value: ())
+
+     valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
+     loadingTest.assertValues([true, false, true, false, true, false], "Loading does not start again.")
+
+     // Wait enough time for request to finish.
+     self.scheduler.advance()
+
+     valuesTest.assertValues([[1], [1, 2]], "Still no values emit.")
+     loadingTest.assertValues([true, false, true, false, true, false], "Loading did not start or stop again.")
+
+     // Start over with a new request
+     self.newRequestObserver.send(value: 0)
+
+     valuesTest.assertValues([[1], [1, 2], []], "Values clear immediately.")
+     loadingTest.assertValues([true, false, true, false, true, false, true], "Loading started.")
+
+     // Wait enough time for request to finish.
+     self.scheduler.advance()
+
+     valuesTest.assertValues([[1], [1, 2], [], [0]], "New page of values emits.")
+     loadingTest.assertValues([true, false, true, false, true, false, true, false], "Loading finishes.")
+
+     self.nextPageObserver.send(value: ())
+
+     valuesTest.assertValues([[1], [1, 2], [], [0]], "New page of values emits.")
+     loadingTest.assertValues([true, false, true, false, true, false, true, false, true], "Loading finishes.")
+
+     self.scheduler.advance()
+
+     valuesTest.assertValues([[1], [1, 2], [], [0], [0, 1]], "New page of values emits.")
+     loadingTest.assertValues(
+       [true, false, true, false, true, false, true, false, true, false],
+       "Loading finishes."
+     )*/
   }
 
   func testPaginateFlow_Errors() {

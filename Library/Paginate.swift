@@ -1,3 +1,4 @@
+import Combine
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
@@ -105,5 +106,40 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
     isLoading.signal,
     pageCount,
     errors.signal.skipNil()
+  )
+}
+
+public func paginate_combine<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams>(
+  requestFirstPageWith _: any Publisher<RequestParams, Never>,
+  requestNextPageWhen _: any Publisher<(), Never>,
+  clearOnNewRequest _: Bool,
+  skipRepeats _: Bool = true,
+  valuesFromEnvelope _: @escaping ((Envelope) -> [Value]),
+  cursorFromEnvelope _: @escaping ((Envelope) -> Cursor),
+  requestFromParams _: @escaping ((RequestParams) -> any Publisher<Envelope, ErrorEnvelope>),
+  requestFromCursor _: @escaping ((Cursor) -> any Publisher<Envelope, ErrorEnvelope>),
+  concater _: @escaping (([Value], [Value]) -> [Value]) = (+)
+)
+  ->
+  (
+    paginatedValues: AnyPublisher<[Value], Never>,
+    isLoading: AnyPublisher<Bool, Never>,
+    pageCount: AnyPublisher<Int, Never>,
+    errors: AnyPublisher<ErrorEnvelope, Never>
+  ) {
+  let paginatedValues = Empty(completeImmediately: false, outputType: [Value].self, failureType: Never.self)
+    .eraseToAnyPublisher()
+  let isLoading = Empty(completeImmediately: false, outputType: Bool.self, failureType: Never.self)
+    .eraseToAnyPublisher()
+  let pageCount = Empty(completeImmediately: false, outputType: Int.self, failureType: Never.self)
+    .eraseToAnyPublisher()
+  let errors = Empty(completeImmediately: false, outputType: ErrorEnvelope.self, failureType: Never.self)
+    .eraseToAnyPublisher()
+
+  return (
+    paginatedValues,
+    isLoading,
+    pageCount,
+    errors
   )
 }
