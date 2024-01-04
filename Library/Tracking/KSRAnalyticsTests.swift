@@ -984,7 +984,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      page: .projectPage,
+      page: .project,
       typeContext: .watch
     )
 
@@ -1005,7 +1005,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      page: .projectPage,
+      page: .project,
       typeContext: .unwatch
     )
 

@@ -43,7 +43,7 @@ public final class KSRAnalytics {
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card"
     case pledgeScreen = "pledge" // PledgeViewController
-    case projectPage = "project" // ProjectPageViewController
+    case project // ProjectPageViewController
     case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
@@ -760,7 +760,7 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
-      .withAllValuesFrom(contextProperties(page: .projectPage))
+      .withAllValuesFrom(contextProperties(page: .project))
 
     self.track(
       event: SegmentEvent.videoPlaybackStarted.rawValue,
@@ -808,7 +808,7 @@ public final class KSRAnalytics {
     project: Project
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .projectPage))
+      .withAllValuesFrom(contextProperties(page: .project))
 
     switch stateType {
     case .pledge:
@@ -1103,7 +1103,7 @@ public final class KSRAnalytics {
     sectionContext: KSRAnalytics.SectionContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .projectPage, sectionContext: sectionContext))
+      .withAllValuesFrom(contextProperties(page: .project, sectionContext: sectionContext))
 
     self.track(
       event: SegmentEvent.pageViewed.rawValue,
@@ -1151,7 +1151,7 @@ public final class KSRAnalytics {
 
   public func trackGotoCreatorDetailsClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
+      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .project))
 
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
@@ -1165,7 +1165,7 @@ public final class KSRAnalytics {
    */
   public func trackCampaignDetailsButtonClicked(project: Project) {
     let props = projectProperties(from: project)
-      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
+      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .project))
 
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
