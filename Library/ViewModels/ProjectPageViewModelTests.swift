@@ -2017,6 +2017,89 @@ final class ProjectPageViewModelTests: TestCase {
     self.goToURL.assertValue(url)
   }
 
+  func testTrackUserBlockedFromProject_InitialEventTracked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(
+      apiService: MockService(
+        fetchProjectPamphletResult: .success(projectPamphletData)
+      ),
+      currentUser: User.template,
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+      self.vm.inputs.blockUser(id: 111)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["CTA Clicked"])
+
+      XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["\(User.template.id)"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["block_user"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_location"), ["creator_details_menu"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["project"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_section"), ["overview"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate"])
+      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111"])
+    }
+  }
+
+  func testTrackUserBlockedFromProject_ConfirmedEventTracked() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    let projectPamphletData = Project.ProjectPamphletData(project: .template, backingId: nil)
+
+    withEnvironment(
+      apiService: MockService(
+        blockUserResult: .success(EmptyResponseEnvelope()),
+        fetchProjectPamphletResult: .success(projectPamphletData)
+      ),
+      currentUser: User.template,
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+      self.vm.inputs.blockUser(id: 111)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["CTA Clicked", "CTA Clicked"])
+
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
+        [true, true]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1", "1"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["block_user", "block_user"])
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "context_location"),
+        ["creator_details_menu", "creator_details_menu"]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["project", "project"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_section"), ["overview", "overview"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate", "confirm"])
+      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111", "111"])
+    }
+  }
+
   // MARK: - Functions
 
   private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
