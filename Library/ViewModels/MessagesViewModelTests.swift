@@ -384,6 +384,71 @@ internal final class MessagesViewModelTests: TestCase {
     }
   }
 
+  func testTrackUserBlockedFromMessage_InitialEventEmitted() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    withEnvironment(currentUser: .template, ksrAnalytics: ksrAnalytics) {
+      self.vm.inputs.configureWith(data: .right((project: .template, backing: .template)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.blockUser(id: "111")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["CTA Clicked"])
+
+      XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["\(User.template.id)"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["block_user"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["messages"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate"])
+      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111"])
+    }
+  }
+
+  func testTrackUserBlockedFromMessage_ConfirmEventEmitted() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    withEnvironment(
+      apiService: MockService(blockUserResult: .success(EmptyResponseEnvelope())),
+      currentUser: .template,
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs.configureWith(data: .right((project: .template, backing: .template)))
+
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.blockUser(id: "111")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["CTA Clicked", "CTA Clicked"])
+
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
+        [true, true]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1", "1"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["block_user", "block_user"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["messages", "messages"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate", "confirm"])
+      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111", "111"])
+    }
+  }
+
   func testMarkAsRead() {
     self.vm.inputs.configureWith(data: .left(MessageThread.template))
     self.vm.inputs.viewDidLoad()

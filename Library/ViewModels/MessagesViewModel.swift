@@ -220,6 +220,23 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     // TODO: Display proper error messaging from the backend
     self.didBlockUserError = blockUserEvent.errors().ignoreValues()
+
+    // MARK: User Blocking Analytics
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: self.project)
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackUserBlockedFromMessage(project, typeContext: .initiate, targetUserId: "\(blockedUserId)")
+      }
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: self.project)
+      .takeWhen(blockUserEvent.values().ignoreValues())
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackUserBlockedFromMessage(project, typeContext: .confirm, targetUserId: "\(blockedUserId)")
+      }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
