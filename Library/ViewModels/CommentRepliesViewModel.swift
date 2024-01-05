@@ -272,7 +272,13 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .combineLatest(with: project)
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
-          .trackUserBlockedFromComment(project, typeContext: .initiate, targetUserId: "\(blockedUserId)")
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .comments,
+            typeContext: .initiate,
+            targetUserId: "\(blockedUserId)"
+          )
       }
 
     _ = self.blockUserProperty.signal
@@ -280,7 +286,13 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       .takeWhen(blockUserEvent.values().ignoreValues())
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
-          .trackUserBlockedFromComment(project, typeContext: .confirm, targetUserId: "\(blockedUserId)")
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .comments,
+            typeContext: .confirm,
+            targetUserId: "\(blockedUserId)"
+          )
       }
   }
 

@@ -484,14 +484,21 @@ final class KSRAnalyticsTests: TestCase {
 
   // MARK: - User Blocking Tests
 
-  func testTrackUserBlockedFromComment() {
+  func testTrackUserBlocked_FromComments() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
       segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
-    ksrAnalytics.trackUserBlockedFromComment(.template, typeContext: .confirm, targetUserId: "2222")
+    ksrAnalytics
+      .trackBlockedUser(
+        Project.template,
+        page: .project,
+        sectionContext: .comments,
+        typeContext: .confirm,
+        targetUserId: "2222"
+      )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("block_user", segmentClient.properties.last?["context_cta"] as? String)
@@ -501,14 +508,21 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("2222", segmentClient.properties.last?["interaction_target_uid"] as? String)
   }
 
-  func testTrackUserBlockedFromProject() {
+  func testTrackUserBlocked_FromProject() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
       segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
-    ksrAnalytics.trackUserBlockedFromProject(.template, typeContext: .initiate, targetUserId: "1111")
+    ksrAnalytics.trackBlockedUser(
+      Project.template,
+      page: .project,
+      sectionContext: .overview,
+      locationContext: .creatorDetailsMenu,
+      typeContext: .initiate,
+      targetUserId: "1111"
+    )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("block_user", segmentClient.properties.last?["context_cta"] as? String)
@@ -519,19 +533,24 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("1111", segmentClient.properties.last?["interaction_target_uid"] as? String)
   }
 
-  func testTrackUserBlockedFromMessage() {
+  func testTrackUserBlocked_FromMessages() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
       loggedInUser: nil,
       segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
     )
 
-    ksrAnalytics.trackUserBlockedFromMessage(.template, typeContext: .cancel, targetUserId: "3333")
+    ksrAnalytics.trackBlockedUser(
+      Project.template,
+      page: .messages,
+      typeContext: .confirm,
+      targetUserId: "3333"
+    )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("block_user", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("messages", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("cancel", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("confirm", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("3333", segmentClient.properties.last?["interaction_target_uid"] as? String)
   }
 
@@ -1877,7 +1896,7 @@ final class KSRAnalyticsTests: TestCase {
       appTrackingTransparency: self.appTrackingTransparency
     )
 
-    ksrAnalytics.trackUserBlockedFromProject(.template, typeContext: .initiate, targetUserId: "1111")
+    ksrAnalytics.trackBlockedUser(.template, page: .project, typeContext: .initiate, targetUserId: "1111")
 
     XCTAssertEqual("1111", segmentClient.properties.last?["interaction_target_uid"] as? String)
   }

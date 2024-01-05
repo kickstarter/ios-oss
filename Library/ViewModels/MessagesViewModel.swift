@@ -227,7 +227,12 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       .combineLatest(with: self.project)
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
-          .trackUserBlockedFromMessage(project, typeContext: .initiate, targetUserId: "\(blockedUserId)")
+          .trackBlockedUser(
+            project,
+            page: .messages,
+            typeContext: .initiate,
+            targetUserId: "\(blockedUserId)"
+          )
       }
 
     _ = self.blockUserProperty.signal
@@ -235,7 +240,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
       .takeWhen(blockUserEvent.values().ignoreValues())
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
-          .trackUserBlockedFromMessage(project, typeContext: .confirm, targetUserId: "\(blockedUserId)")
+          .trackBlockedUser(project, page: .messages, typeContext: .confirm, targetUserId: "\(blockedUserId)")
       }
   }
 

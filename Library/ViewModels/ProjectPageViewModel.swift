@@ -526,7 +526,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .combineLatest(with: project)
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
-          .trackUserBlockedFromProject(project, typeContext: .initiate, targetUserId: "\(blockedUserId)")
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .overview,
+            locationContext: .creatorDetailsMenu,
+            typeContext: .initiate,
+            targetUserId: "\(blockedUserId)"
+          )
       }
 
     _ = self.blockUserProperty.signal
@@ -534,7 +541,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       .takeWhen(blockUserEvent.values().ignoreValues())
       .observeValues { blockedUserId, project in
         AppEnvironment.current.ksrAnalytics
-          .trackUserBlockedFromProject(project, typeContext: .confirm, targetUserId: "\(blockedUserId)")
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .overview,
+            locationContext: .creatorDetailsMenu,
+            typeContext: .confirm,
+            targetUserId: "\(blockedUserId)"
+          )
       }
   }
 

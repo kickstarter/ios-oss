@@ -612,74 +612,32 @@ public final class KSRAnalytics {
   // MARK: - Block User Events
 
   /**
-   Call when a user attempts to block another user from a comment.
+   Call when a user attempts or succeeds  to block a user.
 
    - parameter project: The project being viewed.
+   - parameter page: The `PageContext` representing the specific area the UI is interacted in
+   - parameter sectionContext: The optional `SectionContext` representing the grouping of content
+   - parameter locationContext: The optional `LocationContext` representing additional details of the UI interaction
    - parameter typeContext: Additional information about where in the flow the event emitted.
    - parameter targetUserId: The uid of the user who is potentially being blocked.
    */
-  public func trackUserBlockedFromComment(
+
+  public func trackBlockedUser(
     _ project: Project,
+    page: KSRAnalytics.PageContext,
+    sectionContext: KSRAnalytics.SectionContext? = nil,
+    locationContext: KSRAnalytics.LocationContext? = nil,
     typeContext: KSRAnalytics.TypeContext,
     targetUserId: String
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .blockUser,
-        page: .project,
-        sectionContext: .comments,
-        typeContext: typeContext
-      ))
-      .withAllValuesFrom(interactionProperties(targetUserId: targetUserId))
-
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /**
-   Call when a user attempts to block another user from a project's overview page.
-
-   - parameter project: The project being viewed.
-   - parameter typeContext: Additional information about where in the flow the event emitted.
-   - parameter targetUserId: The uid of the user who is potentially being blocked.
-   */
-  public func trackUserBlockedFromProject(
-    _ project: Project,
-    typeContext: KSRAnalytics.TypeContext,
-    targetUserId: String
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(
-        ctaContext: .blockUser,
-        page: .project,
-        sectionContext: .overview,
+        page: page,
+        sectionContext: sectionContext,
         typeContext: typeContext,
-        locationContext: .creatorDetailsMenu
+        locationContext: locationContext
       ))
-      .withAllValuesFrom(interactionProperties(targetUserId: targetUserId))
-
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /**
-   Call when a user attempts to block another user from a message thread.
-
-   - parameter project: The project being viewed.
-   - parameter typeContext: Additional information about where in the flow the event emitted.
-   - parameter targetUserId: The uid of the user who is potentially being blocked.
-   */
-  public func trackUserBlockedFromMessage(
-    _ project: Project,
-    typeContext: KSRAnalytics.TypeContext,
-    targetUserId: String
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .blockUser, page: .messages, typeContext: typeContext))
       .withAllValuesFrom(interactionProperties(targetUserId: targetUserId))
 
     self.track(
