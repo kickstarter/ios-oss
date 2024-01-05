@@ -374,6 +374,23 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     // TODO: Display proper error messaging from the backend
     self.didBlockUserError = blockUserEvent.errors().ignoreValues()
+
+    // MARK: User Blocking Analytics
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: initialProject)
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackUserBlockedFromComment(project, typeContext: .initiate, targetUserId: "\(blockedUserId)")
+      }
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: initialProject)
+      .takeWhen(blockUserEvent.values().ignoreValues())
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackUserBlockedFromComment(project, typeContext: .confirm, targetUserId: "\(blockedUserId)")
+      }
   }
 
   // Properties to assist with injecting these values into the existing data streams.
