@@ -11,6 +11,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   fileprivate let dataSource = MessagesDataSource()
 
   public var messageBannerViewController: MessageBannerViewController?
+  var dismissedAfterBlockingUserHandler: (() -> Void)?
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
@@ -249,6 +250,7 @@ extension MessagesViewController: MessageBannerViewControllerDelegate {
   func messageBannerViewDidHide(type: MessageBannerType) {
     if type == .success {
       self.navigationController?.popViewController(animated: true)
+      self.dismissedAfterBlockingUserHandler?()
     }
   }
 }
