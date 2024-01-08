@@ -612,7 +612,7 @@ public final class KSRAnalytics {
   // MARK: - Block User Events
 
   /**
-   Call when a user attempts or succeeds  to block a user.
+   Call when a user attempts to block a user and when blocking succeeds
 
    - parameter project: The project being viewed.
    - parameter page: The `PageContext` representing the specific area the UI is interacted in
