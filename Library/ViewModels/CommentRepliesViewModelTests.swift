@@ -172,6 +172,53 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
+  func testTrackUserBlockedFromComment_EventsEmitted() {
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient,
+      appTrackingTransparency: MockAppTrackingTransparency()
+    )
+
+    withEnvironment(
+      apiService: MockService(blockUserResult: .success(EmptyResponseEnvelope())),
+      currentUser: .template,
+      ksrAnalytics: ksrAnalytics
+    ) {
+      self.vm.inputs
+        .configureWith(
+          comment: .template,
+          project: .template,
+          update: nil,
+          inputAreaBecomeFirstResponder: false,
+          replyId: nil
+        )
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.blockUser(id: "111")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(segmentClient.events, ["CTA Clicked", "CTA Clicked"])
+
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
+        [true, true]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1", "1"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["block_user", "block_user"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["project", "project"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_section"), ["comments", "comments"])
+      XCTAssertEqual(segmentClient.properties(forKey: "context_type"), ["initiate", "confirm"])
+      XCTAssertEqual(segmentClient.properties(forKey: "interaction_target_uid"), ["111", "111"])
+    }
+  }
+
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsBacking_False_HasBlockedCommentComposer() {
     let user = User.template |> \.id .~ 12_345
 

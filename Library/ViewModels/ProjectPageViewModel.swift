@@ -519,6 +519,37 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
 
     // TODO: Display proper error messaging from the backend
     self.didBlockUserError = blockUserEvent.errors().ignoreValues()
+
+    // MARK: User Blocking Analytics
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: project)
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .overview,
+            locationContext: .creatorDetailsMenu,
+            typeContext: .initiate,
+            targetUserId: "\(blockedUserId)"
+          )
+      }
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: project)
+      .takeWhen(blockUserEvent.values().ignoreValues())
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .overview,
+            locationContext: .creatorDetailsMenu,
+            typeContext: .confirm,
+            targetUserId: "\(blockedUserId)"
+          )
+      }
   }
 
   fileprivate let askAQuestionCellTappedProperty = MutableProperty(())
