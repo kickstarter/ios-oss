@@ -3,6 +3,27 @@ import Prelude_UIKit
 import UIKit
 
 public enum DesignSystemColors: String {
+  // MARK: - New Colors
+
+  // MARK: - Background
+
+  case backgroundPrimary
+
+  // MARK: - Buttons
+
+  case buttonPrimary
+
+  // MARK: - Text
+
+  case textDisabled
+  case textSecondary
+
+  // MARK: - Borders
+
+  case borderBold
+
+  // MARK: - Old Colors
+
   // MARK: - Greens
 
   case create100
@@ -80,7 +101,7 @@ public let alertStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 
 public let adaptiveGreenButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.create700)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.greenButtonColor)
   <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.create700).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.create700).mixLighter(0.36)
@@ -91,6 +112,12 @@ public let adaptiveBlueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.trust500).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.trust500).mixLighter(0.36)
+
+public let adaptiveforgotPasswordButtonStyle =
+  UIButton.lens.titleLabel.font .~ .ksr_subhead()
+    <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.ksr_support_400)
+    <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.ksr_support_700)
+    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let adaptiveGreyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.support700)

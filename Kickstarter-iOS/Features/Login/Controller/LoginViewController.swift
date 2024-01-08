@@ -73,7 +73,7 @@ internal final class LoginViewController: UIViewController {
     _ = self |> loginControllerStyle
 
     _ = self.loginButton
-      |> greenButtonStyle
+      |> featureDarkModeEnabled() ? adaptiveGreenButtonStyle : greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.login_tout_back_intent_traditional_login_button()
       }
