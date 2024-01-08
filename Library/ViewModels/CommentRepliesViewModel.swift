@@ -265,6 +265,35 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     // TODO: Display proper error messaging from the backend
     self.didBlockUserError = blockUserEvent.errors().ignoreValues()
+
+    // MARK: User Blocking Analytics
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: project)
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .comments,
+            typeContext: .initiate,
+            targetUserId: "\(blockedUserId)"
+          )
+      }
+
+    _ = self.blockUserProperty.signal
+      .combineLatest(with: project)
+      .takeWhen(blockUserEvent.values().ignoreValues())
+      .observeValues { blockedUserId, project in
+        AppEnvironment.current.ksrAnalytics
+          .trackBlockedUser(
+            project,
+            page: .project,
+            sectionContext: .comments,
+            typeContext: .confirm,
+            targetUserId: "\(blockedUserId)"
+          )
+      }
   }
 
   private let blockUserProperty = MutableProperty<String>("")

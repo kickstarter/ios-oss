@@ -329,7 +329,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
       .observeValues { [weak self] project, _ in
         self?.navigationDelegate?.configureSharing(with: .project(project))
 
-        let watchProjectValue = WatchProjectValue(project, KSRAnalytics.PageContext.projectPage, nil)
+        let watchProjectValue = WatchProjectValue(project, KSRAnalytics.PageContext.project, nil)
 
         self?.navigationDelegate?.configureWatchProject(with: watchProjectValue)
       }
