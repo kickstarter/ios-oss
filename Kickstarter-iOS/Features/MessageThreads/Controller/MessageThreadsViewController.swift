@@ -86,7 +86,9 @@ internal final class MessageThreadsViewController: UITableViewController {
     if let messageThread = self.dataSource[indexPath] as? MessageThread {
       let vc = MessagesViewController.configuredWith(messageThread: messageThread)
 
-      vc.dismissedAfterBlockingUserHandler = { self.viewModel.inputs.refresh() }
+      vc.dismissedAfterBlockingUserHandler = { [weak self] in
+        self?.viewModel.inputs.refresh()
+      }
 
       self.navigationController?.pushViewController(vc, animated: true)
     }

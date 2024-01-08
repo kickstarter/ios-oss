@@ -249,8 +249,8 @@ extension MessagesViewController: MessageCellDelegate {
 extension MessagesViewController: MessageBannerViewControllerDelegate {
   func messageBannerViewDidHide(type: MessageBannerType) {
     if type == .success {
-      self.navigationController?.popViewController(animated: true)
       self.dismissedAfterBlockingUserHandler?()
+      self.navigationController?.popViewController(animated: true)
     }
   }
 }
