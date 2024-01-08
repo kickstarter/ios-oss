@@ -33,7 +33,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var categoryNameLabel: UILabel!
   @IBOutlet fileprivate var contentStackView: UIStackView!
   @IBOutlet fileprivate var conversionLabel: UILabel!
-  @IBOutlet fileprivate var creatorButton: UIButton!
+  @IBOutlet fileprivate(set) var creatorButton: UIButton! // Made visible so it can be used as a popover target
   @IBOutlet fileprivate var creatorImageView: UIImageView!
   @IBOutlet fileprivate var creatorLabel: UILabel!
   @IBOutlet fileprivate var creatorStackView: UIStackView!

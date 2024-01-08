@@ -1012,8 +1012,8 @@ extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
           self.presentBlockUserAlert(username: project.creator.name, userId: project.creator.id)
         },
         viewProfileHandler: { _ in self.goToCreatorProfile(forProject: project) },
-        sourceView: cell,
-        isIPad: self.traitCollection.horizontalSizeClass == .regular
+        sourceView: cell.creatorButton,
+        isIPad: self.traitCollection.userInterfaceIdiom == .pad
       )
 
     self.present(actionSheet, animated: true)

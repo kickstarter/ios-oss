@@ -237,7 +237,7 @@ extension MessagesViewController: MessageCellDelegate {
       .blockUserActionSheet(
         blockUserHandler: { _ in self.presentBlockUserAlert(username: user.name, userId: user.id) },
         sourceView: cell,
-        isIPad: self.traitCollection.horizontalSizeClass == .regular
+        isIPad: self.traitCollection.userInterfaceIdiom == .pad
       )
 
     self.present(actionSheet, animated: true)
