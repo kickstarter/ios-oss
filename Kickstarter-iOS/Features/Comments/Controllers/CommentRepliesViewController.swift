@@ -211,7 +211,7 @@ final class CommentRepliesViewController: UITableViewController, MessageBannerVi
       .blockUserActionSheet(
         blockUserHandler: { _ in self.presentBlockUserAlert(username: author.name, userId: author.id) },
         sourceView: cell,
-        isIPad: self.traitCollection.horizontalSizeClass == .regular
+        isIPad: self.traitCollection.userInterfaceIdiom == .pad
       )
 
     self.present(actionSheet, animated: true)
