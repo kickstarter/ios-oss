@@ -82,8 +82,6 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as SettingsPrivacyRecommendationCell, value as SettingsPrivacyStaticCellValue):
       cell.configureWith(value: value)
-    case let (cell as SettingsPrivacyRequestDataCell, value as User):
-      cell.configureWith(value: value)
     case let (
       cell as SettingsPrivacyDeleteOrRequestCell,
       value as (user: User, cellType: SettingsPrivacyDeleteOrRequestCell.CellType)

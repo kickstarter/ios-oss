@@ -1431,7 +1431,6 @@
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
 		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
 		D723708C2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift */; };
-		D723708E2118CD9C001EA4CA /* SettingsRequestDataCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */; };
 		D72370902118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */; };
 		D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */; };
 		D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */; };
@@ -1471,11 +1470,9 @@
 		D79CF3BF21AC9CB200ECB73A /* PaymentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79CF38521AC9AD200ECB73A /* PaymentType.swift */; };
 		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */; };
-		D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */; };
 		D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */; };
 		D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */; };
 		D79F0F7521068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */; };
-		D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
 		D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */; };
@@ -3007,7 +3004,6 @@
 		D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateTypeTests.swift; sourceTree = "<group>"; };
 		D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModelTests.swift; sourceTree = "<group>"; };
 		D723708B2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteOrRequestCellViewModelTests.swift; sourceTree = "<group>"; };
-		D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRequestDataCellViewModelTests.swift; sourceTree = "<group>"; };
 		D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModelTests.swift; sourceTree = "<group>"; };
 		D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3049,11 +3045,9 @@
 		D79CF38521AC9AD200ECB73A /* PaymentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentType.swift; sourceTree = "<group>"; };
 		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRecommendationCell.swift; sourceTree = "<group>"; };
-		D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRequestDataCell.swift; sourceTree = "<group>"; };
 		D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDeleteOrRequestCell.swift; sourceTree = "<group>"; };
 		D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModel.swift; sourceTree = "<group>"; };
 		D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteOrRequestCellViewModel.swift; sourceTree = "<group>"; };
-		D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRequestDataCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
@@ -4359,7 +4353,6 @@
 				D7237097211A3925001EA4CA /* SettingsFollowCell.swift */,
 				D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */,
 				D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */,
-				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
 				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
 				77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */,
 			);
@@ -6485,8 +6478,6 @@
 				D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */,
 				D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */,
 				D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */,
-				D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */,
-				D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */,
 				608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */,
 				60DA50E928B68990002E2DF1 /* SetYourPasswordViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
@@ -7516,7 +7507,6 @@
 				D710ADFB243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift in Sources */,
 				3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */,
 				19F0940128B3D75800973138 /* PledgePaymentMethodAddCellViewModel.swift in Sources */,
-				D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */,
 				8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */,
 				477239772710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
@@ -7865,7 +7855,6 @@
 				7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */,
 				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
-				D723708E2118CD9C001EA4CA /* SettingsRequestDataCellViewModelTests.swift in Sources */,
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
 				77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */,
@@ -8159,7 +8148,6 @@
 				60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,
-				D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */,
 				D764370A224040D100DAFC9E /* SharedFunctions.swift in Sources */,
 				77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */,
 				A7C795B41C873AC90081977F /* DiscoveryViewController.swift in Sources */,
