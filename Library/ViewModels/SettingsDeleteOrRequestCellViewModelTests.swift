@@ -6,7 +6,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class SettingsDeleteAccountCellViewModelTests: TestCase {
+internal final class SettingsDeleteOrRequestCellViewModelTests: TestCase {
   internal let vm = SettingsDeleteOrRequestCellViewModel()
   internal let notifyDeleteAccountTapped = TestObserver<URL, Never>()
 
@@ -17,8 +17,7 @@ internal final class SettingsDeleteAccountCellViewModelTests: TestCase {
 
   func testNotifyDeleteAccountTapped() {
     let user = User.template
-    let url =
-      AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
+    let url = URL(string: "https://legal.kickstarter.com/policies/en/?modal=take-control")!
     self.vm.inputs.configureWith(user: user)
     self.vm.inputs.deleteAccountTapped()
     self.notifyDeleteAccountTapped.assertValues([url])

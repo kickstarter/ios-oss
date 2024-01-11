@@ -23,10 +23,9 @@ public final class SettingsDeleteOrRequestCellViewModel: SettingsDeleteOrRequest
   public init() {
     self.notifyDeleteAccountTapped = self.deleteAccountTappedProperty.signal
       .map {
-        AppEnvironment.current.apiService.serverConfig.webBaseUrl
-          .appendingPathComponent("profile")
-          .appendingPathComponent("destroy")
-      }
+        // TODO(MBL-1063): Replace hardcoded URL with translatable string.
+        URL(string: "https://legal.kickstarter.com/policies/en/?modal=take-control")
+      }.skipNil()
   }
 
   fileprivate let deleteAccountTappedProperty = MutableProperty(())

@@ -1430,7 +1430,7 @@
 		D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */; };
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
 		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
-		D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */; };
+		D723708C2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift */; };
 		D723708E2118CD9C001EA4CA /* SettingsRequestDataCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */; };
 		D72370902118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */; };
 		D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */; };
@@ -3006,7 +3006,7 @@
 		D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerViewModelTests.swift; sourceTree = "<group>"; };
 		D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateTypeTests.swift; sourceTree = "<group>"; };
 		D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModelTests.swift; sourceTree = "<group>"; };
-		D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteAccountCellViewModelTests.swift; sourceTree = "<group>"; };
+		D723708B2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteOrRequestCellViewModelTests.swift; sourceTree = "<group>"; };
 		D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRequestDataCellViewModelTests.swift; sourceTree = "<group>"; };
 		D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModelTests.swift; sourceTree = "<group>"; };
@@ -6466,7 +6466,7 @@
 				D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */,
 				D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */,
 				D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */,
-				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
+				D723708B2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
 				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
 				D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */,
@@ -7745,7 +7745,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1611EF6923B275700051CDCC /* MockUUID.swift in Sources */,
-				D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */,
+				D723708C2118CAD8001EA4CA /* SettingsDeleteOrRequestCellViewModelTests.swift in Sources */,
 				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
 				D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */,
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
