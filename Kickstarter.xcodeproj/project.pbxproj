@@ -1472,9 +1472,9 @@
 		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */; };
 		D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */; };
-		D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift */; };
+		D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */; };
 		D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */; };
-		D79F0F7521068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */; };
+		D79F0F7521068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */; };
 		D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
@@ -3050,9 +3050,9 @@
 		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRecommendationCell.swift; sourceTree = "<group>"; };
 		D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRequestDataCell.swift; sourceTree = "<group>"; };
-		D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDeleteAccountCell.swift; sourceTree = "<group>"; };
+		D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDeleteOrRequestCell.swift; sourceTree = "<group>"; };
 		D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModel.swift; sourceTree = "<group>"; };
-		D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteAccountCellViewModel.swift; sourceTree = "<group>"; };
+		D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteOrRequestCellViewModel.swift; sourceTree = "<group>"; };
 		D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRequestDataCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
@@ -4357,7 +4357,7 @@
 			isa = PBXGroup;
 			children = (
 				D7237097211A3925001EA4CA /* SettingsFollowCell.swift */,
-				D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift */,
+				D79F0F702102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift */,
 				D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */,
 				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
 				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
@@ -6465,7 +6465,7 @@
 				D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */,
 				D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */,
 				D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */,
-				D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */,
+				D79F0F7421068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift */,
 				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
 				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
@@ -7424,7 +7424,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D79F0F7521068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift in Sources */,
+				D79F0F7521068DC800D3B32C /* SettingsDeleteOrRequestCellViewModel.swift in Sources */,
 				D65BF351232FE88300B15B25 /* ManagePledgeSummaryViewModel.swift in Sources */,
 				37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */,
 				013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */,
@@ -7997,7 +7997,7 @@
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */,
 				94114D5B265305210063E8F6 /* CommentPostFailedCell.swift in Sources */,
-				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
+				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift in Sources */,
 				379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */,
 				8A4841B424871B9500246223 /* RewardTableViewCell.swift in Sources */,
 				20C186F126726631008046D8 /* CommentsErrorCell.swift in Sources */,

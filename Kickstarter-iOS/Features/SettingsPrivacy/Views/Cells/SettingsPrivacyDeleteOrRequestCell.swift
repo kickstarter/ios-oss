@@ -5,13 +5,13 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-internal protocol SettingsPrivacyDeleteAccountCellDelegate: AnyObject {
-  func settingsPrivacyDeleteAccountCellTapped(_ cell: SettingsPrivacyDeleteAccountCell, with url: URL)
+internal protocol SettingsPrivacyDeleteOrRequestCellDelegate: AnyObject {
+  func settingsPrivacyDeleteOrRequestCellTapped(_ cell: SettingsPrivacyDeleteOrRequestCell, with url: URL)
 }
 
-internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: SettingsDeleteAccountCellViewModelType = SettingsDeleteAccountCellViewModel()
-  internal weak var delegate: SettingsPrivacyDeleteAccountCellDelegate?
+internal final class SettingsPrivacyDeleteOrRequestCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel: SettingsDeleteOrRequestCellViewModelType = SettingsDeleteOrRequestCellViewModel()
+  internal weak var delegate: SettingsPrivacyDeleteOrRequestCellDelegate?
 
   @IBOutlet fileprivate var deleteAccountButton: UIButton!
   @IBOutlet fileprivate var deleteAccountLabel: UILabel!
@@ -61,7 +61,7 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
       .observeForUI()
       .observeValues { [weak self] url in
         guard let _self = self else { return }
-        self?.delegate?.settingsPrivacyDeleteAccountCellTapped(_self, with: url)
+        self?.delegate?.settingsPrivacyDeleteOrRequestCellTapped(_self, with: url)
       }
   }
 

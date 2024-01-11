@@ -7,7 +7,7 @@ import ReactiveSwift
 import XCTest
 
 internal final class SettingsDeleteAccountCellViewModelTests: TestCase {
-  internal let vm = SettingsDeleteAccountCellViewModel()
+  internal let vm = SettingsDeleteOrRequestCellViewModel()
   internal let notifyDeleteAccountTapped = TestObserver<URL, Never>()
 
   internal override func setUp() {

@@ -78,7 +78,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       followCell.delegate = self
     } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
       requestDataCell.delegate = self
-    } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteAccountCell {
+    } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteOrRequestCell {
       deleteAccountCell.delegate = self
     } else if let privacySwitchCell = cell as? SettingsPrivacySwitchCell {
       privacySwitchCell.delegate = self
@@ -153,9 +153,9 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
   }
 }
 
-extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
-  internal func settingsPrivacyDeleteAccountCellTapped(
-    _: SettingsPrivacyDeleteAccountCell,
+extension SettingsPrivacyViewController: SettingsPrivacyDeleteOrRequestCellDelegate {
+  internal func settingsPrivacyDeleteOrRequestCellTapped(
+    _: SettingsPrivacyDeleteOrRequestCell,
     with url: URL
   ) {
     self.goTo(url: url)

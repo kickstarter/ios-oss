@@ -71,7 +71,7 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
 
     self.set(
       values: [user],
-      cellClass: SettingsPrivacyDeleteAccountCell.self,
+      cellClass: SettingsPrivacyDeleteOrRequestCell.self,
       inSection: Section.deleteAccount.rawValue
     )
   }
@@ -84,7 +84,7 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as SettingsPrivacyRequestDataCell, value as User):
       cell.configureWith(value: value)
-    case let (cell as SettingsPrivacyDeleteAccountCell, value as User):
+    case let (cell as SettingsPrivacyDeleteOrRequestCell, value as User):
       cell.configureWith(value: value)
     case let (cell as SettingsPrivacyStaticCell, value as String):
       cell.configureWith(value: value)

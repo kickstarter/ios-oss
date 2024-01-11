@@ -4,22 +4,22 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public protocol SettingsDeleteAccountCellViewModelInputs {
+public protocol SettingsDeleteOrRequestCellViewModelInputs {
   func configureWith(user: User)
   func deleteAccountTapped()
 }
 
-public protocol SettingsDeleteAccountCellViewModelOutputs {
+public protocol SettingsDeleteOrRequestCellViewModelOutputs {
   var notifyDeleteAccountTapped: Signal<URL, Never> { get }
 }
 
-public protocol SettingsDeleteAccountCellViewModelType {
-  var inputs: SettingsDeleteAccountCellViewModelInputs { get }
-  var outputs: SettingsDeleteAccountCellViewModelOutputs { get }
+public protocol SettingsDeleteOrRequestCellViewModelType {
+  var inputs: SettingsDeleteOrRequestCellViewModelInputs { get }
+  var outputs: SettingsDeleteOrRequestCellViewModelOutputs { get }
 }
 
-public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCellViewModelType,
-  SettingsDeleteAccountCellViewModelInputs, SettingsDeleteAccountCellViewModelOutputs {
+public final class SettingsDeleteOrRequestCellViewModel: SettingsDeleteOrRequestCellViewModelType,
+  SettingsDeleteOrRequestCellViewModelInputs, SettingsDeleteOrRequestCellViewModelOutputs {
   public init() {
     self.notifyDeleteAccountTapped = self.deleteAccountTappedProperty.signal
       .map {
@@ -41,6 +41,6 @@ public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCell
 
   public let notifyDeleteAccountTapped: Signal<URL, Never>
 
-  public var inputs: SettingsDeleteAccountCellViewModelInputs { return self }
-  public var outputs: SettingsDeleteAccountCellViewModelOutputs { return self }
+  public var inputs: SettingsDeleteOrRequestCellViewModelInputs { return self }
+  public var outputs: SettingsDeleteOrRequestCellViewModelOutputs { return self }
 }
