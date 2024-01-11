@@ -13,6 +13,11 @@ internal final class SettingsPrivacyDeleteOrRequestCell: UITableViewCell, ValueC
   fileprivate let viewModel: SettingsDeleteOrRequestCellViewModelType = SettingsDeleteOrRequestCellViewModel()
   internal weak var delegate: SettingsPrivacyDeleteOrRequestCellDelegate?
 
+  internal enum CellType {
+    case delete
+    case request
+  }
+
   @IBOutlet fileprivate var deleteAccountButton: UIButton!
   @IBOutlet fileprivate var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate var separatorView: [UIView]!
@@ -23,14 +28,22 @@ internal final class SettingsPrivacyDeleteOrRequestCell: UITableViewCell, ValueC
     _ = self
       |> \.accessibilityElements .~ [self.deleteAccountButton].compact()
 
-    _ = self.deleteAccountButton
-      |> \.accessibilityLabel %~ { _ in Strings.Delete_my_Kickstarter_Account() }
-
     self.deleteAccountButton.addTarget(self, action: #selector(self.deleteAccountTapped), for: .touchUpInside)
   }
 
-  internal func configureWith(value user: User) {
-    self.viewModel.inputs.configureWith(user: user)
+  internal func configureWith(value: (user: User, cellType: CellType)) {
+    self.viewModel.inputs.configureWith(user: value.user)
+
+    switch value.cellType {
+    case .request:
+      self.deleteAccountLabel.textColor = .ksr_support_700
+      self.deleteAccountLabel.text = Strings.Request_my_personal_data()
+      self.deleteAccountButton.accessibilityLabel = Strings.Request_my_personal_data()
+    case .delete:
+      self.deleteAccountLabel.textColor = .ksr_alert
+      self.deleteAccountLabel.text = Strings.Delete_my_Kickstarter_Account()
+      self.deleteAccountButton.accessibilityLabel = Strings.Delete_my_Kickstarter_Account()
+    }
   }
 
   internal override func bindStyles() {
@@ -48,10 +61,8 @@ internal final class SettingsPrivacyDeleteOrRequestCell: UITableViewCell, ValueC
       ||> settingsSeparatorStyle
 
     _ = self.deleteAccountLabel
-      |> UILabel.lens.textColor .~ .ksr_alert
       |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
   }
 
   internal override func bindViewModel() {
