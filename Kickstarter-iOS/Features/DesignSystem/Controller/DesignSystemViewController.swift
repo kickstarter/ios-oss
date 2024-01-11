@@ -311,7 +311,7 @@ final class DesignSystemViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ adaptiveColor(.white)
+      |> \.backgroundColor .~ adaptiveColor(.backgroundPrimary)
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
@@ -377,7 +377,7 @@ final class DesignSystemViewController: UIViewController {
       |> verticalComponentStackViewStyle
 
     _ = self.primaryGreenButton
-      |> adaptiveGreenButtonStyle
+      |> adaptivePrimaryButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Primary Green Button"
 
     _ = self.primaryBlueButton
@@ -430,12 +430,12 @@ final class DesignSystemViewController: UIViewController {
 
     _ = self.heartIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.support400)
+      |> \.tintColor .~ adaptiveColor(.textDisabled)
       |> UIImageView.lens.image .~ UIImage(named: "heart-icon")?.withRenderingMode(.alwaysTemplate)
 
     _ = self.bookmarkIcon
       |> adaptiveIconImageViewStyle
-      |> \.tintColor .~ adaptiveColor(.create700)
+      |> \.tintColor .~ adaptiveColor(.buttonPrimary)
       |> UIImageView.lens.image .~ UIImage(named: "icon--bookmark")?.withRenderingMode(.alwaysTemplate)
 
     // MARK: - Control Styles
