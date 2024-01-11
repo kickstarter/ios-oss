@@ -76,6 +76,8 @@ internal final class LoginViewController: UIViewController {
   }
 
   override func bindStyles() {
+    _ = self.navigationController?.navigationBar.tintColor = adaptiveColor(.iconPrimary)
+
     _ = self
       |> loginControllerStyle
 

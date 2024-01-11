@@ -27,6 +27,7 @@ internal final class ResetPasswordViewController: UIViewController {
   }
 
   override func bindStyles() {
+    _ = self.navigationController?.navigationBar.tintColor = adaptiveColor(.iconPrimary)
     _ = self |> resetPasswordControllerStyle
     _ = self.emailTextField |> featureDarkModeEnabled() ? adaptiveEmailFieldStyle : emailFieldStyle
     _ = self.emailTextFieldBackgroundView

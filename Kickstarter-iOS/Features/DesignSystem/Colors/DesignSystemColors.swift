@@ -13,6 +13,10 @@ public enum DesignSystemColors: String {
 
   case buttonPrimary
 
+  // MARK: - Icons
+
+  case iconPrimary
+
   // MARK: - Text
 
   case textDisabled
