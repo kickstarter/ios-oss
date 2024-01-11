@@ -97,14 +97,20 @@ public let alertStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.layer.cornerRadius .~ 6
 }
 
-// MARK: - Buttons
+// MARK: - Button Styles
 
-public let adaptiveGreenButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.greenButtonColor)
-  <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.create700).mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.create700).mixLighter(0.36)
+public let adaptivePrimaryButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white.mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ adaptiveColor(.buttonPrimary)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.buttonPrimary).mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.buttonPrimary).mixLighter(0.36)
+
+public let adaptiveForgotPasswordButtonStyle =
+  UIButton.lens.titleLabel.font .~ .ksr_subhead()
+    <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.textSecondary)
+    <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.textSecondary).mixDarker(0.36)
+    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let adaptiveBlueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.white)
@@ -112,12 +118,6 @@ public let adaptiveBlueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.white)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ adaptiveColor(.trust500).mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ adaptiveColor(.trust500).mixLighter(0.36)
-
-public let adaptiveforgotPasswordButtonStyle =
-  UIButton.lens.titleLabel.font .~ .ksr_subhead()
-    <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.ksr_support_400)
-    <> UIButton.lens.titleColor(for: .highlighted) .~ adaptiveColor(.ksr_support_700)
-    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let adaptiveGreyButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ adaptiveColor(.support700)
@@ -157,6 +157,14 @@ public let adaptiveFacebookButtonStyle = baseButtonStyle
   }
 
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
+
+// MARK: - Functional Elements
+
+public let adaptiveBorderBoldStyle: ViewStyle = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ adaptiveColor(.borderBold)
+    |> \.accessibilityElementsHidden .~ true
+}
 
 // MARK: - Icons
 
@@ -203,12 +211,24 @@ public let adaptiveFormFieldStyle: TextFieldStyle = { (textField: UITextField) i
 // MARK: - Text Field
 
 public let adaptiveEmailFieldStyle = adaptiveFormFieldStyle
+  <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .emailAddress
+
+public let adaptivePasswordFieldStyle = adaptiveFormFieldStyle
+  <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
+  <> UITextField.lens.secureTextEntry .~ true
+
+public func adaptivePasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
+  return textField
+    |> adaptivePasswordFieldStyle
+    |> adaptiveEmailTextFieldPlaceholderStyle
+    |> \.textContentType .~ .password
+}
 
 public func adaptiveAttributedPlaceholder(_ string: String) -> NSAttributedString {
   return NSAttributedString(
     string: string,
-    attributes: [NSAttributedString.Key.foregroundColor: adaptiveColor(.support400)]
+    attributes: [NSAttributedString.Key.foregroundColor: adaptiveColor(.textDisabled)]
   )
 }
 

@@ -61,6 +61,12 @@ internal final class LoginViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+//
+//    if featureDarkModeEnabled() {
+//      _ = self.view
+//        |> \.backgroundColor .~ adaptiveColor(.backgroundPrimary)
+//    }
+
     self.viewModel.inputs.viewWillAppear()
   }
 
@@ -70,18 +76,29 @@ internal final class LoginViewController: UIViewController {
   }
 
   override func bindStyles() {
-    _ = self |> loginControllerStyle
+    _ = self
+      |> loginControllerStyle
+
+    if featureDarkModeEnabled() {
+      _ = self.view
+        |> \.backgroundColor .~ adaptiveColor(.backgroundPrimary)
+    }
 
     _ = self.loginButton
-      |> featureDarkModeEnabled() ? adaptiveGreenButtonStyle : greenButtonStyle
+      |> featureDarkModeEnabled() ? adaptivePrimaryButtonStyle : greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.login_tout_back_intent_traditional_login_button()
       }
 
-    _ = self.forgotPasswordButton |> forgotPasswordButtonStyle
+    _ = self
+      .forgotPasswordButton |> featureDarkModeEnabled() ? adaptiveForgotPasswordButtonStyle :
+      forgotPasswordButtonStyle
 
-    _ = self.emailTextField |> emailFieldAutoFillStyle
+    _ = self.emailTextField |> featureDarkModeEnabled() ? adaptiveEmailFieldStyle : emailFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .next
+      |> \.attributedPlaceholder %~ { _ in
+        adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
+      }
 
     _ = self.showHidePasswordButton |> showHidePasswordButtonStyle
       |> \.frame .~ CGRect(x: 0, y: 0, width: 45, height: 30)
@@ -94,12 +111,19 @@ internal final class LoginViewController: UIViewController {
         Strings.Show_password()
       }
 
-    _ = self.passwordTextField |> passwordFieldAutoFillStyle
+    _ = self
+      .passwordTextField |> featureDarkModeEnabled() ? adaptivePasswordFieldAutoFillStyle :
+      passwordFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .go
+      |> \.attributedPlaceholder %~ { _ in
+        adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
+      }
 
-    _ = self.formDividerView |> separatorStyle
+    _ = self.formDividerView |> featureDarkModeEnabled() ? adaptiveBorderBoldStyle : separatorStyle
 
-    _ = self.formBackgroundView |> cardStyle()
+    _ = self.formBackgroundView
+      |> cardStyle()
+      |> \.backgroundColor .~ .clear
 
     _ = self.rootStackView |> loginRootStackViewStyle
   }
