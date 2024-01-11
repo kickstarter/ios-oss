@@ -28,9 +28,13 @@ internal final class ResetPasswordViewController: UIViewController {
 
   override func bindStyles() {
     _ = self |> resetPasswordControllerStyle
-    _ = self.emailTextField |> emailFieldStyle
-    _ = self.emailTextFieldBackgroundView |> cardStyle()
-    _ = self.resetPasswordButton |> resetPasswordButtonStyle
+    _ = self.emailTextField |> featureDarkModeEnabled() ? adaptiveEmailFieldStyle : emailFieldStyle
+    _ = self.emailTextFieldBackgroundView
+      |> cardStyle()
+      |> \.backgroundColor .~ .clear
+    _ = self.resetPasswordButton
+      |> featureDarkModeEnabled() ? adaptivePrimaryButtonStyle : resetPasswordButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
     _ = self.rootStackView |> loginRootStackViewStyle
   }
 
