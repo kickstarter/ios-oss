@@ -61,11 +61,6 @@ internal final class LoginViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-//
-//    if featureDarkModeEnabled() {
-//      _ = self.view
-//        |> \.backgroundColor .~ adaptiveColor(.backgroundPrimary)
-//    }
 
     self.viewModel.inputs.viewWillAppear()
   }
@@ -76,7 +71,9 @@ internal final class LoginViewController: UIViewController {
   }
 
   override func bindStyles() {
-    _ = self.navigationController?.navigationBar.tintColor = adaptiveColor(.iconPrimary)
+    if featureDarkModeEnabled() {
+      _ = self.navigationController?.navigationBar.tintColor = adaptiveColor(.iconPrimary)
+    }
 
     _ = self
       |> loginControllerStyle
@@ -98,9 +95,6 @@ internal final class LoginViewController: UIViewController {
 
     _ = self.emailTextField |> featureDarkModeEnabled() ? adaptiveEmailFieldStyle : emailFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .next
-      |> \.attributedPlaceholder %~ { _ in
-        adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
-      }
 
     _ = self.showHidePasswordButton |> showHidePasswordButtonStyle
       |> \.frame .~ CGRect(x: 0, y: 0, width: 45, height: 30)
@@ -117,9 +111,18 @@ internal final class LoginViewController: UIViewController {
       .passwordTextField |> featureDarkModeEnabled() ? adaptivePasswordFieldAutoFillStyle :
       passwordFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .go
-      |> \.attributedPlaceholder %~ { _ in
-        adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
-      }
+
+    if featureDarkModeEnabled() {
+      _ = self.emailTextField
+        |> \.attributedPlaceholder %~ { _ in
+          adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
+        }
+
+      _ = self.passwordTextField
+        |> \.attributedPlaceholder %~ { _ in
+          adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
+        }
+    }
 
     _ = self.formDividerView |> featureDarkModeEnabled() ? adaptiveBorderBoldStyle : separatorStyle
 
