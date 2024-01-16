@@ -11,6 +11,7 @@ internal final class MessagesViewController: UITableViewController, MessageBanne
   fileprivate let dataSource = MessagesDataSource()
 
   public var messageBannerViewController: MessageBannerViewController?
+  var dismissedAfterBlockingUserHandler: (() -> Void)?
 
   internal static func configuredWith(messageThread: MessageThread) -> MessagesViewController {
     let vc = self.instantiate()
@@ -236,7 +237,7 @@ extension MessagesViewController: MessageCellDelegate {
       .blockUserActionSheet(
         blockUserHandler: { _ in self.presentBlockUserAlert(username: user.name, userId: user.id) },
         sourceView: cell,
-        isIPad: self.traitCollection.horizontalSizeClass == .regular
+        isIPad: self.traitCollection.userInterfaceIdiom == .pad
       )
 
     self.present(actionSheet, animated: true)
@@ -248,6 +249,7 @@ extension MessagesViewController: MessageCellDelegate {
 extension MessagesViewController: MessageBannerViewControllerDelegate {
   func messageBannerViewDidHide(type: MessageBannerType) {
     if type == .success {
+      self.dismissedAfterBlockingUserHandler?()
       self.navigationController?.popViewController(animated: true)
     }
   }

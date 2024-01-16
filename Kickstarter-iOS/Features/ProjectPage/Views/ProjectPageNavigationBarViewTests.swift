@@ -28,7 +28,7 @@ internal final class ProjectPageNavBarViewTests: TestCase {
 
       let watchValue = WatchProjectValue(
         project: project,
-        context: .projectPage,
+        context: .project,
         discoveryParams: nil
       )
 
@@ -58,7 +58,7 @@ internal final class ProjectPageNavBarViewTests: TestCase {
 
       let watchValue = WatchProjectValue(
         project: project,
-        context: .projectPage,
+        context: .project,
         discoveryParams: nil
       )
 

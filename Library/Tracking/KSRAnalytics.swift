@@ -40,10 +40,11 @@ public final class KSRAnalytics {
     case login = "log_in" // LoginViewController
     case loginTout = "log_in_sign_up" // LoginToutViewController
     case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
+    case messages // MessagesViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card"
     case pledgeScreen = "pledge" // PledgeViewController
-    case projectPage = "project" // ProjectPageViewController
+    case project // ProjectPageViewController
     case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
@@ -138,6 +139,7 @@ public final class KSRAnalytics {
    */
   public enum CTAContext {
     case addOnsContinue
+    case blockUser
     case campaignDetails
     case creatorDashboard
     case creatorDetails
@@ -163,6 +165,7 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .addOnsContinue: return "add_ons_continue"
+      case .blockUser: return "block_user"
       case .campaignDetails: return "campaign_details"
       case .creatorDashboard: return "creator_dashboard"
       case .creatorDetails: return "creator_details"
@@ -324,9 +327,12 @@ public final class KSRAnalytics {
     case applePay
     case backed
     case categoryName
+    case cancel
     case creditCard
+    case confirm
     case discovery(DiscoverySortContext)
     case facebook
+    case initiate
     case location
     case percentRaised
     case pledge(PledgeContext)
@@ -399,10 +405,13 @@ public final class KSRAnalytics {
       case .apple: return "apple"
       case .applePay: return "apple_pay"
       case .backed: return "backed"
+      case .cancel: return "cancel"
       case .categoryName: return "category_name"
+      case .confirm: return "confirm"
       case .creditCard: return "credit_card"
       case let .discovery(discoveryContext): return discoveryContext.trackingString
       case .facebook: return "facebook"
+      case .initiate: return "initiate"
       case .location: return "location"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
@@ -429,6 +438,7 @@ public final class KSRAnalytics {
   public enum LocationContext {
     case accountMenu
     case curated
+    case creatorDetailsMenu
     case discoverAdvanced
     case discoverOverlay
     case globalNav
@@ -439,6 +449,7 @@ public final class KSRAnalytics {
       switch self {
       case .accountMenu: return "account_menu"
       case .curated: return "curated"
+      case .creatorDetailsMenu: return "creator_details_menu"
       case .discoverAdvanced: return "discover_advanced"
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
@@ -595,6 +606,43 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: properties
+    )
+  }
+
+  // MARK: - Block User Events
+
+  /**
+   Call when a user attempts to block a user and when blocking succeeds
+
+   - parameter project: The project being viewed.
+   - parameter page: The `PageContext` representing the specific area the UI is interacted in
+   - parameter sectionContext: The optional `SectionContext` representing the grouping of content
+   - parameter locationContext: The optional `LocationContext` representing additional details of the UI interaction
+   - parameter typeContext: Additional information about where in the flow the event emitted.
+   - parameter targetUserId: The uid of the user who is potentially being blocked.
+   */
+
+  public func trackBlockedUser(
+    _ project: Project,
+    page: KSRAnalytics.PageContext,
+    sectionContext: KSRAnalytics.SectionContext? = nil,
+    locationContext: KSRAnalytics.LocationContext? = nil,
+    typeContext: KSRAnalytics.TypeContext,
+    targetUserId: String
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .blockUser,
+        page: page,
+        sectionContext: sectionContext,
+        typeContext: typeContext,
+        locationContext: locationContext
+      ))
+      .withAllValuesFrom(interactionProperties(targetUserId: targetUserId))
+
+    self.track(
+      event: SegmentEvent.ctaClicked.rawValue,
+      properties: props
     )
   }
 
@@ -760,7 +808,7 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
-      .withAllValuesFrom(contextProperties(page: .projectPage))
+      .withAllValuesFrom(contextProperties(page: .project))
 
     self.track(
       event: SegmentEvent.videoPlaybackStarted.rawValue,
@@ -808,7 +856,7 @@ public final class KSRAnalytics {
     project: Project
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .projectPage))
+      .withAllValuesFrom(contextProperties(page: .project))
 
     switch stateType {
     case .pledge:
@@ -1103,7 +1151,7 @@ public final class KSRAnalytics {
     sectionContext: KSRAnalytics.SectionContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .projectPage, sectionContext: sectionContext))
+      .withAllValuesFrom(contextProperties(page: .project, sectionContext: sectionContext))
 
     self.track(
       event: SegmentEvent.pageViewed.rawValue,
@@ -1151,7 +1199,7 @@ public final class KSRAnalytics {
 
   public func trackGotoCreatorDetailsClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
+      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .project))
 
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
@@ -1165,7 +1213,7 @@ public final class KSRAnalytics {
    */
   public func trackCampaignDetailsButtonClicked(project: Project) {
     let props = projectProperties(from: project)
-      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
+      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .project))
 
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
@@ -1454,6 +1502,19 @@ private func contextProperties(
   result["section"] = sectionContext?.trackingString
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString
+
+  return result.prefixedKeys(prefix)
+}
+
+// MARK: - Interaction Properties
+
+private func interactionProperties(
+  targetUserId: String,
+  prefix: String = "interaction_"
+) -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["target_uid"] = targetUserId
 
   return result.prefixedKeys(prefix)
 }
