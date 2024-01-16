@@ -12,8 +12,6 @@ internal enum Route {
   case config
   case deleteImage(UpdateDraft.Image, fromDraft: UpdateDraft)
   case discover(DiscoveryParams)
-  case exportData
-  case exportDataState
   case facebookConnect(facebookAccessToken: String)
   case facebookLogin(facebookAccessToken: String, code: String?)
   case facebookSignup(facebookAccessToken: String, sendNewsletters: Bool)
@@ -82,12 +80,6 @@ internal enum Route {
 
       case .config:
         return (.GET, "/v1/app/ios/config", ["no_cache": "\(Date().timeIntervalSince1970)"], nil)
-
-      case .exportData:
-        return (.POST, "/v1/users//self/queue_export_data", [:], nil)
-
-      case .exportDataState:
-        return (.GET, "/v1/users/self/download_export_data", [:], nil)
 
       case let .deleteImage(i, draft):
         return (.DELETE, "/v1/projects/\(draft.update.projectId)/updates/draft/images/\(i.id)", [:], nil)

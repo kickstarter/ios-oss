@@ -106,10 +106,6 @@ public protocol ServiceType {
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope>
 
-  func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
-
-  func exportDataState() -> SignalProducer<ExportDataEnvelope, ErrorEnvelope>
-
   /// Fetch a page of activities.
   func fetchActivities(count: Int?) -> SignalProducer<ActivityEnvelope, ErrorEnvelope>
 
