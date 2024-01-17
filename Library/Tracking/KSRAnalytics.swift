@@ -140,7 +140,6 @@ public final class KSRAnalytics {
   public enum CTAContext {
     case addOnsContinue
     case blockUser
-    case campaignDetails
     case creatorDashboard
     case creatorDetails
     case discover
@@ -166,7 +165,6 @@ public final class KSRAnalytics {
       switch self {
       case .addOnsContinue: return "add_ons_continue"
       case .blockUser: return "block_user"
-      case .campaignDetails: return "campaign_details"
       case .creatorDashboard: return "creator_dashboard"
       case .creatorDetails: return "creator_details"
       case .discover: return "discover"
@@ -1200,20 +1198,6 @@ public final class KSRAnalytics {
   public func trackGotoCreatorDetailsClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .project))
-
-    self.track(
-      event: SegmentEvent.ctaClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /**
-    Call when read more about the campaign button is tapped.
-   - parameter project: The project that the read more button is clicked from
-   */
-  public func trackCampaignDetailsButtonClicked(project: Project) {
-    let props = projectProperties(from: project)
-      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .project))
 
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
