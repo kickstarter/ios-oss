@@ -73,15 +73,12 @@ internal final class LoginViewController: UIViewController {
   override func bindStyles() {
     if featureDarkModeEnabled() {
       _ = self.navigationController?.navigationBar.tintColor = adaptiveColor(.iconPrimary)
+      _ = self.view
+        |> \.backgroundColor .~ adaptiveColor(.backgroundPrimary)
     }
 
     _ = self
       |> loginControllerStyle
-
-    if featureDarkModeEnabled() {
-      _ = self.view
-        |> \.backgroundColor .~ adaptiveColor(.backgroundPrimary)
-    }
 
     _ = self.loginButton
       |> featureDarkModeEnabled() ? adaptivePrimaryButtonStyle : greenButtonStyle
@@ -114,6 +111,7 @@ internal final class LoginViewController: UIViewController {
 
     if featureDarkModeEnabled() {
       _ = self.emailTextField
+        |> UITextField.lens.tintColor .~ adaptiveColor(.textDisabled)
         |> \.attributedPlaceholder %~ { _ in
           adaptiveAttributedPlaceholder(Strings.login_placeholder_email())
         }
@@ -122,6 +120,9 @@ internal final class LoginViewController: UIViewController {
         |> \.attributedPlaceholder %~ { _ in
           adaptiveAttributedPlaceholder(Strings.login_placeholder_password())
         }
+
+      _ = self.showHidePasswordButton
+        |> UIButton.lens.tintColor .~ adaptiveColor(.textDisabled)
     }
 
     _ = self.formDividerView |> featureDarkModeEnabled() ? adaptiveBorderBoldStyle : separatorStyle
@@ -196,8 +197,12 @@ internal final class LoginViewController: UIViewController {
   }
 
   fileprivate func updateShowHidePassword(_ shouldShow: Bool) {
-    let tintColor: UIColor = shouldShow ? .ksr_create_700 : .ksr_support_300
+    var tintColor: UIColor = shouldShow ? .ksr_create_700 : .ksr_support_300
     let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
+
+    if featureDarkModeEnabled() {
+      tintColor = shouldShow ? adaptiveColor(.iconPrimary) : adaptiveColor(.textDisabled)
+    }
 
     _ = self.showHidePasswordButton
       |> UIButton.lens.tintColor .~ tintColor
