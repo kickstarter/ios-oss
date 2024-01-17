@@ -41,10 +41,3 @@ public func featureReportThisProjectEnabled() -> Bool {
     (AppEnvironment.current.remoteConfigClient?
       .isFeatureEnabled(featureKey: RemoteConfigFeature.reportThisProjectEnabled) ?? false)
 }
-
-public func featureUseOfAIProjectTabEnabled() -> Bool {
-  return AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue] ??
-    (AppEnvironment.current.remoteConfigClient?
-      .isFeatureEnabled(featureKey: RemoteConfigFeature.useOfAIProjectTab) ?? false)
-}

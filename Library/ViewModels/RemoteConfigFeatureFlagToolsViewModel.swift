@@ -97,8 +97,6 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featurePostCampaignPledgeEnabled()
   case .reportThisProjectEnabled:
     return featureReportThisProjectEnabled()
-  case .useOfAIProjectTab:
-    return featureUseOfAIProjectTabEnabled()
   }
 }
 
@@ -124,9 +122,6 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .reportThisProjectEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue]
-  case .useOfAIProjectTab:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue]
   }
 }
 
@@ -152,8 +147,5 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .reportThisProjectEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] = value
-  case .useOfAIProjectTab:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.useOfAIProjectTab.rawValue] = value
   }
 }

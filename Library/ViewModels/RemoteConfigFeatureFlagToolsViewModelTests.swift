@@ -28,7 +28,6 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
         RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: true,
-        RemoteConfigFeature.useOfAIProjectTab.rawValue: true
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
@@ -53,7 +52,6 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
         RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: false,
-        RemoteConfigFeature.useOfAIProjectTab.rawValue: false
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
