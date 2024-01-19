@@ -75,6 +75,24 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
     }
   }
 
+  func testPostCampaignPledge_RemoteConfig_FeatureFlag_True() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(featurePostCampaignPledgeEnabled())
+    }
+  }
+
+  func testPostCampaignPledge_RemoteConfig_FeatureFlag_False() {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertFalse(featurePostCampaignPledgeEnabled())
+    }
+  }
+
   func testReportThisProject_RemoteConfig_FeatureFlag_True() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [RemoteConfigFeature.reportThisProjectEnabled.rawValue: true]
