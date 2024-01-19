@@ -76,9 +76,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
   internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let followCell = cell as? SettingsFollowCell {
       followCell.delegate = self
-    } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
-      requestDataCell.delegate = self
-    } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteAccountCell {
+    } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteOrRequestCell {
       deleteAccountCell.delegate = self
     } else if let privacySwitchCell = cell as? SettingsPrivacySwitchCell {
       privacySwitchCell.delegate = self
@@ -117,45 +115,9 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
   }
 }
 
-extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
-  internal func settingsRequestDataCellDidPresentPrompt(
-    _: SettingsPrivacyRequestDataCell,
-    alertMessage: String
-  ) {
-    let exportDataSheet = UIAlertController(
-      title: nil,
-      message: alertMessage,
-      preferredStyle: .actionSheet
-    )
-
-    let startTheRequest = UIAlertAction(
-      title: Strings.Request_my_data(),
-      style: .default,
-      handler: { _ in
-        NotificationCenter.default.post(name: Notification.Name.ksr_dataRequested, object: nil, userInfo: nil)
-      }
-    )
-
-    let dismiss = UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil)
-
-    exportDataSheet.addAction(startTheRequest)
-    exportDataSheet.addAction(dismiss)
-
-    self.present(exportDataSheet, animated: true, completion: nil)
-  }
-
-  internal func settingsRequestDataCell(
-    _: SettingsPrivacyRequestDataCell,
-    requestedDataWith url: String
-  ) {
-    guard let fileUrl = URL(string: url) else { return }
-    UIApplication.shared.open(fileUrl)
-  }
-}
-
-extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
-  internal func settingsPrivacyDeleteAccountCellTapped(
-    _: SettingsPrivacyDeleteAccountCell,
+extension SettingsPrivacyViewController: SettingsPrivacyDeleteOrRequestCellDelegate {
+  internal func settingsPrivacyDeleteOrRequestCellTapped(
+    _: SettingsPrivacyDeleteOrRequestCell,
     with url: URL
   ) {
     self.goTo(url: url)
