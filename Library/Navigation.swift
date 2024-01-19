@@ -165,6 +165,8 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/profile/verify_email",
     "/projects/:creator_param/:project_param",
     "/projects/:creator_param/:project_param/comments",
+    "/projects/:creator_param/:project_param/description",
+    "/projects/:creator_param/:project_param/faqs",
     "/projects/:creator_param/:project_param/posts",
     "/projects/:creator_param/:project_param/posts/:update_param",
     "/projects/:creator_param/:project_param/posts/:update_param/comments",
