@@ -31,7 +31,6 @@ public final class KSRAnalytics {
   public enum PageContext: String {
     case activities = "activity_feed" // ActivitiesViewController
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
-    case campaign // ProjectDescriptionViewController
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
     case creatorDashboard = "creator_dashboard" // DashboardViewController
@@ -72,13 +71,12 @@ public final class KSRAnalytics {
    Determines the place from which the external link was presented.
 
    - projectCreator: The creator profile, usually seen by pressing the creator's name on the project page.
-   - projectDescription: The project description page.
+   - projectUpdate: The page for a specific project update.
    - projectUpdates: The project updates page.
 
    **/
   public enum ExternalLinkContext {
     case projectCreator
-    case projectDescription
     case projectUpdate
     case projectUpdates
 
@@ -86,8 +84,6 @@ public final class KSRAnalytics {
       switch self {
       case .projectCreator:
         return "project_creator"
-      case .projectDescription:
-        return "project_description"
       case .projectUpdate:
         return "project_update"
       case .projectUpdates:
@@ -264,7 +260,6 @@ public final class KSRAnalytics {
    A tab or section within a grouping of content.
    - backed: Section of BackerDashboardProjectViewController for backed Projects
    - comments: Section of Project overview screen
-   - campaign: Details when user clicks "Read more"
    - overview: Project overview landing screen
    - updates: Section of project overview screen.
    - watched:Section of BackerDashboardProjectViewController for saved Projects
@@ -272,7 +267,6 @@ public final class KSRAnalytics {
    */
   public enum SectionContext {
     case backed
-    case campaign
     case comments
     case dashboard
     case overview
@@ -283,7 +277,6 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .backed: return "backed"
-      case .campaign: return "campaign"
       case .comments: return "comments"
       case .dashboard: return "dashboard"
       case .overview: return "overview"
