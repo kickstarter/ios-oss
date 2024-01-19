@@ -26,6 +26,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
         RemoteConfigFeature.darkModeEnabled.rawValue: true,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
+        RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: true,
         RemoteConfigFeature.useOfAIProjectTab.rawValue: true
       ]
@@ -50,6 +51,7 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
         RemoteConfigFeature.darkModeEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
+        RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: false,
         RemoteConfigFeature.useOfAIProjectTab.rawValue: false
       ]

@@ -27,6 +27,7 @@ final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
         RemoteConfigFeature.darkModeEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled
           .rawValue: false,
+        RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false,
         RemoteConfigFeature.reportThisProjectEnabled.rawValue: false
       ]
 

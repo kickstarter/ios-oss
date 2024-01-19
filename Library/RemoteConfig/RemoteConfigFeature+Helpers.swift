@@ -28,6 +28,13 @@ public func featureFacebookLoginInterstitialEnabled() -> Bool {
       .isFeatureEnabled(featureKey: RemoteConfigFeature.facebookLoginInterstitialEnabled) ?? false)
 }
 
+public func featurePostCampaignPledgeEnabled() -> Bool {
+  return AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[RemoteConfigFeature.postCampaignPledgeEnabled.rawValue] ??
+    (AppEnvironment.current.remoteConfigClient?
+      .isFeatureEnabled(featureKey: RemoteConfigFeature.postCampaignPledgeEnabled) ?? false)
+}
+
 public func featureReportThisProjectEnabled() -> Bool {
   return AppEnvironment.current.userDefaults
     .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] ??
