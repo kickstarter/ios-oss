@@ -42,7 +42,6 @@ public enum Navigation: Equatable {
     case comments
     case commentThread(String?, String?)
     case creatorBio
-    case faqs
     case friends
     case messageCreator
     case pledge(Navigation.Project.Pledge)
@@ -136,7 +135,7 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/comments": projectComments,
   "/projects/:creator_param/:project_param/creator_bio": creatorBio,
   "/projects/:creator_param/:project_param/description": project,
-  "/projects/:creator_param/:project_param/faqs": faqs,
+  "/projects/:creator_param/:project_param/faqs": project,
   "/projects/:creator_param/:project_param/friends": friends,
   "/projects/:creator_param/:project_param/messages/new": messageCreator,
   "/projects/:creator_param/:project_param/pledge": pledgeRoot,
@@ -325,15 +324,6 @@ private func creatorBio(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .creatorBio, refTag: refTag)
-  }
-
-  return nil
-}
-
-private func faqs(_ params: RouteParamsDecoded) -> Navigation? {
-  if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .faqs, refTag: refTag)
   }
 
   return nil

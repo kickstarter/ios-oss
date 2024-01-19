@@ -90,11 +90,6 @@ public final class NavigationTests: XCTestCase {
     )
 
     KSRAssertMatch(
-      .project(.slug("project"), .faqs, refTag: nil),
-      "/projects/creator/project/faqs"
-    )
-
-    KSRAssertMatch(
       .project(.slug("project"), .friends, refTag: nil),
       "/projects/creator/project/friends"
     )
