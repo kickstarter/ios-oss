@@ -74,11 +74,6 @@
     fileprivate let fetchFriendStatsResponse: FriendStatsEnvelope?
     fileprivate let fetchFriendStatsError: ErrorEnvelope?
 
-    fileprivate let fetchExportStateResponse: ExportDataEnvelope?
-    fileprivate let fetchExportStateError: ErrorEnvelope?
-
-    fileprivate let exportDataError: ErrorEnvelope?
-
     fileprivate let fetchDraftResponse: UpdateDraft?
     fileprivate let fetchDraftError: ErrorEnvelope?
 
@@ -256,9 +251,6 @@
       fetchFriendsError: ErrorEnvelope? = nil,
       fetchFriendStatsResponse: FriendStatsEnvelope? = nil,
       fetchFriendStatsError: ErrorEnvelope? = nil,
-      fetchExportStateResponse: ExportDataEnvelope? = nil,
-      fetchExportStateError: ErrorEnvelope? = nil,
-      exportDataError: ErrorEnvelope? = nil,
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserResult: Result<UserEnvelope<GraphUser>, ErrorEnvelope>? = nil,
@@ -403,11 +395,6 @@
 
       self.fetchFriendStatsResponse = fetchFriendStatsResponse
       self.fetchFriendStatsError = fetchFriendStatsError
-
-      self.fetchExportStateResponse = fetchExportStateResponse
-      self.fetchExportStateError = fetchExportStateError
-
-      self.exportDataError = exportDataError
 
       self.fetchDraftResponse = fetchDraftResponse
       self.fetchDraftError = fetchDraftError
@@ -788,13 +775,6 @@
     }
 
     internal func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-      return SignalProducer(value: VoidEnvelope())
-    }
-
-    internal func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-      if let error = exportDataError {
-        return SignalProducer(error: error)
-      }
       return SignalProducer(value: VoidEnvelope())
     }
 
@@ -1470,15 +1450,6 @@
       return SignalProducer(value: VoidEnvelope())
     }
 
-    func exportDataState() -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
-      if let response = fetchExportStateResponse {
-        return SignalProducer(value: response)
-      } else if let error = fetchExportStateError {
-        return SignalProducer(error: error)
-      }
-      return SignalProducer(value: .template)
-    }
-
     internal func searchMessages(query _: String, project _: Project?)
       -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
       return SignalProducer(
@@ -1740,9 +1711,6 @@
             fetchFriendsError: $1.fetchFriendsError,
             fetchFriendStatsResponse: $1.fetchFriendStatsResponse,
             fetchFriendStatsError: $1.fetchFriendStatsError,
-            fetchExportStateResponse: $1.fetchExportStateResponse,
-            fetchExportStateError: $1.fetchExportStateError,
-            exportDataError: $1.exportDataError,
             fetchDraftResponse: $1.fetchDraftResponse,
             fetchDraftError: $1.fetchDraftError,
             fetchGraphUserResult: $1.fetchGraphUserResult,

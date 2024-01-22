@@ -93,6 +93,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureDarkModeEnabled()
   case .facebookLoginInterstitialEnabled:
     return featureFacebookLoginInterstitialEnabled()
+  case .postCampaignPledgeEnabled:
+    return featurePostCampaignPledgeEnabled()
   case .reportThisProjectEnabled:
     return featureReportThisProjectEnabled()
   case .useOfAIProjectTab:
@@ -116,6 +118,9 @@ private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool?
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
+  case .postCampaignPledgeEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.postCampaignPledgeEnabled.rawValue]
   case .reportThisProjectEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue]
@@ -141,6 +146,9 @@ private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value:
   case .facebookLoginInterstitialEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
+  case .postCampaignPledgeEnabled:
+    return AppEnvironment.current.userDefaults
+      .remoteConfigFeatureFlags[RemoteConfigFeature.postCampaignPledgeEnabled.rawValue] = value
   case .reportThisProjectEnabled:
     return AppEnvironment.current.userDefaults
       .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] = value

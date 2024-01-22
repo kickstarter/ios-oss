@@ -221,15 +221,6 @@ public struct Service: ServiceType {
     return request(.deleteImage(image, fromDraft: draft))
   }
 
-  public func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return request(.exportData)
-  }
-
-  public func exportDataState()
-    -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
-    return request(.exportDataState)
-  }
-
   public func previewUrl(forDraft draft: UpdateDraft) -> URL? {
     return self.serverConfig.apiBaseUrl
       .appendingPathComponent("/v1/projects/\(draft.update.projectId)/updates/draft/preview")
