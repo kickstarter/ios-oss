@@ -151,6 +151,13 @@ public struct Service: ServiceType {
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
+  public func createCheckout(input: CreateCheckoutInput) ->
+    SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.CreateCheckoutMutation(input: GraphAPI.CreateCheckoutInput.from(input)))
+      .flatMap(CreateCheckoutEnvelope.producer(from:))
+  }
+
   public func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

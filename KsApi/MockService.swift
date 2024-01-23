@@ -31,6 +31,8 @@
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
+    fileprivate let createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>?
+
     fileprivate let createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -221,6 +223,7 @@
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
+      createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>? = nil,
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
@@ -340,6 +343,8 @@
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
 
       self.createBackingResult = createBackingResult
+
+      self.createCheckoutResult = createCheckoutResult
 
       self.createFlaggingResult = createFlaggingResult
 
@@ -608,6 +613,17 @@
       let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
+    }
+
+    internal func createCheckout(input: CreateCheckoutInput)
+      -> SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CreateCheckoutMutation(input: GraphAPI.CreateCheckoutInput.from(input))
+
+      return client.performWithResult(mutation: mutation, result: self.createCheckoutResult)
     }
 
     internal func createFlaggingInput(input: CreateFlaggingInput) -> ReactiveSwift

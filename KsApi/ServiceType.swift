@@ -75,6 +75,10 @@ public protocol ServiceType {
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
+  /// Create a checkout and returns it. Called before createBacking so that the backend can run some extra validations.
+  func createCheckout(input: CreateCheckoutInput) ->
+    SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope>
+
   /// Sends report project data for a specific project
   func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
