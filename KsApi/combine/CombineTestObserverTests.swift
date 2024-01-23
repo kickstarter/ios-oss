@@ -23,14 +23,17 @@ final class CombineTestObserverTests: XCTestCase {
   func testValues() {
     self.publisher.send(true)
     self.observer.assertValue(true)
+    self.observer.assertDidEmitValue()
 
     self.publisher.send(false)
     self.observer.assertLastValue(false)
 
     self.observer.assertValues([true, false])
+    self.observer.assertValueCount(2)
 
     self.observer.assertDidNotFail()
     self.observer.assertDidNotComplete()
+    self.observer.assertDidNotTerminate()
   }
 
   func testFailure() {
