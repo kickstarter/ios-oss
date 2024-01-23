@@ -66,6 +66,11 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     )
 
     self.viewModel.inputs.viewDidLoad()
+
+    // Initial style
+    self.primaryLabel.font = self.traitCollection.isRegularRegular
+      ? UIFont.ksr_body(size: 18)
+      : UIFont.ksr_body(size: 17)
   }
 
   internal override func bindViewModel() {
@@ -211,11 +216,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UILabel.lens.backgroundColor .~ .ksr_support_100
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular
-          ? UIFont.ksr_body(size: 18)
-          : UIFont.ksr_body(size: 17)
-      }
 
     _ = self.secondaryLabel
       |> UILabel.lens.font %~~ { _, label in

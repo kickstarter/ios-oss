@@ -88,11 +88,11 @@ internal class TestCase: XCTestCase {
   }
 
   internal func preferredSimulatorCheck() {
-    let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
-    let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
+    let deviceName = ProcessInfo().environment["SIMULATOR_DEVICE_NAME"]
+    let iOSVersion = ProcessInfo().environment["SIMULATOR_RUNTIME_VERSION"]
 
-    guard supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
-      fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 15.5")
+    guard deviceName == "iPhone SE (3rd generation)", iOSVersion == "17.2" else {
+      fatalError("Please only test and record screenshots on an iPhone SE simulator running iOS 17.2")
     }
   }
 }

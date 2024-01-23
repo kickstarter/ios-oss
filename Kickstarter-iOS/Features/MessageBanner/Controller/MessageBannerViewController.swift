@@ -34,6 +34,8 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.isHidden = true
+
     _ = self.backgroundView
       |> \.isAccessibilityElement .~ true
 
@@ -46,7 +48,6 @@ public final class MessageBannerViewController: UIViewController, NibLoading {
 
     _ = self.view
       |> \.backgroundColor .~ .clear
-      |> \.isHidden .~ true
 
     _ = self.backgroundView
       |> roundedStyle(cornerRadius: 4)
