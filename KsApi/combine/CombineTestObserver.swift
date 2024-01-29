@@ -73,7 +73,7 @@ public final class CombineTestObserver<Value, Error: Swift.Error> {
 
     assert(
       errors.count <= 1,
-      "I'm pretty sure a Combine publisher can only ever emit one error. If this fails, we've learned something new today."
+      "I'm pretty sure a Combine publisher can only ever emit one error. If this fails, I've learned something new today."
     )
 
     return errors.last
