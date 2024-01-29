@@ -1487,6 +1487,7 @@
 		E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */; };
 		E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
+		E1889D8F2B6065E1004FBE21 /* CombineTestObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */; };
 		E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
 		E1A149222ACE013100F49709 /* FetchProjectsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */; };
@@ -3058,6 +3059,7 @@
 		E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchBackerProjectsQuery.json; sourceTree = "<group>"; };
 		E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackerProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
 		E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockGraphQLClient+CombineTests.swift"; sourceTree = "<group>"; };
+		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
 		E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchBackerProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
 		E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProjectsEnvelope.swift; sourceTree = "<group>"; };
@@ -6875,6 +6877,7 @@
 			children = (
 				E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */,
 				E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */,
+				E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */,
 			);
 			path = combine;
 			sourceTree = "<group>";
@@ -8637,6 +8640,7 @@
 				D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */,
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,
 				06232D452795EC4600A81755 /* TextViewElement.swift in Sources */,
+				E1889D8F2B6065E1004FBE21 /* CombineTestObserverTests.swift in Sources */,
 				D01588431EEB2ED7006E7684 /* Activity.swift in Sources */,
 				8ACF36F7262763960026E74D /* MockPerimeterXTypes.swift in Sources */,
 				D01588CD1EEB2ED7006E7684 /* ShippingRulesEnvelopeLenses.swift in Sources */,
