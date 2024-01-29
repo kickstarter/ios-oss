@@ -86,6 +86,10 @@ public protocol ServiceType {
   func createFlaggingInputCombine(input: CreateFlaggingInput)
     -> AnyPublisher<EmptyResponseEnvelope, ErrorEnvelope>
 
+  /// Sends report project data for a specific project
+  func createPaymentIntentInput(input: CreatePaymentIntentInput)
+    -> SignalProducer<PaymentIntentEnvelope, ErrorEnvelope>
+
   /// Creates the password on a user account
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>

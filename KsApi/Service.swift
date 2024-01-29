@@ -179,6 +179,14 @@ public struct Service: ServiceType {
       .eraseToAnyPublisher()
   }
 
+  public func createPaymentIntentInput(input: CreatePaymentIntentInput) -> ReactiveSwift
+    .SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput.from(input)))
+      .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
+  }
+
   public func createPassword(input: CreatePasswordInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client

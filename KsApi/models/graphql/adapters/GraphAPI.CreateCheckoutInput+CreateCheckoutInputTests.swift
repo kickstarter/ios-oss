@@ -1,8 +1,8 @@
 @testable import KsApi
 import XCTest
 
-class GraphAPI_CreateFlaggingInput_CreateFlaggingInputTests: XCTestCase {
-  func testCreateFlaggingInputCreation_WithValidData_Success() {
+class GraphAPI_CreateCheckoutInput_CreateCheckoutInputTests: XCTestCase {
+  func testCreateCheckoutInputCreation_WithValidData_Success() {
     let input = CreateCheckoutInput(
       projectId: "projectId",
       amount: "200.00",
