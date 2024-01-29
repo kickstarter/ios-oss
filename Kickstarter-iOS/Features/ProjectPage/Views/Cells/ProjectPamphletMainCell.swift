@@ -138,9 +138,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_body(size: 12)
       |> UILabel.lens.backgroundColor .~ .ksr_white
 
-    let leftRightInsetValue: CGFloat = self.traitCollection.isRegularRegular
-      ? Styles.grid(16)
-      : Styles.grid(4)
+    let isIpad = self.traitCollection.isRegularRegular == true
+    let leftRightInsetValue: CGFloat = isIpad ? Styles.grid(16) : Styles.grid(4)
 
     _ = self.categoryAndLocationStackView
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
@@ -149,8 +148,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       )
 
     _ = self.contentStackView
-      |> UIStackView.lens.layoutMargins %~~ { _, stackView in
-        stackView.traitCollection.isRegularRegular
+      |> UIStackView.lens.layoutMargins %~~ { _, _ in
+        isIpad
           ? .init(topBottom: Styles.grid(6))
           : .init(top: Styles.grid(4), left: 0, bottom: Styles.grid(3), right: 0)
       }
@@ -210,8 +209,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.projectBlurbLabel
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular
+      |> UILabel.lens.font %~~ { _, _ in
+        isIpad
           ? .ksr_body(size: 18)
           : .ksr_body(size: 15)
       }
@@ -225,8 +224,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.projectNameLabel
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular
+      |> UILabel.lens.font %~~ { _, _ in
+        isIpad
           ? .ksr_title3(size: 28)
           : .ksr_title3(size: 20)
       }

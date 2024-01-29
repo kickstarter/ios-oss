@@ -345,9 +345,12 @@ final class CategorySelectionViewModelTests: TestCase {
       ])
 
       let categories: [KsApi.Category] = [.art, .games, .illustration]
-      let encodedCategories = try? JSONEncoder().encode(categories)
+      let cachedCategories = try? JSONDecoder().decode(
+        [KsApi.Category].self,
+        from: mockKVStore.onboardingCategories!
+      )
 
-      XCTAssertEqual(encodedCategories, mockKVStore.onboardingCategories)
+      XCTAssertEqual(categories, cachedCategories)
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
