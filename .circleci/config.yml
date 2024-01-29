@@ -39,6 +39,7 @@ test_job: &test_job
     - attach_workspace:
         at: .
     - macos/preboot-simulator:
+        # Keep simulator in sync with `Library/TestHelpers/TestCase.swift` and `Makefile`
         version: "17.2"
         platform: "iOS"
         device: "iPhone SE (3rd generation)"
