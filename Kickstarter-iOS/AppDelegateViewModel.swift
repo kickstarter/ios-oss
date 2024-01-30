@@ -596,12 +596,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           }
       }
 
-    let campaignFaqLink = projectLink
-      .filter { _, subpage, _, _ in subpage == .faqs }
-      .map { project, _, vcs, refTag in
-        vcs + [ProjectDescriptionViewController.configuredWith(data: (project, refTag))]
-      }
-
     let updatesLink = projectLink
       .filter { _, subpage, _, _ in subpage == .updates }
       .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
@@ -683,8 +677,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         updatesLink,
         updateRootLink,
         updateCommentsLink,
-        updateCommentThreadLink,
-        campaignFaqLink
+        updateCommentThreadLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
 

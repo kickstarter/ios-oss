@@ -657,25 +657,6 @@ final class KSRAnalyticsTests: TestCase {
 
   // MARK: - Project Page Tracking
 
-  func testTrackProjectViewed_SectionContext_Campaign() {
-    let segmentClient = MockTrackingClient()
-    let project = Project.template
-    let ksrAnalytics = KSRAnalytics(
-      segmentClient: segmentClient,
-      appTrackingTransparency: self.appTrackingTransparency
-    )
-
-    ksrAnalytics
-      .trackProjectViewed(project, refTag: .discovery, sectionContext: .campaign)
-
-    XCTAssertEqual(["Page Viewed"], segmentClient.events)
-    XCTAssertEqual(["project"], segmentClient.properties(forKey: "context_page"))
-    XCTAssertEqual(["campaign"], segmentClient.properties(forKey: "context_section"))
-    XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_ref_tag"))
-
-    self.assertProjectProperties(segmentClient.properties.last)
-  }
-
   func testTrackCheckoutPaymentMethodViewed_PledgeViewContext_Pledge() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
@@ -1353,27 +1334,6 @@ final class KSRAnalyticsTests: TestCase {
     self.assertCheckoutProperties(segmentClient.properties.last)
   }
 
-  func testTrackCampaignDetailsButtonClicked() {
-    let segmentClient = MockTrackingClient()
-
-    let ksrAnalytics = KSRAnalytics(
-      segmentClient: segmentClient, appTrackingTransparency: self.appTrackingTransparency
-    )
-
-    let project = Project.template
-
-    ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
-
-    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual("campaign_details", segmentClientProps?["context_cta"] as? String)
-    XCTAssertEqual("project", segmentClientProps?["context_page"] as? String)
-
-    self.assertProjectProperties(segmentClientProps)
-  }
-
   // MARK: - Activities Tracking
 
   func testTrackExploreButtonClicked() {
@@ -1948,10 +1908,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("overview", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackProjectViewed(.template, sectionContext: .campaign)
-    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("campaign", segmentClient.properties.last?["context_section"] as? String)
-
     ksrAnalytics.trackProjectViewed(.template, sectionContext: .comments)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("comments", segmentClient.properties.last?["context_section"] as? String)
@@ -2031,7 +1987,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.CTAContext.discoverSort.trackingString, "discover_sort")
     XCTAssertEqual(KSRAnalytics.CTAContext.search.trackingString, "search")
     XCTAssertEqual(KSRAnalytics.CTAContext.watchProject.trackingString, "watch_project")
-    XCTAssertEqual(KSRAnalytics.CTAContext.campaignDetails.trackingString, "campaign_details")
     XCTAssertEqual(KSRAnalytics.CTAContext.creatorDetails.trackingString, "creator_details")
     XCTAssertEqual(KSRAnalytics.CTAContext.logInInitiate.trackingString, "log_in_initiate")
     XCTAssertEqual(KSRAnalytics.CTAContext.logInOrSignUp.trackingString, "log_in_or_sign_up")
@@ -2042,7 +1997,6 @@ final class KSRAnalyticsTests: TestCase {
   }
 
   func testSectionContextTrackingStrings() {
-    XCTAssertEqual(KSRAnalytics.SectionContext.campaign.trackingString, "campaign")
     XCTAssertEqual(KSRAnalytics.SectionContext.comments.trackingString, "comments")
     XCTAssertEqual(KSRAnalytics.SectionContext.overview.trackingString, "overview")
     XCTAssertEqual(KSRAnalytics.SectionContext.updates.trackingString, "updates")

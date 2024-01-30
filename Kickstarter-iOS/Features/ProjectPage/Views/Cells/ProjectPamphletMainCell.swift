@@ -5,10 +5,6 @@ import UIKit
 
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
-  func projectPamphletMainCell(
-    _ cell: ProjectPamphletMainCell,
-    goToCampaignForProjectWith data: ProjectPamphletMainCellData
-  )
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
 }
 
@@ -25,7 +21,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
-  @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
+  @IBOutlet fileprivate var blurbAndOverviewStackview: UIStackView!
   @IBOutlet fileprivate var blurbStackView: UIStackView!
   @IBOutlet fileprivate var categoryStackView: UIStackView!
   @IBOutlet fileprivate var categoryAndLocationStackView: UIStackView!
@@ -51,8 +47,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet fileprivate var projectNameLabel: UILabel!
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
-  @IBOutlet fileprivate var readMoreButton: UIButton!
-  @IBOutlet fileprivate var readMoreStackView: UIStackView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
   @IBOutlet fileprivate var backingContainerView: UIView!
@@ -65,11 +59,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.creatorButton.addTarget(
       self,
       action: #selector(self.creatorButtonTapped),
-      for: .touchUpInside
-    )
-    self.readMoreButton.addTarget(
-      self,
-      action: #selector(self.readMoreButtonTapped),
       for: .touchUpInside
     )
 
@@ -159,15 +148,16 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = (self.projectNameAndCreatorStackView, self.contentStackView)
       |> ksr_setCustomSpacing(Styles.grid(4))
 
-    _ = self.blurbAndReadMoreStackView
+    _ = self.blurbAndOverviewStackview
       |> \.spacing .~ verticalSpacing
 
     _ = self.blurbStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-
-    _ = self.readMoreStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
+        top: 0,
+        left: leftRightInsetValue,
+        bottom: verticalSpacing, // Double spacing below blurb.
+        right: leftRightInsetValue
+      )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.conversionLabel
@@ -257,16 +247,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.backingLabel
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-
-    _ = self.readMoreButton
-      |> readMoreButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.readMoreButton.rac.hidden = self.viewModel.outputs.campaignTabShown
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
     self.backersTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
@@ -305,13 +290,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] in self?.creatorImageView.af.setImage(withURL: $0) }
 
-    self.viewModel.outputs.notifyDelegateToGoToCampaignWithData
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-        self.delegate?.projectPamphletMainCell(self, goToCampaignForProjectWith: $0)
-      }
-
     self.viewModel.outputs.notifyDelegateToGoToCreator
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -330,7 +308,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           animations: {
             self.creatorStackView.alpha = alpha
             self.statsStackView.alpha = alpha
-            self.blurbAndReadMoreStackView.alpha = alpha
+            self.blurbAndOverviewStackview.alpha = alpha
           },
           completion: nil
         )
@@ -361,10 +339,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.delegate?.projectPamphletMainCell(self, addChildController: vc)
     self.videoController = vc
     self.videoController?.playbackDelegate = vc
-  }
-
-  @objc fileprivate func readMoreButtonTapped() {
-    self.viewModel.inputs.readMoreButtonTapped()
   }
 
   @objc fileprivate func creatorButtonTapped() {

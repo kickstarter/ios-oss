@@ -3,11 +3,6 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public enum PledgeCTAContainerViewContext {
-  case projectPamphlet
-  case projectDescription
-}
-
 public typealias PledgeCTAPrelaunchState = (
   prelaunch: Bool,
   saved: Bool,
@@ -16,8 +11,7 @@ public typealias PledgeCTAPrelaunchState = (
 
 public typealias PledgeCTAContainerViewData = (
   projectOrError: Either<(Project, RefTag?), ErrorEnvelope>,
-  isLoading: Bool,
-  context: PledgeCTAContainerViewContext
+  isLoading: Bool
 )
 
 public protocol PledgeCTAContainerViewViewModelInputs {

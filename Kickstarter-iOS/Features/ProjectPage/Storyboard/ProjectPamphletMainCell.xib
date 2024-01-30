@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -61,7 +61,7 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CTC-V4-a6E">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CTC-V4-a6E" userLabel="Blurb And Overview Stack View">
                                                 <rect key="frame" x="0.0" y="38.5" width="400" height="336.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N5v-Sa-W2B">
@@ -75,19 +75,8 @@
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qVW-hB-5Kd">
-                                                        <rect key="frame" x="0.0" y="20.5" width="400" height="34"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcy-A5-iHs" customClass="LoadingButton" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="400" height="34"/>
-                                                                <state key="normal">
-                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                            </button>
-                                                        </subviews>
-                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Nk9-Fp-QSS">
-                                                        <rect key="frame" x="0.0" y="54.5" width="400" height="15"/>
+                                                        <rect key="frame" x="0.0" y="20.5" width="400" height="15"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="400" placeholderIntrinsicHeight="15" translatesAutoresizingMaskIntoConstraints="NO" id="i4o-Jb-Akz">
                                                                 <rect key="frame" x="0.0" y="0.0" width="200" height="15"/>
@@ -128,7 +117,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="J1Y-cJ-TjV">
-                                                        <rect key="frame" x="0.0" y="69.5" width="400" height="267"/>
+                                                        <rect key="frame" x="0.0" y="35.5" width="400" height="301"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t7N-l1-eTw">
                                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="20.5"/>
@@ -154,7 +143,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="ZTt-dn-nNA">
-                                                                <rect key="frame" x="0.0" y="23.5" width="400" height="223"/>
+                                                                <rect key="frame" x="0.0" y="23.5" width="400" height="257"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yXJ-DH-NKO">
                                                                         <rect key="frame" x="0.0" y="0.0" width="4.5" height="41"/>
@@ -210,7 +199,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LvJ-Nj-1Zt">
-                                                                <rect key="frame" x="0.0" y="246.5" width="400" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="280.5" width="400" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -287,7 +276,7 @@
                 <outlet property="backingContainerView" destination="dDT-Li-H3h" id="9b8-Z1-hBK"/>
                 <outlet property="backingContainerViewLeadingConstraint" destination="d5a-qT-ewn" id="JZa-cF-Xoi"/>
                 <outlet property="backingLabel" destination="ntT-LN-gwV" id="Zxw-pe-fwR"/>
-                <outlet property="blurbAndReadMoreStackView" destination="CTC-V4-a6E" id="ZtT-Zz-Yzd"/>
+                <outlet property="blurbAndOverviewStackview" destination="CTC-V4-a6E" id="ZtT-Zz-Yzd"/>
                 <outlet property="blurbStackView" destination="N5v-Sa-W2B" id="dE2-PS-Kz9"/>
                 <outlet property="categoryAndLocationStackView" destination="Nk9-Fp-QSS" id="11G-bt-8PF"/>
                 <outlet property="categoryIconImageView" destination="Eda-Gr-N8O" id="g67-8A-sWk"/>
@@ -313,8 +302,6 @@
                 <outlet property="projectImageContainerView" destination="Xgw-0t-wnS" id="Y6d-2o-Fca"/>
                 <outlet property="projectNameAndCreatorStackView" destination="QuM-eM-5Sy" id="o4Z-YX-WXG"/>
                 <outlet property="projectNameLabel" destination="Zr5-lc-tKC" id="9Sl-wV-l6f"/>
-                <outlet property="readMoreButton" destination="pcy-A5-iHs" id="Aq4-dq-CAV"/>
-                <outlet property="readMoreStackView" destination="qVW-hB-5Kd" id="NRS-Nx-Jzr"/>
                 <outlet property="stateLabel" destination="t7N-l1-eTw" id="hK2-re-L6h"/>
                 <outlet property="statsStackView" destination="ZTt-dn-nNA" id="BvW-Qy-Yhg"/>
             </connections>
