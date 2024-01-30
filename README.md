@@ -1,7 +1,6 @@
 <a href="https://www.kickstarter.com"><img src=".github/ksr-wordmark.svg" width="36%" alt="Kickstarter for iOS"></a>
 
 [![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-oss)
-[![codecov](https://codecov.io/gh/kickstarter/ios-oss/branch/main/graph/badge.svg)](https://codecov.io/gh/kickstarter/ios-oss)
 
 Welcome to Kickstarter’s open source iOS app! Come on in, take your shoes off,
 stay a while—explore how Kickstarter’s native squad has built and continues to
