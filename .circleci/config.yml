@@ -46,9 +46,6 @@ test_job: &test_job
         name: Run tests
         command: make test
         no_output_timeout: "20m" # 20 minutes
-    - run:
-        name: Generate Slather coverage report
-        command: bundle exec slather coverage -x --scheme $SCHEME ./Kickstarter.xcodeproj
     - store_artifacts:
         path: ./Failed_Snapshot_Tests
 
