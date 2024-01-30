@@ -21,9 +21,6 @@ public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when the delegate has been set on the cell.
   func delegateDidSet()
 
-  /// Call when the read more button is tapped.
-  func readMoreButtonTapped()
-
   func videoDidFinish()
   func videoDidStart()
 }
@@ -34,9 +31,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, Never> { get }
-
-  /// Emits a hide/show `Bool` for the read more campaign button if the compaign tab is enabled.
-  var campaignTabShown: Signal<Bool, Never> { get }
 
   /// Emits a string to use for the category name label.
   var categoryNameLabelText: Signal<String, Never> { get }
@@ -70,9 +64,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
-
-  /// Emits the project and ref tag when we should go to the campaign view for the project.
-  var notifyDelegateToGoToCampaignWithData: Signal<ProjectPamphletMainCellData, Never> { get }
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
@@ -254,9 +245,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.notifyDelegateToGoToCampaignWithData = data
-      .takeWhen(self.readMoreButtonTappedProperty.signal)
-
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
 
@@ -271,17 +259,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     // Tracking
 
-    self.notifyDelegateToGoToCampaignWithData
-      .observeValues { project, _ in
-        AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
-      }
-
     self.notifyDelegateToGoToCreator.observeValues { project in
       AppEnvironment.current.ksrAnalytics.trackGotoCreatorDetailsClicked(project: project)
     }
-
-    self.campaignTabShown = project.ignoreValues()
-      .map(value: campaignTabEnabled)
   }
 
   private let awakeFromNibProperty = MutableProperty(())
@@ -305,11 +285,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.delegateDidSetProperty.value = ()
   }
 
-  fileprivate let readMoreButtonTappedProperty = MutableProperty(())
-  public func readMoreButtonTapped() {
-    self.readMoreButtonTappedProperty.value = ()
-  }
-
   fileprivate let videoDidFinishProperty = MutableProperty(())
   public func videoDidFinish() {
     self.videoDidFinishProperty.value = ()
@@ -323,7 +298,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersSubtitleLabelText: Signal<String, Never>
   public let backersTitleLabelText: Signal<String, Never>
   public let categoryNameLabelText: Signal<String, Never>
-  public let campaignTabShown: Signal<Bool, Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
@@ -334,7 +308,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let isPrelaunchProject: Signal<Bool, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
-  public let notifyDelegateToGoToCampaignWithData: Signal<ProjectPamphletMainCellData, Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
@@ -411,8 +384,6 @@ private func fundingStatus(forProject project: Project) -> String {
     return ""
   }
 }
-
-private let campaignTabEnabled: Bool = true
 
 typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)
 

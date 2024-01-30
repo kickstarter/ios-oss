@@ -333,7 +333,7 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
       Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
       isLoading.signal
     )
-    .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
+    .map { ($0, $1) }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }

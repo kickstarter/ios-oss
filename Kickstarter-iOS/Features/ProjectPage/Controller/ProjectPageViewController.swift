@@ -975,15 +975,6 @@ extension ProjectPageViewController: ProjectRisksDisclaimerCellDelegate {
 extension ProjectPageViewController: ProjectPamphletMainCellDelegate {
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
-    goToCampaignForProjectWith data: ProjectPamphletMainCellData
-  ) {
-    let vc = ProjectDescriptionViewController.configuredWith(data: data)
-    self.viewModel.inputs.showNavigationBar(false)
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
-  internal func projectPamphletMainCell(
-    _: ProjectPamphletMainCell,
     addChildController child: UIViewController
   ) {
     self.addChild(child)

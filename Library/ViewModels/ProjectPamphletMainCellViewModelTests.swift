@@ -19,7 +19,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
   private let isPrelaunchProject = TestObserver<Bool, Never>()
-  private let notifyDelegateToGoToCampaignWithData = TestObserver<ProjectPamphletMainCellData, Never>()
   private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
@@ -33,9 +32,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let projectStateLabelText = TestObserver<String, Never>()
   private let projectStateLabelTextColor = TestObserver<UIColor, Never>()
   private let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
-  private let readMoreButtonIsHidden = TestObserver<Bool, Never>()
-  private let readMoreButtonIsLoading = TestObserver<Bool, Never>()
-  private let readMoreButtonLargeIsHidden = TestObserver<Bool, Never>()
   private let stateLabelHidden = TestObserver<Bool, Never>()
   private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
 
@@ -45,7 +41,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.statsStackViewAccessibilityLabel
       .observe(self.statsStackViewAccessibilityLabel.observer)
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
-    self.vm.outputs.campaignTabShown.observe(self.readMoreButtonIsHidden.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)
@@ -54,8 +49,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.fundingProgressBarViewBackgroundColor
       .observe(self.fundingProgressBarViewBackgroundColor.observer)
-    self.vm.outputs.notifyDelegateToGoToCampaignWithData
-      .observe(self.notifyDelegateToGoToCampaignWithData.observer)
     self.vm.outputs.notifyDelegateToGoToCreator.observe(self.notifyDelegateToGoToCreator.observer)
     self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
@@ -72,15 +65,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.backingLabelHidden.observe(self.backingLabelHidden.observer)
     self.vm.outputs.isPrelaunchProject.observe(self.isPrelaunchProject.observer)
     self.vm.outputs.prelaunchProjectBackingText.observe(self.prelaunchProjectBackingText.observer)
-  }
-
-  func testReadMoreButton_ExperimentStory_Success() {
-    withEnvironment(config: .template) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([true])
-    }
   }
 
   func testStatsStackViewAccessibilityLabel() {
@@ -561,26 +545,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
 
-  func testNotifyDelegateToGoToCampaign() {
-    let project = Project.template
-    let refTag = RefTag.discovery
-
-    XCTAssertNil(self.notifyDelegateToGoToCampaignWithData.lastValue)
-
-    self.vm.inputs.configureWith(value: (project, refTag))
-    self.vm.inputs.awakeFromNib()
-
-    XCTAssertNil(self.notifyDelegateToGoToCampaignWithData.lastValue)
-
-    self.vm.inputs.readMoreButtonTapped()
-
-    XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue?.project)
-    XCTAssertEqual(refTag, self.notifyDelegateToGoToCampaignWithData.lastValue?.refTag)
-
-    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
-    XCTAssertEqual("campaign_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
-  }
-
   func testNotifyDelegateToGoToCreator() {
     let project = Project.template
 
@@ -597,32 +561,5 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
-  }
-
-  func testTrackingCampaignDetailsButtonTapped_NonLiveProject_LoggedIn_Backed() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-
-    let project = Project.template
-      |> Project.lens.state .~ .successful
-      |> Project.lens.personalization.isBacking .~ true
-
-    let refTag = RefTag.discovery
-
-    withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, refTag))
-      self.vm.inputs.awakeFromNib()
-
-      XCTAssertEqual(self.segmentTrackingClient.events, [])
-
-      self.vm.inputs.readMoreButtonTapped()
-
-      XCTAssertEqual(
-        self.segmentTrackingClient.events,
-        ["CTA Clicked"],
-        "Event is tracked"
-      )
-    }
   }
 }

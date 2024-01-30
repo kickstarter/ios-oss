@@ -521,7 +521,7 @@ final class AppDelegateViewModelTests: TestCase {
       )
       XCTAssertTrue(result)
 
-      self.presentViewController.assertValues([1, 2, 2, 2, 3, 2])
+      self.presentViewController.assertValues([1, 2, 2, 2, 3, 1])
     }
   }
 
