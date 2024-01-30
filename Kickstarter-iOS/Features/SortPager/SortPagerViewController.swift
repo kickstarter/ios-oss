@@ -104,7 +104,7 @@ internal final class SortPagerViewController: UIViewController {
     _ = self.borderLineView
       |> discoveryBorderLineStyle
 
-    if self.view.traitCollection.isRegularRegular {
+    if self.traitCollection.isRegularRegular {
       self.sortsStackViewCenterXConstraint?.isActive = true
       self.sortsStackViewLeadingConstraint.isActive = false
       self.sortsStackViewTrailingConstraint.isActive = false
