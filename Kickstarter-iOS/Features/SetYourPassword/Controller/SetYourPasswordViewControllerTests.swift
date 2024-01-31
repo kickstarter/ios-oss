@@ -22,7 +22,7 @@ final class SetYourPasswordViewControllerTests: TestCase {
     let userEnvelope = UserEnvelope(me: userTemplate)
     let service = MockService(fetchGraphUserResult: .success(userEnvelope))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: service, apiDelayInterval: .seconds(0), language: language) {
         let controller = SetYourPasswordViewController.instantiate()
