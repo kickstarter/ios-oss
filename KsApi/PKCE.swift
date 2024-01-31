@@ -28,7 +28,11 @@ public extension Data {
           throw PKCEError.UnexpectedRuntimeError
         }
 
-        _ = SecRandomCopyBytes(kSecRandomDefault, numBytes, address)
+        let result = SecRandomCopyBytes(kSecRandomDefault, numBytes, address)
+
+        if result != errSecSuccess {
+          throw PKCEError.UnexpectedRuntimeError
+        }
       }
     } catch {
       throw error
