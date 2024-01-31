@@ -88,11 +88,11 @@ internal class TestCase: XCTestCase {
   }
 
   internal func preferredSimulatorCheck() {
-    let deviceName = ProcessInfo().environment["SIMULATOR_DEVICE_NAME"]
+    let deviceName = ProcessInfo().environment["SIMULATOR_VERSION_INFO"]
     let iOSVersion = ProcessInfo().environment["SIMULATOR_RUNTIME_VERSION"]
 
     // Keep this check in sync with the device specified in `.cicleci/config.yml` and `Makefile`.
-    guard deviceName == "iPhone SE (3rd generation)", iOSVersion == "17.2" else {
+    guard deviceName!.localizedStandardContains("iPhone SE (3rd generation)"), iOSVersion == "17.2" else {
       fatalError("Please only test and record screenshots on an iPhone SE simulator running iOS 17.2")
     }
   }
