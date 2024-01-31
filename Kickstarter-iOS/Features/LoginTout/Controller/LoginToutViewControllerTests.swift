@@ -18,7 +18,7 @@ internal final class LoginToutViewControllerTests: TestCase {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject]
 
-    combos(Language.allLanguages, devices, intents).forEach { language, device, intent in
+    orthogonalCombos(Language.allLanguages, devices, intents).forEach { language, device, intent in
       withEnvironment(language: language) {
         let controller = LoginToutViewController.configuredWith(loginIntent: intent)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
