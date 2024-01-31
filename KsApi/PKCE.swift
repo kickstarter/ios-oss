@@ -1,39 +1,42 @@
 import CryptoKit
 import Foundation
+import Security
 
-/// PKCE stands for Proof Key for Code Exchange.
-/// The code verifier, and its associated challenge, are used to ensure that an oAuth request is valid.
-/// See this documentation for more details: https://www.oauth.com/oauth2-servers/mobile-and-native-apps/authorization/
-public struct PKCE {
-  /// Creates a random alphanumeric string of the specified length
-  static func createCodeVerifier(ofLength length: Int) throws -> String {
-    let uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    let lowercase = "abcdefghijklmnopqrstuvwxyz"
-    let numbers = "0123456789"
-    let specials = "-._~"
+enum PKCEError: Error {
+  case UnexpectedRuntimeError
+}
 
-    let validCharacters = uppercase + lowercase + numbers + specials
+public extension Data {
+  func base64URLEncodedStringWithNoPadding() -> String {
+    var encodedString = self.base64EncodedString()
 
-    var codeVerifier = ""
+    // Convert base64 to base64url
+    encodedString = encodedString.replacingOccurrences(of: "+", with: "-")
+    encodedString = encodedString.replacingOccurrences(of: "/", with: "_")
+    // Strip padding
+    encodedString = encodedString.replacingOccurrences(of: "=", with: "")
 
-    for _ in 0..<length {
-      guard let character = validCharacters.randomElement() else {
-        throw ErrorType.UnableToCreateCodeVerifier
-      }
-
-      codeVerifier += String(character)
-    }
-
-    return codeVerifier
+    return encodedString
   }
 
-  /// Creates a base-64 encoded SHA256 hash of the given string.
-  static func createCodeChallenge(fromVerifier verifier: String) throws -> String {
-    guard let stringData = verifier.data(using: .utf8) else {
-      throw ErrorType.UnableToCreateCodeChallenge
-    }
+  mutating func fillWithRandomSecureBytes() throws {
+    do {
+      let numBytes = self.count
+      try self.withUnsafeMutableBytes { rawPointer in
+        let pointer = rawPointer.bindMemory(to: UInt8.self)
+        guard let address = pointer.baseAddress else {
+          throw PKCEError.UnexpectedRuntimeError
+        }
 
-    let hash = SHA256.hash(data: stringData)
+        _ = SecRandomCopyBytes(kSecRandomDefault, numBytes, address)
+      }
+    } catch {
+      throw error
+    }
+  }
+
+  func sha256Hash() throws -> Data {
+    let hash = SHA256.hash(data: self)
     var hashData: Data?
 
     hash.withUnsafeBytes { pointer in
@@ -42,17 +45,39 @@ public struct PKCE {
     }
 
     guard let unwrappedData = hashData else {
-      throw ErrorType.UnableToCreateCodeChallenge
+      throw PKCEError.UnexpectedRuntimeError
     }
 
-    return unwrappedData.base64EncodedString()
+    return unwrappedData
+  }
+}
+
+/// PKCE stands for Proof Key for Code Exchange.
+/// The code verifier, and its associated challenge, are used to ensure that an oAuth request is valid.
+/// See this documentation for more details: https://www.oauth.com/oauth2-servers/mobile-and-native-apps/authorization/
+public struct PKCE {
+  /// Creates a random alphanumeric string of the specified length
+  static func createCodeVerifier(byteLength length: Int) throws -> String {
+    do {
+      var buffer = Data(count: length)
+      try buffer.fillWithRandomSecureBytes()
+      return buffer.base64URLEncodedStringWithNoPadding()
+    } catch _ {
+      throw PKCEError.UnexpectedRuntimeError
+    }
   }
 
-  /// Errors that can occur in the PKCE flow.
-  /// Note that these are exceptional errors - effectively run time errors that we don't ever expect to happen.
-  /// However, because PKCE is a critical part of auth, it's worthwhile to be explicit if the unexpected ever *did* happen.
-  public enum ErrorType: Error {
-    case UnableToCreateCodeChallenge
-    case UnableToCreateCodeVerifier
+  /// Creates a base-64 encoded SHA256 hash of the given string.
+  static func createCodeChallenge(fromVerifier verifier: String) throws -> String {
+    guard let stringData = verifier.data(using: .utf8) else {
+      throw PKCEError.UnexpectedRuntimeError
+    }
+
+    do {
+      let hash = try stringData.sha256Hash()
+      return hash.base64URLEncodedStringWithNoPadding()
+    } catch {
+      throw PKCEError.UnexpectedRuntimeError
+    }
   }
 }
