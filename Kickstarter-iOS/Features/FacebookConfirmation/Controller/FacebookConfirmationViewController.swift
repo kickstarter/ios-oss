@@ -62,19 +62,18 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self
       |> baseControllerStyle()
 
-    _ = self.disclaimerTextView
-      |> disclaimerTextViewStyle
-
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
-    _ = self.newsletterLabel
-      |> newsletterLabelStyle
+    _ = self.newsletterLabel |> newsletterLabelStyle
     _ = self.newsletterSwitch |> newsletterSwitchStyle
-    _ = self.rootStackView |> loginRootStackViewStyle
+
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+    applyDisclaimerTextViewStyle(self.disclaimerTextView, useLargerText: isPad)
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
   }
 
   override func bindViewModel() {
