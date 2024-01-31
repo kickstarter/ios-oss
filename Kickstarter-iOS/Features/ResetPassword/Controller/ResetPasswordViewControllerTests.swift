@@ -10,7 +10,7 @@ internal final class ResetPasswordViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.pad, Device.phone4_7inch, Device.phone5_8inch]).forEach {
       language, device in
       withEnvironment(language: language) {
         let controller = ResetPasswordViewController.configuredWith(email: "americasnexttopmodulus@gmail.com")
