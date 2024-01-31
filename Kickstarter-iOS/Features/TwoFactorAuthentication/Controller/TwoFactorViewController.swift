@@ -28,7 +28,7 @@ internal final class TwoFactorViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+    let isPad = self.traitCollection.isRegularRegular
 
     _ = self
       |> twoFactorControllerStyle
