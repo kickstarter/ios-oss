@@ -21,15 +21,10 @@ final class RemoteConfigFeatureFlagToolsViewControllerTests: TestCase {
 
   func testRemoteConfigFeatureFlagToolsViewController() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.blockUsersEnabled.rawValue: false,
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false,
-        RemoteConfigFeature.darkModeEnabled.rawValue: false,
-        RemoteConfigFeature.facebookLoginInterstitialEnabled
-          .rawValue: false,
-        RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false,
-        RemoteConfigFeature.reportThisProjectEnabled.rawValue: false
-      ]
+
+    for feature in RemoteConfigFeature.allCases {
+      mockRemoteConfigClient.features[feature.rawValue] = false
+    }
 
     withEnvironment(language: .en, mainBundle: MockBundle(), remoteConfigClient: mockRemoteConfigClient) {
       let controller = RemoteConfigFeatureFlagToolsViewController.instantiate()
