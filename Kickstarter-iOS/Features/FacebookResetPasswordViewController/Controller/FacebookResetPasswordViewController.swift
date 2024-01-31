@@ -70,7 +70,8 @@ public final class FacebookResetPasswordViewController: UIViewController {
 
     _ = self.rootStackView
       |> baseStackViewStyle
-      |> loginRootStackViewStyle
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
 
     _ = self.emailLabel
       |> textFieldLabelStyle
