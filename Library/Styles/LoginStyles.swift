@@ -99,14 +99,6 @@ public let resetPasswordControllerStyle = UIViewController.lens.title %~ { _ in
   Strings.forgot_password_title()
 }
 
-public let loginRootStackViewStyle =
-  UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-    <> UIStackView.lens.layoutMargins %~~ { _, stack in
-      stack.traitCollection.isRegularRegular
-        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
-    }
-
 public func applyLoginRootStackViewStyle(_ stackView: UIStackView, useLargerMargins: Bool) {
   stackView.isLayoutMarginsRelativeArrangement = true
   let leftRightMargin = useLargerMargins ? Styles.grid(20) : Styles.grid(4)
@@ -193,19 +185,6 @@ public func tfaCodeFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
 }
 
 public let twoFactorControllerStyle = UIViewController.lens.title %~ { _ in Strings.two_factor_title() }
-
-public let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
-  _ = textView
-    |> tappableLinksViewStyle
-    |> \.attributedText .~ attributedDisclaimerText(
-      textView: textView,
-      useLargerText: textView.traitCollection.isRegularRegular
-    )
-    |> \.accessibilityTraits .~ [.staticText]
-    |> \.textAlignment .~ .center
-
-  return textView
-}
 
 public func applyDisclaimerTextViewStyle(_ textView: UITextView, useLargerText: Bool) {
   _ = textView
