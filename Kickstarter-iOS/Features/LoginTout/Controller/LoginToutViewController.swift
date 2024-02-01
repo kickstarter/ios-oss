@@ -148,7 +148,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
       |> UIStackView.lens.layoutMargins %~~ { _, _ in
         isPad
-          ? .init(topBottom: Styles.grid(10), leftRight: 0)
+          ? .init(topBottom: Styles.grid(5), leftRight: 0)
           : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
