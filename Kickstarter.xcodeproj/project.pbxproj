@@ -1497,7 +1497,6 @@
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
-		E1FDB1E82AEAAC6100285F93 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -6015,6 +6014,7 @@
 				A7DC83951C9DBBE700BB2B44 /* RefTag.swift */,
 				A7ED1F1E1E830FDC00BFFA01 /* RefTagTests.swift */,
 				19A666622A0472C700708F8B /* RemoteConfig */,
+				60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */,
 				D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */,
 				D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */,
 				0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */,
@@ -6670,7 +6670,6 @@
 				D01587E41EEB2ED7006E7684 /* RewardsItem.swift */,
 				D01587E51EEB2ED7006E7684 /* RewardsItemTests.swift */,
 				D01587E61EEB2ED7006E7684 /* RewardTests.swift */,
-				60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */,
 				D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */,
 				D01587E71EEB2ED7006E7684 /* ShippingRule.swift */,
 				D01587E81EEB2ED7006E7684 /* ShippingRulesEnvelope.swift */,
