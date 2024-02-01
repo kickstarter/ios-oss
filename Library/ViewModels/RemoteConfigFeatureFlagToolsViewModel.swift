@@ -103,49 +103,13 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
 /** Returns the value of the User Defaults key in the AppEnvironment.
  */
 private func getValueFromUserDefaults(for feature: RemoteConfigFeature) -> Bool? {
-  switch feature {
-  case .blockUsersEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.blockUsersEnabled.rawValue]
-  case .consentManagementDialogEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue]
-  case .darkModeEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.darkModeEnabled.rawValue]
-  case .facebookLoginInterstitialEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue]
-  case .postCampaignPledgeEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.postCampaignPledgeEnabled.rawValue]
-  case .reportThisProjectEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue]
-  }
+  return AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[feature.rawValue]
 }
 
 /** Sets the value for the UserDefaults key in the AppEnvironment.
  */
 private func setValueInUserDefaults(for feature: RemoteConfigFeature, and value: Bool) {
-  switch feature {
-  case .blockUsersEnabled:
-    AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.blockUsersEnabled.rawValue] = value
-  case .consentManagementDialogEnabled:
-    AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.consentManagementDialogEnabled.rawValue] = value
-  case .darkModeEnabled:
-    AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.darkModeEnabled.rawValue] = value
-  case .facebookLoginInterstitialEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue] = value
-  case .postCampaignPledgeEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.postCampaignPledgeEnabled.rawValue] = value
-  case .reportThisProjectEnabled:
-    return AppEnvironment.current.userDefaults
-      .remoteConfigFeatureFlags[RemoteConfigFeature.reportThisProjectEnabled.rawValue] = value
-  }
+  AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[feature.rawValue] = value
 }

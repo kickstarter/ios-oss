@@ -3,111 +3,119 @@ import Prelude
 import XCTest
 
 final class RemoteConfigFeatureHelpersTests: TestCase {
-  func testBlockUsers_RemoteConfig_FeatureFlag_False() {
+  func assert(featureFlagIsFalse checkFeatureFlag: () -> Bool,
+              whenRemoteConfigFeatureIsFalse feature: RemoteConfigFeature) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.blockUsersEnabled.rawValue: false]
+      |> \.features .~ [feature.rawValue: false]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureBlockUsersEnabled())
+      XCTAssertFalse(checkFeatureFlag())
     }
+  }
+
+  func assert(featureFlagIsTrue checkFeatureFlag: () -> Bool,
+              whenRemoteConfigFeatureIsTrue feature: RemoteConfigFeature) {
+    let mockRemoteConfigClient = MockRemoteConfigClient()
+      |> \.features .~ [feature.rawValue: true]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
+      XCTAssertTrue(checkFeatureFlag())
+    }
+  }
+
+  func testBlockUsers_RemoteConfig_FeatureFlag_False() {
+    self
+      .assert(
+        featureFlagIsFalse: featureBlockUsersEnabled,
+        whenRemoteConfigFeatureIsFalse: .blockUsersEnabled
+      )
   }
 
   func testBlockUsers_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.blockUsersEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featureBlockUsersEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsTrue: featureBlockUsersEnabled,
+        whenRemoteConfigFeatureIsTrue: .blockUsersEnabled
+      )
   }
 
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_False() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.consentManagementDialogEnabled.rawValue: false]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureConsentManagementDialogEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsFalse: featureConsentManagementDialogEnabled,
+        whenRemoteConfigFeatureIsFalse: .consentManagementDialogEnabled
+      )
   }
 
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featureConsentManagementDialogEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsTrue: featureConsentManagementDialogEnabled,
+        whenRemoteConfigFeatureIsTrue: .consentManagementDialogEnabled
+      )
   }
 
   func testDarkMode_RemoteConfig_FeatureFlag_False() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.darkModeEnabled.rawValue: false]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureDarkModeEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsFalse: featureDarkModeEnabled,
+        whenRemoteConfigFeatureIsFalse: .darkModeEnabled
+      )
   }
 
   func testDarkMode_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.darkModeEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featureDarkModeEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsTrue: featureDarkModeEnabled,
+        whenRemoteConfigFeatureIsTrue: .darkModeEnabled
+      )
   }
 
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featureFacebookLoginInterstitialEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsTrue: featureFacebookLoginInterstitialEnabled,
+        whenRemoteConfigFeatureIsTrue: .facebookLoginInterstitialEnabled
+      )
   }
 
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_False() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: false]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureFacebookLoginInterstitialEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsFalse: featureFacebookLoginInterstitialEnabled,
+        whenRemoteConfigFeatureIsFalse: .facebookLoginInterstitialEnabled
+      )
   }
 
   func testPostCampaignPledge_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featurePostCampaignPledgeEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsTrue: featurePostCampaignPledgeEnabled,
+        whenRemoteConfigFeatureIsTrue: .postCampaignPledgeEnabled
+      )
   }
 
   func testPostCampaignPledge_RemoteConfig_FeatureFlag_False() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featurePostCampaignPledgeEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsFalse: featurePostCampaignPledgeEnabled,
+        whenRemoteConfigFeatureIsFalse: .postCampaignPledgeEnabled
+      )
   }
 
   func testReportThisProject_RemoteConfig_FeatureFlag_True() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.reportThisProjectEnabled.rawValue: true]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertTrue(featureReportThisProjectEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsTrue: featureReportThisProjectEnabled,
+        whenRemoteConfigFeatureIsTrue: .reportThisProjectEnabled
+      )
   }
 
   func testReportThisProject_RemoteConfig_FeatureFlag_False() {
-    let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [RemoteConfigFeature.reportThisProjectEnabled.rawValue: false]
-
-    withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureReportThisProjectEnabled())
-    }
+    self
+      .assert(
+        featureFlagIsFalse: featureReportThisProjectEnabled,
+        whenRemoteConfigFeatureIsFalse: .reportThisProjectEnabled
+      )
   }
 }
