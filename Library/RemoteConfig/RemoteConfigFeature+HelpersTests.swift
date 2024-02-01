@@ -3,102 +3,118 @@ import Prelude
 import XCTest
 
 final class RemoteConfigFeatureHelpersTests: TestCase {
-  func assertFeatureIsFalse(_ featureFlag: Bool,
-                            whenRemoteConfigFeatureIsFalse feature: RemoteConfigFeature) {
+  func assertFeatureIsFalse(
+    whenRemoteConfigFeatureIsFalse feature: RemoteConfigFeature,
+    checkFeatureFlag: () -> Bool
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [feature.rawValue: false]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureFlag)
+      XCTAssertFalse(checkFeatureFlag())
     }
   }
 
-  func assertFeatureIsTrue(_ featureFlag: Bool, whenRemoteConfigFeatureIsTrue feature: RemoteConfigFeature) {
+  func assertFeatureIsTrue(
+    whenRemoteConfigFeatureIsTrue feature: RemoteConfigFeature,
+    checkFeatureFlag: () -> Bool
+  ) {
     let mockRemoteConfigClient = MockRemoteConfigClient()
       |> \.features .~ [feature.rawValue: true]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
-      XCTAssertFalse(featureFlag)
+      XCTAssertTrue(checkFeatureFlag())
     }
   }
 
   func testBlockUsers_RemoteConfig_FeatureFlag_False() {
-    self.assertFeatureIsFalse(featureBlockUsersEnabled(), whenRemoteConfigFeatureIsFalse: .blockUsersEnabled)
+    self.assertFeatureIsFalse(whenRemoteConfigFeatureIsFalse: .blockUsersEnabled) {
+      featureBlockUsersEnabled()
+    }
   }
 
   func testBlockUsers_RemoteConfig_FeatureFlag_True() {
-    self.assertFeatureIsTrue(featureBlockUsersEnabled(), whenRemoteConfigFeatureIsTrue: .blockUsersEnabled)
+    self.assertFeatureIsTrue(whenRemoteConfigFeatureIsTrue: .blockUsersEnabled) {
+      featureBlockUsersEnabled()
+    }
   }
 
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_False() {
     self
       .assertFeatureIsFalse(
-        featureConsentManagementDialogEnabled(),
         whenRemoteConfigFeatureIsFalse: .consentManagementDialogEnabled
-      )
+      ) {
+        featureConsentManagementDialogEnabled()
+      }
   }
 
   func testConsentManagementDialog_RemoteConfig_FeatureFlag_True() {
     self
       .assertFeatureIsTrue(
-        featureConsentManagementDialogEnabled(),
         whenRemoteConfigFeatureIsTrue: .consentManagementDialogEnabled
-      )
+      ) {
+        featureConsentManagementDialogEnabled()
+      }
   }
 
   func testDarkMode_RemoteConfig_FeatureFlag_False() {
-    self.assertFeatureIsFalse(featureDarkModeEnabled(), whenRemoteConfigFeatureIsFalse: .darkModeEnabled)
+    self.assertFeatureIsFalse(whenRemoteConfigFeatureIsFalse: .darkModeEnabled) {
+      featureDarkModeEnabled()
+    }
   }
 
   func testDarkMode_RemoteConfig_FeatureFlag_True() {
-    self.assertFeatureIsTrue(featureDarkModeEnabled(), whenRemoteConfigFeatureIsTrue: .darkModeEnabled)
+    self.assertFeatureIsTrue(whenRemoteConfigFeatureIsTrue: .darkModeEnabled) {
+      featureDarkModeEnabled()
+    }
   }
 
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_True() {
     self
-      .assertFeatureIsTrue(
-        featureFacebookLoginInterstitialEnabled(),
-        whenRemoteConfigFeatureIsTrue: .facebookLoginInterstitialEnabled
-      )
+      .assertFeatureIsTrue(whenRemoteConfigFeatureIsTrue: .facebookLoginInterstitialEnabled
+      ) {
+        featureFacebookLoginInterstitialEnabled()
+      }
   }
 
   func testFacebookDeprecation_RemoteConfig_FeatureFlag_False() {
     self
-      .assertFeatureIsFalse(
-        featureFacebookLoginInterstitialEnabled(),
-        whenRemoteConfigFeatureIsFalse: .facebookLoginInterstitialEnabled
-      )
+      .assertFeatureIsFalse(whenRemoteConfigFeatureIsFalse: .facebookLoginInterstitialEnabled
+      ) {
+        featureFacebookLoginInterstitialEnabled()
+      }
   }
 
   func testPostCampaignPledge_RemoteConfig_FeatureFlag_True() {
     self
-      .assertFeatureIsTrue(
-        featurePostCampaignPledgeEnabled(),
-        whenRemoteConfigFeatureIsTrue: .postCampaignPledgeEnabled
-      )
+      .assertFeatureIsTrue(whenRemoteConfigFeatureIsTrue: .postCampaignPledgeEnabled
+      ) {
+        featurePostCampaignPledgeEnabled()
+      }
   }
 
   func testPostCampaignPledge_RemoteConfig_FeatureFlag_False() {
     self
       .assertFeatureIsFalse(
-        featurePostCampaignPledgeEnabled(),
         whenRemoteConfigFeatureIsFalse: .postCampaignPledgeEnabled
-      )
+      ) {
+        featurePostCampaignPledgeEnabled()
+      }
   }
 
   func testReportThisProject_RemoteConfig_FeatureFlag_True() {
     self
       .assertFeatureIsTrue(
-        featureReportThisProjectEnabled(),
         whenRemoteConfigFeatureIsTrue: .reportThisProjectEnabled
-      )
+      ) { featureReportThisProjectEnabled() }
   }
 
   func testReportThisProject_RemoteConfig_FeatureFlag_False() {
     self
       .assertFeatureIsFalse(
-        featureReportThisProjectEnabled(),
         whenRemoteConfigFeatureIsFalse: .reportThisProjectEnabled
-      )
+      ) {
+        featureReportThisProjectEnabled()
+      }
   }
 }
