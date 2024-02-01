@@ -1618,6 +1618,18 @@
             "deprecationReason": null
           },
           {
+            "name": "backerNote",
+            "description": "Backer's note regarding their backing",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "backingUrl",
             "description": "A link to the backing information",
             "args": [],
@@ -25283,6 +25295,22 @@
         "description": "An add-on reward included in a backing.",
         "fields": [
           {
+            "name": "amount",
+            "description": "Amount the add-on costs.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Money",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "description",
             "description": "The add-on description.",
             "args": [],
@@ -25315,6 +25343,63 @@
             "deprecationReason": null
           },
           {
+            "name": "items",
+            "description": "Items in the add-on.",
+            "args": [
+              {
+                "name": "first",
+                "description": "Returns the first _n_ elements from the list.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": "Returns the elements in the list that come after the specified cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "last",
+                "description": "Returns the last _n_ elements from the list.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "before",
+                "description": "Returns the elements in the list that come before the specified cursor.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RewardItemsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": "The add-on name.",
             "args": [],
@@ -25328,7 +25413,7 @@
           },
           {
             "name": "quantity",
-            "description": "The quantity of the add-on included in a backing",
+            "description": "The quantity of the add-on included in a backing.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -25973,6 +26058,22 @@
               "ofType": {
                 "kind": "ENUM",
                 "name": "CheckoutState",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stripeOnSessionPaymentRedirectUrl",
+            "description": "The full URL to redirect to after an on_session payment via Stripe",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -33393,6 +33494,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "SetBackingFulfillmentStatusesPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "setBackingNote",
+            "description": null,
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "SetBackingNoteInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "SetBackingNotePayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -43491,6 +43619,127 @@
                   }
                 }
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "SetBackingNoteInput",
+        "description": "Autogenerated input type of SetBackingNote",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "backingId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "noteBody",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "noteType",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "BackingNoteType",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "BackingNoteType",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "CreatorBackingNote",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BackerBackingNote",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SetBackingNotePayload",
+        "description": "Autogenerated return type of SetBackingNote",
+        "fields": [
+          {
+            "name": "backing",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Backing",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
