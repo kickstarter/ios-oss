@@ -30,3 +30,7 @@ public func featurePostCampaignPledgeEnabled() -> Bool {
 public func featureReportThisProjectEnabled() -> Bool {
   featureEnabled(feature: .reportThisProjectEnabled)
 }
+
+public func featureLoginWithOAuthEnabled() -> Bool {
+  featureEnabled(feature: .loginWithOAuthEnabled)
+}

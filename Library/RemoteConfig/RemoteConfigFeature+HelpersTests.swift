@@ -118,4 +118,20 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
         whenRemoteConfigFeatureIsFalse: .reportThisProjectEnabled
       )
   }
+
+  func testLoginWithOAuth_RemoteConfig_FeatureFlag_True() {
+    self
+      .assert(
+        featureFlagIsTrue: featureLoginWithOAuthEnabled,
+        whenRemoteConfigFeatureIsTrue: .loginWithOAuthEnabled
+      )
+  }
+
+  func testLoginWithOAuth_RemoteConfig_FeatureFlag_False() {
+    self
+      .assert(
+        featureFlagIsFalse: featureLoginWithOAuthEnabled,
+        whenRemoteConfigFeatureIsFalse: .loginWithOAuthEnabled
+      )
+  }
 }

@@ -7,6 +7,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case facebookLoginInterstitialEnabled = "facebook_interstitial"
   case postCampaignPledgeEnabled = "post_campaign_pledge"
   case reportThisProjectEnabled = "report_this_project"
+  case loginWithOAuthEnabled = "ios_oauth"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -18,6 +19,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .facebookLoginInterstitialEnabled: return "Facebook Login Interstitial"
     case .postCampaignPledgeEnabled: return "Post Campaign Pledging"
     case .reportThisProjectEnabled: return "Report This Project"
+    case .loginWithOAuthEnabled: return "Login with OAuth"
     }
   }
 }
