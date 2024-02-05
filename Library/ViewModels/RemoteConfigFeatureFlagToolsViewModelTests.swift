@@ -21,15 +21,10 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
 
   func testReloadWithData_AllFeaturesEnabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.blockUsersEnabled.rawValue: true,
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
-        RemoteConfigFeature.darkModeEnabled.rawValue: true,
-        RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
-        RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true,
-        RemoteConfigFeature.reportThisProjectEnabled.rawValue: true,
-        RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
-      ]
+
+    for feature in RemoteConfigFeature.allCases {
+      mockRemoteConfigClient.features[feature.rawValue] = true
+    }
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
@@ -46,15 +41,11 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
 
   func testReloadWithData_FeaturesEnabledAndDisabled() {
     let mockRemoteConfigClient = MockRemoteConfigClient()
-      |> \.features .~ [
-        RemoteConfigFeature.blockUsersEnabled.rawValue: false,
-        RemoteConfigFeature.consentManagementDialogEnabled.rawValue: true,
-        RemoteConfigFeature.darkModeEnabled.rawValue: false,
-        RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
-        RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false,
-        RemoteConfigFeature.reportThisProjectEnabled.rawValue: false,
-        RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
-      ]
+
+    for feature in RemoteConfigFeature.allCases {
+      let trueOrFalse = feature.rawValue.hashValue % 2 == 1
+      mockRemoteConfigClient.features[feature.rawValue] = trueOrFalse
+    }
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
       self.vm.inputs.viewDidLoad()
