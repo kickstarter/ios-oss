@@ -101,8 +101,9 @@ public let resetPasswordControllerStyle = UIViewController.lens.title %~ { _ in
 
 public func applyLoginRootStackViewStyle(_ stackView: UIStackView, useLargerMargins: Bool) {
   stackView.isLayoutMarginsRelativeArrangement = true
-  let leftRightMargin = useLargerMargins ? Styles.grid(20) : Styles.grid(4)
-  stackView.layoutMargins = .init(topBottom: Styles.grid(2), leftRight: leftRightMargin)
+  stackView.layoutMargins = useLargerMargins ?
+    .init(topBottom: Styles.grid(5), leftRight: Styles.grid(20)) :
+    .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
 }
 
 public let signupButtonStyle: ButtonStyle = { button in
