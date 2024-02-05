@@ -27,7 +27,8 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         RemoteConfigFeature.darkModeEnabled.rawValue: true,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
         RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true,
-        RemoteConfigFeature.reportThisProjectEnabled.rawValue: true
+        RemoteConfigFeature.reportThisProjectEnabled.rawValue: true,
+        RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {
@@ -51,7 +52,8 @@ final class RemoteConfigFlagToolsViewModelTests: TestCase {
         RemoteConfigFeature.darkModeEnabled.rawValue: false,
         RemoteConfigFeature.facebookLoginInterstitialEnabled.rawValue: true,
         RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: false,
-        RemoteConfigFeature.reportThisProjectEnabled.rawValue: false
+        RemoteConfigFeature.reportThisProjectEnabled.rawValue: false,
+        RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
       ]
 
     withEnvironment(remoteConfigClient: mockRemoteConfigClient) {

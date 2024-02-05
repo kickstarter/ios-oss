@@ -97,6 +97,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featurePostCampaignPledgeEnabled()
   case .reportThisProjectEnabled:
     return featureReportThisProjectEnabled()
+  case .loginWithOAuthEnabled:
+    return featureLoginWithOAuthEnabled()
   }
 }
 
