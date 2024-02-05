@@ -640,6 +640,10 @@ extension LoginToutViewController: ASAuthorizationControllerPresentationContextP
 
 extension LoginToutViewController: ASWebAuthenticationPresentationContextProviding {
   public func presentationAnchor(for _: ASWebAuthenticationSession) -> ASPresentationAnchor {
-    return self.view.window!
+    guard let window = self.view.window else {
+      return ASPresentationAnchor()
+    }
+
+    return window
   }
 }
