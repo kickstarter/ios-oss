@@ -32,19 +32,6 @@ public let showHidePasswordButtonStyle = UIButton.lens.title(for: .normal) .~ ""
     Strings.Password_visibility()
   }
 
-public let fbDisclaimerTextStyle = UILabel.lens.font %~~ { _, label in
-  label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0)
-}
-
-  <> UILabel.lens.backgroundColor .~ .ksr_white
-  <> UILabel.lens.lineBreakMode .~ .byWordWrapping
-  <> UILabel.lens.numberOfLines .~ 0
-  <> UILabel.lens.textColor .~ .ksr_support_400
-  <> UILabel.lens.textAlignment .~ .center
-  <> UILabel.lens.text %~ { _ in
-    Strings.Well_import_your_name_and_profile_photo_and_access_your_friend_list()
-  }
-
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .emailAddress
@@ -112,13 +99,12 @@ public let resetPasswordControllerStyle = UIViewController.lens.title %~ { _ in
   Strings.forgot_password_title()
 }
 
-public let loginRootStackViewStyle =
-  UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-    <> UIStackView.lens.layoutMargins %~~ { _, stack in
-      stack.traitCollection.isRegularRegular
-        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
-    }
+public func applyLoginRootStackViewStyle(_ stackView: UIStackView, useLargerMargins: Bool) {
+  stackView.isLayoutMarginsRelativeArrangement = true
+  stackView.layoutMargins = useLargerMargins ?
+    .init(topBottom: Styles.grid(5), leftRight: Styles.grid(20)) :
+    .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
+}
 
 public let signupButtonStyle: ButtonStyle = { button in
   button
@@ -161,7 +147,7 @@ public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
 
 public func disclaimerAttributedString(
   with string: String,
-  traitCollection: UITraitCollection
+  useLargerText: Bool
 ) -> NSAttributedString? {
   guard let attributedString = try? NSMutableAttributedString(
     data: Data(string.utf8),
@@ -173,7 +159,7 @@ public func disclaimerAttributedString(
   ) else { return nil }
 
   let attributes: String.Attributes = [
-    .font: traitCollection.isRegularRegular ? UIFont.ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0),
+    .font: useLargerText ? UIFont.ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0),
     .foregroundColor: UIColor.ksr_support_400,
     .underlineStyle: 0
   ]
@@ -201,17 +187,16 @@ public func tfaCodeFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
 
 public let twoFactorControllerStyle = UIViewController.lens.title %~ { _ in Strings.two_factor_title() }
 
-public let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+public func applyDisclaimerTextViewStyle(_ textView: UITextView, useLargerText: Bool) {
   _ = textView
     |> tappableLinksViewStyle
-    |> \.attributedText .~ attributedDisclaimerText(textView: textView)
-    |> \.accessibilityTraits .~ [.staticText]
-    |> \.textAlignment .~ .center
-
-  return textView
+  textView.attributedText =
+    attributedDisclaimerText(textView: textView, useLargerText: useLargerText)
+  textView.accessibilityTraits = [.staticText]
+  textView.textAlignment = .center
 }
 
-public func attributedDisclaimerText(textView: UITextView) -> NSAttributedString? {
+public func attributedDisclaimerText(textView _: UITextView, useLargerText: Bool) -> NSAttributedString? {
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
 
   guard let termsOfUseLink = HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
@@ -222,5 +207,5 @@ public func attributedDisclaimerText(textView: UITextView) -> NSAttributedString
       terms_of_use_link: termsOfUseLink,
       privacy_policy_link: privacyPolicyLink
     )
-  return disclaimerAttributedString(with: string, traitCollection: textView.traitCollection)
+  return disclaimerAttributedString(with: string, useLargerText: useLargerText)
 }

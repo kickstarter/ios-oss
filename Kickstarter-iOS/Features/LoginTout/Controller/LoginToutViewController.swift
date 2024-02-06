@@ -108,6 +108,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   public override func bindStyles() {
     super.bindStyles()
 
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+
     _ = self.backgroundImageView
       |> backgroundImageViewStyle
 
@@ -131,8 +133,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
     _ = self.getNotifiedLabel
       |> baseLabelStyle
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular ? UIFont.ksr_subhead() : UIFont.ksr_caption2()
+      |> UILabel.lens.font %~~ { _, _ in
+        isPad ? UIFont.ksr_subhead() : UIFont.ksr_caption2()
       }
       |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
 
@@ -144,9 +146,9 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-      |> UIStackView.lens.layoutMargins %~~ { _, stack in
-        stack.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(10), leftRight: 0)
+      |> UIStackView.lens.layoutMargins %~~ { _, _ in
+        isPad
+          ? .init(topBottom: Styles.grid(2), leftRight: 0)
           : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
@@ -156,8 +158,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
     _ = self.rootStackView
       |> baseStackViewStyle
-      |> loginRootStackViewStyle
       |> UIStackView.lens.spacing .~ Styles.grid(5)
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
 
     _ = self.separatorView
       |> separatorViewStyle
