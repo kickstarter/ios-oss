@@ -23,8 +23,8 @@ public final class SettingsDeleteOrRequestCellViewModel: SettingsDeleteOrRequest
   public init() {
     self.notifyDeleteAccountTapped = self.deleteAccountTappedProperty.signal
       .map {
-        // TODO(MBL-1063): Replace hardcoded URL with translatable string.
-        URL(string: "https://legal.kickstarter.com/policies/en/?modal=take-control")
+        let code = Locale.current.languageCode ?? "en"
+        return URL(string: "https://legal.kickstarter.com/policies/\(code)/?modal=take-control")
       }.skipNil()
   }
 
