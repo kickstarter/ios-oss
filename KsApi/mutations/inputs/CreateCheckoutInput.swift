@@ -6,7 +6,6 @@ public struct CreateCheckoutInput: GraphMutationInput, Encodable {
   let locationId: String?
   let rewardIds: [String]
   let refParam: String?
-  let clientMutationId: String?
 
   /**
    Initializes a CreateCheckout.
@@ -22,14 +21,12 @@ public struct CreateCheckoutInput: GraphMutationInput, Encodable {
     amount: String?,
     locationId: String?,
     rewardIds: [String],
-    refParam: String?,
-    clientMutationId: String?
+    refParam: String?
   ) {
     self.projectId = projectId
     self.amount = amount
     self.locationId = locationId
     self.rewardIds = rewardIds
     self.refParam = refParam
-    self.clientMutationId = clientMutationId
   }
 }

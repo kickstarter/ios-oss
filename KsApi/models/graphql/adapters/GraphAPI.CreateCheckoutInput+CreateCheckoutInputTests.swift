@@ -8,8 +8,7 @@ class GraphAPI_CreateCheckoutInput_CreateCheckoutInputTests: XCTestCase {
       amount: "200.00",
       locationId: "NY",
       rewardIds: ["rewardId"],
-      refParam: "project",
-      clientMutationId: "clientMutationId"
+      refParam: "project"
     )
 
     let graphInput = GraphAPI.CreateCheckoutInput.from(input)
@@ -19,6 +18,5 @@ class GraphAPI_CreateCheckoutInput_CreateCheckoutInputTests: XCTestCase {
     XCTAssertEqual(graphInput.locationId, input.locationId)
     XCTAssertEqual(graphInput.rewardIds, input.rewardIds)
     XCTAssertEqual(graphInput.refParam, input.refParam)
-    XCTAssertEqual(graphInput.clientMutationId, input.clientMutationId)
   }
 }

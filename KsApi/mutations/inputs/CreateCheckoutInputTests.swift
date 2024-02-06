@@ -9,8 +9,7 @@ final class CreateCheckoutInputTests: XCTestCase {
       amount: "200.00",
       locationId: "NY",
       rewardIds: ["rewardId"],
-      refParam: "project",
-      clientMutationId: "clientMutationId"
+      refParam: "project"
     )
 
     let input = createCheckoutInput.toInputDictionary()
@@ -20,6 +19,5 @@ final class CreateCheckoutInputTests: XCTestCase {
     XCTAssertEqual(input["locationId"] as? String, "NY")
     XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertEqual(input["refParam"] as? String, "project")
-    XCTAssertEqual(input["clientMutationId"] as? String, "clientMutationId")
   }
 }

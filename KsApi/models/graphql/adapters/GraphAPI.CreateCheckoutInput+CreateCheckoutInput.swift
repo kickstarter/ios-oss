@@ -9,8 +9,7 @@ extension GraphAPI.CreateCheckoutInput {
         amount: input.amount,
         locationId: input.locationId,
         rewardIds: input.rewardIds,
-        refParam: input.refParam,
-        clientMutationId: input.clientMutationId
+        refParam: input.refParam
       )
   }
 }
