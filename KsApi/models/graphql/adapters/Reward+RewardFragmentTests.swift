@@ -124,6 +124,7 @@ private func rewardDictionary() -> [String: Any] {
     "limit": null,
     "limitPerBacker": 1,
     "name": "Soft Cover Book (Signed)",
+    "postCampaignPledgingEnabled": false,
     "project": {
       "__typename": "Project",
       "id": "UHJvamVjdC0xNTk2NTk0NDYz"

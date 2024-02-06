@@ -119,6 +119,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":50,
                    "limitPerBacker":1,
                    "name":"SET OF 5 POSTCARDS",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -224,6 +225,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SPECIAL OFFER FOR PUPILS",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -314,6 +316,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":null,
                    "limitPerBacker":1,
                    "name":"FIRST EDITON BOOK / ERSTAUSGABE",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -419,6 +422,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + PUPIL SUPPORT",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -509,6 +513,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":null,
                    "limitPerBacker":1,
                    "name":"2 SIGNED BOOKS / 2 SIGNIERTE BÜCHER",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -608,6 +613,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Eisbären)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -707,6 +713,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Aurora Borealis)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -806,6 +813,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Schnee)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -905,6 +913,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Spalte im Eis)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -1004,6 +1013,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Meereis)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -1103,6 +1113,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Arktisches Licht)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -1202,6 +1213,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"BOOK + PRINT (Das erste Eis)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",
@@ -1307,6 +1319,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":10,
                    "limitPerBacker":1,
                    "name":"SIGNED BOOK + GALLERY PRINT (30x45cm)",
+                   "postCampaignPledgingEnabled": false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",

@@ -75,6 +75,19 @@ final class RewardTests: XCTestCase {
     XCTAssertEqual(reward.backersCount, 10)
   }
 
+  func testJsonDecoding_WithPostCampaignPledgingEnabled() {
+    let reward: Reward! = Reward.decodeJSONDictionary([
+      "id": 1,
+      "description": "Some reward",
+      "minimum": 10,
+      "converted_minimum": 12,
+      "post_campaign_pledging_enabled": true
+    ])
+
+    XCTAssertNotNil(reward)
+    XCTAssertTrue(reward.postCampaignPledgingEnabled)
+  }
+
   func testJsonDecoding_WithShipping() {
     let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
