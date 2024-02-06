@@ -402,14 +402,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   }
 
   fileprivate func pushLoginViewController() {
-    if featureLoginWithOAuthEnabled() {
-      let session = ASWebAuthenticationSession(
-        url: OAuth.authorizationURL(),
-        callbackURLScheme: OAuth.redirectScheme
-      ) { _, _ in
-        // TODO: MBL-1159: Get required information from the callback; call mutation to login.
-      }
-
+    if featureLoginWithOAuthEnabled(), let session = OAuth.createAuthorizationSession() {
       session.presentationContextProvider = self
       session.start()
     } else {
