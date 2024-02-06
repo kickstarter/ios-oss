@@ -15,6 +15,7 @@ extension Reward {
     limit: 100,
     limitPerBacker: nil,
     minimum: 10.00,
+    postCampaignPledgingEnabled: false,
     remaining: 50,
     rewardsItems: [RewardsItem.template],
     shipping: Reward.Shipping(
@@ -42,6 +43,7 @@ extension Reward {
     limit: nil,
     limitPerBacker: nil,
     minimum: 0,
+    postCampaignPledgingEnabled: false,
     remaining: nil,
     rewardsItems: [],
     shipping: Reward.Shipping(
@@ -69,6 +71,7 @@ extension Reward {
     limit: nil,
     limitPerBacker: nil,
     minimum: 0,
+    postCampaignPledgingEnabled: false,
     remaining: nil,
     rewardsItems: [],
     shipping: Reward.Shipping(

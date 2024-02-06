@@ -57,6 +57,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "limit":null,
                    "limitPerBacker":1,
                    "name":"PERSONAL THANK YOU + SURPRISE GIF",
+                   "postCampaignPledgingEnabled":false,
                    "project":{
                       "id":"UHJvamVjdC05MDQ3MDIxMTY=",
                       "story": "",

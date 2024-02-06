@@ -46,6 +46,7 @@ extension Reward {
       limit: rewardFragment.limit,
       limitPerBacker: rewardFragment.limitPerBacker,
       minimum: rewardFragment.amount.fragments.moneyFragment.amount.flatMap(Double.init) ?? 0,
+      postCampaignPledgingEnabled: rewardFragment.postCampaignPledgingEnabled,
       remaining: rewardFragment.remainingQuantity,
       rewardsItems: rewardItemsData(from: rewardFragment, with: projectId),
       shipping: shippingData(from: rewardFragment),

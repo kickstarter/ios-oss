@@ -12,6 +12,7 @@ public struct Reward {
   public let limit: Int?
   public let limitPerBacker: Int?
   public let minimum: Double
+  public let postCampaignPledgingEnabled: Bool
   public let remaining: Int?
   public let rewardsItems: [RewardsItem]
   public let shipping: Shipping // only v1
@@ -107,6 +108,7 @@ extension Reward: Decodable {
     case limit
     case limitPerBacker = "limit_per_backer"
     case minimum
+    case postCampaignPledgingEnabled = "post_campaign_pledging_enabled"
     case remaining
     case rewardsItems = "rewards_items"
     case shippingRules = "shipping_rules"
@@ -131,6 +133,7 @@ extension Reward: Decodable {
     self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
     self.limitPerBacker = try values.decodeIfPresent(Int.self, forKey: .limitPerBacker)
     self.minimum = try values.decode(Double.self, forKey: .minimum)
+    self.postCampaignPledgingEnabled = try values.decode(Bool.self, forKey: .postCampaignPledgingEnabled)
     self.remaining = try values.decodeIfPresent(Int.self, forKey: .remaining)
     self.rewardsItems = try values.decodeIfPresent([RewardsItem].self, forKey: .rewardsItems) ?? []
     self.shipping = try Shipping(from: decoder)
