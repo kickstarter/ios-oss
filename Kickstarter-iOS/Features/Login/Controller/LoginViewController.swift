@@ -101,7 +101,8 @@ internal final class LoginViewController: UIViewController {
 
     _ = self.formBackgroundView |> cardStyle()
 
-    _ = self.rootStackView |> loginRootStackViewStyle
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
   }
 
   override func bindViewModel() {

@@ -28,10 +28,12 @@ internal final class TwoFactorViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    let isPad = self.traitCollection.isRegularRegular
+
     _ = self
       |> twoFactorControllerStyle
-      |> UIViewController.lens.view.layoutMargins %~~ { _, view in
-        view.traitCollection.isRegularRegular ? .init(all: Styles.grid(20)) : .init(all: Styles.grid(3))
+      |> UIViewController.lens.view.layoutMargins %~~ { _, _ in
+        isPad ? .init(all: Styles.grid(20)) : .init(all: Styles.grid(3))
       }
 
     _ = self.codeTextField
@@ -39,8 +41,8 @@ internal final class TwoFactorViewController: UIViewController {
 
     _ = self.formBackgroundView
       |> cardStyle()
-      |> UIView.lens.layoutMargins %~~ { _, view in
-        view.traitCollection.isRegularRegular ? .init(all: Styles.grid(10)) : .init(all: Styles.grid(3))
+      |> UIView.lens.layoutMargins %~~ { _, _ in
+        isPad ? .init(all: Styles.grid(10)) : .init(all: Styles.grid(3))
       }
 
     _ = self.formStackView

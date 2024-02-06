@@ -74,9 +74,11 @@ public final class SetYourPasswordViewController: UIViewController {
     _ = self.contextLabel
       |> contextLabelStyle
 
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+
     _ = self.rootStackView
       |> baseStackViewStyle
-      |> loginRootStackViewStyle
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
 
     _ = self.newPasswordLabel
       |> textFieldLabelStyle

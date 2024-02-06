@@ -82,9 +82,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     _ = self
       |> signupControllerStyle
 
-    _ = self.disclaimerTextView
-      |> disclaimerTextViewStyle
-
     _ = self.nameTextField
       |> UITextField.lens.returnKeyType .~ .next
       |> UITextField.lens.placeholder %~ { _ in Strings.Name() }
@@ -103,11 +100,12 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> newPasswordFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .go
 
-    _ = self.rootStackView
-      |> loginRootStackViewStyle
-
     _ = self.signupButton
       |> signupButtonStyle
+
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+    applyDisclaimerTextViewStyle(self.disclaimerTextView, useLargerText: isPad)
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
   }
 
   internal override func bindViewModel() {

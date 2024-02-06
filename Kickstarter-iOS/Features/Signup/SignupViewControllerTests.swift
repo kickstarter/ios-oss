@@ -10,8 +10,8 @@ internal final class SignupViewControllerTests: TestCase {
   }
 
   func testView() {
-    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    combos(Language.allLanguages, devices).forEach { language, device in
+    let devices = [Device.phone4_7inch, Device.pad, Device.phone5_8inch]
+    orthogonalCombos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = SignupViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

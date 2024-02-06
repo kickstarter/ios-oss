@@ -31,7 +31,9 @@ internal final class ResetPasswordViewController: UIViewController {
     _ = self.emailTextField |> emailFieldStyle
     _ = self.emailTextFieldBackgroundView |> cardStyle()
     _ = self.resetPasswordButton |> resetPasswordButtonStyle
-    _ = self.rootStackView |> loginRootStackViewStyle
+
+    let isPad = self.traitCollection.userInterfaceIdiom == .pad
+    applyLoginRootStackViewStyle(self.rootStackView, useLargerMargins: isPad)
   }
 
   override func bindViewModel() {
