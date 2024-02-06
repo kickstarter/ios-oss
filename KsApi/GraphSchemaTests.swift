@@ -1,6 +1,4 @@
 @testable import KsApi
-@testable import Library
-import Prelude
 import XCTest
 
 class GraphSchemaTests: XCTestCase {
