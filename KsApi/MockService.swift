@@ -31,7 +31,11 @@
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
+    fileprivate let createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>?
+
     fileprivate let createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
+
+    fileprivate let createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>?
 
     fileprivate let createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
@@ -221,7 +225,9 @@
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
+      createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>? = nil,
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>? = nil,
       createPasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createStripeSetupIntentResult: Result<ClientSecretEnvelope, ErrorEnvelope>? = nil,
       changeCurrencyResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -341,7 +347,11 @@
 
       self.createBackingResult = createBackingResult
 
+      self.createCheckoutResult = createCheckoutResult
+
       self.createFlaggingResult = createFlaggingResult
+
+      self.createPaymentIntentResult = createPaymentIntentResult
 
       self.createPasswordResult = createPasswordResult
 
@@ -610,6 +620,24 @@
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
     }
 
+    internal func createCheckout(input: CreateCheckoutInput)
+      -> SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CreateCheckoutMutation(input: GraphAPI
+        .CreateCheckoutInput(
+          projectId: input.projectId,
+          amount: input.amount,
+          locationId: input.locationId,
+          rewardIds: input.rewardIds,
+          refParam: input.refParam
+        ))
+
+      return client.performWithResult(mutation: mutation, result: self.createCheckoutResult)
+    }
+
     internal func createFlaggingInput(input: CreateFlaggingInput) -> ReactiveSwift
       .SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
       guard let client = self.apolloClient else {
@@ -632,6 +660,22 @@
         .CreateFlaggingMutation(input: GraphAPI.CreateFlaggingInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createFlaggingResult)
+    }
+
+    internal func createPaymentIntentInput(input: CreatePaymentIntentInput) -> ReactiveSwift
+      .SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI
+        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
+          projectId: input.projectId,
+          amountDollars: input.amountDollars,
+          digitalMarketingAttributed: input.digitalMarketingAttributed
+        ))
+
+      return client.performWithResult(mutation: mutation, result: self.createPaymentIntentResult)
     }
 
     internal func createPassword(input: CreatePasswordInput)
