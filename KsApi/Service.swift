@@ -154,7 +154,14 @@ public struct Service: ServiceType {
   public func createCheckout(input: CreateCheckoutInput) ->
     SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
-      .perform(mutation: GraphAPI.CreateCheckoutMutation(input: GraphAPI.CreateCheckoutInput.from(input)))
+      .perform(mutation: GraphAPI.CreateCheckoutMutation(input: GraphAPI
+          .CreateCheckoutInput(
+            projectId: input.projectId,
+            amount: input.amount,
+            locationId: input.locationId,
+            rewardIds: input.rewardIds,
+            refParam: input.refParam
+          )))
       .flatMap(CreateCheckoutEnvelope.producer(from:))
   }
 
@@ -183,7 +190,11 @@ public struct Service: ServiceType {
     .SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
-        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput.from(input)))
+        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
+          projectId: input.projectId,
+          amountDollars: input.amountDollars,
+          digitalMarketingAttributed: input.digitalMarketingAttributed
+        )))
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
   }
 

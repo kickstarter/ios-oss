@@ -468,14 +468,10 @@
 		6051C6672B600F3200514202 /* CreateCheckoutInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6662B600F3200514202 /* CreateCheckoutInputTests.swift */; };
 		6051C6692B60186B00514202 /* CreateCheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6682B60186B00514202 /* CreateCheckoutEnvelope.swift */; };
 		6051C66B2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C66A2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift */; };
-		6051C66D2B601CA300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C66C2B601CA300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInput.swift */; };
-		6051C6732B601F8300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6722B601F8300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInputTests.swift */; };
 		6051C6752B67F2D600514202 /* CreatePaymentIntent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6051C6742B67F2D600514202 /* CreatePaymentIntent.graphql */; };
 		6051C6772B67F30200514202 /* CreatePaymentIntentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6762B67F30200514202 /* CreatePaymentIntentMutation.swift */; };
 		6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6782B67F36800514202 /* CreatePaymentIntentInput.swift */; };
 		6051C67C2B67F44500514202 /* CreatePaymentIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */; };
-		6051C67E2B67F48000514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C67D2B67F48000514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInput.swift */; };
-		6051C6812B67F9E700514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C67F2B67F48A00514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInputTests.swift */; };
 		6051C6832B683E6300514202 /* PaymentIntentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
@@ -1511,7 +1507,6 @@
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
-		E1FDB1E82AEAAC6100285F93 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2030,14 +2025,10 @@
 		6051C6662B600F3200514202 /* CreateCheckoutInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutInputTests.swift; sourceTree = "<group>"; };
 		6051C6682B60186B00514202 /* CreateCheckoutEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutEnvelope.swift; sourceTree = "<group>"; };
 		6051C66A2B60190E00514202 /* CreateCheckoutEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCheckoutEnvelopeTests.swift; sourceTree = "<group>"; };
-		6051C66C2B601CA300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateCheckoutInput+CreateCheckoutInput.swift"; sourceTree = "<group>"; };
-		6051C6722B601F8300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreateCheckoutInput+CreateCheckoutInputTests.swift"; sourceTree = "<group>"; };
 		6051C6742B67F2D600514202 /* CreatePaymentIntent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreatePaymentIntent.graphql; sourceTree = "<group>"; };
 		6051C6762B67F30200514202 /* CreatePaymentIntentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentMutation.swift; sourceTree = "<group>"; };
 		6051C6782B67F36800514202 /* CreatePaymentIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInput.swift; sourceTree = "<group>"; };
 		6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInputTests.swift; sourceTree = "<group>"; };
-		6051C67D2B67F48000514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInput.swift"; sourceTree = "<group>"; };
-		6051C67F2B67F48A00514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInputTests.swift"; sourceTree = "<group>"; };
 		6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIntentEnvelope.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
@@ -5807,12 +5798,8 @@
 				47B1338E26B35AA000080048 /* GraphAPI.BackingState+BackingStateTests.swift */,
 				8AC3E0C9269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift */,
 				8AC3E0E1269E53E800168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInputTests.swift */,
-				6051C66C2B601CA300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInput.swift */,
-				6051C6722B601F8300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInputTests.swift */,
 				60C996E72AC1FDD8006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInput.swift */,
 				60C996E92AC1FDE3006BE4F4 /* GraphAPI.CreateFlaggingInput+CreateFlaggingInputTests.swift */,
-				6051C67D2B67F48000514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInput.swift */,
-				6051C67F2B67F48A00514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInputTests.swift */,
 				065E6BA926B1E5C7007F67CA /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInput.swift */,
 				06F7BE1B26B33A690094BF37 /* GraphAPI.CreatePaymentSourceInput+CreatePaymentSourceInputTests.swift */,
 				19047FCA2889CDAC00BDD1A8 /* GraphAPI.CreateSetupIntentInput+CreateSetupIntentInput.swift */,
@@ -7887,7 +7874,6 @@
 				A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */,
 				7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */,
 				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
-				6051C6732B601F8300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInputTests.swift in Sources */,
 				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
@@ -8509,7 +8495,6 @@
 				8AC3E0CA269E2E9C00168BF8 /* GraphAPI.CreateBackingInput+CreateBackingInput.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
 				8AC3E0D2269E338700168BF8 /* CreateBackingEnvelope+CreateBackingMutation.Data.swift in Sources */,
-				6051C66D2B601CA300514202 /* GraphAPI.CreateCheckoutInput+CreateCheckoutInput.swift in Sources */,
 				D6B686E92191FE5E005F5DA7 /* EmptyInput.swift in Sources */,
 				478E31C726C1CC2E004BF898 /* GraphAPI.UnwatchProjectInput+WatchProjectInput.swift in Sources */,
 				D0158A2A1EEB30A2006E7684 /* SurveyResponseTemplates.swift in Sources */,
@@ -8555,7 +8540,6 @@
 				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
 				8A07CFF926657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift in Sources */,
-				6051C67E2B67F48000514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInput.swift in Sources */,
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				47D7D09A26C2EE5800D2BAB5 /* SignInWithAppleEnvelope+SignInWithAppleMutation.Data.swift in Sources */,
@@ -8851,7 +8835,6 @@
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
 				066C0ADE26CAEAFD0048F4D8 /* CreatePaymentSourceMutationTemplate.swift in Sources */,
 				E10F75E82B6937FA00024AD1 /* PKCETest.swift in Sources */,
-				6051C6812B67F9E700514202 /* GraphAPI.CreaetPaymentIntentInput+CreatePaymentIntentInputTests.swift in Sources */,
 				06032A9426CEF4810013AAB9 /* FetchUserBackingsQueryTemplate.swift in Sources */,
 				06B9AF4326AF465000735908 /* UserCreditCards+UserFragmentTests.swift in Sources */,
 				066C0AE326CC0E410048F4D8 /* CreateBackingMutationTemplate.swift in Sources */,

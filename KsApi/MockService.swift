@@ -626,7 +626,14 @@
         return .empty
       }
 
-      let mutation = GraphAPI.CreateCheckoutMutation(input: GraphAPI.CreateCheckoutInput.from(input))
+      let mutation = GraphAPI.CreateCheckoutMutation(input: GraphAPI
+        .CreateCheckoutInput(
+          projectId: input.projectId,
+          amount: input.amount,
+          locationId: input.locationId,
+          rewardIds: input.rewardIds,
+          refParam: input.refParam
+        ))
 
       return client.performWithResult(mutation: mutation, result: self.createCheckoutResult)
     }
@@ -662,7 +669,11 @@
       }
 
       let mutation = GraphAPI
-        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput.from(input))
+        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
+          projectId: input.projectId,
+          amountDollars: input.amountDollars,
+          digitalMarketingAttributed: input.digitalMarketingAttributed
+        ))
 
       return client.performWithResult(mutation: mutation, result: self.createPaymentIntentResult)
     }
