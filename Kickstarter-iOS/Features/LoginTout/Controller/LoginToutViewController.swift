@@ -402,8 +402,20 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   }
 
   fileprivate func pushLoginViewController() {
-    self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
-    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    if featureLoginWithOAuthEnabled() {
+      let session = ASWebAuthenticationSession(
+        url: OAuth.authorizationURL(),
+        callbackURLScheme: OAuth.redirectScheme
+      ) { _, _ in
+        // TODO: MBL-1159: Get required information from the callback; call mutation to login.
+      }
+
+      session.presentationContextProvider = self
+      session.start()
+    } else {
+      self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
+      self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    }
   }
 
   fileprivate func pushTwoFactorViewController(facebookAccessToken token: String) {
@@ -622,6 +634,18 @@ extension LoginToutViewController: ASAuthorizationControllerPresentationContextP
     guard let window = self.view.window else {
       return ASPresentationAnchor()
     }
+    return window
+  }
+}
+
+// MARK: - ASWebAuthenticationPresentationContextProviding
+
+extension LoginToutViewController: ASWebAuthenticationPresentationContextProviding {
+  public func presentationAnchor(for _: ASWebAuthenticationSession) -> ASPresentationAnchor {
+    guard let window = self.view.window else {
+      return ASPresentationAnchor()
+    }
+
     return window
   }
 }
