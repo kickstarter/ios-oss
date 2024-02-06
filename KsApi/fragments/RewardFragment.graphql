@@ -32,6 +32,7 @@ fragment RewardFragment on Reward {
     ...LocationFragment
   }
   name
+  postCampaignPledgingEnabled
   project {
     id
   }
