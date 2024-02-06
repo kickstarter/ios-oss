@@ -151,6 +151,20 @@ public struct Service: ServiceType {
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
+  public func createCheckout(input: CreateCheckoutInput) ->
+    SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.CreateCheckoutMutation(input: GraphAPI
+          .CreateCheckoutInput(
+            projectId: input.projectId,
+            amount: input.amount,
+            locationId: input.locationId,
+            rewardIds: input.rewardIds,
+            refParam: input.refParam
+          )))
+      .flatMap(CreateCheckoutEnvelope.producer(from:))
+  }
+
   public func createFlaggingInput(input: CreateFlaggingInput)
     -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
@@ -170,6 +184,18 @@ public struct Service: ServiceType {
         EmptyResponseEnvelope()
       }
       .eraseToAnyPublisher()
+  }
+
+  public func createPaymentIntentInput(input: CreatePaymentIntentInput) -> ReactiveSwift
+    .SignalProducer<PaymentIntentEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI
+        .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
+          projectId: input.projectId,
+          amountDollars: input.amountDollars,
+          digitalMarketingAttributed: input.digitalMarketingAttributed
+        )))
+      .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))
   }
 
   public func createPassword(input: CreatePasswordInput)
