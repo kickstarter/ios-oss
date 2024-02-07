@@ -1,65 +1,14 @@
-import CryptoKit
 import Foundation
-import Security
-
-enum PKCEError: Error {
-  case UnexpectedRuntimeError
-}
-
-public extension Data {
-  func base64URLEncodedStringWithNoPadding() -> String {
-    var encodedString = self.base64EncodedString()
-
-    // Convert base64 to base64url
-    encodedString = encodedString.replacingOccurrences(of: "+", with: "-")
-    encodedString = encodedString.replacingOccurrences(of: "/", with: "_")
-    // Strip padding
-    encodedString = encodedString.replacingOccurrences(of: "=", with: "")
-
-    return encodedString
-  }
-
-  mutating func fillWithRandomSecureBytes() throws {
-    do {
-      let numBytes = self.count
-      try self.withUnsafeMutableBytes { rawPointer in
-        let pointer = rawPointer.bindMemory(to: UInt8.self)
-        guard let address = pointer.baseAddress else {
-          throw PKCEError.UnexpectedRuntimeError
-        }
-
-        let result = SecRandomCopyBytes(kSecRandomDefault, numBytes, address)
-
-        if result != errSecSuccess {
-          throw PKCEError.UnexpectedRuntimeError
-        }
-      }
-    } catch {
-      throw error
-    }
-  }
-
-  func sha256Hash() throws -> Data {
-    let hash = SHA256.hash(data: self)
-    var hashData: Data?
-
-    hash.withUnsafeBytes { pointer in
-      let dataPointer = pointer.bindMemory(to: UInt8.self)
-      hashData = Data(buffer: dataPointer)
-    }
-
-    guard let unwrappedData = hashData else {
-      throw PKCEError.UnexpectedRuntimeError
-    }
-
-    return unwrappedData
-  }
-}
 
 /// PKCE stands for Proof Key for Code Exchange.
 /// The code verifier, and its associated challenge, are used to ensure that an oAuth request is valid.
 /// See this documentation for more details: https://www.oauth.com/oauth2-servers/mobile-and-native-apps/authorization/
 public struct PKCE {
+  public static let minCodeVerifierLength = 43
+  public static let maxCodeVerifierLength = 128
+  public static let codeVerifierRegexPattern =
+    "^[0-9a-zA-Z\\-._~]{\(minCodeVerifierLength),\(maxCodeVerifierLength)}$"
+
   /// Creates a random alphanumeric string of the specified length
   public static func createCodeVerifier(byteLength length: Int) throws -> String {
     do {
@@ -83,5 +32,28 @@ public struct PKCE {
     } catch {
       throw PKCEError.UnexpectedRuntimeError
     }
+  }
+
+  public static func checkCodeVerifier(_ codeVerifier: String) -> Bool {
+    if codeVerifier.count < self.minCodeVerifierLength {
+      return false
+    }
+
+    if codeVerifier.count > self.maxCodeVerifierLength {
+      return false
+    }
+
+    do {
+      let regex = try NSRegularExpression(pattern: codeVerifierRegexPattern)
+      let matches = regex
+        .numberOfMatches(in: codeVerifier, range: NSRange(location: 0, length: codeVerifier.count))
+      if matches == 0 {
+        return false
+      }
+    } catch {
+      return false
+    }
+
+    return true
   }
 }

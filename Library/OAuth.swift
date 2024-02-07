@@ -30,7 +30,12 @@ public struct OAuth {
   public static func createAuthorizationSession() -> ASWebAuthenticationSession? {
     do {
       let verifier = try PKCE.createCodeVerifier(byteLength: 32)
+      if !PKCE.checkCodeVerifier(verifier) {
+        return nil
+      }
+
       let challenge = try PKCE.createCodeChallenge(fromVerifier: verifier)
+
       guard let url = authorizationURL(withCodeChallenge: challenge) else {
         return nil
       }

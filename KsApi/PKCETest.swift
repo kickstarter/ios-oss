@@ -47,26 +47,35 @@ final class PKCETest: XCTestCase {
     XCTAssertEqual(expectedEncodedString, actualEncodedString)
   }
 
-  func testPKCECodeChallenge_isValid() {
-    // TODO: Add more examples.
-    let res = try! PKCE.createCodeChallenge(fromVerifier: "foo")
-    XCTAssertEqual(res, "LCa0a2j_xo_5m0U8HTBBNBNCLXBkg7-g-YpeiGJm564")
+  func testPKCECodeChallenge_givenSentence_isCorrect() {
+    // Use https://oauth.school/exercise/refresh/ to obtain a code challenge from a string.
+    let r1 = try! PKCE.createCodeChallenge(fromVerifier: "Hello, world. I am a string.")
+    XCTAssertEqual(r1, "wcaGQDnzgCSNMKc1Jcg1FCfH-0aNWLexAF8-NyegQqE")
+
+    let r2 = try! PKCE.createCodeChallenge(fromVerifier: "Another test string.")
+    XCTAssertEqual(r2, "kvYrE5sk3NsQbuSV_H9sWnAGpOFx8gw09MJ80SDx5Ag")
+
+    let r3 = try! PKCE.createCodeChallenge(fromVerifier: "Just one more, for good measure!")
+    XCTAssertEqual(r3, "0elvB0AIlk_NSBDvOtDwUP5x6AAI2ugJDBe075L2DHI")
   }
 
-  func testPKCECreateCodeVerifier_matchesRequirements() {
+  func testCheckCodeVerifier_tooShort_returnsFalse() {
+    let verifier = try! PKCE.createCodeVerifier(byteLength: 2)
+    XCTAssertFalse(PKCE.checkCodeVerifier(verifier))
+  }
+
+  func testCheckCodeVerifier_tooLong_returnsFalse() {
+    let verifier = try! PKCE.createCodeVerifier(byteLength: 256)
+    XCTAssertFalse(PKCE.checkCodeVerifier(verifier))
+  }
+
+  func testCheckCodeVerifier_languageSentence_returnsFalse() {
+    let verifier = "Hello, world. I am a string. Hello, world. I am a string."
+    XCTAssertFalse(PKCE.checkCodeVerifier(verifier))
+  }
+
+  func testCheckCodeVerifier_validVerifier_returnsTrue() {
     let verifier = try! PKCE.createCodeVerifier(byteLength: 32)
-    XCTAssertEqual(verifier.count, 43)
-
-    let uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    let lowercase = "abcdefghijklmnopqrstuvwxyz"
-    let numbers = "0123456789"
-    let specials = "-._~"
-
-    let validCharacters = CharacterSet(charactersIn: uppercase + lowercase + numbers + specials)
-
-    for character in verifier {
-      let unichar = character.unicodeScalars.first!
-      XCTAssertTrue(validCharacters.contains(unichar), "\(unichar) not in valid character set")
-    }
+    XCTAssertTrue(PKCE.checkCodeVerifier(verifier))
   }
 }
