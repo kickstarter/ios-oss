@@ -61,7 +61,7 @@ public extension Data {
 /// See this documentation for more details: https://www.oauth.com/oauth2-servers/mobile-and-native-apps/authorization/
 public struct PKCE {
   /// Creates a random alphanumeric string of the specified length
-  static func createCodeVerifier(byteLength length: Int) throws -> String {
+  public static func createCodeVerifier(byteLength length: Int) throws -> String {
     do {
       var buffer = Data(count: length)
       try buffer.fillWithRandomSecureBytes()
@@ -72,7 +72,7 @@ public struct PKCE {
   }
 
   /// Creates a base-64 encoded SHA256 hash of the given string.
-  static func createCodeChallenge(fromVerifier verifier: String) throws -> String {
+  public static func createCodeChallenge(fromVerifier verifier: String) throws -> String {
     guard let stringData = verifier.data(using: .utf8) else {
       throw PKCEError.UnexpectedRuntimeError
     }
