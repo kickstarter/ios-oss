@@ -43,6 +43,8 @@ extension Project {
       isStarred: nil
     ),
     photo: .template,
+    isInPostCampaignPledgingPhase: false,
+    postCampaignPledgingEnabled: false,
     prelaunchActivated: nil,
     rewardData: RewardData(addOns: nil, rewards: []),
     sendMetaCapiEvents: false,

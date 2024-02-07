@@ -88,6 +88,8 @@ extension Project {
           friends: []
         ),
         photo: photo,
+        isInPostCampaignPledgingPhase: projectFragment.isInPostCampaignPledgingPhase,
+        postCampaignPledgingEnabled: projectFragment.postCampaignPledgingEnabled,
         prelaunchActivated: projectFragment.prelaunchActivated,
         rewardData: RewardData(addOns: addOns, rewards: rewards),
         sendMetaCapiEvents: projectFragment.sendMetaCapiEvents,
