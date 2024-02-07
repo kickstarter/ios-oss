@@ -133,7 +133,8 @@ extension Reward: Decodable {
     self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
     self.limitPerBacker = try values.decodeIfPresent(Int.self, forKey: .limitPerBacker)
     self.minimum = try values.decode(Double.self, forKey: .minimum)
-    self.postCampaignPledgingEnabled = try values.decode(Bool.self, forKey: .postCampaignPledgingEnabled)
+    self.postCampaignPledgingEnabled =
+      try values.decodeIfPresent(Bool.self, forKey: .postCampaignPledgingEnabled) ?? false
     self.remaining = try values.decodeIfPresent(Int.self, forKey: .remaining)
     self.rewardsItems = try values.decodeIfPresent([RewardsItem].self, forKey: .rewardsItems) ?? []
     self.shipping = try Shipping(from: decoder)
