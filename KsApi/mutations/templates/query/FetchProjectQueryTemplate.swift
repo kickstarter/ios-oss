@@ -233,6 +233,8 @@ public enum FetchProjectQueryTemplate {
              "currency":"EUR",
              "symbol":"€"
           },
+          "isInPostCampaignPledgingPhase": false,
+          "postCampaignPledgingEnabled": false,
           "posts":{
              "__typename":"PostConnection",
              "totalCount":5
