@@ -11,7 +11,8 @@ final class BackingTests: XCTestCase {
           "description": "Some reward",
           "minimum": 10,
           "converted_minimum": 12,
-          "backers_count": 10
+          "backers_count": 10,
+          "post_campaign_pledging_enabled": false
         ]
       ],
       "amount": 1.0,
@@ -39,7 +40,8 @@ final class BackingTests: XCTestCase {
         "description": "Some reward",
         "minimum": 10,
         "converted_minimum": 12,
-        "backers_count": 10
+        "backers_count": 10,
+        "post_campaign_pledging_enabled": false
       ]
     ])
 

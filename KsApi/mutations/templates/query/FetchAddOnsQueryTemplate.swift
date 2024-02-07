@@ -100,6 +100,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "limit": null,
                 "limitPerBacker": 10,
                 "name": "Paper Sticker Sheet",
+                "postCampaignPledgingEnabled": false,
                 "project": {
                   "__typename": "Project",
                   "id": "UHJvamVjdC0xNjA2NTMyODgx"
@@ -216,6 +217,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "limit": null,
                 "limitPerBacker": 10,
                 "name": "Hedgerow Paper Tape (20mm)",
+                "postCampaignPledgingEnabled": false,
                 "project": {
                   "__typename": "Project",
                   "id": "UHJvamVjdC0xNjA2NTMyODgx"
