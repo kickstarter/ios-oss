@@ -6,7 +6,8 @@ import Foundation
 public struct PKCE {
   public static let minCodeVerifierLength = 43
   public static let maxCodeVerifierLength = 128
-  public static let codeVerifierRegexPattern = "^[0-9a-zA-Z\\-._~]{43,128}$"
+  public static let codeVerifierRegexPattern =
+    "^[0-9a-zA-Z\\-._~]{\(minCodeVerifierLength),\(maxCodeVerifierLength)}$"
 
   /// Creates a random alphanumeric string of the specified length
   public static func createCodeVerifier(byteLength length: Int) throws -> String {
