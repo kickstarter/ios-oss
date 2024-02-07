@@ -12,7 +12,7 @@ internal final class TwoFactorViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    orthogonalCombos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
         let controller = Storyboard.Login.instantiate(TwoFactorViewController.self)
