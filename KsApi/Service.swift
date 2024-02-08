@@ -805,4 +805,24 @@ public struct Service: ServiceType {
         SignalProducer(value: EmptyResponseEnvelope())
       }
   }
+
+  /**
+   Post Campaign Pledge Validation.
+   - parameter checkoutId: The Checkout Id..
+   - parameter paymentSourceId: The id of the payment source.
+   - parameter paymentIntentClientSecret: The client secret returned from our CreatePaymentIntent Mutation.
+   */
+  public func validateCheckout(
+    checkoutId: String,
+    paymentSourceId: String?,
+    paymentIntentClientSecret: String
+  ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: GraphAPI.ValidateCheckoutQuery(
+        checkoutId: checkoutId,
+        paymentSourceId: paymentSourceId,
+        paymentIntentClientSecret: paymentIntentClientSecret
+      ))
+      .flatMap(ValidateCheckoutEnvelope.envelopeProducer(from:))
+  }
 }

@@ -11004,6 +11004,163 @@ public enum GraphAPI {
     }
   }
 
+  public final class ValidateCheckoutQuery: GraphQLQuery {
+    /// The raw GraphQL definition of this operation.
+    public let operationDefinition: String =
+      """
+      query ValidateCheckout($checkoutId: ID!, $paymentSourceId: String, $paymentIntentClientSecret: String!) {
+        checkout(id: $checkoutId) {
+          __typename
+          isValidForOnSessionCheckout(
+            paymentSourceId: $paymentSourceId
+            paymentIntentClientSecret: $paymentIntentClientSecret
+          ) {
+            __typename
+            valid
+            messages
+          }
+        }
+      }
+      """
+
+    public let operationName: String = "ValidateCheckout"
+
+    public var checkoutId: GraphQLID
+    public var paymentSourceId: String?
+    public var paymentIntentClientSecret: String
+
+    public init(checkoutId: GraphQLID, paymentSourceId: String? = nil, paymentIntentClientSecret: String) {
+      self.checkoutId = checkoutId
+      self.paymentSourceId = paymentSourceId
+      self.paymentIntentClientSecret = paymentIntentClientSecret
+    }
+
+    public var variables: GraphQLMap? {
+      return ["checkoutId": checkoutId, "paymentSourceId": paymentSourceId, "paymentIntentClientSecret": paymentIntentClientSecret]
+    }
+
+    public struct Data: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Query"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("checkout", arguments: ["id": GraphQLVariable("checkoutId")], type: .object(Checkout.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(checkout: Checkout? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Query", "checkout": checkout.flatMap { (value: Checkout) -> ResultMap in value.resultMap }])
+      }
+
+      /// Fetches a checkout given its id.
+      public var checkout: Checkout? {
+        get {
+          return (resultMap["checkout"] as? ResultMap).flatMap { Checkout(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "checkout")
+        }
+      }
+
+      public struct Checkout: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Checkout"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("isValidForOnSessionCheckout", arguments: ["paymentSourceId": GraphQLVariable("paymentSourceId"), "paymentIntentClientSecret": GraphQLVariable("paymentIntentClientSecret")], type: .nonNull(.object(IsValidForOnSessionCheckout.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(isValidForOnSessionCheckout: IsValidForOnSessionCheckout) {
+          self.init(unsafeResultMap: ["__typename": "Checkout", "isValidForOnSessionCheckout": isValidForOnSessionCheckout.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Checks whether the checkout is valid prior to charging the user's card.
+        public var isValidForOnSessionCheckout: IsValidForOnSessionCheckout {
+          get {
+            return IsValidForOnSessionCheckout(unsafeResultMap: resultMap["isValidForOnSessionCheckout"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "isValidForOnSessionCheckout")
+          }
+        }
+
+        public struct IsValidForOnSessionCheckout: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Validation"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("valid", type: .nonNull(.scalar(Bool.self))),
+              GraphQLField("messages", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(valid: Bool, messages: [String]) {
+            self.init(unsafeResultMap: ["__typename": "Validation", "valid": valid, "messages": messages])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// Whether a value is valid.
+          public var valid: Bool {
+            get {
+              return resultMap["valid"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "valid")
+            }
+          }
+
+          /// Error messages associated with the value
+          public var messages: [String] {
+            get {
+              return resultMap["messages"]! as! [String]
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "messages")
+            }
+          }
+        }
+      }
+    }
+  }
+
   public struct BackingFragment: GraphQLFragment {
     /// The raw GraphQL definition of this fragment.
     public static let fragmentDefinition: String =
