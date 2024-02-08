@@ -126,6 +126,8 @@
             "currency": "USD",
             "symbol": "$"
           },
+          "isInPostCampaignPledgingPhase": false,
+          "postCampaignPledgingEnabled": false,
           "posts": {
             "__typename": "PostConnection",
             "totalCount": 1
@@ -421,6 +423,8 @@
             "currency": "USD",
             "symbol": "$"
           },
+          "isInPostCampaignPledgingPhase": false,
+          "postCampaignPledgingEnabled": false,
           "posts": {
             "__typename": "PostConnection",
             "totalCount": 6
@@ -667,6 +671,8 @@
             "currency": "EUR",
             "symbol": "€"
           },
+          "isInPostCampaignPledgingPhase": false,
+          "postCampaignPledgingEnabled": false,
           "posts": {
             "__typename": "PostConnection",
             "totalCount": 18

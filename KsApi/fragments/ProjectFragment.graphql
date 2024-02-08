@@ -54,6 +54,7 @@ fragment ProjectFragment on Project {
   isProjectOfTheDay
   isWatched
   isLaunched
+  isInPostCampaignPledgingPhase
   launchedAt
   location {
     ...LocationFragment
@@ -65,6 +66,7 @@ fragment ProjectFragment on Project {
   pledged {
     ...MoneyFragment
   }
+  postCampaignPledgingEnabled
   posts {
     totalCount
   }
