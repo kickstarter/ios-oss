@@ -5162,6 +5162,22 @@
             "deprecationReason": null
           },
           {
+            "name": "isInPostCampaignPledgingPhase",
+            "description": "Is this project currently accepting post-campaign pledges?",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "isLaunched",
             "description": "The project has launched",
             "args": [],
@@ -5511,6 +5527,22 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Money",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "postCampaignPledgingEnabled",
+            "description": "Is this project configured for post-campaign pledges?",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },

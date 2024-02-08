@@ -18,6 +18,8 @@ public struct Project {
   public var name: String
   public var personalization: Personalization
   public var photo: Photo
+  public var isInPostCampaignPledgingPhase: Bool
+  public var postCampaignPledgingEnabled: Bool
   public var prelaunchActivated: Bool?
   public var rewardData: RewardData
   public var sendMetaCapiEvents: Bool
@@ -278,6 +280,8 @@ extension Project: Decodable {
     case location
     case name
     case photo
+    case isInPostCampaignPledgingPhase = "is_in_post_campaign_pledging_phase"
+    case postCampaignPledgingEnabled = "post_campaign_pledging_enabled"
     case prelaunchActivated = "prelaunch_activated"
     case sendMetaCapiEvents = "send_meta_capi_events"
     case slug
@@ -305,6 +309,10 @@ extension Project: Decodable {
     self.name = try values.decode(String.self, forKey: .name)
     self.personalization = try Project.Personalization(from: decoder)
     self.photo = try values.decode(Photo.self, forKey: .photo)
+    self.isInPostCampaignPledgingPhase =
+      try values.decodeIfPresent(Bool.self, forKey: .isInPostCampaignPledgingPhase) ?? false
+    self.postCampaignPledgingEnabled =
+      try values.decodeIfPresent(Bool.self, forKey: .postCampaignPledgingEnabled) ?? false
     self.prelaunchActivated = try values.decodeIfPresent(Bool.self, forKey: .prelaunchActivated)
     self.rewardData = try Project.RewardData(from: decoder)
     self.sendMetaCapiEvents = try values.decodeIfPresent(Bool.self, forKey: .sendMetaCapiEvents) ?? false

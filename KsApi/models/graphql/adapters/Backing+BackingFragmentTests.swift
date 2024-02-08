@@ -726,6 +726,8 @@ private func backingDictionary() -> [String: Any] {
         "currency": "USD",
         "symbol": "$"
       },
+      "isInPostCampaignPledgingPhase": false,
+      "postCampaignPledgingEnabled": false,
       "posts": {
         "__typename": "PostConnection",
         "totalCount": 3

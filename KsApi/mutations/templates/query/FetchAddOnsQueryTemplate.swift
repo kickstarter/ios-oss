@@ -573,6 +573,8 @@ public enum FetchAddsOnsQueryTemplate {
             "currency": "AUD",
             "symbol": "$"
           },
+          "isInPostCampaignPledgingPhase": false,
+          "postCampaignPledgingEnabled": false,
           "prelaunchActivated": true,
           "slug": "peppermintfox/peppermint-fox-press-notebooks-and-stationery",
           "state": "LIVE",
