@@ -1736,6 +1736,14 @@
           + "\(draft.update.id)/preview"
       )
     }
+
+    func fetchDiscovery_combine(params _: DiscoveryParams) -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope> {
+      return Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
+
+    func fetchDiscovery_combine(paginationUrl _: String) -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope> {
+      Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
   }
 
   private extension MockService {

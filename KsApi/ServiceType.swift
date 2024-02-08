@@ -396,6 +396,12 @@ public protocol ServiceType {
     -> SignalProducer<FetchProjectsEnvelope, ErrorEnvelope>
 
   func blockUser(input: BlockUserInput) -> SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+
+  func fetchDiscovery_combine(paginationUrl: String)
+    -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope>
+
+  func fetchDiscovery_combine(params: DiscoveryParams)
+    -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope>
 }
 
 extension ServiceType {

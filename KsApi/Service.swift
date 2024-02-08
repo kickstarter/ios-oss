@@ -339,6 +339,16 @@ public struct Service: ServiceType {
     return request(.discover(params))
   }
 
+  public func fetchDiscovery_combine(paginationUrl: String)
+    -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope> {
+    return requestPaginationDecodable(paginationUrl)
+  }
+
+  public func fetchDiscovery_combine(params: DiscoveryParams)
+    -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope> {
+    return request(.discover(params))
+  }
+
   public func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
     return request(.friends)
   }
