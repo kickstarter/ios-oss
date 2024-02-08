@@ -374,6 +374,13 @@ public protocol ServiceType {
   func unwatchProject(input: WatchProjectInput) ->
     SignalProducer<WatchProjectResponseEnvelope, ErrorEnvelope>
 
+  /// Validates a Post Campaign Pledge
+  func validateCheckout(
+    checkoutId: String,
+    paymentSourceId: String?,
+    paymentIntentClientSecret: String
+  ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope>
+
   /// Verifies an email address with a given access token.
   func verifyEmail(withToken token: String)
     -> SignalProducer<EmailVerificationResponseEnvelope, ErrorEnvelope>

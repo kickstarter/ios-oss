@@ -489,6 +489,8 @@
 		6080DA402AB366680088EF3D /* Text+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080DA3F2AB366680088EF3D /* Text+HTML.swift */; };
 		608E7A5328ABDBAE00289E92 /* SetYourPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */; };
 		608E7A5628ABE6CD00289E92 /* SetYourPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */; };
+		608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */; };
+		608F974C2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */; };
 		6093098D2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */; };
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
@@ -2043,6 +2045,8 @@
 		6080DA3F2AB366680088EF3D /* Text+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+HTML.swift"; sourceTree = "<group>"; };
 		608E7A5128ABD5E700289E92 /* SetYourPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewController.swift; sourceTree = "<group>"; };
 		608E7A5428ABE27400289E92 /* SetYourPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetYourPasswordViewModel.swift; sourceTree = "<group>"; };
+		608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ValidateCheckout.graphql; sourceTree = "<group>"; };
+		608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateCheckoutEnvelope.swift; sourceTree = "<group>"; };
 		6093098C2A6054CB004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInput.swift"; sourceTree = "<group>"; };
 		6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift"; sourceTree = "<group>"; };
 		609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInput.swift; sourceTree = "<group>"; };
@@ -5650,6 +5654,7 @@
 				0655C7272732FDA30087281F /* FetchRootCategories.graphql */,
 				0655C7292732FDE00087281F /* FetchCategory.graphql */,
 				E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */,
+				608F97492B7522EF00DBE7D7 /* ValidateCheckout.graphql */,
 				E1A149252ACE060E00F49709 /* templates */,
 			);
 			path = queries;
@@ -6725,6 +6730,7 @@
 				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
+				608F974B2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift */,
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				8ABD5B3B24CFB026002E585C /* graphql */,
 				D01587971EEB2ED6006E7684 /* lenses */,
@@ -7356,6 +7362,7 @@
 				6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */,
 				399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */,
 				06DAAE5B26AA3CD800194E58 /* BackingFragment.graphql in Resources */,
+				608F974A2B7522EF00DBE7D7 /* ValidateCheckout.graphql in Resources */,
 				E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */,
 				6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */,
 				47C0BCD826C42135003658AC /* CreatePaymentSource.graphql in Resources */,
@@ -8656,6 +8663,7 @@
 				4778EE2126A200BE0059EA69 /* UserEnvelope+GraphUserEnvelope.swift in Sources */,
 				8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */,
 				609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */,
+				608F974C2B752C4900DBE7D7 /* ValidateCheckoutEnvelope.swift in Sources */,
 				D0158A2E1EEB30A2006E7684 /* User.AvatarTemplates.swift in Sources */,
 				D01588771EEB2ED7006E7684 /* FriendStatsEnvelope.swift in Sources */,
 				D015891D1EEB2ED7006E7684 /* ShippingRule.swift in Sources */,

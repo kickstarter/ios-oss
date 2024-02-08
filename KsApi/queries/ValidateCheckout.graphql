@@ -1,0 +1,8 @@
+query ValidateCheckout($checkoutId: ID!, $paymentSourceId: String, $paymentIntentClientSecret: String!) {
+  checkout(id: $checkoutId) {
+    isValidForOnSessionCheckout(paymentSourceId: $paymentSourceId, paymentIntentClientSecret: $paymentIntentClientSecret) {
+      valid
+      messages
+    }
+  }
+}

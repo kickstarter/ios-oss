@@ -178,6 +178,8 @@
       ErrorEnvelope
     >?
 
+    fileprivate let validateCheckoutResult: Result<ValidateCheckoutEnvelope, ErrorEnvelope>?
+
     fileprivate let verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let watchProjectMutationResult: Result<
@@ -316,6 +318,7 @@
       updateProjectNotificationError: ErrorEnvelope? = nil,
       updateUserSelfError: ErrorEnvelope? = nil,
       unwatchProjectMutationResult: Result<WatchProjectResponseEnvelope, ErrorEnvelope>? = nil,
+      validateCheckoutResult: Result<ValidateCheckoutEnvelope, ErrorEnvelope>? = nil,
       verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>? = nil,
       watchProjectMutationResult: Result<WatchProjectResponseEnvelope, ErrorEnvelope>? = nil
     ) {
@@ -515,6 +518,8 @@
       self.updateUserSelfError = updateUserSelfError
 
       self.unwatchProjectMutationResult = unwatchProjectMutationResult
+
+      self.validateCheckoutResult = validateCheckoutResult
 
       self.verifyEmailResult = verifyEmailResult
 
@@ -1647,6 +1652,14 @@
 
       return client
         .performWithResult(mutation: mutationUnwatchProject, result: self.unwatchProjectMutationResult)
+    }
+
+    internal func validateCheckout(
+      checkoutId _: String,
+      paymentSourceId _: String?,
+      paymentIntentClientSecret _: String
+    ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope> {
+      return producer(for: self.validateCheckoutResult)
     }
 
     internal func verifyEmail(withToken _: String)
