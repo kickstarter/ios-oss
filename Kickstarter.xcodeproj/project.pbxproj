@@ -1500,9 +1500,13 @@
 		E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */; };
 		E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */; };
 		E10F75E82B6937FA00024AD1 /* PKCETest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED2A2B686829009976D9 /* PKCETest.swift */; };
+		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
 		E17611E22B73D9A400DF2F50 /* Data+PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */; };
+		E17611E02B7287CF00DF2F50 /* PaginationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */; };
+		E17611E42B751E8100DF2F50 /* Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E32B751E8100DF2F50 /* Paginator.swift */; };
+		E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E52B75242A00DF2F50 /* PaginatorTests.swift */; };
 		E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */; };
 		E1A149202ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */; };
 		E1A149222ACE013100F49709 /* FetchProjectsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A149212ACE013100F49709 /* FetchProjectsEnvelope.swift */; };
@@ -3082,9 +3086,13 @@
 		E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserInputTests.swift; sourceTree = "<group>"; };
 		E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchBackerProjectsQuery.json; sourceTree = "<group>"; };
 		E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackerProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
+		E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleViewModel.swift; sourceTree = "<group>"; };
 		E11CFE492B6C41B400497375 /* OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth.swift; sourceTree = "<group>"; };
+		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
 		E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockGraphQLClient+CombineTests.swift"; sourceTree = "<group>"; };
 		E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PKCE.swift"; sourceTree = "<group>"; };
+		E17611E32B751E8100DF2F50 /* Paginator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paginator.swift; sourceTree = "<group>"; };
+		E17611E52B75242A00DF2F50 /* PaginatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatorTests.swift; sourceTree = "<group>"; };
 		E1889D8D2B6065D6004FBE21 /* CombineTestObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTestObserverTests.swift; sourceTree = "<group>"; };
 		E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FetchBackerProjectsQuery.graphql; sourceTree = "<group>"; };
 		E1A1491F2ACDD7BF00F49709 /* FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FetchProjectsEnvelope+FetchBackerProjectsQueryData.swift"; sourceTree = "<group>"; };
@@ -4673,6 +4681,7 @@
 				1937A6ED28C92EC700DD732D /* MessageBanner */,
 				1937A6EE28C92ED400DD732D /* MessageDialog */,
 				19A97D2D28C7FF330031B857 /* MessageThreads */,
+				E11835202B75799F007B42E6 /* PaginationExample */,
 				19A97D3228C8001C0031B857 /* PaymentMethods */,
 				19A97D3828C801AB0031B857 /* PillCollectionView_DEPRECATED_09_06_2022 */,
 				1937A6F128C92F0C00DD732D /* PledgeAmount */,
@@ -6027,6 +6036,8 @@
 				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
+				E17611E32B751E8100DF2F50 /* Paginator.swift */,
+				E17611E52B75242A00DF2F50 /* PaginatorTests.swift */,
 				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
 				373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */,
 				7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */,
@@ -6903,6 +6914,15 @@
 			path = RichPushNotifications;
 			sourceTree = "<group>";
 		};
+		E11835202B75799F007B42E6 /* PaginationExample */ = {
+			isa = PBXGroup;
+			children = (
+				E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */,
+				E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */,
+			);
+			path = PaginationExample;
+			sourceTree = "<group>";
+		};
 		E1A149252ACE060E00F49709 /* templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -7617,6 +7637,7 @@
 				37DEC1E72257C9F30051EF9B /* PledgeViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */,
+				E17611E42B751E8100DF2F50 /* Paginator.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				8A45168D24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift in Sources */,
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
@@ -7784,6 +7805,7 @@
 				8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */,
 				77D19FF22406D5A40058FC8E /* CategorySelectionViewModelTests.swift in Sources */,
 				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
+				E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */,
 				8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */,
 				A7ED1F2B1E830FDC00BFFA01 /* IsValidEmailTests.swift in Sources */,
 				37C7B81723187BAC00C78278 /* ShippingRuleCellViewModelTests.swift in Sources */,
@@ -8021,6 +8043,7 @@
 				771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */,
+				E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */,
 				94114D5B265305210063E8F6 /* CommentPostFailedCell.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteOrRequestCell.swift in Sources */,
 				379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */,
@@ -8141,6 +8164,7 @@
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */,
+				E17611E02B7287CF00DF2F50 /* PaginationExampleView.swift in Sources */,
 				8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */,
 				473DE014273C551C0033331D /* ProjectRisksDisclaimerCell.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
