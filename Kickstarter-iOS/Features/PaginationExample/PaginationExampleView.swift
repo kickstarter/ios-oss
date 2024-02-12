@@ -24,11 +24,11 @@ private struct PaginationExampleProjectList: View {
       Spacer()
     }
     .padding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
-    .background(Color.yellow)
+    .background(.yellow)
     List {
       ForEach(projectIdsAndTitles, id: \.0) {
         let title = $0.1
-        PaginationExampleProjectCell(title: $0.1)
+        PaginationExampleProjectCell(title: title)
       }
       if showProgressView {
         HStack {
@@ -39,7 +39,7 @@ private struct PaginationExampleProjectList: View {
             }
           Spacer()
         }
-        .background(Color.yellow)
+        .background(.yellow)
       }
     }
     .refreshable {

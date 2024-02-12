@@ -78,9 +78,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor, SomeError: Error, Req
         self?.isLoading = false
       })
       .sink(receiveValue: { [weak self] envelope in
-        guard let self = self else {
-          return
-        }
+        guard let self else { return }
 
         let newValues = self.valuesFromEnvelope(envelope)
         self.values.append(contentsOf: newValues)
