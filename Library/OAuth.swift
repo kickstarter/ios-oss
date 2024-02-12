@@ -1,4 +1,5 @@
 import AuthenticationServices
+import FirebaseCrashlytics
 import Foundation
 import KsApi
 
@@ -50,7 +51,7 @@ public struct OAuth {
       return session
 
     } catch {
-      // TODO: Is there a way we can log/monitor these errors?
+      Crashlytics.crashlytics().record(error: error)
       return nil
     }
   }
