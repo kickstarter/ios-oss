@@ -52,6 +52,9 @@ public struct PaginationExampleView: View {
   @StateObject private var viewModel = PaginationExampleViewModel()
 
   public var body: some View {
+    //Note that PaginationExampleProjectList is decoupled from the view model;
+    //all the information it needs is passed in via bindings.
+    //This makes it easy to write a preview!
     PaginationExampleProjectList(
       projectIdsAndTitles: $viewModel.projectIdsAndTitles,
       showProgressView: $viewModel.showProgressView,
