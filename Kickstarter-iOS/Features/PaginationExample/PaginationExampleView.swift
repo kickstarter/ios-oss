@@ -14,8 +14,8 @@ private struct PaginationExampleProjectList: View {
   @Binding var showProgressView: Bool
   @Binding var statusText: String
 
-  let onRefresh: @Sendable() -> Void
-  let onDidShowProgressView: @Sendable() -> Void
+  let onRefresh: () -> Void
+  let onDidShowProgressView: () -> Void
 
   var body: some View {
     HStack {
@@ -52,17 +52,15 @@ public struct PaginationExampleView: View {
   @StateObject private var viewModel = PaginationExampleViewModel()
 
   public var body: some View {
-    let capturedViewModel = viewModel
-
     PaginationExampleProjectList(
       projectIdsAndTitles: $viewModel.projectIdsAndTitles,
       showProgressView: $viewModel.showProgressView,
       statusText: $viewModel.statusText,
       onRefresh: {
-        capturedViewModel.didRefresh()
+        viewModel.didRefresh()
       },
       onDidShowProgressView: {
-        capturedViewModel.didShowProgressView()
+        viewModel.didShowProgressView()
       }
     )
   }
