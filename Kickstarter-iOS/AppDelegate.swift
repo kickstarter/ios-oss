@@ -416,9 +416,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         return
       }
 
-      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
+      let errorAsNSError = remoteConfigActivationError as NSError
 
-      Crashlytics.crashlytics().record(error: remoteConfigActivationError)
+      if errorAsNSError.domain == RemoteConfigErrorDomain,
+        errorAsNSError.code == RemoteConfigError.internalError.rawValue {
+        // This is (almost certainly) just a connection error; we won't log it.
+      } else {
+        Crashlytics.crashlytics().record(error: remoteConfigActivationError)
+      }
+
+      print("🔴 Remote Config SDK Activation Failed with Error: \(remoteConfigActivationError.localizedDescription)")
 
       self.viewModel.inputs.remoteConfigClientConfigurationFailed()
     }
