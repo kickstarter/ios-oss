@@ -27,6 +27,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
   }
+  
+  internal var appBoyHelper: SEGAppboyHelper? = nil
 
   func application(
     _ application: UIApplication,
@@ -240,6 +242,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
 
         Analytics.setup(with: configuration)
+        
+        // Store the helper from this appBoyInstance, which is different from
+        // SEGAppboyIntegrationFactory.instance()?.appboyHelper, and importantly
+        // contains an active version of Appboy.
+        strongSelf.appBoyHelper = appBoyInstance?.appboyHelper
 
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(Analytics.shared())
       }
@@ -460,10 +467,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _: UNUserNotificationCenter,
+    _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
+    // Track notification opened.
+    // `appBoyHelper` gets set in `applicationDidFinishLaunching`, so it should not be nil here.
+    appBoyHelper?.userNotificationCenter(center, receivedNotificationResponse: response)
+
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
