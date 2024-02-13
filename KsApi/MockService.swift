@@ -676,7 +676,7 @@
       let mutation = GraphAPI
         .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
           projectId: input.projectId,
-          amountDollars: input.amountDollars,
+          amount: input.amountDollars,
           digitalMarketingAttributed: input.digitalMarketingAttributed
         ))
 
