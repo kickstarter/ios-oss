@@ -7,8 +7,8 @@ import ReactiveSwift
 extension Service {
   private static let session = URLSession(configuration: .default)
 
-  func request<M: Decodable>(_ route: Route)
-    -> SignalProducer<M, ErrorEnvelope> {
+  func request<Model: Decodable>(_ route: Route)
+    -> SignalProducer<Model, ErrorEnvelope> {
     let properties = route.requestProperties
 
     guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
@@ -25,7 +25,7 @@ extension Service {
     .flatMap(self.decodeModelToSignal)
   }
 
-  func request<M: Decodable>(_ route: Route) -> AnyPublisher<M, ErrorEnvelope> {
+  func request<Model: Decodable>(_ route: Route) -> AnyPublisher<Model, ErrorEnvelope> {
     let properties = route.requestProperties
 
     guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
@@ -41,8 +41,8 @@ extension Service {
     ).handle_combine_dataResponse(service: self)
   }
 
-  func requestPaginationDecodable<M: Decodable>(_ paginationUrl: String)
-    -> SignalProducer<M, ErrorEnvelope> {
+  func requestPaginationDecodable<Model: Decodable>(_ paginationUrl: String)
+    -> SignalProducer<Model, ErrorEnvelope> {
     guard let paginationUrl = URL(string: paginationUrl) else {
       return .init(error: .invalidPaginationUrl)
     }
@@ -52,8 +52,8 @@ extension Service {
       .flatMap(self.decodeModelToSignal)
   }
 
-  func requestPaginationDecodable<M: Decodable>(_ paginationUrl: String)
-    -> AnyPublisher<M, ErrorEnvelope> {
+  func requestPaginationDecodable<Model: Decodable>(_ paginationUrl: String)
+    -> AnyPublisher<Model, ErrorEnvelope> {
     guard let paginationUrl = URL(string: paginationUrl) else {
       fatalError("Invalid pagination URL \(paginationUrl)")
     }
@@ -65,10 +65,11 @@ extension Service {
 }
 
 extension Publisher where Output == Data, Failure == ErrorEnvelope {
-  func handle_combine_dataResponse<M: Decodable>(service: Service) -> AnyPublisher<M, ErrorEnvelope> {
+  func handle_combine_dataResponse<Model: Decodable>(service: Service) -> AnyPublisher<Model, ErrorEnvelope> {
     return self
       .tryMap { data in
-        let result: Result<M?, ErrorEnvelope> = service.decodeModelToResult(data: data, ofType: M.self)
+        let result: Result<Model?, ErrorEnvelope> = service
+          .decodeModelToResult(data: data, ofType: Model.self)
 
         switch result {
         case let .success(value):
