@@ -1515,6 +1515,7 @@
 		E1AA8ABF2AEABBB100AC98BF /* Signal+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EA34EE2AE1B28400942A04 /* Signal+Combine.swift */; };
 		E1BB25642B1E81AA000BD2D6 /* Publisher+Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BB25632B1E81AA000BD2D6 /* Publisher+Service.swift */; };
 		E1EEED292B684AA7009976D9 /* PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED282B684AA7009976D9 /* PKCE.swift */; };
+		E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E1F1DB3E2B7BC09C004EA80B /* Prelude */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3141,6 +3142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1F1DB3F2B7BC09C004EA80B /* Prelude in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7041,6 +7043,7 @@
 			);
 			name = "Kickstarter-Framework-iOS";
 			packageProductDependencies = (
+				E1F1DB3E2B7BC09C004EA80B /* Prelude */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -10600,6 +10603,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
+		};
+		E1F1DB3E2B7BC09C004EA80B /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
