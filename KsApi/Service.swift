@@ -192,7 +192,7 @@ public struct Service: ServiceType {
       .perform(mutation: GraphAPI
         .CreatePaymentIntentMutation(input: GraphAPI.CreatePaymentIntentInput(
           projectId: input.projectId,
-          amountDollars: input.amountDollars,
+          amount: input.amountDollars,
           digitalMarketingAttributed: input.digitalMarketingAttributed
         )))
       .flatMap(PaymentIntentEnvelope.envelopeProducer(from:))

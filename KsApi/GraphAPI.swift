@@ -746,14 +746,15 @@ public enum GraphAPI {
     public var graphQLMap: GraphQLMap
 
     /// - Parameters:
-    ///   - projectId
-    ///   - amountDollars
-    ///   - digitalMarketingAttributed
+    ///   - projectId: kickstarter project id
+    ///   - amount: total amount to be paid (eg. 10.55)
+    ///   - digitalMarketingAttributed: if the payment is attributed to digital marketing (default: false)
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, amountDollars: String, digitalMarketingAttributed: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "amountDollars": amountDollars, "digitalMarketingAttributed": digitalMarketingAttributed, "clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, amount: String, digitalMarketingAttributed: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "amount": amount, "digitalMarketingAttributed": digitalMarketingAttributed, "clientMutationId": clientMutationId]
     }
 
+    /// kickstarter project id
     public var projectId: GraphQLID {
       get {
         return graphQLMap["projectId"] as! GraphQLID
@@ -763,15 +764,17 @@ public enum GraphAPI {
       }
     }
 
-    public var amountDollars: String {
+    /// total amount to be paid (eg. 10.55)
+    public var amount: String {
       get {
-        return graphQLMap["amountDollars"] as! String
+        return graphQLMap["amount"] as! String
       }
       set {
-        graphQLMap.updateValue(newValue, forKey: "amountDollars")
+        graphQLMap.updateValue(newValue, forKey: "amount")
       }
     }
 
+    /// if the payment is attributed to digital marketing (default: false)
     public var digitalMarketingAttributed: Swift.Optional<Bool?> {
       get {
         return graphQLMap["digitalMarketingAttributed"] as? Swift.Optional<Bool?> ?? Swift.Optional<Bool?>.none
@@ -4423,6 +4426,7 @@ public enum GraphAPI {
           }
         }
 
+        /// the stripe payment intent client secret used to complete a payment
         public var clientSecret: String {
           get {
             return resultMap["clientSecret"]! as! String
@@ -8054,7 +8058,7 @@ public enum GraphAPI {
           }
         }
 
-        /// The current user's backing of this project.
+        /// The current user's backing of this project.  Does not include inactive backings.
         public var backing: Backing? {
           get {
             return (resultMap["backing"] as? ResultMap).flatMap { Backing(unsafeResultMap: $0) }
@@ -8350,7 +8354,7 @@ public enum GraphAPI {
           }
         }
 
-        /// The current user's backing of this project.
+        /// The current user's backing of this project.  Does not include inactive backings.
         public var backing: Backing? {
           get {
             return (resultMap["backing"] as? ResultMap).flatMap { Backing(unsafeResultMap: $0) }
