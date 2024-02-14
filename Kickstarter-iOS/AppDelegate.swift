@@ -230,17 +230,19 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] writeKey in
         guard let strongSelf = self else { return }
 
-        let (configuration, appBoyInstance) = Analytics.configuredClient(withWriteKey: writeKey)
+        let configuration = Analytics.configuredClient(withWriteKey: writeKey)
 
-        appBoyInstance?.saveLaunchOptions(launchOptions)
-        appBoyInstance?.appboyOptions = [
-          ABKInAppMessageControllerDelegateKey: strongSelf,
-          ABKURLDelegateKey: strongSelf,
-          ABKMinimumTriggerTimeIntervalKey: 5
-        ]
+        if let appBoyInstance = SEGAppboyIntegrationFactory.instance() {
+          configuration.use(appBoyInstance)
+          appBoyInstance.saveLaunchOptions(launchOptions)
+          appBoyInstance.appboyOptions = [
+            ABKInAppMessageControllerDelegateKey: strongSelf,
+            ABKURLDelegateKey: strongSelf,
+            ABKMinimumTriggerTimeIntervalKey: 5
+          ]
+        }
 
         Analytics.setup(with: configuration)
-
         AppEnvironment.current.ksrAnalytics.configureSegmentClient(Analytics.shared())
       }
 
@@ -460,10 +462,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   }
 
   func userNotificationCenter(
-    _: UNUserNotificationCenter,
+    _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
+    // Track notification opened.
+    // Documentation: https://github.com/Appboy/appboy-segment-ios/blob/master/CHANGELOG.md#added-6.
+    let appBoyHelper = SEGAppboyIntegrationFactory.instance().appboyHelper
+    if Appboy.sharedInstance() == nil {
+      appBoyHelper?.save(center, notificationResponse: response)
+    }
+    appBoyHelper?.userNotificationCenter(center, receivedNotificationResponse: response)
+
     guard let rootTabBarController = self.rootTabBarController else {
       completion()
       return
