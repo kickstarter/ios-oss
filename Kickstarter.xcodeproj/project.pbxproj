@@ -1500,11 +1500,13 @@
 		E10D06632ACF385E00470B5C /* FetchBackerProjectsQuery.json in Resources */ = {isa = PBXBuildFile; fileRef = E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */; };
 		E10D06652AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test in Resources */ = {isa = PBXBuildFile; fileRef = E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */; };
 		E10F75E82B6937FA00024AD1 /* PKCETest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEED2A2B686829009976D9 /* PKCETest.swift */; };
+		E113BD782B7D1B7700D3A809 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD762B7D1B7700D3A809 /* Keychain.swift */; };
+		E113BD7A2B7D1B8600D3A809 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD772B7D1B7700D3A809 /* KeychainTests.swift */; };
 		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
-		E17611E22B73D9A400DF2F50 /* Data+PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */; };
 		E17611E02B7287CF00DF2F50 /* PaginationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */; };
+		E17611E22B73D9A400DF2F50 /* Data+PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */; };
 		E17611E42B751E8100DF2F50 /* Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E32B751E8100DF2F50 /* Paginator.swift */; };
 		E17611E62B75242A00DF2F50 /* PaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E52B75242A00DF2F50 /* PaginatorTests.swift */; };
 		E1A1491E2ACDD76800F49709 /* FetchBackerProjectsQuery.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E1A1491D2ACDD76700F49709 /* FetchBackerProjectsQuery.graphql */; };
@@ -3087,6 +3089,8 @@
 		E10BE8E52B151CC800F73DC9 /* BlockUserInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserInputTests.swift; sourceTree = "<group>"; };
 		E10D06622ACF385E00470B5C /* FetchBackerProjectsQuery.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchBackerProjectsQuery.json; sourceTree = "<group>"; };
 		E10D06642AD48C9C00470B5C /* FetchBackerProjectsQueryRequestForTests.graphql_test */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchBackerProjectsQueryRequestForTests.graphql_test; sourceTree = "<group>"; };
+		E113BD762B7D1B7700D3A809 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		E113BD772B7D1B7700D3A809 /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleViewModel.swift; sourceTree = "<group>"; };
 		E11CFE492B6C41B400497375 /* OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth.swift; sourceTree = "<group>"; };
 		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
@@ -6008,6 +6012,8 @@
 				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 				A7ED1F161E830FDC00BFFA01 /* IsValidEmailTests.swift */,
 				A72AFFD91CD7ED6B008F052B /* Keyboard.swift */,
+				E113BD762B7D1B7700D3A809 /* Keychain.swift */,
+				E113BD772B7D1B7700D3A809 /* KeychainTests.swift */,
 				A71404381CAF215900A2795B /* KeyValueStoreType.swift */,
 				A71F59E71D2424CA00909BE3 /* KSCache.swift */,
 				A7ED1F171E830FDC00BFFA01 /* KSCacheTests.swift */,
@@ -7696,6 +7702,7 @@
 				A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */,
 				8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */,
 				473DE016273C56E50033331D /* ProjectRisksDisclaimerCellViewModel.swift in Sources */,
+				E113BD782B7D1B7700D3A809 /* Keychain.swift in Sources */,
 				20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
@@ -7801,6 +7808,7 @@
 				1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */,
 				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
 				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,
+				E113BD7A2B7D1B8600D3A809 /* KeychainTests.swift in Sources */,
 				A7ED1FB31E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
 				A7ED1FD71E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
