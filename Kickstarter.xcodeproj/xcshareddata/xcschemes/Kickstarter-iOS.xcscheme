@@ -25,7 +25,7 @@
       </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -39,7 +39,7 @@
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
@@ -49,6 +49,48 @@
                BlueprintIdentifier = "D01587571EEB2DE4006E7684"
                BuildableName = "KsApiTests.xctest"
                BlueprintName = "KsApiTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A75511441C8642B3005355CF"
+               BuildableName = "Library-iOSTests.xctest"
+               BlueprintName = "Library-iOSTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
+               BuildableName = "Kickstarter-Framework-iOSTests.xctest"
+               BlueprintName = "Kickstarter-Framework-iOSTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D05DFC40227A578B006F3B68"
+               BuildableName = "KickstarterUITests.xctest"
+               BlueprintName = "KickstarterUITests"
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -69,52 +111,6 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A75511441C8642B3005355CF"
-               BuildableName = "Library-iOSTests.xctest"
-               BlueprintName = "Library-iOSTests"
-               ReferencedContainer = "container:Kickstarter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7D1F9591C850B7C000D41D5"
-               BuildableName = "Kickstarter-Framework-iOSTests.xctest"
-               BlueprintName = "Kickstarter-Framework-iOSTests"
-               ReferencedContainer = "container:Kickstarter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D01587571EEB2DE4006E7684"
-               BuildableName = "KsApiTests.xctest"
-               BlueprintName = "KsApiTests"
-               ReferencedContainer = "container:Kickstarter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D05DFC40227A578B006F3B68"
-               BuildableName = "KickstarterUITests.xctest"
-               BlueprintName = "KickstarterUITests"
-               ReferencedContainer = "container:Kickstarter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
