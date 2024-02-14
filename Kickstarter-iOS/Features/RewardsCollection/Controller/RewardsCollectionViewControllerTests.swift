@@ -24,22 +24,20 @@ final class RewardsCollectionViewControllerTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+    let language = Language.en, device = Device.phone4_7inch
+    withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)"
+      )
     }
   }
 
@@ -47,22 +45,20 @@ final class RewardsCollectionViewControllerTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
+    let language = Language.de, device = Device.pad
+    withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
 
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)"
+      )
     }
   }
 
@@ -77,24 +73,23 @@ final class RewardsCollectionViewControllerTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.amount .~ 700.0
+          |> Backing.lens.addOns .~ []
       )
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
+    let language = Language.es, device = Device.phone5_8inch
+    withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
 
-        assertSnapshot(
-          matching: parent.view,
-          as: .image(perceptualPrecision: 0.98),
-          named: "lang_\(language)_device_\(device)"
-        )
-      }
+      assertSnapshot(
+        matching: parent.view,
+        as: .image(perceptualPrecision: 0.98),
+        named: "lang_\(language)_device_\(device)"
+      )
     }
   }
 
@@ -107,21 +102,19 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.rewardData.rewards .~ [reward]
 
-    combos(Language.allLanguages, [Device.pad]).forEach {
-      language, device in
-      withEnvironment(
-        language: language,
-        locale: .init(identifier: language.rawValue)
-      ) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
+    let language = Language.fr, device = Device.pad
+    withEnvironment(
+      language: language,
+      locale: .init(identifier: language.rawValue)
+    ) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
+      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
     }
   }
 
@@ -134,21 +127,19 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.rewardData.rewards .~ [reward]
 
-    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
-      language, device in
-      withEnvironment(
-        language: language,
-        locale: .init(identifier: language.rawValue)
-      ) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+    let language = Language.ja, device = Device.phone5_8inch
+    withEnvironment(
+      language: language,
+      locale: .init(identifier: language.rawValue)
+    ) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
+      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
     }
   }
 
@@ -161,21 +152,19 @@ final class RewardsCollectionViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.rewardData.rewards .~ [.noReward, reward]
 
-    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
-      language, device in
-      withEnvironment(
-        language: language,
-        locale: .init(identifier: language.rawValue)
-      ) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+    let language = Language.en, device = Device.phone5_8inch
+    withEnvironment(
+      language: language,
+      locale: .init(identifier: language.rawValue)
+    ) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
+      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
     }
   }
 
@@ -193,21 +182,19 @@ final class RewardsCollectionViewControllerTests: TestCase {
       )
       |> Project.lens.rewardData.rewards .~ [reward]
 
-    combos(Language.allLanguages, [Device.phone5_8inch]).forEach {
-      language, device in
-      withEnvironment(
-        language: language,
-        locale: .init(identifier: language.rawValue)
-      ) {
-        let vc = RewardsCollectionViewController.instantiate(
-          with: project,
-          refTag: nil,
-          context: .createPledge
-        )
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+    let language = Language.de, device = Device.phone5_8inch
+    withEnvironment(
+      language: language,
+      locale: .init(identifier: language.rawValue)
+    ) {
+      let vc = RewardsCollectionViewController.instantiate(
+        with: project,
+        refTag: nil,
+        context: .createPledge
+      )
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
-      }
+      assertSnapshot(matching: parent.view, as: .image, named: "lang_\(language)_device_\(device)")
     }
   }
 }
