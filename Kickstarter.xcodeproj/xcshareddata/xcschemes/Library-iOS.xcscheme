@@ -47,6 +47,16 @@
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E113BD802B7D255000D3A809"
+               BuildableName = "Library-Keychain-iOSTests.xctest"
+               BlueprintName = "Library-Keychain-iOSTests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
