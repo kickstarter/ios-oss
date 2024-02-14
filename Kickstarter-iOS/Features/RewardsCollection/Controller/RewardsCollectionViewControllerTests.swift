@@ -44,6 +44,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
   func testRewards_NonBacker_LiveProject_Landscape() {
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
+      |> Project.lens.rewardData.rewards %~ { Array($0[1...3]) }
 
     let language = Language.de, device = Device.pad
     withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
@@ -63,7 +64,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
   }
 
   func testRewards_Backer_LiveProject_Landscape() {
-    let reward = Project.cosmicSurgery.rewards[1]
+    let reward = Project.cosmicSurgery.rewards[3]
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true

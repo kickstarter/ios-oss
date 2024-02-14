@@ -53,7 +53,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map(first)
 
     let rewards = project
-      .map(allowableProjectRewards)
+      .map(allowableSortedProjectRewards)
 
     self.title = configData
       .map { project, _, context in (context, project) }
@@ -384,6 +384,8 @@ private func backingAndShippingTotal(for project: Project, and reward: Reward) -
   return (backing, shippingTotal)
 }
 
-private func allowableProjectRewards(from project: Project) -> [Reward] {
-  project.rewards
+private func allowableSortedProjectRewards(from project: Project) -> [Reward] {
+  let availableRewards = project.rewards.filter { rewardIsAvailable(project: project, reward: $0) }
+  let unAvailableRewards = project.rewards.filter { !rewardIsAvailable(project: project, reward: $0) }
+  return availableRewards + unAvailableRewards
 }
