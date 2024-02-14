@@ -120,6 +120,7 @@ public class Paginator<Envelope, Value: Equatable, Cursor, SomeError: Error, Req
     self.isLoading = true
     guard let cursor = self.lastCursor else {
       assert(false, "Requested next page, but there is no cursor.")
+      return
     }
 
     let request = self.requestFromCursor(cursor)
