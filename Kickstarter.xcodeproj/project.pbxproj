@@ -1504,6 +1504,7 @@
 		E113BD842B7D255000D3A809 /* Library_Keychain_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD832B7D255000D3A809 /* Library_Keychain_iOSTests.swift */; };
 		E113BD852B7D255000D3A809 /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; platformFilter = ios; };
 		E113BD8D2B7D255A00D3A809 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E113BD772B7D1B7700D3A809 /* KeychainTests.swift */; };
+		E113BD912B7D615000D3A809 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E113BD902B7D615000D3A809 /* Prelude */; };
 		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
@@ -3137,6 +3138,7 @@
 				19338D9B2A0D4E2300075F29 /* Stripe in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				6078106D2A0419170050D4F7 /* FirebasePerformance in Frameworks */,
+				E113BD912B7D615000D3A809 /* Prelude in Frameworks */,
 				60DA50FE28C38DDB002E2DF1 /* AlamofireImage in Frameworks */,
 				1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */,
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
@@ -7042,6 +7044,7 @@
 				19338D9A2A0D4E2300075F29 /* Stripe */,
 				1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */,
 				195747172A71AF1700D43CA3 /* PerimeterX_SDK */,
+				E113BD902B7D615000D3A809 /* Prelude */,
 			);
 			productName = "Library-iOS";
 			productReference = A755113C1C8642B3005355CF /* Library.framework */;
@@ -10828,6 +10831,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
+		};
+		E113BD902B7D615000D3A809 /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06634FC32807A4EB00950F60 /* XCRemoteSwiftPackageReference "Kickstarter-Prelude" */;
+			productName = Prelude;
 		};
 		E1F1DB3E2B7BC09C004EA80B /* Prelude */ = {
 			isa = XCSwiftPackageProductDependency;
