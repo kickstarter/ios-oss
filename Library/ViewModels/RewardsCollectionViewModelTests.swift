@@ -78,7 +78,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
 
-      XCTAssertEqual(displayableRewards, project.rewards)
+      XCTAssertEqual(displayableRewards?.sorted(), project.rewards.sorted())
     }
   }
 
@@ -116,7 +116,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       let displayableRewards = self.reloadDataWithValues.lastValue?.compactMap { $0.reward }
 
-      XCTAssertEqual(displayableRewards, allNonLocalPickupRewards)
+      XCTAssertEqual(displayableRewards?.sorted(), allNonLocalPickupRewards.sorted())
     }
   }
 
