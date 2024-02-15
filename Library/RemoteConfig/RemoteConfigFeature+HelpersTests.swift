@@ -127,6 +127,22 @@ final class RemoteConfigFeatureHelpersTests: TestCase {
       )
   }
 
+  func testUseKeychainForOAuthTokenEnabled_RemoteConfig_FeatureFlag_False() {
+    self
+      .assert(
+        featureFlagIsFalse: featureUseKeychainForOAuthTokenEnabled,
+        whenRemoteConfigFeatureIsFalse: .useKeychainForOAuthToken
+      )
+  }
+
+  func testUseKeychainForOAuthTokenEnabled_RemoteConfig_FeatureFlag_True() {
+    self
+      .assert(
+        featureFlagIsTrue: featureUseKeychainForOAuthTokenEnabled,
+        whenRemoteConfigFeatureIsTrue: .useKeychainForOAuthToken
+      )
+  }
+
   func testLoginWithOAuth_RemoteConfig_FeatureFlag_False() {
     self
       .assert(

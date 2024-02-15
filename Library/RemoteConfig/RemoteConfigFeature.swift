@@ -8,6 +8,7 @@ public enum RemoteConfigFeature: String, CaseIterable {
   case postCampaignPledgeEnabled = "post_campaign_pledge"
   case reportThisProjectEnabled = "report_this_project"
   case loginWithOAuthEnabled = "ios_oauth"
+  case useKeychainForOAuthToken = "use_keychain_for_oauth_token"
 }
 
 extension RemoteConfigFeature: CustomStringConvertible {
@@ -20,6 +21,7 @@ extension RemoteConfigFeature: CustomStringConvertible {
     case .postCampaignPledgeEnabled: return "Post Campaign Pledging"
     case .reportThisProjectEnabled: return "Report This Project"
     case .loginWithOAuthEnabled: return "Login with OAuth"
+    case .useKeychainForOAuthToken: return "Use Keychain for OAuth token"
     }
   }
 }
