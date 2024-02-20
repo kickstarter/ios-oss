@@ -99,6 +99,8 @@ private func isFeatureEnabled(_ feature: RemoteConfigFeature) -> Bool {
     return featureReportThisProjectEnabled()
   case .loginWithOAuthEnabled:
     return featureLoginWithOAuthEnabled()
+  case .useKeychainForOAuthToken:
+    return featureUseKeychainForOAuthTokenEnabled()
   }
 }
 
