@@ -159,6 +159,7 @@
 
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
+    fileprivate let tokenExchangeResponse: OAuthTokenExchangeResponse?
 
     fileprivate let unfollowFriendError: ErrorEnvelope?
 
@@ -302,6 +303,7 @@
       postCommentResult: Result<Comment, ErrorEnvelope>? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
       loginError: ErrorEnvelope? = nil,
+      tokenExchangeResponse: OAuthTokenExchangeResponse? = nil,
       resendCodeResponse: ErrorEnvelope? = nil,
       resendCodeError: ErrorEnvelope? = nil,
       resetPasswordResponse: User? = nil,
@@ -524,6 +526,8 @@
       self.verifyEmailResult = verifyEmailResult
 
       self.watchProjectMutationResult = watchProjectMutationResult
+
+      self.tokenExchangeResponse = tokenExchangeResponse
     }
 
     public func addNewCreditCard(input: CreatePaymentSourceInput)
@@ -1756,8 +1760,13 @@
 
     func exchangeTokenForOAuthToken(params _: OAuthTokenExchangeParams)
       -> AnyPublisher<OAuthTokenExchangeResponse, ErrorEnvelope> {
-      // TODO: Implement for testing.
-      Empty(completeImmediately: false).eraseToAnyPublisher()
+      if let tokenExchangeResponse = self.tokenExchangeResponse {
+        return Just(tokenExchangeResponse).setFailureType(to: ErrorEnvelope.self).eraseToAnyPublisher()
+      } else if let loginError = self.loginError {
+        return Fail(outputType: OAuthTokenExchangeResponse.self, failure: loginError).eraseToAnyPublisher()
+      } else {
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
+      }
     }
   }
 
