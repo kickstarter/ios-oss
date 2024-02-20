@@ -1399,6 +1399,15 @@
       return SignalProducer(value: self.fetchUserSelfResponse ?? .template)
     }
 
+    func fetchUserSelf_combine(withToken _: String) -> AnyPublisher<User, ErrorEnvelope> {
+      if let error = fetchUserSelfError {
+        return Fail(outputType: User.self, failure: self.fetchUserSelfError!).eraseToAnyPublisher()
+      }
+
+      return Just(self.fetchUserSelfResponse ?? .template).setFailureType(to: ErrorEnvelope.self)
+        .eraseToAnyPublisher()
+    }
+
     internal func fetchSurveyResponse(surveyResponseId id: Int)
       -> SignalProducer<SurveyResponse, ErrorEnvelope> {
       if let response = fetchSurveyResponseResponse {
@@ -1742,6 +1751,12 @@
     }
 
     func fetchDiscovery_combine(paginationUrl _: String) -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope> {
+      Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
+
+    func exchangeTokenForOAuthToken(params _: OAuthTokenExchangeParams)
+      -> AnyPublisher<OAuthTokenExchangeResponse, ErrorEnvelope> {
+      // TODO: Implement for testing.
       Empty(completeImmediately: false).eraseToAnyPublisher()
     }
   }

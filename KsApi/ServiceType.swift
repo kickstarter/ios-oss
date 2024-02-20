@@ -284,6 +284,9 @@ public protocol ServiceType {
   /// Fetch the logged-in user's data.
   func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope>
 
+  /// Fetch the logged-in user's data.
+  func fetchUserSelf_combine(withToken: String) -> AnyPublisher<User, ErrorEnvelope>
+
   /// Mark reward received.
   func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
     -> SignalProducer<Backing, ErrorEnvelope>
@@ -402,6 +405,9 @@ public protocol ServiceType {
 
   func fetchDiscovery_combine(params: DiscoveryParams)
     -> AnyPublisher<DiscoveryEnvelope, ErrorEnvelope>
+
+  func exchangeTokenForOAuthToken(params: OAuthTokenExchangeParams)
+    -> AnyPublisher<OAuthTokenExchangeResponse, ErrorEnvelope>
 }
 
 extension ServiceType {
