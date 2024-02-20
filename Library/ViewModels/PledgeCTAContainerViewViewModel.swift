@@ -210,6 +210,11 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
       return PledgeStateCTAType.viewYourRewards
     }
 
+    if featurePostCampaignPledgeEnabled(), project.postCampaignPledgingEnabled,
+      project.isInPostCampaignPledgingPhase {
+      return PledgeStateCTAType.pledge
+    }
+
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
   }
 
