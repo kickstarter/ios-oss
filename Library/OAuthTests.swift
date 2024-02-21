@@ -91,4 +91,67 @@ final class OAuthTests: XCTestCase {
       }
     }
   }
+
+  func testHandleRedirect_exchangeEndpointReturnsError_fails() {
+    let urlWithCode = URL(string: "ksrauth2://authenticate?code=a1b2c3")
+
+    XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
+
+    // The redirect makes two calls - the first is for token exchange, the second fetches the current user.
+    let expectedErrorMessage = "The token exchange failed."
+    let exchangeError = ErrorEnvelope(
+      errorMessages: [expectedErrorMessage],
+      ksrCode: .UnknownCode,
+      httpCode: 403,
+      exception: nil
+    )
+    var currentUser = User.template
+    currentUser.id = 123_456
+    let mockService = MockService(loginError: exchangeError)
+
+    withEnvironment(apiService: mockService) {
+      verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
+        if case let .failure(errorMessage: errorMessage) = result {
+          XCTAssertNil(AppEnvironment.current.currentUser)
+          XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
+
+          XCTAssertEqual(errorMessage, expectedErrorMessage)
+        } else {
+          XCTFail("Expected call to fail")
+        }
+      }
+    }
+  }
+
+  func testHandleRedirect_userEndpointReturnsError_fails() {
+    let urlWithCode = URL(string: "ksrauth2://authenticate?code=a1b2c3")
+
+    XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
+
+    // The redirect makes two calls - the first is for token exchange, the second fetches the current user.
+    let exchangeResponse = OAuthTokenExchangeResponse(token: "test_token")
+    let expectedErrorMessage = "Unable to load user."
+    let userError = ErrorEnvelope(
+      errorMessages: [expectedErrorMessage],
+      ksrCode: .UnknownCode,
+      httpCode: 403,
+      exception: nil
+    )
+    let mockService = MockService(fetchUserSelfError: userError, tokenExchangeResponse: exchangeResponse)
+
+    withEnvironment(apiService: mockService) {
+      verifyRedirectAsync(redirectURL: urlWithCode, error: nil, verifier: "test_verifier") { result in
+        if case let .failure(errorMessage: errorMessage) = result {
+          XCTAssertNil(AppEnvironment.current.currentUser)
+          XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
+
+          XCTAssertEqual(errorMessage, expectedErrorMessage)
+        } else {
+          XCTFail("Expected call to fail")
+        }
+      }
+    }
+  }
 }
