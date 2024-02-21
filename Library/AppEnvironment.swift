@@ -298,11 +298,6 @@ public struct AppEnvironment: AppEnvironmentType {
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
       // If there is an oauth token stored in the defaults, then we can authenticate our api service
       service = service.login(OauthToken(token: oauthToken))
-      removeLegacyOauthToken(fromUserDefaults: userDefaults)
-    } else if let oauthToken = legacyOauthToken(forUserDefaults: userDefaults) {
-      // Otherwise if there is a token in the legacy user defaults entry we can use that
-      service = service.login(OauthToken(token: oauthToken))
-      removeLegacyOauthToken(fromUserDefaults: userDefaults)
     }
 
     // Try restoring the client id for the api service
@@ -412,12 +407,4 @@ public struct AppEnvironment: AppEnvironmentType {
 
     userDefaults.set(data, forKey: self.environmentStorageKey)
   }
-}
-
-private func legacyOauthToken(forUserDefaults userDefaults: KeyValueStoreType) -> String? {
-  return userDefaults.object(forKey: "com.kickstarter.access_token") as? String
-}
-
-private func removeLegacyOauthToken(fromUserDefaults userDefaults: KeyValueStoreType) {
-  userDefaults.removeObject(forKey: "com.kickstarter.access_token")
 }
