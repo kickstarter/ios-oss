@@ -205,13 +205,14 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
     return .prelaunch(saved: projectIsSaved, watchCount: project.watchesCount ?? 0)
   }
 
+  let isInPostCampaign = featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
+
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
     }
 
-    if featurePostCampaignPledgeEnabled(), project.postCampaignPledgingEnabled,
-      project.isInPostCampaignPledgingPhase {
+    if isInPostCampaign {
       return PledgeStateCTAType.pledge
     }
 
@@ -219,12 +220,14 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
   }
 
   // NB: Add error case back once correctly returned
-  switch (project.state, projectBacking.status) {
-  case (.live, _):
+  switch (project.state, projectBacking.status, isInPostCampaign) {
+  case (.live, _, _):
     return .manage
-  case (.successful, .errored):
+  case (.successful, _, true):
+    return .viewBacking
+  case (.successful, .errored, _):
     return .fix
-  case (_, _):
+  case (_, _, _):
     return .viewBacking
   }
 }
