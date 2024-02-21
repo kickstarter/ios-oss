@@ -15,6 +15,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
     return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
 
+  private lazy var headerView: RewardsCollectionViewHeaderView = {
+    RewardsCollectionViewHeaderView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.minimumLineSpacing .~ Styles.grid(3)
@@ -61,6 +66,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
+    _ = (self.headerView, self.view)
+      |> ksr_addSubviewToParent()
+
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
 
@@ -68,6 +76,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> ksr_addSubviewToParent()
 
     self.collectionView.register(RewardCell.self)
+    self.collectionView.register(
+      RewardsCollectionViewHeaderView.self,
+      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+      withReuseIdentifier: RewardsCollectionViewHeaderView.defaultReusableId
+    )
 
     self.setupConstraints()
 
@@ -84,6 +97,18 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.viewDidLayoutSubviews()
 
     guard let layout = self.flowLayout else { return }
+
+    self.headerView.layoutIfNeeded()
+
+    let topSafeAreaInset = self.view.safeAreaInsets.top
+    let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(1)
+
+    self.collectionView.contentInset = .init(
+      top: topInset,
+      left: self.collectionView.contentInset.left,
+      bottom: self.collectionView.contentInset.bottom,
+      right: self.collectionView.contentInset.right
+    )
 
     let itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
@@ -111,6 +136,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.view
       |> checkoutBackgroundStyle
+
+    _ = self.headerView
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.collectionView
       |> collectionViewStyle
@@ -195,6 +223,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     NSLayoutConstraint.activate([
+      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.rewardsCollectionFooterView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rewardsCollectionFooterView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rewardsCollectionFooterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
