@@ -605,7 +605,6 @@ extension ServiceType {
     var query: [String: String] = [:]
     query["client_id"] = self.serverConfig.apiClientAuth.clientId
     query["currency"] = self.currency
-    query["oauth_token"] = self.oauthToken?.token
     return query
   }
 
