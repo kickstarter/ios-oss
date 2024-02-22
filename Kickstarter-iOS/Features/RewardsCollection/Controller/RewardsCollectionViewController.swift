@@ -76,11 +76,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> ksr_addSubviewToParent()
 
     self.collectionView.register(RewardCell.self)
-    self.collectionView.register(
-      RewardsCollectionViewHeaderView.self,
-      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-      withReuseIdentifier: RewardsCollectionViewHeaderView.defaultReusableId
-    )
+    
+    if featurePostCampaignPledgeEnabled() {
+      self.collectionView.register(
+        RewardsCollectionViewHeaderView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+        withReuseIdentifier: RewardsCollectionViewHeaderView.defaultReusableId
+      )
+    }
 
     self.setupConstraints()
 
@@ -103,12 +106,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let topSafeAreaInset = self.view.safeAreaInsets.top
     let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(1)
 
-    self.collectionView.contentInset = .init(
-      top: topInset,
-      left: self.collectionView.contentInset.left,
-      bottom: self.collectionView.contentInset.bottom,
-      right: self.collectionView.contentInset.right
-    )
+    if featurePostCampaignPledgeEnabled() {
+      self.collectionView.contentInset = .init(
+        top: topInset,
+        left: self.collectionView.contentInset.left,
+        bottom: self.collectionView.contentInset.bottom,
+        right: self.collectionView.contentInset.right
+      )
+    }
 
     let itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
