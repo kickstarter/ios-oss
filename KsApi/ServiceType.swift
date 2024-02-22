@@ -491,37 +491,6 @@ extension ServiceType {
   }
 
   /**
-   Prepares a URL request to be sent to the server.
-
-   - parameter originalRequest: The request that should be prepared.
-   - parameter queryString:     The GraphQL query string for the request.
-
-   - returns: A new URL request that is properly configured for the server.
-   */
-  public func preparedRequest(forRequest originalRequest: URLRequest, queryString: String)
-    -> URLRequest {
-    var request = originalRequest
-    guard let URL = request.url else {
-      return originalRequest
-    }
-
-    request.httpBody = "query=\(queryString)".data(using: .utf8)
-
-    let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
-    request.url = components.url
-    request.allHTTPHeaderFields = self.defaultHeaders
-
-    return request
-  }
-
-  public func preparedRequest(forURL url: URL, queryString: String)
-    -> URLRequest {
-    var request = URLRequest(url: url)
-    request.httpMethod = Method.POST.rawValue
-    return self.preparedRequest(forRequest: request, queryString: queryString)
-  }
-
-  /**
      Prepares a URL request to be sent to the server.
      - parameter originalRequest: The request that should be prepared
      - parameter queryString: The GraphQL mutation string description
