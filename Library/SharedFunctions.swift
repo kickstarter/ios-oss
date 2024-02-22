@@ -380,6 +380,14 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
   let isAvailableForNewBacker = rewardIsAvailable(project: project, reward: reward) && !isBacking
   let isAvailableForExistingBackerToEdit = (isBacking && reward.hasAddOns)
 
+  if featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase {
+    return [
+      project.state == .successful,
+      isAvailableForNewBacker
+    ]
+    .allSatisfy(isTrue)
+  }
+
   return [
     project.state == .live,
     isAvailableForNewBacker || isAvailableForExistingBackerToEdit
