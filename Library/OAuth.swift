@@ -97,7 +97,6 @@ public struct OAuth {
     let params = OAuthTokenExchangeParams(temporaryToken: code, codeVerifier: verifier)
 
     AppEnvironment.current.apiService.exchangeTokenForOAuthToken(params: params)
-      .receive(on: RunLoop.main)
       .flatMap { response in
         let token = response.token
         // TODO: This would be neater if we can just return the V1 user from the exchange endpoint.
@@ -106,6 +105,7 @@ public struct OAuth {
         return Just(token).setFailureType(to: ErrorEnvelope.self)
           .zip(AppEnvironment.current.apiService.fetchUserSelf_combine(withToken: token))
       }
+      .receive(on: RunLoop.main)
       .sink { result in
         if case let .failure(error) = result {
           let message = error.errorMessages.first ?? Strings.login_errors_unable_to_log_in()
