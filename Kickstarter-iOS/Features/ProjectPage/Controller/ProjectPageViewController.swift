@@ -67,7 +67,7 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
   ) -> ProjectPageViewController {
     let vc = ProjectPageViewController.instantiate()
 
-    vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
+    vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refInfo: RefInfo(refTag))
 
     return vc
   }

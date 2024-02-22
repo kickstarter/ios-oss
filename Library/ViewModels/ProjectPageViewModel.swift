@@ -14,7 +14,7 @@ public protocol ProjectPageViewModelInputs {
   func blockUser(id: Int)
 
   /// Call with the project given to the view controller.
-  func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
+  func configureWith(projectOrParam: Either<Project, Param>, refInfo: RefInfo?)
 
   /// Call when the Thank you page is dismissed after finishing backing the project
   func didBackProject()
@@ -178,14 +178,14 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
-      .switchMap { projectOrParam, refTag, shouldPrefix in
+      .switchMap { projectOrParam, refInfo, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .on(
             starting: { isLoading.value = true },
             terminated: { isLoading.value = false }
           )
           .map { project in
-            (project, refTag.map(cleanUp(refTag:)))
+            (project, refInfo?.refTag.map(cleanUp(refTag:)))
           }
           .materialize()
       }
@@ -567,9 +567,9 @@ public final class ProjectPageViewModel: ProjectPageViewModelType, ProjectPageVi
     self.blockUserProperty.value = id
   }
 
-  private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
-  public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
-    self.configDataProperty.value = (projectOrParam, refTag)
+  private let configDataProperty = MutableProperty<(Either<Project, Param>, RefInfo?)?>(nil)
+  public func configureWith(projectOrParam: Either<Project, Param>, refInfo: RefInfo?) {
+    self.configDataProperty.value = (projectOrParam, refInfo)
   }
 
   private let didBackProjectProperty = MutableProperty<Void>(())

@@ -148,7 +148,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -187,7 +187,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .failure(.couldNotParseJSON),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -226,7 +226,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refTag: nil)
+      self.vm.inputs.configureWith(projectOrParam: .right(.id(project.id)), refInfo: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -255,7 +255,8 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testConfigureProjectPageViewControllerDataSourceNavigationSection() {
-    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+    self.vm.inputs
+      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
     self.configureDataSourceNavigationSection.assertDidNotEmitValue()
 
@@ -265,7 +266,8 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testConfigureProjectPageViewControllerDataSourceProject() {
-    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+    self.vm.inputs
+      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
     self.configureDataSourceProject.assertDidNotEmitValue()
 
@@ -292,7 +294,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refTag: .category)
+      self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refInfo: RefInfo(.category))
 
       self.configureDataSourceProject.assertDidNotEmitValue()
 
@@ -321,7 +323,8 @@ final class ProjectPageViewModelTests: TestCase {
     let envelope = EmptyResponseEnvelope()
 
     withEnvironment(apiService: MockService(blockUserResult: .success(envelope)), currentUser: .template) {
-      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
       self.vm.inputs.viewDidLoad()
 
@@ -346,7 +349,8 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(blockUserResult: .failure(error)), currentUser: .template) {
-      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
       self.vm.inputs.viewDidLoad()
 
@@ -380,7 +384,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refTag: .category)
+      self.vm.inputs.configureWith(projectOrParam: .left(USCurrencyProject), refInfo: RefInfo(.category))
 
       self.configureDataSourceProject.assertDidNotEmitValue()
 
@@ -413,7 +417,8 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
@@ -431,7 +436,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectPamphletResult: .success(projectPamphletData),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .category)
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.category))
 
       self.configureProjectNavigationSelectorView.assertDidNotEmitValue()
 
@@ -454,7 +459,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -481,7 +486,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .failure(.couldNotParseJSON),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -505,7 +510,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectFriendsResult: .success(friends),
       fetchProjectRewardsResult: .success([.template])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(refTag))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -536,7 +541,7 @@ final class ProjectPageViewModelTests: TestCase {
         Reward.template
       ])
     )) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -568,7 +573,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       // Start up another view model with the same project
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewDidAppear(animated: true)
 
@@ -647,7 +652,7 @@ final class ProjectPageViewModelTests: TestCase {
       scheduler: scheduler1
     ) {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewDidAppear(animated: true)
 
@@ -664,7 +669,7 @@ final class ProjectPageViewModelTests: TestCase {
       scheduler: scheduler2
     ) {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewDidAppear(animated: true)
 
@@ -680,7 +685,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(scheduler: scheduler1) {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewDidAppear(animated: true)
 
@@ -691,7 +696,7 @@ final class ProjectPageViewModelTests: TestCase {
 
     withEnvironment(scheduler: scheduler1) {
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewDidAppear(animated: true)
 
@@ -714,7 +719,7 @@ final class ProjectPageViewModelTests: TestCase {
       fetchProjectRewardsResult: .success([.template])
     )) {
       self.vm.inputs.configureWith(
-        projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
+        projectOrParam: .left(project), refInfo: RefInfo(.unrecognized("category%3F1232"))
       )
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -747,7 +752,7 @@ final class ProjectPageViewModelTests: TestCase {
 
       // Start up another view model with the same project
       let newVm: ProjectPageViewModelType = ProjectPageViewModel()
-      newVm.inputs.configureWith(projectOrParam: .left(project), refTag: .recommended)
+      newVm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.recommended))
       newVm.inputs.viewDidLoad()
       newVm.inputs.viewDidAppear(animated: true)
 
@@ -779,7 +784,7 @@ final class ProjectPageViewModelTests: TestCase {
     let project = Project.template
 
     self.vm.inputs.configureWith(
-      projectOrParam: .left(project), refTag: RefTag.unrecognized("category%3F1232")
+      projectOrParam: .left(project), refInfo: RefInfo(.unrecognized("category%3F1232"))
     )
     self.vm.inputs.viewDidLoad()
 
@@ -789,7 +794,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testGoToComments() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
 
     self.vm.inputs.viewDidLoad()
 
@@ -802,7 +807,7 @@ final class ProjectPageViewModelTests: TestCase {
 
   func testGoToReportProject() {
     let project = Project.template
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
 
     self.vm.inputs.viewDidLoad()
 
@@ -921,7 +926,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testGoToUpdates() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
 
     self.vm.inputs.viewDidLoad()
 
@@ -933,7 +938,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testNavigationBarIsHidden() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
 
     self.vm.inputs.showNavigationBar(true)
 
@@ -1032,7 +1037,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: true)
 
@@ -1121,7 +1126,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
 
       self.configurePledgeCTAViewProject.assertValues([project])
@@ -1200,7 +1205,7 @@ final class ProjectPageViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
       self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
 
       self.configurePledgeCTAViewProject.assertValues([project])
@@ -1251,7 +1256,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testManagePledgeViewControllerFinished() {
-    self.vm.inputs.configureWith(projectOrParam: .left(Project.template), refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: .left(Project.template), refInfo: RefInfo(.discovery))
     self.vm.inputs.viewDidLoad()
 
     self.dismissManagePledgeAndShowMessageBannerWithMessage.assertDidNotEmitValue()
@@ -1282,7 +1287,7 @@ final class ProjectPageViewModelTests: TestCase {
       currentUser: User.template,
       ksrAnalytics: ksrAnalytics
     ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -1311,7 +1316,7 @@ final class ProjectPageViewModelTests: TestCase {
       currentUser: User.template,
       ksrAnalytics: ksrAnalytics
     ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -1351,7 +1356,7 @@ final class ProjectPageViewModelTests: TestCase {
       currentUser: nil,
       ksrAnalytics: ksrAnalytics
     ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
@@ -1371,7 +1376,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testPopToRootViewController() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
     self.vm.inputs.viewDidLoad()
 
     self.popToRootViewController.assertDidNotEmitValue()
@@ -1382,7 +1387,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testOutput_PresentMessageDialog() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
     self.vm.inputs.viewDidLoad()
 
     self.presentMessageDialog.assertDidNotEmitValue()
@@ -1393,7 +1398,7 @@ final class ProjectPageViewModelTests: TestCase {
   }
 
   func testOutput_ProjectFlagged_False() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
     self.vm.inputs.viewDidLoad()
 
     self.projectFlagged.assertValue(false)
@@ -1403,14 +1408,14 @@ final class ProjectPageViewModelTests: TestCase {
     var project = Project.template
     project.flagging = true
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: nil)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: nil)
     self.vm.inputs.viewDidLoad()
 
     self.projectFlagged.assertValue(true)
   }
 
   func testOutput_ShowHelpWebViewController() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: nil)
     self.vm.inputs.viewDidLoad()
 
     self.showHelpWebViewController.assertDidNotEmitValue()
@@ -1429,7 +1434,8 @@ final class ProjectPageViewModelTests: TestCase {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
-    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+    self.vm.inputs
+      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
     self.updateDataSourceNavigationSection.assertDidNotEmitValue()
 
@@ -1451,7 +1457,8 @@ final class ProjectPageViewModelTests: TestCase {
     let overviewSection = NavigationSection.overview.rawValue
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
-    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+    self.vm.inputs
+      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
     self.updateDataSourceProject.assertDidNotEmitValue()
 
@@ -1473,7 +1480,8 @@ final class ProjectPageViewModelTests: TestCase {
     let environmentalCommitmentsSection = NavigationSection.environmentalCommitments.rawValue
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+      self.vm.inputs
+        .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
       self.updateDataSourceProject.assertDidNotEmitValue()
 
@@ -1502,7 +1510,8 @@ final class ProjectPageViewModelTests: TestCase {
     let overviewSection = NavigationSection.overview.rawValue
     let campaignSection = NavigationSection.campaign.rawValue
 
-    self.vm.inputs.configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refTag: .category)
+    self.vm.inputs
+      .configureWith(projectOrParam: .left(self.projectWithEmptyProperties), refInfo: RefInfo(.category))
 
     self.updateDataSourceImageURLS.assertDidNotEmitValue()
 
@@ -1541,7 +1550,8 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(nonEmptyProjectProperties), refTag: .category)
+    self.vm.inputs
+      .configureWith(projectOrParam: .left(nonEmptyProjectProperties), refInfo: RefInfo(.category))
 
     self.updateDataSourceImageURLS.assertDidNotEmitValue()
 
@@ -1593,7 +1603,7 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -1643,7 +1653,7 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -1705,7 +1715,7 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -1758,7 +1768,7 @@ final class ProjectPageViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(projectFull), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -1815,7 +1825,7 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
 
     self.updateFAQsInDataSourceProject.assertDidNotEmitValue()
 
@@ -1866,7 +1876,7 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
 
     self.updateFAQsInDataSourceIsExpandedValues.assertDidNotEmitValue()
 
@@ -1895,7 +1905,7 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
 
     self.vm.inputs.viewDidLoad()
 
@@ -1920,7 +1930,7 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
 
     self.vm.inputs.viewDidLoad()
 
@@ -1956,7 +1966,7 @@ final class ProjectPageViewModelTests: TestCase {
         minimumPledgeAmount: 1
       )
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .category)
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refInfo: RefInfo(.category))
 
     self.vm.inputs.viewDidLoad()
 
@@ -1986,7 +1996,7 @@ final class ProjectPageViewModelTests: TestCase {
       currentUser: User.template,
       ksrAnalytics: ksrAnalytics
     ) {
-      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refInfo: RefInfo(.discovery))
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
       self.vm.inputs.blockUser(id: 111)
@@ -2015,7 +2025,7 @@ final class ProjectPageViewModelTests: TestCase {
   // MARK: - Functions
 
   private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
-    self.vm.inputs.configureWith(projectOrParam: projectOrParam, refTag: .discovery)
+    self.vm.inputs.configureWith(projectOrParam: projectOrParam, refInfo: RefInfo(.discovery))
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear(animated: false)
   }
