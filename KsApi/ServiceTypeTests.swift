@@ -103,7 +103,8 @@ final class ServiceTypeTests: XCTestCase {
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
         "User-Agent": userAgent(),
-        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "X-Auth": "token cafebeef"
       ],
       request.allHTTPHeaderFields!
     )
@@ -125,7 +126,8 @@ final class ServiceTypeTests: XCTestCase {
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
         "User-Agent": userAgent(),
-        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "X-Auth": "token cafebeef"
       ],
       request.allHTTPHeaderFields!
     )
@@ -148,7 +150,8 @@ final class ServiceTypeTests: XCTestCase {
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
         "User-Agent": userAgent(),
-        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "X-Auth": "token cafebeef"
       ],
       request.allHTTPHeaderFields!
     )
@@ -172,7 +175,8 @@ final class ServiceTypeTests: XCTestCase {
         "Content-Type": "application/json; charset=utf-8",
         "X-KICKSTARTER-CLIENT": "deadbeef",
         "User-Agent": userAgent(),
-        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "X-Auth": "token cafebeef"
       ],
       request.allHTTPHeaderFields!
     )
@@ -203,7 +207,8 @@ final class ServiceTypeTests: XCTestCase {
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
         "User-Agent": userAgent(),
-        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "X-Auth": "token cafebeef"
       ],
       request.allHTTPHeaderFields!
     )
