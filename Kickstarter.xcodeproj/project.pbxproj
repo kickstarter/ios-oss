@@ -1508,6 +1508,8 @@
 		E113BD912B7D615000D3A809 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E113BD902B7D615000D3A809 /* Prelude */; };
 		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
+		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
+		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
 		E17611E02B7287CF00DF2F50 /* PaginationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */; };
 		E17611E22B73D9A400DF2F50 /* Data+PKCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */; };
@@ -3115,6 +3117,8 @@
 		E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleViewModel.swift; sourceTree = "<group>"; };
 		E11CFE492B6C41B400497375 /* OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth.swift; sourceTree = "<group>"; };
 		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
+		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
+		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockGraphQLClient+CombineTests.swift"; sourceTree = "<group>"; };
 		E17611E12B73D9A400DF2F50 /* Data+PKCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PKCE.swift"; sourceTree = "<group>"; };
 		E17611E32B751E8100DF2F50 /* Paginator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paginator.swift; sourceTree = "<group>"; };
@@ -6072,6 +6076,7 @@
 				37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */,
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
 				E11CFE492B6C41B400497375 /* OAuth.swift */,
+				E16794292B85136900064063 /* OAuthTests.swift */,
 				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
@@ -6733,6 +6738,7 @@
 				D01587D21EEB2ED7006E7684 /* MessageThreadsEnvelope.swift */,
 				D01587D31EEB2ED7006E7684 /* MessageThreadTests.swift */,
 				8A4E953A2450FE1500A578CF /* Money.swift */,
+				E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */,
 				D01587D41EEB2ED7006E7684 /* Param.swift */,
 				6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */,
 				D79CF38521AC9AD200ECB73A /* PaymentType.swift */,
@@ -8052,6 +8058,7 @@
 				37DEC2202257CA0A0051EF9B /* PledgeViewModelTests.swift in Sources */,
 				A7ED20001E831C5C00BFFA01 /* SearchViewModelTests.swift in Sources */,
 				8A213CF3239EAEB700BBB4C7 /* KSRAnalyticsTests.swift in Sources */,
+				E167942A2B85136900064063 /* OAuthTests.swift in Sources */,
 				77C9122B23C5079200F3D2C9 /* MockApplePayCapable.swift in Sources */,
 				D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */,
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
@@ -8641,6 +8648,7 @@
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
+				E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */,
 				8ADCCD862655CA680079D308 /* ApolloClient+Singleton.swift in Sources */,
 				E10BE8E02B1517FB00F73DC9 /* GraphAPI.BlockUserInput+BlockUserInput.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,

@@ -402,12 +402,32 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   }
 
   fileprivate func pushLoginViewController() {
-    if featureLoginWithOAuthEnabled(), let session = OAuth.createAuthorizationSession() {
+    if featureLoginWithOAuthEnabled(), let session = createAuthorizationSession() {
       session.presentationContextProvider = self
       session.start()
     } else {
       self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
       self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    }
+  }
+
+  fileprivate func createAuthorizationSession() -> ASWebAuthenticationSession? {
+    return OAuth.createAuthorizationSession { [weak self] result in
+      switch result {
+      case .loggedIn:
+        self?.viewModel.inputs.environmentLoggedIn()
+      case let .failure(errorMessage):
+        let alert = UIAlertController(
+          title: Strings.login_errors_title(),
+          message: errorMessage,
+          preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: Strings.login_errors_button_ok(), style: .cancel))
+        self?.present(alert, animated: true)
+      case .cancelled:
+        // Do nothing
+        break
+      }
     }
   }
 
