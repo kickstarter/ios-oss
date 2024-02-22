@@ -103,10 +103,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.headerView.layoutIfNeeded()
 
-    let topSafeAreaInset = self.view.safeAreaInsets.top
-    let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(1)
-
     if featurePostCampaignPledgeEnabled() {
+      let topSafeAreaInset = self.view.safeAreaInsets.top
+      let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(1)
+
       self.collectionView.contentInset = .init(
         top: topInset,
         left: self.collectionView.contentInset.left,
@@ -235,7 +235,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor)
     ])
-    
+
     if featurePostCampaignPledgeEnabled() {
       self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
