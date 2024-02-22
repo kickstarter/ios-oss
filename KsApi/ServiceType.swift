@@ -533,12 +533,23 @@ extension ServiceType {
   internal var defaultHeaders: [String: String] {
     var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
-    headers["Authorization"] = self.authorizationHeader
     headers["Kickstarter-App-Id"] = self.appId
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
     headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
+
+    /*
+     GraphQL - Reads OAuth token from Authorization header
+     GraphQL - Ignores X-Auth header
+     V1 - Reads basic auth from Authorization header
+     V1 - Reads OAuth token from X-Auth header or (deprecated) from oauth_token parameter
+     */
+
+    headers["Authorization"] = self.authorizationHeader
+    if let oAuthHeader = self.oAuthAuthorizationHeader {
+      headers["X-Auth"] = oAuthHeader
+    }
 
     return headers
   }
@@ -562,9 +573,17 @@ extension ServiceType {
     return "\(app)/\(bundleVersion) (\(model); iOS \(systemVersion) Scale/\(scale))"
   }
 
+  fileprivate var oAuthAuthorizationHeader: String? {
+    guard let token = self.oauthToken?.token else {
+      return nil
+    }
+
+    return "token \(token)"
+  }
+
   fileprivate var authorizationHeader: String? {
-    if let token = self.oauthToken?.token {
-      return "token \(token)"
+    if let header = oAuthAuthorizationHeader {
+      return header
     } else {
       return self.serverConfig.basicHTTPAuth?.authorizationHeader
     }
