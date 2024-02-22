@@ -70,7 +70,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         Format.currency(
           reward.convertedMinimum,
           country: project.stats.currentCountry ?? .us,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          roundingMode: .up
         )
       }
       .map(Strings.About_reward_amount(reward_amount:))
