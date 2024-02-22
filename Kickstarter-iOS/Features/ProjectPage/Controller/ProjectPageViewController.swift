@@ -63,11 +63,11 @@ public final class ProjectPageViewController: UIViewController, MessageBannerVie
 
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
-    refTag: RefTag?
+    refInfo: RefInfo?
   ) -> ProjectPageViewController {
     let vc = ProjectPageViewController.instantiate()
 
-    vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refInfo: RefInfo(refTag))
+    vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refInfo: refInfo)
 
     return vc
   }

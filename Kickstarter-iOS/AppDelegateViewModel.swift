@@ -459,7 +459,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
             let projectParam = Either<Project, Param>(left: project)
             let vc = ProjectPageViewController.configuredWith(
               projectOrParam: projectParam,
-              refTag: refTag
+              refInfo: RefInfo(refTag)
             )
 
             return (
