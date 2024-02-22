@@ -40,124 +40,93 @@ public final class NavigationTests: XCTestCase {
       "/checkouts/1/payments/use_stored_card"
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .root, refInfo: nil),
-      "/projects/creator/project"
-    )
+    self.assertProjectMatch(path: "/projects/creator/project", navigation: .root)
 
     KSRAssertMatch(nil, "/projects/creator/project?token=4")
 
     KSRAssertMatch(nil, "/projects/creator/project?ref=discovery&token=4")
 
-    KSRAssertMatch(
-      .project(.slug("project"), .checkout(1, .thanks(racing: nil)), refInfo: nil),
-      "/projects/creator/project/checkouts/1/thanks"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/checkouts/1/thanks",
+      navigation: .checkout(1, .thanks(racing: nil))
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .checkout(1, .thanks(racing: true)), refInfo: nil),
-      "/projects/creator/project/checkouts/1/thanks?racing=1"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/checkouts/1/thanks?racing=1",
+      navigation: .checkout(1, .thanks(racing: true))
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .root, refInfo: RefInfo(.discovery)),
-      "/projects/creator/project?ref=discovery"
+    self.assertProjectMatch(
+      path: "/projects/creator/project?ref=discovery",
+      navigation: .root,
+      refTag: .discovery
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .comments, refInfo: nil),
-      "/projects/creator/project/comments"
+    self.assertProjectMatch(path: "/projects/creator/project/comments", navigation: .comments)
+
+    self.assertProjectMatch(
+      path: "/projects/creator/project/comments?comment=dead",
+      navigation: .commentThread("dead", nil)
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .commentThread("dead", nil), refInfo: nil),
-      "/projects/creator/project/comments?comment=dead"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/comments?comment=dead&reply=beef",
+      navigation: .commentThread("dead", "beef")
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .commentThread("dead", "beef"), refInfo: nil),
-      "/projects/creator/project/comments?comment=dead&reply=beef"
+    self.assertProjectMatch(path: "/projects/creator/project/creator_bio", navigation: .creatorBio)
+
+    self.assertProjectMatch(path: "/projects/creator/project/description", navigation: .root)
+
+    self.assertProjectMatch(path: "/projects/creator/project/friends", navigation: .friends)
+
+    self.assertProjectMatch(
+      path: "/projects/creator/project/pledge/big_print",
+      navigation: .pledge(.bigPrint)
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .creatorBio, refInfo: nil),
-      "/projects/creator/project/creator_bio"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/pledge/change_method",
+      navigation: .pledge(.changeMethod)
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .root, refInfo: nil),
-      "/projects/creator/project/description"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/pledge/destroy",
+      navigation: .pledge(.destroy)
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .friends, refInfo: nil),
-      "/projects/creator/project/friends"
+    self.assertProjectMatch(path: "/projects/creator/project/pledge/edit", navigation: .pledge(.edit))
+
+    self.assertProjectMatch(path: "/projects/creator/project/pledge/new", navigation: .pledge(.new))
+
+    self.assertProjectMatch(path: "/projects/creator/project/pledge", navigation: .pledge(.root))
+
+    self.assertProjectMatch(
+      path: "/projects/creator/project/pledge?ref=ksr_email_backer_failed_transaction",
+      navigation: .pledge(.manage),
+      refTag: .emailBackerFailedTransaction
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.bigPrint), refInfo: nil),
-      "/projects/creator/project/pledge/big_print"
+    self.assertProjectMatch(path: "/projects/creator/project/posts", navigation: .updates)
+
+    self.assertProjectMatch(path: "/projects/creator/project/posts/1", navigation: .update(1, .root))
+
+    self.assertProjectMatch(
+      path: "/projects/creator/project/posts/2/comments",
+      navigation: .update(2, .comments)
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.changeMethod), refInfo: nil),
-      "/projects/creator/project/pledge/change_method"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/posts/2/comments?comment=dead",
+      navigation: .update(2, .commentThread("dead", nil))
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.destroy), refInfo: nil),
-      "/projects/creator/project/pledge/destroy"
+    self.assertProjectMatch(
+      path: "/projects/creator/project/posts/2/comments?comment=dead&reply=beef",
+      navigation: .update(2, .commentThread("dead", "beef"))
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.edit), refInfo: nil),
-      "/projects/creator/project/pledge/edit"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.new), refInfo: nil),
-      "/projects/creator/project/pledge/new"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.root), refInfo: nil),
-      "/projects/creator/project/pledge"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .pledge(.manage), refInfo: RefInfo(.emailBackerFailedTransaction)),
-      "/projects/creator/project/pledge?ref=ksr_email_backer_failed_transaction"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .updates, refInfo: nil),
-      "/projects/creator/project/posts"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .update(1, .root), refInfo: nil),
-      "/projects/creator/project/posts/1"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .update(2, .comments), refInfo: nil),
-      "/projects/creator/project/posts/2/comments"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .update(2, .commentThread("dead", nil)), refInfo: nil),
-      "/projects/creator/project/posts/2/comments?comment=dead"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .update(2, .commentThread("dead", "beef")), refInfo: nil),
-      "/projects/creator/project/posts/2/comments?comment=dead&reply=beef"
-    )
-
-    KSRAssertMatch(
-      .project(.slug("project"), .survey(3), refInfo: nil),
-      "/projects/creator/project/surveys/3"
-    )
+    self.assertProjectMatch(path: "/projects/creator/project/surveys/3", navigation: .survey(3))
 
     KSRAssertMatch(
       .signup,
@@ -198,10 +167,7 @@ public final class NavigationTests: XCTestCase {
       "/authorize"
     )
 
-    KSRAssertMatch(
-      .project(.slug("project"), .messageCreator, refInfo: nil),
-      "/projects/creator/project/messages/new"
-    )
+    self.assertProjectMatch(path: "/projects/creator/project/messages/new", navigation: .messageCreator)
 
     KSRAssertMatch(
       .user(.slug("self"), .survey(3)),
@@ -248,10 +214,28 @@ public final class NavigationTests: XCTestCase {
   }
 
   func testRecognizesKsrUrlScheme() {
-    let projectRoute = Navigation
-      .match(URL(string: "ksr://www.kickstarter.com/projects/creator/project")!)
+    let url = "ksr://www.kickstarter.com/projects/creator/project"
+    let projectRoute = Navigation.match(URL(string: url)!)
+    let refInfo = RefInfo(nil, deeplinkUrl: url)
 
     XCTAssertNotNil(projectRoute)
-    XCTAssertEqual(.project(.slug("project"), .root, refInfo: nil), projectRoute)
+    XCTAssertEqual(.project(.slug("project"), .root, refInfo: refInfo), projectRoute)
+  }
+
+  // MARK: - Helpers
+
+  private func refInfoFromPath(_ path: String, refTag: RefTag? = nil) -> RefInfo {
+    let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString
+    let url = URL(string: "\(baseUrl)\(path)")
+    return RefInfo(refTag, deeplinkUrl: url?.absoluteString)
+  }
+
+  private func assertProjectMatch(path: String,
+                                  navigation: Navigation.Project,
+                                  refTag: RefTag? = nil) {
+    KSRAssertMatch(
+      .project(.slug("project"), navigation, refInfo: self.refInfoFromPath(path, refTag: refTag)),
+      path
+    )
   }
 }
