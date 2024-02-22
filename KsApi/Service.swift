@@ -619,6 +619,10 @@ public struct Service: ServiceType {
     return request(.userSelf)
   }
 
+  public func fetchUserSelf_combine(withToken token: String) -> AnyPublisher<User, ErrorEnvelope> {
+    return request(.userSelfWithToken(token: token))
+  }
+
   public func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {
     return request(.user(userId: userId))
   }
@@ -638,6 +642,11 @@ public struct Service: ServiceType {
 
   public func fetchUnansweredSurveyResponses() -> SignalProducer<[SurveyResponse], ErrorEnvelope> {
     return request(.unansweredSurveyResponses)
+  }
+
+  public func exchangeTokenForOAuthToken(params: OAuthTokenExchangeParams)
+    -> AnyPublisher<OAuthTokenExchangeResponse, ErrorEnvelope> {
+    return request(.exchangeToken(params: params))
   }
 
   public func backingUpdate(forProject project: Project, forUser user: User, received: Bool) ->
