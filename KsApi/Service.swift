@@ -619,8 +619,8 @@ public struct Service: ServiceType {
     return request(.userSelf)
   }
 
-  public func fetchUserSelf_combine(withToken token: String) -> AnyPublisher<User, ErrorEnvelope> {
-    return request(.userSelfWithToken(token: token))
+  public func fetchUserSelf_combine(withOAuthToken token: String) -> AnyPublisher<User, ErrorEnvelope> {
+    return requestWithAuthentication(.userSelf, oauthToken: token)
   }
 
   public func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {

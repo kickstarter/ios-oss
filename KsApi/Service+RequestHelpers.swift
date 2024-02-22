@@ -41,6 +41,26 @@ extension Service {
     ).handle_combine_dataResponse(service: self)
   }
 
+  func requestWithAuthentication<Model: Decodable>(_ route: Route,
+                                                   oauthToken: String) -> AnyPublisher<Model, ErrorEnvelope> {
+    let properties = route.requestProperties
+
+    guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
+      fatalError(
+        "URL(string: \(properties.path), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
+      )
+    }
+
+    var preparedRequest = preparedRequest(forURL: URL, method: properties.method, query: properties.query)
+    addV1AuthenticationToRequest(&preparedRequest, oauthToken: oauthToken)
+
+    return Service.session.combine_dataResponse(
+      preparedRequest,
+      uploading: properties.file.map { ($1, $0.rawValue) },
+      and: self.perimeterXClient
+    ).handle_combine_dataResponse(service: self)
+  }
+
   func requestPaginationDecodable<Model: Decodable>(_ paginationUrl: String)
     -> SignalProducer<Model, ErrorEnvelope> {
     guard let paginationUrl = URL(string: paginationUrl) else {

@@ -285,7 +285,7 @@ public protocol ServiceType {
   func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope>
 
   /// Fetch the logged-in user's data.
-  func fetchUserSelf_combine(withToken: String) -> AnyPublisher<User, ErrorEnvelope>
+  func fetchUserSelf_combine(withOAuthToken: String) -> AnyPublisher<User, ErrorEnvelope>
 
   /// Mark reward received.
   func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
@@ -528,6 +528,12 @@ extension ServiceType {
   public func isPrepared(request: URLRequest) -> Bool {
     return request.value(forHTTPHeaderField: "Authorization") == self.authorizationHeader
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
+  }
+
+  public func addV1AuthenticationToRequest(_ request: inout URLRequest, oauthToken: String) {
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["X-Auth"] = "token \(oauthToken)"
+    request.allHTTPHeaderFields = headers
   }
 
   internal var defaultHeaders: [String: String] {

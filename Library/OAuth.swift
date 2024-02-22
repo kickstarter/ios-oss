@@ -103,7 +103,7 @@ public struct OAuth {
 
         // Return a publisher that emits a tuple of (token, user) when the user request completes
         return Just(token).setFailureType(to: ErrorEnvelope.self)
-          .zip(AppEnvironment.current.apiService.fetchUserSelf_combine(withToken: token))
+          .zip(AppEnvironment.current.apiService.fetchUserSelf_combine(withOAuthToken: token))
       }
       .receive(on: RunLoop.main)
       .sink { result in
