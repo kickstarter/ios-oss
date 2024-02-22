@@ -1403,7 +1403,7 @@
       return SignalProducer(value: self.fetchUserSelfResponse ?? .template)
     }
 
-    func fetchUserSelf_combine(withToken _: String) -> AnyPublisher<User, ErrorEnvelope> {
+    func fetchUserSelf_combine(withOAuthToken _: String) -> AnyPublisher<User, ErrorEnvelope> {
       if let error = fetchUserSelfError {
         return Fail(outputType: User.self, failure: self.fetchUserSelfError!).eraseToAnyPublisher()
       }

@@ -51,7 +51,6 @@ internal enum Route {
   case updateUpdateDraft(UpdateDraft, title: String, body: String, isPublic: Bool)
   case updateUserSelf(User)
   case userSelf
-  case userSelfWithToken(token: String)
   case user(userId: Int)
   case verifyEmail(accessToken: String)
 
@@ -247,9 +246,6 @@ internal enum Route {
 
       case .userSelf:
         return (.GET, "/v1/users/self", [:], nil)
-
-      case let .userSelfWithToken(token):
-        return (.GET, "/v1/users/self", ["oauth_token": token], nil)
 
       case let .user(userId):
         return (.GET, "/v1/users/\(userId)", [:], nil)
