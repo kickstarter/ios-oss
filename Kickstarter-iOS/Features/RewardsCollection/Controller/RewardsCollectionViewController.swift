@@ -103,18 +103,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.headerView.layoutIfNeeded()
 
-    if featurePostCampaignPledgeEnabled() {
-      let topSafeAreaInset = self.view.safeAreaInsets.top
-      let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(1)
-
-      self.collectionView.contentInset = .init(
-        top: topInset,
-        left: self.collectionView.contentInset.left,
-        bottom: self.collectionView.contentInset.bottom,
-        right: self.collectionView.contentInset.right
-      )
-    }
-
     let itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
     if itemSize != layout.itemSize {
@@ -227,21 +215,24 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self.collectionView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
+    if featurePostCampaignPledgeEnabled() {
+      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+    }
+
     NSLayoutConstraint.activate([
       self.rewardsCollectionFooterView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rewardsCollectionFooterView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rewardsCollectionFooterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor)
+      self.collectionView.topAnchor
+        .constraint(equalTo: featurePostCampaignPledgeEnabled()
+          ? self.headerView.bottomAnchor
+          : self.view.topAnchor
+        )
     ])
-
-    if featurePostCampaignPledgeEnabled() {
-      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-      self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-    }
 
     self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
       .constraint(equalTo: self.rewardsCollectionFooterView.topAnchor)
