@@ -66,8 +66,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
-    _ = (self.headerView, self.view)
-      |> ksr_addSubviewToParent()
+    if featurePostCampaignPledgeEnabled() {
+      _ = (self.headerView, self.view)
+        |> ksr_addSubviewToParent()
+    }
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
@@ -76,14 +78,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> ksr_addSubviewToParent()
 
     self.collectionView.register(RewardCell.self)
-    
-    if featurePostCampaignPledgeEnabled() {
-      self.collectionView.register(
-        RewardsCollectionViewHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: RewardsCollectionViewHeaderView.defaultReusableId
-      )
-    }
+
+    self.collectionView.register(
+      RewardsCollectionViewHeaderView.self,
+      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+      withReuseIdentifier: RewardsCollectionViewHeaderView.defaultReusableId
+    )
 
     self.setupConstraints()
 
@@ -228,10 +228,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     NSLayoutConstraint.activate([
-      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.rewardsCollectionFooterView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rewardsCollectionFooterView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rewardsCollectionFooterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
@@ -239,6 +235,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor)
     ])
+    
+    if featurePostCampaignPledgeEnabled() {
+      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+      self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+    }
 
     self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
       .constraint(equalTo: self.rewardsCollectionFooterView.topAnchor)
