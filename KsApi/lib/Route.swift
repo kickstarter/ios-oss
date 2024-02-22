@@ -12,6 +12,7 @@ internal enum Route {
   case config
   case deleteImage(UpdateDraft.Image, fromDraft: UpdateDraft)
   case discover(DiscoveryParams)
+  case exchangeToken(params: OAuthTokenExchangeParams)
   case facebookConnect(facebookAccessToken: String)
   case facebookLogin(facebookAccessToken: String, code: String?)
   case facebookSignup(facebookAccessToken: String, sendNewsletters: Bool)
@@ -50,6 +51,7 @@ internal enum Route {
   case updateUpdateDraft(UpdateDraft, title: String, body: String, isPublic: Bool)
   case updateUserSelf(User)
   case userSelf
+  case userSelfWithToken(token: String)
   case user(userId: Int)
   case verifyEmail(accessToken: String)
 
@@ -80,6 +82,9 @@ internal enum Route {
 
       case .config:
         return (.GET, "/v1/app/ios/config", ["no_cache": "\(Date().timeIntervalSince1970)"], nil)
+
+      case let .exchangeToken(params):
+        return (.POST, "v1/oauth/authorizations/exchange", params.queryParams, nil)
 
       case let .deleteImage(i, draft):
         return (.DELETE, "/v1/projects/\(draft.update.projectId)/updates/draft/images/\(i.id)", [:], nil)
@@ -242,6 +247,9 @@ internal enum Route {
 
       case .userSelf:
         return (.GET, "/v1/users/self", [:], nil)
+
+      case let .userSelfWithToken(token):
+        return (.GET, "/v1/users/self", ["oauth_token": token], nil)
 
       case let .user(userId):
         return (.GET, "/v1/users/\(userId)", [:], nil)
