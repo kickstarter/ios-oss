@@ -298,6 +298,23 @@ final class RewardCardViewModelTests: TestCase {
     }
   }
 
+  func testConversionLabel() {
+    let project = Project.template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+    let reward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 0.6
+
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configure(with: (project, reward, .pledge))
+
+      self.conversionLabelText.assertValues(
+        ["About $1"],
+        "No-reward min is rounded up."
+      )
+    }
+  }
+
   // MARK: - Included Items
 
   func testItems() {
