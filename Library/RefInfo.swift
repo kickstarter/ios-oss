@@ -2,9 +2,11 @@ import KsApi
 
 public struct RefInfo: Equatable, Hashable {
   public let refTag: RefTag?
+  public let deeplinkUrl: String?
 
-  public init(_ refTag: RefTag?) {
+  public init(_ refTag: RefTag?, deeplinkUrl: String? = nil) {
     self.refTag = refTag
+    self.deeplinkUrl = deeplinkUrl
   }
 }
 

@@ -552,6 +552,11 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
     object[key] = value
   }
 
+  // If the deeplink opens the project page, track the url.
+  if urlComponents.first == "projects" {
+    object[RouteParamsDecoded.CodingKeys.deeplinkUrl.rawValue] = url.absoluteString
+  }
+
   return object
 }
 
@@ -560,10 +565,11 @@ private func stringToInt(_ string: String) -> Int? {
 }
 
 // Return refInfo object if it contains any information. Otherwise, just return nil.
-// TODO(MBL-1220): Add deeplink url to the refInfo if it exists.
 private func refInfoFromParams(_ params: RouteParamsDecoded) -> RefInfo? {
-  if let refTag = params.refTag() {
-    return RefInfo(refTag)
+  let refTag = params.refTag()
+  let url = params.deeplinkUrl()
+  if refTag != nil || url != nil {
+    return RefInfo(refTag, deeplinkUrl: url)
   }
   return nil
 }
@@ -583,6 +589,7 @@ extension Dictionary {
 extension RouteParamsDecoded {
   fileprivate enum CodingKeys: String, CodingKey {
     case comment
+    case deeplinkUrl = "deeplink_url"
     case messageThreadId = "message_thread_id"
     case notificationParam = "notification_param"
     case checkoutParam = "checkout_param"
@@ -602,6 +609,11 @@ extension RouteParamsDecoded {
   public func comment() -> String? {
     let key = CodingKeys.comment.rawValue
     return self[key].flatMap { String($0) }
+  }
+
+  public func deeplinkUrl() -> String? {
+    let key = CodingKeys.deeplinkUrl.rawValue
+    return self[key]
   }
 
   public func enabledParam() -> Bool? {
