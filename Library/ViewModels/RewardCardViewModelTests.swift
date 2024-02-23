@@ -297,7 +297,7 @@ final class RewardCardViewModelTests: TestCase {
       )
     }
   }
-  
+
   func testConversionLabel() {
     let project = Project.template
       |> Project.lens.country .~ .us
@@ -308,8 +308,10 @@ final class RewardCardViewModelTests: TestCase {
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configure(with: (project, reward, .pledge))
 
-      self.conversionLabelText.assertValues(["About $1"],
-        "No-reward min is rounded up.")
+      self.conversionLabelText.assertValues(
+        ["About $1"],
+        "No-reward min is rounded up."
+      )
     }
   }
 
