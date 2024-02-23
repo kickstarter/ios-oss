@@ -553,7 +553,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   }
 
   // If the deeplink opens the project page, track the url.
-  if urlComponents[0] == "projects" {
+  if urlComponents.first == "projects" {
     object[RouteParamsDecoded.CodingKeys.deeplinkUrl.rawValue] = url.absoluteString
   }
 
