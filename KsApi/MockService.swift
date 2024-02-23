@@ -1669,7 +1669,7 @@
 
     internal func validateCheckout(
       checkoutId _: String,
-      paymentSourceId _: String?,
+      paymentSourceId _: String,
       paymentIntentClientSecret _: String
     ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope> {
       return producer(for: self.validateCheckoutResult)

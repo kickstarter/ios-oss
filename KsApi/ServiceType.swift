@@ -380,7 +380,7 @@ public protocol ServiceType {
   /// Validates a Post Campaign Pledge
   func validateCheckout(
     checkoutId: String,
-    paymentSourceId: String?,
+    paymentSourceId: String,
     paymentIntentClientSecret: String
   ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope>
 

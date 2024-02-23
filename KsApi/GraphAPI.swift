@@ -11012,11 +11012,11 @@ public enum GraphAPI {
     /// The raw GraphQL definition of this operation.
     public let operationDefinition: String =
       """
-      query ValidateCheckout($checkoutId: ID!, $paymentSourceId: String, $paymentIntentClientSecret: String!) {
+      query ValidateCheckout($checkoutId: ID!, $paymentSourceId: String!, $paymentIntentClientSecret: String!) {
         checkout(id: $checkoutId) {
           __typename
           isValidForOnSessionCheckout(
-            paymentSourceId: $paymentSourceId
+            stripePaymentMethodId: $paymentSourceId
             paymentIntentClientSecret: $paymentIntentClientSecret
           ) {
             __typename
@@ -11030,10 +11030,10 @@ public enum GraphAPI {
     public let operationName: String = "ValidateCheckout"
 
     public var checkoutId: GraphQLID
-    public var paymentSourceId: String?
+    public var paymentSourceId: String
     public var paymentIntentClientSecret: String
 
-    public init(checkoutId: GraphQLID, paymentSourceId: String? = nil, paymentIntentClientSecret: String) {
+    public init(checkoutId: GraphQLID, paymentSourceId: String, paymentIntentClientSecret: String) {
       self.checkoutId = checkoutId
       self.paymentSourceId = paymentSourceId
       self.paymentIntentClientSecret = paymentIntentClientSecret
@@ -11078,7 +11078,7 @@ public enum GraphAPI {
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("isValidForOnSessionCheckout", arguments: ["paymentSourceId": GraphQLVariable("paymentSourceId"), "paymentIntentClientSecret": GraphQLVariable("paymentIntentClientSecret")], type: .nonNull(.object(IsValidForOnSessionCheckout.selections))),
+            GraphQLField("isValidForOnSessionCheckout", arguments: ["stripePaymentMethodId": GraphQLVariable("paymentSourceId"), "paymentIntentClientSecret": GraphQLVariable("paymentIntentClientSecret")], type: .nonNull(.object(IsValidForOnSessionCheckout.selections))),
           ]
         }
 

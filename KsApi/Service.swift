@@ -833,7 +833,7 @@ public struct Service: ServiceType {
    */
   public func validateCheckout(
     checkoutId: String,
-    paymentSourceId: String?,
+    paymentSourceId: String,
     paymentIntentClientSecret: String
   ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
