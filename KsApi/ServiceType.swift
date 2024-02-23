@@ -72,6 +72,10 @@ public protocol ServiceType {
   func clearUserUnseenActivity(input: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope>
 
+  /// Let the server know to create/track an attribution event.
+  func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
+
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
 
