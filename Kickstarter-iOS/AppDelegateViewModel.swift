@@ -446,26 +446,26 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     let projectLinkValues = deepLink
-      .map { link -> (Param, Navigation.Project, RefTag?)? in
-        guard case let .project(param, subpage, refTag) = link else { return nil }
-        return (param, subpage, refTag)
+      .map { link -> (Param, Navigation.Project, RefInfo?)? in
+        guard case let .project(param, subpage, refInfo) = link else { return nil }
+        return (param, subpage, refInfo)
       }
       .skipNil()
-      .switchMap { param, subpage, refTag in
+      .switchMap { param, subpage, refInfo in
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
           .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
+          .map { project -> (Project, Navigation.Project, [UIViewController], RefInfo?) in
             let projectParam = Either<Project, Param>(left: project)
             let vc = ProjectPageViewController.configuredWith(
               projectOrParam: projectParam,
-              refTag: refTag
+              refInfo: refInfo
             )
 
             return (
               project, subpage,
               [vc],
-              refTag
+              refInfo
             )
           }
       }
@@ -1009,14 +1009,14 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     switch activity.category {
     case .backing:
       guard let projectId = activity.projectId else { return nil }
-      return .project(.id(projectId), .root, refTag: .push)
+      return .project(.id(projectId), .root, refInfo: RefInfo(.push))
     case .failure, .launch, .success, .cancellation, .suspension:
       guard let projectId = activity.projectId else { return nil }
-      return .project(.id(projectId), .root, refTag: .push)
+      return .project(.id(projectId), .root, refInfo: RefInfo(.push))
 
     case .update:
       guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
-      return .project(.id(projectId), .update(updateId, .root), refTag: .push)
+      return .project(.id(projectId), .update(updateId, .root), refInfo: RefInfo(.push))
 
     case .commentPost:
       guard let projectId = activity.projectId, let updateId = activity.updateId else { return nil }
@@ -1025,18 +1025,18 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
         return .project(
           .id(projectId),
           .update(updateId, .commentThread(commentId, activity.replyId)),
-          refTag: .push
+          refInfo: RefInfo(.push)
         )
       }
-      return .project(.id(projectId), .update(updateId, .comments), refTag: .push)
+      return .project(.id(projectId), .update(updateId, .comments), refInfo: RefInfo(.push))
 
     case .commentProject:
       guard let projectId = activity.projectId else { return nil }
 
       if let commentId = activity.commentId {
-        return .project(.id(projectId), .commentThread(commentId, activity.replyId), refTag: .push)
+        return .project(.id(projectId), .commentThread(commentId, activity.replyId), refInfo: RefInfo(.push))
       }
-      return .project(.id(projectId), .comments, refTag: .push)
+      return .project(.id(projectId), .comments, refInfo: RefInfo(.push))
 
     case .follow:
       return .tab(.activity)
@@ -1047,7 +1047,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let project = envelope.project {
-    return .project(.id(project.id), .root, refTag: .push)
+    return .project(.id(project.id), .root, refInfo: RefInfo(.push))
   }
 
   if let message = envelope.message {
@@ -1059,11 +1059,11 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
   }
 
   if let update = envelope.update {
-    return .project(.id(update.projectId), .update(update.id, .root), refTag: .push)
+    return .project(.id(update.projectId), .update(update.id, .root), refInfo: RefInfo(.push))
   }
 
   if let erroredPledge = envelope.erroredPledge {
-    return .project(.id(erroredPledge.projectId), .pledge(.manage), refTag: .push)
+    return .project(.id(erroredPledge.projectId), .pledge(.manage), refInfo: RefInfo(.push))
   }
 
   return nil

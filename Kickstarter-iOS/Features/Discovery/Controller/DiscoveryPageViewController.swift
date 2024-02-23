@@ -352,7 +352,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
-      refTag: refTag
+      refInfo: RefInfo(refTag)
     )
 
     let nav = NavigationController(rootViewController: vc)
@@ -365,7 +365,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
-      refTag: refTag
+      refInfo: RefInfo(refTag)
     )
 
     let nav = NavigationController(rootViewController: vc)

@@ -8,7 +8,7 @@ public enum Navigation: Equatable {
   case profile(Profile)
   case signup
   case tab(Tab)
-  case project(Param, Navigation.Project, refTag: RefTag?)
+  case project(Param, Navigation.Project, refInfo: RefInfo?)
   case projectPreview(Param, Navigation.Project, refTag: RefTag?, token: String)
   case settings(Navigation.Settings)
   case user(Param, Navigation.User)
@@ -179,9 +179,9 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
 
 extension Navigation.Project {
   public static func withRequest(_ request: URLRequest) -> (Param, RefTag?)? {
-    guard let nav = Navigation.match(request), case let .project(project, .root, refTag) = nav
+    guard let nav = Navigation.match(request), case let .project(project, .root, refInfo) = nav
     else { return nil }
-    return (project, refTag)
+    return (project, refInfo?.refTag)
   }
 
   public static func updateWithRequest(_ request: URLRequest) -> (Param, Int)? {
@@ -289,8 +289,8 @@ private func project(_ params: RouteParamsDecoded) -> Navigation? {
   if params.token() != nil {
     return nil
   } else if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .root, refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .root, refInfo: refInfo)
   }
 
   return nil
@@ -299,10 +299,10 @@ private func project(_ params: RouteParamsDecoded) -> Navigation? {
 private func thanks(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
     let checkoutParam = params.checkoutParam() {
-    let refTag = params.refTag()
+    let refInfo = refInfoFromParams(params)
     let thanks = Navigation.Project.Checkout.thanks(racing: params.racing())
     let checkout = Navigation.Project.checkout(checkoutParam, thanks)
-    return Navigation.project(projectParam, checkout, refTag: refTag)
+    return Navigation.project(projectParam, checkout, refInfo: refInfo)
   }
 
   return nil
@@ -310,13 +310,13 @@ private func thanks(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
+    let refInfo = refInfoFromParams(params)
 
     guard let commentId = params.comment() else {
-      return .project(projectParam, .comments, refTag: refTag)
+      return .project(projectParam, .comments, refInfo: refInfo)
     }
 
-    return .project(projectParam, .commentThread(commentId, params.reply()), refTag: refTag)
+    return .project(projectParam, .commentThread(commentId, params.reply()), refInfo: refInfo)
   }
 
   return nil
@@ -324,8 +324,8 @@ private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func creatorBio(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .creatorBio, refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .creatorBio, refInfo: refInfo)
   }
 
   return nil
@@ -333,8 +333,8 @@ private func creatorBio(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func friends(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .friends, refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .friends, refInfo: refInfo)
   }
 
   return nil
@@ -342,8 +342,8 @@ private func friends(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func messageCreator(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .messageCreator, refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .messageCreator, refInfo: refInfo)
   }
 
   return nil
@@ -351,8 +351,8 @@ private func messageCreator(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func pledgeBigPrint(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .pledge(.bigPrint), refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .pledge(.bigPrint), refInfo: refInfo)
   }
 
   return nil
@@ -360,8 +360,8 @@ private func pledgeBigPrint(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func pledgeChangeMethod(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .pledge(.changeMethod), refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .pledge(.changeMethod), refInfo: refInfo)
   }
 
   return nil
@@ -369,8 +369,8 @@ private func pledgeChangeMethod(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func pledgeDestroy(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .pledge(.destroy), refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .pledge(.destroy), refInfo: refInfo)
   }
 
   return nil
@@ -378,8 +378,8 @@ private func pledgeDestroy(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func pledgeEdit(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .pledge(.edit), refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .pledge(.edit), refInfo: refInfo)
   }
 
   return nil
@@ -387,8 +387,8 @@ private func pledgeEdit(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func pledgeNew(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, .pledge(.new), refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, .pledge(.new), refInfo: refInfo)
   }
 
   return nil
@@ -396,12 +396,12 @@ private func pledgeNew(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func pledgeRoot(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    let parseRoot = Navigation.project(projectParam, .pledge(.root), refTag: refTag)
-    guard refTag == .emailBackerFailedTransaction else {
+    let refInfo = refInfoFromParams(params)
+    let parseRoot = Navigation.project(projectParam, .pledge(.root), refInfo: refInfo)
+    guard refInfo?.refTag == .emailBackerFailedTransaction else {
       return parseRoot
     }
-    return Navigation.project(projectParam, .pledge(.manage), refTag: refTag)
+    return Navigation.project(projectParam, .pledge(.manage), refInfo: refInfo)
   }
 
   return nil
@@ -409,8 +409,8 @@ private func pledgeRoot(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func posts(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, Navigation.Project.updates, refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, Navigation.Project.updates, refInfo: refInfo)
   }
 
   return nil
@@ -419,9 +419,9 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
 private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
     let surveyParam = params.surveyParam() {
-    let refTag = params.refTag()
+    let refInfo = refInfoFromParams(params)
     let survey = Navigation.Project.survey(surveyParam)
-    return Navigation.project(projectParam, survey, refTag: refTag)
+    return Navigation.project(projectParam, survey, refInfo: refInfo)
   }
 
   return nil
@@ -430,9 +430,9 @@ private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
 private func update(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
     let updateParam = params.updateParam() {
-    let refTag = params.refTag()
+    let refInfo = refInfoFromParams(params)
     let update = Navigation.Project.update(updateParam, .root)
-    return Navigation.project(projectParam, update, refTag: refTag)
+    return Navigation.project(projectParam, update, refInfo: refInfo)
   }
 
   return nil
@@ -441,20 +441,20 @@ private func update(_ params: RouteParamsDecoded) -> Navigation? {
 private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
     let updateParam = params.updateParam() {
-    let refTag = params.refTag()
+    let refInfo = refInfoFromParams(params)
 
     guard let commentId = params.comment() else {
       return .project(
         projectParam,
         .update(updateParam, .comments),
-        refTag: refTag
+        refInfo: refInfo
       )
     }
 
     return .project(
       projectParam,
       .update(updateParam, .commentThread(commentId, params.reply())),
-      refTag: refTag
+      refInfo: refInfo
     )
   }
 
@@ -463,8 +463,8 @@ private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func updates(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let refTag = params.refTag()
-    return Navigation.project(projectParam, Navigation.Project.updates, refTag: refTag)
+    let refInfo = refInfoFromParams(params)
+    return Navigation.project(projectParam, Navigation.Project.updates, refInfo: refInfo)
   }
 
   return nil
@@ -557,6 +557,15 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
 
 private func stringToInt(_ string: String) -> Int? {
   return Int(string)
+}
+
+// Return refInfo object if it contains any information. Otherwise, just return nil.
+// TODO(MBL-1220): Add deeplink url to the refInfo if it exists.
+private func refInfoFromParams(_ params: RouteParamsDecoded) -> RefInfo? {
+  if let refTag = params.refTag() {
+    return RefInfo(refTag)
+  }
+  return nil
 }
 
 extension Dictionary {
