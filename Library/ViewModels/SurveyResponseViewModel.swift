@@ -86,8 +86,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.goToProject = requestAndNavigationType
       .map { request, _ -> (Param, RefTag?)? in
-        if case let (.project(param, .root, refTag))? = Navigation.match(request) {
-          return (param, refTag)
+        if case let (.project(param, .root, refInfo))? = Navigation.match(request) {
+          return (param, refInfo?.refTag)
         }
         return nil
       }

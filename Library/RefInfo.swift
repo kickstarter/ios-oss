@@ -1,5 +1,13 @@
 import KsApi
 
+public struct RefInfo: Equatable, Hashable {
+  public let refTag: RefTag?
+
+  public init(_ refTag: RefTag?) {
+    self.refTag = refTag
+  }
+}
+
 public enum RefTag {
   case activity
   case activitySample

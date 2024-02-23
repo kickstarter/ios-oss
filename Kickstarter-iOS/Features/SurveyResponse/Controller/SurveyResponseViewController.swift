@@ -80,7 +80,7 @@ internal final class SurveyResponseViewController: WebViewController {
   fileprivate func goToProject(param: Param, refTag: RefTag?) {
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: .right(param),
-      refTag: refTag
+      refInfo: RefInfo(refTag)
     )
 
     let nav = NavigationController(rootViewController: vc)

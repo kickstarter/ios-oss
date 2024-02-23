@@ -161,7 +161,7 @@ final class CuratedProjectsViewController: UIViewController {
     let projectParam = Either<Project, Param>(left: project)
     let vc = ProjectPageViewController.configuredWith(
       projectOrParam: projectParam,
-      refTag: refTag
+      refInfo: RefInfo(refTag)
     )
 
     let nav = NavigationController(rootViewController: vc)
