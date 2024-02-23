@@ -1,4 +1,5 @@
 import FBSDKCoreKit
+import FirebaseCrashlytics
 import Foundation
 import KsApi
 import Prelude
@@ -295,6 +296,41 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  private static func accountNameForUserId(_ userId: Int) -> String {
+    return "kickstarter_\(userId)"
+  }
+
+  private static func storeOAuthTokenToKeychain(_ oauthToken: String, forUserId id: Int?) -> Bool {
+    guard featureLoginWithOAuthEnabled(), let userId = id
+    else {
+      return false
+    }
+
+    do {
+      try Keychain.storePassword(oauthToken, forAccount: self.accountNameForUserId(userId))
+      return true
+    } catch {
+      Crashlytics.crashlytics().record(error: error)
+    }
+
+    return false
+  }
+
+  private static func fetchOAuthTokenFromKeychain(forUserId id: Int?) -> String? {
+    guard featureLoginWithOAuthEnabled(), let userId = id
+    else {
+      return nil
+    }
+
+    do {
+      return try Keychain.fetchPassword(forAccount: self.accountNameForUserId(userId))
+    } catch {
+      Crashlytics.crashlytics().record(error: error)
+    }
+
+    return nil
+  }
+
   // Returns the last saved environment from user defaults.
   public static func fromStorage(
     ubiquitousStore _: KeyValueStoreType,
@@ -303,13 +339,21 @@ public struct AppEnvironment: AppEnvironmentType {
     let data = userDefaults.dictionary(forKey: self.environmentStorageKey) ?? [:]
 
     var service = self.current.apiService
-    var currentUser: User?
+    var currentUser: User? // Will only be set if an OAuth token is also set
     let configDict: [String: Any]? = data["config"] as? [String: Any]
     let config: Config? = configDict.flatMap(Config.decodeJSONDictionary)
 
-    if let oauthToken = data["apiService.oauthToken.token"] as? String {
-      // If there is an oauth token stored in the defaults, then we can authenticate our api service
+    let userFromDefaults: User? = data["currentUser"].flatMap(tryDecode)
+
+    // If there is an oauth token stored, then we can authenticate our api service
+
+    if let oauthToken = fetchOAuthTokenFromKeychain(forUserId: userFromDefaults?.id) {
       service = service.login(OauthToken(token: oauthToken))
+    } else if let oauthToken = data["apiService.oauthToken.token"] as? String {
+      service = service.login(OauthToken(token: oauthToken))
+
+      // Move it over to the keychain if we can
+      _ = self.storeOAuthTokenToKeychain(oauthToken, forUserId: userFromDefaults?.id)
     }
 
     // Try restoring the client id for the api service
@@ -383,7 +427,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restore the current user
     if service.oauthToken != nil {
-      currentUser = data["currentUser"].flatMap(tryDecode)
+      currentUser = userFromDefaults
     }
 
     return Environment(
@@ -404,7 +448,14 @@ public struct AppEnvironment: AppEnvironmentType {
     var data: [String: Any] = [:]
 
     // swiftformat:disable wrap
-    data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
+
+    if let oauthToken = env.apiService.oauthToken?.token {
+      // Try to save to the keychain, but if that fails, save to user defaults
+      if !self.storeOAuthTokenToKeychain(oauthToken, forUserId: env.currentUser?.id) {
+        data["apiService.oauthToken.token"] = oauthToken
+      }
+    }
+
     data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString
     data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth.clientId
     data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username
