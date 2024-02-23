@@ -285,7 +285,7 @@ public protocol ServiceType {
   func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope>
 
   /// Fetch the logged-in user's data.
-  func fetchUserSelf_combine(withToken: String) -> AnyPublisher<User, ErrorEnvelope>
+  func fetchUserSelf_combine(withOAuthToken: String) -> AnyPublisher<User, ErrorEnvelope>
 
   /// Mark reward received.
   func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
@@ -491,37 +491,6 @@ extension ServiceType {
   }
 
   /**
-   Prepares a URL request to be sent to the server.
-
-   - parameter originalRequest: The request that should be prepared.
-   - parameter queryString:     The GraphQL query string for the request.
-
-   - returns: A new URL request that is properly configured for the server.
-   */
-  public func preparedRequest(forRequest originalRequest: URLRequest, queryString: String)
-    -> URLRequest {
-    var request = originalRequest
-    guard let URL = request.url else {
-      return originalRequest
-    }
-
-    request.httpBody = "query=\(queryString)".data(using: .utf8)
-
-    let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
-    request.url = components.url
-    request.allHTTPHeaderFields = self.defaultHeaders
-
-    return request
-  }
-
-  public func preparedRequest(forURL url: URL, queryString: String)
-    -> URLRequest {
-    var request = URLRequest(url: url)
-    request.httpMethod = Method.POST.rawValue
-    return self.preparedRequest(forRequest: request, queryString: queryString)
-  }
-
-  /**
      Prepares a URL request to be sent to the server.
      - parameter originalRequest: The request that should be prepared
      - parameter queryString: The GraphQL mutation string description
@@ -561,15 +530,32 @@ extension ServiceType {
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
   }
 
+  public func addV1AuthenticationToRequest(_ request: inout URLRequest, oauthToken: String) {
+    var headers = request.allHTTPHeaderFields ?? [:]
+    headers["X-Auth"] = "token \(oauthToken)"
+    request.allHTTPHeaderFields = headers
+  }
+
   internal var defaultHeaders: [String: String] {
     var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
-    headers["Authorization"] = self.authorizationHeader
     headers["Kickstarter-App-Id"] = self.appId
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
     headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
+
+    /*
+     GraphQL - Reads OAuth token from Authorization header
+     GraphQL - Ignores X-Auth header
+     V1 - Reads basic auth from Authorization header
+     V1 - Reads OAuth token from X-Auth header or (deprecated) from oauth_token parameter
+     */
+
+    headers["Authorization"] = self.authorizationHeader
+    if let oAuthHeader = self.oAuthAuthorizationHeader {
+      headers["X-Auth"] = oAuthHeader
+    }
 
     return headers
   }
@@ -593,9 +579,17 @@ extension ServiceType {
     return "\(app)/\(bundleVersion) (\(model); iOS \(systemVersion) Scale/\(scale))"
   }
 
+  fileprivate var oAuthAuthorizationHeader: String? {
+    guard let token = self.oauthToken?.token else {
+      return nil
+    }
+
+    return "token \(token)"
+  }
+
   fileprivate var authorizationHeader: String? {
-    if let token = self.oauthToken?.token {
-      return "token \(token)"
+    if let header = oAuthAuthorizationHeader {
+      return header
     } else {
       return self.serverConfig.basicHTTPAuth?.authorizationHeader
     }
@@ -605,7 +599,6 @@ extension ServiceType {
     var query: [String: String] = [:]
     query["client_id"] = self.serverConfig.apiClientAuth.clientId
     query["currency"] = self.currency
-    query["oauth_token"] = self.oauthToken?.token
     return query
   }
 
