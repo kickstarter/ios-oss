@@ -97,6 +97,10 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits an access token to show 2fa view when Facebook login fails with tfaRequired error
   var startTwoFactorChallenge: Signal<String, Never> { get }
+
+  /// True if the feature flag for OAuth login is true.
+  /// Note that this is not a signal, because we don't want it to ever change after the screen is loaded.
+  var loginWithOAuthEnabled: Bool { get }
 }
 
 public protocol LoginToutViewModelType {
@@ -265,6 +269,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
     self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
+    self.loginWithOAuthEnabled = featureLoginWithOAuthEnabled()
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
@@ -354,6 +359,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startTwoFactorChallenge: Signal<String, Never>
   public let showAppleErrorAlert: Signal<String, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
+  public let loginWithOAuthEnabled: Bool
 }
 
 private func statusString(_ forStatus: LoginIntent) -> String {
