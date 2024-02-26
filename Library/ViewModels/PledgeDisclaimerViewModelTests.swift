@@ -9,6 +9,7 @@ final class PledgeDisclaimerViewModelTests: TestCase {
   private let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
 
   override func setUp() {
+    super.setUp()
     self.vm.outputs.notifyDelegateLinkTappedWithURL
       .observe(self.notifyDelegateLinkTappedWithURL.observer)
   }
