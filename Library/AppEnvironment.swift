@@ -296,12 +296,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  private static func accountNameForUserId(_ userId: Int) -> String {
+  internal static func accountNameForUserId(_ userId: Int) -> String {
     return "kickstarter_\(userId)"
   }
 
   private static func storeOAuthTokenToKeychain(_ oauthToken: String, forUserId id: Int?) -> Bool {
-    guard featureLoginWithOAuthEnabled(), let userId = id
+    guard featureUseKeychainForOAuthTokenEnabled(), let userId = id
     else {
       return false
     }
@@ -317,7 +317,7 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   private static func fetchOAuthTokenFromKeychain(forUserId id: Int?) -> String? {
-    guard featureLoginWithOAuthEnabled(), let userId = id
+    guard featureUseKeychainForOAuthTokenEnabled(), let userId = id
     else {
       return nil
     }
