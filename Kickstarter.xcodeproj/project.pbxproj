@@ -497,6 +497,11 @@
 		609309912A60555F004297AF /* TriggerThirdPartyEventInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609309902A60555F004297AF /* TriggerThirdPartyEventInput.swift */; };
 		609309952A6055A5004297AF /* TriggerThirdPartyEvent.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */; };
 		60A3ED252B85361E008E1BA8 /* RewardsCollectionViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */; };
+		60A3ED322B8CDA47008E1BA8 /* ConfirmDetailsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED2D2B8CD9C2008E1BA8 /* ConfirmDetailsViewControllerTests.swift */; };
+		60A3ED332B8CDA4B008E1BA8 /* ConfirmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED292B8CD98C008E1BA8 /* ConfirmDetailsViewController.swift */; };
+		60A3ED382B8CDAC8008E1BA8 /* ConfirmDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED372B8CDAC8008E1BA8 /* ConfirmDetailsViewModel.swift */; };
+		60A3ED3A2B8CDAD4008E1BA8 /* ConfirmDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED392B8CDAD4008E1BA8 /* ConfirmDetailsViewModelTests.swift */; };
+		60A3ED3D2B8CE300008E1BA8 /* ConfirmDetailsContinueCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A3ED352B8CDA64008E1BA8 /* ConfirmDetailsContinueCTAView.swift */; };
 		60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */; };
 		60C996E42ABCA5E5006BE4F4 /* ReportProjectLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */; };
 		60C996E62ABCC002006BE4F4 /* ReportProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */; };
@@ -2082,6 +2087,11 @@
 		609309922A605563004297AF /* TriggerThirdPartyEventInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerThirdPartyEventInputTests.swift; sourceTree = "<group>"; };
 		609309942A6055A5004297AF /* TriggerThirdPartyEvent.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriggerThirdPartyEvent.graphql; sourceTree = "<group>"; };
 		60A3ED232B853618008E1BA8 /* RewardsCollectionViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewHeaderView.swift; sourceTree = "<group>"; };
+		60A3ED292B8CD98C008E1BA8 /* ConfirmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewController.swift; sourceTree = "<group>"; };
+		60A3ED2D2B8CD9C2008E1BA8 /* ConfirmDetailsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewControllerTests.swift; sourceTree = "<group>"; };
+		60A3ED352B8CDA64008E1BA8 /* ConfirmDetailsContinueCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsContinueCTAView.swift; sourceTree = "<group>"; };
+		60A3ED372B8CDAC8008E1BA8 /* ConfirmDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModel.swift; sourceTree = "<group>"; };
+		60A3ED392B8CDAD4008E1BA8 /* ConfirmDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		60AE9F022ABB822300FB3A96 /* ReportProjectInfoListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoListItem.swift; sourceTree = "<group>"; };
 		60C996E32ABCA5E5006BE4F4 /* ReportProjectLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectLabelView.swift; sourceTree = "<group>"; };
 		60C996E52ABCC002006BE4F4 /* ReportProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectCell.swift; sourceTree = "<group>"; };
@@ -4702,6 +4712,7 @@
 				1937A6DF28C92AFE00DD732D /* ChangePassword */,
 				1937A6E028C92B1D00DD732D /* CreatePassword */,
 				19A97CD428C79BF60031B857 /* Comments */,
+				60A3ED262B8CD95D008E1BA8 /* ConfirmDetails */,
 				1937A6E128C92BBD00DD732D /* CuratedProjects */,
 				1937A6E228C92BD400DD732D /* DebugPushNotifications */,
 				6049D00E2A9CF6530015BB0D /* DesignSystem */,
@@ -5619,6 +5630,32 @@
 			path = "SwiftUI+Extensions";
 			sourceTree = "<group>";
 		};
+		60A3ED262B8CD95D008E1BA8 /* ConfirmDetails */ = {
+			isa = PBXGroup;
+			children = (
+				60A3ED282B8CD97C008E1BA8 /* Controllers */,
+				60A3ED272B8CD977008E1BA8 /* Views */,
+			);
+			path = ConfirmDetails;
+			sourceTree = "<group>";
+		};
+		60A3ED272B8CD977008E1BA8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				60A3ED352B8CDA64008E1BA8 /* ConfirmDetailsContinueCTAView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		60A3ED282B8CD97C008E1BA8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				60A3ED292B8CD98C008E1BA8 /* ConfirmDetailsViewController.swift */,
+				60A3ED2D2B8CD9C2008E1BA8 /* ConfirmDetailsViewControllerTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		7061848A29BE4C1E008F9941 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -6355,6 +6392,8 @@
 				061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */,
 				94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */,
 				94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */,
+				60A3ED372B8CDAC8008E1BA8 /* ConfirmDetailsViewModel.swift */,
+				60A3ED392B8CDAD4008E1BA8 /* ConfirmDetailsViewModelTests.swift */,
 				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
 				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
 				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
@@ -7856,6 +7895,7 @@
 				A75C811C1D210C4700B5AD03 /* SafariActivity.swift in Sources */,
 				A796FF591D425A4D00CD58AA /* ProjectStyles.swift in Sources */,
 				A796A88F1D48DE79009B6EF6 /* ProjectPamphletContentViewModel.swift in Sources */,
+				60A3ED382B8CDAC8008E1BA8 /* ConfirmDetailsViewModel.swift in Sources */,
 				77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */,
 				A71404391CAF215900A2795B /* KeyValueStoreType.swift in Sources */,
 				8A788F27263C80D600A89DAE /* BrazeDebounceMiddleware.swift in Sources */,
@@ -7987,6 +8027,7 @@
 				373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */,
 				A7ED1FF11E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift in Sources */,
 				8A49395F24B53D1900C3C3CE /* RewardAddOnSelectionViewModelTests.swift in Sources */,
+				60A3ED3A2B8CDAD4008E1BA8 /* ConfirmDetailsViewModelTests.swift in Sources */,
 				D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */,
 				A7ED1FAE1E831C5C00BFFA01 /* FindFriendsViewModelTests.swift in Sources */,
 				A7ED1FE11E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift in Sources */,
@@ -8182,6 +8223,7 @@
 				4751A679272B56C400F81DD5 /* ProjectTabDisclaimerCell.swift in Sources */,
 				94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */,
 				D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */,
+				60A3ED322B8CDA47008E1BA8 /* ConfirmDetailsViewControllerTests.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
 				77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */,
 				4724A0A4268F6123000EB7A9 /* ViewMoreRepliesCell.swift in Sources */,
@@ -8311,6 +8353,7 @@
 				D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */,
 				D668509F236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift in Sources */,
 				19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */,
+				60A3ED332B8CDA4B008E1BA8 /* ConfirmDetailsViewController.swift in Sources */,
 				D6B6766720FF8D3C0082717D /* SettingsNewslettersViewController.swift in Sources */,
 				77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */,
 				8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */,
@@ -8350,6 +8393,7 @@
 				06B02BED26680D4300903A83 /* CommentCell.swift in Sources */,
 				7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */,
 				473DE010273C4BA90033331D /* ProjectRisksCell.swift in Sources */,
+				60A3ED3D2B8CE300008E1BA8 /* ConfirmDetailsContinueCTAView.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */,
 				4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */,
