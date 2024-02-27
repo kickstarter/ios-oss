@@ -29,6 +29,8 @@
 
     fileprivate let changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
+    fileprivate let createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
+
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>?
@@ -227,6 +229,7 @@
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>? = nil,
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -349,6 +352,8 @@
       self.changePasswordResult = changePasswordResult
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
+
+      self.createAttributionEventResult = createAttributionEventResult
 
       self.createBackingResult = createBackingResult
 
@@ -616,6 +621,17 @@
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.changePasswordResult)
+    }
+
+    public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
+      SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CreateAttributionEventMutation(input: input)
+
+      return client.performWithResult(mutation: mutation, result: self.createAttributionEventResult)
     }
 
     internal func createBacking(input: CreateBackingInput)
