@@ -133,7 +133,19 @@ public struct AppEnvironment: AppEnvironmentType {
       ubiquitousStore: next.ubiquitousStore,
       userDefaults: next.userDefaults
     )
+
+    // If there are no more items in the stack,
+    // then the next call to AppEvironment.current will fail.
+    assert(self.stack.count > 0)
+
     return last
+  }
+
+  internal static func resetStackForUnitTests() {
+    while self.stack.popLast() != nil {}
+
+    let next = Environment()
+    self.pushEnvironment(next)
   }
 
   // Replace the current environment with a new environment.

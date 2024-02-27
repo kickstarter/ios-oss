@@ -5,6 +5,10 @@ import Prelude
 import XCTest
 
 final class AppEnvironmentTests: XCTestCase {
+  override func setUp() {
+    AppEnvironment.resetStackForUnitTests()
+  }
+
   func testPushAndPopEnvironment() {
     let lang = AppEnvironment.current.language
 
