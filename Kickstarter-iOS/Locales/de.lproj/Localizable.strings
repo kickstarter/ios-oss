@@ -72,13 +72,13 @@
 "Big_Kickstarter_news_and_events_near_you" = "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe.";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Das Neueste von Kickstarter plus gelegentlich für dich ausgewählte Projekte und Events.";
 "Biography" = "Biografie";
-"Block" = "Block";
+"Block" = "Blockieren";
 "Block_this_user" = "Diesen Nutzer blockieren";
 "Block_user_fail" = "Deine Anfrage konnte nicht verarbeitet werden. Bitte versuche es noch einmal.";
 "Block_user_success" = "Dieser Nutzer wurde erfolgreich blockiert";
 "Block_username" = "%{username} blockieren?";
 "Blocked_user" = "Blockierter Nutzer";
-"Blocked_user_confirmation" = "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast und deine Unterstützung zurückziehen möchtest, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter.";
+"Blocked_user_confirmation" = "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter.";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus-Unterstützung";
 "Bookmarks" = "Bookmarks";
@@ -444,7 +444,7 @@
 "Opens_rewards" = "Öffnet Belohnungen.";
 "Opens_shipping_options" = "Öffnet Versandoptionen.";
 "Opens_update" = "Öffnet Update.";
-"Opens_user_menu" = "Opens user menu.";
+"Opens_user_menu" = "Öffnet das Nutzermenü.";
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
@@ -1467,6 +1467,7 @@
 "login_tout.generic_intent.title" = "Hoppla! Um fortzufahren, musst du dich auf Kickstarter einloggen. Du kannst dich unten mit deinem Facebook-Konto oder deiner E-Mail-Adresse anmelden oder dich neu registrieren.";
 "login_tout.generic_intent.traditional_login_button" = "Anmelden";
 "login_tout.generic_intent.traditional_signup_button" = "Registrieren";
+"login_tout.generic_intent.traditional_signup_or_login_button" = "Sign up or Log in";
 "login_tout.generic_intent.traditional_title" = "Benutze deine E-Mail-Adresse:";
 "login_tout.help_sheet.cancel" = "Abbrechen";
 "login_tout.help_sheet.contact" = "Kontakt";

@@ -1467,6 +1467,7 @@
 "login_tout.generic_intent.title" = "Whoa there! You must log in to your Kickstarter account to continue. Sign up or log in with your email address or Facebook account below.";
 "login_tout.generic_intent.traditional_login_button" = "Log in";
 "login_tout.generic_intent.traditional_signup_button" = "Sign up";
+"login_tout.generic_intent.traditional_signup_or_login_button" = "Sign up or Log in";
 "login_tout.generic_intent.traditional_title" = "Use your email address:";
 "login_tout.help_sheet.cancel" = "Cancel";
 "login_tout.help_sheet.contact" = "Contact";
