@@ -14,7 +14,9 @@ struct AttributionTracking {
     }
     props["context_page_url"] = contextPageUrl ?? ""
 
-    let propsData = try? JSONSerialization.data(withJSONObject: props)
-    return String(data: propsData!, encoding: .utf8)
+    guard let propsData = try? JSONSerialization.data(withJSONObject: props) else {
+      return nil
+    }
+    return String(data: propsData, encoding: .utf8)
   }
 }
