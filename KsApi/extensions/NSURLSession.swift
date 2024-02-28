@@ -21,8 +21,7 @@ internal extension URLSession {
   }
 
   // Wrap an URLSession producer with error envelope logic.
-  func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil,
-                        and error: ErrorHandler? = nil)
+  func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil)
     -> SignalProducer<Data, ErrorEnvelope> {
     let producer = file.map { self.rac_requestWithFileUpload(request, uploading: $0, named: $1) }
       ?? self.reactive.data(with: request)
@@ -34,9 +33,6 @@ internal extension URLSession {
       .flatMapError { _ in SignalProducer(error: .couldNotParseErrorEnvelopeJSON) } // NSError
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
-
-        guard [nil, false].contains(error?.handleResponse(data: data, response: response))
-        else { return .empty }
 
         guard self.isValidResponse(response: response) else {
           if let json = parseJSONData(data) as? [String: Any] {
@@ -61,8 +57,11 @@ internal extension URLSession {
       }
   }
 
-  func combine_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil,
-                            and error: ErrorHandler? = nil) -> AnyPublisher<Data, ErrorEnvelope> {
+  func combine_dataResponse(_ request: URLRequest,
+                            uploading file: (url: URL, name: String)? = nil) -> AnyPublisher<
+    Data,
+                              ErrorEnvelope
+                            > {
     let producer = file != nil ? self
       .combine_requestWithFileUpload(request, uploading: file!.url, named: file!.name) :
       DataTaskPublisher(request: request, session: self).eraseToAnyPublisher()
@@ -72,10 +71,6 @@ internal extension URLSession {
       .flatMap { (data: Data, response: URLResponse) -> AnyPublisher<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else {
           fatalError()
-        }
-
-        guard [nil, false].contains(error?.handleResponse(data: data, response: response)) else {
-          return Empty(outputType: Data.self, failureType: ErrorEnvelope.self).eraseToAnyPublisher()
         }
 
         guard self.isValidResponse(response: response) else {

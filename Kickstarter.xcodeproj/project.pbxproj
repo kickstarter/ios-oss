@@ -377,7 +377,6 @@
 		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
 		47554A5B2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */; };
-		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
 		4758484E26B31CF8005AAC1C /* FetchUserBackings.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */; };
 		4758485026B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */; };
 		475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 475DEC0026B07BB9001B961B /* CancelBacking.graphql */; };
@@ -1952,7 +1951,6 @@
 		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
 		47554A5A2727314E003A0D45 /* ProjectFAQsAskAQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFAQsAskAQuestionCell.swift; sourceTree = "<group>"; };
-		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		4758484D26B31CF8005AAC1C /* FetchUserBackings.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserBackings.graphql; sourceTree = "<group>"; };
 		4758484F26B32110005AAC1C /* GraphAPI.BackingState+BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphAPI.BackingState+BackingState.swift"; sourceTree = "<group>"; };
 		475D16F22773A944009E4354 /* HTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLParser.swift; sourceTree = "<group>"; };
@@ -6579,7 +6577,6 @@
 			isa = PBXGroup;
 			children = (
 				D01587531EEB2DE4006E7684 /* Info.plist */,
-				47567A5C25E40E500073AD6E /* ErrorHandler.swift */,
 				8ADCCD4E2654281E0079D308 /* GraphAPI.swift */,
 				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
 				775DFA9C215E758400620CED /* GraphMutation.swift */,
@@ -8678,7 +8675,6 @@
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
 				478E31C326C1C8A8004BF898 /* WatchProjectResponseEnvelope+UnwatchProjectMutation.Data.swift in Sources */,
 				19047FC92889BD8100BDD1A8 /* ClientSecretEnvelope+CreateSetupIntentMutation.Data.swift in Sources */,
-				47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */,
 				77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */,
