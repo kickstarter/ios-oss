@@ -141,7 +141,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     if self.viewModel.outputs.loginWithOAuthEnabled {
       // TODO: Add and translate a new version of this string for this page.
       _ = self.loginButton |> greenButtonStyle
-      self.loginButton.setTitle(Strings.discovery_onboarding_buttons_signup_or_login(), for: .normal)
+      self.loginButton
+        .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
     } else {
       _ = self.loginButton |> greyButtonStyle
       self.loginButton.setTitle(Strings.login_tout_back_intent_traditional_login_button(), for: .normal)

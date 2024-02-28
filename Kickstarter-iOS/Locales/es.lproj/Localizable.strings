@@ -1467,6 +1467,7 @@
 "login_tout.generic_intent.title" = "¡Un momentito! Primero tienes que iniciar sesión con tu cuenta de Kickstarter para continuar. Regístrate o inicia sesión con tu dirección de correo electrónico o con tu cuenta de Facebook.";
 "login_tout.generic_intent.traditional_login_button" = "Iniciar sesión";
 "login_tout.generic_intent.traditional_signup_button" = "Registrar";
+"login_tout.generic_intent.traditional_signup_or_login_button" = "Sign up or Log in";
 "login_tout.generic_intent.traditional_title" = "Utiliza tu dirección de correo electrónico:";
 "login_tout.help_sheet.cancel" = "Cancelar";
 "login_tout.help_sheet.contact" = "Contacto";
