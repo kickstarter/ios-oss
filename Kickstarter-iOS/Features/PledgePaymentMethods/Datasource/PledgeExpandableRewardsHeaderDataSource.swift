@@ -9,7 +9,7 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
     case rewards
   }
 
-  internal func load(_ items: [PledgeExpandableRewardsHeaderItem]) {
+  internal func load(_ items: [PledgeExpandableRewardsHeaderItem], isInPostCampaign: Bool = false) {
     self.clearValues()
 
     let headerItemData = items.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
@@ -22,11 +22,20 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
       return data
     }
 
-    self.set(
-      values: headerItemData,
-      cellClass: PledgeExpandableHeaderRewardHeaderCell.self,
-      inSection: Section.header.rawValue
-    )
+    // TODO: Scott Add feature flag gate as well
+    if isInPostCampaign {
+      self.set(
+        values: headerItemData,
+        cellClass: PostCampaignPledgeRewardsSummaryHeaderCell.self,
+        inSection: Section.header.rawValue
+      )
+    } else {
+      self.set(
+        values: headerItemData,
+        cellClass: PledgeExpandableHeaderRewardHeaderCell.self,
+        inSection: Section.header.rawValue
+      )
+    }
 
     self.set(
       values: rewardItemData,
@@ -40,6 +49,11 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
     case let (cell as PledgeExpandableHeaderRewardHeaderCell, value as PledgeExpandableHeaderRewardCellData):
       cell.configureWith(value: value)
     case let (cell as PledgeExpandableHeaderRewardCell, value as PledgeExpandableHeaderRewardCellData):
+      cell.configureWith(value: value)
+    case let (
+      cell as PostCampaignPledgeRewardsSummaryHeaderCell,
+      value as PledgeExpandableHeaderRewardCellData
+    ):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

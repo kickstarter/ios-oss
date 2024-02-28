@@ -19,42 +19,16 @@ protocol ConfirmDetailsViewControllerDelegate: AnyObject {
   func viewControllerDidUpdatePledge(_ viewController: ConfirmDetailsViewController, message: String)
 }
 
-final class ConfirmDetailsViewController: UIViewController,
-  MessageBannerViewControllerPresenting, ProcessingViewPresenting {
+final class ConfirmDetailsViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   public weak var delegate: ConfirmDetailsViewControllerDelegate?
 
-  private lazy var descriptionSectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var titleLabel = UILabel(frame: .zero)
-
-  private lazy var sectionSeparatorViews = {
-    [self.descriptionSectionSeparator, self.summarySectionSeparator]
-  }()
-
-  private lazy var summarySectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
-  }()
-
-  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
-
-  private lazy var descriptionSectionViews = {
-    [self.titleLabel, self.descriptionSectionSeparator]
-  }()
-
-  private lazy var pledgeExpandableRewardsHeaderViewController = {
-    PledgeExpandableRewardsHeaderViewController(nibName: nil, bundle: nil)
-      |> \.animatingViewDelegate .~ self.view
   }()
 
   private lazy var continueCTAView: ConfirmDetailsContinueCTAView = {
@@ -98,15 +72,8 @@ final class ConfirmDetailsViewController: UIViewController,
     PledgeShippingSummaryView(frame: .zero)
   }()
 
-  private lazy var summarySectionViews = {
-    [
-      self.summarySectionSeparator,
-      self.summaryViewController.view
-    ]
-  }()
-
-  private lazy var summaryViewController = {
-    PledgeSummaryViewController.instantiate()
+  private lazy var expandableRewardsViewController = {
+    PostCampaignPledgeExpandableRewardsViewController.instantiate()
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -136,8 +103,14 @@ final class ConfirmDetailsViewController: UIViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.navigationItem
+      .backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+
     _ = self
       |> \.extendedLayoutIncludesOpaqueBars .~ true
+
+    _ = self
+      |> \.title .~ Strings.Back_this_project()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
@@ -173,24 +146,21 @@ final class ConfirmDetailsViewController: UIViewController,
       |> ksr_constrainViewToEdgesInParent()
 
     let childViewControllers = [
-      self.pledgeExpandableRewardsHeaderViewController,
+      self.expandableRewardsViewController,
       self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
-      self.shippingLocationViewController,
-      self.summaryViewController
+      self.shippingLocationViewController
     ]
 
     let arrangedSubviews = [
-      self.pledgeExpandableRewardsHeaderViewController.view,
       self.rootInsetStackView
     ]
-    .compact()
 
     let arrangedInsetSubviews = [
-      self.descriptionSectionViews,
-      [self.pledgeAmountSummaryViewController.view],
+      [self.titleLabel],
       self.inputsSectionViews,
-      self.summarySectionViews
+      [self.pledgeAmountSummaryViewController.view],
+      [self.expandableRewardsViewController.view]
     ]
     .flatMap { $0 }
     .compact()
@@ -209,7 +179,7 @@ final class ConfirmDetailsViewController: UIViewController,
     }
 
     self.rootStackView
-      .setCustomSpacing(Styles.grid(2), after: self.pledgeExpandableRewardsHeaderViewController.view)
+      .setCustomSpacing(Styles.grid(2), after: self.expandableRewardsViewController.view)
   }
 
   private func setupConstraints() {
@@ -223,13 +193,6 @@ final class ConfirmDetailsViewController: UIViewController,
       self.continueCTAView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
-
-    self.sectionSeparatorViews.forEach { view in
-      _ = view.heightAnchor.constraint(equalToConstant: 1)
-        |> \.isActive .~ true
-
-      view.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
   }
 
   // MARK: - Styles
@@ -251,15 +214,15 @@ final class ConfirmDetailsViewController: UIViewController,
 
     _ = self.rootInsetStackView
       |> rootInsetStackViewStyle
-
-    _ = self.sectionSeparatorViews
-      ||> separatorStyleDark
   }
 
   // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.expandableRewardsViewController.view.rac.hidden
+      = self.viewModel.outputs.expandableRewardsViewHidden
 
     self.viewModel.outputs.configureLocalPickupViewWithData
       .observeForUI()
@@ -285,11 +248,9 @@ final class ConfirmDetailsViewController: UIViewController,
         self?.pledgeAmountViewController.configureWith(value: data)
       }
 
-    self.viewModel.outputs.configureExpandableRewardsHeaderWithData
+    self.viewModel.outputs.configurePledgeSummaryHeaderWithData
       .observeForUI()
-      .observeValues { [weak self] data in
-        self?.pledgeExpandableRewardsHeaderViewController.configure(with: data)
-      }
+      .observeValues { [weak self] _ in }
 
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
       .observeForUI()
@@ -303,10 +264,10 @@ final class ConfirmDetailsViewController: UIViewController,
         self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
-    self.viewModel.outputs.configureSummaryViewControllerWithData
+    self.viewModel.outputs.configureExpandableRewardsViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.summaryViewController.configure(with: data)
+        self?.expandableRewardsViewController.configure(with: data)
       }
 
     self.viewModel.outputs.goToLoginSignup
@@ -326,9 +287,6 @@ final class ConfirmDetailsViewController: UIViewController,
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
-    self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
-
     self.viewModel.outputs.rootStackViewLayoutMargins
       .observeForUI()
       .observeValues { [weak self] margins in
@@ -343,14 +301,6 @@ final class ConfirmDetailsViewController: UIViewController,
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
-    self.pledgeExpandableRewardsHeaderViewController.view.rac.hidden
-      = self.viewModel.outputs.expandableRewardsHeaderViewHidden
-
-//    self.viewModel.outputs.configureContinueCTAViewWithData
-//      .observeForUI()
-//      .observeValues { [weak self] data in
-//        self?.continueCTAView.configure(with: data)
-//      }
   }
 
   // MARK: - Actions
@@ -421,7 +371,7 @@ private let titleLabelStyle: LabelStyle = { label in
   label
     // TODO: [MBL-1217] Update string once translations are done
     |> \.text %~ { _ in "Confirm your pledge details." }
-    |> \.font .~ UIFont.ksr_body().bolded
+    |> \.font .~ UIFont.ksr_title2().bolded
     |> \.numberOfLines .~ 0
 }
 
@@ -444,7 +394,7 @@ private let rootInsetStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(4)
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: 0,
+      topBottom: Layout.Margin.topBottom,
       leftRight: Layout.Margin.leftRight
     )
 }

@@ -449,6 +449,8 @@
 		59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */; };
 		59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B0E07D1D147F340081D2DC /* DashboardStyles.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		60043A0E2B8F8EAC00B0BF5E /* PostCampaignPledgeSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60043A0D2B8F8EAC00B0BF5E /* PostCampaignPledgeSummaryViewController.swift */; };
+		60043A112B8F94E000B0BF5E /* PostCampaignPledgeRewardsSummaryHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60043A102B8F94E000B0BF5E /* PostCampaignPledgeRewardsSummaryHeaderCell.swift */; };
 		6008632C29B8F64800B87B39 /* UserEmailFragment.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */; };
 		6008632E29B8F66F00B87B39 /* FetchUserEmail.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */; };
 		6008633429B8FBD700B87B39 /* GraphUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633329B8FBD700B87B39 /* GraphUserEmail.swift */; };
@@ -2042,6 +2044,8 @@
 		59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPostcardCell.swift; sourceTree = "<group>"; };
 		59B0E07D1D147F340081D2DC /* DashboardStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStyles.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		60043A0D2B8F8EAC00B0BF5E /* PostCampaignPledgeSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeSummaryViewController.swift; sourceTree = "<group>"; };
+		60043A102B8F94E000B0BF5E /* PostCampaignPledgeRewardsSummaryHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryHeaderCell.swift; sourceTree = "<group>"; };
 		6008632B29B8F64700B87B39 /* UserEmailFragment.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserEmailFragment.graphql; sourceTree = "<group>"; };
 		6008632D29B8F66F00B87B39 /* FetchUserEmail.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchUserEmail.graphql; sourceTree = "<group>"; };
 		6008633329B8FBD700B87B39 /* GraphUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmail.swift; sourceTree = "<group>"; };
@@ -5520,6 +5524,7 @@
 				8A864ACC24429A5B0026BF13 /* PledgePaymentMethodLoadingCell.swift */,
 				8A13D168249817BF007E2C0B /* PledgeExpandableHeaderRewardCell.swift */,
 				8A13D162249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift */,
+				60043A102B8F94E000B0BF5E /* PostCampaignPledgeRewardsSummaryHeaderCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5541,6 +5546,7 @@
 				D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */,
 				192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */,
 				8A13D15E249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift */,
+				60043A0D2B8F8EAC00B0BF5E /* PostCampaignPledgeSummaryViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -8148,6 +8154,7 @@
 			files = (
 				D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */,
 				4791BDE42717604C00DFE5D5 /* ProjectFAQsCell.swift in Sources */,
+				60043A112B8F94E000B0BF5E /* PostCampaignPledgeRewardsSummaryHeaderCell.swift in Sources */,
 				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */,
 				7061848B29BE4CD8008F9941 /* MessageBannerView.swift in Sources */,
@@ -8421,6 +8428,7 @@
 				D6E7DAFA22089F3900689BD6 /* MessageBannerViewController.swift in Sources */,
 				8A8C6134243F99AB0092B682 /* ContentSizeTableView.swift in Sources */,
 				8A45169524B3E8FB00D8CAEF /* RewardAddOnCell.swift in Sources */,
+				60043A0E2B8F8EAC00B0BF5E /* PostCampaignPledgeSummaryViewController.swift in Sources */,
 				8A13D163249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift in Sources */,
 				8A13D1672495687E007E2C0B /* PledgeExpandableRewardsHeaderDataSource.swift in Sources */,
 				8A32FE0424D2336E00F79C72 /* EmpyStateView.swift in Sources */,
