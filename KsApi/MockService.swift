@@ -13,7 +13,6 @@
     internal let currency: String
     internal let buildVersion: String
     internal let deviceIdentifier: String
-    internal let perimeterXClient: PerimeterXClientType
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
@@ -198,8 +197,7 @@
       currency: String,
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-      apolloClient: ApolloClientType? = nil,
-      perimeterXClient: PerimeterXClientType
+      apolloClient: ApolloClientType? = nil
     ) {
       self.init(
         appId: appId,
@@ -209,8 +207,7 @@
         currency: currency,
         buildVersion: buildVersion,
         deviceIdentifier: deviceIdentifier,
-        apolloClient: apolloClient,
-        perimeterXClient: perimeterXClient
+        apolloClient: apolloClient
       )
     }
 
@@ -273,7 +270,6 @@
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
-      perimeterXClient: PerimeterXClientType = PerimeterXClient(),
       publishUpdateError: ErrorEnvelope? = nil,
       fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
@@ -485,8 +481,6 @@
       self.incrementVideoCompletionError = incrementVideoCompletionError
 
       self.incrementVideoStartError = incrementVideoStartError
-
-      self.perimeterXClient = perimeterXClient
 
       self.postCommentResult = postCommentResult
 
