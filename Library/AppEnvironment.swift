@@ -351,9 +351,6 @@ public struct AppEnvironment: AppEnvironmentType {
       service = service.login(OauthToken(token: oauthToken))
     } else if let oauthToken = data["apiService.oauthToken.token"] as? String {
       service = service.login(OauthToken(token: oauthToken))
-
-      // Move it over to the keychain if we can
-      _ = self.storeOAuthTokenToKeychain(oauthToken, forUserId: userFromDefaults?.id)
     }
 
     // Try restoring the client id for the api service
