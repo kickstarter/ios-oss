@@ -14,7 +14,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let applicationIconBadgeNumber = TestObserver<Int, Never>()
   private let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   private let configureFirebase = TestObserver<(), Never>()
-  private let configurePerimeterX = TestObserver<(), Never>()
   private let configureSegmentWithBraze = TestObserver<String, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let emailVerificationCompletedMessage = TestObserver<String, Never>()
@@ -27,8 +26,6 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
-  private let perimeterXManagerReady = TestObserver<[String: String]?, Never>()
-  private let perimeterXRefreshedHeaders = TestObserver<[String: String]?, Never>()
   private let postNotificationName = TestObserver<Notification.Name, Never>()
   private let presentViewController = TestObserver<Int, Never>()
   private let pushRegistrationStarted = TestObserver<(), Never>()
@@ -60,7 +57,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFirebase.observe(self.configureFirebase.observer)
-    self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
     self.vm.outputs.configureSegmentWithBraze.observe(self.configureSegmentWithBraze.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
       .observe(self.emailVerificationCompletedMessage.observer)
@@ -142,12 +138,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
     self.configureFirebase.assertValueCount(1)
-  }
-
-  func testConfigurePerimeterX() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
-
-    self.configurePerimeterX.assertValueCount(1)
   }
 
   // MARK: - AppCenter

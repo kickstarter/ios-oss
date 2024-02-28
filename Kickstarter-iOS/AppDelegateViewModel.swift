@@ -105,9 +105,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Firebase
   var configureFirebase: Signal<(), Never> { get }
 
-  /// Emits when the application should configure Perimeter X
-  var configurePerimeterX: Signal<(), Never> { get }
-
   /// Emits when the application should configure Segment with an instance of Braze.
   var configureSegmentWithBraze: Signal<String, Never> { get }
 
@@ -688,8 +685,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
-    self.configurePerimeterX = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
@@ -904,7 +899,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
-  public let configurePerimeterX: Signal<(), Never>
   public let configureSegmentWithBraze: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
