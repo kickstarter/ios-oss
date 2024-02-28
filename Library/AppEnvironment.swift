@@ -143,10 +143,12 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   internal static func resetStackForUnitTests() {
-    while self.stack.popLast() != nil {}
+    while self.stack.count > 1 {
+      _ = self.stack.popLast()
+    }
 
     let next = Environment()
-    self.pushEnvironment(next)
+    self.replaceCurrentEnvironment(next)
   }
 
   // Replace the current environment with a new environment.
@@ -296,18 +298,16 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  internal static func accountNameForUserId(_ userId: Int) -> String {
-    return "kickstarter_\(userId)"
-  }
+  internal static let accountNameForKeychain = "kickstarter_currently_logged_in_user"
 
-  private static func storeOAuthTokenToKeychain(_ oauthToken: String, forUserId id: Int?) -> Bool {
-    guard featureUseKeychainForOAuthTokenEnabled(), let userId = id
+  private static func storeOAuthTokenToKeychain(_ oauthToken: String) -> Bool {
+    guard featureUseKeychainForOAuthTokenEnabled()
     else {
       return false
     }
 
     do {
-      try Keychain.storePassword(oauthToken, forAccount: self.accountNameForUserId(userId))
+      try Keychain.storePassword(oauthToken, forAccount: self.accountNameForKeychain)
       return true
     } catch {
       Crashlytics.crashlytics().record(error: error)
@@ -316,19 +316,32 @@ public struct AppEnvironment: AppEnvironmentType {
     return false
   }
 
-  private static func fetchOAuthTokenFromKeychain(forUserId id: Int?) -> String? {
-    guard featureUseKeychainForOAuthTokenEnabled(), let userId = id
+  private static func fetchOAuthTokenFromKeychain() -> String? {
+    guard featureUseKeychainForOAuthTokenEnabled()
     else {
       return nil
     }
 
     do {
-      return try Keychain.fetchPassword(forAccount: self.accountNameForUserId(userId))
+      return try Keychain.fetchPassword(forAccount: self.accountNameForKeychain)
     } catch {
       Crashlytics.crashlytics().record(error: error)
     }
 
     return nil
+  }
+
+  private static func removeOAuthTokenFromKeychain() -> Bool {
+    guard featureUseKeychainForOAuthTokenEnabled() else { return false }
+
+    do {
+      try Keychain.deletePassword(forAccount: self.accountNameForKeychain)
+      return true
+    } catch {
+      Crashlytics.crashlytics().record(error: error)
+    }
+
+    return false
   }
 
   // Returns the last saved environment from user defaults.
@@ -343,11 +356,9 @@ public struct AppEnvironment: AppEnvironmentType {
     let configDict: [String: Any]? = data["config"] as? [String: Any]
     let config: Config? = configDict.flatMap(Config.decodeJSONDictionary)
 
-    let userFromDefaults: User? = data["currentUser"].flatMap(tryDecode)
-
     // If there is an oauth token stored, then we can authenticate our api service
 
-    if let oauthToken = fetchOAuthTokenFromKeychain(forUserId: userFromDefaults?.id) {
+    if let oauthToken = fetchOAuthTokenFromKeychain() {
       service = service.login(OauthToken(token: oauthToken))
     } else if let oauthToken = data["apiService.oauthToken.token"] as? String {
       service = service.login(OauthToken(token: oauthToken))
@@ -424,7 +435,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restore the current user
     if service.oauthToken != nil {
-      currentUser = userFromDefaults
+      currentUser = data["currentUser"].flatMap(tryDecode)
     }
 
     return Environment(
@@ -448,9 +459,11 @@ public struct AppEnvironment: AppEnvironmentType {
 
     if let oauthToken = env.apiService.oauthToken?.token {
       // Try to save to the keychain, but if that fails, save to user defaults
-      if !self.storeOAuthTokenToKeychain(oauthToken, forUserId: env.currentUser?.id) {
+      if !self.storeOAuthTokenToKeychain(oauthToken) {
         data["apiService.oauthToken.token"] = oauthToken
       }
+    } else {
+      _ = self.removeOAuthTokenFromKeychain()
     }
 
     data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString

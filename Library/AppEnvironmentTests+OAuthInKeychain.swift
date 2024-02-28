@@ -49,7 +49,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
 
     do {
       let tokenFromKeychain = try Keychain
-        .fetchPassword(forAccount: AppEnvironment.accountNameForUserId(currentUser.id))
+        .fetchPassword(forAccount: AppEnvironment.accountNameForKeychain)
       XCTAssertEqual(tokenFromKeychain, "deadbeef")
 
     } catch {
@@ -190,6 +190,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
 
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertFalse(Keychain.hasPassword(forAccount: AppEnvironment.accountNameForKeychain))
 
     let env = AppEnvironment
       .fromStorage(
@@ -221,7 +222,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     )
 
     XCTAssertNoThrow(try Keychain
-      .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForUserId(user.id)))
+      .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForKeychain))
 
     let env = AppEnvironment
       .fromStorage(
@@ -263,7 +264,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     AppEnvironment.pushEnvironment(env)
 
     let tokenFromKeychain = try! Keychain
-      .fetchPassword(forAccount: AppEnvironment.accountNameForUserId(user.id))
+      .fetchPassword(forAccount: AppEnvironment.accountNameForKeychain)
     XCTAssertEqual(tokenInDefaults, tokenFromKeychain)
   }
 
@@ -289,6 +290,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
 
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertFalse(Keychain.hasPassword(forAccount: AppEnvironment.accountNameForKeychain))
 
     let env = AppEnvironment
       .fromStorage(
@@ -296,8 +298,8 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
         userDefaults: userDefaults
       )
 
-    XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
-    XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertNil(env.apiService.oauthToken)
+    XCTAssertNil(env.currentUser)
   }
 
   func testFromStorage_featureUseKeychainEnabledIsFalse_hasTokenInDefaults_usesTokenInDefaults() {
@@ -319,7 +321,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     )
 
     XCTAssertNoThrow(try Keychain
-      .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForUserId(user.id)))
+      .storePassword(tokenInKeychain, forAccount: AppEnvironment.accountNameForKeychain))
 
     let env = AppEnvironment
       .fromStorage(
@@ -358,7 +360,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     XCTAssertNotNil(env.apiService.oauthToken)
     XCTAssertEqual(env.apiService.oauthToken?.token, tokenInDefaults)
 
-    let hasTokenInKeychain = Keychain.hasPassword(forAccount: AppEnvironment.accountNameForUserId(user.id))
+    let hasTokenInKeychain = Keychain.hasPassword(forAccount: AppEnvironment.accountNameForKeychain)
     XCTAssertFalse(hasTokenInKeychain)
   }
 
@@ -373,7 +375,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
     let user = User.template
     let token1 = "first token"
     let token2 = "second token"
-    let accountName = AppEnvironment.accountNameForUserId(user.id)
+    let accountName = AppEnvironment.accountNameForKeychain
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: token1, user: user))
 
