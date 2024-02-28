@@ -227,9 +227,6 @@
 		194C002F2A6844B300621DC3 /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6093098E2A6054D8004297AF /* GraphAPI.TriggerThirdPartyEventInput+TriggerThirdPartyEventInputTests.swift */; };
 		1950DBBE2A8445B500071862 /* ProjectTabCheckmarkListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950DBBD2A8445B500071862 /* ProjectTabCheckmarkListCell.swift */; };
 		1950DBC02A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950DBBF2A844C7F00071862 /* ProjectTabCheckmarkListCellViewModel.swift */; };
-		195747162A71AF0B00D43CA3 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 195747152A71AF0B00D43CA3 /* PerimeterX_SDK */; };
-		195747182A71AF1700D43CA3 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 195747172A71AF1700D43CA3 /* PerimeterX_SDK */; };
-		1957471A2A71AF3200D43CA3 /* PerimeterX_SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 195747192A71AF3200D43CA3 /* PerimeterX_SDK */; };
 		1965436D28C807FB00457EC6 /* PledgePaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */; };
 		1965437428C811B000457EC6 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		1965437E28C8165200457EC6 /* ProjectPageNavigationBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AF78772710DB57009587F1 /* ProjectPageNavigationBarViewTests.swift */; };
@@ -386,7 +383,6 @@
 		475DEC0126B07BB9001B961B /* CancelBacking.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 475DEC0026B07BB9001B961B /* CancelBacking.graphql */; };
 		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
 		47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplates.swift */; };
-		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
 		4771DF9926EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */; };
 		477239752710FA1900D26CDA /* ProjectNavigationSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */; };
 		477239772710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477239762710FA9A00D26CDA /* ProjectNavigationSelectorViewModel.swift */; };
@@ -683,7 +679,6 @@
 		8A1A93D224C602300012FB43 /* PledgeShippingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */; };
 		8A1F155624DB609D00E0C000 /* DateFormatter+ISOFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */; };
 		8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F155724DC657E00E0C000 /* Project.RewardDataLenses.swift */; };
-		8A1F65E6262660CB00A28E74 /* PerimeterXClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65E4262660CB00A28E74 /* PerimeterXClient.swift */; };
 		8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */; };
 		8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */; };
 		8A213CF3239EAEB700BBB4C7 /* KSRAnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */; };
@@ -796,7 +791,6 @@
 		8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */; };
 		8ACF36D1262745520026E74D /* MockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587761EEB2ED6006E7684 /* MockService.swift */; };
 		8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F66022627300900A28E74 /* ApiDateProtocol.swift */; };
-		8ACF36F7262763960026E74D /* MockPerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65EA262660DB00A28E74 /* MockPerimeterXTypes.swift */; };
 		8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558823E8D467001654A2 /* TryDecodable.swift */; };
 		8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */; };
 		8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD48632235939AF00A1463E /* StripeTypes.swift */; };
@@ -1973,7 +1967,6 @@
 		475DEC0026B07BB9001B961B /* CancelBacking.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CancelBacking.graphql; sourceTree = "<group>"; };
 		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
 		47613FC52652CD11006F09FF /* CommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
-		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
 		4771DF9826EFD51700F7DE87 /* RiskMessagingViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMessagingViewControllerTests.swift; sourceTree = "<group>"; };
 		477239722710F87D00D26CDA /* ProjectPageViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPageViewControllerDataSource.swift; sourceTree = "<group>"; };
 		477239742710FA1900D26CDA /* ProjectNavigationSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigationSelectorView.swift; sourceTree = "<group>"; };
@@ -2276,8 +2269,6 @@
 		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISOFormatter.swift"; sourceTree = "<group>"; };
 		8A1F155724DC657E00E0C000 /* Project.RewardDataLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.RewardDataLenses.swift; sourceTree = "<group>"; };
-		8A1F65E4262660CB00A28E74 /* PerimeterXClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerimeterXClient.swift; sourceTree = "<group>"; };
-		8A1F65EA262660DB00A28E74 /* MockPerimeterXTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPerimeterXTypes.swift; sourceTree = "<group>"; };
 		8A1F66022627300900A28E74 /* ApiDateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiDateProtocol.swift; sourceTree = "<group>"; };
 		8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSRAnalyticsTests.swift; sourceTree = "<group>"; };
@@ -3155,7 +3146,6 @@
 				06634FC72807A4EB00950F60 /* Prelude_UIKit in Frameworks */,
 				6078106F2A04191C0050D4F7 /* FirebaseAnalytics in Frameworks */,
 				19821C87299D3E8300EF312F /* AppboySegment in Frameworks */,
-				195747182A71AF1700D43CA3 /* PerimeterX_SDK in Frameworks */,
 				60DA510F28C7E04B002E2DF1 /* Kingfisher in Frameworks */,
 				6078106B2A0419130050D4F7 /* FirebaseCrashlytics in Frameworks */,
 				19A6665F2A045F2A00708F8B /* FirebaseRemoteConfig in Frameworks */,
@@ -3186,7 +3176,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				195747162A71AF0B00D43CA3 /* PerimeterX_SDK in Frameworks */,
 				60EAD1C728D25A36009F9474 /* AppCenterDistribute in Frameworks */,
 				06EA2D4C280F76B700F4DE2E /* Prelude in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
@@ -3210,7 +3199,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				06634FBE2807A4C300950F60 /* Apollo in Frameworks */,
-				1957471A2A71AF3200D43CA3 /* PerimeterX_SDK in Frameworks */,
 				06634FC52807A4EB00950F60 /* Prelude in Frameworks */,
 				06634FC02807A4C300950F60 /* ApolloAPI in Frameworks */,
 				06634FC22807A4C300950F60 /* ApolloUtils in Frameworks */,
@@ -5751,16 +5739,6 @@
 			path = graphql;
 			sourceTree = "<group>";
 		};
-		8A1F660D26273B6300A28E74 /* px */ = {
-			isa = PBXGroup;
-			children = (
-				8A1F65EA262660DB00A28E74 /* MockPerimeterXTypes.swift */,
-				8A1F65E4262660CB00A28E74 /* PerimeterXClient.swift */,
-				476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */,
-			);
-			path = px;
-			sourceTree = "<group>";
-		};
 		8A213CE3239EAEA400BBB4C7 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -6625,7 +6603,6 @@
 				D015876B1EEB2ED6006E7684 /* lib */,
 				D01587771EEB2ED6006E7684 /* models */,
 				775DFADB2162A56D00620CED /* mutations */,
-				8A1F660D26273B6300A28E74 /* px */,
 				7798B5292174F3BC008BC50D /* queries */,
 			);
 			path = KsApi;
@@ -7059,7 +7036,6 @@
 				19A6665E2A045F2A00708F8B /* FirebaseRemoteConfig */,
 				19338D9A2A0D4E2300075F29 /* Stripe */,
 				1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */,
-				195747172A71AF1700D43CA3 /* PerimeterX_SDK */,
 				E113BD902B7D615000D3A809 /* Prelude */,
 			);
 			productName = "Library-iOS";
@@ -7133,7 +7109,6 @@
 				06EA2D4B280F76B700F4DE2E /* Prelude */,
 				60EAD1C628D25A36009F9474 /* AppCenterDistribute */,
 				19821C84299D392400EF312F /* AppboySegment */,
-				195747152A71AF0B00D43CA3 /* PerimeterX_SDK */,
 			);
 			productName = Kickstarter;
 			productReference = A7D1F9451C850B7C000D41D5 /* KickDebug.app */;
@@ -7184,7 +7159,6 @@
 				06634FC42807A4EB00950F60 /* Prelude */,
 				60DA511328C96A65002E2DF1 /* SwiftSoup */,
 				1998BCB128F60ED400D04077 /* ReactiveExtensions */,
-				195747192A71AF3200D43CA3 /* PerimeterX_SDK */,
 			);
 			productName = KsApi;
 			productReference = D01587501EEB2DE4006E7684 /* KsApi.framework */;
@@ -7331,7 +7305,6 @@
 				606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				19BF225F28D10497007F4197 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				60EAD1C528D25A36009F9474 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
-				602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */,
 				194C593E28F5E7FF00453249 /* XCRemoteSwiftPackageReference "Kickstarter-ReactiveExtensions" */,
 				7049568E299D53ED00B273DF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				19821C83299D392300EF312F /* XCRemoteSwiftPackageReference "appboy-segment-ios" */,
@@ -8593,7 +8566,6 @@
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
 				8AC3E00726961E6400168BF8 /* Reward+RewardFragment.swift in Sources */,
 				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
-				476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */,
@@ -8725,7 +8697,6 @@
 				D01588D31EEB2ED7006E7684 /* SurveyResponseLenses.swift in Sources */,
 				8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */,
 				D01588A91EEB2ED7006E7684 /* Project.PersonalizationLenses.swift in Sources */,
-				8A1F65E6262660CB00A28E74 /* PerimeterXClient.swift in Sources */,
 				8AC3E10D269F4D4000168BF8 /* GraphAPI.UpdateBackingInput+UpdateBackingInput.swift in Sources */,
 				D0158A281EEB30A2006E7684 /* StarEnvelopeTemplates.swift in Sources */,
 				D0158A221EEB30A2006E7684 /* ProjectStatsEnvelopeTemplates.swift in Sources */,
@@ -8819,7 +8790,6 @@
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,
 				06232D452795EC4600A81755 /* TextViewElement.swift in Sources */,
 				D01588431EEB2ED7006E7684 /* Activity.swift in Sources */,
-				8ACF36F7262763960026E74D /* MockPerimeterXTypes.swift in Sources */,
 				D01588CD1EEB2ED7006E7684 /* ShippingRulesEnvelopeLenses.swift in Sources */,
 				8A4E954924525EC100A578CF /* BackingState.swift in Sources */,
 				8479CF2C2530A5D700FD13F1 /* Service+DecodeHelpers.swift in Sources */,
@@ -10660,14 +10630,6 @@
 				minimumVersion = 10.7.0;
 			};
 		};
-		602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/PerimeterX/px-iOS-Framework";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.3;
-			};
-		};
 		606754B728CF8A190033CD5E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
@@ -10758,21 +10720,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 194520C12888542100CA9B88 /* XCRemoteSwiftPackageReference "stripe-ios" */;
 			productName = Stripe;
-		};
-		195747152A71AF0B00D43CA3 /* PerimeterX_SDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX_SDK;
-		};
-		195747172A71AF1700D43CA3 /* PerimeterX_SDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX_SDK;
-		};
-		195747192A71AF3200D43CA3 /* PerimeterX_SDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 602C97D628DB787900919CA8 /* XCRemoteSwiftPackageReference "px-iOS-Framework" */;
-			productName = PerimeterX_SDK;
 		};
 		19821C84299D392400EF312F /* AppboySegment */ = {
 			isa = XCSwiftPackageProductDependency;

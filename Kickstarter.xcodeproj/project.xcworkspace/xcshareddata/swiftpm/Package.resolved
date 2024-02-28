@@ -217,15 +217,6 @@
       }
     },
     {
-      "identity" : "px-ios-framework",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/PerimeterX/px-iOS-Framework",
-      "state" : {
-        "revision" : "9618a64b64307f3e70abcde6bf16cf205e9d80f6",
-        "version" : "3.0.5"
-      }
-    },
-    {
       "identity" : "reactiveswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",

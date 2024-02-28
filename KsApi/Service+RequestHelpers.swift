@@ -20,7 +20,7 @@ extension Service {
     return Service.session.rac_dataResponse(
       preparedRequest(forURL: URL, method: properties.method, query: properties.query),
       uploading: properties.file.map { ($1, $0.rawValue) },
-      and: self.perimeterXClient
+      and: nil
     )
     .flatMap(self.decodeModelToSignal)
   }
@@ -37,7 +37,7 @@ extension Service {
     return Service.session.combine_dataResponse(
       preparedRequest(forURL: URL, method: properties.method, query: properties.query),
       uploading: properties.file.map { ($1, $0.rawValue) },
-      and: self.perimeterXClient
+      and: nil
     ).handle_combine_dataResponse(service: self)
   }
 
@@ -57,7 +57,7 @@ extension Service {
     return Service.session.combine_dataResponse(
       preparedRequest,
       uploading: properties.file.map { ($1, $0.rawValue) },
-      and: self.perimeterXClient
+      and: nil
     ).handle_combine_dataResponse(service: self)
   }
 
@@ -68,7 +68,7 @@ extension Service {
     }
 
     return Service.session
-      .rac_dataResponse(preparedRequest(forURL: paginationUrl), and: self.perimeterXClient)
+      .rac_dataResponse(preparedRequest(forURL: paginationUrl), and: nil)
       .flatMap(self.decodeModelToSignal)
   }
 
@@ -79,7 +79,7 @@ extension Service {
     }
 
     return Service.session
-      .combine_dataResponse(preparedRequest(forURL: paginationUrl), and: self.perimeterXClient)
+      .combine_dataResponse(preparedRequest(forURL: paginationUrl), and: nil)
       .handle_combine_dataResponse(service: self)
   }
 }
