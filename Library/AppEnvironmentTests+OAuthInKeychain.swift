@@ -69,7 +69,7 @@ final class AppEnvironmentTests_OAuthInKeychain: XCTestCase {
 
     XCTAssertEqual(
       nil, ubiquitousStore.string(forKey: AppEnvironment.oauthTokenStorageKey),
-      "No token stored."
+      "Token should never have been stored in the ubiquitous store; only in the user defaults or keychain."
     )
   }
 
