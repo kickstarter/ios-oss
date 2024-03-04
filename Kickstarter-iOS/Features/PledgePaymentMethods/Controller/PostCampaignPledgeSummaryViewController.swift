@@ -68,15 +68,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryCell.self)
   }
 
-  private func configureChildViewControllers() {
-    self.addChild(self.pledgeTotalViewController)
-    self.pledgeTotalViewController.didMove(toParent: self)
-  }
-
-  /*
-   tableView is not pinned to bottom of container to allow it to size freely and for us to manage its height
-   with constraints
-   */
   private func setupConstraints() {
     let tableViewContainerHeightConstraint = self.tableViewContainer.heightAnchor
       .constraint(equalToConstant: 0)

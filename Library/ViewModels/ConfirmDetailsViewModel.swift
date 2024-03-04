@@ -31,7 +31,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
-  var rewardsSummaryViewHidden: Signal<Bool, Never> { get }
+  var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var shippingSummaryViewHidden: Signal<Bool, Never> { get }
   var rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never> { get }
@@ -348,7 +348,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     }
 
-    self.rewardsSummaryViewHidden = Signal.zip(context, baseReward)
+    self.pledgeRewardsSummaryViewHidden = Signal.zip(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
           return reward.isNoReward
@@ -413,7 +413,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let pledgeTotalSummarySectionIsHidden: Signal<Bool, Never>
-  public let rewardsSummaryViewHidden: Signal<Bool, Never>
+  public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let shippingSummaryViewHidden: Signal<Bool, Never>
   public let rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never>

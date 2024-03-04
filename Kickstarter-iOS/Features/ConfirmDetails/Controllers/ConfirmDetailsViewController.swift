@@ -67,7 +67,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     PledgeShippingSummaryView(frame: .zero)
   }()
 
-  private lazy var rewardsSummaryViewController = {
+  private lazy var pledgeRewardsSummaryViewController = {
     PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
@@ -141,7 +141,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       |> ksr_constrainViewToEdgesInParent()
 
     let childViewControllers = [
-      self.rewardsSummaryViewController,
+      self.pledgeRewardsSummaryViewController,
       self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
       self.shippingLocationViewController
@@ -155,7 +155,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       [self.titleLabel],
       self.inputsSectionViews,
       [self.pledgeAmountSummaryViewController.view],
-      [self.rewardsSummaryViewController.view]
+      [self.pledgeRewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
     .compact()
@@ -213,9 +213,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.rewardsSummaryViewController.view.rac.hidden
-      = self.viewModel.outputs.rewardsSummaryViewHidden
-
     self.viewModel.outputs.configureLocalPickupViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -255,7 +252,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     self.viewModel.outputs.configureRewardsSummaryViewWithData
       .observeForUI()
       .observeValues { [weak self] rewardsData, pledgeData in
-        self?.rewardsSummaryViewController.configureWith(rewardsData: rewardsData, pledgeData: pledgeData)
+        self?.pledgeRewardsSummaryViewController
+          .configureWith(rewardsData: rewardsData, pledgeData: pledgeData)
       }
 
     self.viewModel.outputs.goToLoginSignup
@@ -289,6 +287,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
+    self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
+      .pledgeRewardsSummaryViewHidden
   }
 
   // MARK: - Actions
