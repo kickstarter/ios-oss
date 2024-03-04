@@ -214,9 +214,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.current.apiService.fetchGraphUserEmail().wrapInOptional().materialize()
       }
 
-    _ = fetchUserEmailEvent.values()
+    self.fetchUserEmail = fetchUserEmailEvent.values()
       .map { user in
-        guard let email = user?.me.email else { return }
+        guard let email = user?.me.email else {
+          return
+        }
 
         AppEnvironment.updateCurrentUserEmail(email)
       }
@@ -904,6 +906,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
+  private let fetchUserEmail: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
