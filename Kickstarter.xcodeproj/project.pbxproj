@@ -458,6 +458,9 @@
 		6008633F29BF750700B87B39 /* MockAppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */; };
 		6018626629A9194600EA2842 /* AppTrackingTransparency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626529A9194600EA2842 /* AppTrackingTransparency.swift */; };
 		6018626829A91B8C00EA2842 /* ThirdPartyEventInputName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */; };
+		6021F6562B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6552B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift */; };
+		6021F6582B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6572B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift */; };
+		6021F65A2B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6592B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
@@ -2053,6 +2056,10 @@
 		6008633E29BF750700B87B39 /* MockAppTrackingTransparency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626529A9194600EA2842 /* AppTrackingTransparency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparency.swift; sourceTree = "<group>"; };
 		6018626729A91B8C00EA2842 /* ThirdPartyEventInputName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyEventInputName.swift; sourceTree = "<group>"; };
+		6021F6552B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeSummaryTotalViewController.swift; sourceTree = "<group>"; };
+		6021F6572B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeSummaryTotalViewModel.swift; sourceTree = "<group>"; };
+		6021F6592B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeSummaryTotalViewModelTests.swift; sourceTree = "<group>"; };
+		6021F65B2B9630F900F76031 /* PostCampaignPledgeRewardsSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModel.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
@@ -5658,6 +5665,7 @@
 			children = (
 				60A3ED292B8CD98C008E1BA8 /* ConfirmDetailsViewController.swift */,
 				60A3ED2D2B8CD9C2008E1BA8 /* ConfirmDetailsViewControllerTests.swift */,
+				6021F6552B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -6522,6 +6530,8 @@
 				D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */,
 				37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */,
 				37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */,
+				6021F6572B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift */,
+				6021F6592B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift */,
 				A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */,
 				A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */,
 				4751A676272B31D000F81DD5 /* ProjectTabCategoryDescriptionCellViewModel.swift */,
@@ -7676,6 +7686,7 @@
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,
 				D0D77C1E22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
+				6021F6582B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift in Sources */,
 				19F91B10289C1E51000AEC6A /* PledgePaymentSheetPaymentMethodCellViewModel.swift in Sources */,
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
@@ -8036,6 +8047,7 @@
 				60A3ED3A2B8CDAD4008E1BA8 /* ConfirmDetailsViewModelTests.swift in Sources */,
 				D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */,
 				A7ED1FAE1E831C5C00BFFA01 /* FindFriendsViewModelTests.swift in Sources */,
+				6021F65A2B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift in Sources */,
 				A7ED1FE11E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift in Sources */,
 				77C9122F23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift in Sources */,
 				A7ED1FAA1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift in Sources */,
@@ -8396,6 +8408,7 @@
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
 				3767EDAD22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift in Sources */,
 				370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */,
+				6021F6562B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift in Sources */,
 				06FFE98827C67C8800E3A929 /* GIFAnimatedImageView.swift in Sources */,
 				06B02BED26680D4300903A83 /* CommentCell.swift in Sources */,
 				7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */,
