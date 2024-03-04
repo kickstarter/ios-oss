@@ -299,14 +299,25 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
     .map(pledgeSummaryViewData)
 
+    let shippingSummaryData = Signal.combineLatest(
+      selectedShippingRule.skipNil().map(\.location.localizedName),
+      project.map(\.stats.omitUSCurrencyCode),
+      project.map { project in
+        projectCountry(forCurrency: project.stats.currency) ?? project.country
+      },
+      allRewardsShippingTotal
+    )
+    .map(PledgeShippingSummaryViewData.init)
+
     self.configureRewardsSummaryViewWithData = Signal.zip(
       baseReward.map(\.isNoReward).filter(isFalse),
       project,
       rewards,
       selectedQuantities,
-      rewardsSummaryPledgeData
+      rewardsSummaryPledgeData,
+      shippingSummaryData
     )
-    .map { _, project, rewards, selectedQuantities, rewardsSummaryPledgeData -> (
+    .map { _, project, rewards, selectedQuantities, rewardsSummaryPledgeData, shippingSummaryData -> (
       PostCampaignRewardsSummaryViewData,
       PledgeSummaryViewData
     ) in
@@ -317,7 +328,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
             rewards: rewards,
             selectedQuantities: selectedQuantities,
             projectCountry: project.country,
-            omitCurrencyCode: project.stats.omitUSCurrencyCode
+            omitCurrencyCode: project.stats.omitUSCurrencyCode,
+            shipping: shippingSummaryData
           ),
         rewardsSummaryPledgeData
       )
@@ -329,7 +341,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
           rewards: rewards,
           selectedQuantities: selectedQuantities,
           projectCountry: projectCurrencyCountry,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          shipping: shippingSummaryData
         ),
       rewardsSummaryPledgeData
     )
