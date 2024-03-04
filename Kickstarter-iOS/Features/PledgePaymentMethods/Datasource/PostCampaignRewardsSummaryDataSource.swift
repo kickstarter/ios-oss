@@ -30,7 +30,7 @@ internal final class PostCampaignRewardsSummaryDataSource: ValueCellDataSource {
 
     self.set(
       values: rewardItemData,
-      cellClass: PledgeExpandableHeaderRewardCell.self,
+      cellClass: PostCampaignPledgeRewardsSummaryCell.self,
       inSection: Section.rewards.rawValue
     )
   }
@@ -42,7 +42,7 @@ internal final class PostCampaignRewardsSummaryDataSource: ValueCellDataSource {
       value as PledgeExpandableHeaderRewardCellData
     ):
       cell.configureWith(value: value)
-    case let (cell as PledgeExpandableHeaderRewardCell, value as PledgeExpandableHeaderRewardCellData):
+    case let (cell as PostCampaignPledgeRewardsSummaryCell, value as PledgeExpandableHeaderRewardCellData):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

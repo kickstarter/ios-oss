@@ -3,12 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Style {
-    static let cornerRadius: CGFloat = Styles.grid(2)
-    static let modalHeightMultiplier: CGFloat = 0.65
-  }
-
+public enum ConfirmDetailsLayout {
   enum Margin {
     static let topBottom: CGFloat = Styles.grid(3)
     static let leftRight: CGFloat = CheckoutConstants.PledgeView.Inset.leftRight
@@ -72,8 +67,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     PledgeShippingSummaryView(frame: .zero)
   }()
 
-  private lazy var expandableRewardsViewController = {
-    PostCampaignPledgeExpandableRewardsViewController.instantiate()
+  private lazy var rewardsSummaryViewController = {
+    PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -146,7 +141,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       |> ksr_constrainViewToEdgesInParent()
 
     let childViewControllers = [
-      self.expandableRewardsViewController,
+      self.rewardsSummaryViewController,
       self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
       self.shippingLocationViewController
@@ -160,7 +155,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       [self.titleLabel],
       self.inputsSectionViews,
       [self.pledgeAmountSummaryViewController.view],
-      [self.expandableRewardsViewController.view]
+      [self.rewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
     .compact()
@@ -177,9 +172,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
-
-    self.rootStackView
-      .setCustomSpacing(Styles.grid(2), after: self.expandableRewardsViewController.view)
   }
 
   private func setupConstraints() {
@@ -221,8 +213,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.expandableRewardsViewController.view.rac.hidden
-      = self.viewModel.outputs.expandableRewardsViewHidden
+    self.rewardsSummaryViewController.view.rac.hidden
+      = self.viewModel.outputs.rewardsSummaryViewHidden
 
     self.viewModel.outputs.configureLocalPickupViewWithData
       .observeForUI()
@@ -248,10 +240,6 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.pledgeAmountViewController.configureWith(value: data)
       }
 
-    self.viewModel.outputs.configurePledgeSummaryHeaderWithData
-      .observeForUI()
-      .observeValues { [weak self] _ in }
-
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -264,10 +252,10 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
-    self.viewModel.outputs.configureExpandableRewardsViewWithData
+    self.viewModel.outputs.configureRewardsSummaryViewWithData
       .observeForUI()
-      .observeValues { [weak self] data in
-        self?.expandableRewardsViewController.configure(with: data)
+      .observeValues { [weak self] rewardsData, pledgeData in
+        self?.rewardsSummaryViewController.configureWith(rewardsData: rewardsData, pledgeData: pledgeData)
       }
 
     self.viewModel.outputs.goToLoginSignup
@@ -394,7 +382,7 @@ private let rootInsetStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(4)
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: Layout.Margin.topBottom,
-      leftRight: Layout.Margin.leftRight
+      topBottom: ConfirmDetailsLayout.Margin.topBottom,
+      leftRight: ConfirmDetailsLayout.Margin.leftRight
     )
 }

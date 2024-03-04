@@ -19,17 +19,19 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
-  var configureExpandableRewardsViewWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
+  var configureRewardsSummaryViewWithData: Signal<
+    (PostCampaignRewardsSummaryViewData, PledgeSummaryViewData),
+    Never
+  > { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
-  var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
-  var totalSummarySectionIsHidden: Signal<Bool, Never> { get }
+  var pledgeTotalSummarySectionIsHidden: Signal<Bool, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
-  var expandableRewardsViewHidden: Signal<Bool, Never> { get }
+  var rewardsSummaryViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var shippingSummaryViewHidden: Signal<Bool, Never> { get }
   var rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never> { get }
@@ -58,18 +60,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let refTag = initialData.map(\.refTag)
     let context = initialData.map(\.context)
 
-    let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
-
     let backing = project.map { $0.personalization.backing }.skipNil()
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
       (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
     }
-
-    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
-      .map { _ in AppEnvironment.current.currentUser }
-      .map(isNotNil)
 
     let selectedShippingRule = Signal.merge(
       project.mapConst(nil),
@@ -251,27 +247,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       context.map { $0.confirmationLabelHidden }
     )
 
-    self.configureSummaryViewControllerWithData = Signal.combineLatest(
-      projectAndConfirmationLabelHidden,
-      pledgeTotal
-    )
-    .map(unpack)
-    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
-    .map(pledgeSummaryViewData)
-
-    self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
-      projectAndReward,
-      allRewardsTotal,
-      additionalPledgeAmount,
-      shippingViewsHiddenConditionsForPledgeAmountSummary,
-      context
-    )
-    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
-      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
-    }
-    .map(pledgeAmountSummaryViewData)
-    .skipNil()
-
     self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
       .map { (LoginIntent.backProject, $0.0, $0.1) }
 
@@ -290,7 +265,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     }
     .map(PledgeExpandableRewardsHeaderViewData.init)
 
-    self.totalSummarySectionIsHidden = Signal.zip(context, baseReward)
+    self.pledgeTotalSummarySectionIsHidden = Signal.zip(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
           return reward.isNoReward
@@ -299,26 +274,68 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         return context.expandableRewardViewHidden
       }
 
-    self.rootStackViewLayoutMargins = self.totalSummarySectionIsHidden.map { hidden in
+    self.rootStackViewLayoutMargins = self.pledgeTotalSummarySectionIsHidden.map { hidden in
       hidden ? UIEdgeInsets(topBottom: Styles.grid(3)) : UIEdgeInsets(bottom: Styles.grid(3))
     }
 
-    self.configureExpandableRewardsViewWithData = Signal.zip(
+    self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
+      projectAndReward,
+      allRewardsTotal,
+      additionalPledgeAmount,
+      shippingViewsHiddenConditionsForPledgeAmountSummary,
+      context
+    )
+    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
+      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
+    }
+    .map(pledgeAmountSummaryViewData)
+    .skipNil()
+
+    let rewardsSummaryPledgeData = Signal.combineLatest(
+      projectAndConfirmationLabelHidden,
+      pledgeTotal
+    )
+    .map(unpack)
+    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+    .map(pledgeSummaryViewData)
+
+    self.configureRewardsSummaryViewWithData = Signal.zip(
       baseReward.map(\.isNoReward).filter(isFalse),
       project,
       rewards,
-      selectedQuantities
+      selectedQuantities,
+      rewardsSummaryPledgeData
     )
-    .map { _, project, rewards, selectedQuantities in
-      guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
-        return (rewards, selectedQuantities, project.country, project.stats.omitUSCurrencyCode)
-      }
-
-      return (rewards, selectedQuantities, projectCurrencyCountry, project.stats.omitUSCurrencyCode)
+    .map { _, project, rewards, selectedQuantities, rewardsSummaryPledgeData -> (
+      PostCampaignRewardsSummaryViewData,
+      PledgeSummaryViewData
+    ) in
+    guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
+      return (
+        PostCampaignRewardsSummaryViewData
+          .init(
+            rewards: rewards,
+            selectedQuantities: selectedQuantities,
+            projectCountry: project.country,
+            omitCurrencyCode: project.stats.omitUSCurrencyCode
+          ),
+        rewardsSummaryPledgeData
+      )
     }
-    .map(PledgeExpandableRewardsHeaderViewData.init)
 
-    self.expandableRewardsViewHidden = Signal.zip(context, baseReward)
+    return (
+      PostCampaignRewardsSummaryViewData
+        .init(
+          rewards: rewards,
+          selectedQuantities: selectedQuantities,
+          projectCountry: projectCurrencyCountry,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
+        ),
+      rewardsSummaryPledgeData
+    )
+    }
+
+    self.rewardsSummaryViewHidden = Signal.zip(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
           return reward.isNoReward
@@ -371,17 +388,19 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
-  public let configureExpandableRewardsViewWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
+  public let configureRewardsSummaryViewWithData: Signal<(
+    PostCampaignRewardsSummaryViewData,
+    PledgeSummaryViewData
+  ), Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
-  public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
-  public let totalSummarySectionIsHidden: Signal<Bool, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
-  public let expandableRewardsViewHidden: Signal<Bool, Never>
+  public let pledgeTotalSummarySectionIsHidden: Signal<Bool, Never>
+  public let rewardsSummaryViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let shippingSummaryViewHidden: Signal<Bool, Never>
   public let rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never>

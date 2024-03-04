@@ -1,0 +1,210 @@
+import KsApi
+import Prelude
+import ReactiveSwift
+import UIKit
+
+public enum PostCampaignRewardsSummaryItem {
+  case header(PledgeExpandableHeaderRewardCellData)
+  case reward(PledgeExpandableHeaderRewardCellData)
+
+  public var data: PledgeExpandableHeaderRewardCellData {
+    switch self {
+    case let .header(data): return data
+    case let .reward(data): return data
+    }
+  }
+
+  public var isHeader: Bool {
+    switch self {
+    case .header: return true
+    case .reward: return false
+    }
+  }
+
+  public var isReward: Bool {
+    switch self {
+    case .header: return false
+    case .reward: return true
+    }
+  }
+}
+
+public struct PostCampaignRewardsSummaryViewData {
+  public let rewards: [Reward]
+  public let selectedQuantities: SelectedRewardQuantities
+  public let projectCountry: Project.Country
+  public let omitCurrencyCode: Bool
+}
+
+public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
+  func configureWith(rewardsData: PostCampaignRewardsSummaryViewData, pledgeData: PledgeSummaryViewData)
+  func viewDidLoad()
+}
+
+public protocol PostCampaignPledgeRewardsSummaryViewModelOutputs {
+  var configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never> { get }
+  var loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never> { get }
+}
+
+public protocol PostCampaignPledgeRewardsSummaryViewModelType {
+  var inputs: PostCampaignPledgeRewardsSummaryViewModelInputs { get }
+  var outputs: PostCampaignPledgeRewardsSummaryViewModelOutputs { get }
+}
+
+public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledgeRewardsSummaryViewModelType,
+  PostCampaignPledgeRewardsSummaryViewModelInputs, PostCampaignPledgeRewardsSummaryViewModelOutputs {
+  public init() {
+    let data = Signal.combineLatest(
+      self.configureWithDataProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
+    let rewardData = data.map { $0.0 }
+    let rewards = data.map(\.0.rewards)
+    let selectedQuantities = data.map(\.0.selectedQuantities)
+
+    let latestRewardDeliveryDate = rewards.map { rewards in
+      rewards
+        .compactMap { $0.estimatedDeliveryOn }
+        .reduce(0) { accum, value in max(accum, value) }
+    }
+
+    let estimatedDeliveryString = latestRewardDeliveryDate.map { date -> String? in
+      guard date > 0 else { return nil }
+
+      let dateString = Format.date(
+        secondsInUTC: date,
+        template: DateFormatter.monthYear,
+        timeZone: UTCTimeZone
+      )
+
+      return Strings.backing_info_estimated_delivery_date(delivery_date: dateString)
+    }
+    .skipNil()
+
+    let total: Signal<Double, Never> = Signal.combineLatest(
+      rewards,
+      selectedQuantities
+    )
+    .map { rewards, selectedQuantities in
+      rewards.reduce(0.0) { total, reward in
+        let totalForReward = reward.minimum
+          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+        return total.addingCurrency(totalForReward)
+      }
+    }
+
+    self.loadRewardsIntoDataSource = Signal.zip(
+      rewardData,
+      selectedQuantities,
+      estimatedDeliveryString,
+      total
+    )
+    .map(items)
+
+    self.configurePledgeTotalViewWithData = data.map { $0.1 }
+  }
+
+  private let configureWithDataProperty =
+    MutableProperty<(PostCampaignRewardsSummaryViewData, PledgeSummaryViewData)?>(nil)
+  public func configureWith(
+    rewardsData: PostCampaignRewardsSummaryViewData,
+    pledgeData: PledgeSummaryViewData
+  ) {
+    self.configureWithDataProperty.value = (rewardsData, pledgeData)
+  }
+
+  private let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
+  public let configurePledgeTotalViewWithData: Signal<PledgeSummaryViewData, Never>
+  public let loadRewardsIntoDataSource: Signal<[PostCampaignRewardsSummaryItem], Never>
+
+  public var inputs: PostCampaignPledgeRewardsSummaryViewModelInputs { return self }
+  public var outputs: PostCampaignPledgeRewardsSummaryViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func items(
+  with data: PostCampaignRewardsSummaryViewData,
+  selectedQuantities: SelectedRewardQuantities,
+  estimatedDeliveryString: String,
+  total: Double
+) -> [PostCampaignRewardsSummaryItem] {
+  guard let totalAmountAttributedText = attributedHeaderCurrency(
+    with: data.projectCountry, amount: total, omitUSCurrencyCode: data.omitCurrencyCode
+  ) else { return [] }
+
+  let headerItem = PostCampaignRewardsSummaryItem.header((
+    text: estimatedDeliveryString,
+    amount: totalAmountAttributedText
+  ))
+
+  let rewardItems = data.rewards.compactMap { reward -> PostCampaignRewardsSummaryItem? in
+    guard let title = reward.title else { return nil }
+
+    let quantity = selectedQuantities[reward.id] ?? 0
+
+    let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
+
+    let amountAttributedText = attributedRewardCurrency(
+      with: data.projectCountry, amount: reward.minimum, omitUSCurrencyCode: data.omitCurrencyCode
+    )
+
+    return PostCampaignRewardsSummaryItem.reward((
+      text: itemString,
+      amount: amountAttributedText
+    ))
+  }
+
+  return [headerItem] + rewardItems
+}
+
+private func attributedHeaderCurrency(
+  with projectCountry: Project.Country,
+  amount: Double,
+  omitUSCurrencyCode: Bool
+) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_400])
+  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
+  guard
+    let attributedCurrency = Format.attributedCurrency(
+      amount,
+      country: projectCountry,
+      omitCurrencyCode: omitUSCurrencyCode,
+      defaultAttributes: defaultAttributes,
+      superscriptAttributes: superscriptAttributes,
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0
+    ) else { return nil }
+
+  return attributedCurrency
+}
+
+private func attributedRewardCurrency(
+  with projectCountry: Project.Country,
+  amount: Double,
+  omitUSCurrencyCode: Bool
+) -> NSAttributedString {
+  let currencyString = Format.currency(
+    amount,
+    country: projectCountry,
+    omitCurrencyCode: omitUSCurrencyCode,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  )
+
+  return NSAttributedString(
+    string: currencyString,
+    attributes: [
+      .foregroundColor: UIColor.ksr_support_400,
+      .font: UIFont.ksr_subhead().bolded
+    ]
+  )
+}

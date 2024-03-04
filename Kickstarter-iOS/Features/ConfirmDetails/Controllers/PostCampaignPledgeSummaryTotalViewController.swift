@@ -123,6 +123,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   _ = label
     |> checkoutTitleLabelStyle
+    |> \.font .~ .ksr_subhead().bolded
     |> \.text %~ { _ in Strings.Total() }
     |> \.backgroundColor .~ .ksr_white
 
@@ -131,7 +132,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 
 private let totalConversionLabelStyle: LabelStyle = { label in
   _ = label
-    |> \.font .~ .ksr_footnote()
+    |> \.font .~ .ksr_caption1()
     |> \.textColor .~ .ksr_support_400
     |> \.backgroundColor .~ .ksr_white
 

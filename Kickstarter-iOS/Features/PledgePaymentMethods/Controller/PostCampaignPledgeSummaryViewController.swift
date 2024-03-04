@@ -2,12 +2,17 @@ import Library
 import Prelude
 import UIKit
 
-final class PostCampaignPledgeExpandableRewardsViewController: UIViewController {
+final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
   // MARK: - Properties
 
-  private let dataSource = PledgeExpandableRewardsHeaderDataSource()
+  private let dataSource = PostCampaignRewardsSummaryDataSource()
 
   private var tableViewContainerHeightConstraint: NSLayoutConstraint?
+
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var tableViewContainer: UIView = {
     UIView(frame: .zero)
@@ -25,7 +30,14 @@ final class PostCampaignPledgeExpandableRewardsViewController: UIViewController 
       |> \.rowHeight .~ UITableView.automaticDimension
   }()
 
-  private let viewModel: PledgeExpandableRewardsHeaderViewModelType = PledgeExpandableRewardsHeaderViewModel()
+  private lazy var separatorView: UIView = { UIView(frame: .zero) }()
+
+  private lazy var pledgeTotalViewController = {
+    PostCampaignPledgeSummaryTotalViewController.instantiate()
+  }()
+
+  private let viewModel: PostCampaignPledgeRewardsSummaryViewModelType =
+    PostCampaignPledgeRewardsSummaryViewModel()
 
   // MARK: - Lifecycle
 
@@ -39,14 +51,26 @@ final class PostCampaignPledgeExpandableRewardsViewController: UIViewController 
   }
 
   private func configureSubviews() {
+    _ = (self.rootStackView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = (self.tableView, self.tableViewContainer)
       |> ksr_addSubviewToParent()
 
-    _ = (self.tableViewContainer, self.view)
-      |> ksr_addSubviewToParent()
+    _ = (
+      [self.tableViewContainer, self.separatorView, self.pledgeTotalViewController.view],
+      self.rootStackView
+    )
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryHeaderCell.self)
-    self.tableView.registerCellClass(PledgeExpandableHeaderRewardCell.self)
+    self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryCell.self)
+  }
+
+  private func configureChildViewControllers() {
+    self.addChild(self.pledgeTotalViewController)
+    self.pledgeTotalViewController.didMove(toParent: self)
   }
 
   /*
@@ -63,11 +87,15 @@ final class PostCampaignPledgeExpandableRewardsViewController: UIViewController 
       self.tableView.leftAnchor.constraint(equalTo: self.tableViewContainer.leftAnchor),
       self.tableView.rightAnchor.constraint(equalTo: self.tableViewContainer.rightAnchor),
       self.tableView.topAnchor.constraint(equalTo: self.tableViewContainer.topAnchor),
-      self.tableViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.tableViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.tableViewContainer.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.tableViewContainer.bottomAnchor
-        .constraint(equalTo: self.view.bottomAnchor, constant: -Styles.grid(3))
+      self.tableViewContainer.leftAnchor.constraint(equalTo: self.rootStackView.leftAnchor),
+      self.tableViewContainer.rightAnchor.constraint(equalTo: self.rootStackView.rightAnchor),
+      self.tableViewContainer.topAnchor.constraint(equalTo: self.rootStackView.topAnchor),
+      self.separatorView.leftAnchor
+        .constraint(equalTo: self.rootStackView.leftAnchor, constant: Styles.grid(4)),
+      self.separatorView.rightAnchor
+        .constraint(equalTo: self.rootStackView.rightAnchor, constant: -Styles.grid(4)),
+      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
   }
 
@@ -80,9 +108,15 @@ final class PostCampaignPledgeExpandableRewardsViewController: UIViewController 
       |> \.clipsToBounds .~ true
       |> checkoutWhiteBackgroundStyle
 
+    _ = self.rootStackView
+      |> self.rootStackViewStyle
+
     _ = self.tableView
       |> checkoutWhiteBackgroundStyle
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    _ = self.separatorView
+      |> self.separatorViewStyle
   }
 
   // MARK: - View model
@@ -95,7 +129,7 @@ final class PostCampaignPledgeExpandableRewardsViewController: UIViewController 
       .observeValues { [weak self] data in
         guard let self else { return }
 
-        self.dataSource.load(data, isInPostCampaign: true)
+        self.dataSource.load(data)
         self.tableView.reloadData()
         self.tableView.setNeedsLayout()
 
@@ -103,20 +137,43 @@ final class PostCampaignPledgeExpandableRewardsViewController: UIViewController 
           self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
         }
       }
+
+    self.viewModel.outputs.configurePledgeTotalViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let self else { return }
+
+        self.pledgeTotalViewController.configure(with: data)
+      }
   }
 
   // MARK: - Configuration
 
-  func configure(with data: PledgeExpandableRewardsHeaderViewData) {
-    self.viewModel.inputs.configure(with: data)
+  func configureWith(rewardsData: PostCampaignRewardsSummaryViewData, pledgeData: PledgeSummaryViewData) {
+    self.viewModel.inputs.configureWith(rewardsData: rewardsData, pledgeData: pledgeData)
 
     self.view.setNeedsLayout()
+  }
+
+  // MARK: Styles
+
+  private let rootStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> \.axis .~ NSLayoutConstraint.Axis.vertical
+      |> \.spacing .~ Styles.grid(1)
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+  }
+
+  private let separatorViewStyle: ViewStyle = { view in
+    view
+      |> \.backgroundColor .~ .ksr_support_200
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }
 }
 
 // MARK: - UITableViewDelegate
 
-extension PostCampaignPledgeExpandableRewardsViewController: UITableViewDelegate {
+extension PostCampaignPledgeRewardsSummaryViewController: UITableViewDelegate {
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
   }
