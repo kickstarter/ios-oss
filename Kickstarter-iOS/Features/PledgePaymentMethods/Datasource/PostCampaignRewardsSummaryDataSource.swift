@@ -3,13 +3,13 @@ import Library
 import Prelude
 import UIKit
 
-internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSource {
+internal final class PostCampaignRewardsSummaryDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case header
     case rewards
   }
 
-  internal func load(_ items: [PledgeExpandableRewardsHeaderItem], isInPostCampaign _: Bool = false) {
+  internal func load(_ items: [PostCampaignRewardsSummaryItem]) {
     self.clearValues()
 
     let headerItemData = items.compactMap { item -> PledgeExpandableHeaderRewardCellData? in
@@ -24,7 +24,7 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
 
     self.set(
       values: headerItemData,
-      cellClass: PledgeExpandableHeaderRewardHeaderCell.self,
+      cellClass: PostCampaignPledgeRewardsSummaryHeaderCell.self,
       inSection: Section.header.rawValue
     )
 
@@ -37,7 +37,10 @@ internal final class PledgeExpandableRewardsHeaderDataSource: ValueCellDataSourc
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgeExpandableHeaderRewardHeaderCell, value as PledgeExpandableHeaderRewardCellData):
+    case let (
+      cell as PostCampaignPledgeRewardsSummaryHeaderCell,
+      value as PledgeExpandableHeaderRewardCellData
+    ):
       cell.configureWith(value: value)
     case let (cell as PledgeExpandableHeaderRewardCell, value as PledgeExpandableHeaderRewardCellData):
       cell.configureWith(value: value)

@@ -461,6 +461,9 @@
 		6021F6562B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6552B91058000F76031 /* PostCampaignPledgeSummaryTotalViewController.swift */; };
 		6021F6582B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6572B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift */; };
 		6021F65A2B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F6592B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift */; };
+		6021F65C2B9630F900F76031 /* PostCampaignPledgeRewardsSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F65B2B9630F900F76031 /* PostCampaignPledgeRewardsSummaryViewModel.swift */; };
+		6021F65E2B96369300F76031 /* PostCampaignRewardsSummaryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F65D2B96369300F76031 /* PostCampaignRewardsSummaryDataSource.swift */; };
+		6021F6602B96372F00F76031 /* PostCampaignRewardsSummaryDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021F65F2B96372F00F76031 /* PostCampaignRewardsSummaryDataSourceTests.swift */; };
 		6031A8462AB2485800F8184D /* ReportProjectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */; };
 		60368E662AC334B9005EE9A5 /* ReportProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */; };
 		60368E6A2AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */; };
@@ -2060,6 +2063,8 @@
 		6021F6572B9105A500F76031 /* PostCampaignPledgeSummaryTotalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeSummaryTotalViewModel.swift; sourceTree = "<group>"; };
 		6021F6592B91069600F76031 /* PostCampaignPledgeSummaryTotalViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeSummaryTotalViewModelTests.swift; sourceTree = "<group>"; };
 		6021F65B2B9630F900F76031 /* PostCampaignPledgeRewardsSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignPledgeRewardsSummaryViewModel.swift; sourceTree = "<group>"; };
+		6021F65D2B96369300F76031 /* PostCampaignRewardsSummaryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignRewardsSummaryDataSource.swift; sourceTree = "<group>"; };
+		6021F65F2B96372F00F76031 /* PostCampaignRewardsSummaryDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCampaignRewardsSummaryDataSourceTests.swift; sourceTree = "<group>"; };
 		6031A8452AB2485800F8184D /* ReportProjectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectInfoView.swift; sourceTree = "<group>"; };
 		60368E652AC334B9005EE9A5 /* ReportProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormView.swift; sourceTree = "<group>"; };
 		60368E692AC35BD9005EE9A5 /* ReportProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProjectFormViewModel.swift; sourceTree = "<group>"; };
@@ -5543,6 +5548,8 @@
 				8A13D16A2498489D007E2C0B /* PledgeExpandableRewardsHeaderDataSourceTests.swift */,
 				8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */,
 				8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */,
+				6021F65D2B96369300F76031 /* PostCampaignRewardsSummaryDataSource.swift */,
+				6021F65F2B96372F00F76031 /* PostCampaignRewardsSummaryDataSourceTests.swift */,
 			);
 			path = Datasource;
 			sourceTree = "<group>";
@@ -5554,6 +5561,7 @@
 				192016C728B6731A0046919B /* PledgePaymentMethodsViewControllerTests.swift */,
 				8A13D15E249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift */,
 				60043A0D2B8F8EAC00B0BF5E /* PostCampaignPledgeSummaryViewController.swift */,
+				6021F65B2B9630F900F76031 /* PostCampaignPledgeRewardsSummaryViewModel.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -7643,6 +7651,7 @@
 				A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */,
 				3772A4C6229C9E2000EDDC6F /* String+Attributed.swift in Sources */,
+				6021F65C2B9630F900F76031 /* PostCampaignPledgeRewardsSummaryViewModel.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				77EBB62123A175C700A58853 /* RootViewModel.swift in Sources */,
 				19A666612A0472A500708F8B /* RemoteConfligClient.swift in Sources */,
@@ -8060,6 +8069,7 @@
 				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
+				6021F6602B96372F00F76031 /* PostCampaignRewardsSummaryDataSourceTests.swift in Sources */,
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
 				77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
@@ -8382,6 +8392,7 @@
 				770DF32A2106210900A6D0F1 /* SettingsNotificationsDataSource.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */,
+				6021F65E2B96369300F76031 /* PostCampaignRewardsSummaryDataSource.swift in Sources */,
 				3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */,
 				8AF2ABD6247ED338009BF5E7 /* PledgeViewCTAContainerView.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
