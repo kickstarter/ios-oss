@@ -55,14 +55,14 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.tableView, self.tableViewContainer)
-      |> ksr_addSubviewToParent()
-
     _ = (
       [self.tableViewContainer, self.separatorView, self.pledgeTotalViewController.view],
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.tableView, self.tableViewContainer)
+      |> ksr_addSubviewToParent()
 
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryHeaderCell.self)
     self.tableView.registerCellClass(PostCampaignPledgeRewardsSummaryCell.self)
@@ -98,6 +98,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     _ = self.view
       |> \.clipsToBounds .~ true
       |> checkoutWhiteBackgroundStyle
+      |> \.isHidden .~ true
 
     _ = self.rootStackView
       |> self.rootStackViewStyle
@@ -135,6 +136,10 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
         guard let self else { return }
 
         self.pledgeTotalViewController.configure(with: data)
+
+        DispatchQueue.main.async {
+          self.view.isHidden = false
+        }
       }
   }
 

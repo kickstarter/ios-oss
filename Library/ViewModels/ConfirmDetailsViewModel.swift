@@ -25,7 +25,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
-  var configureRewardsSummaryViewWithData: Signal<
+  var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, PledgeSummaryViewData),
     Never
   > { get }
@@ -278,7 +278,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
         return context.expandableRewardViewHidden
       }
-    
+
     self.continueCTATotalViewHidden = self.pledgeSummaryViewHidden.signal.negate()
 
     self.rootStackViewLayoutMargins = self.pledgeRewardsSummaryViewHidden.map { hidden in
@@ -286,6 +286,14 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     }
 
     self.configurePledgeSummaryViewControllerWithData = Signal.combineLatest(
+      projectAndConfirmationLabelHidden,
+      pledgeTotal
+    )
+    .map(unpack)
+    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+    .map(pledgeSummaryViewData)
+
+    let pledgeRewardsSummaryData = Signal.combineLatest(
       projectAndConfirmationLabelHidden,
       pledgeTotal
     )
@@ -303,15 +311,15 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     .map(PledgeShippingSummaryViewData.init)
 
-    self.configureRewardsSummaryViewWithData = Signal.zip(
+    self.configurePledgeRewardsSummaryViewWithData = Signal.zip(
       baseReward.map(\.isNoReward).filter(isFalse),
       project,
       rewards,
       selectedQuantities,
-      self.configurePledgeSummaryViewControllerWithData.signal,
+      pledgeRewardsSummaryData,
       shippingSummaryData
     )
-    .map { _, project, rewards, selectedQuantities, rewardsSummaryPledgeData, shippingSummaryData -> (
+    .map { _, project, rewards, selectedQuantities, pledgeRewardsSummaryData, shippingSummaryData -> (
       PostCampaignRewardsSummaryViewData,
       PledgeSummaryViewData
     ) in
@@ -325,7 +333,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
             omitCurrencyCode: project.stats.omitUSCurrencyCode,
             shipping: shippingSummaryData
           ),
-        rewardsSummaryPledgeData
+        pledgeRewardsSummaryData
       )
     }
 
@@ -338,7 +346,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           shipping: shippingSummaryData
         ),
-      rewardsSummaryPledgeData
+      pledgeRewardsSummaryData
     )
     }
 
@@ -394,7 +402,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
-  public let configureRewardsSummaryViewWithData: Signal<(
+  public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
     PledgeSummaryViewData
   ), Never>

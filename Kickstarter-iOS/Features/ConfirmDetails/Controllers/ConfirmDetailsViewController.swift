@@ -272,7 +272,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
-    self.viewModel.outputs.configureRewardsSummaryViewWithData
+    self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
       .observeForUI()
       .observeValues { [weak self] rewardsData, pledgeData in
         self?.pledgeRewardsSummaryViewController
@@ -318,8 +318,9 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     self.pledgeSummarySectionSeparator.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
     self.pledgeSummaryViewController.view.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
-    
-    self.continueCTAView.titleAndAmountStackView.rac.hidden = self.viewModel.outputs.continueCTATotalViewHidden
+
+    self.continueCTAView.titleAndAmountStackView.rac.hidden = self.viewModel.outputs
+      .continueCTATotalViewHidden
 
     self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
       .pledgeRewardsSummaryViewHidden
