@@ -13,7 +13,6 @@
     internal let currency: String
     internal let buildVersion: String
     internal let deviceIdentifier: String
-    internal let perimeterXClient: PerimeterXClientType
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, ErrorEnvelope>?
 
@@ -28,6 +27,8 @@
     fileprivate let changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
+
+    fileprivate let createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
@@ -196,8 +197,7 @@
       currency: String,
       buildVersion: String = "1",
       deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-      apolloClient: ApolloClientType? = nil,
-      perimeterXClient: PerimeterXClientType
+      apolloClient: ApolloClientType? = nil
     ) {
       self.init(
         appId: appId,
@@ -207,8 +207,7 @@
         currency: currency,
         buildVersion: buildVersion,
         deviceIdentifier: deviceIdentifier,
-        apolloClient: apolloClient,
-        perimeterXClient: perimeterXClient
+        apolloClient: apolloClient
       )
     }
 
@@ -227,6 +226,7 @@
       cancelBackingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changeEmailResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
+      createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
       createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>? = nil,
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
@@ -270,7 +270,6 @@
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
-      perimeterXClient: PerimeterXClientType = PerimeterXClient(),
       publishUpdateError: ErrorEnvelope? = nil,
       fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
@@ -349,6 +348,8 @@
       self.changePasswordResult = changePasswordResult
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
+
+      self.createAttributionEventResult = createAttributionEventResult
 
       self.createBackingResult = createBackingResult
 
@@ -480,8 +481,6 @@
       self.incrementVideoCompletionError = incrementVideoCompletionError
 
       self.incrementVideoStartError = incrementVideoStartError
-
-      self.perimeterXClient = perimeterXClient
 
       self.postCommentResult = postCommentResult
 
@@ -616,6 +615,17 @@
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.changePasswordResult)
+    }
+
+    public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
+      SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CreateAttributionEventMutation(input: input)
+
+      return client.performWithResult(mutation: mutation, result: self.createAttributionEventResult)
     }
 
     internal func createBacking(input: CreateBackingInput)
@@ -1669,7 +1679,7 @@
 
     internal func validateCheckout(
       checkoutId _: String,
-      paymentSourceId _: String?,
+      paymentSourceId _: String,
       paymentIntentClientSecret _: String
     ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope> {
       return producer(for: self.validateCheckoutResult)

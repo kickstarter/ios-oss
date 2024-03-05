@@ -905,7 +905,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         isApplePay: isApplePay
       )
 
-      return (data.project, baseReward, checkoutPropsData)
+      return (data.project, baseReward, checkoutPropsData, data.pledgeTotal)
     }
     .skipNil()
 

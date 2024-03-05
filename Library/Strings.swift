@@ -1212,10 +1212,10 @@ contributeurs"
    "Block"
 
    - **en**: "Block"
-   - **de**: "Block"
+   - **de**: "Blockieren"
    - **es**: "Bloquear"
    - **fr**: "Bloquer"
-   - **ja**: "Block"
+   - **ja**: "ブロック"
   */
   public static func Block() -> String {
     return localizedString(
@@ -1314,10 +1314,10 @@ contributeurs"
    "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
 
    - **en**: "Blocking this user means that you won’t see their comments or content anymore. If you have saved or backed projects from this user, you must remove your pledge before blocking. To unblock a user in the future, please go through our Help Center."
-   - **de**: "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast und deine Unterstützung zurückziehen möchtest, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter."
+   - **de**: "Wenn du diesen Nutzer blockierst, siehst du keine Kommentare oder Inhalte mehr von ihm. Falls du Projekte von diesem Nutzer gespeichert oder unterstützt hast, musst du deinen Beitrag vor dem Blockieren entfernen. Weitere Informationen dazu, wie du die Blockierung eines Nutzers aufheben kannst, findest du im Hilfecenter."
    - **es**: "Al bloquear a este usuario, ya no verás sus comentarios ni su contenido. Si guardaste o patrocinaste proyectos del usuario, debes eliminar tu contribución antes de bloquearlo. Puedes desbloquear usuarios desde nuestro Centro de ayuda."
    - **fr**: "Si vous bloquez cet utilisateur, vous ne verrez plus ses commentaires ni son contenu. Si vous avez sauvegardé ou soutenu ses projets, veuillez supprimer votre engagement avant de le bloquer. Pour débloquer un utilisateur, veuillez consulter notre Centre d'assistance."
-   - **ja**: "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがあり、そのサポートを撤回したい場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。"
+   - **ja**: "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがある場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。"
   */
   public static func Blocked_user_confirmation() -> String {
     return localizedString(
@@ -7350,10 +7350,10 @@ n'ont rien soutenu."
    "Opens user menu."
 
    - **en**: "Opens user menu."
-   - **de**: "Opens user menu."
+   - **de**: "Öffnet das Nutzermenü."
    - **es**: "Abre el menú del usuario."
    - **fr**: "Ouvre le menu utilisateur."
-   - **ja**: "Opens user menu."
+   - **ja**: "ユーザーメニューが開きます。"
   */
   public static func Opens_user_menu() -> String {
     return localizedString(
@@ -19281,7 +19281,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -22008,6 +22008,23 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
     )
   }
   /**
+   "Sign up or Log in"
+
+   - **en**: "Sign up or Log in"
+   - **de**: "Sign up or Log in"
+   - **es**: "Sign up or Log in"
+   - **fr**: "Sign up or Log in"
+   - **ja**: "Sign up or Log in"
+  */
+  public static func login_tout_generic_intent_traditional_signup_or_login_button() -> String {
+    return localizedString(
+      key: "login_tout.generic_intent.traditional_signup_or_login_button",
+      defaultValue: "Sign up or Log in",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Use your email address:"
 
    - **en**: "Use your email address:"
@@ -22675,7 +22692,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -25786,7 +25803,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -26738,7 +26755,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

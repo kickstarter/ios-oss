@@ -20,7 +20,6 @@ public protocol ServiceType {
   var currency: String { get }
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
-  var perimeterXClient: PerimeterXClientType { get }
   var apolloClient: ApolloClientType? { get }
 
   init(
@@ -31,8 +30,7 @@ public protocol ServiceType {
     currency: String,
     buildVersion: String,
     deviceIdentifier: String,
-    apolloClient: ApolloClientType?,
-    perimeterXClient: PerimeterXClientType
+    apolloClient: ApolloClientType?
   )
 
   /// Returns a new service with the oauth token replaced.
@@ -71,6 +69,10 @@ public protocol ServiceType {
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, ErrorEnvelope>
+
+  /// Let the server know to create/track an attribution event.
+  func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope>
 
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, ErrorEnvelope>
@@ -380,7 +382,7 @@ public protocol ServiceType {
   /// Validates a Post Campaign Pledge
   func validateCheckout(
     checkoutId: String,
-    paymentSourceId: String?,
+    paymentSourceId: String,
     paymentIntentClientSecret: String
   ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope>
 

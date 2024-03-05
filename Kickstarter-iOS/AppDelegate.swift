@@ -203,12 +203,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
       }
 
-    self.viewModel.outputs.configurePerimeterX
-      .observeValues {
-        AppEnvironment.current.apiService.perimeterXClient
-          .start(policyDomains: [AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host ?? ""])
-      }
-
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()

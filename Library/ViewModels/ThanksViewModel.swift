@@ -7,7 +7,8 @@ import UIKit
 public typealias ThanksPageData = (
   project: Project,
   reward: Reward,
-  checkoutData: KSRAnalytics.CheckoutPropertiesData?
+  checkoutData: KSRAnalytics.CheckoutPropertiesData?,
+  pledgeTotal: Double
 )
 
 public protocol ThanksViewModelInputs {
@@ -77,21 +78,25 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public init() {
     let project = self.configureWithDataProperty.signal
       .skipNil()
-      .map(first)
+      .map { $0.project }
 
     let rewardAndCheckoutData = self.configureWithDataProperty.signal
       .skipNil()
       .map { ($0.reward, $0.checkoutData) }
 
-    self.backedProjectText = project.map {
-      let string = Strings.You_have_successfully_backed_project_html(
-        project_name: $0.name
-      )
+    self.backedProjectText = self.configureWithDataProperty.signal
+      .skipNil()
+      .map { project, _, _, _ in
 
-      return string.simpleHtmlAttributedString(font: UIFont.ksr_subhead(), bold: UIFont.ksr_subhead().bolded)
-        ?? NSAttributedString(string: "")
-    }
-    .takeWhen(self.viewDidLoadProperty.signal)
+        let string = Strings.You_have_successfully_backed_project_html(
+          project_name: project.name
+        )
+
+        return string
+          .simpleHtmlAttributedString(font: UIFont.ksr_subhead(), bold: UIFont.ksr_subhead().bolded)
+          ?? NSAttributedString(string: "")
+      }
+      .takeWhen(self.viewDidLoadProperty.signal)
 
     let shouldShowGamesAlert = project
       .map { project in

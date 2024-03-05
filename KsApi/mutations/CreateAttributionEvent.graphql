@@ -1,0 +1,5 @@
+mutation createAttributionEvent($input: CreateAttributionEventInput!) {
+  createAttributionEvent(input: $input) {
+    successful
+  }
+}

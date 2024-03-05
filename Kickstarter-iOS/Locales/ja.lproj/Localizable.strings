@@ -72,13 +72,13 @@
 "Big_Kickstarter_news_and_events_near_you" = "Kickstarter に関するビッグニュースやお近くのイベントについて、年に数回お届け。";
 "Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Kickstarter のニュースに加え、あなたにピッタリのおすすめプロジェクトやイベントを随時お送りします.";
 "Biography" = "自己紹介";
-"Block" = "Block";
+"Block" = "ブロック";
 "Block_this_user" = "このユーザーをブロックする";
 "Block_user_fail" = "リクエストを処理できませんでした。もう一度お試しください。";
 "Block_user_success" = "このユーザーをブロックしました";
 "Block_username" = "%{username} をブロックしますか？";
 "Blocked_user" = "ブロックされたユーザー";
-"Blocked_user_confirmation" = "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがあり、そのサポートを撤回したい場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。";
+"Blocked_user_confirmation" = "このユーザーをブロックすると、その後はこのユーザーのコメントやコンテンツを閲覧することができなくなります。このユーザーのプロジェクトを保存またはバックしたことがある場合は、ブロックする前にプレッジを取り消す必要があります。今後ユーザーのブロックを解除するには、ヘルプセンターをご参照ください。";
 "Bonus" = "ボーナス";
 "Bonus_support" = "ボーナスサポート";
 "Bookmarks" = "ブックマーク";
@@ -444,7 +444,7 @@
 "Opens_rewards" = "リワードをみる";
 "Opens_shipping_options" = "配送方法をみる";
 "Opens_update" = "アップデートをみる";
-"Opens_user_menu" = "Opens user menu.";
+"Opens_user_menu" = "ユーザーメニューが開きます。";
 "Or_select_a_different_reward_below_colon" = "別のリワードをみる：";
 "Other_payment_methods" = "その他の支払方法";
 "Other_projects_you_might_like" = "おすすめをさらに見る";
@@ -1467,6 +1467,7 @@
 "login_tout.generic_intent.title" = "続行するにはアカウントにログインが必要です。 メールアドレス、Facebookアカウントで登録するか、ログインしてください。";
 "login_tout.generic_intent.traditional_login_button" = "ログイン";
 "login_tout.generic_intent.traditional_signup_button" = "サインアップ";
+"login_tout.generic_intent.traditional_signup_or_login_button" = "Sign up or Log in";
 "login_tout.generic_intent.traditional_title" = "メールアドレスを使用：";
 "login_tout.help_sheet.cancel" = "キャンセル";
 "login_tout.help_sheet.contact" = "お問い合わせ";

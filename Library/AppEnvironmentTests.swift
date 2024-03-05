@@ -5,6 +5,22 @@ import Prelude
 import XCTest
 
 final class AppEnvironmentTests: XCTestCase {
+  override func setUp() {
+    AppEnvironment.resetStackForUnitTests()
+  }
+
+  func setFeatureUseKeychainEnabled(_ setting: Bool) {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.useKeychainForOAuthToken.rawValue: setting
+    ]
+
+    /* Awkward bit of condition here - our feature flag values implicitly come from
+     AppEnvironment.current, which in some cases, is the PREVIOUS environment in the stack.
+     If you're pushing/saving a new stack, that can be confusing. */
+    AppEnvironment.updateRemoteConfigClient(mockConfigClient)
+  }
+
   func testPushAndPopEnvironment() {
     let lang = AppEnvironment.current.language
 
@@ -77,7 +93,9 @@ final class AppEnvironmentTests: XCTestCase {
     AppEnvironment.popEnvironment()
   }
 
-  func testFromStorage_WithNothingStored() {
+  func testFromStorage_WithNothingStored_featureUseKeychainEnabledIsFalse() {
+    self.setFeatureUseKeychainEnabled(false)
+
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
     let env = AppEnvironment.fromStorage(ubiquitousStore: ubiquitousStore, userDefaults: userDefaults)
@@ -86,7 +104,9 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual(nil, env.currentUser)
   }
 
-  func testFromStorage_WithFullDataStored() {
+  func testFromStorage_WithFullDataStored_featureUseKeychainEnabledIsFalse() {
+    self.setFeatureUseKeychainEnabled(false)
+
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
     let user = User.template
@@ -126,7 +146,9 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertNotNil(env.appTrackingTransparency)
   }
 
-  func testSaveEnvironment() {
+  func testSaveEnvironment_featureUseKeychainEnabledIsFalse() {
+    self.setFeatureUseKeychainEnabled(false)
+
     let apiService = MockService(
       serverConfig: ServerConfig(
         apiBaseUrl: URL(string: "http://api.ksr.com")!,
@@ -142,7 +164,10 @@ final class AppEnvironmentTests: XCTestCase {
     let ubiquitousStore = MockKeyValueStore()
 
     AppEnvironment.saveEnvironment(
-      environment: Environment(apiService: apiService, currentUser: currentUser),
+      environment: Environment(
+        apiService: apiService,
+        currentUser: currentUser
+      ),
       ubiquitousStore: ubiquitousStore,
       userDefaults: userDefaults
     )
@@ -162,7 +187,9 @@ final class AppEnvironmentTests: XCTestCase {
     )
   }
 
-  func testRestoreFromEnvironment() {
+  func testRestoreFromEnvironment_featureUseKeychainEnabledIsFalse() {
+    self.setFeatureUseKeychainEnabled(false)
+
     let apiService = MockService(
       serverConfig: ServerConfig.production,
       oauthToken: OauthToken(token: "deadbeef")
@@ -173,7 +200,10 @@ final class AppEnvironmentTests: XCTestCase {
     let ubiquitousStore = MockKeyValueStore()
 
     AppEnvironment.saveEnvironment(
-      environment: Environment(apiService: apiService, currentUser: currentUser),
+      environment: Environment(
+        apiService: apiService,
+        currentUser: currentUser
+      ),
       ubiquitousStore: ubiquitousStore,
       userDefaults: userDefaults
     )

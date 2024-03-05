@@ -23,7 +23,6 @@ public struct Service: ServiceType {
   public let currency: String
   public let buildVersion: String
   public let deviceIdentifier: String
-  public let perimeterXClient: PerimeterXClientType
   public let apolloClient: ApolloClientType?
 
   public init(
@@ -34,8 +33,7 @@ public struct Service: ServiceType {
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
-    apolloClient: ApolloClientType? = nil,
-    perimeterXClient: PerimeterXClientType = PerimeterXClient()
+    apolloClient: ApolloClientType? = nil
   ) {
     self.appId = appId
     self.serverConfig = serverConfig
@@ -44,7 +42,6 @@ public struct Service: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
     self.deviceIdentifier = deviceIdentifier
-    self.perimeterXClient = perimeterXClient
     /// Dummy client, only required to satisfy `ApolloClientType` protocol, not used.
     self.apolloClient = apolloClient
 
@@ -139,6 +136,15 @@ public struct Service: ServiceType {
     return GraphQL.shared.client
       .perform(mutation: GraphAPI
         .UpdateUserAccountMutation(input: GraphAPI.UpdateUserAccountInput.from(input)))
+      .flatMap { _ in
+        SignalProducer(value: EmptyResponseEnvelope())
+      }
+  }
+
+  public func createAttributionEvent(input: GraphAPI.CreateAttributionEventInput) ->
+    SignalProducer<EmptyResponseEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .perform(mutation: GraphAPI.CreateAttributionEventMutation(input: input))
       .flatMap { _ in
         SignalProducer(value: EmptyResponseEnvelope())
       }
@@ -833,7 +839,7 @@ public struct Service: ServiceType {
    */
   public func validateCheckout(
     checkoutId: String,
-    paymentSourceId: String?,
+    paymentSourceId: String,
     paymentIntentClientSecret: String
   ) -> SignalProducer<ValidateCheckoutEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
