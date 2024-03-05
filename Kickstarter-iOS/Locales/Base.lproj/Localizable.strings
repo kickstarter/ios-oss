@@ -796,6 +796,7 @@
 "You_canceled_your_pledge_for_this_project" = "You canceled your pledge for this project.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "You can’t use this credit card to back a project from %{project_country}.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
+"You_have_successfully_backed_project_post_campaign_html" = "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
 "You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}. For creator tools, head to our website!";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "You need to pledge at least %{reward_minimum} for this reward.";
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";

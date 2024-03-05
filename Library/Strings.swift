@@ -13070,6 +13070,35 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
+<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
+<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+
+   - **en**: "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
+<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
+<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+   - **de**: "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
+<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
+<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+   - **es**: "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
+<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
+<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+   - **fr**: "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
+<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
+<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+   - **ja**: "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
+<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
+<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+  */
+  public static func You_have_successfully_backed_project_post_campaign_html(project_name: String, pledge_total: String, user_email: String) -> String {
+    return localizedString(
+      key: "You_have_successfully_backed_project_post_campaign_html",
+      defaultValue: "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>",
+      count: nil,
+      substitutions: ["project_name": project_name, "pledge_total": pledge_total, "user_email": user_email]
+    )
+  }
+  /**
    "You launched this project on %{launch_date}. For creator tools, head to our website!"
 
    - **en**: "You launched this project on %{launch_date}. For creator tools, head to our website!"
@@ -19281,7 +19310,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -22011,10 +22040,11 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
    "Sign up or Log in"
 
    - **en**: "Sign up or Log in"
-   - **de**: "Sign up or Log in"
-   - **es**: "Sign up or Log in"
-   - **fr**: "Sign up or Log in"
-   - **ja**: "Sign up or Log in"
+   - **de**: "Registrieren oder Anmelden"
+   - **es**: "Registrarme o iniciar sesión"
+   - **fr**: "Inscription ou connexion"
+   - **ja**: "サインアップ or ログイン
+"
   */
   public static func login_tout_generic_intent_traditional_signup_or_login_button() -> String {
     return localizedString(
@@ -22692,7 +22722,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -25803,7 +25833,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -26755,7 +26785,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
