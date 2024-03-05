@@ -302,6 +302,12 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.rootStackView.layoutMargins = margins
       }
 
+    self.viewModel.outputs.configureCTAWithPledgeTotal
+      .observeForUI()
+      .observeValues { data in
+        self.continueCTAView.configure(with: data)
+      }
+
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
 
     self.shippingLocationViewController.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden

@@ -4,6 +4,11 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
+public typealias ConfirmDetailsContinueCTAViewData = (
+  project: Project,
+  total: Double
+)
+
 public protocol ConfirmDetailsViewModelInputs {
   func configure(with data: PledgeViewData)
   func goToLoginSignupTapped()
@@ -15,6 +20,7 @@ public protocol ConfirmDetailsViewModelInputs {
 }
 
 public protocol ConfirmDetailsViewModelOutputs {
+  var configureCTAWithPledgeTotal: Signal<(Project, Double), Never> { get }
   var configurePledgeSummaryHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
@@ -332,6 +338,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       rewardsSummaryPledgeData
     )
     }
+
+    self.configureCTAWithPledgeTotal = Signal.combineLatest(
+      project,
+      pledgeTotal
+    )
+    .map { project, total in (project, total) }
+    .map(continueCTAViewData)
   }
 
   // MARK: - Inputs
@@ -373,6 +386,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
   // MARK: - Outputs
 
+  public let configureCTAWithPledgeTotal: Signal<(Project, Double), Never>
   public let configurePledgeSummaryHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
@@ -401,6 +415,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
 private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
+}
+
+private func continueCTAViewData(
+  project: Project,
+  total: Double
+) -> ConfirmDetailsContinueCTAViewData {
+  return (project, total)
 }
 
 // MARK: - Validation Functions

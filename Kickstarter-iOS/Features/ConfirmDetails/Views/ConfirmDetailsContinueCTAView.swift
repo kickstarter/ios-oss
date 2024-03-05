@@ -12,6 +12,11 @@ private enum Layout {
 final class ConfirmDetailsContinueCTAView: UIView {
   // MARK: - Properties
 
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var titleAndAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
+
   private(set) lazy var continueButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -55,6 +60,19 @@ final class ConfirmDetailsContinueCTAView: UIView {
         CACornerMask.layerMinXMinYCorner
       ]
 
+    _ = self.rootStackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ Styles.grid(3)
+
+    _ = self.titleAndAmountStackView
+      |> self.titleAndAmountStackViewStyle
+
+    _ = self.titleLabel
+      |> self.titleLabelStyle
+
+    _ = self.amountLabel
+      |> self.amountLabelStyle
+
     _ = self.continueButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
@@ -63,9 +81,15 @@ final class ConfirmDetailsContinueCTAView: UIView {
   // MARK: Functions
 
   private func configureSubviews() {
-    _ = (self.continueButton, self)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.titleAndAmountStackView, self.continueButton], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.titleLabel, self.amountLabel], self.titleAndAmountStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
@@ -74,9 +98,55 @@ final class ConfirmDetailsContinueCTAView: UIView {
     ])
   }
 
+  func configure(with data: ConfirmDetailsContinueCTAViewData) {
+    if let attributedAmount = attributedCurrency(with: data.project, total: data.total) {
+      self.amountLabel.attributedText = attributedAmount
+    }
+  }
+
+  private func attributedCurrency(with project: Project, total: Double) -> NSAttributedString? {
+    let defaultAttributes = checkoutCurrencyDefaultAttributes()
+      .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
+    let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
+
+    return Format.attributedCurrency(
+      total,
+      country: projectCurrencyCountry,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      defaultAttributes: defaultAttributes,
+      superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+    )
+  }
+
   // MARK: - Accessors
 
   @objc func continueButtonTapped() {
     // TODO: Navigate to PledgeViewController with PledgeViewData
+  }
+
+  // MARK: - Styles
+
+  private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
+    _ = label
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Total_amount() }
+
+    return label
+  }
+
+  private let amountLabelStyle: LabelStyle = { (label: UILabel) in
+    _ = label
+      |> \.adjustsFontForContentSizeCategory .~ true
+      |> \.textAlignment .~ NSTextAlignment.right
+      |> \.isAccessibilityElement .~ true
+      |> \.minimumScaleFactor .~ 0.75
+
+    return label
+  }
+
+  private let titleAndAmountStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+    stackView
+      |> \.backgroundColor .~ .ksr_white
+      |> \.layoutMargins .~ UIEdgeInsets(leftRight: Styles.gridHalf(4))
   }
 }
