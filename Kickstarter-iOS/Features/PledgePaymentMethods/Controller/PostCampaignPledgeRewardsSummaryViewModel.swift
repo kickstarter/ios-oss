@@ -171,7 +171,7 @@ private func items(
     text: "Shipping to \(data.shipping.locationName)",
     amount: shippingAmountAttributedText
   ))
-  
+
   var items = [headerItem] + rewardItems
   items.append(shippingItem)
 

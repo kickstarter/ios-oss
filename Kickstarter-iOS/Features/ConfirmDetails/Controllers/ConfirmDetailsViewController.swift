@@ -21,9 +21,47 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
+  /// The pledge stepper used to change the pledge amount
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
+  }()
+
+  /// The shipping location shown when changing shipping locations isn't an option
+  private lazy var shippingSummaryView: PledgeShippingSummaryView = {
+    PledgeShippingSummaryView(frame: .zero)
+  }()
+
+  /// The bottom-up modal for selecting a new shipping location
+  private lazy var shippingLocationViewController = {
+    PledgeShippingLocationViewController.instantiate()
+      |> \.delegate .~ self
+  }()
+
+  private lazy var localPickupLocationView = {
+    PledgeLocalPickupView(frame: .zero)
+  }()
+
+  private lazy var pledgeSummarySectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  /// Total Pledge Summary. Shown when there is no reward selected
+  private lazy var pledgeSummaryViewController: PledgeAmountSummaryViewController = {
+    PledgeAmountSummaryViewController.instantiate()
+  }()
+
+  private lazy var pledgeSummarySectionViews = {
+    [
+      self.pledgeSummarySectionSeparator,
+      self.pledgeSummaryViewController.view
+    ]
+  }()
+
+  /// The rewards and pledge summary table view
+  private lazy var pledgeRewardsSummaryViewController = {
+    PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var continueCTAView: ConfirmDetailsContinueCTAView = {
@@ -40,35 +78,12 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     ]
   }()
 
-  fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
+  private lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
     UITapGestureRecognizer(
       target: self,
       action: #selector(ConfirmDetailsViewController.dismissKeyboard)
     )
       |> \.cancelsTouchesInView .~ false
-  }()
-
-  internal var messageBannerViewController: MessageBannerViewController?
-
-  private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
-    PledgeAmountSummaryViewController.instantiate()
-  }()
-
-  private lazy var shippingLocationViewController = {
-    PledgeShippingLocationViewController.instantiate()
-      |> \.delegate .~ self
-  }()
-
-  private lazy var localPickupLocationView = {
-    PledgeLocalPickupView(frame: .zero)
-  }()
-
-  private lazy var shippingSummaryView: PledgeShippingSummaryView = {
-    PledgeShippingSummaryView(frame: .zero)
-  }()
-
-  private lazy var pledgeRewardsSummaryViewController = {
-    PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -85,6 +100,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private var sessionStartedObserver: Any?
   private let viewModel: ConfirmDetailsViewModelType = ConfirmDetailsViewModel()
@@ -141,10 +158,10 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       |> ksr_constrainViewToEdgesInParent()
 
     let childViewControllers = [
-      self.pledgeRewardsSummaryViewController,
-      self.pledgeAmountSummaryViewController,
       self.pledgeAmountViewController,
-      self.shippingLocationViewController
+      self.shippingLocationViewController,
+      self.pledgeSummaryViewController,
+      self.pledgeRewardsSummaryViewController
     ]
 
     let arrangedSubviews = [
@@ -154,7 +171,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     let arrangedInsetSubviews = [
       [self.titleLabel],
       self.inputsSectionViews,
-      [self.pledgeAmountSummaryViewController.view],
+      self.pledgeSummarySectionViews,
       [self.pledgeRewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
@@ -240,7 +257,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeAmountSummaryViewController.configureWith(data)
+        self?.pledgeSummaryViewController.configureWith(data)
       }
 
     self.viewModel.outputs.notifyPledgeAmountViewControllerUnavailableAmountChanged
@@ -285,7 +302,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     self.shippingSummaryView.rac.hidden
       = self.viewModel.outputs.shippingSummaryViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
-    self.pledgeAmountSummaryViewController.view.rac.hidden
+    self.pledgeSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
     self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
       .pledgeRewardsSummaryViewHidden
