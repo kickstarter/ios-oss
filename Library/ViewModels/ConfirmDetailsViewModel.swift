@@ -18,19 +18,18 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configurePledgeSummaryHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
-  var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
+  var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, PledgeSummaryViewData),
     Never
   > { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
-  var pledgeTotalSummarySectionIsHidden: Signal<Bool, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
-  var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
+  var pledgeSummaryViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var shippingSummaryViewHidden: Signal<Bool, Never> { get }
@@ -57,14 +56,13 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let rewards = initialData.map(\.rewards)
     let selectedQuantities = initialData.map(\.selectedQuantities)
     let selectedLocationId = initialData.map(\.selectedLocationId)
-    let refTag = initialData.map(\.refTag)
     let context = initialData.map(\.context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
-    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
+    self.pledgeSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
+      baseReward.isNoReward == false && context == .pledge
     }
 
     let selectedShippingRule = Signal.merge(
@@ -278,20 +276,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       hidden ? UIEdgeInsets(topBottom: Styles.grid(3)) : UIEdgeInsets(bottom: Styles.grid(3))
     }
 
-    self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
-      projectAndReward,
-      allRewardsTotal,
-      additionalPledgeAmount,
-      shippingViewsHiddenConditionsForPledgeAmountSummary,
-      context
-    )
-    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
-      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
-    }
-    .map(pledgeAmountSummaryViewData)
-    .skipNil()
-
-    let rewardsSummaryPledgeData = Signal.combineLatest(
+    self.configurePledgeSummaryViewControllerWithData = Signal.combineLatest(
       projectAndConfirmationLabelHidden,
       pledgeTotal
     )
@@ -314,7 +299,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
-      rewardsSummaryPledgeData,
+      self.configurePledgeSummaryViewControllerWithData.signal,
       shippingSummaryData
     )
     .map { _, project, rewards, selectedQuantities, rewardsSummaryPledgeData, shippingSummaryData -> (
@@ -346,10 +331,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         ),
       rewardsSummaryPledgeData
     )
-    }
-
-    self.pledgeTotalSummarySectionIsHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
     }
   }
 
@@ -395,7 +376,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configurePledgeSummaryHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
-  public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
+  public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
     PledgeSummaryViewData
@@ -406,8 +387,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
-  public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
-  public let pledgeTotalSummarySectionIsHidden: Signal<Bool, Never>
+  public let pledgeSummaryViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let shippingSummaryViewHidden: Signal<Bool, Never>

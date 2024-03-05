@@ -48,11 +48,11 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   }()
 
   /// Total Pledge Summary. Shown when there is no reward selected
-  private lazy var pledgeSummaryViewController: PledgeAmountSummaryViewController = {
-    PledgeAmountSummaryViewController.instantiate()
+  private lazy var pledgeSummaryViewController: PostCampaignPledgeSummaryViewController = {
+    PostCampaignPledgeSummaryViewController.instantiate()
   }()
 
-  private lazy var pledgeSummarySectionViews = {
+  private lazy var pledgeAmountSummarySectionViews = {
     [
       self.pledgeSummarySectionSeparator,
       self.pledgeSummaryViewController.view
@@ -171,7 +171,7 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
     let arrangedInsetSubviews = [
       [self.titleLabel],
       self.inputsSectionViews,
-      self.pledgeSummarySectionViews,
+      self.pledgeAmountSummarySectionViews,
       [self.pledgeRewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
@@ -197,11 +197,14 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rootScrollView.bottomAnchor.constraint(equalTo: self.continueCTAView.topAnchor),
+      self.pledgeSummarySectionSeparator.heightAnchor.constraint(equalToConstant: 1),
       self.continueCTAView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.continueCTAView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.continueCTAView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
+
+    self.pledgeSummarySectionSeparator.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
   // MARK: - Styles
@@ -223,6 +226,9 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     _ = self.rootInsetStackView
       |> rootInsetStackViewStyle
+
+    _ = self.pledgeSummarySectionSeparator
+      |> separatorStyle
   }
 
   // MARK: - View model
@@ -254,10 +260,10 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.pledgeAmountViewController.configureWith(value: data)
       }
 
-    self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
+    self.viewModel.outputs.configurePledgeSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeSummaryViewController.configureWith(data)
+        self?.pledgeSummaryViewController.configure(with: data)
       }
 
     self.viewModel.outputs.notifyPledgeAmountViewControllerUnavailableAmountChanged
@@ -296,14 +302,17 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
         self?.rootStackView.layoutMargins = margins
       }
 
-    self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
-    self.shippingLocationViewController.view.rac.hidden
-      = self.viewModel.outputs.shippingLocationViewHidden
-    self.shippingSummaryView.rac.hidden
-      = self.viewModel.outputs.shippingSummaryViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
-    self.pledgeSummaryViewController.view.rac.hidden
-      = self.viewModel.outputs.pledgeAmountSummaryViewHidden
+
+    self.shippingLocationViewController.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
+
+    self.shippingSummaryView.rac.hidden = self.viewModel.outputs.shippingSummaryViewHidden
+
+    self.localPickupLocationView.rac.hidden = self.viewModel.outputs.localPickupViewHidden
+
+    self.pledgeSummarySectionSeparator.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
+    self.pledgeSummaryViewController.view.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
+
     self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
       .pledgeRewardsSummaryViewHidden
   }
