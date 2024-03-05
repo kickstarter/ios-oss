@@ -86,11 +86,25 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.backedProjectText = self.configureWithDataProperty.signal
       .skipNil()
-      .map { project, _, _, _ in
+      .map { project, _, _, pledgeTotal in
 
-        let string = Strings.You_have_successfully_backed_project_html(
-          project_name: project.name
-        )
+        let string: String
+
+        if featurePostCampaignPledgeEnabled(),
+          project.isInPostCampaignPledgingPhase,
+          let email = AppEnvironment.current.currentUserEmail {
+          let formattedTotal = Format.formattedCurrency(pledgeTotal, country: project.country)
+
+          string = Strings.You_have_successfully_backed_project_post_campaign_html(
+            project_name: project.name,
+            pledge_total: formattedTotal,
+            user_email: email
+          )
+        } else {
+          string = Strings.You_have_successfully_backed_project_html(
+            project_name: project.name
+          )
+        }
 
         return string
           .simpleHtmlAttributedString(font: UIFont.ksr_subhead(), bold: UIFont.ksr_subhead().bolded)
