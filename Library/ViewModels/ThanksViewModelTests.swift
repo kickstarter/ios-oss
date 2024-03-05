@@ -51,9 +51,10 @@ final class ThanksViewModelTests: TestCase {
   private func thanksPageData(
     project: Project = Project.template,
     reward: Reward = Reward.template,
-    checkoutData: KSRAnalytics.CheckoutPropertiesData? = nil
+    checkoutData: KSRAnalytics.CheckoutPropertiesData? = nil,
+    pledgeTotal: Double = 1
   ) -> ThanksPageData {
-    return (project, reward, checkoutData, 1)
+    return (project, reward, checkoutData, pledgeTotal)
   }
 
   func testDismissToRootViewController() {
@@ -111,6 +112,31 @@ final class ThanksViewModelTests: TestCase {
           "This project is now one step closer to a reality, thanks to you. Spread the word!"
       ], "Name of project emits"
     )
+  }
+
+  func testDisplayBackedProjectText_postCampaignBackings() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true
+    ]
+
+    var project = Project.template
+    project.name = "Test Project"
+    project.isInPostCampaignPledgingPhase = true
+    project.country = Project.Country.jp
+
+    withEnvironment(Environment(currentUserEmail: "test@user.com", remoteConfigClient: mockConfigClient)) {
+      self.vm.inputs.configure(with: self.thanksPageData(project: project, pledgeTotal: 127))
+      self.vm.inputs.viewDidLoad()
+
+      self.backedProjectText.assertValues(
+        [
+          """
+          You have successfully backed Test Project. Your pledge of ¥127 has been collected.\nYou’ll receive a confirmation email at test@user.com when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.\nThis project is now one step closer to a reality, thanks to you. Spread the word!\n
+          """
+        ], "Name of project emits"
+      )
+    }
   }
 
   func testRatingAlert_Initial() {
