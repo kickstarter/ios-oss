@@ -265,7 +265,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     }
     .map(PledgeExpandableRewardsHeaderViewData.init)
 
-    self.pledgeTotalSummarySectionIsHidden = Signal.zip(context, baseReward)
+    self.pledgeRewardsSummaryViewHidden = Signal.zip(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
           return reward.isNoReward
@@ -274,7 +274,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         return context.expandableRewardViewHidden
       }
 
-    self.rootStackViewLayoutMargins = self.pledgeTotalSummarySectionIsHidden.map { hidden in
+    self.rootStackViewLayoutMargins = self.pledgeRewardsSummaryViewHidden.map { hidden in
       hidden ? UIEdgeInsets(topBottom: Styles.grid(3)) : UIEdgeInsets(bottom: Styles.grid(3))
     }
 
@@ -348,14 +348,9 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     }
 
-    self.pledgeRewardsSummaryViewHidden = Signal.zip(context, baseReward)
-      .map { context, reward in
-        if context.isAny(of: .pledge, .updateReward) {
-          return reward.isNoReward
-        }
-
-        return context.expandableRewardViewHidden
-      }
+    self.pledgeTotalSummarySectionIsHidden = Signal.zip(baseReward, context).map { baseReward, context in
+      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
+    }
   }
 
   // MARK: - Inputs
