@@ -107,6 +107,7 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
+      currentUserEmail: nil,
       ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ nil
     )
   }

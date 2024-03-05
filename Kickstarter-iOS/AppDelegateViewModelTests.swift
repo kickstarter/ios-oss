@@ -2434,6 +2434,37 @@ final class AppDelegateViewModelTests: TestCase {
       self.postNotificationName.assertValues([.ksr_remoteConfigClientConfigurationFailed])
     }
   }
+
+  func testUserSessionStarted_fetchesUserEmail_andClearsOnLogout() {
+    let fetchUserEmailQueryData = GraphAPI.FetchUserEmailQuery
+      .Data(unsafeResultMap: [
+        "me": [
+          "email": "nativesquad@ksr.com"
+        ]
+      ]
+      )
+
+    guard let envelope = UserEnvelope<GraphUserEmail>.userEnvelope(from: fetchUserEmailQueryData) else {
+      XCTFail()
+      return
+    }
+
+    let mockService = MockService(
+      fetchGraphUserEmailResult: .success(envelope)
+    )
+
+    withEnvironment(apiService: mockService) {
+      XCTAssertNil(AppEnvironment.current.currentUserEmail)
+
+      self.vm.inputs.userSessionStarted()
+
+      XCTAssertEqual(AppEnvironment.current.currentUserEmail, "nativesquad@ksr.com")
+
+      AppEnvironment.logout()
+
+      XCTAssertNil(AppEnvironment.current.currentUserEmail)
+    }
+  }
 }
 
 private let backingForCreatorPushData: [String: Any] = [
