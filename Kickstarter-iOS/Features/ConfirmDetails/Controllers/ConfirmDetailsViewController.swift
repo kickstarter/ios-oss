@@ -318,6 +318,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     self.pledgeSummarySectionSeparator.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
     self.pledgeSummaryViewController.view.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
+    
+    self.continueCTAView.titleAndAmountStackView.rac.hidden = self.viewModel.outputs.continueCTATotalViewHidden
 
     self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
       .pledgeRewardsSummaryViewHidden

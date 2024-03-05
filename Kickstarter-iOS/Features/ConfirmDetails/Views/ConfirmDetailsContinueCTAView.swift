@@ -13,7 +13,7 @@ final class ConfirmDetailsContinueCTAView: UIView {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var titleAndAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private(set) lazy var titleAndAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
 

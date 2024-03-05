@@ -31,6 +31,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   > { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
+  var continueCTATotalViewHidden: Signal<Bool, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
@@ -277,6 +278,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
         return context.expandableRewardViewHidden
       }
+    
+    self.continueCTATotalViewHidden = self.pledgeSummaryViewHidden.signal.negate()
 
     self.rootStackViewLayoutMargins = self.pledgeRewardsSummaryViewHidden.map { hidden in
       hidden ? UIEdgeInsets(topBottom: Styles.grid(3)) : UIEdgeInsets(bottom: Styles.grid(3))
@@ -397,6 +400,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   ), Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
+  public let continueCTATotalViewHidden: Signal<Bool, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
