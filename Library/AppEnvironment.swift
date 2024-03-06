@@ -1,4 +1,5 @@
 import FBSDKCoreKit
+import FirebaseCrashlytics
 import Foundation
 import KsApi
 import Prelude
@@ -106,6 +107,7 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
+      currentUserEmail: nil,
       ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ nil
     )
   }
@@ -142,10 +144,12 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   internal static func resetStackForUnitTests() {
-    while self.stack.popLast() != nil {}
+    while self.stack.count > 1 {
+      _ = self.stack.popLast()
+    }
 
     let next = Environment()
-    self.pushEnvironment(next)
+    self.replaceCurrentEnvironment(next)
   }
 
   // Replace the current environment with a new environment.
@@ -295,6 +299,52 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  internal static let accountNameForKeychain = "kickstarter_currently_logged_in_user"
+
+  private static func storeOAuthTokenToKeychain(_ oauthToken: String) -> Bool {
+    guard featureUseKeychainForOAuthTokenEnabled()
+    else {
+      return false
+    }
+
+    do {
+      try Keychain.storePassword(oauthToken, forAccount: self.accountNameForKeychain)
+      return true
+    } catch {
+      Crashlytics.crashlytics().record(error: error)
+    }
+
+    return false
+  }
+
+  private static func fetchOAuthTokenFromKeychain() -> String? {
+    guard featureUseKeychainForOAuthTokenEnabled()
+    else {
+      return nil
+    }
+
+    do {
+      return try Keychain.fetchPassword(forAccount: self.accountNameForKeychain)
+    } catch {
+      Crashlytics.crashlytics().record(error: error)
+    }
+
+    return nil
+  }
+
+  private static func removeOAuthTokenFromKeychain() -> Bool {
+    guard featureUseKeychainForOAuthTokenEnabled() else { return false }
+
+    do {
+      try Keychain.deletePassword(forAccount: self.accountNameForKeychain)
+      return true
+    } catch {
+      Crashlytics.crashlytics().record(error: error)
+    }
+
+    return false
+  }
+
   // Returns the last saved environment from user defaults.
   public static func fromStorage(
     ubiquitousStore _: KeyValueStoreType,
@@ -303,12 +353,15 @@ public struct AppEnvironment: AppEnvironmentType {
     let data = userDefaults.dictionary(forKey: self.environmentStorageKey) ?? [:]
 
     var service = self.current.apiService
-    var currentUser: User?
+    var currentUser: User? // Will only be set if an OAuth token is also set
     let configDict: [String: Any]? = data["config"] as? [String: Any]
     let config: Config? = configDict.flatMap(Config.decodeJSONDictionary)
 
-    if let oauthToken = data["apiService.oauthToken.token"] as? String {
-      // If there is an oauth token stored in the defaults, then we can authenticate our api service
+    // If there is an oauth token stored, then we can authenticate our api service
+
+    if let oauthToken = fetchOAuthTokenFromKeychain() {
+      service = service.login(OauthToken(token: oauthToken))
+    } else if let oauthToken = data["apiService.oauthToken.token"] as? String {
       service = service.login(OauthToken(token: oauthToken))
     }
 
@@ -324,8 +377,7 @@ public struct AppEnvironment: AppEnvironmentType {
         ),
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD",
-        perimeterXClient: service.perimeterXClient
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -344,8 +396,7 @@ public struct AppEnvironment: AppEnvironmentType {
         ),
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD",
-        perimeterXClient: service.perimeterXClient
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -362,8 +413,7 @@ public struct AppEnvironment: AppEnvironmentType {
         ),
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD",
-        perimeterXClient: service.perimeterXClient
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -376,8 +426,7 @@ public struct AppEnvironment: AppEnvironmentType {
         serverConfig: serverConfig,
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD",
-        perimeterXClient: service.perimeterXClient
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -404,7 +453,16 @@ public struct AppEnvironment: AppEnvironmentType {
     var data: [String: Any] = [:]
 
     // swiftformat:disable wrap
-    data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
+
+    if let oauthToken = env.apiService.oauthToken?.token {
+      // Try to save to the keychain, but if that fails, save to user defaults
+      if !self.storeOAuthTokenToKeychain(oauthToken) {
+        data["apiService.oauthToken.token"] = oauthToken
+      }
+    } else {
+      _ = self.removeOAuthTokenFromKeychain()
+    }
+
     data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString
     data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth.clientId
     data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username

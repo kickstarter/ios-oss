@@ -48,8 +48,17 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
+  private func thanksPageData(
+    project: Project = Project.template,
+    reward: Reward = Reward.template,
+    checkoutData: KSRAnalytics.CheckoutPropertiesData? = nil,
+    pledgeTotal: Double = 1
+  ) -> ThanksPageData {
+    return (project, reward, checkoutData, pledgeTotal)
+  }
+
   func testDismissToRootViewController() {
-    self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+    self.vm.inputs.configure(with: self.thanksPageData())
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.closeButtonTapped()
@@ -71,7 +80,7 @@ final class ThanksViewModelTests: TestCase {
       fetchGraphCategoryResult: .success(self.categoryEnvelope),
       fetchDiscoveryResponse: response
     )) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -94,7 +103,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testDisplayBackedProjectText() {
     let project = Project.template |> \.category .~ .games
-    self.vm.inputs.configure(with: (project, Reward.template, nil))
+    self.vm.inputs.configure(with: self.thanksPageData(project: project))
     self.vm.inputs.viewDidLoad()
 
     self.backedProjectText.assertValues(
@@ -105,11 +114,36 @@ final class ThanksViewModelTests: TestCase {
     )
   }
 
+  func testDisplayBackedProjectText_postCampaignBackings() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true
+    ]
+
+    var project = Project.template
+    project.name = "Test Project"
+    project.isInPostCampaignPledgingPhase = true
+    project.country = Project.Country.jp
+
+    withEnvironment(Environment(currentUserEmail: "test@user.com", remoteConfigClient: mockConfigClient)) {
+      self.vm.inputs.configure(with: self.thanksPageData(project: project, pledgeTotal: 127))
+      self.vm.inputs.viewDidLoad()
+
+      self.backedProjectText.assertValues(
+        [
+          """
+          You have successfully backed Test Project. Your pledge of ¥127 has been collected.\nYou’ll receive a confirmation email at test@user.com when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.\nThis project is now one step closer to a reality, thanks to you. Spread the word!\n
+          """
+        ], "Name of project emits"
+      )
+    }
+  }
+
   func testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
       showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
-      self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData())
       self.vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
@@ -130,7 +164,7 @@ final class ThanksViewModelTests: TestCase {
       )
 
       let project = Project.template |> Project.lens.category .~ .games
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
@@ -146,7 +180,7 @@ final class ThanksViewModelTests: TestCase {
       let secondShowGamesNewsletterAlert = TestObserver<(), Never>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
-      secondVM.inputs.configure(with: (project, Reward.template, nil))
+      secondVM.inputs.configure(with: thanksPageData(project: project))
       secondVM.inputs.viewDidLoad()
 
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on games project")
@@ -160,7 +194,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on games project")
@@ -171,7 +205,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(1)
@@ -219,7 +253,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(countryCode: "DE", currentUser: User.template) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(1)
@@ -251,7 +285,7 @@ final class ThanksViewModelTests: TestCase {
         fetchDiscoveryResponse: response
       )
     ) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -291,7 +325,7 @@ final class ThanksViewModelTests: TestCase {
       fetchGraphCategoryResult: .success(self.categoryEnvelope),
       fetchDiscoveryResponse: response
     )) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -305,7 +339,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: thanksPageData(project: project))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -333,7 +367,7 @@ final class ThanksViewModelTests: TestCase {
     )
 
     (self.appTrackingTransparency as? MockAppTrackingTransparency)?.shouldRequestAuthStatus = false
-    self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
+    self.vm.inputs.configure(with: self.thanksPageData(checkoutData: checkoutData))
     self.vm.inputs.viewDidLoad()
 
     XCTAssertNil(self.segmentTrackingClient.properties.last)
@@ -357,7 +391,7 @@ final class ThanksViewModelTests: TestCase {
       userHasStoredApplePayCard: true
     )
 
-    self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
+    self.vm.inputs.configure(with: self.thanksPageData(checkoutData: checkoutData))
     self.vm.inputs.viewDidLoad()
 
     let segmentClientProps = self.segmentTrackingClient.properties.last

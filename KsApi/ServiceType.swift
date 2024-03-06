@@ -20,7 +20,6 @@ public protocol ServiceType {
   var currency: String { get }
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
-  var perimeterXClient: PerimeterXClientType { get }
   var apolloClient: ApolloClientType? { get }
 
   init(
@@ -31,8 +30,7 @@ public protocol ServiceType {
     currency: String,
     buildVersion: String,
     deviceIdentifier: String,
-    apolloClient: ApolloClientType?,
-    perimeterXClient: PerimeterXClientType
+    apolloClient: ApolloClientType?
   )
 
   /// Returns a new service with the oauth token replaced.

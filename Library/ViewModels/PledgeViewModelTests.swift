@@ -156,9 +156,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.goToRiskMessagingModal.observe(self.goToRiskMessagingModal.observer)
 
-    self.vm.outputs.goToThanks.map(first).observe(self.goToThanksProject.observer)
-    self.vm.outputs.goToThanks.map(second).observe(self.goToThanksReward.observer)
-    self.vm.outputs.goToThanks.map(third).observe(self.goToThanksCheckoutData.observer)
+    self.vm.outputs.goToThanks.map { $0.project }.observe(self.goToThanksProject.observer)
+    self.vm.outputs.goToThanks.map { $0.reward }.observe(self.goToThanksReward.observer)
+    self.vm.outputs.goToThanks.map { $0.checkoutData }.observe(self.goToThanksCheckoutData.observer)
     self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
 
     self.vm.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
