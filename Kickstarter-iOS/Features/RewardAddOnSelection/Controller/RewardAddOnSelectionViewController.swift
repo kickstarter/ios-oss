@@ -22,7 +22,6 @@ final class RewardAddOnSelectionViewController: UIViewController {
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
-  public weak var confirmDetailsViewControllerDelegate: ConfirmDetailsViewControllerDelegate?
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
@@ -214,7 +213,6 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
   private func goToConfirmDetails(data: PledgeViewData) {
     let vc = ConfirmDetailsViewController.instantiate()
-    vc.delegate = self.confirmDetailsViewControllerDelegate
     vc.configure(with: data)
     vc.title = self.title
 

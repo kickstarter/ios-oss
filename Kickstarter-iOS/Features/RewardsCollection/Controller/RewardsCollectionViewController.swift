@@ -33,7 +33,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
-  public weak var confirmDetailsViewControllerDelegate: ConfirmDetailsViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)
@@ -295,7 +294,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func goToConfirmDetails(data: PledgeViewData) {
     let vc = ConfirmDetailsViewController.instantiate()
-    vc.delegate = self.confirmDetailsViewControllerDelegate
     vc.configure(with: data)
     vc.title = self.title
 
