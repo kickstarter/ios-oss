@@ -25,7 +25,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.configureLocalPickupViewWithData.observe(self.configureLocalPickupViewWithData.observer)
-
     self.vm.outputs.configureShippingLocationViewWithData.map { $0.project }
       .observe(self.configureShippingLocationViewWithDataProject.observer)
     self.vm.outputs.configureShippingLocationViewWithData.map { $0.reward }
