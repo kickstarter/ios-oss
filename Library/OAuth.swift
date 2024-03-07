@@ -7,7 +7,7 @@ import KsApi
 public enum OAuthAuthorizationResult {
   case loggedIn
   case failure(errorMessage: String)
-  case cancelled
+  case canceled
 }
 
 public struct OAuth {
@@ -76,7 +76,7 @@ public struct OAuth {
       if let authenticationError = error as? ASWebAuthenticationSessionError,
         authenticationError.code == .canceledLogin {
         DispatchQueue.main.async {
-          onComplete(.cancelled)
+          onComplete(.canceled)
         }
       } else {
         DispatchQueue.main.async {
@@ -84,6 +84,13 @@ public struct OAuth {
         }
       }
 
+      return
+    }
+
+    guard !self.isRedirectURLCanceled(url) else {
+      DispatchQueue.main.async {
+        onComplete(.canceled)
+      }
       return
     }
 
@@ -131,5 +138,14 @@ public struct OAuth {
 
     let components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false)
     return components?.queryItems?.first(where: { $0.name == "code" })?.value
+  }
+
+  private static func isRedirectURLCanceled(_ url: URL?) -> Bool {
+    guard let redirectURL = url else {
+      return false
+    }
+
+    let components = URLComponents(url: redirectURL, resolvingAgainstBaseURL: false)
+    return components?.queryItems?.first(where: { $0.name == "canceled" && $0.value == "true" }) != nil
   }
 }

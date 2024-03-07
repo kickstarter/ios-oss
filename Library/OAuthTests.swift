@@ -29,7 +29,7 @@ final class OAuthTests: XCTestCase {
     }
   }
 
-  func testHandleRedirect_missingRedirectCode_fails() {
+  func testHandleRedirect_missingRedirectCodeWithNoCancelParam_fails() {
     self.verifyRedirectAsync(
       redirectURL: URL(string: "ksrauth2://authenticate?foo=bar"),
       error: nil,
@@ -43,10 +43,24 @@ final class OAuthTests: XCTestCase {
     }
   }
 
+  func testHandleRedirect_missingRedirectCodeAndIncludesCancelParam_cancels() {
+    self.verifyRedirectAsync(
+      redirectURL: URL(string: "ksrauth2://authenticate?canceled=true"),
+      error: nil,
+      verifier: ""
+    ) { result in
+      if case .canceled = result {
+        // Success
+      } else {
+        XCTFail("Expected call to be cancelled")
+      }
+    }
+  }
+
   func testHandleRedirect_cancellationError_cancels() {
     let cancelledError = ASWebAuthenticationSessionError(.canceledLogin)
     verifyRedirectAsync(redirectURL: nil, error: cancelledError, verifier: "") { result in
-      if case .cancelled = result {
+      if case .canceled = result {
         // Success
       } else {
         XCTFail("Expected call to be canceled")
