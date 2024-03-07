@@ -115,6 +115,10 @@ public struct OAuth {
         let accessEnvelope = AccessTokenEnvelope(accessToken: token, user: user)
         AppEnvironment.login(accessEnvelope)
 
+        // This is an imperfect bit of logging, since it doesn't differentiate between logins and signups.
+        // But it makes up for the fact that we can't track any of this through the embedded web views.
+        AppEnvironment.current.ksrAnalytics.trackLoginSubmitButtonClicked()
+
         onComplete(.loggedIn)
 
       }.store(in: &self.cancellables)
