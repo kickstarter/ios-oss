@@ -16858,6 +16858,7 @@ public enum GraphAPI {
           id
           lastFour
           type
+          stripeCardId
         }
         totalCount
       }
@@ -16921,6 +16922,7 @@ public enum GraphAPI {
           GraphQLField("id", type: .nonNull(.scalar(String.self))),
           GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
           GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
+          GraphQLField("stripeCardId", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -16930,8 +16932,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(expirationDate: String, id: String, lastFour: String, type: CreditCardTypes) {
-        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "type": type])
+      public init(expirationDate: String, id: String, lastFour: String, type: CreditCardTypes, stripeCardId: String) {
+        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -16980,6 +16982,16 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "type")
+        }
+      }
+
+      /// Stripe card id
+      public var stripeCardId: String {
+        get {
+          return resultMap["stripeCardId"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "stripeCardId")
         }
       }
     }
