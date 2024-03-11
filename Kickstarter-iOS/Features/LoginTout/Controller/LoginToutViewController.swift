@@ -432,7 +432,7 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         )
         alert.addAction(UIAlertAction(title: Strings.login_errors_button_ok(), style: .cancel))
         self?.present(alert, animated: true)
-      case .cancelled:
+      case .canceled:
         // Do nothing
         break
       }
