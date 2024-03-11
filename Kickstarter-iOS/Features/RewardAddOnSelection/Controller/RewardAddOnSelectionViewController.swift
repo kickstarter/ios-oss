@@ -176,11 +176,14 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
-      .observeValues { data in
-        let vc = PledgeViewController.instantiate()
-        vc.delegate = self.pledgeViewDelegate
-        vc.configure(with: data)
-        self.navigationController?.pushViewController(vc, animated: true)
+      .observeValues { [weak self] data in
+        guard let self else { return }
+
+        if featurePostCampaignPledgeEnabled(), data.project.isInPostCampaignPledgingPhase {
+          self.goToConfirmDetails(data: data)
+        } else {
+          self.goToPledge(data: data)
+        }
       }
 
     self.viewModel.outputs.startRefreshing
@@ -204,6 +207,23 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
   @objc private func beginRefresh() {
     self.viewModel.inputs.beginRefresh()
+  }
+
+  // MARK: Functions
+
+  private func goToConfirmDetails(data: PledgeViewData) {
+    let vc = ConfirmDetailsViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
+
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToPledge(data: PledgeViewData) {
+    let vc = PledgeViewController.instantiate()
+    vc.delegate = self.pledgeViewDelegate
+    vc.configure(with: data)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 

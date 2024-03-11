@@ -170,7 +170,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
       .observeValues { [weak self] data in
-        self?.goToPledge(data: data)
+        guard let self else { return }
+
+        if featurePostCampaignPledgeEnabled(), data.project.isInPostCampaignPledgingPhase {
+          self.goToConfirmDetails(data: data)
+        } else {
+          self.goToPledge(data: data)
+        }
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
@@ -284,6 +290,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
     pledgeViewController.configure(with: data)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
+  }
+
+  private func goToConfirmDetails(data: PledgeViewData) {
+    let vc = ConfirmDetailsViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
+
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func showEditRewardConfirmationPrompt(title: String, message: String) {
