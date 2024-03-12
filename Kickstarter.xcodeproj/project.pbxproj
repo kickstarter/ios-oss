@@ -7169,6 +7169,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D01587611EEB2DE4006E7684 /* Build configuration list for PBXNativeTarget "KsApi" */;
 			buildPhases = (
+				E1F63FC22BA0A419007B2B2B /* Make list of GraphQL dependencies */,
 				8ADCCD3C26532CCF0079D308 /* Apollo Code Generation */,
 				D015874B1EEB2DE4006E7684 /* Sources */,
 				D015874C1EEB2DE4006E7684 /* Frameworks */,
@@ -7548,6 +7549,7 @@
 			files = (
 			);
 			inputFileListPaths = (
+				"$(DERIVED_FILE_DIR)/GraphQLFiles.xcfilelist",
 			);
 			inputPaths = (
 			);
@@ -7555,10 +7557,30 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(PROJECT_DIR)/KsApi/GraphAPI.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Don't run this during index builds\nif [ $ACTION = \"indexbuild\" ]; then exit 0; fi\n\n# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"${SRCROOT}/KsApi/graphql-schema.json\" --namespace=GraphAPI GraphAPI.swift\n";
+		};
+		E1F63FC22BA0A419007B2B2B /* Make list of GraphQL dependencies */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Make list of GraphQL dependencies";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$PROJECT_DIR/bin/find-graphql-files.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
