@@ -13,7 +13,8 @@ class UserCreditCards_UserFragmentTests: XCTestCase {
           "expirationDate": "2025-02-01",
           "id": "69021256",
           "lastFour": "4242",
-          "type": "VISA"
+          "type": "VISA",
+          "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
         ]],
       "totalCount": 1
     ]

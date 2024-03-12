@@ -4733,8 +4733,8 @@ public enum GraphAPI {
             self.resultMap = unsafeResultMap
           }
 
-          public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes) {
-            self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type])
+          public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) {
+            self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
           }
 
           public var __typename: String {
@@ -11721,8 +11721,8 @@ public enum GraphAPI {
         return CreditCard(unsafeResultMap: ["__typename": "BankAccount"])
       }
 
-      public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes) -> CreditCard {
-        return CreditCard(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type])
+      public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> CreditCard {
+        return CreditCard(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -12964,6 +12964,7 @@ public enum GraphAPI {
           paymentType
           state
           type
+          stripeCardId
         }
       }
       """
@@ -12991,8 +12992,8 @@ public enum GraphAPI {
       return CreditCardFragment(unsafeResultMap: ["__typename": "BankAccount"])
     }
 
-    public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes) -> CreditCardFragment {
-      return CreditCardFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type])
+    public static func makeCreditCard(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) -> CreditCardFragment {
+      return CreditCardFragment(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
     }
 
     public var __typename: String {
@@ -13027,6 +13028,7 @@ public enum GraphAPI {
           GraphQLField("paymentType", type: .nonNull(.scalar(CreditCardPaymentType.self))),
           GraphQLField("state", type: .nonNull(.scalar(CreditCardState.self))),
           GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
+          GraphQLField("stripeCardId", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -13036,8 +13038,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes) {
-        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type])
+      public init(expirationDate: String, id: String, lastFour: String, paymentType: CreditCardPaymentType, state: CreditCardState, type: CreditCardTypes, stripeCardId: String) {
+        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "paymentType": paymentType, "state": state, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -13106,6 +13108,16 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "type")
+        }
+      }
+
+      /// Stripe card id
+      public var stripeCardId: String {
+        get {
+          return resultMap["stripeCardId"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "stripeCardId")
         }
       }
     }
@@ -16858,6 +16870,7 @@ public enum GraphAPI {
           id
           lastFour
           type
+          stripeCardId
         }
         totalCount
       }
@@ -16921,6 +16934,7 @@ public enum GraphAPI {
           GraphQLField("id", type: .nonNull(.scalar(String.self))),
           GraphQLField("lastFour", type: .nonNull(.scalar(String.self))),
           GraphQLField("type", type: .nonNull(.scalar(CreditCardTypes.self))),
+          GraphQLField("stripeCardId", type: .nonNull(.scalar(String.self))),
         ]
       }
 
@@ -16930,8 +16944,8 @@ public enum GraphAPI {
         self.resultMap = unsafeResultMap
       }
 
-      public init(expirationDate: String, id: String, lastFour: String, type: CreditCardTypes) {
-        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "type": type])
+      public init(expirationDate: String, id: String, lastFour: String, type: CreditCardTypes, stripeCardId: String) {
+        self.init(unsafeResultMap: ["__typename": "CreditCard", "expirationDate": expirationDate, "id": id, "lastFour": lastFour, "type": type, "stripeCardId": stripeCardId])
       }
 
       public var __typename: String {
@@ -16980,6 +16994,16 @@ public enum GraphAPI {
         }
         set {
           resultMap.updateValue(newValue, forKey: "type")
+        }
+      }
+
+      /// Stripe card id
+      public var stripeCardId: String {
+        get {
+          return resultMap["stripeCardId"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "stripeCardId")
         }
       }
     }

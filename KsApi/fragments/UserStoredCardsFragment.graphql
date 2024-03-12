@@ -4,6 +4,7 @@ fragment UserStoredCardsFragment on UserCreditCardTypeConnection {
       id
       lastFour
       type
+      stripeCardId
     }
     totalCount
 }

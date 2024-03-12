@@ -21,7 +21,8 @@ public struct GraphUserEnvelopeTemplates {
               "expirationDate": "2023-01-01",
               "id": "6",
               "lastFour": "4242",
-              "type": GraphAPI.CreditCardTypes(rawValue: "VISA") as Any
+              "type": GraphAPI.CreditCardTypes(rawValue: "VISA") as Any,
+              "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
             ]
           ],
           "totalCount": 1

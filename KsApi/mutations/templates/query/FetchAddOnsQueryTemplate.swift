@@ -527,7 +527,8 @@ public enum FetchAddsOnsQueryTemplate {
                   "expirationDate": "2023-01-01",
                   "id": "6",
                   "lastFour": "4242",
-                  "type": "VISA"
+                  "type": "VISA",
+                  "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
                 }
               ],
               "totalCount": 1
