@@ -7549,7 +7549,7 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(DERIVED_FILE_DIR)/GraphQLFiles.xcfilelist",
+				"$(PROJECT_DIR)/KsApi/GraphQLFiles.xcfilelist",
 			);
 			inputPaths = (
 			);
