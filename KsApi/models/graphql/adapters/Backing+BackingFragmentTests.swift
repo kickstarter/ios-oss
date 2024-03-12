@@ -517,7 +517,8 @@ private func backingDictionary() -> [String: Any] {
       "lastFour": "4242",
       "paymentType": "CREDIT_CARD",
       "state": "ACTIVE",
-      "type": "VISA"
+      "type": "VISA",
+      "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
     },
     "id": "QmFja2luZy0xNDQ5NTI3MTc=",
     "location": {
