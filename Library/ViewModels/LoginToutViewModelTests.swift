@@ -25,7 +25,9 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
   fileprivate let startLogin = TestObserver<(), Never>()
   fileprivate let startSignup = TestObserver<(), Never>()
+  fileprivate let startOAuthSignupOrLogin = TestObserver<(), Never>()
   fileprivate let startTwoFactorChallenge = TestObserver<String, Never>()
+  fileprivate let showLoginWithOAuth = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -47,7 +49,9 @@ final class LoginToutViewModelTests: TestCase {
       .observe(self.startFacebookConfirmation.observer)
     self.vm.outputs.startLogin.observe(self.startLogin.observer)
     self.vm.outputs.startSignup.observe(self.startSignup.observer)
+    self.vm.outputs.startOAuthSignupOrLogin.observe(self.startOAuthSignupOrLogin.observer)
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
+    self.vm.outputs.showLoginWithOAuth.observe(self.showLoginWithOAuth.observer)
   }
 
   func testLoginIntent_Pledge() {
@@ -115,6 +119,36 @@ final class LoginToutViewModelTests: TestCase {
       ["Please log in or sign up to back this project."],
       "Emits Signup with pledge login Context Text"
     )
+  }
+
+  func testStartSignupOrLoginWithOAuth() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.signupOrLoginWithOAuthButtonPressed()
+    self.startOAuthSignupOrLogin.assertValueCount(1, "OAuth signup/loginlogin emitted")
+  }
+
+  func testShowSignupOrLoginWithOAuth_featureFlagOn() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.viewWillAppear()
+      self.showLoginWithOAuth.assertValues([true])
+    }
+  }
+
+  func testShowSignupOrLoginWithOAuth_featureFlagOff() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: false
+    ]
+
+    withEnvironment(remoteConfigClient: mockConfigClient) {
+      self.vm.inputs.viewWillAppear()
+      self.showLoginWithOAuth.assertValues([false])
+    }
   }
 
   func testHeadlineLabelHidden() {
