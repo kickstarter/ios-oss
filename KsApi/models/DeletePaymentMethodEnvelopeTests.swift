@@ -13,13 +13,15 @@ class DeletePaymentMethodEnvelopeTests: XCTestCase {
                   "expirationDate": "2055-11-01",
                   "id": "1057",
                   "lastFour": "1111",
-                  "type": "VISA"
+                  "type": "VISA",
+                  "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
                 },
                 {
                   "expirationDate": "2044-04-01",
                   "id": "1055",
                   "lastFour": "4444",
-                  "type": "MASTERCARD"
+                  "type": "MASTERCARD",
+                  "stripeCardId": "pm_1OpDEC4VvJ2PtfhKftPrpgJ2",
                 }
               ]
             }

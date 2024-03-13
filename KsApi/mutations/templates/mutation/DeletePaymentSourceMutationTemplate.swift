@@ -28,13 +28,15 @@ public enum DeletePaymentSourceMutationTemplate {
                 "expirationDate": "2023-02-01",
                 "id": "69021326",
                 "lastFour": "4242",
-                "type": GraphAPI.CreditCardTypes.visa
+                "type": GraphAPI.CreditCardTypes.visa,
+                "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
               ],
               [
                 "expirationDate": "2024-01-01",
                 "id": "69021329",
                 "lastFour": "4243",
-                "type": GraphAPI.CreditCardTypes.discover
+                "type": GraphAPI.CreditCardTypes.discover,
+                "stripeCardId": "pm_1OpDEC4VvJ2PtfhKftPrpgJ2"
               ]
             ]
           ],
