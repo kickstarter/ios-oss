@@ -6,5 +6,6 @@ fragment CreditCardFragment on PaymentSource {
     paymentType
     state
     type
+    stripeCardId
   }
 }

@@ -28,13 +28,15 @@ final class UserCreditCardsTests: XCTestCase {
             "expirationDate": "2023-02-01",
             "lastFour": "4242",
             "id": "3021",
-            "type": "VISA"
+            "type": "VISA",
+            "stripeCardId": "pm_1OpDEC4VvJ2PtfhKftPrpgJ2",
           },
           {
             "expirationDate": "2020-02-01",
             "lastFour": "1111",
             "id": "2768",
-            "type": "VISA"
+            "type": "VISA",
+            "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
           }
       ],
       "totalCount": 2
@@ -69,7 +71,8 @@ final class UserCreditCardsTests: XCTestCase {
           {
             "expirationDate": "2020-02-01",
             "lastFour": "1111",
-            "id": "2768"
+            "id": "2768",
+            "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
           }
       ],
       "totalCount": 1
@@ -103,7 +106,8 @@ final class UserCreditCardsTests: XCTestCase {
             "expirationDate": "2020-02-01",
             "lastFour": "1111",
             "type": "UNKNOWN",
-            "id": "2768"
+            "id": "2768",
+            "stripeCardId": "pm_1OtGFX4VvJ2PtfhK3Gp00SWK",
           }
       ],
       "totalCount": 1

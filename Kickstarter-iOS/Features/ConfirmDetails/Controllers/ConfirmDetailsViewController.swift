@@ -46,8 +46,8 @@ final class ConfirmDetailsViewController: UIViewController {
   }()
 
   /// Total Pledge Summary. Shown when there is no reward selected
-  private lazy var pledgeSummaryViewController: PostCampaignPledgeSummaryViewController = {
-    PostCampaignPledgeSummaryViewController.instantiate()
+  private lazy var pledgeSummaryViewController: PledgeSummaryViewController = {
+    PledgeSummaryViewController.instantiate()
   }()
 
   private lazy var pledgeAmountSummarySectionViews = {
