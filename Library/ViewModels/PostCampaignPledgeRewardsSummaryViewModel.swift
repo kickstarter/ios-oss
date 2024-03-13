@@ -40,6 +40,7 @@ public struct PostCampaignRewardsSummaryViewData {
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
   func configureWith(rewardsData: PostCampaignRewardsSummaryViewData, bonusAmount: Double?,
                      pledgeData: PledgeSummaryViewData)
+  func updatePledgeTotalViewWithData(with pledgeData: PledgeSummaryViewData)
   func viewDidLoad()
 }
 
@@ -108,7 +109,7 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     )
     .map(items)
 
-    self.configurePledgeTotalViewWithData = data.map { $0.2 }
+    self.configurePledgeTotalViewWithData = self.updatePledgeTotalViewWithDataSignal.signal
   }
 
   private let configureWithDataProperty =
@@ -119,6 +120,14 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     pledgeData: PledgeSummaryViewData
   ) {
     self.configureWithDataProperty.value = (rewardsData, bonusAmount, pledgeData)
+  }
+
+  private let (updatePledgeTotalViewWithDataSignal, updatePledgeTotalViewWithDataObserver) = Signal<
+    PledgeSummaryViewData,
+    Never
+  >.pipe()
+  public func updatePledgeTotalViewWithData(with pledgeData: PledgeSummaryViewData) {
+    self.updatePledgeTotalViewWithDataObserver.send(value: pledgeData)
   }
 
   private let viewDidLoadProperty = MutableProperty(())

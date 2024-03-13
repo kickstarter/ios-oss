@@ -78,12 +78,6 @@ final class PostCampaignPledgeSummaryViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyDelegateOpenHelpType
-      .observeForControllerAction()
-      .observeValues { [weak self] helpType in
-        self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
-      }
-
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.totalConversionLabel.rac.text = self.viewModel.outputs.totalConversionLabelText
   }

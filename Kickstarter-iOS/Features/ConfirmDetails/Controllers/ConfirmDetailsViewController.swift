@@ -19,7 +19,7 @@ final class ConfirmDetailsViewController: UIViewController {
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
-  /// The pledge stepper used to change the pledge amount
+  /// The pledge and bonus steppers used to change the pledge amount
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
@@ -241,6 +241,12 @@ final class ConfirmDetailsViewController: UIViewController {
       .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
         self?.pledgeRewardsSummaryViewController
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
+      }
+
+    self.viewModel.outputs.updatePledgeRewardsSummaryPledgeTotal
+      .observeForUI()
+      .observeValues { [weak self] pledgeData in
+        self?.pledgeRewardsSummaryViewController.updatePledgeTotal(with: pledgeData)
       }
 
     Keyboard.change

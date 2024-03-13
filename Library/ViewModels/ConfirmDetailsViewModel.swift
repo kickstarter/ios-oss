@@ -14,6 +14,7 @@ public protocol ConfirmDetailsViewModelInputs {
 public protocol ConfirmDetailsViewModelOutputs {
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
+  var updatePledgeRewardsSummaryPledgeTotal: Signal<PledgeSummaryViewData, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
@@ -230,13 +231,15 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       context.map { $0.confirmationLabelHidden }
     )
 
-    self.configurePledgeSummaryViewControllerWithData = Signal.combineLatest(
+    let pledgeTotalSummaryData = Signal.combineLatest(
       projectAndConfirmationLabelHidden,
       pledgeTotal
     )
     .map(unpack)
     .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
     .map(pledgeSummaryViewData)
+
+    self.configurePledgeSummaryViewControllerWithData = pledgeTotalSummaryData
 
     // MARK: Pledge + Rewards Summary Table
 
@@ -248,14 +251,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
         return context.expandableRewardViewHidden
       }
-
-    let pledgeRewardsSummaryData = Signal.combineLatest(
-      projectAndConfirmationLabelHidden,
-      pledgeTotal
-    )
-    .map(unpack)
-    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
-    .map(pledgeSummaryViewData)
 
     let shippingSummaryData = Signal.combineLatest(
       selectedShippingRule.skipNil().map(\.location.localizedName),
@@ -272,11 +267,10 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
-      pledgeRewardsSummaryData,
-      shippingSummaryData,
-      initialAdditionalPledgeAmount
+      pledgeTotalSummaryData,
+      shippingSummaryData
     )
-    .map { _, project, rewards, selectedQuantities, pledgeRewardsSummaryData, shippingSummaryData, bonusAmount -> (
+    .map { _, project, rewards, selectedQuantities, pledgeTotalSummaryData, shippingSummaryData -> (
       PostCampaignRewardsSummaryViewData,
       Double?,
       PledgeSummaryViewData
@@ -292,7 +286,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
             shipping: shippingSummaryData
           ),
         0,
-        pledgeRewardsSummaryData
+        pledgeTotalSummaryData
       )
     }
 
@@ -305,10 +299,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           shipping: shippingSummaryData
         ),
-      bonusAmount > 0 ? bonusAmount : nil,
-      pledgeRewardsSummaryData
+      0,
+      pledgeTotalSummaryData
     )
     }
+
+    self.updatePledgeRewardsSummaryPledgeTotal = pledgeTotalSummaryData
   }
 
   // MARK: - Inputs
@@ -342,6 +338,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
+  public let updatePledgeRewardsSummaryPledgeTotal: Signal<PledgeSummaryViewData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
     Double?,

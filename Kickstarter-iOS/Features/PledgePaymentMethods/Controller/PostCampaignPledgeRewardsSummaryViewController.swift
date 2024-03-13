@@ -156,6 +156,12 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     self.view.setNeedsLayout()
   }
 
+  func updatePledgeTotal(with pledgeData: PledgeSummaryViewData) {
+    self.viewModel.inputs.updatePledgeTotalViewWithData(with: pledgeData)
+
+    self.view.setNeedsLayout()
+  }
+
   // MARK: Styles
 
   private let rootStackViewStyle: StackViewStyle = { stackView in
