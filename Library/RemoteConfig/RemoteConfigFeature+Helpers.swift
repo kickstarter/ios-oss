@@ -1,10 +1,12 @@
 /// Return remote config values either a value from the cloud, if it found one, or a default value based on the provided key
+private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = false) -> Bool {
+  let valueFromDefaults = AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[feature.rawValue]
 
-private func featureEnabled(feature: RemoteConfigFeature) -> Bool {
-  return AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[feature.rawValue] ??
-    (AppEnvironment.current.remoteConfigClient?
-      .isFeatureEnabled(featureKey: feature) ?? false)
+  let valueFromRemoteConfig = AppEnvironment.current.remoteConfigClient?
+    .isFeatureEnabled(featureKey: feature)
+
+  return valueFromDefaults ?? valueFromRemoteConfig ?? defaultValue
 }
 
 public func featureBlockUsersEnabled() -> Bool {
@@ -32,7 +34,7 @@ public func featureReportThisProjectEnabled() -> Bool {
 }
 
 public func featureLoginWithOAuthEnabled() -> Bool {
-  featureEnabled(feature: .loginWithOAuthEnabled)
+  featureEnabled(feature: .loginWithOAuthEnabled, defaultValue: true)
 }
 
 public func featureUseKeychainForOAuthTokenEnabled() -> Bool {

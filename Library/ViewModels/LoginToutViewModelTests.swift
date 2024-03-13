@@ -151,6 +151,13 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
+  func testShowSignupOrLoginWithOAuth_featureFlagUnset() {
+    withEnvironment(remoteConfigClient: nil) {
+      self.vm.inputs.viewWillAppear()
+      self.showLoginWithOAuth.assertValues([true])
+    }
+  }
+
   func testHeadlineLabelHidden() {
     self.vm.inputs.configureWith(.starProject, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
