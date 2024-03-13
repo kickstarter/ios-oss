@@ -1,12 +1,16 @@
 /// Return remote config values either a value from the cloud, if it found one, or a default value based on the provided key
 private func featureEnabled(feature: RemoteConfigFeature, defaultValue: Bool = false) -> Bool {
-  let valueFromDefaults = AppEnvironment.current.userDefaults
-    .remoteConfigFeatureFlags[feature.rawValue]
+  if let valueFromDefaults = AppEnvironment.current.userDefaults
+    .remoteConfigFeatureFlags[feature.rawValue] {
+    return valueFromDefaults
+  }
 
-  let valueFromRemoteConfig = AppEnvironment.current.remoteConfigClient?
-    .isFeatureEnabled(featureKey: feature)
+  if let valueFromRemoteConfig = AppEnvironment.current.remoteConfigClient?
+    .isFeatureEnabled(featureKey: feature) {
+    return valueFromRemoteConfig
+  }
 
-  return valueFromDefaults ?? valueFromRemoteConfig ?? defaultValue
+  return defaultValue
 }
 
 public func featureBlockUsersEnabled() -> Bool {
