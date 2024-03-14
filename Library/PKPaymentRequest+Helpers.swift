@@ -9,12 +9,11 @@ extension PKPaymentRequest {
     allRewardsTotal: Double,
     additionalPledgeAmount: Double,
     allRewardsShippingTotal: Double,
-    merchantIdentifier: String,
-    env: Environment = AppEnvironment.current
+    merchantIdentifier: String
   ) -> PKPaymentRequest {
     let request = PKPaymentRequest()
     request.merchantIdentifier = merchantIdentifier
-    request.supportedNetworks = env.applePayCapabilities.supportedNetworks(for: project)
+    request.supportedNetworks = AppEnvironment.current.applePayCapabilities.supportedNetworks(for: project)
     request.merchantCapabilities = .capability3DS
     request.countryCode = project.country.countryCode
     request.currencyCode = projectCountry(forCurrency: project.stats.currency)?.currencyCode ?? project
@@ -22,22 +21,22 @@ extension PKPaymentRequest {
     request.shippingType = .shipping
 
     request.paymentSummaryItems = self.paymentSummaryItems(
-      forProject: project,
       reward: reward,
       allRewardsTotal: allRewardsTotal,
       additionalPledgeAmount: additionalPledgeAmount,
-      allRewardsShippingTotal: allRewardsShippingTotal
+      allRewardsShippingTotal: allRewardsShippingTotal,
+      postCampaignPledgingActive: featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
     )
 
     return request
   }
 
   private static func paymentSummaryItems(
-    forProject _: Project,
     reward: Reward,
     allRewardsTotal: Double,
     additionalPledgeAmount: Double,
-    allRewardsShippingTotal: Double
+    allRewardsShippingTotal: Double,
+    postCampaignPledgingActive: Bool
   ) -> [PKPaymentSummaryItem] {
     var paymentSummaryItems: [PKPaymentSummaryItem] = []
 
@@ -85,7 +84,8 @@ extension PKPaymentRequest {
 
     paymentSummaryItems.append(
       PKPaymentSummaryItem(
-        label: Strings.Kickstarter_if_funded(),
+        label: postCampaignPledgingActive ? Strings.Kickstarter_payment_summary() : Strings
+          .Kickstarter_if_funded(),
         amount: total,
         type: .final
       )
