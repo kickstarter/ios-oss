@@ -109,6 +109,9 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     _ = self.separatorView
       |> self.separatorViewStyle
+
+    _ = self.pledgeTotalViewController.view
+      |> \.isHidden .~ true
   }
 
   // MARK: - View model
@@ -126,6 +129,8 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
         self.tableView.setNeedsLayout()
 
         DispatchQueue.main.async {
+          self.view.isHidden = false
+          self.pledgeTotalViewController.view.isHidden = false
           self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
         }
       }
@@ -136,10 +141,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
         guard let self else { return }
 
         self.pledgeTotalViewController.configure(with: data)
-
-        DispatchQueue.main.async {
-          self.view.isHidden = false
-        }
       }
   }
 
@@ -152,12 +153,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
   ) {
     self.viewModel.inputs
       .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
-
-    self.view.setNeedsLayout()
-  }
-
-  func updatePledgeTotal(with pledgeData: PledgeSummaryViewData) {
-    self.viewModel.inputs.updatePledgeTotalViewWithData(with: pledgeData)
 
     self.view.setNeedsLayout()
   }

@@ -243,12 +243,6 @@ final class ConfirmDetailsViewController: UIViewController {
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
-    self.viewModel.outputs.updatePledgeRewardsSummaryPledgeTotal
-      .observeForUI()
-      .observeValues { [weak self] pledgeData in
-        self?.pledgeRewardsSummaryViewController.updatePledgeTotal(with: pledgeData)
-      }
-
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in

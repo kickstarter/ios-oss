@@ -14,7 +14,6 @@ public protocol ConfirmDetailsViewModelInputs {
 public protocol ConfirmDetailsViewModelOutputs {
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
-  var updatePledgeRewardsSummaryPledgeTotal: Signal<PledgeSummaryViewData, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
     (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
@@ -264,7 +263,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     let bonusOrPledgeUpdatedAmount = self.pledgeAmountDataSignal.map { $0.amount }
 
-    self.configurePledgeRewardsSummaryViewWithData = Signal.zip(
+    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
       baseReward.map(\.isNoReward).filter(isFalse),
       project,
       rewards,
@@ -306,8 +305,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       pledgeTotalSummaryData
     )
     }
-
-    self.updatePledgeRewardsSummaryPledgeTotal = pledgeTotalSummaryData
   }
 
   // MARK: - Inputs
@@ -341,7 +338,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
-  public let updatePledgeRewardsSummaryPledgeTotal: Signal<PledgeSummaryViewData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
     Double?,
