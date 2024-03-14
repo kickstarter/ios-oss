@@ -81,8 +81,16 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
         )
       }
 
-    self.confirmationLabelHidden = initialData
-      .map(third)
+    let project = initialData.map(\.project)
+
+    self.confirmationLabelHidden = Signal.combineLatest(initialData, project)
+      .map { initialData, project in
+        guard featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase else {
+          return initialData.confirmationLabelHidden
+        }
+
+        return true
+      }
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)

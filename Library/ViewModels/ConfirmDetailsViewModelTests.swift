@@ -11,11 +11,19 @@ import XCTest
 final class ConfirmDetailsViewModelTests: TestCase {
   private let vm: ConfirmDetailsViewModelType = ConfirmDetailsViewModel()
 
+  private let configurePledgeSummaryViewControllerWithDataConfirmationLabelHidden = TestObserver<
+    Bool,
+    Never
+  >()
+  private let configurePledgeSummaryViewControllerWithDataPledgeTotal = TestObserver<Double, Never>()
+  private let configurePledgeSummaryViewControllerWithDataProject = TestObserver<Project, Never>()
+
   private let configureLocalPickupViewWithData = TestObserver<PledgeLocalPickupViewData, Never>()
   private let configureShippingSummaryViewWithData = TestObserver<PledgeShippingSummaryViewData, Never>()
   private let configureShippingLocationViewWithDataProject = TestObserver<Project, Never>()
   private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
   private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
+
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
@@ -36,10 +44,15 @@ final class ConfirmDetailsViewModelTests: TestCase {
     self.vm.outputs.configureShippingSummaryViewWithData
       .observe(self.configureShippingSummaryViewWithData.observer)
 
+    self.vm.outputs.configurePledgeSummaryViewControllerWithData.map { $0.2 }
+      .observe(self.configurePledgeSummaryViewControllerWithDataConfirmationLabelHidden.observer)
+    self.vm.outputs.configurePledgeSummaryViewControllerWithData.map { $0.1 }
+      .observe(self.configurePledgeSummaryViewControllerWithDataPledgeTotal.observer)
+    self.vm.outputs.configurePledgeSummaryViewControllerWithData.map { $0.0 }
+      .observe(self.configurePledgeSummaryViewControllerWithDataProject.observer)
+
     self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
-
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
-
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.shippingSummaryViewHidden.observe(self.shippingSummaryViewHidden.observer)
   }
@@ -63,6 +76,10 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
 
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
@@ -93,6 +110,10 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePledgeSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
@@ -118,6 +139,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
 
       self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
       self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
@@ -145,6 +169,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
@@ -168,6 +195,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
 
       self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
       self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
@@ -193,6 +223,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
@@ -217,9 +250,21 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+
+      let defaultShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+
+      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
+
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal
+        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
     }
   }
 
@@ -241,9 +286,34 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+
+      let defaultShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+
+      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
+
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal
+        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
+
+      let selectedShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+        |> ShippingRule.lens.location .~ .australia
+
+      self.vm.inputs.shippingRuleSelected(selectedShippingRule)
+
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([
+        reward.minimum,
+        reward.minimum + defaultShippingRule.cost,
+        reward.minimum + selectedShippingRule.cost
+      ])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
 
@@ -265,6 +335,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
@@ -276,6 +349,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
 
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project])
+
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
@@ -283,6 +359,9 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let data2 = (amount: 93.0, min: 10.0, max: 10_000.0, isValid: true)
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
+
+      self.configurePledgeSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76, 103])
+      self.configurePledgeSummaryViewControllerWithDataProject.assertValues([project, project, project])
 
       self.configureShippingLocationViewWithDataProject.assertValues([project])
       self.configureShippingLocationViewWithDataReward.assertValues([reward])

@@ -14,10 +14,12 @@ public protocol ConfirmDetailsViewModelInputs {
 public protocol ConfirmDetailsViewModelOutputs {
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
+  var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
+  var pledgeSummaryViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var shippingSummaryViewHidden: Signal<Bool, Never> { get }
 }
@@ -70,7 +72,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       calculatedShippingTotal
     )
 
-    // Initial pledge amount is zero if not backed.
+    /// Initial pledge amount is zero if not backed.
     let initialAdditionalPledgeAmount = Signal.merge(
       initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       backing.map(\.bonusAmount)
@@ -142,7 +144,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       (project, reward, true, locationId)
     }
 
-    // Only shown for add-ons based rewards
+    /// Only shown for add-ons based rewards
     self.configureShippingSummaryViewWithData = Signal.combineLatest(
       selectedShippingRule.skipNil().map(\.location.localizedName),
       project.map(\.stats.omitUSCurrencyCode),
@@ -166,7 +168,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       )
     }
 
-    // Only shown for if the shipping summary view and shipping location view are hidden
+    /// Only shown for if the shipping summary view and shipping location view are hidden
     self.configureLocalPickupViewWithData = Signal.combineLatest(
       projectAndReward,
       shippingViewsHidden.filter(isTrue)
@@ -181,6 +183,54 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       return SignalProducer(value: localPickupLocationData)
     }
     .skipNil()
+
+    // MARK: Total Pledge Summary
+
+    /// Hide when there is a reward and shipping is enabled (accounts for digital rewards), and in a pledge context
+    self.pledgeSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
+      (baseReward.isNoReward == false && baseReward.shipping.enabled) && context == .pledge
+    }
+
+    let allRewardsTotal = Signal.combineLatest(
+      rewards,
+      selectedQuantities
+    )
+    .map(calculateAllRewardsTotal)
+
+    let additionalPledgeAmount = Signal.merge(
+      self.pledgeAmountDataSignal.map { $0.amount },
+      initialAdditionalPledgeAmount
+    )
+
+    /**
+     * For a regular reward this includes the bonus support amount,
+     * the total of all rewards and their respective shipping costs.
+     * For No Reward this is only the pledge amount.
+     */
+    let calculatedPledgeTotal = Signal.combineLatest(
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      allRewardsTotal
+    )
+    .map(calculatePledgeTotal)
+
+    let pledgeTotal = Signal.merge(
+      backing.map(\.amount),
+      calculatedPledgeTotal
+    )
+
+    let projectAndConfirmationLabelHidden = Signal.combineLatest(
+      project,
+      context.map { $0.confirmationLabelHidden }
+    )
+
+    self.configurePledgeSummaryViewControllerWithData = Signal.combineLatest(
+      projectAndConfirmationLabelHidden,
+      pledgeTotal
+    )
+    .map(unpack)
+    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+    .map(pledgeSummaryViewData)
   }
 
   // MARK: - Inputs
@@ -214,10 +264,12 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
+  public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
+  public let pledgeSummaryViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let shippingSummaryViewHidden: Signal<Bool, Never>
 
