@@ -262,15 +262,18 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     .map(PledgeShippingSummaryViewData.init)
 
+    let bonusOrPledgeUpdatedAmount = self.pledgeAmountDataSignal.map { $0.amount }
+
     self.configurePledgeRewardsSummaryViewWithData = Signal.zip(
       baseReward.map(\.isNoReward).filter(isFalse),
       project,
       rewards,
       selectedQuantities,
-      pledgeTotalSummaryData,
-      shippingSummaryData
+      shippingSummaryData,
+      bonusOrPledgeUpdatedAmount,
+      pledgeTotalSummaryData
     )
-    .map { _, project, rewards, selectedQuantities, pledgeTotalSummaryData, shippingSummaryData -> (
+    .map { _, project, rewards, selectedQuantities, shippingSummaryData, bonusOrPledgeUpdatedAmount, pledgeTotalSummaryData -> (
       PostCampaignRewardsSummaryViewData,
       Double?,
       PledgeSummaryViewData
@@ -285,7 +288,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
             omitCurrencyCode: project.stats.omitUSCurrencyCode,
             shipping: shippingSummaryData
           ),
-        0,
+        bonusOrPledgeUpdatedAmount,
         pledgeTotalSummaryData
       )
     }
@@ -299,7 +302,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           shipping: shippingSummaryData
         ),
-      0,
+      bonusOrPledgeUpdatedAmount,
       pledgeTotalSummaryData
     )
     }
