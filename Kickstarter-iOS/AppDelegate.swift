@@ -365,7 +365,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       })
     )
 
-    DispatchQueue.main.async {
+    // Sometimes, the "sign up for push" popup doesn't appear when you sign in via web authentication session.
+    // My best guess is that this happens because the dismissal of the web login screen accidentally dismisses this popup, too.
+    // The delay isn't pretty, but it works.
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       if let viewController = notification.userInfo?[UserInfoKeys.viewController] as? UIViewController {
         viewController.present(alert, animated: true, completion: nil)
       } else {
