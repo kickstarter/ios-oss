@@ -37,6 +37,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var signupOrLoginWithOAuthButton = { UIButton(type: .custom)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var loginContextStackView = { UIStackView() }()
   private lazy var logoImageView = { UIImageView(frame: .zero) }()
   internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
@@ -138,15 +142,12 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       }
       |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
 
-    if self.viewModel.outputs.loginWithOAuthEnabled {
-      // TODO: Add and translate a new version of this string for this page.
-      _ = self.loginButton |> greenButtonStyle
-      self.loginButton
-        .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
-    } else {
-      _ = self.loginButton |> greyButtonStyle
-      self.loginButton.setTitle(Strings.login_tout_back_intent_traditional_login_button(), for: .normal)
-    }
+    _ = self.loginButton |> greyButtonStyle
+    self.loginButton.setTitle(Strings.login_tout_back_intent_traditional_login_button(), for: .normal)
+
+    _ = self.signupOrLoginWithOAuthButton |> greenButtonStyle
+    self.signupOrLoginWithOAuthButton
+      .setTitle(Strings.login_tout_generic_intent_traditional_signup_or_login_button(), for: .normal)
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -188,6 +189,12 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.pushSignupViewController()
+      }
+
+    self.viewModel.outputs.startOAuthSignupOrLogin
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        self?.pushOAuthFlow()
       }
 
     self.viewModel.outputs.logIntoEnvironmentWithApple
@@ -298,6 +305,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
 
+    self.loginButton.rac.hidden = self.viewModel.outputs.showLoginWithOAuth
+    self.signupButton.rac.hidden = self.viewModel.outputs.showLoginWithOAuth
+    self.signupOrLoginWithOAuthButton.rac.hidden = self.viewModel.outputs.showLoginWithOAuth.signal.negate()
+
     self.viewModel.outputs.headlineLabelHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
@@ -357,12 +368,9 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     _ = ([self.appleLoginButton, self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    if self.viewModel.outputs.loginWithOAuthEnabled {
-      self.emailLoginStackView.addArrangedSubview(self.loginButton)
-    } else {
-      self.emailLoginStackView.addArrangedSubview(self.signupButton)
-      self.emailLoginStackView.addArrangedSubview(self.loginButton)
-    }
+    self.emailLoginStackView.addArrangedSubview(self.signupOrLoginWithOAuthButton)
+    self.emailLoginStackView.addArrangedSubview(self.signupButton)
+    self.emailLoginStackView.addArrangedSubview(self.loginButton)
   }
 
   private func setupConstraints() {
@@ -391,6 +399,8 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
     )
     self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
+    self.signupOrLoginWithOAuthButton
+      .addTarget(self, action: #selector(self.signupOrLoginWithOAuthButtonPressed), for: .touchUpInside)
   }
 
   private func attemptAppleLogin() {
@@ -410,13 +420,17 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
   }
 
   fileprivate func pushLoginViewController() {
-    if self.viewModel.outputs.loginWithOAuthEnabled, let session = createAuthorizationSession() {
-      session.presentationContextProvider = self
-      session.start()
-    } else {
-      self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
-      self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+    self.navigationController?.pushViewController(LoginViewController.instantiate(), animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+  }
+
+  fileprivate func pushOAuthFlow() {
+    guard featureLoginWithOAuthEnabled(), let session = createAuthorizationSession() else {
+      return
     }
+
+    session.presentationContextProvider = self
+    session.start()
   }
 
   fileprivate func createAuthorizationSession() -> ASWebAuthenticationSession? {
@@ -547,6 +561,10 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
 
   @objc private func signupButtonPressed() {
     self.viewModel.inputs.signupButtonPressed()
+  }
+
+  @objc private func signupOrLoginWithOAuthButtonPressed() {
+    self.viewModel.inputs.signupOrLoginWithOAuthButtonPressed()
   }
 }
 
