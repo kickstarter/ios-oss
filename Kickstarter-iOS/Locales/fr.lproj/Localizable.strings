@@ -348,6 +348,7 @@
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs. </br><a href=\"%{trust_link}\">En savoir plus sur la notion de responsabilité</a>";
 "Kickstarter_on_Film" = "Kickstarter on Film";
+"Kickstarter_payment_summary" = "Kickstarter";
 "Kickstarter_takes_claims" = "Kickstarter prend les atteintes au droit à la propriété intellectuelle très au sérieux. Pour plus d'information et pour des instructions sur le signalement d'utilisations abusives, veuillez consulter nos pages {{copyrightPolicyLink}} et {{trademarkPolicyLink}}. Seules les demandes formulées par le titulaire du droit d'auteur ou de la marque déposée seront traitées.";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
 "Learn_about_AI_policy_on_Kickstarter" = "Comprendre la politique sur l'IA de Kickstarter";
@@ -796,7 +797,7 @@
 "You_canceled_your_pledge_for_this_project" = "Vous avez annulé votre engagement.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Impossible d'accepter cette carte pour soutenir un projet depuis le pays suivant : %{project_country}.";
 "You_have_successfully_backed_project_html" = "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !";
-"You_have_successfully_backed_project_post_campaign_html" = "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
+"You_have_successfully_backed_project_post_campaign_html" = "<p>Vous venez de vous engager à soutenir le projet <b>%{project_name}</b>. Votre engagement de <b>%{pledge_total}</b> a bien été prélevé.</p>\n<p>Vous recevrez une confirmation à l'adresse %{user_email} lorsque votre ou vos récompenses seront sur le point d'être expédiées, ce qui vous permettra de régler vos frais de port et les taxes qui s'appliquent.</p>\n<p>Ce projet prend vie grace à vous, donc parlez-en autour de vous !</p>";
 "You_launched_this_project_on_launch_date" = "Vous avez lancé ce projet le %{launch_date}. Rendez-vous sur notre site Web pour accéder aux outils du créateur !";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Vous devez vous engager à hauteur de %{reward_minimum} ou plus pour sélectionner cette récompense.";
 "You_pledged_on_date" = "<b>Votre engagement</b> du %{pledge_date}";
