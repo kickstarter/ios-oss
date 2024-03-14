@@ -15,11 +15,16 @@ internal final class LoginToutViewControllerTests: TestCase {
   }
 
   func testLoginToutView() {
+    let mockConfigClient = MockRemoteConfigClient()
+    mockConfigClient.features = [
+      RemoteConfigFeature.loginWithOAuthEnabled.rawValue: false
+    ]
+
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject]
 
     orthogonalCombos(Language.allLanguages, devices, intents).forEach { language, device, intent in
-      withEnvironment(language: language) {
+      withEnvironment(language: language, remoteConfigClient: mockConfigClient) {
         let controller = LoginToutViewController.configuredWith(loginIntent: intent)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

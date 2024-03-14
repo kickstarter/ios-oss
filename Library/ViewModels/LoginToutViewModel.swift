@@ -41,6 +41,9 @@ public protocol LoginToutViewModelInputs {
   /// Call when sign up button is pressed
   func signupButtonPressed()
 
+  /// Call with login with OAuth button is pressed
+  func signupOrLoginWithOAuthButtonPressed()
+
   /// Call when a user session starts.
   func userSessionStarted()
 
@@ -92,6 +95,9 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when Signup view should be shown
   var startSignup: Signal<(), Never> { get }
 
+  /// Emits when OAuth flow should be shown
+  var startOAuthSignupOrLogin: Signal<(), Never> { get }
+
   /// Emits a Facebook user and access token when Facebook login has occurred
   var startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never> { get }
 
@@ -100,7 +106,7 @@ public protocol LoginToutViewModelOutputs {
 
   /// True if the feature flag for OAuth login is true.
   /// Note that this is not a signal, because we don't want it to ever change after the screen is loaded.
-  var loginWithOAuthEnabled: Bool { get }
+  var showLoginWithOAuth: Signal<Bool, Never> { get }
 }
 
 public protocol LoginToutViewModelType {
@@ -125,6 +131,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.isLoading = isLoading.signal.skipRepeats()
     self.startLogin = self.loginButtonPressedProperty.signal
     self.startSignup = self.signupButtonPressedProperty.signal
+    self.startOAuthSignupOrLogin = self.signupOrLoginWithOAuthButtonPressedProperty.signal
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
     self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
@@ -269,7 +276,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironmentWithApple = logIntoEnvironmentWithApple.signal
     self.logIntoEnvironmentWithFacebook = logIntoEnvironmentWithFacebook.signal
-    self.loginWithOAuthEnabled = featureLoginWithOAuthEnabled()
+    self.showLoginWithOAuth = self.viewWillAppearProperty.signal.map { _ in
+      featureLoginWithOAuthEnabled()
+    }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
@@ -329,6 +338,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.signupButtonPressedProperty.value = ()
   }
 
+  fileprivate let signupOrLoginWithOAuthButtonPressedProperty = MutableProperty(())
+  public func signupOrLoginWithOAuthButtonPressed() {
+    self.signupOrLoginWithOAuthButtonPressedProperty.value = ()
+  }
+
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
@@ -356,10 +370,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
+  public let startOAuthSignupOrLogin: Signal<(), Never>
   public let startTwoFactorChallenge: Signal<String, Never>
   public let showAppleErrorAlert: Signal<String, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
-  public let loginWithOAuthEnabled: Bool
+  public let showLoginWithOAuth: Signal<Bool, Never>
 }
 
 private func statusString(_ forStatus: LoginIntent) -> String {
