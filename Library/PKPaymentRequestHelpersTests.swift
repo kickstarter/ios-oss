@@ -7,8 +7,10 @@ import XCTest
 
 final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_NoShipping() {
-    let project = Project.template
-      |> Project.lens.country .~ .us
+    var project = Project.template
+    project.country = .us
+    project.isInPostCampaignPledgingPhase = false
+
     let reward = Reward.noReward
     let merchantId = "merchant_id"
 
@@ -36,9 +38,11 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   }
 
   func testPaymentRequest_WithShipping() {
-    let project = Project.template
-      |> Project.lens.country .~ .ca
-      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+    var project = Project.template
+    project.country = .ca
+    project.stats.currency = Project.Country.ca.currencyCode
+    project.isInPostCampaignPledgingPhase = false
+
     let reward = Reward.template
       |> Reward.lens.title .~ "A cool reward"
       |> Reward.lens.minimum .~ 5
@@ -77,9 +81,11 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   }
 
   func testPaymentRequest_WithShipping_CountryDifferentFromCurrency() {
-    let project = Project.template
-      |> Project.lens.country .~ .ca
-      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+    var project = Project.template
+    project.country = .ca
+    project.stats.currency = Project.Country.us.currencyCode
+    project.isInPostCampaignPledgingPhase = false
+
     let reward = Reward.template
       |> Reward.lens.title .~ "A cool reward"
       |> Reward.lens.minimum .~ 5
@@ -118,9 +124,11 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
   }
 
   func testPaymentRequest_WithShipping_NonWholeNumberPledgeAmount() {
-    let project = Project.template
-      |> Project.lens.country .~ .ca
-      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+    var project = Project.template
+    project.country = .ca
+    project.stats.currency = Project.Country.ca.currencyCode
+    project.isInPostCampaignPledgingPhase = false
+
     let reward = Reward.template
       |> Reward.lens.title .~ "A cool reward"
       |> Reward.lens.minimum .~ 5
@@ -156,5 +164,32 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     XCTAssertEqual(paymentRequest.paymentSummaryItems[3].label, "Kickstarter (if funded)")
     XCTAssertEqual(paymentRequest.paymentSummaryItems[3].amount.doubleValue, 36.6)
     XCTAssertEqual(paymentRequest.paymentSummaryItems[3].type, .final)
+  }
+
+  func testPaymentRequest_postCampaignPledgingEnabled() {
+    var project = Project.template
+    project.country = .us
+    project.isInPostCampaignPledgingPhase = true
+
+    let reward = Reward.noReward
+    let merchantId = "merchant_id"
+
+    let mockRemoteConfig = MockRemoteConfigClient()
+    mockRemoteConfig.features = [
+      RemoteConfigFeature.postCampaignPledgeEnabled.rawValue: true
+    ]
+
+    withEnvironment(remoteConfigClient: mockRemoteConfig) {
+      let paymentRequest = PKPaymentRequest.paymentRequest(
+        for: project,
+        reward: reward,
+        allRewardsTotal: 100,
+        additionalPledgeAmount: 50,
+        allRewardsShippingTotal: 0,
+        merchantIdentifier: merchantId
+      )
+
+      XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.label, "Kickstarter")
+    }
   }
 }
