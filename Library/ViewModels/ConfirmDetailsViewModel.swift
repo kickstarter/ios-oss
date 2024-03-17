@@ -14,11 +14,16 @@ public protocol ConfirmDetailsViewModelInputs {
 public protocol ConfirmDetailsViewModelOutputs {
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
+  var configurePledgeRewardsSummaryViewWithData: Signal<
+    (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
+    Never
+  > { get }
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
+  var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
   var pledgeSummaryViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var shippingSummaryViewHidden: Signal<Bool, Never> { get }
@@ -73,11 +78,17 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
 
     /// Initial pledge amount is zero if not backed.
-    let initialAdditionalPledgeAmount = Signal.merge(
+    let initialPledgeAmount = Signal.merge(
       initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       backing.map(\.bonusAmount)
     )
     .take(first: 1)
+
+    /// Called when pledge or bonus is updated by backer
+    let additionalPledgeAmount = Signal.merge(
+      self.pledgeAmountDataSignal.map { $0.amount },
+      initialPledgeAmount
+    )
 
     let projectAndReward = Signal.zip(project, baseReward)
 
@@ -153,11 +164,18 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       },
       allRewardsShippingTotal
     )
-    .map(PledgeShippingSummaryViewData.init)
+    .map { locationName, omitUSCurrencyCode, projectCountry, total in
+      PledgeShippingSummaryViewData(
+        locationName: locationName,
+        omitUSCurrencyCode: omitUSCurrencyCode,
+        projectCountry: projectCountry,
+        total: total
+      )
+    }
 
     self.configurePledgeAmountViewWithData = Signal.combineLatest(
       projectAndReward,
-      initialAdditionalPledgeAmount
+      initialPledgeAmount
     )
     .map(unpack)
     .map { project, reward, additionalPledgeAmount in
@@ -197,11 +215,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     .map(calculateAllRewardsTotal)
 
-    let additionalPledgeAmount = Signal.merge(
-      self.pledgeAmountDataSignal.map { $0.amount },
-      initialAdditionalPledgeAmount
-    )
-
     /**
      * For a regular reward this includes the bonus support amount,
      * the total of all rewards and their respective shipping costs.
@@ -224,13 +237,79 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       context.map { $0.confirmationLabelHidden }
     )
 
-    self.configurePledgeSummaryViewControllerWithData = Signal.combineLatest(
+    let pledgeTotalSummaryData = Signal.combineLatest(
       projectAndConfirmationLabelHidden,
       pledgeTotal
     )
     .map(unpack)
     .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
     .map(pledgeSummaryViewData)
+
+    self.configurePledgeSummaryViewControllerWithData = pledgeTotalSummaryData
+
+    // MARK: Pledge + Rewards Summary Table
+
+    self.pledgeRewardsSummaryViewHidden = Signal.zip(context, baseReward)
+      .map { context, reward in
+        if context.isAny(of: .pledge, .updateReward) {
+          return reward.isNoReward
+        }
+
+        return context.expandableRewardViewHidden
+      }
+
+    let shippingSummaryData = Signal.combineLatest(
+      selectedShippingRule.skipNil().map(\.location.localizedName),
+      project.map(\.stats.omitUSCurrencyCode),
+      project.map { project in
+        projectCountry(forCurrency: project.stats.currency) ?? project.country
+      },
+      allRewardsShippingTotal
+    )
+    .map(PledgeShippingSummaryViewData.init)
+
+    let bonusOrPledgeUpdatedAmount = self.pledgeAmountDataSignal.map { $0.amount }
+
+    self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
+      baseReward.map(\.isNoReward).filter(isFalse),
+      project,
+      rewards,
+      selectedQuantities,
+      shippingSummaryData,
+      bonusOrPledgeUpdatedAmount,
+      pledgeTotalSummaryData
+    )
+    .map { _, project, rewards, selectedQuantities, shippingSummaryData, bonusOrPledgeUpdatedAmount, pledgeTotalSummaryData -> (
+      PostCampaignRewardsSummaryViewData,
+      Double?,
+      PledgeSummaryViewData
+    ) in
+    guard let projectCurrencyCountry = project.stats.currentCountry else {
+      return (
+        PostCampaignRewardsSummaryViewData(
+          rewards: rewards,
+          selectedQuantities: selectedQuantities,
+          projectCountry: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          shipping: shippingSummaryData
+        ),
+        bonusOrPledgeUpdatedAmount,
+        pledgeTotalSummaryData
+      )
+    }
+
+    return (
+      PostCampaignRewardsSummaryViewData(
+        rewards: rewards,
+        selectedQuantities: selectedQuantities,
+        projectCountry: projectCurrencyCountry,
+        omitCurrencyCode: project.stats.omitUSCurrencyCode,
+        shipping: shippingSummaryData
+      ),
+      bonusOrPledgeUpdatedAmount,
+      pledgeTotalSummaryData
+    )
+    }
   }
 
   // MARK: - Inputs
@@ -264,11 +343,17 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
+  public let configurePledgeRewardsSummaryViewWithData: Signal<(
+    PostCampaignRewardsSummaryViewData,
+    Double?,
+    PledgeSummaryViewData
+  ), Never>
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
+  public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>
   public let pledgeSummaryViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let shippingSummaryViewHidden: Signal<Bool, Never>
@@ -285,32 +370,4 @@ private func pledgeSummaryViewData(
   confirmationLabelHidden: Bool
 ) -> PledgeSummaryViewData {
   return (project, total, confirmationLabelHidden)
-}
-
-private func pledgeAmountSummaryViewData(
-  with project: Project,
-  reward _: Reward,
-  allRewardsTotal: Double,
-  additionalPledgeAmount: Double,
-  shippingViewsHidden: Bool,
-  context: PledgeViewContext
-) -> PledgeAmountSummaryViewData? {
-  guard let backing = project.personalization.backing else { return nil }
-
-  let rewardIsLocalPickup = isRewardLocalPickup(backing.reward)
-  let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
-
-  return .init(
-    bonusAmount: additionalPledgeAmount,
-    bonusAmountHidden: context == .update,
-    isNoReward: backing.reward?.isNoReward ?? false,
-    locationName: backing.locationName,
-    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    projectCurrencyCountry: projectCurrencyCountry,
-    pledgedOn: backing.pledgedAt,
-    rewardMinimum: allRewardsTotal,
-    shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    shippingAmountHidden: !shippingViewsHidden,
-    rewardIsLocalPickup: rewardIsLocalPickup
-  )
 }

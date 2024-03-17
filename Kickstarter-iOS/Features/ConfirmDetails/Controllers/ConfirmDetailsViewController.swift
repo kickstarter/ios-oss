@@ -19,7 +19,7 @@ final class ConfirmDetailsViewController: UIViewController {
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
-  /// The pledge stepper used to change the pledge amount
+  /// The pledge and bonus steppers used to change the pledge amount
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
@@ -64,6 +64,11 @@ final class ConfirmDetailsViewController: UIViewController {
       self.localPickupLocationView,
       self.pledgeAmountViewController.view
     ]
+  }()
+
+  /// The rewards and pledge summary table view
+  private lazy var pledgeRewardsSummaryViewController = {
+    PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
   private lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -130,7 +135,8 @@ final class ConfirmDetailsViewController: UIViewController {
     let childViewControllers = [
       self.pledgeAmountViewController,
       self.shippingLocationViewController,
-      self.pledgeSummaryViewController
+      self.pledgeSummaryViewController,
+      self.pledgeRewardsSummaryViewController
     ]
 
     let arrangedSubviews = [
@@ -140,7 +146,8 @@ final class ConfirmDetailsViewController: UIViewController {
     let arrangedInsetSubviews = [
       [self.titleLabel],
       self.inputsSectionViews,
-      self.pledgeAmountSummarySectionViews
+      self.pledgeAmountSummarySectionViews,
+      [self.pledgeRewardsSummaryViewController.view]
     ]
     .flatMap { $0 }
     .compact()
@@ -229,6 +236,13 @@ final class ConfirmDetailsViewController: UIViewController {
         self?.pledgeSummaryViewController.configure(with: data)
       }
 
+    self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
+      .observeForUI()
+      .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
+        self?.pledgeRewardsSummaryViewController
+          .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
+      }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -245,6 +259,9 @@ final class ConfirmDetailsViewController: UIViewController {
 
     self.pledgeSummarySectionSeparator.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
     self.pledgeSummaryViewController.view.rac.hidden = self.viewModel.outputs.pledgeSummaryViewHidden
+
+    self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
+      .pledgeRewardsSummaryViewHidden
   }
 
   // MARK: - Actions
