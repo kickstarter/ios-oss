@@ -128,11 +128,9 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
         self.tableView.reloadData()
         self.tableView.setNeedsLayout()
 
-        DispatchQueue.main.async {
-          self.view.isHidden = false
-          self.pledgeTotalViewController.view.isHidden = false
-          self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
-        }
+        self.view.isHidden = false
+        self.pledgeTotalViewController.view.isHidden = false
+        self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
       }
 
     self.viewModel.outputs.configurePledgeTotalViewWithData

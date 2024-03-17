@@ -108,7 +108,10 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
     )
     .map(items)
 
-    self.configurePledgeTotalViewWithData = data.map { $0.2 }
+    self.configurePledgeTotalViewWithData = data.map { data in
+      let (_, _, pledgeSummaryData) = data
+      return pledgeSummaryData
+    }
   }
 
   private let configureWithDataProperty =

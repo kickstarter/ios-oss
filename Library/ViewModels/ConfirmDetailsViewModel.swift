@@ -78,7 +78,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
 
     /// Initial pledge amount is zero if not backed.
-    let initialAdditionalPledgeAmount = Signal.merge(
+    let initialPledgeAmount = Signal.merge(
       initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       backing.map(\.bonusAmount)
     )
@@ -87,7 +87,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     /// Called when pledge or bonus is updated by backer
     let additionalPledgeAmount = Signal.merge(
       self.pledgeAmountDataSignal.map { $0.amount },
-      initialAdditionalPledgeAmount
+      initialPledgeAmount
     )
 
     let projectAndReward = Signal.zip(project, baseReward)
@@ -164,11 +164,18 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       },
       allRewardsShippingTotal
     )
-    .map(PledgeShippingSummaryViewData.init)
+    .map { locationName, omitUSCurrencyCode, projectCountry, total in
+      PledgeShippingSummaryViewData(
+        locationName: locationName,
+        omitUSCurrencyCode: omitUSCurrencyCode,
+        projectCountry: projectCountry,
+        total: total
+      )
+    }
 
     self.configurePledgeAmountViewWithData = Signal.combineLatest(
       projectAndReward,
-      initialAdditionalPledgeAmount
+      initialPledgeAmount
     )
     .map(unpack)
     .map { project, reward, additionalPledgeAmount in
@@ -277,30 +284,28 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Double?,
       PledgeSummaryViewData
     ) in
-    guard let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) else {
+    guard let projectCurrencyCountry = project.stats.currentCountry else {
       return (
-        PostCampaignRewardsSummaryViewData
-          .init(
-            rewards: rewards,
-            selectedQuantities: selectedQuantities,
-            projectCountry: project.country,
-            omitCurrencyCode: project.stats.omitUSCurrencyCode,
-            shipping: shippingSummaryData
-          ),
+        PostCampaignRewardsSummaryViewData(
+          rewards: rewards,
+          selectedQuantities: selectedQuantities,
+          projectCountry: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          shipping: shippingSummaryData
+        ),
         bonusOrPledgeUpdatedAmount,
         pledgeTotalSummaryData
       )
     }
 
     return (
-      PostCampaignRewardsSummaryViewData
-        .init(
-          rewards: rewards,
-          selectedQuantities: selectedQuantities,
-          projectCountry: projectCurrencyCountry,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode,
-          shipping: shippingSummaryData
-        ),
+      PostCampaignRewardsSummaryViewData(
+        rewards: rewards,
+        selectedQuantities: selectedQuantities,
+        projectCountry: projectCurrencyCountry,
+        omitCurrencyCode: project.stats.omitUSCurrencyCode,
+        shipping: shippingSummaryData
+      ),
       bonusOrPledgeUpdatedAmount,
       pledgeTotalSummaryData
     )
