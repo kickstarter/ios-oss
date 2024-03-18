@@ -312,11 +312,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     }
 
-    self.configureCTAWithPledgeTotal = Signal.combineLatest(
-      project,
-      pledgeTotal
-    )
-    .map { project, total in (project, total) }
+    self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)
   }
 
   // MARK: - Inputs

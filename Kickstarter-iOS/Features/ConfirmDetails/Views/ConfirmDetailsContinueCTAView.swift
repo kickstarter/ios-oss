@@ -110,12 +110,12 @@ final class ConfirmDetailsContinueCTAView: UIView {
   }
 
   func configure(with data: ConfirmDetailsContinueCTAViewData) {
-    if let attributedAmount = attributedCurrency(with: data.project, total: data.total) {
+    if let attributedAmount = attributedCurrency(withProject: data.project, total: data.total) {
       self.amountLabel.attributedText = attributedAmount
     }
   }
 
-  private func attributedCurrency(with project: Project, total: Double) -> NSAttributedString? {
+  private func attributedCurrency(withProject project: Project, total: Double) -> NSAttributedString? {
     let defaultAttributes = checkoutCurrencyDefaultAttributes()
       .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
     let projectCurrencyCountry = projectCountry(forCurrency: project.stats.currency) ?? project.country
