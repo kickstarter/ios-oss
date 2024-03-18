@@ -4,8 +4,19 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
+public struct PostCampaignCheckoutData: Equatable {
+  public let project: Project
+  public let rewards: [Reward]
+  public let selectedQuantities: SelectedRewardQuantities
+  public let bonusAmount: Double
+  public let shipping: PledgeShippingSummaryViewData
+  public let total: Double
+  public let refTag: RefTag?
+  public let context: PledgeViewContext
+}
+
 public protocol PostCampaignCheckoutViewModelInputs {
-  func configure(with data: PledgeViewData)
+  func configure(with data: PostCampaignCheckoutData)
   func pledgeDisclaimerViewDidTapLearnMore()
   func viewDidLoad()
 }
@@ -61,8 +72,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   // MARK: - Inputs
 
-  private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
-  public func configure(with data: PledgeViewData) {
+  private let configureWithDataProperty = MutableProperty<PostCampaignCheckoutData?>(nil)
+  public func configure(with data: PostCampaignCheckoutData) {
     self.configureWithDataProperty.value = data
   }
 

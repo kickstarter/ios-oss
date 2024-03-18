@@ -310,7 +310,7 @@ final class ConfirmDetailsViewController: UIViewController {
 
   // MARK: - Functions
 
-  private func goToCheckout(data: PledgeViewData) {
+  private func goToCheckout(data: PostCampaignCheckoutData) {
     let vc = PostCampaignCheckoutViewController.instantiate()
     vc.configure(with: data)
     vc.title = self.title

@@ -45,7 +45,7 @@ final class PostCampaignCheckoutViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  func configure(with data: PledgeViewData) {
+  func configure(with data: PostCampaignCheckoutData) {
     self.viewModel.inputs.configure(with: data)
   }
 

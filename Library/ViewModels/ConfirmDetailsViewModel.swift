@@ -23,7 +23,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
-  var goToCheckout: Signal<PledgeViewData, Never> { get }
+  var goToCheckout: Signal<PostCampaignCheckoutData, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
@@ -316,9 +316,25 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)
 
-    // TODO: Update with real data
-    self.goToCheckout = initialData
-      .takeWhen(self.continueButtonTappedProperty.signal)
+    self.goToCheckout = Signal.combineLatest(
+      initialData,
+      bonusOrPledgeUpdatedAmount,
+      shippingSummaryData,
+      pledgeTotal
+    )
+    .map { initialData, bonus, shipping, pledgeTotal -> PostCampaignCheckoutData in
+      PostCampaignCheckoutData(
+        project: initialData.project,
+        rewards: initialData.rewards,
+        selectedQuantities: initialData.selectedQuantities,
+        bonusAmount: bonus,
+        shipping: shipping,
+        total: pledgeTotal,
+        refTag: initialData.refTag,
+        context: initialData.context
+      )
+    }
+    .takeWhen(self.continueButtonTappedProperty.signal)
   }
 
   // MARK: - Inputs
@@ -366,7 +382,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
-  public let goToCheckout: Signal<PledgeViewData, Never>
+  public let goToCheckout: Signal<PostCampaignCheckoutData, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>
