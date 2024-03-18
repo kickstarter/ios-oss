@@ -10,6 +10,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
 }
 
 public protocol PostCampaignCheckoutViewModelOutputs {
+  var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
 }
 
@@ -28,19 +29,27 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     )
     .map(first)
     .skipNil()
-    
+
     let context = initialData.map(\.context)
-    
+
+    self.configurePaymentMethodsViewControllerWithValue = initialData
+      .compactMap { data -> PledgePaymentMethodsValue? in
+        guard let user = AppEnvironment.current.currentUser else { return nil }
+        guard let reward = data.rewards.first else { return nil }
+
+        return (user, data.project, reward, data.context, data.refTag)
+      }
+
     // TODO: Respond to login flow.
     let isLoggedIn = initialData.ignoreValues()
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
-    
+
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       isLoggedIn,
       context
     )
-    .map { (isLoggedIn, context) in
+    .map { isLoggedIn, context in
       // TODO: Calculate isEnabled and willRetryPaymentMethod fields instead of defaulting to true.
       PledgeViewCTAContainerViewData(isLoggedIn, true, context, true)
     }
@@ -60,6 +69,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   // MARK: - Outputs
 
+  public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }

@@ -3,11 +3,22 @@ import Library
 import Prelude
 import UIKit
 
+private enum PostCampaignCheckoutLayout {
+  enum Style {
+    static let cornerRadius: CGFloat = Styles.grid(2)
+  }
+}
+
 final class PostCampaignCheckoutViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var titleLabel = UILabel(frame: .zero)
-  
+
+  private lazy var paymentMethodsViewController = {
+    PledgePaymentMethodsViewController.instantiate()
+    // TODO: Add self as delegate and add support for delegate methods.
+  }()
+
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
     PledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -64,8 +75,9 @@ final class PostCampaignCheckoutViewController: UIViewController {
 
     self.rootStackView.addArrangedSubview(self.titleLabel)
     // TODO: Add payment methods VC to stack view.
-    // TODO: Add pledge summary table to stack view.
-    // TODO: Add pledge cta to view.
+    self.rootStackView.addArrangedSubview(self.paymentMethodsViewController.view)
+    self.addChild(self.paymentMethodsViewController)
+    self.paymentMethodsViewController.didMove(toParent: self)
   }
 
   private func setupConstraints() {
@@ -104,16 +116,26 @@ final class PostCampaignCheckoutViewController: UIViewController {
       topBottom: ConfirmDetailsLayout.Margin.topBottom,
       leftRight: ConfirmDetailsLayout.Margin.leftRight
     )
+
+    _ = self.paymentMethodsViewController.view
+      |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
   }
-  
+
   // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
-    
+
     self.viewModel.outputs.configurePledgeViewCTAContainerView
       .observeForUI()
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
+      }
+
+    self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.paymentMethodsViewController.configure(with: value)
       }
   }
 }
