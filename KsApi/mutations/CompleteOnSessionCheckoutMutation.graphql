@@ -1,0 +1,8 @@
+mutation CompleteOnSessionCheckout($input: CompleteOnSessionCheckoutInput!) {
+  completeOnSessionCheckout(input: $input) {
+    checkout {
+      ...CheckoutFragment
+    }
+  }
+}
+

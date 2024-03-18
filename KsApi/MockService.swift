@@ -32,6 +32,11 @@
 
     fileprivate let createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>?
 
+    fileprivate let completeOnSessionCheckoutResult: Result<
+      GraphAPI.CompleteOnSessionCheckoutMutation.Data,
+      ErrorEnvelope
+    >?
+
     fileprivate let createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>?
 
     fileprivate let createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>?
@@ -228,6 +233,10 @@
       changePasswordResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createAttributionEventResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createBackingResult: Result<CreateBackingEnvelope, ErrorEnvelope>? = nil,
+      completeOnSessionCheckoutResult: Result<
+        GraphAPI.CompleteOnSessionCheckoutMutation.Data,
+        ErrorEnvelope
+      >? = nil,
       createCheckoutResult: Result<CreateCheckoutEnvelope, ErrorEnvelope>? = nil,
       createFlaggingResult: Result<EmptyResponseEnvelope, ErrorEnvelope>? = nil,
       createPaymentIntentResult: Result<PaymentIntentEnvelope, ErrorEnvelope>? = nil,
@@ -352,6 +361,8 @@
       self.createAttributionEventResult = createAttributionEventResult
 
       self.createBackingResult = createBackingResult
+
+      self.completeOnSessionCheckoutResult = completeOnSessionCheckoutResult
 
       self.createCheckoutResult = createCheckoutResult
 
@@ -637,6 +648,16 @@
       let mutation = GraphAPI.CreateBackingMutation(input: GraphAPI.CreateBackingInput.from(input))
 
       return client.performWithResult(mutation: mutation, result: self.createBackingResult)
+    }
+
+    internal func completeOnSessionCheckout(input: GraphAPI.CompleteOnSessionCheckoutInput) ->
+      SignalProducer<GraphAPI.CompleteOnSessionCheckoutMutation.Data, ErrorEnvelope> {
+      guard let client = self.apolloClient else {
+        return .empty
+      }
+
+      let mutation = GraphAPI.CompleteOnSessionCheckoutMutation(input: input)
+      return client.performWithResult(mutation: mutation, result: self.completeOnSessionCheckoutResult)
     }
 
     internal func createCheckout(input: CreateCheckoutInput)
@@ -1890,5 +1911,11 @@ private extension Result {
     case .success: return nil
     case let .failure(error): return error
     }
+  }
+}
+
+extension GraphAPI.CompleteOnSessionCheckoutMutation.Data: Decodable {
+  public init(from _: Decoder) throws {
+    fatalError("The test code should not actually be decoding this object.")
   }
 }
