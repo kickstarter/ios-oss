@@ -7,6 +7,12 @@ final class PostCampaignCheckoutViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var titleLabel = UILabel(frame: .zero)
+  
+  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    // TODO: Add self as delegate and add support for delegate methods.
+  }()
 
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
@@ -50,6 +56,7 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> ksr_addSubviewToParent()
 
     self.view.addSubview(self.rootScrollView)
+    self.view.addSubview(self.pledgeCTAContainerView)
 
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
@@ -66,8 +73,10 @@ final class PostCampaignCheckoutViewController: UIViewController {
       self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.rootScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      // TODO: Update to pledge cta instead
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
   }
@@ -95,5 +104,16 @@ final class PostCampaignCheckoutViewController: UIViewController {
       topBottom: ConfirmDetailsLayout.Margin.topBottom,
       leftRight: ConfirmDetailsLayout.Margin.leftRight
     )
+  }
+  
+  // MARK: - View model
+  override func bindViewModel() {
+    super.bindViewModel()
+    
+    self.viewModel.outputs.configurePledgeViewCTAContainerView
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.pledgeCTAContainerView.configureWith(value: value)
+      }
   }
 }
