@@ -6,12 +6,14 @@ import ReactiveSwift
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PledgeViewData)
+  func pledgeDisclaimerViewDidTapLearnMore()
   func viewDidLoad()
 }
 
 public protocol PostCampaignCheckoutViewModelOutputs {
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var showWebHelp: Signal<HelpType, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -53,6 +55,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       // TODO: Calculate isEnabled and willRetryPaymentMethod fields instead of defaulting to true.
       PledgeViewCTAContainerViewData(isLoggedIn, true, context, true)
     }
+
+    self.showWebHelp = self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
   }
 
   // MARK: - Inputs
@@ -60,6 +64,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
   public func configure(with data: PledgeViewData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
+    = Signal<Void, Never>.pipe()
+  public func pledgeDisclaimerViewDidTapLearnMore() {
+    self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -71,6 +81,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let showWebHelp: Signal<HelpType, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }

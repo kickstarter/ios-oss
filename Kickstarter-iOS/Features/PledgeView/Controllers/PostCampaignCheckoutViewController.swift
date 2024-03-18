@@ -25,6 +25,12 @@ final class PostCampaignCheckoutViewController: UIViewController {
     // TODO: Add self as delegate and add support for delegate methods.
   }()
 
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
+  }()
+
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -57,6 +63,10 @@ final class PostCampaignCheckoutViewController: UIViewController {
     self.configureChildViewControllers()
     self.setupConstraints()
 
+    if let attributedText = PledgeViewControllerHelpers.attributedLearnMoreText() {
+      self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -78,6 +88,8 @@ final class PostCampaignCheckoutViewController: UIViewController {
     self.rootStackView.addArrangedSubview(self.paymentMethodsViewController.view)
     self.addChild(self.paymentMethodsViewController)
     self.paymentMethodsViewController.didMove(toParent: self)
+
+    self.rootStackView.addArrangedSubview(self.pledgeDisclaimerView)
   }
 
   private func setupConstraints() {
@@ -119,6 +131,9 @@ final class PostCampaignCheckoutViewController: UIViewController {
 
     _ = self.paymentMethodsViewController.view
       |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
+
+    _ = self.pledgeDisclaimerView
+      |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
   }
 
   // MARK: - View model
@@ -137,5 +152,20 @@ final class PostCampaignCheckoutViewController: UIViewController {
       .observeValues { [weak self] value in
         self?.paymentMethodsViewController.configure(with: value)
       }
+
+    self.viewModel.outputs.showWebHelp
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+  }
+}
+
+// MARK: - PledgeDisclaimerViewDelegate
+
+extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
+  func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
+    self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
   }
 }
