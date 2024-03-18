@@ -24,7 +24,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var createCheckoutSuccess: Signal<String, Never> { get }
-  var createCheckoutError: Signal<String, Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
@@ -350,8 +350,9 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     self.createCheckoutSuccess = createCheckoutEvents.values()
       .map { $0.checkout.id }
 
-    self.createCheckoutError = createCheckoutEvents.errors()
-      .map { $0.localizedDescription }
+    // TODO: [MBL-1217] Update string once translations are done
+    self.showErrorBannerWithMessage = createCheckoutEvents.errors()
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
   }
 
   // MARK: - Inputs
@@ -400,7 +401,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let createCheckoutSuccess: Signal<String, Never>
-  public let createCheckoutError: Signal<String, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>

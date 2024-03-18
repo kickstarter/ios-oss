@@ -12,10 +12,12 @@ public enum ConfirmDetailsLayout {
 
 protocol ConfirmDetailsViewControllerDelegate: AnyObject {}
 
-final class ConfirmDetailsViewController: UIViewController {
+final class ConfirmDetailsViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   public weak var delegate: ConfirmDetailsViewControllerDelegate?
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
@@ -121,6 +123,8 @@ final class ConfirmDetailsViewController: UIViewController {
       |> \.title .~ Strings.Back_this_project()
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -270,15 +274,14 @@ final class ConfirmDetailsViewController: UIViewController {
     self.viewModel.outputs.createCheckoutSuccess
       .observeForUI()
       .observeValues { checkoutId in
-        //TODO: Navigate to checkout screen
+        // TODO: Navigate to checkout screen
         print("navigate to checkout screen with checkoutID: \(checkoutId)")
       }
 
-    self.viewModel.outputs.createCheckoutError
-      .observeForUI()
-      .observeValues { error in
-        //TODO: Handle Error once sad path UX is defined
-        print("CreateCheckout Error: \(error)")
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
