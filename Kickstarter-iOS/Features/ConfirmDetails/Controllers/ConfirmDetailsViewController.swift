@@ -12,10 +12,12 @@ public enum ConfirmDetailsLayout {
 
 protocol ConfirmDetailsViewControllerDelegate: AnyObject {}
 
-final class ConfirmDetailsViewController: UIViewController {
+final class ConfirmDetailsViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   public weak var delegate: ConfirmDetailsViewControllerDelegate?
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
@@ -74,6 +76,7 @@ final class ConfirmDetailsViewController: UIViewController {
   private lazy var continueCTAView: ConfirmDetailsContinueCTAView = {
     ConfirmDetailsContinueCTAView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
   }()
 
   private lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -119,13 +122,9 @@ final class ConfirmDetailsViewController: UIViewController {
     _ = self
       |> \.title .~ Strings.Back_this_project()
 
-    self.continueCTAView.continueButton.addTarget(
-      self,
-      action: #selector(self.continueButtonTapped),
-      for: .touchUpInside
-    )
-
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -272,6 +271,19 @@ final class ConfirmDetailsViewController: UIViewController {
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
+    self.viewModel.outputs.createCheckoutSuccess
+      .observeForUI()
+      .observeValues { checkoutId in
+        // TODO: Navigate to checkout screen
+        print("navigate to checkout screen with checkoutID: \(checkoutId)")
+      }
+
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+      }
+
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
 
     self.shippingLocationViewController.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
@@ -291,11 +303,6 @@ final class ConfirmDetailsViewController: UIViewController {
   }
 
   // MARK: - Actions
-
-  @objc func continueButtonTapped() {
-    // TODO: Navigate to Checkout Screen
-    //    self.viewModel.inputs.continueButtonTapped()
-  }
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
@@ -325,6 +332,14 @@ extension ConfirmDetailsViewController: PledgeShippingLocationViewControllerDele
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
+}
+
+// MARK: - ConfirmDetailsContinueCTAViewDelegate
+
+extension ConfirmDetailsViewController: ConfirmDetailsContinueCTAViewDelegate {
+  func continueButtonTapped() {
+    self.viewModel.inputs.continueCTATapped()
+  }
 }
 
 // MARK: - Styles
