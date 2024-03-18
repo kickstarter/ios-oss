@@ -157,6 +157,11 @@ public struct Service: ServiceType {
       .flatMap(CreateBackingEnvelope.producer(from:))
   }
 
+  public func completeOnSessionCheckout(input: GraphAPI.CompleteOnSessionCheckoutInput) ->
+    SignalProducer<GraphAPI.CompleteOnSessionCheckoutMutation.Data, ErrorEnvelope> {
+    return GraphQL.shared.client.perform(mutation: GraphAPI.CompleteOnSessionCheckoutMutation(input: input))
+  }
+
   public func createCheckout(input: CreateCheckoutInput) ->
     SignalProducer<CreateCheckoutEnvelope, ErrorEnvelope> {
     return GraphQL.shared.client
