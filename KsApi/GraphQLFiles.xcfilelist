@@ -15,6 +15,7 @@ $(PROJECT_DIR)/KsApi/fragments/CheckoutFragment.graphql
 $(PROJECT_DIR)/KsApi/fragments/CommentWithRepliesFragment.graphql
 $(PROJECT_DIR)/KsApi/mutations/UpdateBacking.graphql
 $(PROJECT_DIR)/KsApi/mutations/PostComment.graphql
+$(PROJECT_DIR)/KsApi/mutations/CompleteOnSessionCheckoutMutation.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreateCheckout.graphql
 $(PROJECT_DIR)/KsApi/mutations/CreatePaymentIntent.graphql
 $(PROJECT_DIR)/KsApi/mutations/UpdateUserAccount.graphql
