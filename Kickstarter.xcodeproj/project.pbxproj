@@ -482,6 +482,7 @@
 		6051C6792B67F36800514202 /* CreatePaymentIntentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6782B67F36800514202 /* CreatePaymentIntentInput.swift */; };
 		6051C67C2B67F44500514202 /* CreatePaymentIntentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */; };
 		6051C6832B683E6300514202 /* PaymentIntentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */; };
+		606067112BA8717000023E9A /* ConfirmDetailsContinueCTAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606067102BA8717000023E9A /* ConfirmDetailsContinueCTAView.swift */; };
 		606754BD28CF91D60033CD5E /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BC28CF91D60033CD5E /* FacebookCore */; };
 		606754BF28CF91DD0033CD5E /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 606754BE28CF91DD0033CD5E /* FacebookLogin */; };
 		6067BCE9293E49AC0036ABB1 /* FacebookResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */; };
@@ -2080,6 +2081,7 @@
 		6051C6782B67F36800514202 /* CreatePaymentIntentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInput.swift; sourceTree = "<group>"; };
 		6051C67A2B67F36C00514202 /* CreatePaymentIntentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentIntentInputTests.swift; sourceTree = "<group>"; };
 		6051C6822B683E6300514202 /* PaymentIntentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIntentEnvelope.swift; sourceTree = "<group>"; };
+		606067102BA8717000023E9A /* ConfirmDetailsContinueCTAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDetailsContinueCTAView.swift; sourceTree = "<group>"; };
 		6067BCE7293E48140036ABB1 /* FacebookResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewController.swift; sourceTree = "<group>"; };
 		6067BCEA293E49CB0036ABB1 /* FacebookResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		6067BCEF293FC10E0036ABB1 /* FacebookResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -5573,6 +5575,7 @@
 			isa = PBXGroup;
 			children = (
 				6021F6682B97BC7400F76031 /* Controllers */,
+				6060670F2BA8715F00023E9A /* Views */,
 			);
 			path = ConfirmDetails;
 			sourceTree = "<group>";
@@ -5627,6 +5630,14 @@
 				6049D01E2AA774130015BB0D /* DesignSystemColors.swift */,
 			);
 			path = Colors;
+			sourceTree = "<group>";
+		};
+		6060670F2BA8715F00023E9A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				606067102BA8717000023E9A /* ConfirmDetailsContinueCTAView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		6067BCE5293E47D50036ABB1 /* FacebookResetPasswordViewController */ = {
@@ -8283,6 +8294,7 @@
 				60AE9F062ABB897900FB3A96 /* ReportProjectInfoListItem.swift in Sources */,
 				604453242BA08EEA00B8F485 /* PostCampaignPledgeRewardsSummaryViewController.swift in Sources */,
 				47F4CA63267A7B2300356DBF /* RemoteConfigFeatureFlagToolsViewController.swift in Sources */,
+				606067112BA8717000023E9A /* ConfirmDetailsContinueCTAView.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,
 				01B3B0301E78890800B8BF46 /* BackerDashboardPagesDataSource.swift in Sources */,

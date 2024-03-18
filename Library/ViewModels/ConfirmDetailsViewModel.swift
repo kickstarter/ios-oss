@@ -12,6 +12,7 @@ public protocol ConfirmDetailsViewModelInputs {
 }
 
 public protocol ConfirmDetailsViewModelOutputs {
+  var configureCTAWithPledgeTotal: Signal<(Project, Double), Never> { get }
   var configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never> { get }
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
@@ -310,6 +311,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       pledgeTotalSummaryData
     )
     }
+
+    self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)
   }
 
   // MARK: - Inputs
@@ -341,6 +344,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
   // MARK: - Outputs
 
+  public let configureCTAWithPledgeTotal: Signal<(Project, Double), Never>
   public let configureLocalPickupViewWithData: Signal<PledgeLocalPickupViewData, Never>
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(

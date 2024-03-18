@@ -71,6 +71,11 @@ final class ConfirmDetailsViewController: UIViewController {
     PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
 
+  private lazy var continueCTAView: ConfirmDetailsContinueCTAView = {
+    ConfirmDetailsContinueCTAView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
     UITapGestureRecognizer(
       target: self,
@@ -114,6 +119,12 @@ final class ConfirmDetailsViewController: UIViewController {
     _ = self
       |> \.title .~ Strings.Back_this_project()
 
+    self.continueCTAView.continueButton.addTarget(
+      self,
+      action: #selector(self.continueButtonTapped),
+      for: .touchUpInside
+    )
+
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.configureChildViewControllers()
@@ -126,6 +137,9 @@ final class ConfirmDetailsViewController: UIViewController {
 
   private func configureChildViewControllers() {
     _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.continueCTAView, self.view)
       |> ksr_addSubviewToParent()
 
     _ = (self.rootStackView, self.rootScrollView)
@@ -171,7 +185,10 @@ final class ConfirmDetailsViewController: UIViewController {
       self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.rootScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.continueCTAView.topAnchor),
+      self.continueCTAView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.continueCTAView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.continueCTAView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.pledgeSummarySectionSeparator.heightAnchor.constraint(equalToConstant: 1)
     ])
@@ -243,6 +260,12 @@ final class ConfirmDetailsViewController: UIViewController {
           .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
       }
 
+    self.viewModel.outputs.configureCTAWithPledgeTotal
+      .observeForUI()
+      .observeValues { data in
+        self.continueCTAView.configure(with: data)
+      }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -262,9 +285,17 @@ final class ConfirmDetailsViewController: UIViewController {
 
     self.pledgeRewardsSummaryViewController.view.rac.hidden = self.viewModel.outputs
       .pledgeRewardsSummaryViewHidden
+
+    self.continueCTAView.titleAndAmountStackView.rac.hidden = self.viewModel.outputs
+      .pledgeSummaryViewHidden.negate()
   }
 
   // MARK: - Actions
+
+  @objc func continueButtonTapped() {
+    // TODO: Navigate to Checkout Screen
+    //    self.viewModel.inputs.continueButtonTapped()
+  }
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
