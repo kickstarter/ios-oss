@@ -334,7 +334,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
         return CreateCheckoutInput(
           projectId: project.graphID,
-          amount: "\(pledgeTotal)",
+          amount: String(format: "%.2f", pledgeTotal),
           locationId: "\(project.location.id)",
           rewardIds: rewardsIDs,
           refParam: refTag?.stringTag
