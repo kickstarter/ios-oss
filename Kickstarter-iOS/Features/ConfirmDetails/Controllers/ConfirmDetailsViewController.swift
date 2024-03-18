@@ -267,6 +267,20 @@ final class ConfirmDetailsViewController: UIViewController {
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
+    self.viewModel.outputs.createCheckoutSuccess
+      .observeForUI()
+      .observeValues { checkoutId in
+        //TODO: Navigate to checkout screen
+        print("navigate to checkout screen with checkoutID: \(checkoutId)")
+      }
+
+    self.viewModel.outputs.createCheckoutError
+      .observeForUI()
+      .observeValues { error in
+        //TODO: Handle Error once sad path UX is defined
+        print("CreateCheckout Error: \(error)")
+      }
+
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
 
     self.shippingLocationViewController.view.rac.hidden = self.viewModel.outputs.shippingLocationViewHidden
