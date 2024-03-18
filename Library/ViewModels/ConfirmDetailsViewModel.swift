@@ -6,6 +6,7 @@ import ReactiveSwift
 
 public protocol ConfirmDetailsViewModelInputs {
   func configure(with data: PledgeViewData)
+  func continueButtonTapped()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func viewDidLoad()
@@ -22,6 +23,7 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
+  var goToCheckout: Signal<PledgeViewData, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
@@ -313,6 +315,10 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     }
 
     self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)
+
+    // TODO: Update with real data
+    self.goToCheckout = initialData
+      .takeWhen(self.continueButtonTappedProperty.signal)
   }
 
   // MARK: - Inputs
@@ -320,6 +326,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
   public func configure(with data: PledgeViewData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let continueButtonTappedProperty = MutableProperty(())
+  public func continueButtonTapped() {
+    self.continueButtonTappedProperty.value = ()
   }
 
   private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
@@ -355,6 +366,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
+  public let goToCheckout: Signal<PledgeViewData, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>

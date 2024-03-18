@@ -266,6 +266,14 @@ final class ConfirmDetailsViewController: UIViewController {
         self.continueCTAView.configure(with: data)
       }
 
+    self.viewModel.outputs.goToCheckout
+      .observeForControllerAction()
+      .observeValues { [weak self] data in
+        guard let self else { return }
+
+        self.goToCheckout(data: data)
+      }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -293,12 +301,21 @@ final class ConfirmDetailsViewController: UIViewController {
   // MARK: - Actions
 
   @objc func continueButtonTapped() {
-    // TODO: Navigate to Checkout Screen
-    //    self.viewModel.inputs.continueButtonTapped()
+    self.viewModel.inputs.continueButtonTapped()
   }
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
+  }
+
+  // MARK: - Functions
+
+  private func goToCheckout(data: PledgeViewData) {
+    let vc = PostCampaignCheckoutViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
+
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
