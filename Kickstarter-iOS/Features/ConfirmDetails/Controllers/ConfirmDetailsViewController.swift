@@ -74,6 +74,7 @@ final class ConfirmDetailsViewController: UIViewController {
   private lazy var continueCTAView: ConfirmDetailsContinueCTAView = {
     ConfirmDetailsContinueCTAView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
   }()
 
   private lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -118,12 +119,6 @@ final class ConfirmDetailsViewController: UIViewController {
 
     _ = self
       |> \.title .~ Strings.Back_this_project()
-
-    self.continueCTAView.continueButton.addTarget(
-      self,
-      action: #selector(self.continueButtonTapped),
-      for: .touchUpInside
-    )
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
@@ -292,11 +287,6 @@ final class ConfirmDetailsViewController: UIViewController {
 
   // MARK: - Actions
 
-  @objc func continueButtonTapped() {
-    // TODO: Navigate to Checkout Screen
-    //    self.viewModel.inputs.continueButtonTapped()
-  }
-
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
   }
@@ -325,6 +315,14 @@ extension ConfirmDetailsViewController: PledgeShippingLocationViewControllerDele
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
   func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
+}
+
+// MARK: - ConfirmDetailsContinueCTAViewDelegate
+
+extension ConfirmDetailsViewController: ConfirmDetailsContinueCTAViewDelegate {
+  func continueButtonTapped() {
+    self.viewModel.inputs.continueCTATapped()
+  }
 }
 
 // MARK: - Styles

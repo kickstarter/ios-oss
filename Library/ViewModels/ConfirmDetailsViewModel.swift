@@ -6,6 +6,7 @@ import ReactiveSwift
 
 public protocol ConfirmDetailsViewModelInputs {
   func configure(with data: PledgeViewData)
+  func continueCTATapped()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func viewDidLoad()
@@ -316,6 +317,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   }
 
   // MARK: - Inputs
+
+  private let continueCTATappedProperty = MutableProperty(())
+  public func continueCTATapped() {
+    self.continueCTATappedProperty.value = ()
+  }
 
   private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
   public func configure(with data: PledgeViewData) {
