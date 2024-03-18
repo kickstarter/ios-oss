@@ -44,6 +44,8 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.isHidden = true
+    self.pledgeTotalViewController.view.isHidden = true
     self.configureSubviews()
     self.setupConstraints()
 
@@ -98,7 +100,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     _ = self.view
       |> \.clipsToBounds .~ true
       |> checkoutWhiteBackgroundStyle
-      |> \.isHidden .~ true
 
     _ = self.rootStackView
       |> self.rootStackViewStyle
@@ -109,9 +110,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     _ = self.separatorView
       |> self.separatorViewStyle
-
-    _ = self.pledgeTotalViewController.view
-      |> \.isHidden .~ true
   }
 
   // MARK: - View model

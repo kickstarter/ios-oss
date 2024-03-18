@@ -9,8 +9,10 @@ public struct PostCampaignCheckoutData: Equatable {
   public let rewards: [Reward]
   public let selectedQuantities: SelectedRewardQuantities
   public let bonusAmount: Double
-  public let shipping: PledgeShippingSummaryViewData
   public let total: Double
+  public let projectCountry: Project.Country
+  public let omitCurrencyCode: Bool
+  public let shipping: PledgeShippingSummaryViewData
   public let refTag: RefTag?
   public let context: PledgeViewContext
 }
@@ -23,6 +25,10 @@ public protocol PostCampaignCheckoutViewModelInputs {
 
 public protocol PostCampaignCheckoutViewModelOutputs {
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
+  var configurePledgeRewardsSummaryViewWithData: Signal<
+    (PostCampaignRewardsSummaryViewData, Double, PledgeSummaryViewData),
+    Never
+  > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
 }
@@ -68,6 +74,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     }
 
     self.showWebHelp = self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
+
+    self.configurePledgeRewardsSummaryViewWithData = initialData
+      .compactMap { data in
+        let rewardsData = PostCampaignRewardsSummaryViewData(
+          rewards: data.rewards,
+          selectedQuantities: data.selectedQuantities,
+          projectCountry: data.projectCountry,
+          omitCurrencyCode: data.omitCurrencyCode,
+          shipping: data.shipping
+        )
+        let pledgeData = PledgeSummaryViewData(
+          project: data.project,
+          total: data.total,
+          confirmationLabelHidden: true
+        )
+        return (rewardsData, data.bonusAmount, pledgeData)
+      }
   }
 
   // MARK: - Inputs
@@ -91,6 +114,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   // MARK: - Outputs
 
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
+  public let configurePledgeRewardsSummaryViewWithData: Signal<(
+    PostCampaignRewardsSummaryViewData,
+    Double,
+    PledgeSummaryViewData
+  ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let showWebHelp: Signal<HelpType, Never>
 

@@ -328,8 +328,10 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         rewards: initialData.rewards,
         selectedQuantities: initialData.selectedQuantities,
         bonusAmount: bonus,
-        shipping: shipping,
         total: pledgeTotal,
+        projectCountry: initialData.project.stats.currentCountry ?? initialData.project.country,
+        omitCurrencyCode: initialData.project.stats.omitUSCurrencyCode,
+        shipping: shipping,
         refTag: initialData.refTag,
         context: initialData.context
       )

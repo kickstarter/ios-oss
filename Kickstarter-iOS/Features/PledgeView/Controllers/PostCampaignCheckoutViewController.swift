@@ -31,12 +31,21 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
+  private lazy var pledgeRewardsSummaryViewController = {
+    PostCampaignPledgeRewardsSummaryViewController.instantiate()
+  }()
+
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rootInsetStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -83,13 +92,21 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.rootStackView.addArrangedSubview(self.titleLabel)
-    // TODO: Add payment methods VC to stack view.
-    self.rootStackView.addArrangedSubview(self.paymentMethodsViewController.view)
+    // Configure root stack view.
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
+
+    self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
+    self.addChild(self.pledgeRewardsSummaryViewController)
+    self.pledgeRewardsSummaryViewController.didMove(toParent: self)
+
+    // Configure inset views.
+    self.rootInsetStackView.addArrangedSubview(self.titleLabel)
+
+    self.rootInsetStackView.addArrangedSubview(self.paymentMethodsViewController.view)
     self.addChild(self.paymentMethodsViewController)
     self.paymentMethodsViewController.didMove(toParent: self)
 
-    self.rootStackView.addArrangedSubview(self.pledgeDisclaimerView)
+    self.rootInsetStackView.addArrangedSubview(self.pledgeDisclaimerView)
   }
 
   private func setupConstraints() {
@@ -122,9 +139,12 @@ final class PostCampaignCheckoutViewController: UIViewController {
     self.rootScrollView.alwaysBounceVertical = true
 
     self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
-    self.rootStackView.spacing = Styles.grid(4)
-    self.rootStackView.isLayoutMarginsRelativeArrangement = true
-    self.rootStackView.layoutMargins = UIEdgeInsets(
+    self.rootStackView.spacing = Styles.grid(0)
+
+    self.rootInsetStackView.axis = NSLayoutConstraint.Axis.vertical
+    self.rootInsetStackView.spacing = Styles.grid(4)
+    self.rootInsetStackView.isLayoutMarginsRelativeArrangement = true
+    self.rootInsetStackView.layoutMargins = UIEdgeInsets(
       topBottom: ConfirmDetailsLayout.Margin.topBottom,
       leftRight: ConfirmDetailsLayout.Margin.leftRight
     )
@@ -140,6 +160,13 @@ final class PostCampaignCheckoutViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
+      .observeForUI()
+      .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
+        self?.pledgeRewardsSummaryViewController
+          .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
+      }
 
     self.viewModel.outputs.configurePledgeViewCTAContainerView
       .observeForUI()
