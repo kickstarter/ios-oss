@@ -18,7 +18,13 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private let viewModel: PostCampaignCheckoutViewModelType = PostCampaignCheckoutViewModel()
+
   // MARK: - Lifecycle
+
+  func configure(with data: PledgeViewData) {
+    self.viewModel.inputs.configure(with: data)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -33,6 +39,8 @@ final class PostCampaignCheckoutViewController: UIViewController {
 
     self.configureChildViewControllers()
     self.setupConstraints()
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   // MARK: - Configuration
