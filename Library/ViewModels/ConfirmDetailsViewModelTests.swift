@@ -24,10 +24,14 @@ final class ConfirmDetailsViewModelTests: TestCase {
   private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
   private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
 
+  private let createCheckoutSuccess = TestObserver<String, Never>()
+
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let shippingSummaryViewHidden = TestObserver<Bool, Never>()
+
+  private let showErrorBannerWithMessage = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -51,10 +55,14 @@ final class ConfirmDetailsViewModelTests: TestCase {
     self.vm.outputs.configurePledgeSummaryViewControllerWithData.map { $0.0 }
       .observe(self.configurePledgeSummaryViewControllerWithDataProject.observer)
 
+    self.vm.outputs.createCheckoutSuccess.observe(self.createCheckoutSuccess.observer)
+
     self.vm.outputs.localPickupViewHidden.observe(self.localPickupViewHidden.observer)
     self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.shippingSummaryViewHidden.observe(self.shippingSummaryViewHidden.observer)
+
+    self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
   }
 
   func testPledgeContext_LoggedIn() {
@@ -799,5 +807,89 @@ final class ConfirmDetailsViewModelTests: TestCase {
     self.configureLocalPickupViewWithData.assertValues([
       PledgeLocalPickupViewData(locationName: "Los Angeles, CA")
     ])
+  }
+
+  func testContinueButton_CallsCreateBackingMutation_Success() {
+    let createCheckout = CreateCheckoutEnvelope.Checkout(id: "id", paymentUrl: "paymentUrl")
+
+    let mockService = MockService(
+      createCheckoutResult:
+      Result.success(CreateCheckoutEnvelope(checkout: createCheckout))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ .unrestricted
+        |> Reward.lens.localPickup .~ .losAngeles
+      let addOnReward1 = Reward.template
+        |> Reward.lens.id .~ 2
+      let project = Project.template
+        |> Project.lens.rewardData.rewards .~ [reward]
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward, addOnReward1],
+        selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+        selectedLocationId: ShippingRule.template.id,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.continueCTATapped()
+
+      self.scheduler.run()
+
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.createCheckoutSuccess.assertDidEmitValue()
+      self.createCheckoutSuccess.assertValue("id")
+    }
+  }
+
+  func testContinueButton_CallsCreateBackingMutation_Failure_ShowsErrorMessageBanner() {
+    let createCheckout = CreateCheckoutEnvelope.Checkout(id: "id", paymentUrl: "paymentUrl")
+    let errorUnknown = ErrorEnvelope(
+      errorMessages: ["Something went wrong yo."],
+      ksrCode: .UnknownCode,
+      httpCode: 400,
+      exception: nil
+    )
+
+    let mockService = MockService(createCheckoutResult: Result.failure(errorUnknown))
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shipping.preference .~ .unrestricted
+        |> Reward.lens.localPickup .~ .losAngeles
+      let addOnReward1 = Reward.template
+        |> Reward.lens.id .~ 2
+      let project = Project.template
+        |> Project.lens.rewardData.rewards .~ [reward]
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward, addOnReward1],
+        selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+        selectedLocationId: ShippingRule.template.id,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.continueCTATapped()
+
+      self.scheduler.run()
+
+      self.createCheckoutSuccess.assertDidNotEmitValue()
+
+      self.showErrorBannerWithMessage.assertValue(Strings.Something_went_wrong_please_try_again())
+    }
   }
 }
