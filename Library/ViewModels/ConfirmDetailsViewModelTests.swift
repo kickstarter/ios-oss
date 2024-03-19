@@ -24,7 +24,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
   private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
   private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
 
-  private let createCheckoutSuccess = TestObserver<String, Never>()
+  private let createCheckoutSuccess = TestObserver<PostCampaignCheckoutData, Never>()
 
   private let localPickupViewHidden = TestObserver<Bool, Never>()
   private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
@@ -810,7 +810,8 @@ final class ConfirmDetailsViewModelTests: TestCase {
   }
 
   func testContinueButton_CallsCreateBackingMutation_Success() {
-    let createCheckout = CreateCheckoutEnvelope.Checkout(id: "id", paymentUrl: "paymentUrl")
+    let expectedId = "id"
+    let createCheckout = CreateCheckoutEnvelope.Checkout(id: expectedId, paymentUrl: "paymentUrl")
 
     let mockService = MockService(
       createCheckoutResult:
@@ -827,10 +828,12 @@ final class ConfirmDetailsViewModelTests: TestCase {
       let project = Project.template
         |> Project.lens.rewardData.rewards .~ [reward]
 
+      let expectedRewards = [reward, addOnReward1]
+      let selectedQuantities = [reward.id: 1, addOnReward1.id: 1]
       let data = PledgeViewData(
         project: project,
-        rewards: [reward, addOnReward1],
-        selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+        rewards: expectedRewards,
+        selectedQuantities: selectedQuantities,
         selectedLocationId: ShippingRule.template.id,
         refTag: nil,
         context: .pledge
@@ -839,6 +842,21 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      let expectedShipping = PledgeShippingSummaryViewData(
+        locationName: "Los Angeles, CA",
+        omitUSCurrencyCode: true,
+        projectCountry: .us,
+        total: 3
+      )
+      self.vm.inputs.shippingRuleSelected(
+        ShippingRule(cost: expectedShipping.total, id: nil, location: .losAngeles)
+      )
+
+      let expectedBonus = 5.0
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: expectedBonus, min: 0, max: 100, isValid: true)
+      )
+
       self.vm.inputs.continueCTATapped()
 
       self.scheduler.run()
@@ -846,7 +864,20 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.createCheckoutSuccess.assertDidEmitValue()
-      self.createCheckoutSuccess.assertValue("id")
+      let expectedValue = PostCampaignCheckoutData(
+        project: project,
+        rewards: expectedRewards,
+        selectedQuantities: selectedQuantities,
+        bonusAmount: expectedBonus,
+        total: 28,
+        projectCountry: .us,
+        omitCurrencyCode: true,
+        shipping: expectedShipping,
+        refTag: nil,
+        context: .pledge,
+        checkoutId: expectedId
+      )
+      self.createCheckoutSuccess.assertValue(expectedValue)
     }
   }
 

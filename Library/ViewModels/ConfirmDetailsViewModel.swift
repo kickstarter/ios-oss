@@ -350,15 +350,17 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let checkoutValues = createCheckoutEvents.values()
       .map { $0.checkout.id }
 
-    self.createCheckoutSuccess = Signal.combineLatest(
-      initialData,
-      bonusOrPledgeUpdatedAmount,
-      shippingSummaryData,
-      pledgeTotal,
-      checkoutValues
+    self.createCheckoutSuccess = checkoutValues.withLatestFrom(
+      Signal.combineLatest(
+        initialData,
+        bonusOrPledgeUpdatedAmount,
+        shippingSummaryData,
+        pledgeTotal
+      )
     )
-    .map { initialData, bonus, shipping, pledgeTotal, checkoutValue -> PostCampaignCheckoutData in
-      PostCampaignCheckoutData(
+    .map { checkoutValue, otherData -> PostCampaignCheckoutData in
+      let (initialData, bonus, shipping, pledgeTotal) = otherData
+      return PostCampaignCheckoutData(
         project: initialData.project,
         rewards: initialData.rewards,
         selectedQuantities: initialData.selectedQuantities,
@@ -372,7 +374,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         checkoutId: checkoutValue
       )
     }
-    .takeWhen(checkoutValues.signal)
 
     // TODO: [MBL-1217] Update string once translations are done
     self.showErrorBannerWithMessage = createCheckoutEvents.errors()
