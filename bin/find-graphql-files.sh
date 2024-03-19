@@ -5,6 +5,7 @@ GRAPHQL_FILE_LIST="$PROJECT_DIR/KsApi/GraphQLFiles.xcfilelist"
 #Find all GraphQL files in KsApi.
 #Replace the literal $PROJECT_DIR with the token $(PROJECT_DIR)
 find $PROJECT_DIR -name "*.graphql" | sed "s#^$PROJECT_DIR#\$(PROJECT_DIR)#" > "$GRAPHQL_FILE_LIST.tmp"
+echo "\$(PROJECT_DIR)/KsApi/graphql-schema.json" >> "$GRAPHQL_FILE_LIST.tmp"
 
 GRAPHQL_FILE_COUNT=$(wc -l $GRAPHQL_FILE_LIST.tmp | awk '{print $1}')
 echo "Found $GRAPHQL_FILE_COUNT GraphQL file dependencies."

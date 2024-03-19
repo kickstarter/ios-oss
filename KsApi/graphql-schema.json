@@ -2251,11 +2251,6 @@
           },
           {
             "kind": "OBJECT",
-            "name": "UniversalAddress",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
             "name": "Survey",
             "ofType": null
           }
@@ -2738,6 +2733,18 @@
             "deprecationReason": null
           },
           {
+            "name": "endCondition",
+            "description": "For post-campaign enabled rewards, the conditions under which to stop offering the reward.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "endsAt",
             "description": "When the reward is scheduled to end in seconds",
             "args": [],
@@ -2785,6 +2792,22 @@
               "kind": "OBJECT",
               "name": "Photo",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "inPostCampaignPledgingPhase",
+            "description": "Is this reward currently accepting post-campaign pledges?",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -2854,6 +2877,22 @@
               "kind": "OBJECT",
               "name": "RewardItemsConnection",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "latePledgeAmount",
+            "description": "Amount for claiming this reward after the campaign.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Money",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -2929,6 +2968,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pledgeAmount",
+            "description": "Amount for claiming this reward during the campaign.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Money",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -3140,6 +3195,18 @@
                   "ofType": null
                 }
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "startCondition",
+            "description": "For post-campaign enabled rewards, the conditions under which to start offering the reward.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4190,6 +4257,16 @@
                   "ofType": null
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "followed",
+                "description": "Limit to backers that the current user is following",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -4714,6 +4791,18 @@
                 "name": "CurrencyCode",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "currentAmountPledgedUsd",
+            "description": "The current amount pledged in USD",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -9277,6 +9366,22 @@
             "deprecationReason": null
           },
           {
+            "name": "primary",
+            "description": "Is this the user's primary address?",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "projectsWithUpdatableSurveyResponses",
             "description": "The title of projects with updatable survey responses",
             "args": [],
@@ -11992,12 +12097,6 @@
             "deprecationReason": null
           },
           {
-            "name": "mobile_project_collection_optimizations",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "ios_crashlytics",
             "description": null,
             "isDeprecated": false,
@@ -12550,12 +12649,6 @@
             "deprecationReason": null
           },
           {
-            "name": "backing_details_2024",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "delay_backer_trust_module_2024",
             "description": null,
             "isDeprecated": false,
@@ -12563,6 +12656,12 @@
           },
           {
             "name": "remove_address_event_sourcing_2024",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user_settings_upgrade_2024",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -32453,6 +32552,33 @@
             "deprecationReason": null
           },
           {
+            "name": "createOrUpdateBackingAddress",
+            "description": null,
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrUpdateBackingAddressInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateOrUpdateBackingAddressPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createOrUpdateItemTaxConfig",
             "description": "Sets tax related info for an item",
             "args": [
@@ -32906,33 +33032,6 @@
             "type": {
               "kind": "OBJECT",
               "name": "CreateTrackEventPayload",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "createUniversalAddress",
-            "description": "Creates an address.",
-            "args": [
-              {
-                "name": "input",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CreateUniversalAddressInput",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "CreateUniversalAddressPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -33500,6 +33599,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "DislikeProjectPayload",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "endLatePledges",
+            "description": "End late pledges for a Kickstarter project.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "EndLatePledgesInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "EndLatePledgesPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -36370,6 +36496,26 @@
             "defaultValue": null
           },
           {
+            "name": "primary",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "backingId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "clientMutationId",
             "description": "A unique identifier for the client performing the mutation.",
             "type": {
@@ -36399,6 +36545,22 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Address",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "assignedToBacking",
+            "description": "Backing was associated with address",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -38102,7 +38264,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "FlaggingKind",
+                "name": "NonDeprecatedFlaggingKind",
                 "ofType": null
               }
             },
@@ -38131,6 +38293,323 @@
         ],
         "interfaces": null,
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "NonDeprecatedFlaggingKind",
+        "description": "The bucket for a flagging (general reason). Does not included deprecated kinds.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "PROHIBITED_ITEMS",
+            "description": "prohibited-items",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CHARITY",
+            "description": "charity",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "RESALE",
+            "description": "resale",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FALSE_CLAIMS",
+            "description": "false-claims",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MISREP_SUPPORT",
+            "description": "misrep-support",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOT_PROJECT",
+            "description": "not-project",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "GUIDELINES_VIOLATION",
+            "description": "guidelines-violation",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_ISSUES",
+            "description": "post-funding-issues",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SPAM",
+            "description": "spam",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "VICES_DRUGS",
+            "description": "vices-drugs",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "VICES_ALCOHOL",
+            "description": "vices-alcohol",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "VICES_WEAPONS",
+            "description": "vices-weapons",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HEALTH_CLAIMS",
+            "description": "health-claims",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HEALTH_REGULATIONS",
+            "description": "health-regulations",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HEALTH_GMOS",
+            "description": "health-gmos",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HEALTH_LIVE_ANIMALS",
+            "description": "health-live-animals",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "HEALTH_ENERGY_FOOD_AND_DRINK",
+            "description": "health-energy-food-and-drink",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FINANCIAL_CONTESTS_COUPONS",
+            "description": "financial-contests-coupons",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FINANCIAL_SERVICES",
+            "description": "financial-services",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "FINANCIAL_POLITICAL_DONATIONS",
+            "description": "financial-political-donations",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "OFFENSIVE_CONTENT_HATE",
+            "description": "offensive-content-hate",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "OFFENSIVE_CONTENT_PORN",
+            "description": "offensive-content-porn",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "RESELLING",
+            "description": "reselling",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PLAGIARISM",
+            "description": "plagiarism",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROTOTYPE_MISREPRESENTATION",
+            "description": "prototype-misrepresentation",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MISREP_SUPPORT_IMPERSONATION",
+            "description": "misrep-support-impersonation",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT",
+            "description": "misrep-support-outstanding-fulfillment",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MISREP_SUPPORT_SUSPICIOUS_PLEDGING",
+            "description": "misrep-support-suspicious-pledging",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MISREP_SUPPORT_OTHER",
+            "description": "misrep-support-other",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOT_PROJECT_CHARITY",
+            "description": "not-project-charity",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOT_PROJECT_STUNT_OR_HOAX",
+            "description": "not-project-stunt-or-hoax",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOT_PROJECT_PERSONAL_EXPENSES",
+            "description": "not-project-personal-expenses",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOT_PROJECT_BAREBONES",
+            "description": "not-project-barebones",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOT_PROJECT_OTHER",
+            "description": "not-project-other",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "GUIDELINES_SPAM",
+            "description": "guidelines-spam",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "GUIDELINES_ABUSE",
+            "description": "guidelines-abuse",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_REWARD_NOT_AS_DESCRIBED",
+            "description": "post-funding-reward-not-as-described",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_REWARD_DELAYED",
+            "description": "post-funding-reward-delayed",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_SHIPPED_NEVER_RECEIVED",
+            "description": "post-funding-shipped-never-received",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_CREATOR_SELLING_ELSEWHERE",
+            "description": "post-funding-creator-selling-elsewhere",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_CREATOR_UNCOMMUNICATIVE",
+            "description": "post-funding-creator-uncommunicative",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_CREATOR_INAPPROPRIATE",
+            "description": "post-funding-creator-inappropriate",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_FUNDING_SUSPICIOUS_THIRD_PARTY",
+            "description": "post-funding-suspicious-third-party",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMMENT_ABUSE",
+            "description": "comment-abuse",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMMENT_DOXXING",
+            "description": "comment-doxxing",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMMENT_OFFTOPIC",
+            "description": "comment-offtopic",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMMENT_SPAM",
+            "description": "comment-spam",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BACKING_ABUSE",
+            "description": "backing-abuse",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BACKING_DOXXING",
+            "description": "backing-doxxing",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BACKING_FRAUD",
+            "description": "backing-fraud",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "BACKING_SPAM",
+            "description": "backing-spam",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -38389,6 +38868,94 @@
                   "name": "Nexus",
                   "ofType": null
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateOrUpdateBackingAddressInput",
+        "description": "Autogenerated input type of CreateOrUpdateBackingAddress",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "backingId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "addressId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateOrUpdateBackingAddressPayload",
+        "description": "Autogenerated return type of CreateOrUpdateBackingAddress",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -38853,6 +39420,16 @@
             "defaultValue": null
           },
           {
+            "name": "paymentIntentContext",
+            "description": "Context in which this stripe intent is created",
+            "type": {
+              "kind": "ENUM",
+              "name": "StripeIntentContextTypes",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "digitalMarketingAttributed",
             "description": "if the payment is attributed to digital marketing (default: false)",
             "type": {
@@ -38875,6 +39452,41 @@
         ],
         "interfaces": null,
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "StripeIntentContextTypes",
+        "description": "Different contexts for which stripe intents can be created",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "CROWDFUNDING_CHECKOUT",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "POST_CAMPAIGN_CHECKOUT",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROJECT_BUILD",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PROFILE_SETTINGS",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -39941,6 +40553,16 @@
             "defaultValue": null
           },
           {
+            "name": "latePledgeAmount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "limit",
             "description": null,
             "type": {
@@ -40068,6 +40690,26 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "startCondition",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "endCondition",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null
@@ -40436,6 +41078,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "setupIntentContext",
+            "description": "Context in which this stripe intent is created",
+            "type": {
+              "kind": "ENUM",
+              "name": "StripeIntentContextTypes",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "projectId",
             "description": null,
             "type": {
@@ -40676,325 +41328,6 @@
         ],
         "inputFields": null,
         "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "CreateUniversalAddressInput",
-        "description": "Autogenerated input type of CreateUniversalAddress",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "contactName",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "referenceName",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "addressLine1",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "addressLine2",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "city",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "region",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "postalCode",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "countryCode",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "CountryCode",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "phoneNumber",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "clientMutationId",
-            "description": "A unique identifier for the client performing the mutation.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CreateUniversalAddressPayload",
-        "description": "Autogenerated return type of CreateUniversalAddress",
-        "fields": [
-          {
-            "name": "address",
-            "description": "Address that was created",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "UniversalAddress",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "clientMutationId",
-            "description": "A unique identifier for the client performing the mutation.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "UniversalAddress",
-        "description": "An address associated with a backer or creator",
-        "fields": [
-          {
-            "name": "addressLine1",
-            "description": "The first address line",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "addressLine2",
-            "description": "The second address line",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "city",
-            "description": "The address city",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contactName",
-            "description": "The contact name of the backer or creator",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "countryCode",
-            "description": "The address two-digit country code, e.g. US",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "CountryCode",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "phoneNumber",
-            "description": "The address contact's phone number",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "postalCode",
-            "description": "The address postal code",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "referenceName",
-            "description": "A descriptor for the address, e.g. Home or Miami Warehouse",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "region",
-            "description": "The address region, e.g. North Dakota",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node",
-            "ofType": null
-          }
-        ],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -42741,6 +43074,76 @@
             "type": {
               "kind": "OBJECT",
               "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "EndLatePledgesInput",
+        "description": "Autogenerated input type of EndLatePledges",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "projectId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "EndLatePledgesPayload",
+        "description": "Autogenerated return type of EndLatePledges",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "description": "A unique identifier for the client performing the mutation.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Project",
               "ofType": null
             },
             "isDeprecated": false,
@@ -48791,6 +49194,16 @@
             "defaultValue": null
           },
           {
+            "name": "latePledgeAmount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "image",
             "description": null,
             "type": {
@@ -48924,6 +49337,26 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "startCondition",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "endCondition",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null
