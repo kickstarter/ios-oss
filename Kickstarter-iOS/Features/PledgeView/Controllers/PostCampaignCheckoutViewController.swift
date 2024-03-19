@@ -139,7 +139,7 @@ final class PostCampaignCheckoutViewController: UIViewController {
     self.rootScrollView.alwaysBounceVertical = true
 
     self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
-    self.rootStackView.spacing = Styles.grid(0)
+    self.rootStackView.spacing = Styles.grid(1)
 
     self.rootInsetStackView.axis = NSLayoutConstraint.Axis.vertical
     self.rootInsetStackView.spacing = Styles.grid(4)
