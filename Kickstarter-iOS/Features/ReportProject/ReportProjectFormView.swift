@@ -10,7 +10,7 @@ struct ReportProjectFormView: View {
   @Binding var popToRoot: Bool
   let projectID: String
   let projectURL: String
-  let projectFlaggingKind: GraphAPI.FlaggingKind
+  let projectFlaggingKind: GraphAPI.NonDeprecatedFlaggingKind
 
   @SwiftUI.Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ReportProjectFormViewModel()
