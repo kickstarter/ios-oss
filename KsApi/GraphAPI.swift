@@ -483,7 +483,7 @@ public enum GraphAPI {
     ///   - kind
     ///   - details
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(contentId: GraphQLID, kind: FlaggingKind, details: Swift.Optional<String?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+    public init(contentId: GraphQLID, kind: NonDeprecatedFlaggingKind, details: Swift.Optional<String?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
       graphQLMap = ["contentId": contentId, "kind": kind, "details": details, "clientMutationId": clientMutationId]
     }
 
@@ -496,9 +496,9 @@ public enum GraphAPI {
       }
     }
 
-    public var kind: FlaggingKind {
+    public var kind: NonDeprecatedFlaggingKind {
       get {
-        return graphQLMap["kind"] as! FlaggingKind
+        return graphQLMap["kind"] as! NonDeprecatedFlaggingKind
       }
       set {
         graphQLMap.updateValue(newValue, forKey: "kind")
@@ -525,8 +525,8 @@ public enum GraphAPI {
     }
   }
 
-  /// The bucket for a flagging (general reason).
-  public enum FlaggingKind: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  /// The bucket for a flagging (general reason). Does not included deprecated kinds.
+  public enum NonDeprecatedFlaggingKind: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
     public typealias RawValue = String
     /// prohibited-items
     case prohibitedItems
@@ -546,8 +546,6 @@ public enum GraphAPI {
     case postFundingIssues
     /// spam
     case spam
-    /// abuse
-    case abuse
     /// vices-drugs
     case vicesDrugs
     /// vices-alcohol
@@ -646,7 +644,6 @@ public enum GraphAPI {
         case "GUIDELINES_VIOLATION": self = .guidelinesViolation
         case "POST_FUNDING_ISSUES": self = .postFundingIssues
         case "SPAM": self = .spam
-        case "ABUSE": self = .abuse
         case "VICES_DRUGS": self = .vicesDrugs
         case "VICES_ALCOHOL": self = .vicesAlcohol
         case "VICES_WEAPONS": self = .vicesWeapons
@@ -704,7 +701,6 @@ public enum GraphAPI {
         case .guidelinesViolation: return "GUIDELINES_VIOLATION"
         case .postFundingIssues: return "POST_FUNDING_ISSUES"
         case .spam: return "SPAM"
-        case .abuse: return "ABUSE"
         case .vicesDrugs: return "VICES_DRUGS"
         case .vicesAlcohol: return "VICES_ALCOHOL"
         case .vicesWeapons: return "VICES_WEAPONS"
@@ -751,7 +747,7 @@ public enum GraphAPI {
       }
     }
 
-    public static func == (lhs: FlaggingKind, rhs: FlaggingKind) -> Bool {
+    public static func == (lhs: NonDeprecatedFlaggingKind, rhs: NonDeprecatedFlaggingKind) -> Bool {
       switch (lhs, rhs) {
         case (.prohibitedItems, .prohibitedItems): return true
         case (.charity, .charity): return true
@@ -762,7 +758,6 @@ public enum GraphAPI {
         case (.guidelinesViolation, .guidelinesViolation): return true
         case (.postFundingIssues, .postFundingIssues): return true
         case (.spam, .spam): return true
-        case (.abuse, .abuse): return true
         case (.vicesDrugs, .vicesDrugs): return true
         case (.vicesAlcohol, .vicesAlcohol): return true
         case (.vicesWeapons, .vicesWeapons): return true
@@ -810,7 +805,7 @@ public enum GraphAPI {
       }
     }
 
-    public static var allCases: [FlaggingKind] {
+    public static var allCases: [NonDeprecatedFlaggingKind] {
       return [
         .prohibitedItems,
         .charity,
@@ -821,7 +816,6 @@ public enum GraphAPI {
         .guidelinesViolation,
         .postFundingIssues,
         .spam,
-        .abuse,
         .vicesDrugs,
         .vicesAlcohol,
         .vicesWeapons,
@@ -875,10 +869,11 @@ public enum GraphAPI {
     /// - Parameters:
     ///   - projectId: kickstarter project id
     ///   - amount: total amount to be paid (eg. 10.55)
+    ///   - paymentIntentContext: Context in which this stripe intent is created
     ///   - digitalMarketingAttributed: if the payment is attributed to digital marketing (default: false)
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: GraphQLID, amount: String, digitalMarketingAttributed: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "amount": amount, "digitalMarketingAttributed": digitalMarketingAttributed, "clientMutationId": clientMutationId]
+    public init(projectId: GraphQLID, amount: String, paymentIntentContext: Swift.Optional<StripeIntentContextTypes?> = nil, digitalMarketingAttributed: Swift.Optional<Bool?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["projectId": projectId, "amount": amount, "paymentIntentContext": paymentIntentContext, "digitalMarketingAttributed": digitalMarketingAttributed, "clientMutationId": clientMutationId]
     }
 
     /// kickstarter project id
@@ -901,6 +896,16 @@ public enum GraphAPI {
       }
     }
 
+    /// Context in which this stripe intent is created
+    public var paymentIntentContext: Swift.Optional<StripeIntentContextTypes?> {
+      get {
+        return graphQLMap["paymentIntentContext"] as? Swift.Optional<StripeIntentContextTypes?> ?? Swift.Optional<StripeIntentContextTypes?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "paymentIntentContext")
+      }
+    }
+
     /// if the payment is attributed to digital marketing (default: false)
     public var digitalMarketingAttributed: Swift.Optional<Bool?> {
       get {
@@ -919,6 +924,57 @@ public enum GraphAPI {
       set {
         graphQLMap.updateValue(newValue, forKey: "clientMutationId")
       }
+    }
+  }
+
+  /// Different contexts for which stripe intents can be created
+  public enum StripeIntentContextTypes: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    case crowdfundingCheckout
+    case postCampaignCheckout
+    case projectBuild
+    case profileSettings
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "CROWDFUNDING_CHECKOUT": self = .crowdfundingCheckout
+        case "POST_CAMPAIGN_CHECKOUT": self = .postCampaignCheckout
+        case "PROJECT_BUILD": self = .projectBuild
+        case "PROFILE_SETTINGS": self = .profileSettings
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .crowdfundingCheckout: return "CROWDFUNDING_CHECKOUT"
+        case .postCampaignCheckout: return "POST_CAMPAIGN_CHECKOUT"
+        case .projectBuild: return "PROJECT_BUILD"
+        case .profileSettings: return "PROFILE_SETTINGS"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: StripeIntentContextTypes, rhs: StripeIntentContextTypes) -> Bool {
+      switch (lhs, rhs) {
+        case (.crowdfundingCheckout, .crowdfundingCheckout): return true
+        case (.postCampaignCheckout, .postCampaignCheckout): return true
+        case (.projectBuild, .projectBuild): return true
+        case (.profileSettings, .profileSettings): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [StripeIntentContextTypes] {
+      return [
+        .crowdfundingCheckout,
+        .postCampaignCheckout,
+        .projectBuild,
+        .profileSettings,
+      ]
     }
   }
 
@@ -1034,10 +1090,21 @@ public enum GraphAPI {
     public var graphQLMap: GraphQLMap
 
     /// - Parameters:
+    ///   - setupIntentContext: Context in which this stripe intent is created
     ///   - projectId
     ///   - clientMutationId: A unique identifier for the client performing the mutation.
-    public init(projectId: Swift.Optional<GraphQLID?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
-      graphQLMap = ["projectId": projectId, "clientMutationId": clientMutationId]
+    public init(setupIntentContext: Swift.Optional<StripeIntentContextTypes?> = nil, projectId: Swift.Optional<GraphQLID?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+      graphQLMap = ["setupIntentContext": setupIntentContext, "projectId": projectId, "clientMutationId": clientMutationId]
+    }
+
+    /// Context in which this stripe intent is created
+    public var setupIntentContext: Swift.Optional<StripeIntentContextTypes?> {
+      get {
+        return graphQLMap["setupIntentContext"] as? Swift.Optional<StripeIntentContextTypes?> ?? Swift.Optional<StripeIntentContextTypes?>.none
+      }
+      set {
+        graphQLMap.updateValue(newValue, forKey: "setupIntentContext")
+      }
     }
 
     public var projectId: Swift.Optional<GraphQLID?> {
@@ -1904,6 +1971,349 @@ public enum GraphAPI {
       set {
         graphQLMap.updateValue(newValue, forKey: "clientMutationId")
       }
+    }
+  }
+
+  /// The bucket for a flagging (general reason).
+  public enum FlaggingKind: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+    public typealias RawValue = String
+    /// prohibited-items
+    case prohibitedItems
+    /// charity
+    case charity
+    /// resale
+    case resale
+    /// false-claims
+    case falseClaims
+    /// misrep-support
+    case misrepSupport
+    /// not-project
+    case notProject
+    /// guidelines-violation
+    case guidelinesViolation
+    /// post-funding-issues
+    case postFundingIssues
+    /// spam
+    case spam
+    /// abuse
+    case abuse
+    /// vices-drugs
+    case vicesDrugs
+    /// vices-alcohol
+    case vicesAlcohol
+    /// vices-weapons
+    case vicesWeapons
+    /// health-claims
+    case healthClaims
+    /// health-regulations
+    case healthRegulations
+    /// health-gmos
+    case healthGmos
+    /// health-live-animals
+    case healthLiveAnimals
+    /// health-energy-food-and-drink
+    case healthEnergyFoodAndDrink
+    /// financial-contests-coupons
+    case financialContestsCoupons
+    /// financial-services
+    case financialServices
+    /// financial-political-donations
+    case financialPoliticalDonations
+    /// offensive-content-hate
+    case offensiveContentHate
+    /// offensive-content-porn
+    case offensiveContentPorn
+    /// reselling
+    case reselling
+    /// plagiarism
+    case plagiarism
+    /// prototype-misrepresentation
+    case prototypeMisrepresentation
+    /// misrep-support-impersonation
+    case misrepSupportImpersonation
+    /// misrep-support-outstanding-fulfillment
+    case misrepSupportOutstandingFulfillment
+    /// misrep-support-suspicious-pledging
+    case misrepSupportSuspiciousPledging
+    /// misrep-support-other
+    case misrepSupportOther
+    /// not-project-charity
+    case notProjectCharity
+    /// not-project-stunt-or-hoax
+    case notProjectStuntOrHoax
+    /// not-project-personal-expenses
+    case notProjectPersonalExpenses
+    /// not-project-barebones
+    case notProjectBarebones
+    /// not-project-other
+    case notProjectOther
+    /// guidelines-spam
+    case guidelinesSpam
+    /// guidelines-abuse
+    case guidelinesAbuse
+    /// post-funding-reward-not-as-described
+    case postFundingRewardNotAsDescribed
+    /// post-funding-reward-delayed
+    case postFundingRewardDelayed
+    /// post-funding-shipped-never-received
+    case postFundingShippedNeverReceived
+    /// post-funding-creator-selling-elsewhere
+    case postFundingCreatorSellingElsewhere
+    /// post-funding-creator-uncommunicative
+    case postFundingCreatorUncommunicative
+    /// post-funding-creator-inappropriate
+    case postFundingCreatorInappropriate
+    /// post-funding-suspicious-third-party
+    case postFundingSuspiciousThirdParty
+    /// comment-abuse
+    case commentAbuse
+    /// comment-doxxing
+    case commentDoxxing
+    /// comment-offtopic
+    case commentOfftopic
+    /// comment-spam
+    case commentSpam
+    /// backing-abuse
+    case backingAbuse
+    /// backing-doxxing
+    case backingDoxxing
+    /// backing-fraud
+    case backingFraud
+    /// backing-spam
+    case backingSpam
+    /// Auto generated constant for unknown enum values
+    case __unknown(RawValue)
+
+    public init?(rawValue: RawValue) {
+      switch rawValue {
+        case "PROHIBITED_ITEMS": self = .prohibitedItems
+        case "CHARITY": self = .charity
+        case "RESALE": self = .resale
+        case "FALSE_CLAIMS": self = .falseClaims
+        case "MISREP_SUPPORT": self = .misrepSupport
+        case "NOT_PROJECT": self = .notProject
+        case "GUIDELINES_VIOLATION": self = .guidelinesViolation
+        case "POST_FUNDING_ISSUES": self = .postFundingIssues
+        case "SPAM": self = .spam
+        case "ABUSE": self = .abuse
+        case "VICES_DRUGS": self = .vicesDrugs
+        case "VICES_ALCOHOL": self = .vicesAlcohol
+        case "VICES_WEAPONS": self = .vicesWeapons
+        case "HEALTH_CLAIMS": self = .healthClaims
+        case "HEALTH_REGULATIONS": self = .healthRegulations
+        case "HEALTH_GMOS": self = .healthGmos
+        case "HEALTH_LIVE_ANIMALS": self = .healthLiveAnimals
+        case "HEALTH_ENERGY_FOOD_AND_DRINK": self = .healthEnergyFoodAndDrink
+        case "FINANCIAL_CONTESTS_COUPONS": self = .financialContestsCoupons
+        case "FINANCIAL_SERVICES": self = .financialServices
+        case "FINANCIAL_POLITICAL_DONATIONS": self = .financialPoliticalDonations
+        case "OFFENSIVE_CONTENT_HATE": self = .offensiveContentHate
+        case "OFFENSIVE_CONTENT_PORN": self = .offensiveContentPorn
+        case "RESELLING": self = .reselling
+        case "PLAGIARISM": self = .plagiarism
+        case "PROTOTYPE_MISREPRESENTATION": self = .prototypeMisrepresentation
+        case "MISREP_SUPPORT_IMPERSONATION": self = .misrepSupportImpersonation
+        case "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT": self = .misrepSupportOutstandingFulfillment
+        case "MISREP_SUPPORT_SUSPICIOUS_PLEDGING": self = .misrepSupportSuspiciousPledging
+        case "MISREP_SUPPORT_OTHER": self = .misrepSupportOther
+        case "NOT_PROJECT_CHARITY": self = .notProjectCharity
+        case "NOT_PROJECT_STUNT_OR_HOAX": self = .notProjectStuntOrHoax
+        case "NOT_PROJECT_PERSONAL_EXPENSES": self = .notProjectPersonalExpenses
+        case "NOT_PROJECT_BAREBONES": self = .notProjectBarebones
+        case "NOT_PROJECT_OTHER": self = .notProjectOther
+        case "GUIDELINES_SPAM": self = .guidelinesSpam
+        case "GUIDELINES_ABUSE": self = .guidelinesAbuse
+        case "POST_FUNDING_REWARD_NOT_AS_DESCRIBED": self = .postFundingRewardNotAsDescribed
+        case "POST_FUNDING_REWARD_DELAYED": self = .postFundingRewardDelayed
+        case "POST_FUNDING_SHIPPED_NEVER_RECEIVED": self = .postFundingShippedNeverReceived
+        case "POST_FUNDING_CREATOR_SELLING_ELSEWHERE": self = .postFundingCreatorSellingElsewhere
+        case "POST_FUNDING_CREATOR_UNCOMMUNICATIVE": self = .postFundingCreatorUncommunicative
+        case "POST_FUNDING_CREATOR_INAPPROPRIATE": self = .postFundingCreatorInappropriate
+        case "POST_FUNDING_SUSPICIOUS_THIRD_PARTY": self = .postFundingSuspiciousThirdParty
+        case "COMMENT_ABUSE": self = .commentAbuse
+        case "COMMENT_DOXXING": self = .commentDoxxing
+        case "COMMENT_OFFTOPIC": self = .commentOfftopic
+        case "COMMENT_SPAM": self = .commentSpam
+        case "BACKING_ABUSE": self = .backingAbuse
+        case "BACKING_DOXXING": self = .backingDoxxing
+        case "BACKING_FRAUD": self = .backingFraud
+        case "BACKING_SPAM": self = .backingSpam
+        default: self = .__unknown(rawValue)
+      }
+    }
+
+    public var rawValue: RawValue {
+      switch self {
+        case .prohibitedItems: return "PROHIBITED_ITEMS"
+        case .charity: return "CHARITY"
+        case .resale: return "RESALE"
+        case .falseClaims: return "FALSE_CLAIMS"
+        case .misrepSupport: return "MISREP_SUPPORT"
+        case .notProject: return "NOT_PROJECT"
+        case .guidelinesViolation: return "GUIDELINES_VIOLATION"
+        case .postFundingIssues: return "POST_FUNDING_ISSUES"
+        case .spam: return "SPAM"
+        case .abuse: return "ABUSE"
+        case .vicesDrugs: return "VICES_DRUGS"
+        case .vicesAlcohol: return "VICES_ALCOHOL"
+        case .vicesWeapons: return "VICES_WEAPONS"
+        case .healthClaims: return "HEALTH_CLAIMS"
+        case .healthRegulations: return "HEALTH_REGULATIONS"
+        case .healthGmos: return "HEALTH_GMOS"
+        case .healthLiveAnimals: return "HEALTH_LIVE_ANIMALS"
+        case .healthEnergyFoodAndDrink: return "HEALTH_ENERGY_FOOD_AND_DRINK"
+        case .financialContestsCoupons: return "FINANCIAL_CONTESTS_COUPONS"
+        case .financialServices: return "FINANCIAL_SERVICES"
+        case .financialPoliticalDonations: return "FINANCIAL_POLITICAL_DONATIONS"
+        case .offensiveContentHate: return "OFFENSIVE_CONTENT_HATE"
+        case .offensiveContentPorn: return "OFFENSIVE_CONTENT_PORN"
+        case .reselling: return "RESELLING"
+        case .plagiarism: return "PLAGIARISM"
+        case .prototypeMisrepresentation: return "PROTOTYPE_MISREPRESENTATION"
+        case .misrepSupportImpersonation: return "MISREP_SUPPORT_IMPERSONATION"
+        case .misrepSupportOutstandingFulfillment: return "MISREP_SUPPORT_OUTSTANDING_FULFILLMENT"
+        case .misrepSupportSuspiciousPledging: return "MISREP_SUPPORT_SUSPICIOUS_PLEDGING"
+        case .misrepSupportOther: return "MISREP_SUPPORT_OTHER"
+        case .notProjectCharity: return "NOT_PROJECT_CHARITY"
+        case .notProjectStuntOrHoax: return "NOT_PROJECT_STUNT_OR_HOAX"
+        case .notProjectPersonalExpenses: return "NOT_PROJECT_PERSONAL_EXPENSES"
+        case .notProjectBarebones: return "NOT_PROJECT_BAREBONES"
+        case .notProjectOther: return "NOT_PROJECT_OTHER"
+        case .guidelinesSpam: return "GUIDELINES_SPAM"
+        case .guidelinesAbuse: return "GUIDELINES_ABUSE"
+        case .postFundingRewardNotAsDescribed: return "POST_FUNDING_REWARD_NOT_AS_DESCRIBED"
+        case .postFundingRewardDelayed: return "POST_FUNDING_REWARD_DELAYED"
+        case .postFundingShippedNeverReceived: return "POST_FUNDING_SHIPPED_NEVER_RECEIVED"
+        case .postFundingCreatorSellingElsewhere: return "POST_FUNDING_CREATOR_SELLING_ELSEWHERE"
+        case .postFundingCreatorUncommunicative: return "POST_FUNDING_CREATOR_UNCOMMUNICATIVE"
+        case .postFundingCreatorInappropriate: return "POST_FUNDING_CREATOR_INAPPROPRIATE"
+        case .postFundingSuspiciousThirdParty: return "POST_FUNDING_SUSPICIOUS_THIRD_PARTY"
+        case .commentAbuse: return "COMMENT_ABUSE"
+        case .commentDoxxing: return "COMMENT_DOXXING"
+        case .commentOfftopic: return "COMMENT_OFFTOPIC"
+        case .commentSpam: return "COMMENT_SPAM"
+        case .backingAbuse: return "BACKING_ABUSE"
+        case .backingDoxxing: return "BACKING_DOXXING"
+        case .backingFraud: return "BACKING_FRAUD"
+        case .backingSpam: return "BACKING_SPAM"
+        case .__unknown(let value): return value
+      }
+    }
+
+    public static func == (lhs: FlaggingKind, rhs: FlaggingKind) -> Bool {
+      switch (lhs, rhs) {
+        case (.prohibitedItems, .prohibitedItems): return true
+        case (.charity, .charity): return true
+        case (.resale, .resale): return true
+        case (.falseClaims, .falseClaims): return true
+        case (.misrepSupport, .misrepSupport): return true
+        case (.notProject, .notProject): return true
+        case (.guidelinesViolation, .guidelinesViolation): return true
+        case (.postFundingIssues, .postFundingIssues): return true
+        case (.spam, .spam): return true
+        case (.abuse, .abuse): return true
+        case (.vicesDrugs, .vicesDrugs): return true
+        case (.vicesAlcohol, .vicesAlcohol): return true
+        case (.vicesWeapons, .vicesWeapons): return true
+        case (.healthClaims, .healthClaims): return true
+        case (.healthRegulations, .healthRegulations): return true
+        case (.healthGmos, .healthGmos): return true
+        case (.healthLiveAnimals, .healthLiveAnimals): return true
+        case (.healthEnergyFoodAndDrink, .healthEnergyFoodAndDrink): return true
+        case (.financialContestsCoupons, .financialContestsCoupons): return true
+        case (.financialServices, .financialServices): return true
+        case (.financialPoliticalDonations, .financialPoliticalDonations): return true
+        case (.offensiveContentHate, .offensiveContentHate): return true
+        case (.offensiveContentPorn, .offensiveContentPorn): return true
+        case (.reselling, .reselling): return true
+        case (.plagiarism, .plagiarism): return true
+        case (.prototypeMisrepresentation, .prototypeMisrepresentation): return true
+        case (.misrepSupportImpersonation, .misrepSupportImpersonation): return true
+        case (.misrepSupportOutstandingFulfillment, .misrepSupportOutstandingFulfillment): return true
+        case (.misrepSupportSuspiciousPledging, .misrepSupportSuspiciousPledging): return true
+        case (.misrepSupportOther, .misrepSupportOther): return true
+        case (.notProjectCharity, .notProjectCharity): return true
+        case (.notProjectStuntOrHoax, .notProjectStuntOrHoax): return true
+        case (.notProjectPersonalExpenses, .notProjectPersonalExpenses): return true
+        case (.notProjectBarebones, .notProjectBarebones): return true
+        case (.notProjectOther, .notProjectOther): return true
+        case (.guidelinesSpam, .guidelinesSpam): return true
+        case (.guidelinesAbuse, .guidelinesAbuse): return true
+        case (.postFundingRewardNotAsDescribed, .postFundingRewardNotAsDescribed): return true
+        case (.postFundingRewardDelayed, .postFundingRewardDelayed): return true
+        case (.postFundingShippedNeverReceived, .postFundingShippedNeverReceived): return true
+        case (.postFundingCreatorSellingElsewhere, .postFundingCreatorSellingElsewhere): return true
+        case (.postFundingCreatorUncommunicative, .postFundingCreatorUncommunicative): return true
+        case (.postFundingCreatorInappropriate, .postFundingCreatorInappropriate): return true
+        case (.postFundingSuspiciousThirdParty, .postFundingSuspiciousThirdParty): return true
+        case (.commentAbuse, .commentAbuse): return true
+        case (.commentDoxxing, .commentDoxxing): return true
+        case (.commentOfftopic, .commentOfftopic): return true
+        case (.commentSpam, .commentSpam): return true
+        case (.backingAbuse, .backingAbuse): return true
+        case (.backingDoxxing, .backingDoxxing): return true
+        case (.backingFraud, .backingFraud): return true
+        case (.backingSpam, .backingSpam): return true
+        case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+        default: return false
+      }
+    }
+
+    public static var allCases: [FlaggingKind] {
+      return [
+        .prohibitedItems,
+        .charity,
+        .resale,
+        .falseClaims,
+        .misrepSupport,
+        .notProject,
+        .guidelinesViolation,
+        .postFundingIssues,
+        .spam,
+        .abuse,
+        .vicesDrugs,
+        .vicesAlcohol,
+        .vicesWeapons,
+        .healthClaims,
+        .healthRegulations,
+        .healthGmos,
+        .healthLiveAnimals,
+        .healthEnergyFoodAndDrink,
+        .financialContestsCoupons,
+        .financialServices,
+        .financialPoliticalDonations,
+        .offensiveContentHate,
+        .offensiveContentPorn,
+        .reselling,
+        .plagiarism,
+        .prototypeMisrepresentation,
+        .misrepSupportImpersonation,
+        .misrepSupportOutstandingFulfillment,
+        .misrepSupportSuspiciousPledging,
+        .misrepSupportOther,
+        .notProjectCharity,
+        .notProjectStuntOrHoax,
+        .notProjectPersonalExpenses,
+        .notProjectBarebones,
+        .notProjectOther,
+        .guidelinesSpam,
+        .guidelinesAbuse,
+        .postFundingRewardNotAsDescribed,
+        .postFundingRewardDelayed,
+        .postFundingShippedNeverReceived,
+        .postFundingCreatorSellingElsewhere,
+        .postFundingCreatorUncommunicative,
+        .postFundingCreatorInappropriate,
+        .postFundingSuspiciousThirdParty,
+        .commentAbuse,
+        .commentDoxxing,
+        .commentOfftopic,
+        .commentSpam,
+        .backingAbuse,
+        .backingDoxxing,
+        .backingFraud,
+        .backingSpam,
+      ]
     }
   }
 
@@ -7620,7 +8030,7 @@ public enum GraphAPI {
       }
 
       public struct Node: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "OrderAddress", "UniversalAddress", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "OrderAddress", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -7769,10 +8179,6 @@ public enum GraphAPI {
 
         public static func makeOrderAddress() -> Node {
           return Node(unsafeResultMap: ["__typename": "OrderAddress"])
-        }
-
-        public static func makeUniversalAddress() -> Node {
-          return Node(unsafeResultMap: ["__typename": "UniversalAddress"])
         }
 
         public static func makeSurvey() -> Node {
@@ -8081,7 +8487,7 @@ public enum GraphAPI {
       }
 
       public struct Comment: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "OrderAddress", "UniversalAddress", "Survey"]
+        public static let possibleTypes: [String] = ["Backing", "Reward", "Photo", "RewardItem", "Project", "Comment", "User", "Address", "Conversation", "Message", "CuratedPage", "Location", "Organization", "UserUrl", "Category", "AiDisclosure", "BusinessAddress", "Flagging", "Video", "VideoTrack", "VideoTrackCue", "ProjectProfile", "AttachedAudio", "AttachedVideo", "Tag", "CreatorInterview", "InterviewAnswer", "InterviewQuestion", "CreatorPrompt", "FreeformPost", "ShippingRule", "Checkout", "Order", "OrderAddress", "Survey"]
 
         public static var selections: [GraphQLSelection] {
           return [
@@ -8226,10 +8632,6 @@ public enum GraphAPI {
 
         public static func makeOrderAddress() -> Comment {
           return Comment(unsafeResultMap: ["__typename": "OrderAddress"])
-        }
-
-        public static func makeUniversalAddress() -> Comment {
-          return Comment(unsafeResultMap: ["__typename": "UniversalAddress"])
         }
 
         public static func makeSurvey() -> Comment {
