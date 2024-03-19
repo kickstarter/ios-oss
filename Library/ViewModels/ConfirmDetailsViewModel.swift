@@ -6,7 +6,7 @@ import ReactiveSwift
 
 public protocol ConfirmDetailsViewModelInputs {
   func configure(with data: PledgeViewData)
-  func continueButtonTapped()
+  func continueCTATapped()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func viewDidLoad()
@@ -23,7 +23,8 @@ public protocol ConfirmDetailsViewModelOutputs {
   var configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
-  var goToCheckout: Signal<PostCampaignCheckoutData, Never> { get }
+  var createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var localPickupViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeRewardsSummaryViewHidden: Signal<Bool, Never> { get }
@@ -53,6 +54,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let selectedQuantities = initialData.map(\.selectedQuantities)
     let selectedLocationId = initialData.map(\.selectedLocationId)
     let context = initialData.map(\.context)
+    let refTag = initialData.map(\.refTag)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
@@ -316,13 +318,46 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     self.configureCTAWithPledgeTotal = Signal.combineLatest(project, pledgeTotal)
 
-    self.goToCheckout = Signal.combineLatest(
+    // MARK: CreateCheckout GraphQL Call
+
+    let pledgeDetailsData = Signal.combineLatest(
+      project,
+      rewards,
+      pledgeTotal,
+      refTag
+    )
+
+    let createCheckoutEvents = pledgeDetailsData
+      .takeWhen(self.continueCTATappedProperty.signal)
+      .map { project, rewards, pledgeTotal, refTag in
+        let rewardsIDs = rewards.map { $0.graphID }
+
+        return CreateCheckoutInput(
+          projectId: project.graphID,
+          amount: String(format: "%.2f", pledgeTotal),
+          locationId: "\(project.location.id)",
+          rewardIds: rewardsIDs,
+          refParam: refTag?.stringTag
+        )
+      }
+      .switchMap { input in
+        AppEnvironment.current.apiService
+          .createCheckout(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let checkoutValues = createCheckoutEvents.values()
+      .map { $0.checkout.id }
+
+    self.createCheckoutSuccess = Signal.combineLatest(
       initialData,
       bonusOrPledgeUpdatedAmount,
       shippingSummaryData,
-      pledgeTotal
+      pledgeTotal,
+      checkoutValues
     )
-    .map { initialData, bonus, shipping, pledgeTotal -> PostCampaignCheckoutData in
+    .map { initialData, bonus, shipping, pledgeTotal, checkoutValue -> PostCampaignCheckoutData in
       PostCampaignCheckoutData(
         project: initialData.project,
         rewards: initialData.rewards,
@@ -333,13 +368,23 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         omitCurrencyCode: initialData.project.stats.omitUSCurrencyCode,
         shipping: shipping,
         refTag: initialData.refTag,
-        context: initialData.context
+        context: initialData.context,
+        checkoutId: checkoutValue
       )
     }
-    .takeWhen(self.continueButtonTappedProperty.signal)
+    .takeWhen(checkoutValues.signal)
+
+    // TODO: [MBL-1217] Update string once translations are done
+    self.showErrorBannerWithMessage = createCheckoutEvents.errors()
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
   }
 
   // MARK: - Inputs
+
+  private let continueCTATappedProperty = MutableProperty(())
+  public func continueCTATapped() {
+    self.continueCTATappedProperty.value = ()
+  }
 
   private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
   public func configure(with data: PledgeViewData) {
@@ -384,7 +429,8 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
   public let configurePledgeSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
-  public let goToCheckout: Signal<PostCampaignCheckoutData, Never>
+  public let createCheckoutSuccess: Signal<PostCampaignCheckoutData, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let localPickupViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeRewardsSummaryViewHidden: Signal<Bool, Never>

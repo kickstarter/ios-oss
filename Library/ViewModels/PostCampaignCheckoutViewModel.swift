@@ -15,6 +15,7 @@ public struct PostCampaignCheckoutData: Equatable {
   public let shipping: PledgeShippingSummaryViewData
   public let refTag: RefTag?
   public let context: PledgeViewContext
+  public let checkoutId: String
 }
 
 public protocol PostCampaignCheckoutViewModelInputs {

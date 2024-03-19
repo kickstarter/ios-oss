@@ -1517,6 +1517,7 @@
 		E113BD912B7D615000D3A809 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = E113BD902B7D615000D3A809 /* Prelude */; };
 		E118351F2B75639F007B42E6 /* PaginationExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */; };
 		E11CFE4B2B6C42CE00497375 /* OAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11CFE492B6C41B400497375 /* OAuth.swift */; };
+		E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */; };
 		E16794282B7EAA5200064063 /* OAuthTokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */; };
 		E167942A2B85136900064063 /* OAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16794292B85136900064063 /* OAuthTests.swift */; };
 		E170B9112B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */; };
@@ -3140,6 +3141,7 @@
 		E118351E2B75639F007B42E6 /* PaginationExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleViewModel.swift; sourceTree = "<group>"; };
 		E11CFE492B6C41B400497375 /* OAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth.swift; sourceTree = "<group>"; };
 		E11CFE4E2B7162A400497375 /* PaginationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationExampleView.swift; sourceTree = "<group>"; };
+		E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CompleteOnSessionCheckoutMutation.graphql; sourceTree = "<group>"; };
 		E16794272B7EAA5200064063 /* OAuthTokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenExchange.swift; sourceTree = "<group>"; };
 		E16794292B85136900064063 /* OAuthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTests.swift; sourceTree = "<group>"; };
 		E170B9102B20E83B001BEDD7 /* MockGraphQLClient+CombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockGraphQLClient+CombineTests.swift"; sourceTree = "<group>"; };
@@ -5693,6 +5695,7 @@
 				6051C6742B67F2D600514202 /* CreatePaymentIntent.graphql */,
 				47C0BCD726C42135003658AC /* CreatePaymentSource.graphql */,
 				19047FBA2889A16300BDD1A8 /* CreateSetupIntent.graphql */,
+				E12420A12BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql */,
 				06261602273B0E1500389981 /* PostComment.graphql */,
 				062868E526B999EF00EC5052 /* DeletePaymentSource.graphql */,
 				47D7D09526C2EA5200D2BAB5 /* SignInWithApple.graphql */,
@@ -7487,6 +7490,7 @@
 				06DAAE5826AA3CCF00194E58 /* CountryFragment.graphql in Resources */,
 				06B3605C26E12288006CB9E4 /* FetchProjectByIdQuery.graphql in Resources */,
 				06566373270BA8E000CE7EDF /* FetchProjectRewardsByIdQuery.graphql in Resources */,
+				E12420A22BA8921800037DB5 /* CompleteOnSessionCheckoutMutation.graphql in Resources */,
 				8AC3E0892698CC1A00168BF8 /* FetchAddOnsQuery.graphql in Resources */,
 				0655C7282732FDA30087281F /* FetchRootCategories.graphql in Resources */,
 				19047FBB2889A16300BDD1A8 /* CreateSetupIntent.graphql in Resources */,
