@@ -130,7 +130,8 @@ struct RowView: View {
                     popToRoot: $popToRoot,
                     projectID: self.projectID,
                     projectURL: self.projectUrl,
-                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.FlaggingKind.guidelinesViolation
+                    projectFlaggingKind: item.flaggingKind ?? GraphAPI.NonDeprecatedFlaggingKind
+                      .guidelinesViolation
                   )
                 },
                 label: { BaseRowView(item: item) }

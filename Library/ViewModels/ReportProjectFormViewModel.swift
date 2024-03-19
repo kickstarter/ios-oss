@@ -30,7 +30,7 @@ public final class ReportProjectFormViewModel: ReportProjectFormViewModelType,
   private var cancellables = Set<AnyCancellable>()
 
   public var projectID: String?
-  public var projectFlaggingKind: GraphAPI.FlaggingKind?
+  public var projectFlaggingKind: GraphAPI.NonDeprecatedFlaggingKind?
 
   public init() {
     /// Only enable the save button if the user has entered detail text
