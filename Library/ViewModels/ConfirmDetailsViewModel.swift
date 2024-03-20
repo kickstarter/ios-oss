@@ -273,6 +273,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     .map(PledgeShippingSummaryViewData.init)
 
+    let optionalShippingSummaryData = Signal.merge(
+      project.mapConst(nil),
+      shippingSummaryData.wrapInOptional()
+    )
+
     let bonusOrPledgeUpdatedAmount = self.pledgeAmountDataSignal.map { $0.amount }
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
@@ -280,7 +285,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
-      shippingSummaryData,
+      optionalShippingSummaryData,
       bonusOrPledgeUpdatedAmount,
       pledgeTotalSummaryData
     )
@@ -354,17 +359,26 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Signal.combineLatest(
         initialData,
         bonusOrPledgeUpdatedAmount,
-        shippingSummaryData,
+        optionalShippingSummaryData,
         pledgeTotal
       )
     )
     .map { checkoutValue, otherData -> PostCampaignCheckoutData in
-      let (initialData, bonus, shipping, pledgeTotal) = otherData
+      let (initialData, bonusOrReward, shipping, pledgeTotal) = otherData
+      var rewards = initialData.rewards
+      var bonus = bonusOrReward
+      if let reward = rewards.first, reward.isNoReward {
+        rewards[0] = reward
+          |> Reward.lens.minimum .~ bonusOrReward
+          |> Reward.lens.title .~ Strings.Pledge_without_a_reward()
+        bonus = 0
+      }
+
       return PostCampaignCheckoutData(
         project: initialData.project,
-        rewards: initialData.rewards,
+        rewards: rewards,
         selectedQuantities: initialData.selectedQuantities,
-        bonusAmount: bonus,
+        bonusAmount: bonus == 0 ? nil : bonus,
         total: pledgeTotal,
         projectCountry: initialData.project.stats.currentCountry ?? initialData.project.country,
         omitCurrencyCode: initialData.project.stats.omitUSCurrencyCode,
