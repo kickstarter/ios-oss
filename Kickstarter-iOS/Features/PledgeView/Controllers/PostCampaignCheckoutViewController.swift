@@ -22,7 +22,7 @@ final class PostCampaignCheckoutViewController: UIViewController {
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
     PledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    // TODO: Add self as delegate and add support for delegate methods.
+      |> \.delegate .~ self
   }()
 
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
@@ -49,6 +49,8 @@ final class PostCampaignCheckoutViewController: UIViewController {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private var sessionStartedObserver: Any?
 
   private let viewModel: PostCampaignCheckoutViewModelType = PostCampaignCheckoutViewModel()
 
@@ -77,6 +79,10 @@ final class PostCampaignCheckoutViewController: UIViewController {
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Configuration
@@ -180,12 +186,38 @@ final class PostCampaignCheckoutViewController: UIViewController {
         self?.paymentMethodsViewController.configure(with: value)
       }
 
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
+      }
+
     self.viewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+      }
+  }
+
+  // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward?) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    self.present(navigationController, animated: true)
   }
 }
 
@@ -194,5 +226,29 @@ final class PostCampaignCheckoutViewController: UIViewController {
 extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
   func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
     self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
+  }
+}
+
+// MARK: - PledgeViewCTAContainerViewDelegate
+
+extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
+  func goToLoginSignup() {
+    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    self.viewModel.inputs.goToLoginSignupTapped()
+  }
+
+  func applePayButtonTapped() {
+    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    // TODO: Respond to button tap
+  }
+
+  func submitButtonTapped() {
+    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    // TODO: Respond to button tap
+  }
+
+  func termsOfUseTapped(with helpType: HelpType) {
+    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    // TODO
   }
 }

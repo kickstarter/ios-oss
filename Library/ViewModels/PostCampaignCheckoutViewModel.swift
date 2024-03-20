@@ -20,7 +20,9 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
+  func userSessionStarted()
   func viewDidLoad()
 }
 
@@ -31,6 +33,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
     Never
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
 }
 
@@ -60,8 +63,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         return (user, data.project, reward, data.context, data.refTag)
       }
 
-    // TODO: Respond to login flow.
-    let isLoggedIn = initialData.ignoreValues()
+    self.goToLoginSignup = Signal.combineLatest(initialData, self.goToLoginSignupSignal)
+      .map(first)
+      .map { (LoginIntent.backProject, $0.project, $0.rewards.first) }
+
+    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
@@ -101,10 +107,20 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.configureWithDataProperty.value = data
   }
 
+  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
+  public func goToLoginSignupTapped() {
+    self.goToLoginSignupObserver.send(value: ())
+  }
+
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
+  }
+
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -121,6 +137,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     PledgeSummaryViewData
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let showWebHelp: Signal<HelpType, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
