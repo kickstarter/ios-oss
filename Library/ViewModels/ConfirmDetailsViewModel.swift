@@ -330,7 +330,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     let createCheckoutEvents = pledgeDetailsData
       .takeWhen(self.continueCTATappedProperty.signal)
       .map { project, rewards, pledgeTotal, refTag in
-        let rewardsIDs = rewards.map { $0.graphID }
+        let rewardsIDs = rewards.first?.isNoReward == true ? [] : rewards.map { $0.graphID }
 
         return CreateCheckoutInput(
           projectId: project.graphID,
