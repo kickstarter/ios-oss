@@ -355,8 +355,7 @@ extension ConfirmDetailsViewController: ConfirmDetailsContinueCTAViewDelegate {
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    // TODO: [MBL-1217] Update string once translations are done
-    |> \.text %~ { _ in "Confirm your pledge details." }
+    |> \.text %~ { _ in Strings.Confirm_your_pledge_details() }
     |> \.font .~ UIFont.ksr_title2().bolded
     |> \.numberOfLines .~ 0
 }
