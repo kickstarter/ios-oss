@@ -43,9 +43,9 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
   }
 }
 
-extension PaymentMethodsFooterView: PaymentMethodsViewControllerDelegate {
+extension PaymentMethodsFooterView: PaymentMethodSettingsViewControllerDelegate {
   func cancelLoadingPaymentMethodsViewController(
-    _: PaymentMethodsViewController) {
+    _: PaymentMethodSettingsViewController) {
     self.addCardButton.isHidden = false
     self.addCardButton.isUserInteractionEnabled = true
     self.loadingIndicator.stopAnimating()

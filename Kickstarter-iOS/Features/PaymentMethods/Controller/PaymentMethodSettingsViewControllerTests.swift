@@ -5,7 +5,7 @@ import Prelude
 import SnapshotTesting
 import UIKit
 
-class PaymentMethodsViewControllerTests: TestCase {
+class PaymentMethodSettingsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 
@@ -36,7 +36,7 @@ class PaymentMethodsViewControllerTests: TestCase {
   private func generateSnapshots(with response: UserEnvelope<GraphUser>, name: String) {
     combos(Language.allLanguages, Device.allCases).forEach {
       arg in
-      let controller = PaymentMethodsViewController.instantiate()
+      let controller = PaymentMethodSettingsViewController.instantiate()
       let (language, device) = arg
       withEnvironment(
         apiService: MockService(fetchGraphUserResult: .success(response)),
