@@ -56,7 +56,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
-    
+
     let configurePaymentMethodsData = Signal.merge(
       initialData,
       initialData.takeWhen(self.userSessionStartedSignal)

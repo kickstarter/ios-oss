@@ -288,13 +288,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.shouldCancelPaymentSheetAppearance <~ updatedCards.signal
       .mapConst(true)
-    
+
     // Only ever use the value if the view model is configured and the payment sheet could exist.
     let safeShouldCancelPaymentSheet = Signal.combineLatest(
       self.shouldCancelPaymentSheetAppearance.signal,
       configureWithValue
     )
-      .map(first)
+    .map(first)
 
     let createSetupIntentEvent = Signal.combineLatest(
       project,
