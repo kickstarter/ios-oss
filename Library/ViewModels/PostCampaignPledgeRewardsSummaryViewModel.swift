@@ -177,7 +177,7 @@ private func items(
     let shippingAmountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
     )
-    
+
     let shippingItem = PostCampaignRewardsSummaryItem.reward((
       text: Strings.Shipping_to_country(country: shipping.locationName),
       amount: shippingAmountAttributedText
