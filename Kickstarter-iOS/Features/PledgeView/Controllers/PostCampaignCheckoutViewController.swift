@@ -1,0 +1,198 @@
+import KsApi
+import Library
+import Prelude
+import UIKit
+
+private enum PostCampaignCheckoutLayout {
+  enum Style {
+    static let cornerRadius: CGFloat = Styles.grid(2)
+  }
+}
+
+final class PostCampaignCheckoutViewController: UIViewController {
+  // MARK: - Properties
+
+  private lazy var titleLabel = UILabel(frame: .zero)
+
+  private lazy var paymentMethodsViewController = {
+    PledgePaymentMethodsViewController.instantiate()
+    // TODO: Add self as delegate and add support for delegate methods.
+  }()
+
+  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    // TODO: Add self as delegate and add support for delegate methods.
+  }()
+
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
+  }()
+
+  private lazy var pledgeRewardsSummaryViewController = {
+    PostCampaignPledgeRewardsSummaryViewController.instantiate()
+  }()
+
+  private lazy var rootScrollView: UIScrollView = {
+    UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rootInsetStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let viewModel: PostCampaignCheckoutViewModelType = PostCampaignCheckoutViewModel()
+
+  // MARK: - Lifecycle
+
+  func configure(with data: PostCampaignCheckoutData) {
+    self.viewModel.inputs.configure(with: data)
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.navigationItem
+      .backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+
+    _ = self
+      |> \.extendedLayoutIncludesOpaqueBars .~ true
+
+    self.title = Strings.Back_this_project()
+
+    self.configureChildViewControllers()
+    self.setupConstraints()
+
+    if let attributedText = PledgeViewControllerHelpers.attributedLearnMoreText() {
+      self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
+    }
+
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  // MARK: - Configuration
+
+  private func configureChildViewControllers() {
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.view.addSubview(self.rootScrollView)
+    self.view.addSubview(self.pledgeCTAContainerView)
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    // Configure root stack view.
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
+
+    self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
+    self.addChild(self.pledgeRewardsSummaryViewController)
+    self.pledgeRewardsSummaryViewController.didMove(toParent: self)
+
+    // Configure inset views.
+    self.rootInsetStackView.addArrangedSubview(self.titleLabel)
+
+    self.rootInsetStackView.addArrangedSubview(self.paymentMethodsViewController.view)
+    self.addChild(self.paymentMethodsViewController)
+    self.paymentMethodsViewController.didMove(toParent: self)
+
+    self.rootInsetStackView.addArrangedSubview(self.pledgeDisclaimerView)
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+    ])
+  }
+
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.view
+      |> checkoutBackgroundStyle
+
+    // TODO: Update string to localized string
+    self.titleLabel.text = "Checkout"
+    self.titleLabel.font = UIFont.ksr_title2().bolded
+    self.titleLabel.numberOfLines = 0
+
+    self.rootScrollView.showsVerticalScrollIndicator = false
+    self.rootScrollView.alwaysBounceVertical = true
+
+    self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
+    self.rootStackView.spacing = Styles.grid(1)
+
+    self.rootInsetStackView.axis = NSLayoutConstraint.Axis.vertical
+    self.rootInsetStackView.spacing = Styles.grid(4)
+    self.rootInsetStackView.isLayoutMarginsRelativeArrangement = true
+    self.rootInsetStackView.layoutMargins = UIEdgeInsets(
+      topBottom: ConfirmDetailsLayout.Margin.topBottom,
+      leftRight: ConfirmDetailsLayout.Margin.leftRight
+    )
+
+    _ = self.paymentMethodsViewController.view
+      |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
+
+    _ = self.pledgeDisclaimerView
+      |> roundedStyle(cornerRadius: PostCampaignCheckoutLayout.Style.cornerRadius)
+  }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.configurePledgeRewardsSummaryViewWithData
+      .observeForUI()
+      .observeValues { [weak self] rewardsData, bonusAmount, pledgeData in
+        self?.pledgeRewardsSummaryViewController
+          .configureWith(rewardsData: rewardsData, bonusAmount: bonusAmount, pledgeData: pledgeData)
+      }
+
+    self.viewModel.outputs.configurePledgeViewCTAContainerView
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.pledgeCTAContainerView.configureWith(value: value)
+      }
+
+    self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.paymentMethodsViewController.configure(with: value)
+      }
+
+    self.viewModel.outputs.showWebHelp
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+  }
+}
+
+// MARK: - PledgeDisclaimerViewDelegate
+
+extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
+  func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
+    self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
+  }
+}

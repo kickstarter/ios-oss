@@ -273,9 +273,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
     self.viewModel.outputs.createCheckoutSuccess
       .observeForUI()
-      .observeValues { checkoutId in
-        // TODO: Navigate to checkout screen
-        print("navigate to checkout screen with checkoutID: \(checkoutId)")
+      .observeValues { [weak self] data in
+        self?.goToCheckout(data: data)
       }
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -306,6 +305,16 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
+  }
+
+  // MARK: - Functions
+
+  private func goToCheckout(data: PostCampaignCheckoutData) {
+    let vc = PostCampaignCheckoutViewController.instantiate()
+    vc.configure(with: data)
+    vc.title = self.title
+
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 

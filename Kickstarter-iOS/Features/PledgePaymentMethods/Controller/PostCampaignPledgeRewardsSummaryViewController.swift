@@ -46,6 +46,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     self.configureSubviews()
     self.setupConstraints()
+    setEntireViewToIsHidden(true)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -98,7 +99,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     _ = self.view
       |> \.clipsToBounds .~ true
       |> checkoutWhiteBackgroundStyle
-      |> \.isHidden .~ true
 
     _ = self.rootStackView
       |> self.rootStackViewStyle
@@ -109,9 +109,6 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     _ = self.separatorView
       |> self.separatorViewStyle
-
-    _ = self.pledgeTotalViewController.view
-      |> \.isHidden .~ true
   }
 
   // MARK: - View model
@@ -128,8 +125,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
         self.tableView.reloadData()
         self.tableView.setNeedsLayout()
 
-        self.view.isHidden = false
-        self.pledgeTotalViewController.view.isHidden = false
+        setEntireViewToIsHidden(false)
         self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
       }
 
@@ -168,6 +164,13 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
     view
       |> \.backgroundColor .~ .ksr_support_200
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }
+  
+  // MARK: - Helpers
+  private func setEntireViewToIsHidden(_ isHidden: Bool) {
+    self.view.isHidden = isHidden
+    self.pledgeTotalViewController.view.isHidden = isHidden
+    self.separatorView.isHidden = isHidden
   }
 }
 

@@ -347,6 +347,9 @@
 		3959A62F2B69BC6D00FE8055 /* CombineTestObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FDB1E72AEAAC6100285F93 /* CombineTestObserver.swift */; };
 		395A3BC22B8E54C90091A379 /* AttributionTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC12B8E54C90091A379 /* AttributionTracking.swift */; };
 		395A3BC42B8E56800091A379 /* AttributionTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */; };
+		395A3BC72BA8CB6E0091A379 /* PostCampaignCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */; };
+		395A3BC92BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */; };
+		395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */; };
 		399DAD882ACD15D000238BA1 /* UpdateUserAccount.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06643F3926A5FF1C002C5997 /* UpdateUserAccount.graphql */; };
 		399DAD892ACD162C00238BA1 /* FetchProjectFriendsById.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 06BD057526F15CFB00C44E36 /* FetchProjectFriendsById.graphql */; };
 		399DAD8A2ACD163400238BA1 /* UnwatchProject.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 478E31C026C1C4C6004BF898 /* UnwatchProject.graphql */; };
@@ -1937,6 +1940,9 @@
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
 		395A3BC12B8E54C90091A379 /* AttributionTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTracking.swift; sourceTree = "<group>"; };
 		395A3BC32B8E56800091A379 /* AttributionTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionTrackingTests.swift; sourceTree = "<group>"; };
+		395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewController.swift; sourceTree = "<group>"; };
+		395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCampaignCheckoutViewModel.swift; sourceTree = "<group>"; };
+		395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerHelpers.swift; sourceTree = "<group>"; };
 		39B5E10D2B86C56600FFB720 /* RefInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfo.swift; sourceTree = "<group>"; };
 		39B5E10F2B86C56E00FFB720 /* RefInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefInfoTests.swift; sourceTree = "<group>"; };
 		39B5E1112B89120E00FFB720 /* CreateAttributionEvent.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreateAttributionEvent.graphql; sourceTree = "<group>"; };
@@ -3730,6 +3736,8 @@
 			children = (
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
 				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
+				395A3BCA2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift */,
+				395A3BC52BA8CAFA0091A379 /* PostCampaignCheckoutViewController.swift */,
 				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
 			);
 			path = Controllers;
@@ -6522,6 +6530,7 @@
 				D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */,
 				37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */,
 				37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */,
+				395A3BC82BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift */,
 				6044532D2BA0905600B8F485 /* PostCampaignPledgeRewardsSummaryViewModel.swift */,
 				A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */,
 				A7ED1F971E831C5C00BFFA01 /* ProjectCreatorViewModelTests.swift */,
@@ -7872,6 +7881,7 @@
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
+				395A3BC92BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift in Sources */,
 				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
 				063D2D0C2846779100CEDE33 /* PledgeLocalPickupViewModel.swift in Sources */,
@@ -8382,6 +8392,7 @@
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */,
+				395A3BC72BA8CB6E0091A379 /* PostCampaignCheckoutViewController.swift in Sources */,
 				604453282BA08F7000B8F485 /* PostCampaignPledgeRewardsSummaryCell.swift in Sources */,
 				D668509F236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift in Sources */,
 				19C8E56929A9249D007C3504 /* TextInputFieldModifiers.swift in Sources */,
@@ -8426,6 +8437,7 @@
 				06B02BED26680D4300903A83 /* CommentCell.swift in Sources */,
 				7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */,
 				473DE010273C4BA90033331D /* ProjectRisksCell.swift in Sources */,
+				395A3BCB2BA8EC4A0091A379 /* PledgeViewControllerHelpers.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				19A97CE228C7DA7B0031B857 /* ActivitiesDataSource.swift in Sources */,
 				4705D8982742E20900A13BBE /* ProjectHeaderCell.swift in Sources */,
