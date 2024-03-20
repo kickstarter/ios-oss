@@ -95,7 +95,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           let email = AppEnvironment.current.currentUserEmail {
           let formattedTotal = Format.formattedCurrency(pledgeTotal, country: project.country)
 
-          string = Strings.You_have_successfully_backed_project_post_campaign_html(
+          string = Strings.You_have_successfully_pledged_to_project_post_campaign_html(
             project_name: project.name,
             pledge_total: formattedTotal,
             user_email: email
