@@ -11,8 +11,7 @@ public final class RewardsCollectionViewHeaderView: UICollectionReusableView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    // TODO: [MBL-1217])https://kickstarter.atlassian.net/browse/MBL-1217) Update hardcoded string with translations
-    self.label.text = "Select your reward."
+    self.label.text = Strings.Select_your_reward()
     self.setupSubviews()
   }
 

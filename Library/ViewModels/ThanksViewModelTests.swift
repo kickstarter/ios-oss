@@ -132,7 +132,7 @@ final class ThanksViewModelTests: TestCase {
       self.backedProjectText.assertValues(
         [
           """
-          You have successfully backed Test Project. Your pledge of ¥127 has been collected.\nYou’ll receive a confirmation email at test@user.com when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.\nThis project is now one step closer to a reality, thanks to you. Spread the word!\n
+          You have successfully pledged to Test Project. Your pledge of ¥127 has been collected.\nYou’ll receive a confirmation email at test@user.com when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.\nThis project is now one step closer to a reality, thanks to you. Spread the word!\n
           """
         ], "Name of project emits"
       )
