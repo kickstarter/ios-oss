@@ -203,6 +203,8 @@ final class PostCampaignCheckoutViewController: UIViewController {
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
       }
+    
+    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
   }
 
   // MARK: - Functions

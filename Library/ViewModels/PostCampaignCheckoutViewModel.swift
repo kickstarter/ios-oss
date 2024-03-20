@@ -34,6 +34,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
+  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
 }
 
@@ -54,8 +55,13 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
+    
+    let configurePaymentMethodsData = Signal.merge(
+      initialData,
+      initialData.takeWhen(self.userSessionStartedSignal)
+    )
 
-    self.configurePaymentMethodsViewControllerWithValue = initialData
+    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsData
       .compactMap { data -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
         guard let reward = data.rewards.first else { return nil }
@@ -76,9 +82,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       context
     )
     .map { isLoggedIn, context in
-      // TODO: Calculate isEnabled and willRetryPaymentMethod fields instead of defaulting to true.
-      PledgeViewCTAContainerViewData(isLoggedIn, true, context, true)
+      PledgeViewCTAContainerViewData(
+        isLoggedIn: isLoggedIn,
+        isEnabled: true, // Pledge button never needs to be disabled on checkout page.
+        context: context,
+        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
+      )
     }
+
+    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
+      .map { !$0 || $1.paymentMethodsViewHidden }
 
     self.showWebHelp = self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
 
@@ -138,6 +151,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showWebHelp: Signal<HelpType, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
