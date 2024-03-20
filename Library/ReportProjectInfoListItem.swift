@@ -10,7 +10,7 @@ enum ReportProjectInfoListItemType {
 struct ReportProjectInfoListItem: Identifiable, Hashable {
   var id = UUID()
   var type: ReportProjectInfoListItemType
-  var flaggingKind: GraphAPI.FlaggingKind?
+  var flaggingKind: GraphAPI.NonDeprecatedFlaggingKind?
   var title: String
   var subtitle: String
   var subItems: [ReportProjectInfoListItem]?
@@ -84,7 +84,7 @@ let reportSpamSubListItems = [
   ),
   ReportProjectInfoListItem(
     type: .child,
-    flaggingKind: .abuse,
+    flaggingKind: .guidelinesAbuse,
     title: Strings.Abuse(),
     subtitle: Strings.Ex_posting()
   )

@@ -2,13 +2,13 @@ import Foundation
 
 public struct CreateFlaggingInput: GraphMutationInput {
   let contentId: String
-  let kind: GraphAPI.FlaggingKind
+  let kind: GraphAPI.NonDeprecatedFlaggingKind
   let details: String?
   let clientMutationId: String?
 
   public init(
     contentId: String,
-    kind: GraphAPI.FlaggingKind,
+    kind: GraphAPI.NonDeprecatedFlaggingKind,
     details: String?,
     clientMutationId: String?
   ) {

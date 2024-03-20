@@ -6,7 +6,7 @@ class GraphAPI_CreateFlaggingInput_CreateFlaggingInputTests: XCTestCase {
     let input =
       CreateFlaggingInput(
         contentId: "contentId",
-        kind: GraphAPI.FlaggingKind.prohibitedItems,
+        kind: GraphAPI.NonDeprecatedFlaggingKind.prohibitedItems,
         details: "details",
         clientMutationId: ""
       )
