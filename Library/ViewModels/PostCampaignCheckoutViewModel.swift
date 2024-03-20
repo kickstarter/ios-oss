@@ -20,6 +20,7 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
   func pledgeDisclaimerViewDidTapLearnMore()
   func viewDidLoad()
 }
@@ -99,6 +100,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let configureWithDataProperty = MutableProperty<PostCampaignCheckoutData?>(nil)
   public func configure(with data: PostCampaignCheckoutData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
+    .pipe()
+  public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
+    self.creditCardSelectedObserver.send(value: paymentSourceData)
   }
 
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)

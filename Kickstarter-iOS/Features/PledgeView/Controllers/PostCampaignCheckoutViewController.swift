@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import Stripe
 import UIKit
 
 private enum PostCampaignCheckoutLayout {
@@ -9,14 +10,26 @@ private enum PostCampaignCheckoutLayout {
   }
 }
 
-final class PostCampaignCheckoutViewController: UIViewController {
+protocol PostCampaignCheckoutPaymentSheetAppearanceDelegate: AnyObject {
+  func postCampaignCheckoutViewControllerPaymentSheet(_ viewController: PostCampaignCheckoutViewController,
+                                                      hidden: Bool)
+}
+
+final class PostCampaignCheckoutViewController: UIViewController, MessageBannerViewControllerPresenting,
+  ProcessingViewPresenting {
   // MARK: - Properties
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
+  internal var messageBannerViewController: MessageBannerViewController?
+  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
+
+  public weak var paymentSheetAppearanceDelegate: PaymentSheetAppearanceDelegate?
+
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
-    // TODO: Add self as delegate and add support for delegate methods.
+      |> \.messageDisplayingDelegate .~ self
+      |> \.delegate .~ self
   }()
 
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
@@ -68,6 +81,8 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     self.title = Strings.Back_this_project()
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -178,6 +193,7 @@ final class PostCampaignCheckoutViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] value in
         self?.paymentMethodsViewController.configure(with: value)
+        self?.paymentSheetAppearanceDelegate = self?.paymentMethodsViewController
       }
 
     self.viewModel.outputs.showWebHelp
@@ -186,6 +202,48 @@ final class PostCampaignCheckoutViewController: UIViewController {
         guard let self = self else { return }
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
+
+//    self.viewModel.outputs.processingViewIsHidden
+//      .observeForUI()
+//      .observeValues { [weak self] isHidden in
+//        if isHidden {
+//          self?.hideProcessingView()
+//        } else {
+//          self?.showProcessingView()
+//        }
+//      }
+  }
+}
+
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewControllerDelegate {
+  func pledgePaymentMethodsViewController(
+    _: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSource: PaymentSourceSelected
+  ) {
+    print(paymentSource)
+//    self.viewModel.inputs.creditCardSelected(with: paymentSource)
+  }
+
+  func pledgePaymentMethodsViewController(_: PledgePaymentMethodsViewController, loading flag: Bool) {
+    if flag {
+      self.showProcessingView()
+    } else {
+      self.hideProcessingView()
+    }
+  }
+}
+
+// MARK: - PledgeViewControllerMessageDisplaying
+
+extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .error, message: message)
+  }
+
+  func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .success, message: message)
   }
 }
 
