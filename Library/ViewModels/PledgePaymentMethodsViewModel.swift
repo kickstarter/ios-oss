@@ -259,15 +259,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         switch (selectedPaymentMethodCardId, selectedPaymentSheetPaymentMethodCardId) {
         case let (.none, .some(selectedPaymentSheetPaymentMethodCardId)):
-          return PaymentSourceSelected(
-            paymentSourceId: selectedPaymentSheetPaymentMethodCardId,
-            isSetupIntentClientSecret: true
-          )
+          return PaymentSourceSelected.setupIntentClientSecret(selectedPaymentSheetPaymentMethodCardId)
         case let (.some(selectedPaymentMethodCardId), .none):
-          return PaymentSourceSelected(
-            paymentSourceId: selectedPaymentMethodCardId,
-            isSetupIntentClientSecret: false
-          )
+          return PaymentSourceSelected.paymentSourceId(selectedPaymentMethodCardId)
         default:
           return nil
         }
