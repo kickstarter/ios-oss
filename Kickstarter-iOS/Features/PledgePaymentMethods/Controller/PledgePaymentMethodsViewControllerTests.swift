@@ -99,7 +99,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        controller.pledgeViewControllerPaymentSheet(PledgeViewController(), hidden: false)
+        controller.setShouldCancelPaymentSheetAppearance(hidden: false)
 
         self.scheduler.advance(by: .seconds(1))
 

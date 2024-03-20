@@ -216,8 +216,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Public functions
 
-  func cancelPaymentSheetAppearance() {
-    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+  func setShouldCancelPaymentSheetAppearance(hidden: Bool) {
+    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: hidden)
   }
 }
 

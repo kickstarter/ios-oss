@@ -454,7 +454,7 @@ final class PledgeViewController: UIViewController,
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
-        self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+        self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
@@ -595,22 +595,22 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
 extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
-    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
     self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
-    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
     self.viewModel.inputs.applePayButtonTapped()
   }
 
   func submitButtonTapped() {
-    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
     self.viewModel.inputs.submitButtonTapped()
   }
 
   func termsOfUseTapped(with helpType: HelpType) {
-    self.paymentMethodsViewController.cancelPaymentSheetAppearance()
+    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }
