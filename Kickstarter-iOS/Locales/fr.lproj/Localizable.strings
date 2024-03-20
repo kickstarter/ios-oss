@@ -109,6 +109,7 @@
 "Check_out_these_handpicked_projects" = "Voici quelques projets sélectionnés rien que pour vous.";
 "Check_your_inbox_to_complete_this_simple_step" = "Pour terminer cette démarche simple, ouvrez votre boîte de réception.";
 "Check_your_payment_details" = "Vérifiez vos coordonnées bancaires";
+"Checkout" = "Règlement";
 "Choose_another_reward" = "Choisir une autre récompense";
 "Chooses_location_for_shipping" = "Sélectionne %{location} pour la livraison.";
 "Chosen_just_for_you" = "Rien que pour vous";
@@ -125,6 +126,7 @@
 "Complete_payment" = "Payer";
 "Confirm" = "Confirmer";
 "Confirm_password" = "Confirmer le nouveau mot de passe";
+"Confirm_your_pledge_details" = "Confirmons le détail de votre engagement";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets.";
 "Contact_backer" = "Contacter le contributeur";
 "Contact_creator" = "Contacter le créateur";
@@ -594,6 +596,7 @@
 "Select_this_reward" = "Sélectionner cette récompense";
 "Select_this_reward_instead" = "Choisir cette récompense";
 "Select_up_to_five" = "Sélectionnez cinq catégories parmi les propositions ci-dessous.";
+"Select_your_reward" = "Veuillez sélectionner votre récompense";
 "Selected" = "Sélectionné";
 "Selected_card" = "Carte sélectionnée";
 "Selected_reward" = "Récompense sélectionnée";
@@ -797,7 +800,7 @@
 "You_canceled_your_pledge_for_this_project" = "Vous avez annulé votre engagement.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Impossible d'accepter cette carte pour soutenir un projet depuis le pays suivant : %{project_country}.";
 "You_have_successfully_backed_project_html" = "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !";
-"You_have_successfully_backed_project_post_campaign_html" = "<p>Vous venez de vous engager à soutenir le projet <b>%{project_name}</b>. Votre engagement de <b>%{pledge_total}</b> a bien été prélevé.</p>\n<p>Vous recevrez une confirmation à l'adresse %{user_email} lorsque votre ou vos récompenses seront sur le point d'être expédiées, ce qui vous permettra de régler vos frais de port et les taxes qui s'appliquent.</p>\n<p>Ce projet prend vie grace à vous, donc parlez-en autour de vous !</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Vous venez de vous engager à soutenir le projet <b>%{project_name}</b>. Votre contribution de <b>%{pledge_total}</b> a bien été prélevée.</p>\n<p>Vous recevrez une confirmation à l'adresse %{user_email} dès que votre récompense sera prête à être expédiée. Il vous sera alors demandé de régler les taxes et frais de port.</p>\n<p>Grâce à vous, ce projet se concrétise. Parlez-en autour de vous !</p>";
 "You_launched_this_project_on_launch_date" = "Vous avez lancé ce projet le %{launch_date}. Rendez-vous sur notre site Web pour accéder aux outils du créateur !";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Vous devez vous engager à hauteur de %{reward_minimum} ou plus pour sélectionner cette récompense.";
 "You_pledged_on_date" = "<b>Votre engagement</b> du %{pledge_date}";
@@ -812,6 +815,7 @@
 "Your_message_has_been_sent" = "Votre message a été envoyé.";
 "Your_name_displayed" = "Votre nom s'affichera toujours sur votre profil.";
 "Your_payment_method_was_successfully_charged" = "Votre moyen de paiement a bien été débité.";
+"Your_payment_method_will_be_charged_immediately" = "La somme sera immédiatement prélevée sur votre moyen de paiement et vous recevrez une confirmation à l'adresse %{user_email}. Cet engagement ne pourra être ni annulé, ni modifié.";
 "Your_pledge" = "Mon engagement";
 "Your_pledge_amount" = "Montant engagé :";
 "Your_pledge_details" = "Votre engagement";

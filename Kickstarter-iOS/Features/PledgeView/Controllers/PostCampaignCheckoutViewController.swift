@@ -130,8 +130,7 @@ final class PostCampaignCheckoutViewController: UIViewController {
     _ = self.view
       |> checkoutBackgroundStyle
 
-    // TODO: Update string to localized string
-    self.titleLabel.text = "Checkout"
+    self.titleLabel.text = Strings.Checkout()
     self.titleLabel.font = UIFont.ksr_title2().bolded
     self.titleLabel.numberOfLines = 0
 
