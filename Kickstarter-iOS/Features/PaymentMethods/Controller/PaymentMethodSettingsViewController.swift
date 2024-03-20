@@ -4,16 +4,17 @@ import Prelude
 import StripePaymentSheet
 import UIKit
 
-protocol PaymentMethodsViewControllerDelegate: AnyObject {
+protocol PaymentMethodSettingsViewControllerDelegate: AnyObject {
   func cancelLoadingPaymentMethodsViewController(
-    _ viewController: PaymentMethodsViewController)
+    _ viewController: PaymentMethodSettingsViewController)
 }
 
-internal final class PaymentMethodsViewController: UIViewController, MessageBannerViewControllerPresenting {
+internal final class PaymentMethodSettingsViewController: UIViewController,
+  MessageBannerViewControllerPresenting {
   private let dataSource = PaymentMethodsDataSource()
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
   private var paymentSheetFlowController: PaymentSheet.FlowController?
-  private weak var cancellationDelegate: PaymentMethodsViewControllerDelegate?
+  private weak var cancellationDelegate: PaymentMethodSettingsViewControllerDelegate?
   @IBOutlet private var tableView: UITableView!
 
   fileprivate lazy var editButton: UIBarButtonItem = {
@@ -27,8 +28,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
   internal var messageBannerViewController: MessageBannerViewController?
 
-  public static func instantiate() -> PaymentMethodsViewController {
-    return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
+  public static func instantiate() -> PaymentMethodSettingsViewController {
+    return Storyboard.Settings.instantiate(PaymentMethodSettingsViewController.self)
   }
 
   override func viewDidLoad() {
@@ -172,7 +173,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
             .showBanner(with: .error, message: error.localizedDescription)
         case let .success(paymentSheetFlowController):
           let topViewController = strongSelf.navigationController?.topViewController
-          let paymentSheetShownWithinPaymentMethodsContext = topViewController is PaymentMethodsViewController
+          let paymentSheetShownWithinPaymentMethodsContext =
+            topViewController is PaymentMethodSettingsViewController
 
           if paymentSheetShownWithinPaymentMethodsContext {
             strongSelf.paymentSheetFlowController = paymentSheetFlowController
@@ -254,7 +256,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   }
 }
 
-extension PaymentMethodsViewController: UITableViewDelegate {
+extension PaymentMethodSettingsViewController: UITableViewDelegate {
   func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
     return 0.1
   }
@@ -264,7 +266,7 @@ extension PaymentMethodsViewController: UITableViewDelegate {
   }
 }
 
-extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
+extension PaymentMethodSettingsViewController: PaymentMethodsFooterViewDelegate {
   internal func paymentMethodsFooterViewDidTapAddNewCardButton(_: PaymentMethodsFooterView) {
     self.viewModel.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
   }

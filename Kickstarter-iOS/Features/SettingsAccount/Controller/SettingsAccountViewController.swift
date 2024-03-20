@@ -194,7 +194,7 @@ extension SettingsAccountViewController {
     case .changePassword:
       return ChangePasswordViewController.instantiate()
     case .paymentMethods:
-      return PaymentMethodsViewController.instantiate()
+      return PaymentMethodSettingsViewController.instantiate()
     case .privacy:
       return SettingsPrivacyViewController.instantiate()
     case .currency:
