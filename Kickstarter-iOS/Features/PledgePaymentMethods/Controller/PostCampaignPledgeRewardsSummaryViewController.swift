@@ -46,7 +46,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     self.configureSubviews()
     self.setupConstraints()
-    setEntireViewToIsHidden(true)
+    self.setEntireViewToIsHidden(true)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -165,8 +165,9 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
       |> \.backgroundColor .~ .ksr_support_200
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }
-  
+
   // MARK: - Helpers
+
   private func setEntireViewToIsHidden(_ isHidden: Bool) {
     self.view.isHidden = isHidden
     self.pledgeTotalViewController.view.isHidden = isHidden
