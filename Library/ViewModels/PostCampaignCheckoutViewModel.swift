@@ -22,6 +22,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
+  func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -93,7 +94,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { !$0 || $1.paymentMethodsViewHidden }
 
-    self.showWebHelp = self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
+    self.showWebHelp = Signal.merge(
+      self.termsOfUseTappedSignal,
+      self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
+    )
 
     self.configurePledgeRewardsSummaryViewWithData = initialData
       .compactMap { data in
@@ -129,6 +133,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
+  }
+
+  private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
+  public func termsOfUseTapped(with helpType: HelpType) {
+    self.termsOfUseTappedObserver.send(value: helpType)
   }
 
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
