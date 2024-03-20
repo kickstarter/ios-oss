@@ -55,6 +55,7 @@ final class PostCampaignPledgeRewardsSummaryHeaderCell: UITableViewCell, ValueCe
       .observeForUI()
       .observeValues { [weak self] titleText in
         self?.subtitleLabel.text = titleText
+        self?.subtitleLabel.isHidden = titleText.isEmpty
       }
   }
 

@@ -8,7 +8,7 @@ public struct PostCampaignCheckoutData: Equatable {
   public let project: Project
   public let rewards: [Reward]
   public let selectedQuantities: SelectedRewardQuantities
-  public let bonusAmount: Double
+  public let bonusAmount: Double?
   public let total: Double
   public let projectCountry: Project.Country
   public let omitCurrencyCode: Bool
@@ -27,7 +27,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
 public protocol PostCampaignCheckoutViewModelOutputs {
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeRewardsSummaryViewWithData: Signal<
-    (PostCampaignRewardsSummaryViewData, Double, PledgeSummaryViewData),
+    (PostCampaignRewardsSummaryViewData, Double?, PledgeSummaryViewData),
     Never
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
@@ -117,7 +117,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeRewardsSummaryViewWithData: Signal<(
     PostCampaignRewardsSummaryViewData,
-    Double,
+    Double?,
     PledgeSummaryViewData
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
