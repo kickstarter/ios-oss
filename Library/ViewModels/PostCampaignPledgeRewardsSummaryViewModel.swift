@@ -176,9 +176,9 @@ private func items(
   let shippingAmountAttributedText = attributedRewardCurrency(
     with: data.projectCountry, amount: data.shipping.total, omitUSCurrencyCode: data.omitCurrencyCode
   )
-  // TODO: [MBL-1217])https://kickstarter.atlassian.net/browse/MBL-1217) Update hardcoded string with translations
+
   let shippingItem = PostCampaignRewardsSummaryItem.reward((
-    text: "Shipping to \(data.shipping.locationName)",
+    text: Strings.Shipping_to_country(country: data.shipping.locationName),
     amount: shippingAmountAttributedText
   ))
 
