@@ -12,7 +12,7 @@ public struct PostCampaignCheckoutData: Equatable {
   public let total: Double
   public let projectCountry: Project.Country
   public let omitCurrencyCode: Bool
-  public let shipping: PledgeShippingSummaryViewData
+  public let shipping: PledgeShippingSummaryViewData?
   public let refTag: RefTag?
   public let context: PledgeViewContext
   public let checkoutId: String

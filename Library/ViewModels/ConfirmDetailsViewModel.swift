@@ -273,6 +273,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
     )
     .map(PledgeShippingSummaryViewData.init)
 
+    let optionalShippingSummaryData = Signal.merge(
+      project.mapConst(nil),
+      shippingSummaryData.wrapInOptional()
+    )
+
     let bonusOrPledgeUpdatedAmount = self.pledgeAmountDataSignal.map { $0.amount }
 
     self.configurePledgeRewardsSummaryViewWithData = Signal.combineLatest(
@@ -280,7 +285,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       project,
       rewards,
       selectedQuantities,
-      shippingSummaryData,
+      optionalShippingSummaryData,
       bonusOrPledgeUpdatedAmount,
       pledgeTotalSummaryData
     )
@@ -354,7 +359,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Signal.combineLatest(
         initialData,
         bonusOrPledgeUpdatedAmount,
-        shippingSummaryData,
+        optionalShippingSummaryData,
         pledgeTotal
       )
     )
