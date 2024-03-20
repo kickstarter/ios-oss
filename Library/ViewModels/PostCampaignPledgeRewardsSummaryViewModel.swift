@@ -34,7 +34,7 @@ public struct PostCampaignRewardsSummaryViewData {
   public let selectedQuantities: SelectedRewardQuantities
   public let projectCountry: Project.Country
   public let omitCurrencyCode: Bool
-  public let shipping: PledgeShippingSummaryViewData
+  public let shipping: PledgeShippingSummaryViewData?
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
@@ -84,7 +84,6 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
 
       return Strings.backing_info_estimated_delivery_date(delivery_date: dateString)
     }
-    .skipNil()
 
     let total: Signal<Double, Never> = Signal.combineLatest(
       rewards,
@@ -141,14 +140,14 @@ public final class PostCampaignPledgeRewardsSummaryViewModel: PostCampaignPledge
 private func items(
   with data: PostCampaignRewardsSummaryViewData,
   selectedQuantities: SelectedRewardQuantities,
-  estimatedDeliveryString: String,
+  estimatedDeliveryString: String?,
   bonusAmount: Double?,
   total _: Double
 ) -> [PostCampaignRewardsSummaryItem] {
   // MARK: Header
 
   let headerItem = PostCampaignRewardsSummaryItem.header((
-    text: estimatedDeliveryString,
+    text: estimatedDeliveryString ?? "",
     amount: NSAttributedString(string: "")
   ))
 
@@ -170,6 +169,7 @@ private func items(
       amount: amountAttributedText
     ))
   }
+  var items = [headerItem] + rewardItems
 
   // MARK: Shipping
 
@@ -182,8 +182,8 @@ private func items(
     amount: shippingAmountAttributedText
   ))
 
-  var items = [headerItem] + rewardItems
-  items.append(shippingItem)
+    items.append(shippingItem)
+  }
 
   // MARK: Bonus
 

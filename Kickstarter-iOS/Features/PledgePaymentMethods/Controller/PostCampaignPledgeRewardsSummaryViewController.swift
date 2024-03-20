@@ -109,6 +109,8 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
 
     _ = self.separatorView
       |> self.separatorViewStyle
+
+    self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
   }
 
   // MARK: - View model
@@ -125,7 +127,7 @@ final class PostCampaignPledgeRewardsSummaryViewController: UIViewController {
         self.tableView.reloadData()
         self.tableView.setNeedsLayout()
 
-        setEntireViewToIsHidden(false)
+        self.setEntireViewToIsHidden(false)
         self.tableViewContainerHeightConstraint?.constant = self.tableView.intrinsicContentSize.height
       }
 
