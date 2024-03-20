@@ -109,6 +109,7 @@
 "Check_out_these_handpicked_projects" = "Check out these handpicked projects just for you.";
 "Check_your_inbox_to_complete_this_simple_step" = "Check your inbox to complete this simple step.";
 "Check_your_payment_details" = "Check your payment details";
+"Checkout" = "Checkout";
 "Choose_another_reward" = "Choose another reward";
 "Chooses_location_for_shipping" = "Chooses %{location} for shipping.";
 "Chosen_just_for_you" = "Chosen just for you";
@@ -125,6 +126,7 @@
 "Complete_payment" = "Complete payment";
 "Confirm" = "Confirm";
 "Confirm_password" = "Confirm new password";
+"Confirm_your_pledge_details" = "Confirm your pledge details";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_backer" = "Contact backer";
 "Contact_creator" = "Contact creator";
@@ -594,6 +596,7 @@
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
 "Select_up_to_five" = "Select up to five from the options below.";
+"Select_your_reward" = "Select your reward";
 "Selected" = "Selected";
 "Selected_card" = "Selected card";
 "Selected_reward" = "Selected reward";
@@ -797,7 +800,7 @@
 "You_canceled_your_pledge_for_this_project" = "You canceled your pledge for this project.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "You can’t use this credit card to back a project from %{project_country}.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
-"You_have_successfully_backed_project_post_campaign_html" = "<p>You have successfully backed <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
 "You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}. For creator tools, head to our website!";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "You need to pledge at least %{reward_minimum} for this reward.";
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
@@ -812,6 +815,7 @@
 "Your_message_has_been_sent" = "Your message has been sent!";
 "Your_name_displayed" = "Your name is always displayed on your profile.";
 "Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
+"Your_payment_method_will_be_charged_immediately" = "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified.";
 "Your_pledge" = "Your pledge";
 "Your_pledge_amount" = "Your pledge amount";
 "Your_pledge_details" = "Your pledge details";
