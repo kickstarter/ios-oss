@@ -96,7 +96,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
           case let (.some(selectedCard), .none):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentMethodCell }
-              .forEach { $0.setSelectedCard(selectedCard) }
+              .forEach { $0.setSelectedCardId(selectedCard.id) }
           default:
             break
           }
