@@ -287,18 +287,37 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .takeWhen(didTapToAddNewCard)
     .switchMap { (project, _) -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
-      AppEnvironment.current.apiService
-        .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
+
+      let usePaymentIntent = featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
+      let useSetupIntent = !usePaymentIntent
+      let clientSecretSignal: SignalProducer<String, ErrorEnvelope>
+
+      if useSetupIntent {
+        clientSecretSignal = AppEnvironment.current.apiService
+          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
+          .map { $0.clientSecret }
+      } else {
+        // TODO: real amt, real digital marketing attribution
+        clientSecretSignal = AppEnvironment.current.apiService
+          .createPaymentIntentInput(input: CreatePaymentIntentInput(
+            projectId: project.graphID,
+            amountDollars: "10.00",
+            digitalMarketingAttributed: nil
+          ))
+          .map { $0.clientSecret }
+      }
+
+      return clientSecretSignal
         .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+        .switchMap { clientSecret -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
 
           var configuration = PaymentSheet.Configuration()
           configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-          configuration.allowsDelayedPaymentMethods = true
+          configuration.allowsDelayedPaymentMethods = useSetupIntent
 
           let data = PaymentSheetSetupData(
-            clientSecret: envelope.clientSecret,
+            clientSecret: clientSecret,
             configuration: configuration
           )
 
