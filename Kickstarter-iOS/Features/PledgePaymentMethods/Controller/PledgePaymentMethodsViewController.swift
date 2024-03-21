@@ -76,7 +76,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, paymentSheetCards, selectedCard, selectedPaymentSheetCardId, shouldReload, isLoading in
+      .observeValues { [weak self] cards, paymentSheetCards, selectedPaymentMethod, shouldReload, isLoading in
         guard let self = self else { return }
 
         self.dataSource.load(
@@ -88,15 +88,15 @@ final class PledgePaymentMethodsViewController: UIViewController {
         if shouldReload {
           self.tableView.reloadData()
         } else {
-          switch (selectedCard, selectedPaymentSheetCardId) {
-          case let (.none, .some(selectedPaymentSheetCardId)):
+          switch selectedPaymentMethod {
+          case let .setupIntentClientSecret(selectedPaymentSheetCardId):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentSheetPaymentMethodCell }
               .forEach { $0.setSelectedCard(selectedPaymentSheetCardId) }
-          case let (.some(selectedCard), .none):
+          case let .paymentSourceId(selectedCardId):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentMethodCell }
-              .forEach { $0.setSelectedCardId(selectedCard.id) }
+              .forEach { $0.setSelectedCardId(selectedCardId) }
           default:
             break
           }
