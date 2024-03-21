@@ -38,7 +38,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheetPaymentOptionsDisplayData,
-                          setupIntent: String)
+                          paymentMethod: PaymentSourceSelected)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
@@ -100,14 +100,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .map { ($0.0, $0.1, $0.2, false) }
 
-    let newSetupIntentCards = self.newSetupIntentCreditCardProperty.signal.skipNil()
+    let newSetupIntentCards = self.newStripeIntentCreditCardProperty.signal.skipNil()
       .map { data -> [PaymentSheetPaymentMethodCellData] in
-        let (displayData, setupIntent) = data
+        let (displayData, paymentMethod) = data
 
         return [(
           image: displayData.image,
           redactedCardNumber: displayData.label,
-          setupIntent: setupIntent,
+          setupIntent: paymentMethod,
           isSelected: false,
           isEnabled: true
         )]
@@ -213,7 +213,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           let selectionUpdatedData = updatedData
             |> \.paymentMethodsCellData .~ cellData(data.paymentMethodsCellData, selecting: nil)
             |> \.paymentSheetPaymentMethodsCellData .~ selectedAllSheetPaymentMethods
-            |> \.selectedPaymentMethod .~ .setupIntentClientSecret(setupIntent)
+            |> \.selectedPaymentMethod .~ setupIntent
 
           return selectionUpdatedData
         } else if indexPath.row < paymentSheetPaymentMethodCount + paymentMethodCount {
@@ -420,13 +420,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.configureWithValueProperty.value = value
   }
 
-  private let newSetupIntentCreditCardProperty =
-    MutableProperty<(PaymentSheetPaymentOptionsDisplayData, String)?>(nil)
+  private let newStripeIntentCreditCardProperty =
+    MutableProperty<(PaymentSheetPaymentOptionsDisplayData, PaymentSourceSelected)?>(nil)
   public func paymentSheetDidAdd(
     newCard card: PaymentSheetPaymentOptionsDisplayData,
-    setupIntent: String
+    paymentMethod: PaymentSourceSelected
   ) {
-    self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
+    self.newStripeIntentCreditCardProperty.value = (card, paymentMethod)
   }
 
   private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(true)
@@ -519,7 +519,7 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
     let updatePaymentMethodData = paymentMethodData
       |> \.paymentMethodsCellData .~ preexistingCardDataUnselected
       |> \.paymentSheetPaymentMethodsCellData .~ data
-      |> \.selectedPaymentMethod .~ .setupIntentClientSecret(newestPaymentSheetPaymentMethod.setupIntent)
+      |> \.selectedPaymentMethod .~ newestPaymentSheetPaymentMethod.setupIntent
 
     return updatePaymentMethodData
   }()

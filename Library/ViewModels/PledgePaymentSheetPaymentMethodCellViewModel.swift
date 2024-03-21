@@ -7,7 +7,7 @@ import UIKit
 public typealias PaymentSheetPaymentMethodCellData = (
   image: UIImage,
   redactedCardNumber: String,
-  setupIntent: String,
+  setupIntent: PaymentSourceSelected,
   isSelected: Bool,
   isEnabled: Bool // FIXME: These cards are always enabled, so this flag isn't used in the cvm, but if there is a scenario where they are disabled in the future, use `PledgePaymentMethodCellViewModel` as a reference of how to update the signals.
 )
@@ -91,7 +91,10 @@ public final class PledgePaymentSheetPaymentMethodCellViewModel: PledgePaymentSh
       selectedCardSetupIntent
     )
 
-    let setAsSelected = cardAndSelectedCard.map(==)
+    let setAsSelected = cardAndSelectedCard
+      .map { card, selectedCard in
+        card.paymentIntentClientSecret == selectedCard || card.setupIntentClientSecret == selectedCard
+      }
 
     let paymentSheetCheckImageName = Signal.merge(paymentSheetCreditCardAsSelected, setAsSelected)
       .map { $0 ? "icon-payment-method-selected" : "icon-payment-method-unselected" }

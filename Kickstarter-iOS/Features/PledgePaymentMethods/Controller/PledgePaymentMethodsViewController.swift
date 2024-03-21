@@ -164,8 +164,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
           strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
             guard let strongSelf = self else { return }
 
-            // TODO: this needs to not just be a SetupIntent
-            strongSelf.confirmPaymentResult(with: data.clientSecret)
+            let selectedMethod: PaymentSourceSelected = isPaymentIntent ?
+              .paymentIntentClientSecret(data.clientSecret) :
+              .setupIntentClientSecret(data.clientSecret)
+
+            strongSelf.confirmPaymentResult(with: selectedMethod)
           }
         }
         strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
@@ -188,7 +191,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     }
   }
 
-  private func confirmPaymentResult(with clientSecret: String) {
+  private func confirmPaymentResult(with selectedPaymentMethod: PaymentSourceSelected) {
     guard self.paymentSheetFlowController?.paymentOption != nil else {
       self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
 
@@ -209,8 +212,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
           image: existingPaymentOption.image,
           label: existingPaymentOption.label
         )
+
         strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: paymentDisplayData, setupIntent: clientSecret)
+          .paymentSheetDidAdd(newCard: paymentDisplayData, paymentMethod: selectedPaymentMethod)
       case .canceled:
         strongSelf.messageDisplayingDelegate?
           .pledgeViewController(strongSelf, didErrorWith: Strings.general_error_something_wrong())
