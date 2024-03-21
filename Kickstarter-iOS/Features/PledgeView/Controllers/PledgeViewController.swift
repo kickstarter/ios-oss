@@ -21,10 +21,6 @@ protocol PledgeViewControllerDelegate: AnyObject {
   func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController, message: String)
 }
 
-protocol PaymentSheetAppearanceDelegate: AnyObject {
-  func pledgeViewControllerPaymentSheet(_ viewController: PledgeViewController, hidden: Bool)
-}
-
 final class PledgeViewController: UIViewController,
   MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
@@ -34,7 +30,6 @@ final class PledgeViewController: UIViewController,
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
-  public weak var paymentSheetAppearanceDelegate: PaymentSheetAppearanceDelegate?
 
   private lazy var descriptionSectionSeparator: UIView = {
     UIView(frame: .zero)
@@ -362,7 +357,6 @@ final class PledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] value in
         self?.paymentMethodsViewController.configure(with: value)
-        self?.paymentSheetAppearanceDelegate = self?.paymentMethodsViewController
       }
 
     self.viewModel.outputs.goToLoginSignup
@@ -460,7 +454,7 @@ final class PledgeViewController: UIViewController,
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
-        self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
+        self.paymentMethodsViewController.cancelModalPresentation(true)
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
@@ -601,22 +595,22 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
 extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.applePayButtonTapped()
   }
 
   func submitButtonTapped() {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.submitButtonTapped()
   }
 
   func termsOfUseTapped(with helpType: HelpType) {
-    self.paymentSheetAppearanceDelegate?.pledgeViewControllerPaymentSheet(self, hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }

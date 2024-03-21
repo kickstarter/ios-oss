@@ -213,6 +213,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       self.tableView.reloadSections([PaymentMethodsTableViewSection.addNewCard.rawValue], with: .none)
     }
   }
+
+  // MARK: - Public functions
+
+  func cancelModalPresentation(_ hidden: Bool) {
+    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: hidden)
+  }
 }
 
 // MARK: - UITableViewDelegate
@@ -229,13 +235,5 @@ extension PledgePaymentMethodsViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
 
     self.viewModel.inputs.didSelectRowAtIndexPath(indexPath)
-  }
-}
-
-// MARK: - PaymentSheetAppearanceDelegate
-
-extension PledgePaymentMethodsViewController: PaymentSheetAppearanceDelegate {
-  func pledgeViewControllerPaymentSheet(_: PledgeViewController, hidden: Bool) {
-    self.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: hidden)
   }
 }

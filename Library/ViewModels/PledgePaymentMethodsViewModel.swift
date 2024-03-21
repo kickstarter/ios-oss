@@ -283,6 +283,15 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.shouldCancelPaymentSheetAppearance <~ updatedCards.signal
       .mapConst(true)
 
+    // Only ever use the value if the view model is configured and the payment sheet could exist.
+    // In the logged out state, the payment sheet is part of the view without being configured,
+    // so this is a real risk.
+    let safeShouldCancelPaymentSheet = Signal.combineLatest(
+      self.shouldCancelPaymentSheetAppearance.signal,
+      configureWithValue
+    )
+    .map(first)
+
     let createSetupIntentEvent = Signal.combineLatest(
       project,
       paymentSheetOnPledgeContext.filter(isTrue)
@@ -310,7 +319,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     }
 
     self.goToAddCardViaStripeScreen = createSetupIntentEvent.values()
-      .withLatestFrom(self.shouldCancelPaymentSheetAppearance.signal)
+      .withLatestFrom(safeShouldCancelPaymentSheet)
       .map { (data, shouldCancel) -> PaymentSheetSetupData? in
         shouldCancel ? nil : data
       }
@@ -322,7 +331,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.updateAddNewCardLoading = Signal.merge(
       createSetupIntentEvent.errors().mapConst(false),
-      self.shouldCancelPaymentSheetAppearance.signal.negate()
+      safeShouldCancelPaymentSheet.negate()
     )
 
     self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods

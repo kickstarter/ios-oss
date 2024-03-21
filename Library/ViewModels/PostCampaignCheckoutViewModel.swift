@@ -20,7 +20,10 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
+  func termsOfUseTapped(with: HelpType)
+  func userSessionStarted()
   func viewDidLoad()
 }
 
@@ -31,6 +34,8 @@ public protocol PostCampaignCheckoutViewModelOutputs {
     Never
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
+  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
 }
 
@@ -52,7 +57,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     let context = initialData.map(\.context)
 
-    self.configurePaymentMethodsViewControllerWithValue = initialData
+    let configurePaymentMethodsData = Signal.merge(
+      initialData,
+      initialData.takeWhen(self.userSessionStartedSignal)
+    )
+
+    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsData
       .compactMap { data -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
         guard let reward = data.rewards.first else { return nil }
@@ -60,8 +70,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         return (user, data.project, reward, data.context, data.refTag)
       }
 
-    // TODO: Respond to login flow.
-    let isLoggedIn = initialData.ignoreValues()
+    self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
+      .map { (LoginIntent.backProject, $0.project, $0.rewards.first) }
+
+    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
@@ -70,11 +82,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       context
     )
     .map { isLoggedIn, context in
-      // TODO: Calculate isEnabled and willRetryPaymentMethod fields instead of defaulting to true.
-      PledgeViewCTAContainerViewData(isLoggedIn, true, context, true)
+      PledgeViewCTAContainerViewData(
+        isLoggedIn: isLoggedIn,
+        isEnabled: true, // Pledge button never needs to be disabled on checkout page.
+        context: context,
+        willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
+      )
     }
 
-    self.showWebHelp = self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
+    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
+      .map { isLoggedIn, context in
+        !isLoggedIn || context.paymentMethodsViewHidden
+      }
+
+    self.showWebHelp = Signal.merge(
+      self.termsOfUseTappedSignal,
+      self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
+    )
 
     self.configurePledgeRewardsSummaryViewWithData = initialData
       .compactMap { data in
@@ -101,10 +125,25 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.configureWithDataProperty.value = data
   }
 
+  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
+  public func goToLoginSignupTapped() {
+    self.goToLoginSignupObserver.send(value: ())
+  }
+
   private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
+  }
+
+  private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
+  public func termsOfUseTapped(with helpType: HelpType) {
+    self.termsOfUseTappedObserver.send(value: helpType)
+  }
+
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -121,6 +160,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     PledgeSummaryViewData
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showWebHelp: Signal<HelpType, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
