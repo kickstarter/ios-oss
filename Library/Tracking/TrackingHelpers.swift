@@ -3,7 +3,7 @@ import Foundation
 final class TrackingHelpers {
   static func pledgeContext(for viewContext: PledgeViewContext) -> KSRAnalytics.TypeContext.PledgeContext {
     switch viewContext {
-    case .pledge:
+    case .pledge, .latePledge:
       return .newPledge
     case .update, .updateReward, .changePaymentMethod:
       return .managePledge

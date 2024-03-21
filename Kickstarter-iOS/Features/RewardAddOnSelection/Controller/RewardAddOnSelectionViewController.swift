@@ -179,7 +179,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
       .observeValues { [weak self] data in
         guard let self else { return }
 
-        if featurePostCampaignPledgeEnabled(), data.project.isInPostCampaignPledgingPhase {
+        if data.context == .latePledge {
           self.goToConfirmDetails(data: data)
         } else {
           self.goToPledge(data: data)
