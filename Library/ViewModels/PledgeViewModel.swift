@@ -4,11 +4,6 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
-public struct PaymentSourceSelected: Equatable {
-  let paymentSourceId: String
-  let isSetupIntentClientSecret: Bool
-}
-
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
 public typealias CreateBackingData = (
   project: Project,
@@ -394,14 +389,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     }
 
-    /// The `selectedPaymentSourceId` will do as it did before taking the payment source id (A) or the setup intent client secret (B), one or the other for comparison against the existing backing payment source id. It does not care which of two payment sources the id refers to.
-    let selectedPaymentSourceId = Signal.merge(
-      initialData.mapConst(nil),
-      self.creditCardSelectedSignal.map { $0.paymentSourceId }.wrapInOptional()
-    )
-
-    /// The `selectedPaymentSourceIdOrSetupIntentClientSecret` will take the payment source id (A) or the setup intent client secret (B) and map only to `createBackingData` or `updateBackingData`
-    let selectedPaymentSourceIdOrSetupIntentClientSecret = Signal.merge(
+    /// The `selectedPaymentSource` will take the payment source id (A) or the setup intent client secret (B) and map only to `createBackingData` or `updateBackingData`
+    let selectedPaymentSource = Signal.merge(
       initialData.mapConst(nil),
       self.creditCardSelectedSignal.wrapInOptional()
     )
@@ -556,7 +545,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       pledgeTotal,
       selectedQuantities,
       selectedShippingRule,
-      selectedPaymentSourceIdOrSetupIntentClientSecret,
+      selectedPaymentSource,
       applePayParamsData,
       refTag
     )
@@ -566,19 +555,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       pledgeTotal,
       selectedQuantities,
       selectedShippingRule,
-      selectedPaymentSourceIdOrSetupIntentClientSecret,
+      selectedPaymentSource,
       applePayParams,
       refTag
     ) -> CreateBackingData in
-    var paymentSourceId: String?
-    var setupIntentClientSecret: String?
 
-    if let isSetupIntentClientSecretAvailable = selectedPaymentSourceIdOrSetupIntentClientSecret {
-      paymentSourceId = isSetupIntentClientSecretAvailable
-        .isSetupIntentClientSecret ? nil : isSetupIntentClientSecretAvailable.paymentSourceId
-      setupIntentClientSecret = isSetupIntentClientSecretAvailable
-        .isSetupIntentClientSecret ? isSetupIntentClientSecretAvailable.paymentSourceId : nil
-    }
+    var paymentSourceId = selectedPaymentSource?.paymentSourceId
+    var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
     return (
       project: project,
@@ -639,7 +622,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       pledgeTotal,
       selectedQuantities,
       selectedShippingRule,
-      selectedPaymentSourceIdOrSetupIntentClientSecret,
+      selectedPaymentSource,
       applePayParamsData
     )
     .map { (
@@ -648,18 +631,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       pledgeTotal,
       selectedQuantities,
       selectedShippingRule,
-      selectedPaymentSourceIdOrSetupIntentClientSecret,
+      selectedPaymentSource,
       applePayParams
     ) -> UpdateBackingData in
-    var paymentSourceId: String?
-    var setupIntentClientSecret: String?
-
-    if let isSetupIntentClientSecretAvailable = selectedPaymentSourceIdOrSetupIntentClientSecret {
-      paymentSourceId = isSetupIntentClientSecretAvailable
-        .isSetupIntentClientSecret ? nil : isSetupIntentClientSecretAvailable.paymentSourceId
-      setupIntentClientSecret = isSetupIntentClientSecretAvailable
-        .isSetupIntentClientSecret ? isSetupIntentClientSecretAvailable.paymentSourceId : nil
-    }
+    var paymentSourceId = selectedPaymentSource?.paymentSourceId
+    var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
     return (
       backing: backing,
@@ -774,7 +750,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       Signal.combineLatest(
         project,
         baseReward,
-        self.creditCardSelectedSignal.map { $0.paymentSourceId },
+        self.creditCardSelectedSignal,
         context
       )
       .map(paymentMethodValid)
@@ -956,11 +932,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let willRetryPaymentMethod = Signal.combineLatest(
       context,
       project,
-      selectedPaymentSourceId
+      selectedPaymentSource
     )
-    .map { context, project, selectedPaymentSourceId -> Bool in
+    .map { context, project, selectedPaymentSource -> Bool in
+
       context == .fixPaymentMethod
-        && project.personalization.backing?.paymentSource?.id == selectedPaymentSourceId
+        && project.personalization.backing?.paymentSource?.id == selectedPaymentSource?.paymentSourceId
     }
     .skipRepeats()
 
@@ -1335,7 +1312,7 @@ private func shippingRuleValid(
 private func paymentMethodValid(
   project: Project,
   reward: Reward,
-  paymentSourceId: String,
+  paymentSource: PaymentSourceSelected,
   context: PledgeViewContext
 ) -> Bool {
   guard
@@ -1348,7 +1325,7 @@ private func paymentMethodValid(
 
   if project.personalization.backing?.status == .errored {
     return true
-  } else if backedPaymentSourceId != paymentSourceId {
+  } else if backedPaymentSourceId != paymentSource.paymentSourceId {
     return true
   }
 

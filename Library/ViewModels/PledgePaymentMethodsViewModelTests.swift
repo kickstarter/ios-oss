@@ -740,7 +740,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected(paymentSourceId: UserCreditCards.amex.id, isSetupIntentClientSecret: false)],
+        [PaymentSourceSelected.paymentSourceId(UserCreditCards.amex.id)],
         "First card selected by default"
       )
 
@@ -752,11 +752,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(discoverIndexPath)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected(paymentSourceId: UserCreditCards.amex.id, isSetupIntentClientSecret: false),
-        PaymentSourceSelected(
-          paymentSourceId: UserCreditCards.discover.id,
-          isSetupIntentClientSecret: false
-        )
+        PaymentSourceSelected.paymentSourceId(UserCreditCards.amex.id),
+        PaymentSourceSelected.paymentSourceId(UserCreditCards.discover.id)
       ])
     }
   }
@@ -774,7 +771,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected(paymentSourceId: UserCreditCards.visa.id, isSetupIntentClientSecret: false)],
+        [PaymentSourceSelected.paymentSourceId(UserCreditCards.visa.id)],
         "First card selected by default"
       )
 
@@ -793,11 +790,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         )
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected(paymentSourceId: UserCreditCards.visa.id, isSetupIntentClientSecret: false),
-        PaymentSourceSelected(
-          paymentSourceId: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
-          isSetupIntentClientSecret: true
-        )
+        PaymentSourceSelected.paymentSourceId(UserCreditCards.visa.id),
+        PaymentSourceSelected
+          .setupIntentClientSecret("seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ")
       ])
     }
   }
