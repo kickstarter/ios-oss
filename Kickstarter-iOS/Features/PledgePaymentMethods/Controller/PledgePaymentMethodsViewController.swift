@@ -89,6 +89,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
           self.tableView.reloadData()
         } else {
           switch selectedPaymentMethod {
+          case let .paymentIntentClientSecret(selectedPaymentSheetCardId):
+            fallthrough
           case let .setupIntentClientSecret(selectedPaymentSheetCardId):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentSheetPaymentMethodCell }
@@ -210,7 +212,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
           label: existingPaymentOption.label
         )
         strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: paymentDisplayData, setupIntent: clientSecret)
+          .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
       case .canceled:
         strongSelf.messageDisplayingDelegate?
           .pledgeViewController(strongSelf, didErrorWith: Strings.general_error_something_wrong())
