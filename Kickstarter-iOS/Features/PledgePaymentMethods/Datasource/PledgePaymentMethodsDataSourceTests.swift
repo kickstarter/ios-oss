@@ -44,14 +44,14 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
       (
         image: UIImage(),
         redactedCardNumber: "test1",
-        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
         isSelected: true,
         isEnabled: true
       ),
       (
         image: UIImage(),
         redactedCardNumber: "test2",
-        setupIntent: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
+        clientSecret: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
         isSelected: false,
         isEnabled: true
       )
@@ -92,14 +92,14 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
       (
         image: UIImage(),
         redactedCardNumber: "test1",
-        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
         isSelected: true,
         isEnabled: true
       ),
       (
         image: UIImage(),
         redactedCardNumber: "test2",
-        setupIntent: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
+        clientSecret: "seti_2LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLP",
         isSelected: false,
         isEnabled: true
       )

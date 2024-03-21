@@ -119,7 +119,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: sampleSetupIntent
+          clientSecret: sampleSetupIntent
         )
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
@@ -269,7 +269,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
@@ -377,7 +377,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
@@ -444,7 +444,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
         image: UIImage(),
         redactedCardNumber: "••••1234",
-        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
         isSelected: true,
         isEnabled: true
       )
@@ -452,7 +452,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
       self.reloadPaymentMethodsCards
         .assertValues(
@@ -466,8 +466,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         expectedPaymentSheetPaymentMethodCard.redactedCardNumber
       )
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.setupIntent,
-        expectedPaymentSheetPaymentMethodCard.setupIntent
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.clientSecret,
+        expectedPaymentSheetPaymentMethodCard.clientSecret
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
@@ -533,7 +533,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
         image: UIImage(),
         redactedCardNumber: "••••1234",
-        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
         isSelected: true,
         isEnabled: true
       )
@@ -541,7 +541,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
       self.reloadPaymentMethodsCards
         .assertValues(
@@ -555,8 +555,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         expectedPaymentSheetPaymentMethodCard.redactedCardNumber
       )
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.setupIntent,
-        expectedPaymentSheetPaymentMethodCard.setupIntent
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.clientSecret,
+        expectedPaymentSheetPaymentMethodCard.clientSecret
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
@@ -568,7 +568,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.reloadPaymentMethodsSelectedSetupIntent
         .assertValues(
-          [nil, nil, expectedPaymentSheetPaymentMethodCard.setupIntent],
+          [nil, nil, expectedPaymentSheetPaymentMethodCard.clientSecret],
           "Newly added payment sheet card still selected even on errored backing."
         )
       self.reloadPaymentMethodsSelectedCardId
@@ -616,7 +616,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
       self.reloadPaymentMethodsSelectedSetupIntent
         .assertValues([nil, nil, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"])
@@ -788,7 +788,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       self.notifyDelegateCreditCardSelected.assertValues([
@@ -1002,7 +1002,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
@@ -1041,7 +1041,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [UserCreditCards.visa])
