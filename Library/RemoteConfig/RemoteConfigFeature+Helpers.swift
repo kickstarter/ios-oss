@@ -30,6 +30,7 @@ public func featureFacebookLoginInterstitialEnabled() -> Bool {
 }
 
 public func featurePostCampaignPledgeEnabled() -> Bool {
+  return true
   featureEnabled(feature: .postCampaignPledgeEnabled)
 }
 
