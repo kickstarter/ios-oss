@@ -4,17 +4,19 @@ public enum PaymentSourceSelected: Equatable {
   case setupIntentClientSecret(String)
 
   public var paymentSourceId: String? {
-    if case let .paymentSourceId(value) = self {
+    switch self {
+    case let .paymentSourceId(value):
       return value
-    } else {
+    default:
       return nil
     }
   }
 
   public var setupIntentClientSecret: String? {
-    if case let .setupIntentClientSecret(value) = self {
+    switch self {
+    case let .setupIntentClientSecret(value):
       return value
-    } else {
+    default:
       return nil
     }
   }
