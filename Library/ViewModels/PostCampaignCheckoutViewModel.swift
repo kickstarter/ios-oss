@@ -70,8 +70,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         return (user, data.project, reward, data.context, data.refTag)
       }
 
-    self.goToLoginSignup = Signal.combineLatest(initialData, self.goToLoginSignupSignal)
-      .map(first)
+    self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
       .map { (LoginIntent.backProject, $0.project, $0.rewards.first) }
 
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
@@ -92,7 +91,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     }
 
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
-      .map { !$0 || $1.paymentMethodsViewHidden }
+      .map { isLoggedIn, context in
+        !isLoggedIn || context.paymentMethodsViewHidden
+      }
 
     self.showWebHelp = Signal.merge(
       self.termsOfUseTappedSignal,
