@@ -148,7 +148,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.unavailableCardText.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(value: (UserCreditCards.generic, true, true, "Brooklyn, NY", false))
-    self.vm.inputs.setSelectedCard(UserCreditCards.diners)
+    self.vm.inputs.setSelectedCardId(UserCreditCards.diners.id)
 
     self.cardImageName.assertValues(["icon--generic"])
     self.cardImageAlpha.assertValues([1.0])
@@ -177,7 +177,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.unavailableCardText.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(value: (UserCreditCards.generic, true, false, "Brooklyn, NY", false))
-    self.vm.inputs.setSelectedCard(UserCreditCards.generic)
+    self.vm.inputs.setSelectedCardId(UserCreditCards.generic.id)
 
     self.cardImageName.assertValues(["icon--generic"])
     self.cardImageAlpha.assertValues([1.0])
@@ -206,7 +206,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.unavailableCardText.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(value: (UserCreditCards.generic, false, true, "Brooklyn, NY", false))
-    self.vm.inputs.setSelectedCard(UserCreditCards.generic)
+    self.vm.inputs.setSelectedCardId(UserCreditCards.generic.id)
 
     self.cardImageName.assertValues(["icon--generic"])
     self.cardImageAlpha.assertValues([0.5])

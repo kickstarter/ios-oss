@@ -17,7 +17,7 @@ public protocol PledgePaymentMethodCellViewModelInputs {
   func configureWith(value: PledgePaymentMethodCellData)
 
   /// Call with the currently selected card.
-  func setSelectedCard(_ creditCard: UserCreditCards.CreditCard)
+  func setSelectedCardId(_ id: String)
 }
 
 public protocol PledgePaymentMethodCellViewModelOutputs {
@@ -64,7 +64,7 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
   PledgePaymentMethodCellViewModelOutputs, PledgePaymentMethodCellViewModelType {
   public init() {
     let creditCard = self.configureValueProperty.signal.skipNil().map(\.card)
-    let selectedCard = self.selectedCardProperty.signal.skipNil()
+    let selectedCardId = self.selectedCardIdProperty.signal.skipNil()
     let cardTypeIsAvailable = self.configureValueProperty.signal.skipNil().map(\.isEnabled)
     let configuredAsSelected = self.configureValueProperty.signal.skipNil().map(\.isSelected)
 
@@ -90,10 +90,12 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
 
     let cardAndSelectedCard = Signal.combineLatest(
       creditCard,
-      selectedCard
+      selectedCardId
     )
 
-    let setAsSelected = cardAndSelectedCard.map(==)
+    let setAsSelected = cardAndSelectedCard.map { card, id in
+      card.id == id
+    }
 
     let creditCardCheckImageName = Signal.merge(configuredAsSelected, setAsSelected)
       .map { $0 ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
@@ -135,9 +137,9 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
     self.configureValueProperty.value = value
   }
 
-  private let selectedCardProperty = MutableProperty<UserCreditCards.CreditCard?>(nil)
-  public func setSelectedCard(_ creditCard: UserCreditCards.CreditCard) {
-    self.selectedCardProperty.value = creditCard
+  private let selectedCardIdProperty = MutableProperty<String?>(nil)
+  public func setSelectedCardId(_ id: String) {
+    self.selectedCardIdProperty.value = id
   }
 
   public let cardImageAlpha: Signal<CGFloat, Never>
