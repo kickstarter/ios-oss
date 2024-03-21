@@ -290,6 +290,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .mapConst(true)
 
     // Only ever use the value if the view model is configured and the payment sheet could exist.
+    // In the logged out state, the payment sheet is part of the view without being configured,
+    // so this is a real risk.
     let safeShouldCancelPaymentSheet = Signal.combineLatest(
       self.shouldCancelPaymentSheetAppearance.signal,
       configureWithValue

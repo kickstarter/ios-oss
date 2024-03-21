@@ -99,7 +99,7 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
-        controller.setShouldCancelPaymentSheetAppearance(hidden: false)
+        controller.cancelModalPresentation(false)
 
         self.scheduler.advance(by: .seconds(1))
 

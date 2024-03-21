@@ -234,22 +234,22 @@ extension PostCampaignCheckoutViewController: PledgeDisclaimerViewDelegate {
 
 extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate {
   func goToLoginSignup() {
-    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.goToLoginSignupTapped()
   }
 
   func applePayButtonTapped() {
-    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     // TODO: Respond to button tap
   }
 
   func submitButtonTapped() {
-    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     // TODO: Respond to button tap
   }
 
   func termsOfUseTapped(with helpType: HelpType) {
-    self.paymentMethodsViewController.setShouldCancelPaymentSheetAppearance(hidden: true)
+    self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }
