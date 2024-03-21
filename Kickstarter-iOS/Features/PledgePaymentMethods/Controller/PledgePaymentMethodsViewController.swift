@@ -144,33 +144,48 @@ final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Functions
 
   private func goToPaymentSheet(data: PaymentSheetSetupData) {
-    PaymentSheet.FlowController
-      .create(
-        setupIntentClientSecret: data.clientSecret,
-        configuration: data.configuration
-      ) { [weak self] result in
-        guard let strongSelf = self else { return }
+    let isSetupIntent = data.configuration.allowsDelayedPaymentMethods
+    let isPaymentIntent = !isSetupIntent
 
-        switch result {
-        case let .failure(error):
-          strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-          strongSelf.messageDisplayingDelegate?
-            .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
-        case let .success(paymentSheetFlowController):
-          let topViewController = strongSelf.navigationController?.topViewController
-          let paymentSheetShownWithinPledgeContext = topViewController is PledgeViewController
+    let completion: (Result<PaymentSheet.FlowController, Error>) -> Void = { [weak self] result in
+      guard let strongSelf = self else { return }
 
-          if paymentSheetShownWithinPledgeContext {
-            strongSelf.paymentSheetFlowController = paymentSheetFlowController
-            strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
-              guard let strongSelf = self else { return }
+      switch result {
+      case let .failure(error):
+        strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+        strongSelf.messageDisplayingDelegate?
+          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+      case let .success(paymentSheetFlowController):
+        let topViewController = strongSelf.navigationController?.topViewController
+        let paymentSheetShownWithinPledgeContext = topViewController is PledgeViewController
 
-              strongSelf.confirmPaymentResult(with: data.clientSecret)
-            }
+        if paymentSheetShownWithinPledgeContext {
+          strongSelf.paymentSheetFlowController = paymentSheetFlowController
+          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+            guard let strongSelf = self else { return }
+
+            // TODO: this needs to not just be a SetupIntent
+            strongSelf.confirmPaymentResult(with: data.clientSecret)
           }
-          strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
         }
+        strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
       }
+    }
+
+    if isSetupIntent {
+      PaymentSheet.FlowController.create(
+        setupIntentClientSecret: data.clientSecret,
+        configuration: data.configuration,
+        completion: completion
+      )
+    } else {
+      PaymentSheet.FlowController
+        .create(
+          paymentIntentClientSecret: data.clientSecret,
+          configuration: data.configuration,
+          completion: completion
+        )
+    }
   }
 
   private func confirmPaymentResult(with clientSecret: String) {
