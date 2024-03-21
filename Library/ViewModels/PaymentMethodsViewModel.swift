@@ -86,13 +86,14 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         return (
           image: displayData.image,
           redactedCardNumber: displayData.label,
-          setupIntent: .setupIntentClientSecret(setupIntent),
+          clientSecret: .setupIntentClientSecret(setupIntent),
           isSelected: false,
           isEnabled: true
         )
       }
       .map { paymentMethodData -> String? in
-        guard let selectedPaymentSheetPaymentMethodCardId = paymentMethodData?.setupIntent.setupIntentClientSecret else {
+        guard let selectedPaymentSheetPaymentMethodCardId = paymentMethodData?.clientSecret
+          .setupIntentClientSecret else {
           return nil
         }
 

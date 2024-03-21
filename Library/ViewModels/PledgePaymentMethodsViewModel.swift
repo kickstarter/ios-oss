@@ -107,7 +107,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         return [(
           image: displayData.image,
           redactedCardNumber: displayData.label,
-          setupIntent: paymentMethod,
+          clientSecret: paymentMethod,
           isSelected: false,
           isEnabled: true
         )]
@@ -198,14 +198,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         if indexPath.row < paymentSheetPaymentMethodCount {
           // we are selecting a new payment sheet card
-          let setupIntent = data.paymentSheetPaymentMethodsCellData[indexPath.row].setupIntent
+          let clientSecret = data.paymentSheetPaymentMethodsCellData[indexPath.row].clientSecret
 
           let selectedAllSheetPaymentMethods = data.paymentSheetPaymentMethodsCellData.map { data in
             (
               image: data.image,
               redactedCardNumber: data.redactedCardNumber,
-              setupIntent: data.setupIntent,
-              isSelected: setupIntent == data.setupIntent,
+              clientSecret: data.clientSecret,
+              isSelected: clientSecret == data.clientSecret,
               isEnabled: true
             )
           }
@@ -213,7 +213,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           let selectionUpdatedData = updatedData
             |> \.paymentMethodsCellData .~ cellData(data.paymentMethodsCellData, selecting: nil)
             |> \.paymentSheetPaymentMethodsCellData .~ selectedAllSheetPaymentMethods
-            |> \.selectedPaymentMethod .~ setupIntent
+            |> \.selectedPaymentMethod .~ clientSecret
 
           return selectionUpdatedData
         } else if indexPath.row < paymentSheetPaymentMethodCount + paymentMethodCount {
@@ -224,7 +224,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
             (
               image: data.image,
               redactedCardNumber: data.redactedCardNumber,
-              setupIntent: data.setupIntent,
+              clientSecret: data.clientSecret,
               isSelected: false,
               isEnabled: data.isEnabled
             )
@@ -493,7 +493,7 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
       (
         image: data.image,
         redactedCardNumber: data.redactedCardNumber,
-        setupIntent: data.setupIntent,
+        clientSecret: data.clientSecret,
         isSelected: false,
         isEnabled: true
       )
@@ -519,7 +519,7 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
     let updatePaymentMethodData = paymentMethodData
       |> \.paymentMethodsCellData .~ preexistingCardDataUnselected
       |> \.paymentSheetPaymentMethodsCellData .~ data
-      |> \.selectedPaymentMethod .~ newestPaymentSheetPaymentMethod.setupIntent
+      |> \.selectedPaymentMethod .~ newestPaymentSheetPaymentMethod.clientSecret
 
     return updatePaymentMethodData
   }()
