@@ -7,7 +7,7 @@ import UIKit
 public typealias PaymentSheetPaymentMethodCellData = (
   image: UIImage,
   redactedCardNumber: String,
-  setupIntent: String,
+  clientSecret: String,
   isSelected: Bool,
   isEnabled: Bool // FIXME: These cards are always enabled, so this flag isn't used in the cvm, but if there is a scenario where they are disabled in the future, use `PledgePaymentMethodCellViewModel` as a reference of how to update the signals.
 )
@@ -67,11 +67,11 @@ public final class PledgePaymentSheetPaymentMethodCellViewModel: PledgePaymentSh
       .map(\.image)
     let paymentSheetCreditCardRedactedNumber = self.configureValueProperty.signal.skipNil()
       .map(\.redactedCardNumber)
-    let paymentSheetCreditCardSetupIntent = self.configureValueProperty.signal.skipNil()
-      .map(\.setupIntent)
+    let paymentSheetCreditCardClientSecret = self.configureValueProperty.signal.skipNil()
+      .map(\.clientSecret)
     let paymentSheetCreditCardAsSelected = self.configureValueProperty.signal.skipNil()
       .map(\.isSelected)
-    let selectedCardSetupIntent = self.selectedCardProperty.signal.skipNil()
+    let selectedCardClientSecret = self.selectedCardProperty.signal.skipNil()
 
     self.cardImage = paymentSheetCreditCardImage
 
@@ -87,8 +87,8 @@ public final class PledgePaymentSheetPaymentMethodCellViewModel: PledgePaymentSh
     self.expirationDateText = paymentSheetCreditCardExpiryDate
 
     let cardAndSelectedCard = Signal.combineLatest(
-      paymentSheetCreditCardSetupIntent,
-      selectedCardSetupIntent
+      paymentSheetCreditCardClientSecret,
+      selectedCardClientSecret
     )
 
     let setAsSelected = cardAndSelectedCard.map(==)
