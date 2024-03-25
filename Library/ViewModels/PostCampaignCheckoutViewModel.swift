@@ -20,6 +20,7 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func termsOfUseTapped(with: HelpType)
@@ -129,6 +130,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.configureWithDataProperty.value = data
   }
 
+  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
+    .pipe()
+  public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
+    self.creditCardSelectedObserver.send(value: paymentSourceData)
+  }
+
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
   public func goToLoginSignupTapped() {
     self.goToLoginSignupObserver.send(value: ())
@@ -139,7 +146,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public func pledgeDisclaimerViewDidTapLearnMore() {
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
   }
-  
+
   private let submitButtonTappedProperty = MutableProperty(())
   public func submitButtonTapped() {
     self.submitButtonTappedProperty.value = ()

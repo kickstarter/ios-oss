@@ -263,3 +263,14 @@ extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }
+
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewControllerDelegate {
+  func pledgePaymentMethodsViewController(
+    _: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSource: PaymentSourceSelected
+  ) {
+    self.viewModel.inputs.creditCardSelected(with: paymentSource)
+  }
+}
