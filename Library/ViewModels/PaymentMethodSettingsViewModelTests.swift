@@ -7,8 +7,8 @@ import ReactiveSwift
 @testable import Stripe
 import XCTest
 
-internal final class PaymentMethodsViewModelTests: TestCase {
-  private let vm = PaymentMethodsViewModel()
+internal final class PaymentMethodSettingsViewModelTests: TestCase {
+  private let vm = PaymentMethodSettingsViewModel()
   private let userTemplate = GraphUser.template |> \.storedCards .~ UserCreditCards.template
   private let cancelLoadingState = TestObserver<Void, Never>()
   private let editButtonIsEnabled = TestObserver<Bool, Never>()

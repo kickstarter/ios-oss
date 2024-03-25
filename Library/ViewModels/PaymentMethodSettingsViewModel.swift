@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import StripePaymentSheet
 
-public protocol PaymentMethodsViewModelInputs {
+public protocol PaymentMethodSettingsViewModelInputs {
   func failedToAddNewCard()
   func didDelete(_ creditCard: UserCreditCards.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
@@ -15,7 +15,7 @@ public protocol PaymentMethodsViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol PaymentMethodsViewModelOutputs {
+public protocol PaymentMethodSettingsViewModelOutputs {
   var cancelAddNewCardLoadingState: Signal<Void, Never> { get }
   var editButtonIsEnabled: Signal<Bool, Never> { get }
   var editButtonTitle: Signal<String, Never> { get }
@@ -30,12 +30,12 @@ public protocol PaymentMethodsViewModelOutputs {
 }
 
 public protocol PaymentMethodsViewModelType {
-  var inputs: PaymentMethodsViewModelInputs { get }
-  var outputs: PaymentMethodsViewModelOutputs { get }
+  var inputs: PaymentMethodSettingsViewModelInputs { get }
+  var outputs: PaymentMethodSettingsViewModelOutputs { get }
 }
 
-public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
-  PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
+public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
+  PaymentMethodSettingsViewModelInputs, PaymentMethodSettingsViewModelOutputs {
   public init() {
     self.reloadData = self.viewDidLoadProperty.signal
 
@@ -273,6 +273,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   public let showAlert: Signal<String, Never>
   public let tableViewIsEditing: Signal<Bool, Never>
 
-  public var inputs: PaymentMethodsViewModelInputs { return self }
-  public var outputs: PaymentMethodsViewModelOutputs { return self }
+  public var inputs: PaymentMethodSettingsViewModelInputs { return self }
+  public var outputs: PaymentMethodSettingsViewModelOutputs { return self }
 }
