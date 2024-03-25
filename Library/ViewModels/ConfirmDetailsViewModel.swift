@@ -209,9 +209,9 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     // MARK: Total Pledge Summary
 
-    /// Hide when there is a reward and shipping is enabled (accounts for digital rewards), and in a pledge context
+    /// Hide when there is a reward and in a pledge context
     self.pledgeSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward == false && baseReward.shipping.enabled) && context == .pledge
+      baseReward.isNoReward == false && context == .pledge
     }
 
     let allRewardsTotal = Signal.combineLatest(
