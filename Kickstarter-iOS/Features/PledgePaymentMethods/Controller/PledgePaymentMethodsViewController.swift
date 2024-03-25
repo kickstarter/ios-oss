@@ -95,7 +95,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentSheetPaymentMethodCell }
               .forEach { $0.setSelectedCard(selectedPaymentSheetCardId) }
-          case let .paymentSourceId(selectedCardId):
+          case let .savedCreditCard(selectedCardId):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentMethodCell }
               .forEach { $0.setSelectedCardId(selectedCardId) }

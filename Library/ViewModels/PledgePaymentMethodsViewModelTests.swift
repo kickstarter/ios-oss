@@ -49,7 +49,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.1 }
       .observe(self.reloadPaymentSheetPaymentMethodsCards.observer)
-    self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.paymentSourceId }
+    self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.savedCreditCardId }
       .observe(self.reloadPaymentMethodsSelectedCardId.observer)
     self.vm.outputs.reloadPaymentMethods.map { data in data.selectedPaymentMethod?.setupIntentClientSecret }
       .observe(self.reloadPaymentMethodsSelectedSetupIntent.observer)
@@ -805,7 +805,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected.paymentSourceId(UserCreditCards.amex.id)],
+        [PaymentSourceSelected.savedCreditCard(UserCreditCards.amex.id)],
         "First card selected by default"
       )
 
@@ -817,8 +817,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didSelectRowAtIndexPath(discoverIndexPath)
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected.paymentSourceId(UserCreditCards.amex.id),
-        PaymentSourceSelected.paymentSourceId(UserCreditCards.discover.id)
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.amex.id),
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.discover.id)
       ])
     }
   }
@@ -845,7 +845,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateCreditCardSelected.assertValues(
-        [PaymentSourceSelected.paymentSourceId(UserCreditCards.visa.id)],
+        [PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id)],
         "First card selected by default"
       )
 
@@ -864,7 +864,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         )
 
       self.notifyDelegateCreditCardSelected.assertValues([
-        PaymentSourceSelected.paymentSourceId(UserCreditCards.visa.id),
+        PaymentSourceSelected.savedCreditCard(UserCreditCards.visa.id),
         PaymentSourceSelected
           .setupIntentClientSecret("seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ")
       ])
