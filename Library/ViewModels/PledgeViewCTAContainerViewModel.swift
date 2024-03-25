@@ -26,6 +26,7 @@ public protocol PledgeViewCTAContainerViewModelOutputs {
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
   var notifyDelegateSubmitButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateToGoToLoginSignup: Signal<Void, Never> { get }
+  var pledgeImmediatelyLabelIsHidden: Signal<Bool, Never> { get }
   var submitButtonIsEnabled: Signal<Bool, Never> { get }
   var submitButtonIsHidden: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
@@ -63,6 +64,11 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
     self.notifyDelegateSubmitButtonTapped = self.submitButtonTappedProperty.signal
     self.notifyDelegateToGoToLoginSignup = self.continueButtonTappedProperty.signal
+
+    self.pledgeImmediatelyLabelIsHidden = context
+      .map { context in
+        context != .latePledge
+      }
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -97,6 +103,7 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let notifyDelegateSubmitButtonTapped: Signal<Void, Never>
   public let notifyDelegateToGoToLoginSignup: Signal<Void, Never>
+  public let pledgeImmediatelyLabelIsHidden: Signal<Bool, Never>
   public let submitButtonIsEnabled: Signal<Bool, Never>
   public let submitButtonTitle: Signal<String, Never>
 

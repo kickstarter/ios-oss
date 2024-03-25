@@ -29,6 +29,11 @@ final class PledgeViewCTAContainerView: UIView {
 
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
+  private lazy var pledgeImmediatelyLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var disclaimerStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -83,6 +88,10 @@ final class PledgeViewCTAContainerView: UIView {
 
     _ = self.termsTextView
       |> termsTextViewStyle
+
+    self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
+    self.pledgeImmediatelyLabel.numberOfLines = 0
+    self.pledgeImmediatelyLabel.textAlignment = .center
 
     _ = self.disclaimerStackView
       |> disclaimerStackViewStyle
@@ -139,6 +148,8 @@ final class PledgeViewCTAContainerView: UIView {
     self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonIsHidden
     self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonIsEnabled
+
+    self.pledgeImmediatelyLabel.rac.hidden = self.viewModel.outputs.pledgeImmediatelyLabelIsHidden
   }
 
   // MARK: - Configuration
@@ -157,7 +168,7 @@ final class PledgeViewCTAContainerView: UIView {
     _ = ([self.continueButton, self.submitButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.termsTextView], self.disclaimerStackView)
+    _ = ([self.pledgeImmediatelyLabel, self.termsTextView], self.disclaimerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
@@ -241,7 +252,8 @@ private let ctaStackViewStyle: StackViewStyle = { stackView in
 
 private let disclaimerStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ .horizontal
+    |> \.axis .~ .vertical
+    |> \.spacing .~ Styles.grid(2)
     |> \.layoutMargins .~ UIEdgeInsets.init(
       top: Styles.grid(0),
       left: Styles.grid(5),
@@ -291,4 +303,56 @@ private func attributedTermsText() -> NSAttributedString? {
   )
 
   return checkoutAttributedLink(with: string)
+}
+
+private func pledgeImmediatelyText() -> NSAttributedString? {
+  let rawText = Strings.Your_payment_method_will_be_charged()
+
+  guard let text = try? NSMutableAttributedString(
+    data: Data(rawText.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else {
+    return nil
+  }
+
+  let attributes: String.Attributes = [
+    .font: UIFont.ksr_caption2(),
+    .foregroundColor: UIColor.ksr_support_400
+  ]
+
+  let fullRange = (text.string as NSString).range(of: text.string)
+  text.addAttributes(attributes, range: fullRange)
+
+  let boldRanges = getBoldRangesFromHtmlTags(plainString: text.string, htmlString: rawText)
+  for range in boldRanges {
+    text.addAttribute(.font, value: UIFont.ksr_caption2().bolded, range: range)
+  }
+
+  return text
+}
+
+private func getBoldRangesFromHtmlTags(plainString: String, htmlString: String) -> [NSRange] {
+  let stringWithoutHtml = plainString as NSString
+  var boldRanges: [NSRange] = []
+
+  var currentString = htmlString as NSString
+  while currentString.contains("<b>") {
+    let startTagRange = currentString.range(of: "<b>")
+    let endTagRange = currentString.range(of: "</b>")
+
+    // Calculate range of bolded text in the string without html tags.
+    let location = startTagRange.location
+    let length = endTagRange.location - (location + startTagRange.length)
+    let toBold = NSRange(location: location, length: length)
+    boldRanges.append(toBold)
+
+    let processedSubstring = stringWithoutHtml.substring(to: toBold.location + toBold.length)
+    let remainingHtml = currentString.substring(from: endTagRange.location + endTagRange.length)
+    currentString = (processedSubstring + remainingHtml) as NSString
+  }
+  return boldRanges
 }
