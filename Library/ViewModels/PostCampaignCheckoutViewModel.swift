@@ -3,6 +3,7 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
+import Stripe
 
 public struct PostCampaignCheckoutData: Equatable {
   public let project: Project
@@ -41,6 +42,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
+  var validateCheckoutSuccess: Signal<String, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -60,6 +62,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
+    let checkoutId = initialData.map(\.checkoutId)
 
     let configurePaymentMethodsData = Signal.merge(
       initialData,
@@ -136,7 +139,29 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
+
+    // MARK: Validate Checkout Details On Submit
+
     let stripeCardIdAndPaymentIntent = self.creditCardSelectedSignal.signal
+
+    let validateCheckout = Signal.combineLatest(checkoutId, stripeCardIdAndPaymentIntent)
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .switchMap { checkoutId, stripeCardIdAndPaymentIntent in
+        let (stripeCardId, paymentIntent) = stripeCardIdAndPaymentIntent
+
+        return AppEnvironment.current.apiService
+          .validateCheckout(
+            checkoutId: checkoutId,
+            paymentSourceId: stripeCardId,
+            paymentIntentClientSecret: paymentIntent
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.validateCheckoutSuccess = stripeCardIdAndPaymentIntent
+      .takeWhen(validateCheckout.values().ignoreValues())
+      .map { stripeCardIdAndPaymentIntent in
         let (_, paymentIntent) = stripeCardIdAndPaymentIntent
         return paymentIntent
       }
@@ -206,6 +231,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
+  public let validateCheckoutSuccess: Signal<String, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
