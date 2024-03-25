@@ -37,6 +37,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
+  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -67,7 +68,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         guard let user = AppEnvironment.current.currentUser else { return nil }
         guard let reward = data.rewards.first else { return nil }
 
-        return (user, data.project, reward, data.context, data.refTag)
+        return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
       }
 
     self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
@@ -116,6 +117,19 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         )
         return (rewardsData, data.bonusAmount, pledgeData)
       }
+
+    self.configureStripeIntegration = Signal.combineLatest(
+      initialData,
+      context
+    )
+    .filter { !$1.paymentMethodsViewHidden }
+    .ignoreValues()
+    .map { _ in
+      (
+        Secrets.ApplePay.merchantIdentifier,
+        AppEnvironment.current.environmentType.stripePublishableKey
+      )
+    }
   }
 
   // MARK: - Inputs
@@ -163,6 +177,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showWebHelp: Signal<HelpType, Never>
+  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }

@@ -86,13 +86,13 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
         return (
           image: displayData.image,
           redactedCardNumber: displayData.label,
-          setupIntent: setupIntent,
+          clientSecret: setupIntent,
           isSelected: false,
           isEnabled: true
         )
       }
       .map { paymentMethodData -> String? in
-        guard let selectedPaymentSheetPaymentMethodCardId = paymentMethodData?.setupIntent else {
+        guard let selectedPaymentSheetPaymentMethodCardId = paymentMethodData?.clientSecret else {
           return nil
         }
 
@@ -155,7 +155,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
             configuration.allowsDelayedPaymentMethods = true
             let data = PaymentSheetSetupData(
               clientSecret: envelope.clientSecret,
-              configuration: configuration
+              configuration: configuration,
+              paymentSheetType: .setupIntent
             )
             return SignalProducer(value: data)
           }

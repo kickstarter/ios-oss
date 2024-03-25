@@ -89,6 +89,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
           self.tableView.reloadData()
         } else {
           switch selectedPaymentMethod {
+          case let .paymentIntentClientSecret(selectedPaymentSheetCardId):
+            fallthrough
           case let .setupIntentClientSecret(selectedPaymentSheetCardId):
             self.tableView.visibleCells
               .compactMap { $0 as? PledgePaymentSheetPaymentMethodCell }
@@ -144,33 +146,48 @@ final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Functions
 
   private func goToPaymentSheet(data: PaymentSheetSetupData) {
-    PaymentSheet.FlowController
-      .create(
-        setupIntentClientSecret: data.clientSecret,
-        configuration: data.configuration
-      ) { [weak self] result in
-        guard let strongSelf = self else { return }
+    let completion: (Result<PaymentSheet.FlowController, Error>) -> Void = { [weak self] result in
+      guard let strongSelf = self else { return }
 
-        switch result {
-        case let .failure(error):
-          strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
-          strongSelf.messageDisplayingDelegate?
-            .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
-        case let .success(paymentSheetFlowController):
-          let topViewController = strongSelf.navigationController?.topViewController
-          let paymentSheetShownWithinPledgeContext = topViewController is PledgeViewController
+      switch result {
+      case let .failure(error):
+        strongSelf.viewModel.inputs.shouldCancelPaymentSheetAppearance(state: true)
+        strongSelf.messageDisplayingDelegate?
+          .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
+      case let .success(paymentSheetFlowController):
+        let topViewController = strongSelf.navigationController?.topViewController
 
-          if paymentSheetShownWithinPledgeContext {
-            strongSelf.paymentSheetFlowController = paymentSheetFlowController
-            strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
-              guard let strongSelf = self else { return }
+        assert(
+          topViewController is PledgeViewController ||
+            topViewController is PostCampaignCheckoutViewController,
+          "PledgePaymentMethodsViewController is only intended to be presented as part of a pledge flow."
+        )
 
-              strongSelf.confirmPaymentResult(with: data.clientSecret)
-            }
-          }
-          strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
+        strongSelf.paymentSheetFlowController = paymentSheetFlowController
+        strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+          guard let strongSelf = self else { return }
+
+          strongSelf.confirmPaymentResult(with: data.clientSecret)
         }
+        strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
       }
+    }
+
+    switch data.paymentSheetType {
+    case .setupIntent:
+      PaymentSheet.FlowController.create(
+        setupIntentClientSecret: data.clientSecret,
+        configuration: data.configuration,
+        completion: completion
+      )
+    case .paymentIntent:
+      PaymentSheet.FlowController
+        .create(
+          paymentIntentClientSecret: data.clientSecret,
+          configuration: data.configuration,
+          completion: completion
+        )
+    }
   }
 
   private func confirmPaymentResult(with clientSecret: String) {
@@ -195,7 +212,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
           label: existingPaymentOption.label
         )
         strongSelf.viewModel.inputs
-          .paymentSheetDidAdd(newCard: paymentDisplayData, setupIntent: clientSecret)
+          .paymentSheetDidAdd(newCard: paymentDisplayData, clientSecret: clientSecret)
       case .canceled:
         strongSelf.messageDisplayingDelegate?
           .pledgeViewController(strongSelf, didErrorWith: Strings.general_error_something_wrong())

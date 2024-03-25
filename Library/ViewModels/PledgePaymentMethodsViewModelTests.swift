@@ -76,7 +76,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -119,7 +128,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: sampleSetupIntent
+          clientSecret: sampleSetupIntent
         )
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
@@ -216,7 +225,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
             |> Backing.lens.paymentSource .~ paymentSource
         )
 
-      self.vm.inputs.configure(with: (User.template, project, .template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (User.template, project, .template, .pledge, .discovery, Double.nan, .setupIntent))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -269,7 +279,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
@@ -347,7 +357,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -377,7 +396,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentSheetPaymentMethodsCards.values.count, 3)
@@ -415,7 +434,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -444,7 +472,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
         image: UIImage(),
         redactedCardNumber: "••••1234",
-        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
         isSelected: true,
         isEnabled: true
       )
@@ -452,7 +480,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
       self.reloadPaymentMethodsCards
         .assertValues(
@@ -466,8 +494,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         expectedPaymentSheetPaymentMethodCard.redactedCardNumber
       )
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.setupIntent,
-        expectedPaymentSheetPaymentMethodCard.setupIntent
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.clientSecret,
+        expectedPaymentSheetPaymentMethodCard.clientSecret
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
@@ -507,7 +535,15 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
       self.vm.inputs
-        .configure(with: (User.template, projectWithErroredBacking, Reward.template, .pledge, .discovery))
+        .configure(with: (
+          User.template,
+          projectWithErroredBacking,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -533,7 +569,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       let expectedPaymentSheetPaymentMethodCard = PaymentSheetPaymentMethodCellData(
         image: UIImage(),
         redactedCardNumber: "••••1234",
-        setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
+        clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ",
         isSelected: true,
         isEnabled: true
       )
@@ -541,7 +577,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
       self.reloadPaymentMethodsCards
         .assertValues(
@@ -555,8 +591,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         expectedPaymentSheetPaymentMethodCard.redactedCardNumber
       )
       XCTAssertEqual(
-        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.setupIntent,
-        expectedPaymentSheetPaymentMethodCard.setupIntent
+        self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.clientSecret,
+        expectedPaymentSheetPaymentMethodCard.clientSecret
       )
       XCTAssertEqual(
         self.reloadPaymentSheetPaymentMethodsCards.lastValue?.last?.isSelected,
@@ -568,7 +604,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.reloadPaymentMethodsSelectedSetupIntent
         .assertValues(
-          [nil, nil, expectedPaymentSheetPaymentMethodCard.setupIntent],
+          [nil, nil, expectedPaymentSheetPaymentMethodCard.clientSecret],
           "Newly added payment sheet card still selected even on errored backing."
         )
       self.reloadPaymentMethodsSelectedCardId
@@ -593,7 +629,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsSelectedCardId.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedSetupIntent.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -616,7 +661,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
       self.reloadPaymentMethodsSelectedSetupIntent
         .assertValues([nil, nil, "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"])
@@ -678,7 +723,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
       self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -736,7 +790,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockService = MockService(fetchGraphUserResult: .success(response))
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -767,7 +830,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockService = MockService(fetchGraphUserResult: .success(response))
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          Project.template,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -788,7 +860,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       self.notifyDelegateCreditCardSelected.assertValues([
@@ -812,7 +884,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -855,7 +936,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       let addNewCardIndexPath = IndexPath(
         row: 0,
@@ -881,7 +971,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .update,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       let addNewCardIndexPath = IndexPath(
         row: 0,
@@ -907,7 +1006,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .updateReward, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .updateReward,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       let addNewCardIndexPath = IndexPath(
         row: 0,
@@ -934,7 +1042,15 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs
-        .configure(with: (User.template, project, Reward.template, .changePaymentMethod, .discovery))
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .changePaymentMethod,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       let addNewCardIndexPath = IndexPath(
         row: 0,
@@ -960,7 +1076,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .fixPaymentMethod, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .fixPaymentMethod,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       let addNewCardIndexPath = IndexPath(
         row: 0,
@@ -987,7 +1112,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       guard let paymentMethod = STPPaymentMethod.visaStripePaymentMethod else {
         XCTFail("Should've created payment method.")
@@ -1002,7 +1136,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [])
@@ -1025,7 +1159,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
 
       guard let paymentMethod = STPPaymentMethod.amexStripePaymentMethod else {
         XCTFail("Should've created payment method.")
@@ -1041,7 +1184,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs
         .paymentSheetDidAdd(
           newCard: paymentOptionsDisplayData,
-          setupIntent: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
+          clientSecret: "seti_1LVlHO4VvJ2PtfhK43R6p7FI_secret_MEDiGbxfYVnHGsQy8v8TbZJTQhlNKLZ"
         )
 
       XCTAssertEqual(self.reloadPaymentMethodsCards.lastValue, [UserCreditCards.visa])
@@ -1067,7 +1210,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
       self.scheduler.run()
@@ -1086,7 +1238,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: true)
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
@@ -1119,7 +1280,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.shouldCancelPaymentSheetAppearance(state: false)
 
       self.scheduler.advance(by: .seconds(1))
@@ -1148,7 +1318,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       currentUser: User.template
     ) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs
+        .configure(with: (
+          User.template,
+          project,
+          Reward.template,
+          .pledge,
+          .discovery,
+          Double.nan,
+          .setupIntent
+        ))
       self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
       self.scheduler.run()

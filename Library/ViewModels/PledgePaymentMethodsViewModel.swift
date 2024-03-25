@@ -16,12 +16,20 @@ public typealias PledgePaymentMethodsValue = (
   project: Project,
   reward: Reward,
   context: PledgeViewContext,
-  refTag: RefTag?
+  refTag: RefTag?,
+  pledgeTotal: Double,
+  paymentSheetType: PledgePaymentSheetType
 )
+
+public enum PledgePaymentSheetType {
+  case setupIntent
+  case paymentIntent
+}
 
 public typealias PaymentSheetSetupData = (
   clientSecret: String,
-  configuration: PaymentSheet.Configuration
+  configuration: PaymentSheet.Configuration,
+  paymentSheetType: PledgePaymentSheetType
 )
 
 public typealias PledgePaymentMethodsAndSelectionData = (
@@ -38,7 +46,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func configure(with value: PledgePaymentMethodsValue)
   func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func paymentSheetDidAdd(newCard card: PaymentSheetPaymentOptionsDisplayData,
-                          setupIntent: String)
+                          clientSecret: String)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
@@ -68,6 +76,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let project = configureWithValue.map { $0.project }
     let context = configureWithValue.map { $0.context }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
+    let pledgeTotal = configureWithValue.map { $0.pledgeTotal }
+    let paymentSheetType = configureWithValue.map { $0.paymentSheetType }
 
     let paymentSheetEnabled = true
 
@@ -100,14 +110,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .map { ($0.0, $0.1, $0.2, false) }
 
-    let newSetupIntentCards = self.newSetupIntentCreditCardProperty.signal.skipNil()
+    let newSetupIntentCards = self.newStripeIntentCreditCardProperty.signal.skipNil()
       .map { data -> [PaymentSheetPaymentMethodCellData] in
         let (displayData, setupIntent) = data
 
         return [(
           image: displayData.image,
           redactedCardNumber: displayData.label,
-          setupIntent: setupIntent,
+          clientSecret: setupIntent,
           isSelected: false,
           isEnabled: true
         )]
@@ -118,12 +128,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       storedCards
     )
     .scan([]) { current, new in new + current }
-
-    let allCardData = Signal.combineLatest(
-      allCards,
-      availableCardTypes,
-      project
-    )
 
     let cards = initialCardData
       .map(pledgePaymentMethodCellDataAndSelectedCard)
@@ -155,15 +159,18 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         )
       }
 
-    let configuredCardsWithNewSetupIntentCards = Signal.combineLatest(configuredCards, project)
+    let configuredCardsWithNewSetupIntentCards = Signal.combineLatest(configuredCards, paymentSheetType)
       .takePairWhen(newSetupIntentCards)
-      .map { cardsAndProject, setupIntentCards -> PledgePaymentMethodsAndSelectionData in
-        let (cards, project) = cardsAndProject
+      .map { cardsAndPaymentSheetType, setupIntentCards -> PledgePaymentMethodsAndSelectionData in
+        let (cards, paymentSheetType) = cardsAndPaymentSheetType
         let updatedCardData = cards
           |> \.paymentSheetPaymentMethodsCellData .~ setupIntentCards
 
         let updatedPaymentMethodSelectionData =
-          pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(with: updatedCardData, project: project)
+          pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
+            with: updatedCardData,
+            paymentSheetType: paymentSheetType
+          )
 
         return updatedPaymentMethodSelectionData
       }
@@ -185,7 +192,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .filter { _, indexPath in
         indexPath.section == PaymentMethodsTableViewSection.paymentMethods.rawValue
       }
-      .map { data, indexPath -> PledgePaymentMethodsAndSelectionData? in
+      .combineLatest(with: paymentSheetType)
+      .map { ($0.0.0, $0.0.1, $0.1) } // turn ((a, b), c) into (a, b, c)
+      .map { (data, indexPath, paymentSheetType) -> PledgePaymentMethodsAndSelectionData? in
         let updatedData = data
           |> \.paymentMethodsCellData .~ []
           |> \.paymentSheetPaymentMethodsCellData .~ []
@@ -198,22 +207,26 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         if indexPath.row < paymentSheetPaymentMethodCount {
           // we are selecting a new payment sheet card
-          let setupIntent = data.paymentSheetPaymentMethodsCellData[indexPath.row].setupIntent
+          let clientSecret = data.paymentSheetPaymentMethodsCellData[indexPath.row].clientSecret
 
           let selectedAllSheetPaymentMethods = data.paymentSheetPaymentMethodsCellData.map { data in
             (
               image: data.image,
               redactedCardNumber: data.redactedCardNumber,
-              setupIntent: data.setupIntent,
-              isSelected: setupIntent == data.setupIntent,
+              clientSecret: data.clientSecret,
+              isSelected: clientSecret == data.clientSecret,
               isEnabled: true
             )
           }
 
+          let usePaymentIntent = paymentSheetType == .paymentIntent
+
           let selectionUpdatedData = updatedData
             |> \.paymentMethodsCellData .~ cellData(data.paymentMethodsCellData, selecting: nil)
             |> \.paymentSheetPaymentMethodsCellData .~ selectedAllSheetPaymentMethods
-            |> \.selectedPaymentMethod .~ .setupIntentClientSecret(setupIntent)
+            |> \.selectedPaymentMethod .~
+            (usePaymentIntent ? .paymentIntentClientSecret(clientSecret) :
+              .setupIntentClientSecret(clientSecret))
 
           return selectionUpdatedData
         } else if indexPath.row < paymentSheetPaymentMethodCount + paymentMethodCount {
@@ -224,7 +237,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
             (
               image: data.image,
               redactedCardNumber: data.redactedCardNumber,
-              setupIntent: data.setupIntent,
+              clientSecret: data.clientSecret,
               isSelected: false,
               isEnabled: data.isEnabled
             )
@@ -283,28 +296,55 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let createSetupIntentEvent = Signal.combineLatest(
       project,
-      paymentSheetOnPledgeContext.filter(isTrue)
+      pledgeTotal,
+      paymentSheetType
     )
     .takeWhen(didTapToAddNewCard)
-    .switchMap { (project, _) -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
-      AppEnvironment.current.apiService
+    .switchMap { (project, pledgeTotal, paymentSheetType) -> SignalProducer<
+      Signal<PaymentSheetSetupData, ErrorEnvelope>.Event,
+      Never
+    > in
+
+    let clientSecretSignal: SignalProducer<String, ErrorEnvelope>
+
+    switch paymentSheetType {
+    case .setupIntent:
+      clientSecretSignal = AppEnvironment.current.apiService
         .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
-        .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
+        .map { $0.clientSecret }
 
-          var configuration = PaymentSheet.Configuration()
-          configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
-          configuration.allowsDelayedPaymentMethods = true
+    case .paymentIntent:
+      assert(
+        !pledgeTotal.isNaN,
+        "Pledge total must be set when using a PaymentIntent. Did you accidentally get here via PledgeViewModel instead of PostCampaignCheckoutViewModel?"
+      )
+      clientSecretSignal = AppEnvironment.current.apiService
+        .createPaymentIntentInput(input: CreatePaymentIntentInput(
+          projectId: project.graphID,
+          amountDollars: String(format: "%.2f", pledgeTotal),
+          digitalMarketingAttributed: nil
+        ))
+        .map { $0.clientSecret }
+    }
 
-          let data = PaymentSheetSetupData(
-            clientSecret: envelope.clientSecret,
-            configuration: configuration
-          )
+    return clientSecretSignal
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      .switchMap { clientSecret -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in
 
-          return SignalProducer(value: data)
-        }
-        .materialize()
+        var configuration = PaymentSheet.Configuration()
+        configuration.merchantDisplayName = Strings.general_accessibility_kickstarter()
+        configuration.allowsDelayedPaymentMethods = paymentSheetType == .setupIntent
+
+        let data = PaymentSheetSetupData(
+          clientSecret: clientSecret,
+          configuration: configuration,
+          paymentSheetType: paymentSheetType
+        )
+
+        return SignalProducer(value: data)
+      }
+      .materialize()
     }
 
     self.goToAddCardViaStripeScreen = createSetupIntentEvent.values()
@@ -401,13 +441,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.configureWithValueProperty.value = value
   }
 
-  private let newSetupIntentCreditCardProperty =
+  private let newStripeIntentCreditCardProperty =
     MutableProperty<(PaymentSheetPaymentOptionsDisplayData, String)?>(nil)
   public func paymentSheetDidAdd(
     newCard card: PaymentSheetPaymentOptionsDisplayData,
-    setupIntent: String
+    clientSecret: String
   ) {
-    self.newSetupIntentCreditCardProperty.value = (card, setupIntent)
+    self.newStripeIntentCreditCardProperty.value = (card, clientSecret)
   }
 
   private let shouldCancelPaymentSheetAppearance = MutableProperty<Bool>(true)
@@ -449,7 +489,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
 private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
   with paymentMethodData: PledgePaymentMethodsAndSelectionData,
-  project _: Project
+  paymentSheetType: PledgePaymentSheetType
 ) -> PledgePaymentMethodsAndSelectionData {
   // We know we have a new payment sheet card, so de-select all existing non-payment sheet cards.
   let preexistingCardDataUnselected: [PledgePaymentMethodCellData] = {
@@ -474,7 +514,7 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
       (
         image: data.image,
         redactedCardNumber: data.redactedCardNumber,
-        setupIntent: data.setupIntent,
+        clientSecret: data.clientSecret,
         isSelected: false,
         isEnabled: true
       )
@@ -497,10 +537,14 @@ private func pledgePaymentSheetMethodCellDataAndSelectedCardSetupIntent(
 
     data[0] = updatedSelectedPaymentSheetPaymentMethod
 
+    let usePaymentIntent = paymentSheetType == .paymentIntent
+
     let updatePaymentMethodData = paymentMethodData
       |> \.paymentMethodsCellData .~ preexistingCardDataUnselected
       |> \.paymentSheetPaymentMethodsCellData .~ data
-      |> \.selectedPaymentMethod .~ .setupIntentClientSecret(newestPaymentSheetPaymentMethod.setupIntent)
+      |> \.selectedPaymentMethod .~
+      (usePaymentIntent ? .paymentIntentClientSecret(newestPaymentSheetPaymentMethod.clientSecret) :
+        .setupIntentClientSecret(newestPaymentSheetPaymentMethod.clientSecret))
 
     return updatePaymentMethodData
   }()

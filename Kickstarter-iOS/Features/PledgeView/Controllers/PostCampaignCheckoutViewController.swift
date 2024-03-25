@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import Stripe
 import UIKit
 
 private enum PostCampaignCheckoutLayout {
@@ -201,6 +202,13 @@ final class PostCampaignCheckoutViewController: UIViewController {
       }
 
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+
+    self.viewModel.outputs.configureStripeIntegration
+      .observeForUI()
+      .observeValues { merchantIdentifier, publishableKey in
+        STPAPIClient.shared.publishableKey = publishableKey
+        STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
+      }
   }
 
   // MARK: - Functions
