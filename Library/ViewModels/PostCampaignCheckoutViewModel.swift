@@ -23,6 +23,7 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
+  func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
@@ -39,7 +40,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-  var submitButtonTapped: Signal<Void, Never> { get }
+  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -49,7 +50,8 @@ public protocol PostCampaignCheckoutViewModelType {
 
 public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   PostCampaignCheckoutViewModelInputs,
-  PostCampaignCheckoutViewModelOutputs {
+                                            PostCampaignCheckoutViewModelOutputs {
+  
   public init() {
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
@@ -70,7 +72,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         guard let user = AppEnvironment.current.currentUser else { return nil }
         guard let reward = data.rewards.first else { return nil }
 
-        return (user, data.project, reward, data.context, data.refTag)
+        return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
       }
 
     self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
@@ -119,8 +121,22 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         )
         return (rewardsData, data.bonusAmount, pledgeData)
       }
-//    self.showErrorBannerWithMessage = validateCheckout.errors()
-//      .map { _ in Strings.Something_went_wrong_please_try_again() }
+
+    self.showErrorBannerWithMessage = initialData.ignoreValues()
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
+
+    self.configureStripeIntegration = Signal.combineLatest(
+      initialData,
+      context
+    )
+    .filter { !$1.paymentMethodsViewHidden }
+    .ignoreValues()
+    .map { _ in
+      (
+        Secrets.ApplePay.merchantIdentifier,
+        AppEnvironment.current.environmentType.stripePublishableKey
+      )
+    }
   }
 
   // MARK: - Inputs
@@ -180,6 +196,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
+  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }

@@ -364,7 +364,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
 
-        return (user, project, reward, context, refTag)
+        // This second to last value - pledgeTotal - is only needed when the payment methods controller
+        // is used in late campaign pledges. There is an assert in PledgePaymentMethodsViewModel to ensure
+        // we don't accidentally propagate this nan downstream.
+        return (user, project, reward, context, refTag, Double.nan, .setupIntent)
       }
 
     self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
