@@ -67,7 +67,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         guard let user = AppEnvironment.current.currentUser else { return nil }
         guard let reward = data.rewards.first else { return nil }
 
-        return (user, data.project, reward, data.context, data.refTag)
+        return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
       }
 
     self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)

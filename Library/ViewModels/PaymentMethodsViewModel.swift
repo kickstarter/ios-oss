@@ -155,7 +155,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
             configuration.allowsDelayedPaymentMethods = true
             let data = PaymentSheetSetupData(
               clientSecret: envelope.clientSecret,
-              configuration: configuration
+              configuration: configuration,
+              paymentSheetType: .setupIntent
             )
             return SignalProducer(value: data)
           }
