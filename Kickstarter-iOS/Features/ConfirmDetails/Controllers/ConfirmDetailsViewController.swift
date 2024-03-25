@@ -135,11 +135,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.continueCTAView, self.view)
-      |> ksr_addSubviewToParent()
+    self.view.addSubview(self.rootScrollView)
+    self.view.addSubview(self.continueCTAView)
 
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
@@ -152,26 +149,21 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       self.pledgeRewardsSummaryViewController
     ]
 
-    let arrangedSubviews = [
-      self.rootInsetStackView
-    ]
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
     let arrangedInsetSubviews = [
       [self.titleLabel],
       self.inputsSectionViews,
-      self.pledgeAmountSummarySectionViews,
-      [self.pledgeRewardsSummaryViewController.view]
+      self.pledgeAmountSummarySectionViews
     ]
     .flatMap { $0 }
     .compact()
 
-    arrangedSubviews.forEach { view in
-      self.rootStackView.addArrangedSubview(view)
-    }
-
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
     }
+
+    self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
 
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
@@ -198,23 +190,29 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> checkoutBackgroundStyle
+    self.view.backgroundColor = UIColor.ksr_support_100
 
-    _ = self.titleLabel
-      |> titleLabelStyle
+    self.titleLabel.text = Strings.Confirm_your_pledge_details()
+    self.titleLabel.font = UIFont.ksr_title2().bolded
+    self.titleLabel.numberOfLines = 0
 
-    _ = self.rootScrollView
-      |> rootScrollViewStyle
+    self.rootScrollView.showsVerticalScrollIndicator = false
+    self.rootScrollView.alwaysBounceVertical = true
 
-    _ = self.rootStackView
-      |> rootStackViewStyle
+    self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
+    self.rootStackView.spacing = Styles.grid(3)
+    self.rootStackView.isLayoutMarginsRelativeArrangement = true
 
-    _ = self.rootInsetStackView
-      |> rootInsetStackViewStyle
+    self.rootInsetStackView.axis = NSLayoutConstraint.Axis.vertical
+    self.rootInsetStackView.spacing = Styles.grid(4)
+    self.rootInsetStackView.isLayoutMarginsRelativeArrangement = true
+    self.rootInsetStackView.layoutMargins = UIEdgeInsets(
+      topBottom: ConfirmDetailsLayout.Margin.topBottom,
+      leftRight: ConfirmDetailsLayout.Margin.leftRight
+    )
 
-    _ = self.pledgeSummarySectionSeparator
-      |> separatorStyle
+    self.pledgeSummarySectionSeparator.backgroundColor = UIColor.ksr_support_300
+    self.pledgeSummarySectionSeparator.accessibilityElementsHidden = true
   }
 
   // MARK: - View model
@@ -349,37 +347,4 @@ extension ConfirmDetailsViewController: ConfirmDetailsContinueCTAViewDelegate {
   func continueButtonTapped() {
     self.viewModel.inputs.continueCTATapped()
   }
-}
-
-// MARK: - Styles
-
-private let titleLabelStyle: LabelStyle = { label in
-  label
-    |> \.text %~ { _ in Strings.Confirm_your_pledge_details() }
-    |> \.font .~ UIFont.ksr_title2().bolded
-    |> \.numberOfLines .~ 0
-}
-
-private let rootScrollViewStyle: ScrollStyle = { scrollView in
-  scrollView
-    |> \.showsVerticalScrollIndicator .~ false
-    |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(4)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-}
-
-private let rootInsetStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(4)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: ConfirmDetailsLayout.Margin.topBottom,
-      leftRight: ConfirmDetailsLayout.Margin.leftRight
-    )
 }

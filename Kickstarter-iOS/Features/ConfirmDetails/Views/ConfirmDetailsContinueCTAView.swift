@@ -56,37 +56,45 @@ final class ConfirmDetailsContinueCTAView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    self.layoutMargins = .init(all: Styles.grid(3))
 
-    _ = self.layer
-      |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ UIColor.ksr_white.cgColor
-      |> \.shadowColor .~ UIColor.ksr_black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ CGFloat(1.0)
-      |> \.maskedCorners .~ [
-        CACornerMask.layerMaxXMinYCorner,
-        CACornerMask.layerMinXMinYCorner
-      ]
+    self.layer.cornerRadius = 16.0
+    self.layer.backgroundColor = UIColor.ksr_white.cgColor
+    self.layer.shadowColor = UIColor.ksr_black.cgColor
+    self.layer.shadowOpacity = 0.12
+    self.layer.shadowOffset = CGSize(width: 0, height: -1.0)
+    self.layer.shadowRadius = CGFloat(1.0)
+    self.layer.maskedCorners = [
+      CACornerMask.layerMaxXMinYCorner,
+      CACornerMask.layerMinXMinYCorner
+    ]
 
-    _ = self.rootStackView
-      |> verticalStackViewStyle
-      |> \.spacing .~ Styles.grid(3)
+    self.rootStackView.axis = NSLayoutConstraint.Axis.vertical
+    self.rootStackView.spacing = Styles.grid(3)
 
-    _ = self.titleAndAmountStackView
-      |> self.titleAndAmountStackViewStyle
+    self.titleAndAmountStackView.backgroundColor = .ksr_white
+    self.titleAndAmountStackView.layoutMargins = UIEdgeInsets(leftRight: Styles.gridHalf(4))
 
-    _ = self.titleLabel
-      |> self.titleLabelStyle
+    self.titleLabel.accessibilityTraits = UIAccessibilityTraits.header
+    self.titleLabel.adjustsFontForContentSizeCategory = true
+    self.titleLabel.font = UIFont.ksr_headline(size: 15)
+    self.titleLabel.numberOfLines = 0
+    self.titleLabel.text = Strings.Total_amount()
 
-    _ = self.amountLabel
-      |> self.amountLabelStyle
+    self.amountLabel.adjustsFontForContentSizeCategory = true
+    self.amountLabel.textAlignment = NSTextAlignment.right
+    self.amountLabel.isAccessibilityElement = true
+    self.amountLabel.minimumScaleFactor = 0.75
 
-    _ = self.continueButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
+    self.continueButton.setTitle(Strings.Continue(), for: .normal)
+    self.continueButton.setTitleColor(.ksr_white, for: .normal)
+    self.continueButton.setTitleColor(.ksr_white, for: .highlighted)
+    self.continueButton.setBackgroundColor(.ksr_create_700, for: .normal)
+    self.continueButton.setBackgroundColor(UIColor.ksr_create_700.mixDarker(0.36), for: .highlighted)
+    self.continueButton.setBackgroundColor(UIColor.ksr_create_700.mixLighter(0.36), for: .disabled)
+    self.continueButton.clipsToBounds = true
+    self.continueButton.layer.masksToBounds = true
+    self.continueButton.layer.cornerRadius = Styles.grid(2)
   }
 
   // MARK: Functions
@@ -112,6 +120,7 @@ final class ConfirmDetailsContinueCTAView: UIView {
   func configure(with data: ConfirmDetailsContinueCTAViewData) {
     if let attributedAmount = attributedCurrency(withProject: data.project, total: data.total) {
       self.amountLabel.attributedText = attributedAmount
+      self.layoutIfNeeded()
     }
   }
 
@@ -133,31 +142,5 @@ final class ConfirmDetailsContinueCTAView: UIView {
 
   @objc func continueButtonTapped() {
     self.delegate?.continueButtonTapped()
-  }
-
-  // MARK: - Styles
-
-  private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
-    _ = label
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Total_amount() }
-
-    return label
-  }
-
-  private let amountLabelStyle: LabelStyle = { (label: UILabel) in
-    _ = label
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.textAlignment .~ NSTextAlignment.right
-      |> \.isAccessibilityElement .~ true
-      |> \.minimumScaleFactor .~ 0.75
-
-    return label
-  }
-
-  private let titleAndAmountStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-    stackView
-      |> \.backgroundColor .~ .ksr_white
-      |> \.layoutMargins .~ UIEdgeInsets(leftRight: Styles.gridHalf(4))
   }
 }

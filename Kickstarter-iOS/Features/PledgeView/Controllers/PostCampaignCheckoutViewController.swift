@@ -88,9 +88,6 @@ final class PostCampaignCheckoutViewController: UIViewController {
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-
     self.view.addSubview(self.rootScrollView)
     self.view.addSubview(self.pledgeCTAContainerView)
 
