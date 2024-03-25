@@ -9,8 +9,10 @@ private enum PostCampaignCheckoutLayout {
   }
 }
 
-final class PostCampaignCheckoutViewController: UIViewController {
+final class PostCampaignCheckoutViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
@@ -70,6 +72,8 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     self.title = Strings.Back_this_project()
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -196,6 +200,12 @@ final class PostCampaignCheckoutViewController: UIViewController {
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
     self.sessionStartedObserver = NotificationCenter.default

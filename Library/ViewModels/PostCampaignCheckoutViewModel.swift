@@ -36,6 +36,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
 }
 
@@ -116,6 +117,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         )
         return (rewardsData, data.bonusAmount, pledgeData)
       }
+//    self.showErrorBannerWithMessage = validateCheckout.errors()
+//      .map { _ in Strings.Something_went_wrong_please_try_again() }
   }
 
   // MARK: - Inputs
@@ -162,6 +165,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
