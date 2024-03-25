@@ -38,6 +38,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
+  var submitButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -137,6 +138,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
+  }
+  
+  private let submitButtonTappedProperty = MutableProperty(())
+  public func submitButtonTapped() {
+    self.submitButtonTappedProperty.value = ()
   }
 
   private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()

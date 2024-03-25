@@ -255,7 +255,7 @@ extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate
 
   func submitButtonTapped() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
-    // TODO: Respond to button tap
+    self.viewModel.inputs.submitButtonTapped()
   }
 
   func termsOfUseTapped(with helpType: HelpType) {
