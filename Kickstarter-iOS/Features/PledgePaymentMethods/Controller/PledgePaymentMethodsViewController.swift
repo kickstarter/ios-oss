@@ -146,9 +146,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Functions
 
   private func goToPaymentSheet(data: PaymentSheetSetupData) {
-    let isSetupIntent = data.configuration.allowsDelayedPaymentMethods
-    let isPaymentIntent = !isSetupIntent
-
     let completion: (Result<PaymentSheet.FlowController, Error>) -> Void = { [weak self] result in
       guard let strongSelf = self else { return }
 
@@ -159,28 +156,31 @@ final class PledgePaymentMethodsViewController: UIViewController {
           .pledgeViewController(strongSelf, didErrorWith: error.localizedDescription)
       case let .success(paymentSheetFlowController):
         let topViewController = strongSelf.navigationController?.topViewController
-        let paymentSheetShownWithinPledgeContext = topViewController is PledgeViewController
 
-        if paymentSheetShownWithinPledgeContext {
-          strongSelf.paymentSheetFlowController = paymentSheetFlowController
-          strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
-            guard let strongSelf = self else { return }
+        assert(
+          topViewController is PledgeViewController ||
+            topViewController is PostCampaignCheckoutViewController,
+          "PledgePaymentMethodsViewController is only intended to be presented as part of a pledge flow."
+        )
 
-            // TODO: this needs to not just be a SetupIntent
-            strongSelf.confirmPaymentResult(with: data.clientSecret)
-          }
+        strongSelf.paymentSheetFlowController = paymentSheetFlowController
+        strongSelf.paymentSheetFlowController?.presentPaymentOptions(from: strongSelf) { [weak self] in
+          guard let strongSelf = self else { return }
+
+          strongSelf.confirmPaymentResult(with: data.clientSecret)
         }
         strongSelf.viewModel.inputs.stripePaymentSheetDidAppear()
       }
     }
 
-    if isSetupIntent {
+    switch data.paymentSheetType {
+    case .setupIntent:
       PaymentSheet.FlowController.create(
         setupIntentClientSecret: data.clientSecret,
         configuration: data.configuration,
         completion: completion
       )
-    } else {
+    case .paymentIntent:
       PaymentSheet.FlowController
         .create(
           paymentIntentClientSecret: data.clientSecret,

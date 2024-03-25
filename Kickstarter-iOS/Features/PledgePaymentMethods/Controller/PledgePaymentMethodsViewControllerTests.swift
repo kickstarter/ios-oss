@@ -50,7 +50,9 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
           project: project,
           reward: reward,
           context: .pledge,
-          refTag: nil
+          refTag: nil,
+          pledgeTotal: Double.nan,
+          paymentSheetType: .setupIntent
         )
 
         controller.configure(with: data)
@@ -89,7 +91,9 @@ final class PledgePaymentMethodsViewControllerTests: TestCase {
           project: project,
           reward: reward,
           context: .pledge,
-          refTag: nil
+          refTag: nil,
+          pledgeTotal: Double.nan,
+          paymentSheetType: .setupIntent
         )
 
         controller.configure(with: data)
