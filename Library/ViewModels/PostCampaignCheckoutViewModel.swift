@@ -20,7 +20,7 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
-  func creditCardSelected(with paymentSourceData: PaymentSourceSelected)
+  func creditCardSelected(with stripeCardIdAndPaymentIntent: (String, String))
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
@@ -36,11 +36,11 @@ public protocol PostCampaignCheckoutViewModelOutputs {
     Never
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -50,8 +50,7 @@ public protocol PostCampaignCheckoutViewModelType {
 
 public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   PostCampaignCheckoutViewModelInputs,
-                                            PostCampaignCheckoutViewModelOutputs {
-  
+  PostCampaignCheckoutViewModelOutputs {
   public init() {
     let initialData = Signal.combineLatest(
       self.configureWithDataProperty.signal,
@@ -137,6 +136,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
+    let stripeCardIdAndPaymentIntent = self.creditCardSelectedSignal.signal
+        let (_, paymentIntent) = stripeCardIdAndPaymentIntent
+        return paymentIntent
+      }
+
+    self.showErrorBannerWithMessage = validateCheckout.errors()
+      .map { error in
+        print(error) // [0]  String  "Couldn't find Checkout with 'id'=Q2hlY2tvdXQtMTk4MzM2NjQ2"
+        return Strings.Something_went_wrong_please_try_again()
+      }
   }
 
   // MARK: - Inputs
@@ -146,10 +155,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.configureWithDataProperty.value = data
   }
 
-  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<PaymentSourceSelected, Never>
+  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<(String, String), Never>
     .pipe()
-  public func creditCardSelected(with paymentSourceData: PaymentSourceSelected) {
-    self.creditCardSelectedObserver.send(value: paymentSourceData)
+  public func creditCardSelected(with stripeCardIdAndPaymentIntent: (String, String)) {
+    self.creditCardSelectedObserver.send(value: stripeCardIdAndPaymentIntent)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -192,11 +201,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     PledgeSummaryViewData
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
-  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
