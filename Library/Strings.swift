@@ -1841,10 +1841,10 @@ contributeurs"
    "Checkout"
 
    - **en**: "Checkout"
-   - **de**: "Checkout"
-   - **es**: "Checkout"
+   - **de**: "Kasse"
+   - **es**: "Pago"
    - **fr**: "Règlement"
-   - **ja**: "Checkout"
+   - **ja**: "チェックアウト"
   */
   public static func Checkout() -> String {
     return localizedString(
@@ -2130,10 +2130,10 @@ contributeurs"
    "Confirm your pledge details"
 
    - **en**: "Confirm your pledge details"
-   - **de**: "Confirm your pledge details"
-   - **es**: "Confirm your pledge details"
+   - **de**: "Bestätige die Details zu deinem Finanzierungsbeitrag"
+   - **es**: "Confirma los datos de tu contribución"
    - **fr**: "Confirmons le détail de votre engagement"
-   - **ja**: "Confirm your pledge details"
+   - **ja**: "プレッジの詳細を確認"
   */
   public static func Confirm_your_pledge_details() -> String {
     return localizedString(
@@ -9733,10 +9733,10 @@ daring ideas."
    "Select your reward"
 
    - **en**: "Select your reward"
-   - **de**: "Select your reward"
-   - **es**: "Select your reward"
+   - **de**: "Belohnung auswählen"
+   - **es**: "Selecciona tu recompensa"
    - **fr**: "Veuillez sélectionner votre récompense"
-   - **ja**: "Select your reward"
+   - **ja**: "リワードの選択"
   */
   public static func Select_your_reward() -> String {
     return localizedString(
@@ -13145,18 +13145,18 @@ Veuillez réessayer ultérieurement."
    - **en**: "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
 <p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
 <p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
-   - **de**: "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
-<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
-<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
-   - **es**: "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
-<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
-<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+   - **de**: "<p>Du hast <b>%{project_name}</b> mit deinem Beitrag erfolgreich unterstützt. Dein Beitrag in Höhe von <b>%{pledge_total}</b> wurde eingezogen.</p>
+<p>Du erhältst eine E-Mail an %{user_email}, wenn deine Belohnungen zur Erfüllung bereit sind, damit du alles finalisieren und für Versand und Steuern zahlen kannst.</p>
+<p>Dank dir ist dieses Projekt seiner Realisierung einen Schritt nähergekommen. Erzähl auch deinen Freunden und Bekannten davon!</p>"
+   - **es**: "<p>Has patrocinado <b>%{project_name}</b> con éxito y tu contribución por <b>%{pledge_total}</b> se ha recaudado.</p>
+<p>Recibirás la confirmación en %{user_email} cuando estemos por entregarte las recompensas para que puedas pagar los costos de envío e impuestos.</p>
+<p>Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Ayuda a correr la voz!</p>"
    - **fr**: "<p>Vous venez de vous engager à soutenir le projet <b>%{project_name}</b>. Votre contribution de <b>%{pledge_total}</b> a bien été prélevée.</p>
 <p>Vous recevrez une confirmation à l'adresse %{user_email} dès que votre récompense sera prête à être expédiée. Il vous sera alors demandé de régler les taxes et frais de port.</p>
 <p>Grâce à vous, ce projet se concrétise. Parlez-en autour de vous !</p>"
-   - **ja**: "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>
-<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>
-<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>"
+   - **ja**: "<p><b>%{project_name}</b>にプレッジしました。これに伴い、<b>%{pledge_total}</b>のプレッジが収集されました。</p>
+<p>リワード配送の準備が整い次第、%{user_email} 宛てに確認メールが届き、配送料と税金の最終確認とお支払いを行うことができます。</p>
+<p>あなたのプレッジのおかげで、このプロジェクトが実現へと一歩近づきました。ありがとうございます。ぜひこのプロジェクトを沢山の人に知ってもらいましょう！</p>"
   */
   public static func You_have_successfully_pledged_to_project_post_campaign_html(project_name: String, pledge_total: String, user_email: String) -> String {
     return localizedString(
@@ -13405,13 +13405,30 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>."
+
+   - **en**: "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>."
+   - **de**: "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>."
+   - **es**: "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>."
+   - **fr**: "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>."
+   - **ja**: "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>."
+  */
+  public static func Your_payment_method_will_be_charged() -> String {
+    return localizedString(
+      key: "Your_payment_method_will_be_charged",
+      defaultValue: "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified."
 
    - **en**: "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified."
-   - **de**: "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified."
-   - **es**: "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified."
+   - **de**: "Deine Zahlungsmethode wird umgehend belastet und du erhältst eine Bestätigungs-E-Mail an %{user_email}. Dein Beitrag kann nicht storniert oder geändert werden."
+   - **es**: "Al hacer la contribución, se hará el cargo inmediatamente a tu método de pago y recibirás un correo electrónico de confirmación en %{user_email}. Tu contribución no puede cancelarse ni modificarse."
    - **fr**: "La somme sera immédiatement prélevée sur votre moyen de paiement et vous recevrez une confirmation à l'adresse %{user_email}. Cet engagement ne pourra être ni annulé, ni modifié."
-   - **ja**: "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified."
+   - **ja**: "お支払い方法にはプレッジ時にただちに請求が行われ、その確認メールが %{user_email} 宛てに送られます。プレッジをキャンセルまたは変更することはできません。"
   */
   public static func Your_payment_method_will_be_charged_immediately(user_email: String) -> String {
     return localizedString(

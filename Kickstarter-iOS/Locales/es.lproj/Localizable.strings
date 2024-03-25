@@ -109,7 +109,7 @@
 "Check_out_these_handpicked_projects" = "Echa un vistazo a estos proyectos seleccionados exclusivamente para ti.";
 "Check_your_inbox_to_complete_this_simple_step" = "Revisa tu bandeja de entrada para completar este simple paso.";
 "Check_your_payment_details" = "Revisa tu información de pago";
-"Checkout" = "Checkout";
+"Checkout" = "Pago";
 "Choose_another_reward" = "Elegir otra recompensa";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
 "Chosen_just_for_you" = "Elegidos especialmente para ti";
@@ -126,7 +126,7 @@
 "Complete_payment" = "Completar pago";
 "Confirm" = "Confirmar";
 "Confirm_password" = "Confirmar nueva contraseña";
-"Confirm_your_pledge_details" = "Confirm your pledge details";
+"Confirm_your_pledge_details" = "Confirma los datos de tu contribución";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto.";
 "Contact_backer" = "Contacta al patrocinador";
 "Contact_creator" = "Comunicarse con el creador";
@@ -596,7 +596,7 @@
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
 "Select_up_to_five" = "Selecciona hasta cinco de las opciones que aparecen a continuación.";
-"Select_your_reward" = "Select your reward";
+"Select_your_reward" = "Selecciona tu recompensa";
 "Selected" = "Seleccionada";
 "Selected_card" = "Tarjeta seleccionada";
 "Selected_reward" = "Recompensa seleccionada";
@@ -800,7 +800,7 @@
 "You_canceled_your_pledge_for_this_project" = "Has cancelado tu contribución a este proyecto.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
-"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Has patrocinado <b>%{project_name}</b> con éxito y tu contribución por <b>%{pledge_total}</b> se ha recaudado.</p>\n<p>Recibirás la confirmación en %{user_email} cuando estemos por entregarte las recompensas para que puedas pagar los costos de envío e impuestos.</p>\n<p>Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Ayuda a correr la voz!</p>";
 "You_launched_this_project_on_launch_date" = "Publicaste el proyecto el %{launch_date}. Encuentra las herramientas para creadores en nuestro sitio web.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Debes contribuir, al menos, %{reward_minimum} para obtener esta recompensa.";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
@@ -815,7 +815,8 @@
 "Your_message_has_been_sent" = "Se envió tu mensaje.";
 "Your_name_displayed" = "Tu nombre siempre se muestra en tu perfil.";
 "Your_payment_method_was_successfully_charged" = "Se efectuó el cargo a tu método de pago.";
-"Your_payment_method_will_be_charged_immediately" = "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified.";
+"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>.";
+"Your_payment_method_will_be_charged_immediately" = "Al hacer la contribución, se hará el cargo inmediatamente a tu método de pago y recibirás un correo electrónico de confirmación en %{user_email}. Tu contribución no puede cancelarse ni modificarse.";
 "Your_pledge" = "Tu contribución";
 "Your_pledge_amount" = "Monto de tu contribución:";
 "Your_pledge_details" = "Los detalles de tu contribución";

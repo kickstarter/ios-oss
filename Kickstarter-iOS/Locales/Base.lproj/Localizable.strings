@@ -815,6 +815,7 @@
 "Your_message_has_been_sent" = "Your message has been sent!";
 "Your_name_displayed" = "Your name is always displayed on your profile.";
 "Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
+"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>.";
 "Your_payment_method_will_be_charged_immediately" = "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified.";
 "Your_pledge" = "Your pledge";
 "Your_pledge_amount" = "Your pledge amount";

@@ -109,7 +109,7 @@
 "Check_out_these_handpicked_projects" = "Sieh dir dieses speziell für dich ausgesuchten Projekte an.";
 "Check_your_inbox_to_complete_this_simple_step" = "Sieh bitte in deinem Posteingang nach und schließe diesen einfachen Schritt ab.";
 "Check_your_payment_details" = "Überprüfe die Daten deiner Zahlungsweise";
-"Checkout" = "Checkout";
+"Checkout" = "Kasse";
 "Choose_another_reward" = "Andere Belohnung auswählen";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
 "Chosen_just_for_you" = "Speziell für dich ausgewählt";
@@ -126,7 +126,7 @@
 "Complete_payment" = "Zahlung abschließen";
 "Confirm" = "Bestätigen";
 "Confirm_password" = "Neues Passwort bestätigen";
-"Confirm_your_pledge_details" = "Confirm your pledge details";
+"Confirm_your_pledge_details" = "Bestätige die Details zu deinem Finanzierungsbeitrag";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen.";
 "Contact_backer" = "Unterstützer kontaktieren";
 "Contact_creator" = "Projektgründer kontaktieren";
@@ -596,7 +596,7 @@
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Select_up_to_five" = "Wähle bis zu fünf aus den unten stehenden Optionen aus.";
-"Select_your_reward" = "Select your reward";
+"Select_your_reward" = "Belohnung auswählen";
 "Selected" = "Ausgewählt";
 "Selected_card" = "Ausgewählte Karte";
 "Selected_reward" = "Gewählte Belohnung";
@@ -800,7 +800,7 @@
 "You_canceled_your_pledge_for_this_project" = "Du hast den Finanzierungsbeitrag für dieses Projekt zurückgezogen.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Diese Karte kann nicht verwendet werden, um ein Projekt aus dem folgenden Land zu unterstützen: %{project_country}.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
-"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>Du hast <b>%{project_name}</b> mit deinem Beitrag erfolgreich unterstützt. Dein Beitrag in Höhe von <b>%{pledge_total}</b> wurde eingezogen.</p>\n<p>Du erhältst eine E-Mail an %{user_email}, wenn deine Belohnungen zur Erfüllung bereit sind, damit du alles finalisieren und für Versand und Steuern zahlen kannst.</p>\n<p>Dank dir ist dieses Projekt seiner Realisierung einen Schritt nähergekommen. Erzähl auch deinen Freunden und Bekannten davon!</p>";
 "You_launched_this_project_on_launch_date" = "Du hast dieses Projekt am %{launch_date} veröffentlicht. Tools für Projektgründer findest du auf unserer Website.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Diese Belohnung hat einen Mindestfinanzierungsbeitrag von %{reward_minimum}.";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
@@ -815,7 +815,8 @@
 "Your_message_has_been_sent" = "Deine Nachricht wurde versandt!";
 "Your_name_displayed" = "Dein Name wird auf deinem Profil angezeigt.";
 "Your_payment_method_was_successfully_charged" = "Deine Zahlungsmethode wurde erfolgreich belastet.";
-"Your_payment_method_will_be_charged_immediately" = "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified.";
+"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>.";
+"Your_payment_method_will_be_charged_immediately" = "Deine Zahlungsmethode wird umgehend belastet und du erhältst eine Bestätigungs-E-Mail an %{user_email}. Dein Beitrag kann nicht storniert oder geändert werden.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";
 "Your_pledge_details" = "Einzelheiten deines Beitrags";
