@@ -204,6 +204,14 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
+    self.viewModel.outputs.validateCheckoutSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        guard let self else { return }
+
+        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+      }
+
     self.viewModel.outputs.showErrorBannerWithMessage
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
