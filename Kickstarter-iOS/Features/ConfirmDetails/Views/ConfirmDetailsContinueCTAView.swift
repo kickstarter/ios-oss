@@ -120,7 +120,6 @@ final class ConfirmDetailsContinueCTAView: UIView {
   func configure(with data: ConfirmDetailsContinueCTAViewData) {
     if let attributedAmount = attributedCurrency(withProject: data.project, total: data.total) {
       self.amountLabel.attributedText = attributedAmount
-      self.layoutIfNeeded()
     }
   }
 
