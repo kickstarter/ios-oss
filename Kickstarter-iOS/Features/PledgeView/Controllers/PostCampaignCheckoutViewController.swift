@@ -19,7 +19,8 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
-    // TODO: Add self as delegate and add support for delegate methods.
+      |> \.messageDisplayingDelegate .~ self
+      |> \.delegate .~ self
   }()
 
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
@@ -296,6 +297,17 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
     default:
       break
     }
+// MARK: - PledgeViewControllerMessageDisplaying
+
+extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .error, message: message)
+  }
+
+  func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .success, message: message)
+  }
+}
     return self
   }
 }
