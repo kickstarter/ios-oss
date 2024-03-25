@@ -10,15 +10,38 @@ private enum PostCampaignCheckoutLayout {
   }
 }
 
-final class PostCampaignCheckoutViewController: UIViewController {
+final class PostCampaignCheckoutViewController: UIViewController, PledgePaymentMethodsViewControllerDelegate {
   // MARK: - Properties
 
-  private lazy var titleLabel = UILabel(frame: .zero)
-
   private lazy var paymentMethodsViewController = {
-    PledgePaymentMethodsViewController.instantiate()
-    // TODO: Add self as delegate and add support for delegate methods.
+    let vc = PledgePaymentMethodsViewController.instantiate()
+    vc.delegate = self
+    return vc
   }()
+
+  // TODO: move somewhere better
+  func pledgePaymentMethodsViewController(
+    _: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSource: Library.PaymentSourceSelected
+  ) {
+    switch paymentSource {
+    case let .paymentIntentClientSecret(paymentIntent):
+      STPAPIClient.shared.retrievePaymentIntent(withClientSecret: paymentIntent) { intent, _ in
+        guard let intent = intent else {
+          // problem
+          return
+        }
+
+        let stripeCardId = intent.stripeId
+        // Do what you need with both the secret + the stripeId
+      }
+    default:
+      // Do something else idk
+      break
+    }
+  }
+
+  private lazy var titleLabel = UILabel(frame: .zero)
 
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
     PledgeViewCTAContainerView(frame: .zero)
