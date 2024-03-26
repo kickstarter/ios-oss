@@ -291,8 +291,9 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
   ) {
     switch paymentSource {
     case let .paymentIntentClientSecret(clientSecret):
-      return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, _ in
+      return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, error in
         guard let intent = intent else {
+          print(error?.localizedDescription)
           self.messageBannerViewController?
             .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
           return
@@ -301,8 +302,11 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
         let stripeCardId = intent.stripeId
         let paymentIntentClientSecret = paymentSource.paymentIntentClientSecret!
 
-        self.viewModel.inputs.creditCardSelected(with: (stripeCardId, paymentIntentClientSecret))
+        self.viewModel.inputs
+          .creditCardSelected(with: (stripeCardId, paymentIntentClientSecret), isExistingPaymentMethod: false)
       }
+    case let .savedCreditCard(savedCardId):
+      self.viewModel.inputs.creditCardSelected(with: (savedCardId, nil), isExistingPaymentMethod: true)
     default:
       break
     }
