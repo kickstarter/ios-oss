@@ -815,7 +815,7 @@
 "Your_message_has_been_sent" = "メッセージが送信されました！";
 "Your_name_displayed" = "あなたの名前はプロフィールに常に表示されます。";
 "Your_payment_method_was_successfully_charged" = "支払方法の登録完了。";
-"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge cannot be <b>canceled or modified</b>.";
+"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge <b>cannot be canceled or modified</b>.";
 "Your_payment_method_will_be_charged_immediately" = "お支払い方法にはプレッジ時にただちに請求が行われ、その確認メールが %{user_email} 宛てに送られます。プレッジをキャンセルまたは変更することはできません。";
 "Your_pledge" = "プレッジ";
 "Your_pledge_amount" = "プレッジ額：";
