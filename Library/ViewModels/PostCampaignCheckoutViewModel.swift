@@ -124,9 +124,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         return (rewardsData, data.bonusAmount, pledgeData)
       }
 
-    self.showErrorBannerWithMessage = initialData.ignoreValues()
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
-
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
       context

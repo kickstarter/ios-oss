@@ -292,7 +292,8 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
     case let .paymentIntentClientSecret(clientSecret):
       return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, _ in
         guard let intent = intent else {
-          // TODO: Tell viewmodel to emit an error message
+          self.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
           return
         }
 
