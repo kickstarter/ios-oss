@@ -22,6 +22,7 @@ public struct PostCampaignCheckoutData: Equatable {
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
   func creditCardSelected(with stripeCardIdAndPaymentIntent: (String, String))
+  func confirmPaymentSuccessful()
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
