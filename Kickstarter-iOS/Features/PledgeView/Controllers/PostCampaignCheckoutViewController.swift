@@ -315,6 +315,18 @@ extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplay
     self.messageBannerViewController?.showBanner(with: .success, message: message)
   }
 }
+
+extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    switch type {
+    case .error:
+      self.navigationController?.popViewController(animated: true)
+    default:
+      break
+    }
+  }
+}
+
     return self
   }
 }
