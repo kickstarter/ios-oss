@@ -29,6 +29,11 @@ final class PledgeViewCTAContainerView: UIView {
 
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
+  private lazy var pledgeImmediatelyLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var disclaimerStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -83,6 +88,11 @@ final class PledgeViewCTAContainerView: UIView {
 
     _ = self.termsTextView
       |> termsTextViewStyle
+
+    self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
+    self.pledgeImmediatelyLabel.numberOfLines = 0
+    self.pledgeImmediatelyLabel.textAlignment = .center
+    self.pledgeImmediatelyLabel.textColor = UIColor.ksr_support_400
 
     _ = self.disclaimerStackView
       |> disclaimerStackViewStyle
@@ -139,6 +149,8 @@ final class PledgeViewCTAContainerView: UIView {
     self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonIsHidden
     self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonIsEnabled
+
+    self.pledgeImmediatelyLabel.rac.hidden = self.viewModel.outputs.pledgeImmediatelyLabelIsHidden
   }
 
   // MARK: - Configuration
@@ -157,7 +169,7 @@ final class PledgeViewCTAContainerView: UIView {
     _ = ([self.continueButton, self.submitButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.termsTextView], self.disclaimerStackView)
+    _ = ([self.pledgeImmediatelyLabel, self.termsTextView], self.disclaimerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
@@ -241,7 +253,8 @@ private let ctaStackViewStyle: StackViewStyle = { stackView in
 
 private let disclaimerStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ .horizontal
+    |> \.axis .~ .vertical
+    |> \.spacing .~ Styles.grid(2)
     |> \.layoutMargins .~ UIEdgeInsets.init(
       top: Styles.grid(0),
       left: Styles.grid(5),
@@ -291,4 +304,9 @@ private func attributedTermsText() -> NSAttributedString? {
   )
 
   return checkoutAttributedLink(with: string)
+}
+
+private func pledgeImmediatelyText() -> NSAttributedString? {
+  let rawText = Strings.Your_payment_method_will_be_charged()
+  return rawText.simpleHtmlAttributedString(font: UIFont.ksr_caption2())
 }

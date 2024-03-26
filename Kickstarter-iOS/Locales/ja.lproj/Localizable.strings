@@ -109,7 +109,7 @@
 "Check_out_these_handpicked_projects" = "あなたにピッタリの Kickstarter イチオシのプロジェクトをご覧ください。";
 "Check_your_inbox_to_complete_this_simple_step" = "メールの受信箱をチェックしてこの簡単手続きを完了してください。";
 "Check_your_payment_details" = "お支払い情報をご確認ください";
-"Checkout" = "Checkout";
+"Checkout" = "チェックアウト";
 "Choose_another_reward" = "他のリワードを選択";
 "Chooses_location_for_shipping" = "配送先%{location} を選択";
 "Chosen_just_for_you" = "あなたのために選びました";
@@ -126,7 +126,7 @@
 "Complete_payment" = "支払いを完了";
 "Confirm" = "確定する";
 "Confirm_password" = "新しいパスワードの確認";
-"Confirm_your_pledge_details" = "Confirm your pledge details";
+"Confirm_your_pledge_details" = "プレッジの詳細を確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_backer" = "バッカーに連絡する";
 "Contact_creator" = "クリエイターに連絡";
@@ -596,7 +596,7 @@
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
 "Select_up_to_five" = "以下のオプションから最大5つをお選びください。";
-"Select_your_reward" = "Select your reward";
+"Select_your_reward" = "リワードの選択";
 "Selected" = "選択済み";
 "Selected_card" = "選択済みのカード";
 "Selected_reward" = "選択したリワード";
@@ -800,7 +800,7 @@
 "You_canceled_your_pledge_for_this_project" = "このプロジェクトのプレッジはキャンセルされました。";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "%{project_country} のプロジェクトをバックするのにこのクレジットカードを利用することはできません。";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
-"You_have_successfully_pledged_to_project_post_campaign_html" = "<p>You have successfully pledged to <b>%{project_name}</b>. Your pledge of <b>%{pledge_total}</b> has been collected.</p>\n<p>You’ll receive a confirmation email at %{user_email} when your rewards are ready to fulfill so that you can finalize and pay shipping and tax.</p>\n<p>This project is now one step closer to a reality, thanks to you. Spread the word!</p>";
+"You_have_successfully_pledged_to_project_post_campaign_html" = "<p><b>%{project_name}</b>にプレッジしました。これに伴い、<b>%{pledge_total}</b>のプレッジが収集されました。</p>\n<p>リワード配送の準備が整い次第、%{user_email} 宛てに確認メールが届き、配送料と税金の最終確認とお支払いを行うことができます。</p>\n<p>あなたのプレッジのおかげで、このプロジェクトが実現へと一歩近づきました。ありがとうございます。ぜひこのプロジェクトを沢山の人に知ってもらいましょう！</p>";
 "You_launched_this_project_on_launch_date" = "%{launch_date} にこのプロジェクトをローンチしました。クリエイター向けツールにアクセスするには、Kickstarter ウェブサイトにアクセスしてください！";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "このリワードには、最低%{reward_minimum}のプレッジが必要です。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
@@ -815,7 +815,8 @@
 "Your_message_has_been_sent" = "メッセージが送信されました！";
 "Your_name_displayed" = "あなたの名前はプロフィールに常に表示されます。";
 "Your_payment_method_was_successfully_charged" = "支払方法の登録完了。";
-"Your_payment_method_will_be_charged_immediately" = "Your payment method will be charged immediately upon pledge and you’ll receive a confirmation email at %{user_email}. Your pledge cannot be canceled or modified.";
+"Your_payment_method_will_be_charged" = "Your payment method will be <b>charged immediately</b> upon pledge. Your pledge <b>cannot be canceled or modified</b>.";
+"Your_payment_method_will_be_charged_immediately" = "お支払い方法にはプレッジ時にただちに請求が行われ、その確認メールが %{user_email} 宛てに送られます。プレッジをキャンセルまたは変更することはできません。";
 "Your_pledge" = "プレッジ";
 "Your_pledge_amount" = "プレッジ額：";
 "Your_pledge_details" = "プレッジの詳細";

@@ -99,13 +99,17 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       rewardsCarouselCanNavigateToReward(reward, in: project)
     }
     .map { project, reward, refTag -> (PledgeViewData, Bool) in
+      let pledgeContext =
+        featurePostCampaignPledgeEnabled() && project.isInPostCampaignPledgingPhase
+          ? PledgeViewContext.latePledge
+          : PledgeViewContext.pledge
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
         selectedLocationId: nil, // Set during add-ons selection.
         refTag: refTag,
-        context: project.personalization.backing == nil ? .pledge : .updateReward
+        context: project.personalization.backing == nil ? pledgeContext : .updateReward
       )
 
       return (data, reward.hasAddOns)
