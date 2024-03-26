@@ -229,10 +229,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     self.showErrorBannerWithMessage = Signal
       .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
-      .map { error in
-        print(error)
-        return Strings.Something_went_wrong_please_try_again()
-      }
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
   }
 
   // MARK: - Inputs
@@ -242,13 +239,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.configureWithDataProperty.value = data
   }
 
-  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<(String, String), Never>
-    .pipe()
+  private let creditCardSelectedProperty =
+    MutableProperty<(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)?>(nil)
   public func creditCardSelected(
-    with stripeCardIdAndPaymentIntent: (String, String?),
-    isExistingPaymentMethod: Bool
+    source: PaymentSourceSelected,
+    paymentMethodId: String,
+    isNewPaymentMethod: Bool
   ) {
-    self.creditCardSelectedObserver.send(value: (stripeCardIdAndPaymentIntent, isExistingPaymentMethod))
+    self.creditCardSelectedProperty.value = (source, paymentMethodId, isNewPaymentMethod)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -297,6 +295,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<String, Never>
+  public let validateCheckoutExistingCardSuccess: Signal<String, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
