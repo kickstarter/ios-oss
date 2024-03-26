@@ -1,11 +1,12 @@
 import Foundation
 public enum PaymentSourceSelected: Equatable {
-  case paymentSourceId(String)
+  case savedCreditCard(String)
   case setupIntentClientSecret(String)
+  case paymentIntentClientSecret(String)
 
-  public var paymentSourceId: String? {
+  public var savedCreditCardId: String? {
     switch self {
-    case let .paymentSourceId(value):
+    case let .savedCreditCard(value):
       return value
     default:
       return nil
@@ -15,6 +16,15 @@ public enum PaymentSourceSelected: Equatable {
   public var setupIntentClientSecret: String? {
     switch self {
     case let .setupIntentClientSecret(value):
+      return value
+    default:
+      return nil
+    }
+  }
+
+  public var paymentIntentClientSecret: String? {
+    switch self {
+    case let .paymentIntentClientSecret(value):
       return value
     default:
       return nil

@@ -364,7 +364,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
 
-        return (user, project, reward, context, refTag)
+        // This second to last value - pledgeTotal - is only needed when the payment methods controller
+        // is used in late campaign pledges. There is an assert in PledgePaymentMethodsViewModel to ensure
+        // we don't accidentally propagate this nan downstream.
+        return (user, project, reward, context, refTag, Double.nan, .setupIntent)
       }
 
     self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
@@ -560,7 +563,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       refTag
     ) -> CreateBackingData in
 
-    var paymentSourceId = selectedPaymentSource?.paymentSourceId
+    var paymentSourceId = selectedPaymentSource?.savedCreditCardId
     var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
     return (
@@ -634,7 +637,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedPaymentSource,
       applePayParams
     ) -> UpdateBackingData in
-    var paymentSourceId = selectedPaymentSource?.paymentSourceId
+    var paymentSourceId = selectedPaymentSource?.savedCreditCardId
     var setupIntentClientSecret = selectedPaymentSource?.setupIntentClientSecret
 
     return (
@@ -937,7 +940,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { context, project, selectedPaymentSource -> Bool in
 
       context == .fixPaymentMethod
-        && project.personalization.backing?.paymentSource?.id == selectedPaymentSource?.paymentSourceId
+        && project.personalization.backing?.paymentSource?.id == selectedPaymentSource?.savedCreditCardId
     }
     .skipRepeats()
 
@@ -1325,7 +1328,7 @@ private func paymentMethodValid(
 
   if project.personalization.backing?.status == .errored {
     return true
-  } else if backedPaymentSourceId != paymentSource.paymentSourceId {
+  } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
     return true
   }
 
