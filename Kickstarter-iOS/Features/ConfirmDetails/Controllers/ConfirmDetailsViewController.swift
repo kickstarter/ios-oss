@@ -135,11 +135,8 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.continueCTAView, self.view)
-      |> ksr_addSubviewToParent()
+    self.view.addSubview(self.rootScrollView)
+    self.view.addSubview(self.continueCTAView)
 
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
@@ -152,26 +149,21 @@ final class ConfirmDetailsViewController: UIViewController, MessageBannerViewCon
       self.pledgeRewardsSummaryViewController
     ]
 
-    let arrangedSubviews = [
-      self.rootInsetStackView
-    ]
+    self.rootStackView.addArrangedSubview(self.rootInsetStackView)
 
     let arrangedInsetSubviews = [
       [self.titleLabel],
       self.inputsSectionViews,
-      self.pledgeAmountSummarySectionViews,
-      [self.pledgeRewardsSummaryViewController.view]
+      self.pledgeAmountSummarySectionViews
     ]
     .flatMap { $0 }
     .compact()
 
-    arrangedSubviews.forEach { view in
-      self.rootStackView.addArrangedSubview(view)
-    }
-
     arrangedInsetSubviews.forEach { view in
       self.rootInsetStackView.addArrangedSubview(view)
     }
+
+    self.rootStackView.addArrangedSubview(self.pledgeRewardsSummaryViewController.view)
 
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
