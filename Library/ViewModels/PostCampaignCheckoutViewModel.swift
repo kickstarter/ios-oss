@@ -164,10 +164,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
 
     self.showErrorBannerWithMessage = validateCheckout.errors()
-      .map { error in
-        print(error) // [0]  String  "Couldn't find Checkout with 'id'=Q2hlY2tvdXQtMTk4MzM2NjQ2"
-        return Strings.Something_went_wrong_please_try_again()
-      }
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
   }
 
   // MARK: - Inputs

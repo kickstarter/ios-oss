@@ -305,6 +305,9 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
     default:
       break
     }
+  }
+}
+
 // MARK: - PledgeViewControllerMessageDisplaying
 
 extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
