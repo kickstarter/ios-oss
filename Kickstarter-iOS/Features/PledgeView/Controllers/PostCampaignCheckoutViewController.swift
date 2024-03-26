@@ -299,7 +299,7 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
         }
 
         let stripeCardId = intent.stripeId
-        let paymentIntentClientSecret = paymentSource.paymentIntentClientSecret ?? ""
+        let paymentIntentClientSecret = paymentSource.paymentIntentClientSecret!
 
         self.viewModel.inputs.creditCardSelected(with: (stripeCardId, paymentIntentClientSecret))
       }

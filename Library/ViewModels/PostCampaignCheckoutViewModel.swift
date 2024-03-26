@@ -158,10 +158,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     self.validateCheckoutSuccess = stripeCardIdAndPaymentIntent
       .takeWhen(validateCheckout.values().ignoreValues())
-      .map { stripeCardIdAndPaymentIntent in
-        let (_, paymentIntent) = stripeCardIdAndPaymentIntent
-        return paymentIntent
-      }
+      .map { _, paymentIntent in paymentIntent }
 
     self.showErrorBannerWithMessage = validateCheckout.errors()
       .map { _ in Strings.Something_went_wrong_please_try_again() }
