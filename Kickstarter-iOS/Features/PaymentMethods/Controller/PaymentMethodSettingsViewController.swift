@@ -12,7 +12,7 @@ protocol PaymentMethodSettingsViewControllerDelegate: AnyObject {
 internal final class PaymentMethodSettingsViewController: UIViewController,
   MessageBannerViewControllerPresenting {
   private let dataSource = PaymentMethodsDataSource()
-  private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
+  private let viewModel: PaymentMethodsViewModelType = PaymentMethodSettingsViewModel()
   private var paymentSheetFlowController: PaymentSheet.FlowController?
   private weak var cancellationDelegate: PaymentMethodSettingsViewControllerDelegate?
   @IBOutlet private var tableView: UITableView!
