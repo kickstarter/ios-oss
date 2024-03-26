@@ -235,7 +235,7 @@
 		1996AA1F2A5F1BC400AE2ED0 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 1996AA1E2A5F1BC400AE2ED0 /* StripePaymentSheet */; };
 		1996AA312A5F39CC00AE2ED0 /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */; };
 		1996AA322A5F3A3200AE2ED0 /* Stripe+PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1923770928DA2AE300F68635 /* Stripe+PaymentMethod.swift */; };
-		1996AA332A5F477B00AE2ED0 /* PaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */; };
+		1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodSettingsViewModelTests.swift */; };
 		1996AA352A5F4ADB00AE2ED0 /* PaymentSheetPaymentOptionsDisplayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1996AA342A5F4ADB00AE2ED0 /* PaymentSheetPaymentOptionsDisplayData.swift */; };
 		1998BCB028F60EC300D04077 /* ReactiveExtensions-TestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCAF28F60EC300D04077 /* ReactiveExtensions-TestHelpers */; };
 		1998BCB228F60ED400D04077 /* ReactiveExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 1998BCB128F60ED400D04077 /* ReactiveExtensions */; };
@@ -1353,7 +1353,7 @@
 		D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */; };
 		D63BBD31217F7212007E01F0 /* UserCreditCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD30217F7212007E01F0 /* UserCreditCards.swift */; };
 		D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */; };
-		D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */; };
+		D63BBD35217FAB85007E01F0 /* PaymentMethodSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD34217FAB85007E01F0 /* PaymentMethodSettingsViewModel.swift */; };
 		D63BBD37217FC224007E01F0 /* CreditCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */; };
 		D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */; };
 		D63BBD3B2180BEA4007E01F0 /* PaymentMethodsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */; };
@@ -2968,7 +2968,7 @@
 		D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		D63BBD30217F7212007E01F0 /* UserCreditCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreditCards.swift; sourceTree = "<group>"; };
 		D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCreditCardTemplate.swift; sourceTree = "<group>"; };
-		D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModel.swift; sourceTree = "<group>"; };
+		D63BBD34217FAB85007E01F0 /* PaymentMethodSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSettingsViewModel.swift; sourceTree = "<group>"; };
 		D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCellViewModel.swift; sourceTree = "<group>"; };
 		D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsFooterView.swift; sourceTree = "<group>"; };
 		D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentMethodsFooterView.xib; sourceTree = "<group>"; };
@@ -2995,7 +2995,7 @@
 		D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCell.swift; sourceTree = "<group>"; };
 		D66850A0236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCellViewModel.swift; sourceTree = "<group>"; };
 		D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCellViewModelTests.swift; sourceTree = "<group>"; };
-		D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
+		D66FB347218212B700A27BCC /* PaymentMethodSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
 		D67B6C9C221F458700B63A6B /* Config+Encode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Encode.swift"; sourceTree = "<group>"; };
 		D67B6CD5221F468100B63A6B /* Location+Encode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Encode.swift"; sourceTree = "<group>"; };
@@ -6494,8 +6494,8 @@
 				A7ED1F6C1E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift */,
 				D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */,
 				D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */,
-				D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */,
-				D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */,
+				D63BBD34217FAB85007E01F0 /* PaymentMethodSettingsViewModel.swift */,
+				D66FB347218212B700A27BCC /* PaymentMethodSettingsViewModelTests.swift */,
 				777C60A72420154100820C59 /* PersonalizationCellViewModel.swift */,
 				771F38892422C961009036A0 /* PersonalizationCellViewModelTests.swift */,
 				77D19FF62408148A0058FC8E /* PillCellViewModel.swift */,
@@ -7886,7 +7886,7 @@
 				3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				395A3BC92BA8D43F0091A379 /* PostCampaignCheckoutViewModel.swift in Sources */,
-				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,
+				D63BBD35217FAB85007E01F0 /* PaymentMethodSettingsViewModel.swift in Sources */,
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
 				063D2D0C2846779100CEDE33 /* PledgeLocalPickupViewModel.swift in Sources */,
 				8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */,
@@ -8173,7 +8173,7 @@
 				D6600790241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift in Sources */,
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
 				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
-				1996AA332A5F477B00AE2ED0 /* PaymentMethodsViewModelTests.swift in Sources */,
+				1996AA332A5F477B00AE2ED0 /* PaymentMethodSettingsViewModelTests.swift in Sources */,
 				473DE018273C74BA0033331D /* ProjectRisksCellViewModelTests.swift in Sources */,
 				84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */,
 				D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */,
