@@ -213,6 +213,14 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
         // TODO: Confirm paymentIntent using Stripe.confirmPayment()
       }
 
+    self.viewModel.outputs.validateCheckoutExistingCardSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        guard let self else { return }
+
+        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+      }
+
     self.viewModel.outputs.showErrorBannerWithMessage
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
@@ -291,22 +299,25 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
   ) {
     switch paymentSource {
     case let .paymentIntentClientSecret(clientSecret):
-      return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, error in
+      return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, _ in
         guard let intent = intent else {
-          print(error?.localizedDescription)
           self.messageBannerViewController?
             .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
           return
         }
 
-        let stripeCardId = intent.stripeId
-        let paymentIntentClientSecret = paymentSource.paymentIntentClientSecret!
+        let paymentMethodId = intent.paymentMethodId!
 
         self.viewModel.inputs
-          .creditCardSelected(with: (stripeCardId, paymentIntentClientSecret), isExistingPaymentMethod: false)
+          .creditCardSelected(
+            source: paymentSource,
+            paymentMethodId: paymentMethodId,
+            isNewPaymentMethod: true
+          )
       }
     case let .savedCreditCard(savedCardId):
-      self.viewModel.inputs.creditCardSelected(with: (savedCardId, nil), isExistingPaymentMethod: true)
+      self.viewModel.inputs
+        .creditCardSelected(source: paymentSource, paymentMethodId: savedCardId, isNewPaymentMethod: false)
     default:
       break
     }

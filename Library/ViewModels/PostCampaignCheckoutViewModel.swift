@@ -21,7 +21,7 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
-  func creditCardSelected(with stripeCardIdAndPaymentIntent: (String, String?), isExistingPaymentMethod: Bool)
+  func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
   func submitButtonTapped()
@@ -43,6 +43,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<String, Never> { get }
+  var validateCheckoutExistingCardSuccess: Signal<String, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -139,6 +140,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: Validate Checkout Details On Submit
 
+    // MARK: - Validate Existing Cards
+
     /// Capture current users stored credit cards in the case that we need to validate an existing payment method
     let storedCardsEvent = initialData.ignoreValues()
       .switchMap { _ in
@@ -156,39 +159,80 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .skipNil()
       .map { $0.me.storedCards.storedCards }
 
-    let selectedCreditCard = self.creditCardSelectedSignal.signal
+    let selectedExistingCard = self.creditCardSelectedProperty.signal.skipNil()
+      .filter { $0.isNewPaymentMethod == false }
 
-    let validateCheckout = Signal.combineLatest(checkoutId, selectedCreditCard, storedCardsValues)
+    let newPaymentIntentEvent = initialData
+      .switchMap { initialData in
+        let projectId = initialData.project.graphID
+        let pledgeTotal = initialData.total
+
+        return AppEnvironment.current.apiService
+          .createPaymentIntentInput(input: CreatePaymentIntentInput(
+            projectId: projectId,
+            amountDollars: String(format: "%.2f", pledgeTotal),
+            digitalMarketingAttributed: nil
+          ))
+          .materialize()
+      }
+
+    let paymentIntentClientSecret = newPaymentIntentEvent.values()
+      .map { $0.clientSecret }
+
+    // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
+    let validateCheckoutExistingCard = Signal
+      .combineLatest(checkoutId, selectedExistingCard, paymentIntentClientSecret, storedCardsValues)
       .takeWhen(self.submitButtonTappedProperty.signal)
-      .switchMap { checkoutId, selectedCreditCard, storedCards in
-        var ((stripeCardId, paymentIntent), isExistingPaymentMethod) = selectedCreditCard
-
-        /// If using an existing payment method, use the stripeCardId set by the backend in it.
-        if isExistingPaymentMethod {
-          let selectedStoredCard = storedCards.first { $0.id == stripeCardId }
-          stripeCardId = selectedStoredCard?.stripeCardId ?? ""
-        }
+      .switchMap { checkoutId, selectedExistingCreditCard, paymentIntentClientSecret, storedCards in
+        let (_, paymentMethodId, _) = selectedExistingCreditCard
+        let selectedStoredCard = storedCards.first { $0.id == paymentMethodId }
+        let selectedCardStripeCardId = selectedStoredCard?.stripeCardId ?? ""
 
         return AppEnvironment.current.apiService
           .validateCheckout(
             checkoutId: checkoutId,
-            paymentSourceId: stripeCardId,
-            paymentIntentClientSecret: paymentIntent ?? ""
+            paymentSourceId: selectedCardStripeCardId,
+            paymentIntentClientSecret: paymentIntentClientSecret
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
-    self.validateCheckoutSuccess = selectedCreditCard
-      .takeWhen(validateCheckout.values())
-      .map { selectedCreditCard in
-        let ((_, paymentIntent), _) = selectedCreditCard
+    self.validateCheckoutExistingCardSuccess = paymentIntentClientSecret
+      .takeWhen(validateCheckoutExistingCard.values())
+      .map { $0 }
 
-        return paymentIntent ?? ""
+    // MARK: - Validate New Cards
+
+    let selectedNewCreditCard = self.creditCardSelectedProperty.signal.skipNil()
+      .filter { $0.isNewPaymentMethod }
+
+    // Runs validation for new cards that were created with payment intents.
+    let validateCheckoutNewCard = Signal.combineLatest(checkoutId, selectedNewCreditCard)
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .switchMap { checkoutId, selectedNewCreditCard in
+        let (paymentSource, paymentMethodId, _) = selectedNewCreditCard
+
+        return AppEnvironment.current.apiService
+          .validateCheckout(
+            checkoutId: checkoutId,
+            paymentSourceId: paymentMethodId,
+            paymentIntentClientSecret: paymentSource.paymentIntentClientSecret!
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
       }
 
-    self.showErrorBannerWithMessage = validateCheckout.errors()
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
+    self.validateCheckoutSuccess = selectedNewCreditCard
+      .takeWhen(validateCheckoutNewCard.values())
+      .map { _, paymentIntentClientSecret, _ in paymentIntentClientSecret }
+
+    self.showErrorBannerWithMessage = Signal
+      .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
+      .map { error in
+        print(error)
+        return Strings.Something_went_wrong_please_try_again()
+      }
   }
 
   // MARK: - Inputs
