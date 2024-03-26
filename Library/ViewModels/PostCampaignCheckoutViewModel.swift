@@ -28,6 +28,12 @@ public protocol PostCampaignCheckoutViewModelInputs {
   func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
+  func applePayButtonTapped()
+  func paymentAuthorizationDidAuthorizePayment(
+    paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
+  )
+  func paymentAuthorizationViewControllerDidFinish()
+  func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
 }
 
 public protocol PostCampaignCheckoutViewModelOutputs {
@@ -44,6 +50,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<String, Never> { get }
   var validateCheckoutExistingCardSuccess: Signal<String, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -231,6 +238,53 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.showErrorBannerWithMessage = Signal
       .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
       .map { _ in Strings.Something_went_wrong_please_try_again() }
+
+    let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = self.configureWithDataProperty
+      .signal
+      .skipNil()
+      .map { (data: PostCampaignCheckoutData) -> PaymentAuthorizationData in
+        let reward = data.rewards.first! // What happens if you select no reward?
+        return PaymentAuthorizationData(
+          project: data.project,
+          reward: reward,
+          // TODO: PKPaymentRequests+Helper switches on reward.isNoReward for displaying the total
+          allRewardsTotal: reward.isNoReward ? 0 : data.total,
+          additionalPledgeAmount: reward.isNoReward ? data.total : 0,
+          allRewardsShippingTotal: data.shipping?.total ?? 0,
+          merchantIdentifier: Secrets.ApplePay.merchantIdentifier
+        )
+      }
+
+    self.goToApplePayPaymentAuthorization = paymentAuthorizationData
+      .takeWhen(self.applePayButtonTappedSignal)
+
+    let pkPaymentData = self.pkPaymentSignal
+      .map { pkPayment -> PKPaymentData? in
+        guard let displayName = pkPayment.displayName, let network = pkPayment.network else {
+          return nil
+        }
+
+        return (displayName, network, pkPayment.transactionIdentifier)
+      }
+
+    let applePayParams = Signal.combineLatest(
+      pkPaymentData.skipNil(),
+      self.stripeTokenSignal.skipNil()
+    )
+    .map { paymentData, token in
+      (
+        paymentData.displayName,
+        paymentData.network,
+        paymentData.transactionIdentifier,
+        token
+      )
+    }
+    .map(ApplePayParams.init)
+
+    // TODO: Real implementation
+    applePayParams.observeValues { params in
+      print("Got ApplePay params: \(params)")
+    }
   }
 
   // MARK: - Inputs
@@ -281,6 +335,41 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func applePayButtonTapped() {
+    self.applePayButtonTappedObserver.send(value: ())
+  }
+
+  private let (pkPaymentSignal, pkPaymentObserver) = Signal<(
+    displayName: String?,
+    network: String?,
+    transactionIdentifier: String
+  ), Never>.pipe()
+  public func paymentAuthorizationDidAuthorizePayment(paymentData: (
+    displayName: String?,
+    network: String?,
+    transactionIdentifier: String
+  )) {
+    self.pkPaymentObserver.send(value: paymentData)
+  }
+
+  private let (paymentAuthorizationDidFinishSignal, paymentAuthorizationDidFinishObserver)
+    = Signal<Void, Never>.pipe()
+  public func paymentAuthorizationViewControllerDidFinish() {
+    self.paymentAuthorizationDidFinishObserver.send(value: ())
+  }
+
+  private let (stripeTokenSignal, stripeTokenObserver) = Signal<String?, Never>.pipe()
+  private let (stripeErrorSignal, stripeErrorObserver) = Signal<Error?, Never>.pipe()
+  private let createApplePayBackingStatusProperty = MutableProperty<PKPaymentAuthorizationStatus>(.failure)
+
+  public func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus {
+    self.stripeTokenObserver.send(value: token)
+    self.stripeErrorObserver.send(value: error)
+
+    return self.createApplePayBackingStatusProperty.value
+  }
+
   // MARK: - Outputs
 
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
@@ -297,6 +386,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<String, Never>
   public let validateCheckoutExistingCardSuccess: Signal<String, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
