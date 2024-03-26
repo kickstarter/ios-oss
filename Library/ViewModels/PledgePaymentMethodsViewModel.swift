@@ -147,7 +147,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
         var selectedPaymentMethod: PaymentSourceSelected?
         if let selectedCardId = selectedCard?.id {
-          selectedPaymentMethod = .paymentSourceId(selectedCardId)
+          selectedPaymentMethod = .savedCreditCard(selectedCardId)
         }
 
         return PledgePaymentMethodsAndSelectionData(
@@ -246,7 +246,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           let selectionUpdatedData = updatedData
             |> \.paymentMethodsCellData .~ cellData(data.paymentMethodsCellData, selecting: card)
             |> \.paymentSheetPaymentMethodsCellData .~ deselectAllSheetPaymentMethods
-            |> \.selectedPaymentMethod .~ .paymentSourceId(card.id)
+            |> \.selectedPaymentMethod .~ .savedCreditCard(card.id)
 
           return selectionUpdatedData
         }
