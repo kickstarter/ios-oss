@@ -353,7 +353,16 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       }
 
     let checkoutValues = createCheckoutEvents.values()
-      .map { $0.checkout.id }
+      .map { values in
+        var checkoutId: String?
+
+        if let decoded = decodeBase64(values.checkout.id), let range = decoded.range(of: "Checkout-") {
+          let id = decoded[range.upperBound...]
+          checkoutId = String(id)
+        }
+
+        return checkoutId
+      }
 
     self.createCheckoutSuccess = checkoutValues.withLatestFrom(
       Signal.combineLatest(
@@ -385,7 +394,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         shipping: shipping,
         refTag: initialData.refTag,
         context: initialData.context,
-        checkoutId: checkoutValue
+        checkoutId: checkoutValue ?? ""
       )
     }
 

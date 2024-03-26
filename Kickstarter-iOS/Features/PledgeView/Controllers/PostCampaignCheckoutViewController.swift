@@ -288,7 +288,6 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
     _: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSource: PaymentSourceSelected
   ) {
-    self.viewModel.inputs.creditCardSelected(with: paymentSource)
     switch paymentSource {
     case let .paymentIntentClientSecret(clientSecret):
       return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, _ in
