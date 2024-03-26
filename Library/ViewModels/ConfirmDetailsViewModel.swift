@@ -354,9 +354,9 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     let checkoutValues = createCheckoutEvents.values()
       .map { values in
-        var checkoutId: String?
+        var checkoutId = values.checkout.id
 
-        if let decoded = decodeBase64(values.checkout.id), let range = decoded.range(of: "Checkout-") {
+        if let decoded = decodeBase64(checkoutId), let range = decoded.range(of: "Checkout-") {
           let id = decoded[range.upperBound...]
           checkoutId = String(id)
         }
@@ -372,7 +372,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         pledgeTotal
       )
     )
-    .map { checkoutValue, otherData -> PostCampaignCheckoutData in
+    .map { checkoutId, otherData -> PostCampaignCheckoutData in
       let (initialData, bonusOrReward, shipping, pledgeTotal) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
@@ -394,7 +394,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         shipping: shipping,
         refTag: initialData.refTag,
         context: initialData.context,
-        checkoutId: checkoutValue ?? ""
+        checkoutId: checkoutId
       )
     }
 

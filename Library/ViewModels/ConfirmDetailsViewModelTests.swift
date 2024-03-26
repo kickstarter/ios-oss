@@ -810,7 +810,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
   }
 
   func testContinueButton_CallsCreateBackingMutation_Success() {
-    let expectedId = "Checkout-12345"
+    let expectedId = "Q2hlY2tvdXQtMTk4MzM2NjQ2"
     let createCheckout = CreateCheckoutEnvelope.Checkout(id: expectedId, paymentUrl: "paymentUrl")
 
     let mockService = MockService(
@@ -875,7 +875,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
         shipping: expectedShipping,
         refTag: nil,
         context: .pledge,
-        checkoutId: "12345"
+        checkoutId: "198336646"
       )
       self.createCheckoutSuccess.assertValue(expectedValue)
     }
