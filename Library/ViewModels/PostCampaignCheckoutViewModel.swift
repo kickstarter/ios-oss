@@ -163,6 +163,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .filter { $0.isNewPaymentMethod == false }
 
     let newPaymentIntentEvent = initialData
+      .takeWhen(selectedExistingCard)
       .switchMap { initialData in
         let projectId = initialData.project.graphID
         let pledgeTotal = initialData.total
