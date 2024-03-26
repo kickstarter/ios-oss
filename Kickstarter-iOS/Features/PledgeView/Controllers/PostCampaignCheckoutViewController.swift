@@ -327,7 +327,3 @@ extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegat
     }
   }
 }
-
-    return self
-  }
-}
