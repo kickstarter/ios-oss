@@ -207,18 +207,19 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.validateCheckoutSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] clientSecret in
         guard let self else { return }
 
-        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+        confirmPayment(with: clientSecret)
       }
 
     self.viewModel.outputs.validateCheckoutExistingCardSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] clientSecret, paymentMethodId in
         guard let self else { return }
 
-        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+        /// Needs the paymentMethodId so that we can associate the new intent with the actual payment method in Stripe
+        confirmPayment(with: clientSecret, paymentMethodId: paymentMethodId)
       }
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -252,9 +253,35 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let navigationBarHeight = navigationController.navigationBar.bounds.height
 
     self.present(navigationController, animated: true)
+  }
+
+  private func confirmPayment(with clientSecret: String, paymentMethodId: String? = nil) {
+    let paymentParams = STPPaymentIntentParams(clientSecret: clientSecret)
+
+    if let id = paymentMethodId {
+      paymentParams.paymentMethodId = id
+    }
+
+    STPPaymentHandler.shared()
+      .confirmPayment(paymentParams, with: self) { status, _, error in
+        guard error == nil, status == .succeeded else {
+          self.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+          return
+        }
+
+        self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: clientSecret)
+      }
+  }
+}
+
+// MARK: - STPAuthenticationContext
+
+extension PostCampaignCheckoutViewController: STPAuthenticationContext {
+  func authenticationPresentingViewController() -> UIViewController {
+    return self
   }
 }
 

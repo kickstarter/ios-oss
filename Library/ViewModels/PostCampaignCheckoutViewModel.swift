@@ -21,6 +21,7 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
@@ -43,7 +44,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<String, Never> { get }
-  var validateCheckoutExistingCardSuccess: Signal<String, Never> { get }
+  var validateCheckoutExistingCardSuccess: Signal<(String, String), Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -199,9 +200,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           .materialize()
       }
 
-    self.validateCheckoutExistingCardSuccess = paymentIntentClientSecret
+    self.validateCheckoutExistingCardSuccess = Signal
+      .combineLatest(paymentIntentClientSecret, selectedExistingCard, storedCardsValues)
       .takeWhen(validateCheckoutExistingCard.values())
-      .map { $0 }
+      .map { paymentIntentClientSecret, selectedExistingCard, storedCards in
+        let (_, paymentMethodId, _) = selectedExistingCard
+        let selectedStoredCard = storedCards.first { $0.id == paymentMethodId }
+        let selectedCardStripeCardId = selectedStoredCard?.stripeCardId ?? ""
+
+        return (paymentIntentClientSecret, selectedCardStripeCardId)
+      }
 
     // MARK: - Validate New Cards
 
@@ -226,11 +234,15 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     self.validateCheckoutSuccess = selectedNewCreditCard
       .takeWhen(validateCheckoutNewCard.values())
-      .map { _, paymentIntentClientSecret, _ in paymentIntentClientSecret }
+      .map { paymentSource, _, _ in paymentSource.paymentIntentClientSecret! }
 
     self.showErrorBannerWithMessage = Signal
       .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
       .map { _ in Strings.Something_went_wrong_please_try_again() }
+
+    // MARK: CompleteOnSessionCheckout
+
+    // TODO: Call .completeOnSessionCheckout when self.confirmPaymentSuccessfulProperty.signal is called
   }
 
   // MARK: - Inputs
@@ -238,6 +250,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let configureWithDataProperty = MutableProperty<PostCampaignCheckoutData?>(nil)
   public func configure(with data: PostCampaignCheckoutData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let confirmPaymentSuccessfulProperty = MutableProperty<String?>(nil)
+  public func confirmPaymentSuccessful(clientSecret: String) {
+    self.confirmPaymentSuccessfulProperty.value = clientSecret
   }
 
   private let creditCardSelectedProperty =
@@ -296,7 +313,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<String, Never>
-  public let validateCheckoutExistingCardSuccess: Signal<String, Never>
+  public let validateCheckoutExistingCardSuccess: Signal<(String, String), Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
