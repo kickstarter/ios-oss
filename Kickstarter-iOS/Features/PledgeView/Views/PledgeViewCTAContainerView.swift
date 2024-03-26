@@ -92,6 +92,7 @@ final class PledgeViewCTAContainerView: UIView {
     self.pledgeImmediatelyLabel.attributedText = pledgeImmediatelyText()
     self.pledgeImmediatelyLabel.numberOfLines = 0
     self.pledgeImmediatelyLabel.textAlignment = .center
+    self.pledgeImmediatelyLabel.textColor = UIColor.ksr_support_400
 
     _ = self.disclaimerStackView
       |> disclaimerStackViewStyle
@@ -307,52 +308,5 @@ private func attributedTermsText() -> NSAttributedString? {
 
 private func pledgeImmediatelyText() -> NSAttributedString? {
   let rawText = Strings.Your_payment_method_will_be_charged()
-
-  guard let text = try? NSMutableAttributedString(
-    data: Data(rawText.utf8),
-    options: [
-      .documentType: NSAttributedString.DocumentType.html,
-      .characterEncoding: String.Encoding.utf8.rawValue
-    ],
-    documentAttributes: nil
-  ) else {
-    return nil
-  }
-
-  let attributes: String.Attributes = [
-    .font: UIFont.ksr_caption2(),
-    .foregroundColor: UIColor.ksr_support_400
-  ]
-
-  let fullRange = (text.string as NSString).range(of: text.string)
-  text.addAttributes(attributes, range: fullRange)
-
-  let boldRanges = getBoldRangesFromHtmlTags(plainString: text.string, htmlString: rawText)
-  for range in boldRanges {
-    text.addAttribute(.font, value: UIFont.ksr_caption2().bolded, range: range)
-  }
-
-  return text
-}
-
-private func getBoldRangesFromHtmlTags(plainString: String, htmlString: String) -> [NSRange] {
-  let stringWithoutHtml = plainString as NSString
-  var boldRanges: [NSRange] = []
-
-  var currentString = htmlString as NSString
-  while currentString.contains("<b>") {
-    let startTagRange = currentString.range(of: "<b>")
-    let endTagRange = currentString.range(of: "</b>")
-
-    // Calculate range of bolded text in the string without html tags.
-    let location = startTagRange.location
-    let length = endTagRange.location - (location + startTagRange.length)
-    let toBold = NSRange(location: location, length: length)
-    boldRanges.append(toBold)
-
-    let processedSubstring = stringWithoutHtml.substring(to: toBold.location + toBold.length)
-    let remainingHtml = currentString.substring(from: endTagRange.location + endTagRange.length)
-    currentString = (processedSubstring + remainingHtml) as NSString
-  }
-  return boldRanges
+  return rawText.simpleHtmlAttributedString(font: UIFont.ksr_caption2())
 }
