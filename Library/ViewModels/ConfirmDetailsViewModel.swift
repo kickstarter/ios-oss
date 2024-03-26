@@ -211,7 +211,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
 
     /// Hide when there is a reward and shipping is enabled (accounts for digital rewards), and in a pledge context
     self.pledgeSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
-      (baseReward.isNoReward == false && baseReward.shipping.enabled) && context == .latePledge
+      baseReward.isNoReward == false && context == .latePledge
     }
 
     let allRewardsTotal = Signal.combineLatest(
@@ -353,7 +353,16 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       }
 
     let checkoutValues = createCheckoutEvents.values()
-      .map { $0.checkout.id }
+      .map { values in
+        var checkoutId = values.checkout.id
+
+        if let decoded = decodeBase64(checkoutId), let range = decoded.range(of: "Checkout-") {
+          let id = decoded[range.upperBound...]
+          checkoutId = String(id)
+        }
+
+        return checkoutId
+      }
 
     self.createCheckoutSuccess = checkoutValues.withLatestFrom(
       Signal.combineLatest(
@@ -363,7 +372,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         pledgeTotal
       )
     )
-    .map { checkoutValue, otherData -> PostCampaignCheckoutData in
+    .map { checkoutId, otherData -> PostCampaignCheckoutData in
       let (initialData, bonusOrReward, shipping, pledgeTotal) = otherData
       var rewards = initialData.rewards
       var bonus = bonusOrReward
@@ -385,7 +394,7 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         shipping: shipping,
         refTag: initialData.refTag,
         context: initialData.context,
-        checkoutId: checkoutValue
+        checkoutId: checkoutId
       )
     }
 

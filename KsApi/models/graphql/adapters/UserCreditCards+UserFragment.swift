@@ -16,7 +16,8 @@ extension UserCreditCards {
         expirationDate: node.expirationDate,
         id: node.id,
         lastFour: node.lastFour,
-        type: CreditCardType(rawValue: node.type.rawValue)
+        type: CreditCardType(rawValue: node.type.rawValue),
+        stripeCardId: node.stripeCardId
       )
     }
 

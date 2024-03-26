@@ -30,7 +30,13 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
       envelope.me.storedCards,
       UserCreditCards(storedCards: [
         UserCreditCards
-          .CreditCard(expirationDate: "2023-01-01", id: "6", lastFour: "4242", type: .visa)
+          .CreditCard(
+            expirationDate: "2023-01-01",
+            id: "6",
+            lastFour: "4242",
+            type: .visa,
+            stripeCardId: "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
+          )
       ])
     )
     XCTAssertEqual(envelope.me.uid, "1470952545")
@@ -63,7 +69,13 @@ final class UserEnvelope_GraphUserEnvelopeTests: XCTestCase {
       envelope.me.storedCards,
       UserCreditCards(storedCards: [
         UserCreditCards
-          .CreditCard(expirationDate: "2023-01-01", id: "6", lastFour: "4242", type: .visa)
+          .CreditCard(
+            expirationDate: "2023-01-01",
+            id: "6",
+            lastFour: "4242",
+            type: .visa,
+            stripeCardId: "pm_1OtGFX4VvJ2PtfhK3Gp00SWK"
+          )
       ])
     )
     XCTAssertEqual(envelope.me.uid, "1470952545")

@@ -9,6 +9,7 @@ public struct UserCreditCards: Decodable {
     public var id: String
     public var lastFour: String
     public var type: CreditCardType?
+    public var stripeCardId: String?
 
     public var formattedExpirationDate: String {
       return String(self.expirationDate.dropLast(3))

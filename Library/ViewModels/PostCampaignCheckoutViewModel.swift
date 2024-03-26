@@ -3,6 +3,7 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
+import Stripe
 
 public struct PostCampaignCheckoutData: Equatable {
   public let project: Project
@@ -20,8 +21,10 @@ public struct PostCampaignCheckoutData: Equatable {
 
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
+  func submitButtonTapped()
   func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
@@ -34,10 +37,13 @@ public protocol PostCampaignCheckoutViewModelOutputs {
     Never
   > { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
+  var validateCheckoutSuccess: Signal<String, Never> { get }
+  var validateCheckoutExistingCardSuccess: Signal<String, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -57,6 +63,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
+    let checkoutId = initialData.map(\.checkoutId)
 
     let configurePaymentMethodsData = Signal.merge(
       initialData,
@@ -130,6 +137,100 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
+
+    // MARK: Validate Checkout Details On Submit
+
+    // MARK: - Validate Existing Cards
+
+    /// Capture current users stored credit cards in the case that we need to validate an existing payment method
+    let storedCardsEvent = initialData.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphUser(withStoredCards: true)
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .map { envelope in (envelope, false) }
+          .prefix(value: (nil, true))
+          .materialize()
+      }
+
+    let storedCardsValues = storedCardsEvent.values()
+      .filter(second >>> isFalse)
+      .map(first)
+      .skipNil()
+      .map { $0.me.storedCards.storedCards }
+
+    let selectedExistingCard = self.creditCardSelectedProperty.signal.skipNil()
+      .filter { $0.isNewPaymentMethod == false }
+
+    let newPaymentIntentEvent = initialData
+      .takeWhen(selectedExistingCard)
+      .switchMap { initialData in
+        let projectId = initialData.project.graphID
+        let pledgeTotal = initialData.total
+
+        return AppEnvironment.current.apiService
+          .createPaymentIntentInput(input: CreatePaymentIntentInput(
+            projectId: projectId,
+            amountDollars: String(format: "%.2f", pledgeTotal),
+            digitalMarketingAttributed: nil
+          ))
+          .materialize()
+      }
+
+    let paymentIntentClientSecret = newPaymentIntentEvent.values()
+      .map { $0.clientSecret }
+
+    // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
+    let validateCheckoutExistingCard = Signal
+      .combineLatest(checkoutId, selectedExistingCard, paymentIntentClientSecret, storedCardsValues)
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .switchMap { checkoutId, selectedExistingCreditCard, paymentIntentClientSecret, storedCards in
+        let (_, paymentMethodId, _) = selectedExistingCreditCard
+        let selectedStoredCard = storedCards.first { $0.id == paymentMethodId }
+        let selectedCardStripeCardId = selectedStoredCard?.stripeCardId ?? ""
+
+        return AppEnvironment.current.apiService
+          .validateCheckout(
+            checkoutId: checkoutId,
+            paymentSourceId: selectedCardStripeCardId,
+            paymentIntentClientSecret: paymentIntentClientSecret
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.validateCheckoutExistingCardSuccess = paymentIntentClientSecret
+      .takeWhen(validateCheckoutExistingCard.values())
+      .map { $0 }
+
+    // MARK: - Validate New Cards
+
+    let selectedNewCreditCard = self.creditCardSelectedProperty.signal.skipNil()
+      .filter { $0.isNewPaymentMethod }
+
+    // Runs validation for new cards that were created with payment intents.
+    let validateCheckoutNewCard = Signal.combineLatest(checkoutId, selectedNewCreditCard)
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .switchMap { checkoutId, selectedNewCreditCard in
+        let (paymentSource, paymentMethodId, _) = selectedNewCreditCard
+
+        return AppEnvironment.current.apiService
+          .validateCheckout(
+            checkoutId: checkoutId,
+            paymentSourceId: paymentMethodId,
+            paymentIntentClientSecret: paymentSource.paymentIntentClientSecret!
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.validateCheckoutSuccess = selectedNewCreditCard
+      .takeWhen(validateCheckoutNewCard.values())
+      .map { _, paymentIntentClientSecret, _ in paymentIntentClientSecret }
+
+    self.showErrorBannerWithMessage = Signal
+      .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
   }
 
   // MARK: - Inputs
@@ -137,6 +238,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let configureWithDataProperty = MutableProperty<PostCampaignCheckoutData?>(nil)
   public func configure(with data: PostCampaignCheckoutData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let creditCardSelectedProperty =
+    MutableProperty<(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)?>(nil)
+  public func creditCardSelected(
+    source: PaymentSourceSelected,
+    paymentMethodId: String,
+    isNewPaymentMethod: Bool
+  ) {
+    self.creditCardSelectedProperty.value = (source, paymentMethodId, isNewPaymentMethod)
   }
 
   private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
@@ -148,6 +259,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     = Signal<Void, Never>.pipe()
   public func pledgeDisclaimerViewDidTapLearnMore() {
     self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
+  }
+
+  private let submitButtonTappedProperty = MutableProperty(())
+  public func submitButtonTapped() {
+    self.submitButtonTappedProperty.value = ()
   }
 
   private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
@@ -174,10 +290,13 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     PledgeSummaryViewData
   ), Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
-  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
+  public let validateCheckoutSuccess: Signal<String, Never>
+  public let validateCheckoutExistingCardSuccess: Signal<String, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }

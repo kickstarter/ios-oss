@@ -10,14 +10,17 @@ private enum PostCampaignCheckoutLayout {
   }
 }
 
-final class PostCampaignCheckoutViewController: UIViewController {
+final class PostCampaignCheckoutViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
-    // TODO: Add self as delegate and add support for delegate methods.
+      |> \.messageDisplayingDelegate .~ self
+      |> \.delegate .~ self
   }()
 
   private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
@@ -71,6 +74,9 @@ final class PostCampaignCheckoutViewController: UIViewController {
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     self.title = Strings.Back_this_project()
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -199,6 +205,28 @@ final class PostCampaignCheckoutViewController: UIViewController {
         self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
 
+    self.viewModel.outputs.validateCheckoutSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        guard let self else { return }
+
+        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+      }
+
+    self.viewModel.outputs.validateCheckoutExistingCardSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        guard let self else { return }
+
+        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+      }
+
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+      }
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -253,11 +281,68 @@ extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate
 
   func submitButtonTapped() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
-    // TODO: Respond to button tap
+    self.viewModel.inputs.submitButtonTapped()
   }
 
   func termsOfUseTapped(with helpType: HelpType) {
     self.paymentMethodsViewController.cancelModalPresentation(true)
     self.viewModel.inputs.termsOfUseTapped(with: helpType)
+  }
+}
+
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewControllerDelegate {
+  func pledgePaymentMethodsViewController(
+    _: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSource: PaymentSourceSelected
+  ) {
+    switch paymentSource {
+    case let .paymentIntentClientSecret(clientSecret):
+      return STPAPIClient.shared.retrievePaymentIntent(withClientSecret: clientSecret) { intent, _ in
+        guard let intent = intent, let paymentMethodId = intent.paymentMethodId else {
+          self.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+          return
+        }
+
+        self.viewModel.inputs
+          .creditCardSelected(
+            source: paymentSource,
+            paymentMethodId: paymentMethodId,
+            isNewPaymentMethod: true
+          )
+      }
+    case let .savedCreditCard(savedCardId):
+      self.viewModel.inputs
+        .creditCardSelected(source: paymentSource, paymentMethodId: savedCardId, isNewPaymentMethod: false)
+    default:
+      break
+    }
+  }
+}
+
+// MARK: - PledgeViewControllerMessageDisplaying
+
+extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplaying {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .error, message: message)
+  }
+
+  func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .success, message: message)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    switch type {
+    case .error:
+      self.navigationController?.popViewController(animated: true)
+    default:
+      break
+    }
   }
 }
