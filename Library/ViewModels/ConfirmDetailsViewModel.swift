@@ -294,25 +294,11 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
       Double?,
       PledgeSummaryViewData
     ) in
-    guard let projectCurrencyCountry = project.stats.currentCountry else {
-      return (
-        PostCampaignRewardsSummaryViewData(
-          rewards: rewards,
-          selectedQuantities: selectedQuantities,
-          projectCountry: project.country,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode,
-          shipping: shippingSummaryData
-        ),
-        bonusOrPledgeUpdatedAmount,
-        pledgeTotalSummaryData
-      )
-    }
-
-    return (
+    (
       PostCampaignRewardsSummaryViewData(
         rewards: rewards,
         selectedQuantities: selectedQuantities,
-        projectCountry: projectCurrencyCountry,
+        projectCountry: project.country,
         omitCurrencyCode: project.stats.omitUSCurrencyCode,
         shipping: shippingSummaryData
       ),
@@ -389,8 +375,6 @@ public class ConfirmDetailsViewModel: ConfirmDetailsViewModelType, ConfirmDetail
         selectedQuantities: initialData.selectedQuantities,
         bonusAmount: bonus == 0 ? nil : bonus,
         total: pledgeTotal,
-        projectCountry: initialData.project.stats.currentCountry ?? initialData.project.country,
-        omitCurrencyCode: initialData.project.stats.omitUSCurrencyCode,
         shipping: shipping,
         refTag: initialData.refTag,
         context: initialData.context,
