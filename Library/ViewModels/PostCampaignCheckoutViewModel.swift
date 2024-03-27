@@ -11,8 +11,6 @@ public struct PostCampaignCheckoutData: Equatable {
   public let selectedQuantities: SelectedRewardQuantities
   public let bonusAmount: Double?
   public let total: Double
-  public let projectCountry: Project.Country
-  public let omitCurrencyCode: Bool
   public let shipping: PledgeShippingSummaryViewData?
   public let refTag: RefTag?
   public let context: PledgeViewContext
@@ -113,8 +111,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         let rewardsData = PostCampaignRewardsSummaryViewData(
           rewards: data.rewards,
           selectedQuantities: data.selectedQuantities,
-          projectCountry: data.projectCountry,
-          omitCurrencyCode: data.omitCurrencyCode,
+          projectCountry: data.project.country,
+          omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
           shipping: data.shipping
         )
         let pledgeData = PledgeSummaryViewData(
