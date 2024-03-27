@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import PassKit
 import Prelude
 import Stripe
 import UIKit
@@ -240,6 +241,12 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
         STPAPIClient.shared.publishableKey = publishableKey
         STPAPIClient.shared.configuration.appleMerchantIdentifier = merchantIdentifier
       }
+
+    self.viewModel.outputs.goToApplePayPaymentAuthorization
+      .observeForControllerAction()
+      .observeValues { [weak self] paymentAuthorizationData in
+        self?.goToPaymentAuthorization(paymentAuthorizationData)
+      }
   }
 
   // MARK: - Functions
@@ -255,6 +262,17 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     let navigationBarHeight = navigationController.navigationBar.bounds.height
 
     self.present(navigationController, animated: true)
+  }
+
+  private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
+    let request = PKPaymentRequest.paymentRequest(for: paymentAuthorizationData)
+
+    guard
+      let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request)
+    else { return }
+    paymentAuthorizationViewController.delegate = self
+
+    self.present(paymentAuthorizationViewController, animated: true)
   }
 }
 
@@ -276,7 +294,7 @@ extension PostCampaignCheckoutViewController: PledgeViewCTAContainerViewDelegate
 
   func applePayButtonTapped() {
     self.paymentMethodsViewController.cancelModalPresentation(true)
-    // TODO: Respond to button tap
+    self.viewModel.inputs.applePayButtonTapped()
   }
 
   func submitButtonTapped() {
@@ -343,6 +361,40 @@ extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegat
       self.navigationController?.popViewController(animated: true)
     default:
       break
+    }
+  }
+}
+
+extension PostCampaignCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
+  func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+    controller.dismiss(animated: true, completion: { [weak self] in
+      self?.viewModel.inputs.paymentAuthorizationViewControllerDidFinish()
+    })
+  }
+
+  func paymentAuthorizationViewController(
+    _: PKPaymentAuthorizationViewController,
+    didAuthorizePayment payment: PKPayment,
+    handler completion: @escaping (PKPaymentAuthorizationResult)
+      -> Void
+  ) {
+    let paymentDisplayName = payment.token.paymentMethod.displayName
+    let paymentNetworkName = payment.token.paymentMethod.network?.rawValue
+    let transactionId = payment.token.transactionIdentifier
+
+    self.viewModel.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
+      paymentDisplayName,
+      paymentNetworkName,
+      transactionId
+    ))
+
+    STPAPIClient.shared.createToken(with: payment) { [weak self] token, error in
+      guard let self = self else { return }
+
+      let status = self.viewModel.inputs.stripeTokenCreated(token: token?.tokenId, error: error)
+      let result = PKPaymentAuthorizationResult(status: status, errors: [])
+
+      completion(result)
     }
   }
 }
