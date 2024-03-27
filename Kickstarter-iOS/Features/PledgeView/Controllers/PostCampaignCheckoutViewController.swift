@@ -208,18 +208,10 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.validateCheckoutSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] validation in
         guard let self else { return }
 
-        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
-      }
-
-    self.viewModel.outputs.validateCheckoutExistingCardSuccess
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in
-        guard let self else { return }
-
-        // TODO: Confirm paymentIntent using Stripe.confirmPayment()
+        confirmPayment(with: validation)
       }
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -259,9 +251,33 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let navigationBarHeight = navigationController.navigationBar.bounds.height
 
     self.present(navigationController, animated: true)
+  }
+
+  private func confirmPayment(with validation: PaymentSourceValidation) {
+    guard validation.requiresConfirmation else {
+      // Short circuit for payment intents that have already been validated
+      self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: validation.paymentIntentClientSecret)
+      return
+    }
+
+    let paymentParams = STPPaymentIntentParams(clientSecret: validation.paymentIntentClientSecret)
+
+    if let id = validation.selectedCardStripeCardId {
+      paymentParams.paymentMethodId = id
+    }
+
+    STPPaymentHandler.shared()
+      .confirmPayment(paymentParams, with: self) { status, _, error in
+        guard error == nil, status == .succeeded else {
+          self.messageBannerViewController?
+            .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+          return
+        }
+
+        self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: validation.paymentIntentClientSecret)
+      }
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
@@ -273,6 +289,14 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     paymentAuthorizationViewController.delegate = self
 
     self.present(paymentAuthorizationViewController, animated: true)
+  }
+}
+
+// MARK: - STPAuthenticationContext
+
+extension PostCampaignCheckoutViewController: STPAuthenticationContext {
+  func authenticationPresentingViewController() -> UIViewController {
+    return self
   }
 }
 

@@ -27,8 +27,15 @@ public struct PostCampaignPaymentAuthorizationData: Equatable {
   public let merchantIdentifier: String
 }
 
+public struct PaymentSourceValidation {
+  public let paymentIntentClientSecret: String
+  public let selectedCardStripeCardId: String?
+  public let requiresConfirmation: Bool
+}
+
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
+  func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
   func goToLoginSignupTapped()
   func pledgeDisclaimerViewDidTapLearnMore()
@@ -56,8 +63,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-  var validateCheckoutSuccess: Signal<String, Never> { get }
-  var validateCheckoutExistingCardSuccess: Signal<String, Never> { get }
+  var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
 }
 
@@ -155,6 +161,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: Validate Checkout Details On Submit
 
+    let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
+
     // MARK: - Validate Existing Cards
 
     /// Capture current users stored credit cards in the case that we need to validate an existing payment method
@@ -174,10 +182,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .skipNil()
       .map { $0.me.storedCards.storedCards }
 
-    let selectedExistingCard = self.creditCardSelectedProperty.signal.skipNil()
-      .filter { $0.isNewPaymentMethod == false }
+    let selectedExistingCard = selectedCard.filter { (_, _, isNewPaymentMethod: Bool) in
+      !isNewPaymentMethod
+    }
 
-    let newPaymentIntentEvent = initialData
+    let newPaymentIntentForExistingCards = initialData
       .takeWhen(selectedExistingCard)
       .switchMap { initialData in
         let projectId = initialData.project.graphID
@@ -192,13 +201,16 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           .materialize()
       }
 
-    let paymentIntentClientSecret = newPaymentIntentEvent.values()
+    let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
       .map { $0.clientSecret }
 
     // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
     let validateCheckoutExistingCard = Signal
-      .combineLatest(checkoutId, selectedExistingCard, paymentIntentClientSecret, storedCardsValues)
+      .combineLatest(checkoutId, selectedCard, paymentIntentClientSecretForExistingCards, storedCardsValues)
       .takeWhen(self.submitButtonTappedProperty.signal)
+      .filter { _, selectedCard, _, _ in
+        selectedCard.isNewPaymentMethod == false
+      }
       .switchMap { checkoutId, selectedExistingCreditCard, paymentIntentClientSecret, storedCards in
         let (_, paymentMethodId, _) = selectedExistingCreditCard
         let selectedStoredCard = storedCards.first { $0.id == paymentMethodId }
@@ -214,18 +226,29 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           .materialize()
       }
 
-    self.validateCheckoutExistingCardSuccess = paymentIntentClientSecret
+    let validateCheckoutExistingCardSuccess: Signal<PaymentSourceValidation, Never> = Signal
+      .combineLatest(paymentIntentClientSecretForExistingCards, selectedCard, storedCardsValues)
       .takeWhen(validateCheckoutExistingCard.values())
-      .map { $0 }
+      .map { paymentIntentClientSecret, selectedCard, storedCards in
+        let (_, paymentMethodId, _) = selectedCard
+        let selectedStoredCard = storedCards.first { $0.id == paymentMethodId }
+        let selectedCardStripeCardId = selectedStoredCard?.stripeCardId ?? ""
+
+        return PaymentSourceValidation(
+          paymentIntentClientSecret: paymentIntentClientSecret,
+          selectedCardStripeCardId: selectedCardStripeCardId,
+          requiresConfirmation: true
+        )
+      }
 
     // MARK: - Validate New Cards
 
-    let selectedNewCreditCard = self.creditCardSelectedProperty.signal.skipNil()
-      .filter { $0.isNewPaymentMethod }
-
     // Runs validation for new cards that were created with payment intents.
-    let validateCheckoutNewCard = Signal.combineLatest(checkoutId, selectedNewCreditCard)
+    let validateCheckoutNewCard = Signal.combineLatest(checkoutId, selectedCard)
       .takeWhen(self.submitButtonTappedProperty.signal)
+      .filter { _, selectedCard in
+        selectedCard.isNewPaymentMethod == true
+      }
       .switchMap { checkoutId, selectedNewCreditCard in
         let (paymentSource, paymentMethodId, _) = selectedNewCreditCard
 
@@ -239,12 +262,19 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
           .materialize()
       }
 
-    self.validateCheckoutSuccess = selectedNewCreditCard
+    let validateCheckoutNewCardSuccess: Signal<PaymentSourceValidation, Never> = selectedCard
       .takeWhen(validateCheckoutNewCard.values())
-      .map { _, paymentIntentClientSecret, _ in paymentIntentClientSecret }
+      .map { paymentSource, _, _ in PaymentSourceValidation(
+        paymentIntentClientSecret: paymentSource.paymentIntentClientSecret!,
+        selectedCardStripeCardId: nil,
+        requiresConfirmation: false // Newly added cards are confirmed in PledgePaymentMethodsViewController
+      ) }
+
+    self.validateCheckoutSuccess = Signal
+      .merge(validateCheckoutNewCardSuccess, validateCheckoutExistingCardSuccess)
 
     self.showErrorBannerWithMessage = Signal
-      .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
+      .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
       .map { _ in Strings.Something_went_wrong_please_try_again() }
 
     let paymentAuthorizationData: Signal<PostCampaignPaymentAuthorizationData, Never> = self
@@ -302,6 +332,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     applePayParams.observeValues { params in
       print("Got ApplePay params: \(params)")
     }
+
+    // MARK: CompleteOnSessionCheckout
+
+    // TODO: Call .completeOnSessionCheckout when self.confirmPaymentSuccessfulProperty.signal is called
   }
 
   // MARK: - Inputs
@@ -309,6 +343,11 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   private let configureWithDataProperty = MutableProperty<PostCampaignCheckoutData?>(nil)
   public func configure(with data: PostCampaignCheckoutData) {
     self.configureWithDataProperty.value = data
+  }
+
+  private let confirmPaymentSuccessfulProperty = MutableProperty<String?>(nil)
+  public func confirmPaymentSuccessful(clientSecret: String) {
+    self.confirmPaymentSuccessfulProperty.value = clientSecret
   }
 
   private let creditCardSelectedProperty =
@@ -401,8 +440,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
-  public let validateCheckoutSuccess: Signal<String, Never>
-  public let validateCheckoutExistingCardSuccess: Signal<String, Never>
+  public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
