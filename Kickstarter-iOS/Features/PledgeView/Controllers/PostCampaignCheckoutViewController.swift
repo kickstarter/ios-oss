@@ -208,19 +208,10 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.validateCheckoutSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] clientSecret in
+      .observeValues { [weak self] validation in
         guard let self else { return }
 
-        confirmPayment(with: clientSecret)
-      }
-
-    self.viewModel.outputs.validateCheckoutExistingCardSuccess
-      .observeForControllerAction()
-      .observeValues { [weak self] clientSecret, paymentMethodId in
-        guard let self else { return }
-
-        /// Needs the paymentMethodId so that we can associate the new intent with the actual payment method in Stripe
-        confirmPayment(with: clientSecret, paymentMethodId: paymentMethodId)
+        confirmPayment(with: validation)
       }
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -264,10 +255,16 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     self.present(navigationController, animated: true)
   }
 
-  private func confirmPayment(with clientSecret: String, paymentMethodId: String? = nil) {
-    let paymentParams = STPPaymentIntentParams(clientSecret: clientSecret)
+  private func confirmPayment(with validation: PaymentSourceValidation) {
+    guard validation.requiresConfirmation else {
+      // Short circuit for payment intents that have already been validated
+      self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: validation.paymentIntentClientSecret)
+      return
+    }
 
-    if let id = paymentMethodId {
+    let paymentParams = STPPaymentIntentParams(clientSecret: validation.paymentIntentClientSecret)
+
+    if let id = validation.selectedCardStripeCardId {
       paymentParams.paymentMethodId = id
     }
 
@@ -279,7 +276,7 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
           return
         }
 
-        self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: clientSecret)
+        self.viewModel.inputs.confirmPaymentSuccessful(clientSecret: validation.paymentIntentClientSecret)
       }
   }
 
