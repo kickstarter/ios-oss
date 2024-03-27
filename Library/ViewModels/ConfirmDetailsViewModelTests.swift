@@ -870,8 +870,6 @@ final class ConfirmDetailsViewModelTests: TestCase {
         selectedQuantities: selectedQuantities,
         bonusAmount: expectedBonus,
         total: 28,
-        projectCountry: .us,
-        omitCurrencyCode: true,
         shipping: expectedShipping,
         refTag: nil,
         context: .pledge,
