@@ -264,16 +264,8 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     self.present(navigationController, animated: true)
   }
 
-  private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
-    let request = PKPaymentRequest
-      .paymentRequest(
-        for: paymentAuthorizationData.project,
-        reward: paymentAuthorizationData.reward,
-        allRewardsTotal: paymentAuthorizationData.allRewardsTotal,
-        additionalPledgeAmount: paymentAuthorizationData.additionalPledgeAmount,
-        allRewardsShippingTotal: paymentAuthorizationData.allRewardsShippingTotal,
-        merchantIdentifier: paymentAuthorizationData.merchantIdentifier
-      )
+  private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
+    let request = PKPaymentRequest.paymentRequest(for: paymentAuthorizationData)
 
     guard
       let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request)

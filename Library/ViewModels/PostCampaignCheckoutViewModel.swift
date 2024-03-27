@@ -19,6 +19,16 @@ public struct PostCampaignCheckoutData: Equatable {
   public let checkoutId: String
 }
 
+public struct PostCampaignPaymentAuthorizationData: Equatable {
+  public let project: Project
+  public let hasNoReward: Bool
+  public let subtotal: Double
+  public let bonus: Double
+  public let shipping: Double
+  public let total: Double
+  public let merchantIdentifier: String
+}
+
 public protocol PostCampaignCheckoutViewModelInputs {
   func configure(with data: PostCampaignCheckoutData)
   func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
@@ -50,7 +60,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<String, Never> { get }
   var validateCheckoutExistingCardSuccess: Signal<String, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -239,21 +249,30 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
       .map { _ in Strings.Something_went_wrong_please_try_again() }
 
-    let paymentAuthorizationData: Signal<PaymentAuthorizationData, Never> = self.configureWithDataProperty
+    let paymentAuthorizationData: Signal<PostCampaignPaymentAuthorizationData, Never> = self
+      .configureWithDataProperty
       .signal
       .skipNil()
-      .map { (data: PostCampaignCheckoutData) -> PaymentAuthorizationData in
-        let reward = data.rewards.first! // What happens if you select no reward?
-        return PaymentAuthorizationData(
+      .map { (data: PostCampaignCheckoutData) -> PostCampaignPaymentAuthorizationData? in
+        guard let firstReward = data.rewards.first else {
+          // There should always be a reward - we create a special "no reward" reward if you make a monetary pledge
+          return nil
+        }
+
+        return PostCampaignPaymentAuthorizationData(
           project: data.project,
-          reward: reward,
-          // TODO: PKPaymentRequests+Helper switches on reward.isNoReward for displaying the total
-          allRewardsTotal: reward.isNoReward ? 0 : data.total,
-          additionalPledgeAmount: reward.isNoReward ? data.total : 0,
-          allRewardsShippingTotal: data.shipping?.total ?? 0,
+          hasNoReward: firstReward.isNoReward,
+          subtotal: firstReward.isNoReward ? firstReward.minimum : calculateAllRewardsTotal(
+            addOnRewards: data.rewards,
+            selectedQuantities: data.selectedQuantities
+          ),
+          bonus: data.bonusAmount ?? 0,
+          shipping: data.shipping?.total ?? 0,
+          total: data.total,
           merchantIdentifier: Secrets.ApplePay.merchantIdentifier
         )
       }
+      .skipNil()
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(self.applePayButtonTappedSignal)
@@ -386,7 +405,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<String, Never>
   public let validateCheckoutExistingCardSuccess: Signal<String, Never>
-  public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
