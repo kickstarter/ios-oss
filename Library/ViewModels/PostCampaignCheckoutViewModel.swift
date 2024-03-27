@@ -276,7 +276,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .merge(validateCheckoutNewCardSuccess, validateCheckoutExistingCardSuccess)
 
     self.showErrorBannerWithMessage = Signal
-      .combineLatest(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
+      .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
       .map { _ in Strings.Something_went_wrong_please_try_again() }
 
     let paymentAuthorizationData: Signal<PostCampaignPaymentAuthorizationData, Never> = self
