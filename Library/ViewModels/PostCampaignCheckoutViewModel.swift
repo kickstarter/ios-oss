@@ -163,7 +163,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .map { $0.me.storedCards.storedCards }
 
     let newPaymentIntentEvent = initialData
-      .takeWhen(selectedExistingCard)
+      .takeWhen(selectedCard)
       .switchMap { initialData in
         let projectId = initialData.project.graphID
         let pledgeTotal = initialData.total
