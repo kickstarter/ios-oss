@@ -146,7 +146,9 @@ public final class PaymentMethodSettingsViewModel: PaymentMethodsViewModelType,
       .filter(isTrue)
       .switchMap { _ -> SignalProducer<Signal<PaymentSheetSetupData, ErrorEnvelope>.Event, Never> in
         AppEnvironment.current.apiService
-          .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: nil))
+          .createStripeSetupIntent(
+            input: CreateSetupIntentInput(projectId: nil, context: .profileSettings)
+          )
           .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .switchMap { envelope -> SignalProducer<PaymentSheetSetupData, ErrorEnvelope> in

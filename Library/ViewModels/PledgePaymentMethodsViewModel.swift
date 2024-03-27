@@ -297,10 +297,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let createSetupIntentEvent = Signal.combineLatest(
       project,
       pledgeTotal,
-      paymentSheetType
+      paymentSheetType,
+      context
     )
     .takeWhen(didTapToAddNewCard)
-    .switchMap { (project, pledgeTotal, paymentSheetType) -> SignalProducer<
+    .switchMap { (project, pledgeTotal, paymentSheetType, pledgeContext) -> SignalProducer<
       Signal<PaymentSheetSetupData, ErrorEnvelope>.Event,
       Never
     > in
@@ -309,8 +310,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     switch paymentSheetType {
     case .setupIntent:
+      let setupIntentContext = pledgeContext == .latePledge
+        ? GraphAPI.StripeIntentContextTypes.postCampaignCheckout
+        : GraphAPI.StripeIntentContextTypes.crowdfundingCheckout
       clientSecretSignal = AppEnvironment.current.apiService
-        .createStripeSetupIntent(input: CreateSetupIntentInput(projectId: project.graphID))
+        .createStripeSetupIntent(
+          input: CreateSetupIntentInput(projectId: project.graphID, context: setupIntentContext)
+        )
         .map { $0.clientSecret }
 
     case .paymentIntent:
