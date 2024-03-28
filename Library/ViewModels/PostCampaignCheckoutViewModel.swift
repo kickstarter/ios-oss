@@ -188,10 +188,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       !isNewPaymentMethod
     }
 
-    let selectedNewCard = selectedCard.filter { (_, _, isNewPaymentMethod: Bool) in
-      isNewPaymentMethod
-    }
-
     let newPaymentIntentForExistingCards = initialData
       .takeWhen(selectedExistingCard)
       .switchMap { initialData in
@@ -343,37 +339,19 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: CompleteOnSessionCheckout
 
-    let completeCheckoutWithExistingCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedExistingCard)
+    let completeCheckoutWithCreditCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
+      .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedCard)
       .map { (
         clientSecret: String,
         checkoutId: String,
-        selectedCard: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)?
+        selectedCard: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
       ) -> GraphAPI.CompleteOnSessionCheckoutInput in
 
       GraphAPI
         .CompleteOnSessionCheckoutInput(
           checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
           paymentIntentClientSecret: clientSecret,
-          paymentSourceId: selectedCard?.paymentMethodId,
-          paymentSourceReusable: true,
-          applePay: nil
-        )
-      }
-
-    let completeCheckoutWithNewCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
-      .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedNewCard)
-      .map { (
-        clientSecret: String,
-        checkoutId: String,
-        _: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)?
-      ) -> GraphAPI.CompleteOnSessionCheckoutInput in
-
-      GraphAPI
-        .CompleteOnSessionCheckoutInput(
-          checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
-          paymentIntentClientSecret: clientSecret,
-          paymentSourceId: nil,
+          paymentSourceId: selectedCard.isNewPaymentMethod ? nil : selectedCard.paymentMethodId,
           paymentSourceReusable: true,
           applePay: nil
         )
@@ -384,15 +362,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     let checkoutCompleteSignal = Signal
       .merge(
-        completeCheckoutWithExistingCardInput,
-        completeCheckoutWithNewCardInput
+        completeCheckoutWithCreditCardInput
         // completeCheckoutWithApplePayInput
       )
       .switchMap { input in
         AppEnvironment.current.apiService.completeOnSessionCheckout(input: input).materialize()
       }
 
-    self.checkoutComplete = checkoutCompleteSignal.signal.ignoreValues()
+    self.checkoutComplete = checkoutCompleteSignal.signal.values().ignoreValues()
     self.checkoutError = checkoutCompleteSignal.signal.errors()
   }
 
