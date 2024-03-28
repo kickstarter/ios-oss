@@ -65,6 +65,8 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
+  var checkoutComplete: Signal<(), Never> { get }
+  var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
 public protocol PostCampaignCheckoutViewModelType {
@@ -186,6 +188,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       !isNewPaymentMethod
     }
 
+    let selectedNewCard = selectedCard.filter { (_, _, isNewPaymentMethod: Bool) in
+      isNewPaymentMethod
+    }
+
     let newPaymentIntentForExistingCards = initialData
       .takeWhen(selectedExistingCard)
       .switchMap { initialData in
@@ -277,6 +283,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
       .map { _ in Strings.Something_went_wrong_please_try_again() }
 
+    // MARK: ApplePay
+
     let paymentAuthorizationData: Signal<PostCampaignPaymentAuthorizationData, Never> = self
       .configureWithDataProperty
       .signal
@@ -335,7 +343,57 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: CompleteOnSessionCheckout
 
-    // TODO: Call .completeOnSessionCheckout when self.confirmPaymentSuccessfulProperty.signal is called
+    let completeCheckoutWithExistingCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
+      .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedExistingCard)
+      .map { (
+        clientSecret: String,
+        checkoutId: String,
+        selectedCard: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)?
+      ) -> GraphAPI.CompleteOnSessionCheckoutInput in
+
+      GraphAPI
+        .CompleteOnSessionCheckoutInput(
+          checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
+          paymentIntentClientSecret: clientSecret,
+          paymentSourceId: selectedCard?.paymentMethodId,
+          paymentSourceReusable: true,
+          applePay: nil
+        )
+      }
+
+    let completeCheckoutWithNewCardInput: Signal<GraphAPI.CompleteOnSessionCheckoutInput, Never> = Signal
+      .combineLatest(self.confirmPaymentSuccessfulProperty.signal.skipNil(), checkoutId, selectedNewCard)
+      .map { (
+        clientSecret: String,
+        checkoutId: String,
+        _: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)?
+      ) -> GraphAPI.CompleteOnSessionCheckoutInput in
+
+      GraphAPI
+        .CompleteOnSessionCheckoutInput(
+          checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
+          paymentIntentClientSecret: clientSecret,
+          paymentSourceId: nil,
+          paymentSourceReusable: true,
+          applePay: nil
+        )
+      }
+
+    // TODO: Implement ApplePay
+    // let completeCheckoutWithApplePay =
+
+    let checkoutCompleteSignal = Signal
+      .merge(
+        completeCheckoutWithExistingCardInput,
+        completeCheckoutWithNewCardInput
+        // completeCheckoutWithApplePayInput
+      )
+      .switchMap { input in
+        AppEnvironment.current.apiService.completeOnSessionCheckout(input: input).materialize()
+      }
+
+    self.checkoutComplete = checkoutCompleteSignal.signal.ignoreValues()
+    self.checkoutError = checkoutCompleteSignal.signal.errors()
   }
 
   // MARK: - Inputs
@@ -442,6 +500,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
+  public let checkoutComplete: Signal<(), Never>
+  public let checkoutError: Signal<ErrorEnvelope, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
