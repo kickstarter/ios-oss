@@ -77,7 +77,6 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     self.title = Strings.Back_this_project()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
-    self.messageBannerViewController?.delegate = self
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -377,17 +376,6 @@ extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplay
 }
 
 // MARK: - MessageBannerViewControllerDelegate
-
-extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegate {
-  func messageBannerViewDidHide(type: MessageBannerType) {
-    switch type {
-    case .error:
-      self.navigationController?.popViewController(animated: true)
-    default:
-      break
-    }
-  }
-}
 
 extension PostCampaignCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
   func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
