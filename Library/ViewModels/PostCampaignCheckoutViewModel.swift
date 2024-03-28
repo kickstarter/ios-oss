@@ -35,6 +35,7 @@ public struct PaymentSourceValidation {
 }
 
 public protocol PostCampaignCheckoutViewModelInputs {
+  func checkoutTerminated()
   func configure(with data: PostCampaignCheckoutData)
   func confirmPaymentSuccessful(clientSecret: String)
   func creditCardSelected(source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
@@ -59,6 +60,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
@@ -163,6 +165,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     // MARK: Validate Checkout Details On Submit
 
     let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
+
+    let processingViewIsHidden = MutableProperty<Bool>(true)
 
     // MARK: - Validate Existing Cards
 
@@ -274,8 +278,10 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.validateCheckoutSuccess = Signal
       .merge(validateCheckoutNewCardSuccess, validateCheckoutExistingCardSuccess)
 
-    self.showErrorBannerWithMessage = Signal
+    let validateCheckoutError = Signal
       .merge(validateCheckoutExistingCard.errors(), validateCheckoutNewCard.errors())
+
+    self.showErrorBannerWithMessage = validateCheckoutError
       .map { _ in Strings.Something_went_wrong_please_try_again() }
 
     // MARK: ApplePay
@@ -391,9 +397,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .map { $0 }
 
     self.checkoutError = checkoutCompleteSignal.signal.errors()
+
+    self.processingViewIsHidden = Signal.merge(
+      initialData.mapConst(true),
+      // TODO: show processing view when Apple pay is initiated
+      self.submitButtonTappedProperty.signal.mapConst(false),
+      validateCheckoutError.mapConst(true),
+      self.checkoutTerminatedProperty.signal.mapConst(true),
+      self.confirmPaymentSuccessfulProperty.signal.mapConst(true) // TODO: update to actual end of flow
+    )
   }
 
   // MARK: - Inputs
+
+  private let checkoutTerminatedProperty = MutableProperty(())
+  public func checkoutTerminated() {
+    self.checkoutTerminatedProperty.value = ()
+  }
 
   private let configureWithDataProperty = MutableProperty<PostCampaignCheckoutData?>(nil)
   public func configure(with data: PostCampaignCheckoutData) {
@@ -474,6 +494,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
