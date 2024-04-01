@@ -238,6 +238,33 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
       .observeValues { [weak self] paymentAuthorizationData in
         self?.goToPaymentAuthorization(paymentAuthorizationData)
       }
+
+    self.viewModel.outputs.checkoutComplete
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        let alert = UIAlertController(
+          title: "Wow!",
+          message: "It worked! Your checkout is done. This should push us to the Thanks page.",
+          preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel))
+        self?.present(alert, animated: true)
+      }
+
+    self.viewModel.outputs.checkoutError
+      .observeForUI()
+      .observeValues { [weak self] error in
+
+        #if DEBUG
+          let serverError = error.errorMessages.first ?? ""
+          let message = "\(Strings.Something_went_wrong_please_try_again())\n\(serverError)"
+        #else
+          let message = Strings.Something_went_wrong_please_try_again()
+        #endif
+
+        self?.messageBannerViewController?
+          .showBanner(with: .error, message: message)
+      }
   }
 
   // MARK: - Functions
