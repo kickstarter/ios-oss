@@ -11,7 +11,7 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
     PostCampaignPaymentAuthorizationData,
     Never
   >()
-  fileprivate let checkoutComplete = TestObserver<(), Never>()
+  fileprivate let checkoutComplete = TestObserver<ThanksPageData, Never>()
 
   override func setUp() {
     super.setUp()
