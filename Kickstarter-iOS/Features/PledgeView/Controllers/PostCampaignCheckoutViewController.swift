@@ -243,14 +243,9 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.checkoutComplete
       .observeForUI()
-      .observeValues { [weak self] _ in
-        let alert = UIAlertController(
-          title: "Wow!",
-          message: "It worked! Your checkout is done. This should push us to the Thanks page.",
-          preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel))
-        self?.present(alert, animated: true)
+      .observeValues { [weak self] thanksPageData in
+        let thanksVC = ThanksViewController.configured(with: thanksPageData)
+        self?.navigationController?.pushViewController(thanksVC, animated: true)
       }
 
     self.viewModel.outputs.checkoutError

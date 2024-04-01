@@ -63,7 +63,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never> { get }
-  var checkoutComplete: Signal<(), Never> { get }
+  var checkoutComplete: Signal<ThanksPageData, Never> { get }
   var checkoutError: Signal<ErrorEnvelope, Never> { get }
 }
 
@@ -85,6 +85,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     let context = initialData.map(\.context)
     let checkoutId = initialData.map(\.checkoutId)
+    let baseReward = initialData.map(\.rewards).map(\.first)
 
     let configurePaymentMethodsData = Signal.merge(
       initialData,
@@ -378,7 +379,17 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         AppEnvironment.current.apiService.completeOnSessionCheckout(input: input).materialize()
       }
 
-    self.checkoutComplete = checkoutCompleteSignal.signal.values().ignoreValues()
+    let thanksPageData = Signal.combineLatest(initialData, baseReward)
+      .map { initialData, baseReward -> ThanksPageData? in
+        guard let reward = baseReward else { return nil }
+
+        return (initialData.project, reward, nil, initialData.total)
+      }
+
+    self.checkoutComplete = thanksPageData.skipNil()
+      .takeWhen(checkoutCompleteSignal.signal.values())
+      .map { $0 }
+
     self.checkoutError = checkoutCompleteSignal.signal.errors()
   }
 
@@ -467,7 +478,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>
   public let goToApplePayPaymentAuthorization: Signal<PostCampaignPaymentAuthorizationData, Never>
-  public let checkoutComplete: Signal<(), Never>
+  public let checkoutComplete: Signal<ThanksPageData, Never>
   public let checkoutError: Signal<ErrorEnvelope, Never>
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
