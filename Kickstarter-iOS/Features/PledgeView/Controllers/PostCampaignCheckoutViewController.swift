@@ -404,6 +404,8 @@ extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegat
   func messageBannerViewDidHide(type: MessageBannerType) {
     switch type {
     case .error:
+      // Pop view controller in order to start checkout flow from the beginning,
+      // starting with generating a new checkout id.
       self.navigationController?.popViewController(animated: true)
     default:
       break
