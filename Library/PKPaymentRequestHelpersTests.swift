@@ -172,7 +172,6 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     project.stats.currency = Project.Country.jp.currencyCode
     project.isInPostCampaignPledgingPhase = true
 
-    let reward = Reward.template
     let merchantId = "merchant_id"
 
     let data = PostCampaignPaymentAuthorizationData(
@@ -182,7 +181,8 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
       bonus: 200,
       shipping: 300,
       total: 500,
-      merchantIdentifier: merchantId
+      merchantIdentifier: merchantId,
+      paymentIntent: "foo"
     )
 
     let paymentRequest = PKPaymentRequest.paymentRequest(for: data)
@@ -212,7 +212,6 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     project.stats.currency = Project.Country.ca.currencyCode
     project.isInPostCampaignPledgingPhase = true
 
-    let reward = Reward.noReward
     let merchantId = "merchant_id"
 
     let data = PostCampaignPaymentAuthorizationData(
@@ -222,7 +221,8 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
       bonus: 0,
       shipping: 0,
       total: 500,
-      merchantIdentifier: merchantId
+      merchantIdentifier: merchantId,
+      paymentIntent: "foo"
     )
 
     let paymentRequest = PKPaymentRequest.paymentRequest(for: data)
