@@ -108,7 +108,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.endRefreshing = projectEvent.filter { $0.isTerminating }.ignoreValues()
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
-
     let requestErrored = projectEvent.map(\.error).map(isNotNil)
 
     // Quantities updated as the user selects them, merged with an empty initial value.
@@ -473,8 +472,10 @@ private func addOnIsAvailable(_ addOn: Reward, in project: Project) -> Bool {
   // Assuming the user has not backed the addOn, we only display if it's within range of the start and end date
   let hasNoTimeLimitOrIsWithinRange = isStartDateBeforeToday(for: addOn) && isEndDateAfterToday(for: addOn)
 
+  let isPostCampaign = project.isInPostCampaignPledgingPhase && featurePostCampaignPledgeEnabled()
+
   return [
-    project.state == .live,
+    project.state == .live || isPostCampaign,
     hasNoTimeLimitOrIsWithinRange,
     isUnlimitedOrAvailable
   ]
