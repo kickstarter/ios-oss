@@ -12,11 +12,14 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
     Never
   >()
   fileprivate let checkoutComplete = TestObserver<ThanksPageData, Never>()
+  
+  fileprivate let processingViewIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
+    self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
   }
 
   func testApplePayAuthorization_noReward_isCorrect() {
@@ -263,6 +266,8 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
+      
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
@@ -280,6 +285,8 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.inputs.applePayContextDidComplete()
 
       self.checkoutComplete.assertDidEmitValue()
+      
+      self.processingViewIsHidden.assertLastValue(true)
     }
   }
 }
