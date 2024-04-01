@@ -83,6 +83,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
     self.title = Strings.Back_this_project()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -412,6 +413,21 @@ extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplay
 
   func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
     self.messageBannerViewController?.showBanner(with: .success, message: message)
+  }
+}
+
+// MARK: - MessageBannerViewControllerDelegate
+
+extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    switch type {
+    case .error:
+      // Pop view controller in order to start checkout flow from the beginning,
+      // starting with generating a new checkout id.
+      self.navigationController?.popViewController(animated: true)
+    default:
+      break
+    }
   }
 }
 
