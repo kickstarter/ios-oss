@@ -322,6 +322,7 @@ final class PostCampaignCheckoutViewController: UIViewController,
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
     let request = PKPaymentRequest.paymentRequest(for: paymentAuthorizationData)
     guard let applePayContext = STPApplePayContext(paymentRequest: request, delegate: self) else {
+      self.viewModel.inputs.checkoutTerminated()
       return
     }
 
@@ -430,6 +431,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     completion: @escaping StripeApplePay.STPIntentClientSecretCompletionBlock
   ) {
     guard let paymentIntentClientSecret = self.applePayPaymentIntent else {
+      self.viewModel.inputs.checkoutTerminated()
       completion(
         nil,
         PostCampaignCheckoutApplePayError.missingPaymentIntent("Missing PaymentIntent")
@@ -439,6 +441,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
 
     guard let paymentDisplayName = payment.token.paymentMethod.displayName,
       let paymentNetworkName = payment.token.paymentMethod.network?.rawValue else {
+      self.viewModel.inputs.checkoutTerminated()
       completion(
         nil,
         PostCampaignCheckoutApplePayError
@@ -456,6 +459,7 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
       }
 
       guard let tokenId = token?.tokenId else {
+        self.viewModel.inputs.checkoutTerminated()
         completion(
           nil,
           PostCampaignCheckoutApplePayError.missingToken("Unable to retrieve token from Stripe")
@@ -484,12 +488,15 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     case .success:
       self.viewModel.inputs.applePayContextDidComplete()
     case .error:
+      self.viewModel.inputs.checkoutTerminated()
       self.messageBannerViewController?
         .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
     case .userCancellation:
       // User canceled the payment
+      self.viewModel.inputs.checkoutTerminated()
       break
     @unknown default:
+      self.viewModel.inputs.checkoutTerminated()
       fatalError()
     }
   }

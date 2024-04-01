@@ -296,21 +296,27 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
      5) Payment authorization form calls paymentAuthorizationDidFinish
      */
 
-    let newPaymentIntentForApplePay: Signal<String, Never> = self.configureWithDataProperty.signal
-      .skipNil()
-      .takeWhen(self.applePayButtonTappedSignal)
-      .switchMap { initialData in
-        let projectId = initialData.project.graphID
-        let pledgeTotal = initialData.total
+    let createPaymentIntentForApplePay: Signal<Signal<PaymentIntentEnvelope, ErrorEnvelope>.Event, Never> =
+      self.configureWithDataProperty.signal
+        .skipNil()
+        .takeWhen(self.applePayButtonTappedSignal)
+        .switchMap { initialData in
+          let projectId = initialData.project.graphID
+          let pledgeTotal = initialData.total
 
-        return AppEnvironment.current.apiService
-          .createPaymentIntentInput(input: CreatePaymentIntentInput(
-            projectId: projectId,
-            amountDollars: String(format: "%.2f", pledgeTotal),
-            digitalMarketingAttributed: nil
-          ))
-          .materialize()
-      }
+          return AppEnvironment.current.apiService
+            .createPaymentIntentInput(input: CreatePaymentIntentInput(
+              projectId: projectId,
+              amountDollars: String(format: "%.2f", pledgeTotal),
+              digitalMarketingAttributed: nil
+            ))
+            .materialize()
+        }
+
+    let newPaymentIntentForApplePayError: Signal<ErrorEnvelope, Never> = createPaymentIntentForApplePay
+      .errors()
+
+    let newPaymentIntentForApplePay: Signal<String, Never> = createPaymentIntentForApplePay
       .values()
       .map { $0.clientSecret }
 
@@ -400,11 +406,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     self.processingViewIsHidden = Signal.merge(
       initialData.mapConst(true),
-      // TODO: show processing view when Apple pay is initiated
       self.submitButtonTappedProperty.signal.mapConst(false),
-      validateCheckoutError.mapConst(true),
-      self.checkoutTerminatedProperty.signal.mapConst(true),
-      self.confirmPaymentSuccessfulProperty.signal.mapConst(true) // TODO: update to actual end of flow
+      self.applePayButtonTappedSignal.mapConst(false),
+      newPaymentIntentForApplePayError.mapConst(true), // Apple pay payment intent error.
+      validateCheckoutError.mapConst(true), // Card validation error terminates flow.
+      self.checkoutTerminatedProperty.signal.mapConst(true), // Error/cancellation in VC.
+      checkoutCompleteSignal.signal.mapConst(true) // Checkout completed.
     )
   }
 
