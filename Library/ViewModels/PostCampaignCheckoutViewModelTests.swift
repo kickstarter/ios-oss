@@ -1,3 +1,4 @@
+import Apollo
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -10,9 +11,12 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
     PostCampaignPaymentAuthorizationData,
     Never
   >()
+  fileprivate let checkoutComplete = TestObserver<ThanksPageData, Never>()
 
   override func setUp() {
+    super.setUp()
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
+    self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
   }
 
   func testApplePayAuthorization_noReward_isCorrect() {
@@ -31,18 +35,24 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       checkoutId: "0"
     )
 
-    self.vm.configure(with: data)
-    self.vm.inputs.applePayButtonTapped()
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
 
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
-    let output = self.goToApplePayPaymentAuthorization.lastValue!
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applePayButtonTapped()
 
-    XCTAssertEqual(output.project, project)
-    XCTAssertEqual(output.hasNoReward, true)
-    XCTAssertEqual(output.subtotal, 5)
-    XCTAssertEqual(output.bonus, 0)
-    XCTAssertEqual(output.shipping, 0)
-    XCTAssertEqual(output.total, 5)
+      self.goToApplePayPaymentAuthorization.assertValueCount(1)
+      let output = self.goToApplePayPaymentAuthorization.lastValue!
+
+      XCTAssertEqual(output.project, project)
+      XCTAssertEqual(output.hasNoReward, true)
+      XCTAssertEqual(output.subtotal, 5)
+      XCTAssertEqual(output.bonus, 0)
+      XCTAssertEqual(output.shipping, 0)
+      XCTAssertEqual(output.total, 5)
+    }
   }
 
   func testApplePayAuthorization_reward_isCorrect() {
@@ -63,18 +73,25 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       checkoutId: "0"
     )
 
-    self.vm.configure(with: data)
-    self.vm.inputs.applePayButtonTapped()
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
 
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
-    let output = self.goToApplePayPaymentAuthorization.lastValue!
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(output.project, project)
-    XCTAssertEqual(output.hasNoReward, false)
-    XCTAssertEqual(output.subtotal, 18)
-    XCTAssertEqual(output.bonus, 0)
-    XCTAssertEqual(output.shipping, 0)
-    XCTAssertEqual(output.total, 18)
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorization.assertValueCount(1)
+      let output = self.goToApplePayPaymentAuthorization.lastValue!
+
+      XCTAssertEqual(output.project, project)
+      XCTAssertEqual(output.hasNoReward, false)
+      XCTAssertEqual(output.subtotal, 18)
+      XCTAssertEqual(output.bonus, 0)
+      XCTAssertEqual(output.shipping, 0)
+      XCTAssertEqual(output.total, 18)
+    }
   }
 
   func testApplePayAuthorization_rewardAndShipping_isCorrect() {
@@ -100,18 +117,25 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       checkoutId: "0"
     )
 
-    self.vm.configure(with: data)
-    self.vm.inputs.applePayButtonTapped()
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
 
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
-    let output = self.goToApplePayPaymentAuthorization.lastValue!
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(output.project, project)
-    XCTAssertEqual(output.hasNoReward, false)
-    XCTAssertEqual(output.subtotal, 18)
-    XCTAssertEqual(output.bonus, 0)
-    XCTAssertEqual(output.shipping, 72)
-    XCTAssertEqual(output.total, 90)
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorization.assertValueCount(1)
+      let output = self.goToApplePayPaymentAuthorization.lastValue!
+
+      XCTAssertEqual(output.project, project)
+      XCTAssertEqual(output.hasNoReward, false)
+      XCTAssertEqual(output.subtotal, 18)
+      XCTAssertEqual(output.bonus, 0)
+      XCTAssertEqual(output.shipping, 72)
+      XCTAssertEqual(output.total, 90)
+    }
   }
 
   func testApplePayAuthorization_rewardAndShippingAndBonus_isCorrect() {
@@ -139,17 +163,123 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       checkoutId: "0"
     )
 
-    self.vm.configure(with: data)
-    self.vm.inputs.applePayButtonTapped()
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
 
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
-    let output = self.goToApplePayPaymentAuthorization.lastValue!
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(output.project, project)
-    XCTAssertEqual(output.hasNoReward, false)
-    XCTAssertEqual(output.subtotal, 56)
-    XCTAssertEqual(output.bonus, 5)
-    XCTAssertEqual(output.shipping, 72)
-    XCTAssertEqual(output.total, 133)
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorization.assertValueCount(1)
+      let output = self.goToApplePayPaymentAuthorization.lastValue!
+
+      XCTAssertEqual(output.project, project)
+      XCTAssertEqual(output.hasNoReward, false)
+      XCTAssertEqual(output.subtotal, 56)
+      XCTAssertEqual(output.bonus, 5)
+      XCTAssertEqual(output.shipping, 72)
+      XCTAssertEqual(output.total, 133)
+    }
+  }
+
+  func testTapApplePayButton_createsPaymentIntent_beforePresentingAuthorizationController() {
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let mockService = MockService(createPaymentIntentResult: .success(paymentIntent))
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PostCampaignCheckoutData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .pledge,
+      checkoutId: "0"
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.applePayButtonTapped()
+      self.goToApplePayPaymentAuthorization.assertDidEmitValue()
+
+      let output = self.goToApplePayPaymentAuthorization.lastValue!
+      XCTAssertEqual(output.paymentIntent, "foo")
+    }
+  }
+
+  func testApplePay_completesCheckoutFlow() {
+    // Mock data for API requests
+    let paymentIntent = PaymentIntentEnvelope(clientSecret: "foo")
+    let completeSessionJsonString = """
+    {
+      "completeOnSessionCheckout": {
+        "__typename": "CompleteOnSessionCheckoutPayload",
+        "checkout": {
+          "__typename": "Checkout",
+          "id": "Q2hlY2tvdXQtMTk4MzM2OTIz",
+          "state": "successful",
+          "backing": {
+            "requiresAction": false,
+            "clientSecret": "super-secret",
+            "__typename": "Backing"
+          }
+        }
+      }
+    }
+    """
+    let completeSessionJson = try! JSONSerialization
+      .jsonObject(with: completeSessionJsonString.data(using: .utf8)!)
+    let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
+      .Data(jsonObject: completeSessionJson as! JSONObject)
+    let mockService = MockService(
+      completeOnSessionCheckoutResult: .success(completeSessionData),
+      createPaymentIntentResult: .success(paymentIntent)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PostCampaignCheckoutData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .pledge,
+      checkoutId: "0"
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.configure(with: data)
+      self.vm.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorization.assertDidEmitValue()
+
+      let params = ApplePayParams(
+        paymentInstrumentName: "Fake Instrument",
+        paymentNetwork: "Fake Payment Network",
+        transactionIdentifier: "Fake transaction identifier",
+        token: "tok_abc123def"
+      )
+
+      self.vm.inputs.applePayContextDidCreatePayment(params: params)
+
+      self.checkoutComplete.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayContextDidComplete()
+
+      self.checkoutComplete.assertDidEmitValue()
+    }
   }
 }
