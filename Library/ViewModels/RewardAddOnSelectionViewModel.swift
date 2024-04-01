@@ -467,19 +467,7 @@ private func addOnIsAvailable(_ addOn: Reward, in project: Project) -> Bool {
     return true
   }
 
-  let isUnlimitedOrAvailable = addOn.limit == nil || addOn.remaining ?? 0 > 0
-
-  // Assuming the user has not backed the addOn, we only display if it's within range of the start and end date
-  let hasNoTimeLimitOrIsWithinRange = isStartDateBeforeToday(for: addOn) && isEndDateAfterToday(for: addOn)
-
-  let isPostCampaign = project.isInPostCampaignPledgingPhase && featurePostCampaignPledgeEnabled()
-
-  return [
-    project.state == .live || isPostCampaign,
-    hasNoTimeLimitOrIsWithinRange,
-    isUnlimitedOrAvailable
-  ]
-  .allSatisfy(isTrue)
+  return addOn.isAvailable ?? false
 }
 
 private func filteredAddOns(
