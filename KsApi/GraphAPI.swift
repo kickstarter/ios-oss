@@ -15520,6 +15520,7 @@ public enum GraphAPI {
         estimatedDeliveryOn
         id
         isMaxPledge
+        available
         items {
           __typename
           edges {
@@ -15570,6 +15571,7 @@ public enum GraphAPI {
         GraphQLField("estimatedDeliveryOn", type: .scalar(String.self)),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("isMaxPledge", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("available", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("items", type: .object(Item.selections)),
         GraphQLField("limit", type: .scalar(Int.self)),
         GraphQLField("limitPerBacker", type: .scalar(Int.self)),
@@ -15595,8 +15597,8 @@ public enum GraphAPI {
       self.resultMap = unsafeResultMap
     }
 
-    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, postCampaignPledgingEnabled: Bool, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
+    public init(amount: Amount, backersCount: Int? = nil, convertedAmount: ConvertedAmount, allowedAddons: AllowedAddon, description: String, displayName: String, endsAt: String? = nil, estimatedDeliveryOn: String? = nil, id: GraphQLID, isMaxPledge: Bool, available: Bool, items: Item? = nil, limit: Int? = nil, limitPerBacker: Int? = nil, localReceiptLocation: LocalReceiptLocation? = nil, name: String? = nil, postCampaignPledgingEnabled: Bool, project: Project? = nil, remainingQuantity: Int? = nil, shippingPreference: ShippingPreference? = nil, shippingSummary: String? = nil, shippingRules: [ShippingRule?]? = nil, startsAt: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Reward", "amount": amount.resultMap, "backersCount": backersCount, "convertedAmount": convertedAmount.resultMap, "allowedAddons": allowedAddons.resultMap, "description": description, "displayName": displayName, "endsAt": endsAt, "estimatedDeliveryOn": estimatedDeliveryOn, "id": id, "isMaxPledge": isMaxPledge, "available": available, "items": items.flatMap { (value: Item) -> ResultMap in value.resultMap }, "limit": limit, "limitPerBacker": limitPerBacker, "localReceiptLocation": localReceiptLocation.flatMap { (value: LocalReceiptLocation) -> ResultMap in value.resultMap }, "name": name, "postCampaignPledgingEnabled": postCampaignPledgingEnabled, "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }, "remainingQuantity": remainingQuantity, "shippingPreference": shippingPreference, "shippingSummary": shippingSummary, "shippingRules": shippingRules.flatMap { (value: [ShippingRule?]) -> [ResultMap?] in value.map { (value: ShippingRule?) -> ResultMap? in value.flatMap { (value: ShippingRule) -> ResultMap in value.resultMap } } }, "startsAt": startsAt])
     }
 
     public var __typename: String {
@@ -15706,6 +15708,16 @@ public enum GraphAPI {
       }
       set {
         resultMap.updateValue(newValue, forKey: "isMaxPledge")
+      }
+    }
+
+    /// Whether or not the reward is available for new pledges
+    public var available: Bool {
+      get {
+        return resultMap["available"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "available")
       }
     }
 

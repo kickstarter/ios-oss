@@ -17,6 +17,7 @@ fragment RewardFragment on Reward {
   estimatedDeliveryOn
   id
   isMaxPledge
+  available
   items {
     edges {
       quantity

@@ -21,6 +21,8 @@ public struct Reward {
   public let startsAt: TimeInterval?
   public let title: String?
   public let localPickup: Location?
+  /// isAvailable is provided by GraphQL but not by API V1.
+  public let isAvailable: Bool?
 
   /// Returns `true` is this is the "fake" "No reward" reward.
   public var isNoReward: Bool {
@@ -147,6 +149,7 @@ extension Reward: Decodable {
     self.title = try values.decodeIfPresent(String.self, forKey: .title)
     // NOTE: `v1` is deprecated and doesn't contain any location pickup information.
     self.localPickup = nil
+    self.isAvailable = nil
   }
 }
 
