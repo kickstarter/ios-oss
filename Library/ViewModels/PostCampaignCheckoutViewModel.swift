@@ -61,6 +61,7 @@ public protocol PostCampaignCheckoutViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var processingViewIsHidden: Signal<Bool, Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
   var validateCheckoutSuccess: Signal<PaymentSourceValidation, Never> { get }
@@ -163,6 +164,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     // MARK: Validate Checkout Details On Submit
 
+    let processingViewIsHidden = MutableProperty<Bool>(true)
+
     let selectedCard = self.creditCardSelectedProperty.signal.skipNil()
 
     // MARK: - Validate Existing Cards
@@ -225,6 +228,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
             paymentIntentClientSecret: paymentIntentClientSecret
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .materialize()
       }
 
@@ -261,6 +272,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
             paymentIntentClientSecret: paymentSource.paymentIntentClientSecret!
           )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .materialize()
       }
 
@@ -346,7 +365,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         checkoutId: String,
         selectedCard: (source: PaymentSourceSelected, paymentMethodId: String, isNewPaymentMethod: Bool)
       ) -> GraphAPI.CompleteOnSessionCheckoutInput in
-
       GraphAPI
         .CompleteOnSessionCheckoutInput(
           checkoutId: encodeToBase64("Checkout-\(checkoutId)"),
@@ -366,11 +384,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         // completeCheckoutWithApplePayInput
       )
       .switchMap { input in
-        AppEnvironment.current.apiService.completeOnSessionCheckout(input: input).materialize()
+        AppEnvironment.current.apiService
+          .completeOnSessionCheckout(input: input)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
+          .materialize()
       }
 
     self.checkoutComplete = checkoutCompleteSignal.signal.values().ignoreValues()
     self.checkoutError = checkoutCompleteSignal.signal.errors()
+
+    self.processingViewIsHidden = processingViewIsHidden.signal
   }
 
   // MARK: - Inputs
@@ -473,6 +503,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward?), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let processingViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showWebHelp: Signal<HelpType, Never>
   public let validateCheckoutSuccess: Signal<PaymentSourceValidation, Never>

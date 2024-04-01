@@ -11,10 +11,12 @@ private enum PostCampaignCheckoutLayout {
   }
 }
 
-final class PostCampaignCheckoutViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class PostCampaignCheckoutViewController: UIViewController, MessageBannerViewControllerPresenting,
+  ProcessingViewPresenting {
   // MARK: - Properties
 
   internal var messageBannerViewController: MessageBannerViewController?
+  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
 
   private lazy var titleLabel = UILabel(frame: .zero)
 
@@ -265,6 +267,16 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
         self?.messageBannerViewController?
           .showBanner(with: .error, message: message)
       }
+
+    self.viewModel.outputs.processingViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        if isHidden {
+          self?.hideProcessingView()
+        } else {
+          self?.showProcessingView()
+        }
+      }
   }
 
   // MARK: - Functions
@@ -386,6 +398,14 @@ extension PostCampaignCheckoutViewController: PledgePaymentMethodsViewController
         .creditCardSelected(source: paymentSource, paymentMethodId: savedCardId, isNewPaymentMethod: false)
     default:
       break
+    }
+  }
+
+  func pledgePaymentMethodsViewController(_: PledgePaymentMethodsViewController, loading flag: Bool) {
+    if flag {
+      self.showProcessingView()
+    } else {
+      self.hideProcessingView()
     }
   }
 }
