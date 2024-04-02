@@ -16,6 +16,8 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
   internal var messageBannerViewController: MessageBannerViewController?
 
+  fileprivate var applePayPaymentIntent: String?
+
   private lazy var titleLabel = UILabel(frame: .zero)
 
   private lazy var paymentMethodsViewController = {
@@ -77,6 +79,7 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
     self.title = Strings.Back_this_project()
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+    self.messageBannerViewController?.delegate = self
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -241,14 +244,9 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.checkoutComplete
       .observeForUI()
-      .observeValues { [weak self] _ in
-        let alert = UIAlertController(
-          title: "Wow!",
-          message: "It worked! Your checkout is done. This should push us to the Thanks page.",
-          preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel))
-        self?.present(alert, animated: true)
+      .observeValues { [weak self] thanksPageData in
+        let thanksVC = ThanksViewController.configured(with: thanksPageData)
+        self?.navigationController?.pushViewController(thanksVC, animated: true)
       }
 
     self.viewModel.outputs.checkoutError
@@ -308,13 +306,12 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
     let request = PKPaymentRequest.paymentRequest(for: paymentAuthorizationData)
+    guard let applePayContext = STPApplePayContext(paymentRequest: request, delegate: self) else {
+      return
+    }
 
-    guard
-      let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request)
-    else { return }
-    paymentAuthorizationViewController.delegate = self
-
-    self.present(paymentAuthorizationViewController, animated: true)
+    self.applePayPaymentIntent = paymentAuthorizationData.paymentIntent
+    applePayContext.presentApplePay()
   }
 }
 
@@ -404,36 +401,96 @@ extension PostCampaignCheckoutViewController: PledgeViewControllerMessageDisplay
 
 // MARK: - MessageBannerViewControllerDelegate
 
-extension PostCampaignCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
-  func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-    controller.dismiss(animated: true, completion: { [weak self] in
-      self?.viewModel.inputs.paymentAuthorizationViewControllerDidFinish()
-    })
+extension PostCampaignCheckoutViewController: MessageBannerViewControllerDelegate {
+  func messageBannerViewDidHide(type: MessageBannerType) {
+    switch type {
+    case .error:
+      // Pop view controller in order to start checkout flow from the beginning,
+      // starting with generating a new checkout id.
+      self.navigationController?.popViewController(animated: true)
+    default:
+      break
+    }
   }
+}
 
-  func paymentAuthorizationViewController(
-    _: PKPaymentAuthorizationViewController,
-    didAuthorizePayment payment: PKPayment,
-    handler completion: @escaping (PKPaymentAuthorizationResult)
-      -> Void
+// MARK: - STPApplePayContextDelegate
+
+enum PostCampaignCheckoutApplePayError: Error {
+  case missingToken(String)
+  case missingPaymentMethodInfo(String)
+  case missingPaymentIntent(String)
+}
+
+extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
+  func applePayContext(
+    _: StripeApplePay.STPApplePayContext,
+    didCreatePaymentMethod _: StripePayments.STPPaymentMethod,
+    paymentInformation payment: PKPayment,
+    completion: @escaping StripeApplePay.STPIntentClientSecretCompletionBlock
   ) {
-    let paymentDisplayName = payment.token.paymentMethod.displayName
-    let paymentNetworkName = payment.token.paymentMethod.network?.rawValue
+    guard let paymentIntentClientSecret = self.applePayPaymentIntent else {
+      completion(
+        nil,
+        PostCampaignCheckoutApplePayError.missingPaymentIntent("Missing PaymentIntent")
+      )
+      return
+    }
+
+    guard let paymentDisplayName = payment.token.paymentMethod.displayName,
+      let paymentNetworkName = payment.token.paymentMethod.network?.rawValue else {
+      completion(
+        nil,
+        PostCampaignCheckoutApplePayError
+          .missingPaymentMethodInfo("Unable to retrieve payment method information from ApplePay")
+      )
+      return
+    }
+
     let transactionId = payment.token.transactionIdentifier
 
-    self.viewModel.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
-      paymentDisplayName,
-      paymentNetworkName,
-      transactionId
-    ))
+    // Tokens considered 'legacy' from Stripe's side, but we still store the token ourselves.
+    STPAPIClient.shared.createToken(with: payment) { [weak self] token, _ in
+      guard let self = self else {
+        return
+      }
 
-    STPAPIClient.shared.createToken(with: payment) { [weak self] token, error in
-      guard let self = self else { return }
+      guard let tokenId = token?.tokenId else {
+        completion(
+          nil,
+          PostCampaignCheckoutApplePayError.missingToken("Unable to retrieve token from Stripe")
+        )
+        return
+      }
 
-      let status = self.viewModel.inputs.stripeTokenCreated(token: token?.tokenId, error: error)
-      let result = PKPaymentAuthorizationResult(status: status, errors: [])
+      let params = ApplePayParams(
+        paymentInstrumentName: paymentDisplayName,
+        paymentNetwork: paymentNetworkName,
+        transactionIdentifier: transactionId,
+        token: tokenId
+      )
 
-      completion(result)
+      self.viewModel.inputs.applePayContextDidCreatePayment(params: params)
+      completion(paymentIntentClientSecret, nil)
+    }
+  }
+
+  func applePayContext(
+    _: StripeApplePay.STPApplePayContext,
+    didCompleteWith status: StripePayments.STPPaymentStatus,
+    error _: Error?
+  ) {
+    switch status {
+    case .success:
+      self.viewModel.inputs.applePayContextDidComplete()
+    case .error:
+      self.messageBannerViewController?
+        .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+    case .userCancellation:
+      // User canceled the payment
+      break
+    @unknown default:
+      fatalError()
     }
   }
 }
