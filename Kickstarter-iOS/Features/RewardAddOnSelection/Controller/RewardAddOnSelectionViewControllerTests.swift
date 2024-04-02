@@ -24,11 +24,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -77,12 +79,14 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ shippingRules
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -145,6 +149,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.id .~ 99
       |> Reward.lens.shippingRules .~ [shippingRule]
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
@@ -153,6 +158,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
@@ -161,6 +167,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
@@ -169,6 +176,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
@@ -177,6 +185,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
       |> Reward.lens.localPickup .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -265,11 +274,13 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.localPickup .~ .australia
       |> Reward.lens.shipping.preference .~ .local
+      |> Reward.lens.isAvailable .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ .local
       |> Reward.lens.localPickup .~ .australia
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]

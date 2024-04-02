@@ -54,7 +54,8 @@ extension Reward {
       shippingRulesExpanded: expandedShippingRules,
       startsAt: rewardFragment.startsAt.flatMap(TimeInterval.init),
       title: rewardFragment.name,
-      localPickup: location
+      localPickup: location,
+      isAvailable: rewardFragment.available
     )
   }
 }

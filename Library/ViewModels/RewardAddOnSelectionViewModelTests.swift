@@ -162,6 +162,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.isAvailable .~ true
+
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
 
@@ -274,6 +276,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.isAvailable .~ true
+
     let project = Project.template
       |> Project.lens.rewardData.addOns .~ [reward]
 
@@ -341,21 +345,25 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 99
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.isAvailable .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.restricted
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -406,6 +414,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ nil
+      |> Reward.lens.isAvailable .~ true
 
     // timebased add-on, ended 60 secs ago.
     let addOn2 = Reward.template
@@ -413,17 +422,20 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 - 60)
+      |> Reward.lens.isAvailable .~ false
 
     // timebased add-on, ended 60 secs ago (backed).
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 - 60)
+      |> Reward.lens.isAvailable .~ false
 
     // limited, unavailable add-on.
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
+      |> Reward.lens.isAvailable .~ false
 
     // time-based, available add-on, ends in 60 secs.
     let addOn5 = Reward.template
@@ -431,12 +443,14 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
 
     // limited, available add-on.
     let addOn6 = Reward.template
       |> Reward.lens.id .~ 6
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 2
+      |> Reward.lens.isAvailable .~ true
 
     // timebased add-on, starts in 60 seconds
     let addOn7 = Reward.template
@@ -444,6 +458,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ false
 
     // timebased add-on, started 60 seconds ago.
     let addOn8 = Reward.template
@@ -451,6 +466,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 - 60)
+      |> Reward.lens.isAvailable .~ true
 
     // timebased add-on, both startsAt and endsAt are within a valid range
     let addOn9 = Reward.template
@@ -459,6 +475,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 - 60)
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ true
 
     // timebased add-on, invalid range
     let addOn10 = Reward.template
@@ -467,6 +484,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 + 30)
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+      |> Reward.lens.isAvailable .~ false
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [baseReward]
@@ -529,6 +547,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
@@ -537,6 +556,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingRule,
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
@@ -545,6 +565,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingRule,
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
@@ -552,11 +573,13 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -628,21 +651,26 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.isAvailable .~ true
 
     let noShippingAddOn = Reward.template
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ false
       |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
@@ -650,10 +678,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -724,6 +754,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
@@ -731,6 +762,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
@@ -738,6 +770,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
@@ -745,6 +778,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
@@ -752,6 +786,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -822,30 +857,35 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.isAvailable .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -934,30 +974,35 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 99
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.isAvailable .~ true
 
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -1193,24 +1238,28 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
       |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
+      |> Reward.lens.isAvailable .~ true
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
