@@ -83,6 +83,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "estimatedDeliveryOn": "2021-06-01",
                 "id": "UmV3YXJkLTgxOTAzMjA=",
                 "isMaxPledge": false,
+                "available": false,
                 "items": {
                   "__typename": "RewardItemsConnection",
                   "edges": [
@@ -200,6 +201,7 @@ public enum FetchAddsOnsQueryTemplate {
                 "estimatedDeliveryOn": "2021-06-01",
                 "id": "UmV3YXJkLTgxOTc0NDQ=",
                 "isMaxPledge": false,
+                "available": false,
                 "items": {
                   "__typename": "RewardItemsConnection",
                   "edges": [

@@ -29,7 +29,8 @@ extension Reward {
     shippingRulesExpanded: nil,
     startsAt: nil,
     title: "My Reward",
-    localPickup: nil
+    localPickup: nil,
+    isAvailable: nil
   )
 
   public static let noReward = Reward(
@@ -57,7 +58,8 @@ extension Reward {
     shippingRulesExpanded: nil,
     startsAt: nil,
     title: nil,
-    localPickup: nil
+    localPickup: nil,
+    isAvailable: nil
   )
 
   public static let otherReward = Reward(
@@ -85,7 +87,8 @@ extension Reward {
     shippingRulesExpanded: nil,
     startsAt: nil,
     title: nil,
-    localPickup: nil
+    localPickup: nil,
+    isAvailable: nil
   )
 
   public static let postcards = Reward.template
