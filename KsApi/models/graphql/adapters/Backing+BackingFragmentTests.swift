@@ -35,6 +35,7 @@ final class Backing_BackingFragmentTests: XCTestCase {
       XCTAssertEqual(backing.projectId, 1_596_594_463)
       XCTAssertNotNil(backing.reward)
       XCTAssertEqual(backing.rewardId, decompose(id: "UmV3YXJkLTgxNzM5MDE="))
+      XCTAssertNotNil(backing.reward?.isAvailable)
       XCTAssertEqual(backing.sequence, 148)
       XCTAssertEqual(backing.shippingAmount, 10.0)
       XCTAssertEqual(backing.status, .pledged)
@@ -793,6 +794,7 @@ private func backingDictionary() -> [String: Any] {
       "estimatedDeliveryOn": "2021-12-01",
       "id": "UmV3YXJkLTgxNzM5MDE=",
       "isMaxPledge": false,
+            "available": false,
       "items": {
         "__typename": "RewardItemsConnection",
         "edges": [

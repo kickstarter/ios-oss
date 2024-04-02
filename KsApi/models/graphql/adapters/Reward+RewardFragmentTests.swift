@@ -44,6 +44,7 @@ final class Reward_RewardFragmentTests: XCTestCase {
       XCTAssertEqual(v1Reward.rewardsItems[1].item.id, 1_170_813)
       XCTAssertEqual(v1Reward.rewardsItems[1].item.name, "Custom Bookmark")
       XCTAssertEqual(v1Reward.rewardsItems[1].quantity, 1)
+      XCTAssertNotNil(v1Reward.isAvailable)
 
       XCTAssertEqual(v1Reward.shipping.enabled, true)
       XCTAssertEqual(v1Reward.shipping.preference, .unrestricted)
@@ -98,6 +99,7 @@ private func rewardDictionary() -> [String: Any] {
     "estimatedDeliveryOn": "2021-12-01",
     "id": "UmV3YXJkLTgxNzM5MDE=",
     "isMaxPledge": false,
+    "available": false,
     "items": {
       "__typename": "RewardItemsConnection",
       "edges": [

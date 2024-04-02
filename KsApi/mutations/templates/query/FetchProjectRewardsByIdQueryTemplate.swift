@@ -50,6 +50,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-09-01",
                    "id":"UmV3YXJkLTgzMzQzNTk=",
                    "isMaxPledge":false,
+    "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": []
@@ -102,6 +103,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzc3MTI=",
                    "isMaxPledge":false,
+    "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -208,6 +210,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQzOTY=",
                    "isMaxPledge":false,
+    "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -299,6 +302,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzA3MDQ=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -405,6 +409,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQzNjU=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -496,6 +501,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDMwNDM=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -587,6 +593,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNDk=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -687,6 +694,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNTg=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -787,6 +795,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODg=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -887,6 +896,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNDI=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -987,6 +997,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzMzQyNTY=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -1087,6 +1098,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODM=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -1187,6 +1199,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODU=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
@@ -1293,6 +1306,7 @@ public enum FetchProjectRewardsByIdQueryTemplate {
                    "estimatedDeliveryOn":"2021-11-01",
                    "id":"UmV3YXJkLTgzNDExODA=",
                    "isMaxPledge":false,
+        "available": false,
                    "items": {
                      "__typename": "RewardItemsConnection",
                      "edges": [
