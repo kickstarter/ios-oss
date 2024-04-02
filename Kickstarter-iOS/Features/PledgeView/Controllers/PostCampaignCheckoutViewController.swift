@@ -11,7 +11,9 @@ private enum PostCampaignCheckoutLayout {
   }
 }
 
-final class PostCampaignCheckoutViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class PostCampaignCheckoutViewController: UIViewController,
+  MessageBannerViewControllerPresenting,
+  ProcessingViewPresenting {
   // MARK: - Properties
 
   internal var messageBannerViewController: MessageBannerViewController?
@@ -41,6 +43,8 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
   private lazy var pledgeRewardsSummaryViewController = {
     PostCampaignPledgeRewardsSummaryViewController.instantiate()
   }()
+
+  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
 
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
@@ -92,6 +96,7 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
   }
 
   deinit {
+    self.hideProcessingView()
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
@@ -187,6 +192,16 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
       .observeForUI()
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
+      }
+
+    self.viewModel.outputs.processingViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        if isHidden {
+          self?.hideProcessingView()
+        } else {
+          self?.showProcessingView()
+        }
       }
 
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
@@ -297,6 +312,7 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
         guard error == nil, status == .succeeded else {
           self.messageBannerViewController?
             .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+          self.viewModel.inputs.checkoutTerminated()
           return
         }
 
@@ -307,6 +323,7 @@ final class PostCampaignCheckoutViewController: UIViewController, MessageBannerV
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PostCampaignPaymentAuthorizationData) {
     let request = PKPaymentRequest.paymentRequest(for: paymentAuthorizationData)
     guard let applePayContext = STPApplePayContext(paymentRequest: request, delegate: self) else {
+      self.viewModel.inputs.checkoutTerminated()
       return
     }
 
@@ -484,12 +501,15 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     case .success:
       self.viewModel.inputs.applePayContextDidComplete()
     case .error:
+      self.viewModel.inputs.checkoutTerminated()
       self.messageBannerViewController?
         .showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
     case .userCancellation:
       // User canceled the payment
+      self.viewModel.inputs.checkoutTerminated()
       break
     @unknown default:
+      self.viewModel.inputs.checkoutTerminated()
       fatalError()
     }
   }
