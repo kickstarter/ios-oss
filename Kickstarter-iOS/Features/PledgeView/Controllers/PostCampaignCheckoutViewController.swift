@@ -447,7 +447,6 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
     completion: @escaping StripeApplePay.STPIntentClientSecretCompletionBlock
   ) {
     guard let paymentIntentClientSecret = self.applePayPaymentIntent else {
-      self.viewModel.inputs.checkoutTerminated()
       completion(
         nil,
         PostCampaignCheckoutApplePayError.missingPaymentIntent("Missing PaymentIntent")
@@ -457,7 +456,6 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
 
     guard let paymentDisplayName = payment.token.paymentMethod.displayName,
       let paymentNetworkName = payment.token.paymentMethod.network?.rawValue else {
-      self.viewModel.inputs.checkoutTerminated()
       completion(
         nil,
         PostCampaignCheckoutApplePayError
@@ -475,7 +473,6 @@ extension PostCampaignCheckoutViewController: STPApplePayContextDelegate {
       }
 
       guard let tokenId = token?.tokenId else {
-        self.viewModel.inputs.checkoutTerminated()
         completion(
           nil,
           PostCampaignCheckoutApplePayError.missingToken("Unable to retrieve token from Stripe")

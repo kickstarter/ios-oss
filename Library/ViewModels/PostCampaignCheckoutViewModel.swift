@@ -310,6 +310,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
               amountDollars: String(format: "%.2f", pledgeTotal),
               digitalMarketingAttributed: nil
             ))
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
             .materialize()
         }
 
@@ -405,13 +406,14 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.checkoutError = checkoutCompleteSignal.signal.errors()
 
     self.processingViewIsHidden = Signal.merge(
-      initialData.mapConst(true),
+      // Processing view starts hidden, so show at the start of a pledge flow.
       self.submitButtonTappedProperty.signal.mapConst(false),
       self.applePayButtonTappedSignal.mapConst(false),
-      newPaymentIntentForApplePayError.mapConst(true), // Apple pay payment intent error.
-      validateCheckoutError.mapConst(true), // Card validation error terminates flow.
-      self.checkoutTerminatedProperty.signal.mapConst(true), // Error/cancellation in VC.
-      checkoutCompleteSignal.signal.mapConst(true) // Checkout completed.
+      // Hide view again whenever pledge flow is completed/cancelled/errors.
+      newPaymentIntentForApplePayError.mapConst(true),
+      validateCheckoutError.mapConst(true),
+      self.checkoutTerminatedProperty.signal.mapConst(true),
+      checkoutCompleteSignal.signal.mapConst(true)
     )
   }
 

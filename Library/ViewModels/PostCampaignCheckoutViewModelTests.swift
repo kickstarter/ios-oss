@@ -5,21 +5,22 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-final class PostCampaignCheckoutViewModelTests: XCTestCase {
+final class PostCampaignCheckoutViewModelTests: TestCase {
   fileprivate let vm = PostCampaignCheckoutViewModel()
   fileprivate let goToApplePayPaymentAuthorization = TestObserver<
     PostCampaignPaymentAuthorizationData,
     Never
   >()
   fileprivate let checkoutComplete = TestObserver<ThanksPageData, Never>()
-  
   fileprivate let processingViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let validateCheckoutSuccess = TestObserver<PaymentSourceValidation, Never>()
 
   override func setUp() {
     super.setUp()
     self.vm.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
     self.vm.checkoutComplete.observe(self.checkoutComplete.observer)
     self.vm.processingViewIsHidden.observe(self.processingViewIsHidden.observer)
+    self.vm.validateCheckoutSuccess.observe(self.validateCheckoutSuccess.observer)
   }
 
   func testApplePayAuthorization_noReward_isCorrect() {
@@ -45,6 +46,8 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.applePayButtonTapped()
+
+      self.scheduler.run()
 
       self.goToApplePayPaymentAuthorization.assertValueCount(1)
       let output = self.goToApplePayPaymentAuthorization.lastValue!
@@ -84,6 +87,8 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
+
+      self.scheduler.run()
 
       self.goToApplePayPaymentAuthorization.assertValueCount(1)
       let output = self.goToApplePayPaymentAuthorization.lastValue!
@@ -128,6 +133,8 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
+
+      self.scheduler.run()
 
       self.goToApplePayPaymentAuthorization.assertValueCount(1)
       let output = self.goToApplePayPaymentAuthorization.lastValue!
@@ -175,6 +182,8 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
+      self.scheduler.run()
+
       self.goToApplePayPaymentAuthorization.assertValueCount(1)
       let output = self.goToApplePayPaymentAuthorization.lastValue!
 
@@ -210,6 +219,7 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.applePayButtonTapped()
+      self.scheduler.run()
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
       let output = self.goToApplePayPaymentAuthorization.lastValue!
@@ -266,9 +276,10 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
       self.vm.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
-      
-      self.processingViewIsHidden.assertLastValue(false)
 
+      self.scheduler.run()
+
+      self.processingViewIsHidden.assertLastValue(false)
       self.goToApplePayPaymentAuthorization.assertDidEmitValue()
 
       let params = ApplePayParams(
@@ -277,15 +288,200 @@ final class PostCampaignCheckoutViewModelTests: XCTestCase {
         transactionIdentifier: "Fake transaction identifier",
         token: "tok_abc123def"
       )
-
       self.vm.inputs.applePayContextDidCreatePayment(params: params)
 
       self.checkoutComplete.assertDidNotEmitValue()
+      self.processingViewIsHidden.assertLastValue(false)
 
       self.vm.inputs.applePayContextDidComplete()
 
       self.checkoutComplete.assertDidEmitValue()
-      
+      self.processingViewIsHidden.assertLastValue(true)
+    }
+  }
+
+  func testApplePay_paymentIntentFails() {
+    // Mock data for API requests
+    let mockService = MockService(
+      createPaymentIntentResult: .failure(.couldNotParseErrorEnvelopeJSON)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PostCampaignCheckoutData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .pledge,
+      checkoutId: "0"
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.configure(with: data)
+      self.vm.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.processingViewIsHidden.assertLastValue(false)
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorization.assertDidNotEmitValue()
+      self.processingViewIsHidden.assertValues([false, true])
+    }
+  }
+
+  func testPledge_completesCheckoutFlow() {
+    // Mock data for API requests
+    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let completeSessionJsonString = """
+    {
+      "completeOnSessionCheckout": {
+        "__typename": "CompleteOnSessionCheckoutPayload",
+        "checkout": {
+          "__typename": "Checkout",
+          "id": "Q2hlY2tvdXQtMTk4MzM2OTIz",
+          "state": "successful",
+          "backing": {
+            "requiresAction": false,
+            "clientSecret": "super-secret",
+            "__typename": "Backing"
+          }
+        }
+      }
+    }
+    """
+    let completeSessionJson = try! JSONSerialization
+      .jsonObject(with: completeSessionJsonString.data(using: .utf8)!)
+    let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
+      .Data(jsonObject: completeSessionJson as! JSONObject)
+    let mockService = MockService(
+      completeOnSessionCheckoutResult: .success(completeSessionData),
+      validateCheckoutResult: .success(validateCheckout)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PostCampaignCheckoutData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .latePledge,
+      checkoutId: "0"
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.configure(with: data)
+      self.vm.viewDidLoad()
+
+      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
+      self.vm.inputs
+        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+      self.vm.inputs.submitButtonTapped()
+
+      self.processingViewIsHidden.assertLastValue(false)
+
+      self.scheduler.run()
+
+      self.validateCheckoutSuccess.assertDidEmitValue()
+      self.checkoutComplete.assertDidNotEmitValue()
+
+      self.vm.inputs.confirmPaymentSuccessful(clientSecret: "super-secret")
+
+      self.checkoutComplete.assertDidEmitValue()
+      self.processingViewIsHidden.assertLastValue(true)
+    }
+  }
+
+  func testPledge_validationFails() {
+    // Mock data for API requests
+    let mockService = MockService(
+      validateCheckoutResult: .failure(.couldNotParseErrorEnvelopeJSON)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PostCampaignCheckoutData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .latePledge,
+      checkoutId: "0"
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.configure(with: data)
+      self.vm.viewDidLoad()
+
+      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
+      self.vm.inputs
+        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+      self.vm.inputs.submitButtonTapped()
+
+      self.processingViewIsHidden.assertLastValue(false)
+
+      self.scheduler.run()
+
+      self.validateCheckoutSuccess.assertDidNotEmitValue()
+      self.processingViewIsHidden.assertValues([false, true])
+    }
+  }
+
+  func testCheckoutTerminated_cancelsCheckoutFlow() {
+    // Mock data for API requests
+    let validateCheckout = ValidateCheckoutEnvelope(valid: true, messages: ["message"])
+    let mockService = MockService(
+      validateCheckoutResult: .success(validateCheckout)
+    )
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward |> Reward.lens.minimum .~ 5
+
+    let data = PostCampaignCheckoutData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      bonusAmount: 0,
+      total: 5,
+      shipping: nil,
+      refTag: nil,
+      context: .latePledge,
+      checkoutId: "0"
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.configure(with: data)
+      self.vm.viewDidLoad()
+
+      let paymentSource = PaymentSourceSelected.paymentIntentClientSecret("123")
+      self.vm.inputs
+        .creditCardSelected(source: paymentSource, paymentMethodId: "123", isNewPaymentMethod: true)
+      self.vm.inputs.submitButtonTapped()
+
+      self.processingViewIsHidden.assertLastValue(false)
+
+      self.scheduler.run()
+
+      self.validateCheckoutSuccess.assertDidEmitValue()
+
+      self.vm.inputs.checkoutTerminated()
+
+      self.checkoutComplete.assertDidNotEmitValue()
       self.processingViewIsHidden.assertLastValue(true)
     }
   }
