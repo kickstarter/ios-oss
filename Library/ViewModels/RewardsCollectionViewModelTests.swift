@@ -121,7 +121,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func testConfigureWithProject_LocalPickupRewards_IncludesBackedLocalPickup_ShowsAllRewards_Success() {
-    let rewards = Project.cosmicSurgery.rewards
+    let rewards = Project.cosmicSurgery.rewards.map { $0 |> Reward.lens.isAvailable .~ true }
 
     let lastRewardId = rewards.last?.id ?? -1
 
@@ -131,7 +131,6 @@ final class RewardsCollectionViewModelTests: TestCase {
           |> Reward.lens.localPickup .~ .brooklyn
           |> Reward.lens.shipping.preference .~ .local
           |> Reward.lens.shipping.enabled .~ false
-          |> Reward.lens.isAvailable .~ true
 
         return updatedReward
       }
@@ -162,8 +161,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
-  func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludiongNonLocalBackedReward_ShowsAllRewards_Success() {
-    let rewards = Project.cosmicSurgery.rewards
+  func testConfigureWithProject_LocalPickupRewards_NonLocalPickupRewards_IncludingNonLocalBackedReward_ShowsAllRewards_Success() {
+    let rewards = Project.cosmicSurgery.rewards.map { $0 |> Reward.lens.isAvailable .~ true }
 
     let lastRewardId = rewards.last?.id ?? -1
 
