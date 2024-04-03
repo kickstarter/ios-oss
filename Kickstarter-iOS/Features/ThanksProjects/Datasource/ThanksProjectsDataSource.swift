@@ -3,9 +3,11 @@ import Library
 import UIKit
 
 internal final class ThanksProjectsDataSource: ValueCellDataSource {
-  internal func loadData(projects: [Project],
-                         category: KsApi.Category) {
-    let values = projects.map { (project) -> DiscoveryProjectCellRowValue in
+  internal func loadData(
+    projects: [Project],
+    category: KsApi.Category
+  ) {
+    let values = projects.map { project -> DiscoveryProjectCellRowValue in
       DiscoveryProjectCellRowValue(project: project, category: category, params: nil)
     }
 

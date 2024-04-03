@@ -94,14 +94,14 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
       switch textStyleType {
       case .bold:
         if let existingFont = combinedAttributes[NSAttributedString.Key.font] as? UIFont,
-          existingFont == baseFont.italicized {
+           existingFont == baseFont.italicized {
           combinedAttributes[NSAttributedString.Key.font] = baseFont.boldItalic
         } else {
           combinedAttributes[NSAttributedString.Key.font] = baseFont.bolded
         }
       case .emphasis:
         if let existingFont = combinedAttributes[NSAttributedString.Key.font] as? UIFont,
-          existingFont == baseFont.bolded {
+           existingFont == baseFont.bolded {
           combinedAttributes[NSAttributedString.Key.font] = baseFont.boldItalic
         } else {
           combinedAttributes[NSAttributedString.Key.font] = baseFont.italicized
@@ -111,7 +111,7 @@ private func attributedText(textElement: TextViewElement) -> SignalProducer<NSAt
         combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
 
         if let validURLString = textItem.link,
-          let validURL = URL(string: validURLString) {
+           let validURL = URL(string: validURLString) {
           combinedAttributes[NSAttributedString.Key.link] = validURL
         }
       case .bulletStart:

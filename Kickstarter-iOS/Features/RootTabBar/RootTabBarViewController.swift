@@ -204,16 +204,16 @@ public final class RootTabBarViewController: UITabBarController, MessageBannerVi
     data.items.forEach { item in
       switch item {
       case let .home(index):
-        _ = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle
+        _ = self.tabBarItem(atIndex: index) ?|> homeTabBarItemStyle
       case let .activity(index):
-        _ = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle
+        _ = self.tabBarItem(atIndex: index) ?|> activityTabBarItemStyle
       case let .search(index):
-        _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
+        _ = self.tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
       case let .profile(avatarUrl, index):
-        _ = tabBarItem(atIndex: index)
+        _ = self.tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn)
 
-        setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
+        self.setProfileImage(with: data, avatarUrl: avatarUrl, index: index)
       }
     }
   }

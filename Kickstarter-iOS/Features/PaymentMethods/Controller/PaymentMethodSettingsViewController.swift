@@ -6,7 +6,8 @@ import UIKit
 
 protocol PaymentMethodSettingsViewControllerDelegate: AnyObject {
   func cancelLoadingPaymentMethodsViewController(
-    _ viewController: PaymentMethodSettingsViewController)
+    _ viewController: PaymentMethodSettingsViewController
+  )
 }
 
 internal final class PaymentMethodSettingsViewController: UIViewController,
@@ -22,7 +23,7 @@ internal final class PaymentMethodSettingsViewController: UIViewController,
       title: Strings.discovery_favorite_categories_buttons_edit(),
       style: .plain,
       target: self,
-      action: #selector(edit)
+      action: #selector(self.edit)
     )
   }()
 

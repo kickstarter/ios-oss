@@ -29,13 +29,13 @@ public final class ImageViewElementCellViewModel:
   public init() {
     self.attributedText = self.imageData.signal
       .skipNil()
-      .switchMap { (imageElement, _) -> SignalProducer<NSAttributedString?, Never> in
+      .switchMap { imageElement, _ -> SignalProducer<NSAttributedString?, Never> in
         attributedTextFrom(imageElement)
       }
 
     self.image = self.imageData.signal
       .skipNil()
-      .switchMap { (_, image) -> SignalProducer<UIImage?, Never> in
+      .switchMap { _, image -> SignalProducer<UIImage?, Never> in
         guard let displayableImage = image else {
           return SignalProducer(value: nil)
         }
@@ -78,7 +78,7 @@ private func attributedTextFrom(_ imageElement: ImageViewElement)
   var combinedAttributes: [NSAttributedString.Key: Any] = baseFontAttributes
 
   if let validURLString = imageElement.href,
-    let validURL = URL(string: validURLString) {
+     let validURL = URL(string: validURLString) {
     combinedAttributes[NSAttributedString.Key.foregroundColor] = UIColor.ksr_create_700
     combinedAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     combinedAttributes[NSAttributedString.Key.link] = validURL

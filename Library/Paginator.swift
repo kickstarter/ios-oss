@@ -48,10 +48,12 @@ public class Paginator<Envelope, Value: Equatable, Cursor, SomeError: Error, Req
 
   private var lastCursor: Cursor?
 
-  public init(valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
-              cursorFromEnvelope: @escaping ((Envelope) -> Cursor?),
-              requestFromParams: @escaping ((RequestParams) -> AnyPublisher<Envelope, SomeError>),
-              requestFromCursor: @escaping ((Cursor) -> AnyPublisher<Envelope, SomeError>)) {
+  public init(
+    valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
+    cursorFromEnvelope: @escaping ((Envelope) -> Cursor?),
+    requestFromParams: @escaping ((RequestParams) -> AnyPublisher<Envelope, SomeError>),
+    requestFromCursor: @escaping ((Cursor) -> AnyPublisher<Envelope, SomeError>)
+  ) {
     self.values = []
     self.isLoading = false
     self.error = nil

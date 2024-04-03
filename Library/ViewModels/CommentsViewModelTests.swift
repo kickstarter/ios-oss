@@ -433,7 +433,9 @@ internal final class CommentsViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ false
 
-    withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .success(.singleCommentTemplate))) {
+    withEnvironment(
+      apiService: MockService(fetchProjectCommentsEnvelopeResult: .success(.singleCommentTemplate))
+    ) {
       AppEnvironment.login(accessToken)
 
       self.vm.inputs.configureWith(
@@ -504,7 +506,9 @@ internal final class CommentsViewModelTests: TestCase {
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
 
-      withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .success(updatedEnvelope))) {
+      withEnvironment(apiService: MockService(
+        fetchProjectCommentsEnvelopeResult: .success(updatedEnvelope)
+      )) {
         self.vm.inputs.refresh()
 
         self.loadCommentsAndProjectIntoDataSourceComments
@@ -552,7 +556,9 @@ internal final class CommentsViewModelTests: TestCase {
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
 
-      withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .success(updatedEnvelope))) {
+      withEnvironment(apiService: MockService(
+        fetchProjectCommentsEnvelopeResult: .success(updatedEnvelope)
+      )) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.loadCommentsAndProjectIntoDataSourceComments.assertValues(
@@ -1063,7 +1069,9 @@ internal final class CommentsViewModelTests: TestCase {
     let envelope = CommentsEnvelope.singleCommentTemplate
     let project = Project.template
 
-    withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON))) {
+    withEnvironment(
+      apiService: MockService(fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON))
+    ) {
       self.vm.inputs.configureWith(project: project, update: nil)
       self.vm.inputs.viewDidLoad()
 
@@ -1100,7 +1108,9 @@ internal final class CommentsViewModelTests: TestCase {
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
 
-      withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .success(updatedEnvelope))) {
+      withEnvironment(apiService: MockService(
+        fetchProjectCommentsEnvelopeResult: .success(updatedEnvelope)
+      )) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.configureFooterViewWithState.assertValues(
@@ -1116,7 +1126,9 @@ internal final class CommentsViewModelTests: TestCase {
         // "Scrolling"
         self.vm.inputs.willDisplayRow(5, outOf: 10)
 
-        withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON))) {
+        withEnvironment(
+          apiService: MockService(fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON))
+        ) {
           self.vm.inputs.willDisplayRow(9, outOf: 10)
 
           self.configureFooterViewWithState.assertValues(

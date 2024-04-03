@@ -54,6 +54,7 @@ final class CommentComposerView: UIView {
     self.setupConstraints()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -220,8 +221,11 @@ extension CommentComposerView: UITextViewDelegate {
     self.viewModel.inputs.bodyTextDidChange(textView.text)
   }
 
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
-                replacementText text: String) -> Bool {
+  func textView(
+    _ textView: UITextView,
+    shouldChangeTextIn range: NSRange,
+    replacementText text: String
+  ) -> Bool {
     return self.viewModel.inputs.textViewShouldChange(text: textView.text, in: range, replacementText: text)
   }
 }

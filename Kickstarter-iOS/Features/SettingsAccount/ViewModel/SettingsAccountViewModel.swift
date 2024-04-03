@@ -60,7 +60,7 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
         }
 
         guard let isEmailVerified = user.isEmailVerified,
-          let isDeliverable = user.isDeliverable else {
+              let isDeliverable = user.isDeliverable else {
           return true
         }
 

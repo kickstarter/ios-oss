@@ -23,6 +23,7 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
       |> ksr_constrainViewToMarginsInParent()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

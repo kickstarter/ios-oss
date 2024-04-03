@@ -18,8 +18,13 @@ public protocol CommentRepliesViewModelInputs {
      - parameter inputAreaBecomeFirstResponder: A Bool that determines if the composer should become first responder.
      - parameter replyId: A `String?` that determines which cell to scroll to, if visible on the first page.
    **/
-  func configureWith(comment: Comment, project: Project, update: Update?, inputAreaBecomeFirstResponder: Bool,
-                     replyId: String?)
+  func configureWith(
+    comment: Comment,
+    project: Project,
+    update: Update?,
+    inputAreaBecomeFirstResponder: Bool,
+    replyId: String?
+  )
 
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)

@@ -5,7 +5,7 @@ import UIKit
 
 final class SettingsDataSource: ValueCellDataSource {
   func configureRows(with user: User) {
-    SettingsSectionType.allCases.forEach { section -> Void in
+    SettingsSectionType.allCases.forEach { section in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0, user: user) }
 
       self.set(

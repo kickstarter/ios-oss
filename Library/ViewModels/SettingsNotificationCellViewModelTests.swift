@@ -74,7 +74,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.emailNotificationsEnabled.assertValues([false], "Email notifications are disabled")
     self.emailNotificationsButtonAccessibilityLabel.assertValues(
-      [Strings.Notification_email_notification_off(notification: value.cellType.title)])
+      [Strings.Notification_email_notification_off(notification: value.cellType.title)]
+    )
   }
 
   func testEmailNotificationButtonAccessibilityLabel_enabled() {
@@ -97,7 +98,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.emailNotificationsEnabled.assertValues([true], "Email notifications are enabled")
     self.emailNotificationsButtonAccessibilityLabel.assertValues(
-      [Strings.Notification_email_notification_on(notification: value.cellType.title)])
+      [Strings.Notification_email_notification_on(notification: value.cellType.title)]
+    )
   }
 
   func testPushNotificationButtonAccessibilityLabel_disabled() {
@@ -120,7 +122,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.pushNotificationsEnabled.assertValues([false], "Push notifications are disabled")
     self.pushNotificationsButtonAccessibilityLabel.assertValues(
-      [Strings.Notification_push_notification_off(notification: value.cellType.title)])
+      [Strings.Notification_push_notification_off(notification: value.cellType.title)]
+    )
   }
 
   func testPushNotificationButtonAccessibilityLabel_enabled() {
@@ -143,7 +146,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.pushNotificationsEnabled.assertValues([true], "Push notifications are enabled")
     self.pushNotificationsButtonAccessibilityLabel.assertValues(
-      [Strings.Notification_push_notification_on(notification: value.cellType.title)])
+      [Strings.Notification_push_notification_on(notification: value.cellType.title)]
+    )
   }
 
   func testEmailNotificationsEnabled() {

@@ -141,7 +141,7 @@ public final class CommentDialogViewModel: CommentDialogViewModelType,
       self.commentBodyProperty.signal.map { !$0.isEmpty },
       isLoading.signal.map(isFalse)
     ])
-      .skipRepeats()
+    .skipRepeats()
 
     let currentUser = self.viewWillAppearProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
@@ -220,10 +220,12 @@ public final class CommentDialogViewModel: CommentDialogViewModelType,
  - Replies are posted as comments on main thread with `@User` tagged.
  */
 
-private func postComment(_ body: String,
-                         project: Project,
-                         commentableId: String,
-                         from user: User)
+private func postComment(
+  _ body: String,
+  project: Project,
+  commentableId: String,
+  from user: User
+)
   -> SignalProducer<Comment, ErrorEnvelope> {
   return CommentsViewModel.postCommentProducer(
     project: project,
@@ -233,7 +235,7 @@ private func postComment(_ body: String,
     body: body
   )
   .promoteError(ErrorEnvelope.self)
-  .switchMap { (comment, _) -> SignalProducer<Comment, ErrorEnvelope> in
+  .switchMap { comment, _ -> SignalProducer<Comment, ErrorEnvelope> in
     guard comment.status == .failed else {
       return SignalProducer<Comment, ErrorEnvelope>(value: comment)
     }

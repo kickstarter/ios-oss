@@ -13,7 +13,7 @@ extension TextNode {
     var tagsOther = [String]()
     var urls = [String]()
 
-    extractTextAttributes(element: element, tags: &tagsOther, urls: &urls)
+    self.extractTextAttributes(element: element, tags: &tagsOther, urls: &urls)
 
     // - Extract from the list of styles `null` values and `LIST`, the list style is processed separately.
     let textStyleList = tagsOther.compactMap { TextComponent.TextStyleType(rawValue: $0) }
@@ -34,14 +34,16 @@ extension TextNode {
    * @param tags - Populates the list of parent tags
    * @param urls - In case of any of the parents is a link(<a>) populates the urls list
    */
-  private func extractTextAttributes(element: Element,
-                                     tags: inout [String],
-                                     urls: inout [String]) {
+  private func extractTextAttributes(
+    element: Element,
+    tags: inout [String],
+    urls: inout [String]
+  ) {
     tags.append(element.tagName())
 
     if !TextComponent.TextBlockType.allCases.contains(where: { $0.rawValue == element.tagName() }) {
       if element.tagName() == HTMLRawText.Link.anchor.rawValue,
-        let elementAttribute = try? element.attr(HTMLRawText.Link.link.rawValue) {
+         let elementAttribute = try? element.attr(HTMLRawText.Link.link.rawValue) {
         urls.append(elementAttribute)
       }
 

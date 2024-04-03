@@ -1591,8 +1591,11 @@ private func userProperties(for user: User?, _ prefix: String = "user_") -> [Str
 
 // MARK: - Video Properties
 
-private func videoProperties(videoLength: Int, videoPosition: Int,
-                             prefix: String = "video_") -> [String: Any] {
+private func videoProperties(
+  videoLength: Int,
+  videoPosition: Int,
+  prefix: String = "video_"
+) -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["length"] = videoLength

@@ -15,7 +15,7 @@ public struct CreateCheckoutEnvelope: Decodable {
 extension CreateCheckoutEnvelope {
   static func from(_ data: GraphAPI.CreateCheckoutMutation.Data) -> CreateCheckoutEnvelope? {
     guard let id = data.createCheckout?.checkout?.id,
-      let paymentUrl = data.createCheckout?.checkout?.paymentUrl else {
+          let paymentUrl = data.createCheckout?.checkout?.paymentUrl else {
       return nil
     }
 

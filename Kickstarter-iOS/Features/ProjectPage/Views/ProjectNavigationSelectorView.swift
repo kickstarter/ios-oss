@@ -53,6 +53,7 @@ final class ProjectNavigationSelectorView: UIView {
     self.bindViewModel()
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -167,7 +168,7 @@ final class ProjectNavigationSelectorView: UIView {
         |> UIButton.lens.backgroundColor .~ .ksr_white
         |> UIButton.lens.tag .~ sectionIndex
         |> UIButton.lens.targets .~ [
-          (self, #selector(buttonTapped(_:)), .touchUpInside)
+          (self, #selector(self.buttonTapped(_:)), .touchUpInside)
         ]
         |> UIButton.lens.title(for: .normal) %~ { _ in section.displayString.uppercased() }
         |> UIButton.lens.accessibilityLabel %~ { _ in section.displayString }
@@ -210,8 +211,10 @@ final class ProjectNavigationSelectorView: UIView {
       leadingConstraint,
       widthConstraint,
       self.selectedButtonBorderView.heightAnchor
-        .constraint(equalToConstant: ProjectNavigationSelectorViewStyles.Layout
-          .selectedButtonBorderViewHeight),
+        .constraint(
+          equalToConstant: ProjectNavigationSelectorViewStyles.Layout
+            .selectedButtonBorderViewHeight
+        ),
       self.selectedButtonBorderView.bottomAnchor
         .constraint(
           equalTo: self.scrollView.bottomAnchor,
@@ -227,9 +230,9 @@ final class ProjectNavigationSelectorView: UIView {
 
   private func pinSelectedButtonBorderView(toIndex index: Int) {
     guard let navigationSection = NavigationSection(rawValue: index),
-      let button = self.buttonsStackView.arrangedSubviews.first(where: { $0.tag == index }),
-      let buttonSection = NavigationSection(rawValue: button.tag),
-      buttonSection == navigationSection else { return }
+          let button = self.buttonsStackView.arrangedSubviews.first(where: { $0.tag == index }),
+          let buttonSection = NavigationSection(rawValue: button.tag),
+          buttonSection == navigationSection else { return }
 
     let leadingConstant = button.frame.origin.x - safeAreaInsets.left
 

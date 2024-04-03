@@ -236,7 +236,7 @@ private func paymentsNew(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func paymentsApplePay(_ params: RouteParamsDecoded) -> Navigation? {
   if let checkoutParam = params.checkoutParam(),
-    let payload = params.payload() {
+     let payload = params.payload() {
     return Navigation.checkout(checkoutParam, Navigation.Checkout.payments(.applePay(payload: payload)))
   }
   return nil
@@ -298,7 +298,7 @@ private func project(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func thanks(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-    let checkoutParam = params.checkoutParam() {
+     let checkoutParam = params.checkoutParam() {
     let refInfo = refInfoFromParams(params)
     let thanks = Navigation.Project.Checkout.thanks(racing: params.racing())
     let checkout = Navigation.Project.checkout(checkoutParam, thanks)
@@ -418,7 +418,7 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-    let surveyParam = params.surveyParam() {
+     let surveyParam = params.surveyParam() {
     let refInfo = refInfoFromParams(params)
     let survey = Navigation.Project.survey(surveyParam)
     return Navigation.project(projectParam, survey, refInfo: refInfo)
@@ -429,7 +429,7 @@ private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func update(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-    let updateParam = params.updateParam() {
+     let updateParam = params.updateParam() {
     let refInfo = refInfoFromParams(params)
     let update = Navigation.Project.update(updateParam, .root)
     return Navigation.project(projectParam, update, refInfo: refInfo)
@@ -440,7 +440,7 @@ private func update(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-    let updateParam = params.updateParam() {
+     let updateParam = params.updateParam() {
     let refInfo = refInfoFromParams(params)
 
     guard let commentId = params.comment() else {
@@ -472,7 +472,7 @@ private func updates(_ params: RouteParamsDecoded) -> Navigation? {
 
 private func userSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let userParam = params.userParam(),
-    let surveyResponseId = params.surveyResponseId() {
+     let surveyResponseId = params.surveyResponseId() {
     return Navigation.user(userParam, Navigation.User.survey(surveyResponseId))
   }
 

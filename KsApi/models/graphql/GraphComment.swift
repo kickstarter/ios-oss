@@ -46,8 +46,10 @@ extension GraphComment {
     self.id = try values.decode(String.self, forKey: .id)
     self.author = try values.decode(GraphComment.GraphAuthor.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
-    self.replyCount = (try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .replies)
-      .decode(Int.self, forKey: .totalCount)) ?? 0
+    self.replyCount = (
+      try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .replies)
+        .decode(Int.self, forKey: .totalCount)
+    ) ?? 0
     self.deleted = try values.decode(Bool.self, forKey: .deleted)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     self.authorBadges = try values.decode([GraphComment.GraphBadge].self, forKey: .authorBadges)

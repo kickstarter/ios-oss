@@ -26,6 +26,7 @@ final class OverlayView: UIView {
     super.init(frame: frame)
   }
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -54,7 +55,7 @@ extension OverlayViewPresenting where Self: UIViewController {
     self.overlayView?.removeFromSuperview()
 
     guard let window = UIApplication.shared.windows.first,
-      let overlayView = self.overlayView else {
+          let overlayView = self.overlayView else {
       return
     }
 

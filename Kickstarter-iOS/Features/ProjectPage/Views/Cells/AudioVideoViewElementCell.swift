@@ -31,6 +31,7 @@ class AudioVideoViewElementCell: UITableViewCell, ValueCell {
 
   // MARK: Initializers
 
+  @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -138,10 +139,12 @@ class AudioVideoViewElementCell: UITableViewCell, ValueCell {
 
   // MARK: Helpers
 
-  override func observeValue(forKeyPath keyPath: String?,
-                             of _: Any?,
-                             change _: [NSKeyValueChangeKey: Any]?,
-                             context _: UnsafeMutableRawPointer?) {
+  override func observeValue(
+    forKeyPath keyPath: String?,
+    of _: Any?,
+    change _: [NSKeyValueChangeKey: Any]?,
+    context _: UnsafeMutableRawPointer?
+  ) {
     if keyPath == self.observerKeyPath {
       self.playerController.contentOverlayView?.subviews.forEach { $0.removeFromSuperview() }
       self.playerController.player?.removeObserver(self, forKeyPath: self.observerKeyPath, context: nil)

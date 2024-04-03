@@ -38,9 +38,11 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     let toggledNotification: Signal<ProjectNotification, Never> = notification
       .takePairWhen(self.notificationTappedProperty.signal)
       .map { notification, on -> ProjectNotification in
-        let n = (notification
-          |> ProjectNotification.lens.email .~ on
-          |> ProjectNotification.lens.mobile .~ on)
+        let n = (
+          notification
+            |> ProjectNotification.lens.email .~ on
+            |> ProjectNotification.lens.mobile .~ on
+        )
 
         return n
       }

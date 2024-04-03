@@ -101,7 +101,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
       )
 
       guard let displayPrelaunch = project.displayPrelaunch,
-        !displayPrelaunch else { return }
+            !displayPrelaunch else { return }
 
       let values: [ProjectPamphletSubpage] = [
         .comments(project.stats.commentsCount as Int?, .first),
@@ -140,7 +140,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
               toSection: Section.campaign.rawValue
             )
         case let element as ImageViewElement:
-          let preExistingElementImage = preexistingImageViewElementsWithData
+          let preExistingElementImage = self.preexistingImageViewElementsWithData
             .filter { $0.element.src == element.src }
             .first?.image
           let dataExists = preExistingElementImage != nil
@@ -152,7 +152,7 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
             toSection: Section.campaign.rawValue
           )
         case let element as AudioVideoViewElement:
-          let preExistingAudioVideoElementWithPlayer = preexistingAudioVideoViewElementsWithPlayer
+          let preExistingAudioVideoElementWithPlayer = self.preexistingAudioVideoViewElementsWithPlayer
             .filter { $0.0.sourceURLString == element.sourceURLString }
             .first
 
@@ -360,22 +360,22 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     if self.numberOfSections(in: UITableView()) > Section.campaign.rawValue {
       self.items(in: Section.campaign.rawValue).forEach { valueAndResuseId in
         guard let imageViewData = valueAndResuseId.value as? (element: ImageViewElement, image: UIImage?),
-          imageViewData.image != nil else {
+              imageViewData.image != nil else {
           return
         }
 
-        preexistingImageViewElementsWithData.append(imageViewData)
+        self.preexistingImageViewElementsWithData.append(imageViewData)
 
         var seenURLStrings = Set<String>()
         var uniqueElements = [(element: ImageViewElement, image: UIImage?)]()
-        for (imageElement, image) in preexistingImageViewElementsWithData {
+        for (imageElement, image) in self.preexistingImageViewElementsWithData {
           if !seenURLStrings.contains(imageElement.src) {
             uniqueElements.append((imageElement, image))
             seenURLStrings.insert(imageElement.src)
           }
         }
 
-        preexistingImageViewElementsWithData = uniqueElements
+        self.preexistingImageViewElementsWithData = uniqueElements
       }
     }
   }
@@ -389,25 +389,27 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
           return
         }
 
-        preexistingAudioVideoViewElementsWithPlayer.append(audioVideoViewElementWithPlayer)
+        self.preexistingAudioVideoViewElementsWithPlayer.append(audioVideoViewElementWithPlayer)
 
         var seenURLStrings = Set<String>()
         var uniqueElements = [(element: AudioVideoViewElement, player: AVPlayer?, image: UIImage?)]()
-        for (audioVideoElement, player, image) in preexistingAudioVideoViewElementsWithPlayer {
+        for (audioVideoElement, player, image) in self.preexistingAudioVideoViewElementsWithPlayer {
           if !seenURLStrings.contains(audioVideoElement.sourceURLString) {
             uniqueElements.append((audioVideoElement, player, image))
             seenURLStrings.insert(audioVideoElement.sourceURLString)
           }
         }
 
-        preexistingAudioVideoViewElementsWithPlayer = uniqueElements
+        self.preexistingAudioVideoViewElementsWithPlayer = uniqueElements
       }
     }
   }
 
-  internal func updateImageViewElementWith(_ imageViewElement: ImageViewElement,
-                                           image: UIImage,
-                                           indexPath: IndexPath) {
+  internal func updateImageViewElementWith(
+    _ imageViewElement: ImageViewElement,
+    image: UIImage,
+    indexPath: IndexPath
+  ) {
     self.set(
       value: (imageViewElement, image),
       cellClass: ImageViewElementCell.self,
@@ -416,10 +418,12 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     )
   }
 
-  internal func updateAudioVideoViewElementWith(_ audioVideoViewElement: AudioVideoViewElement,
-                                                player: AVPlayer,
-                                                thumbnailImage: UIImage?,
-                                                indexPath: IndexPath) {
+  internal func updateAudioVideoViewElementWith(
+    _ audioVideoViewElement: AudioVideoViewElement,
+    player: AVPlayer,
+    thumbnailImage: UIImage?,
+    indexPath: IndexPath
+  ) {
     self.set(
       value: (audioVideoViewElement, player, thumbnailImage),
       cellClass: AudioVideoViewElementCell.self,
@@ -428,16 +432,20 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     )
   }
 
-  internal func imageViewElementWith(urls: [URL],
-                                     indexPath: IndexPath) -> (url: URL,
-                                                               element: ImageViewElement,
-                                                               image: UIImage?,
-                                                               indexPath: IndexPath)? {
+  internal func imageViewElementWith(
+    urls: [URL],
+    indexPath: IndexPath
+  ) -> (
+    url: URL,
+    element: ImageViewElement,
+    image: UIImage?,
+    indexPath: IndexPath
+  )? {
     let allURLStrings = urls.map { $0.absoluteString }
 
     guard let indexPathSection = Section(rawValue: indexPath.section)?.rawValue,
-      let imageViewElementItem = self.items(in: indexPathSection)[indexPath.row]
-      .value as? (element: ImageViewElement, image: UIImage?)
+          let imageViewElementItem = self.items(in: indexPathSection)[indexPath.row]
+          .value as? (element: ImageViewElement, image: UIImage?)
     else {
       return nil
     }
@@ -464,32 +472,36 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     return values.map { _, isExpanded in isExpanded }
   }
 
-  internal func isIndexPathAnImageViewElement(tableView: UITableView,
-                                              indexPath: IndexPath,
-                                              section: ProjectPageViewControllerDataSource.Section) -> Bool {
+  internal func isIndexPathAnImageViewElement(
+    tableView: UITableView,
+    indexPath: IndexPath,
+    section: ProjectPageViewControllerDataSource.Section
+  ) -> Bool {
     guard indexPath.section == section.rawValue else { return false }
 
     if self.numberOfSections(in: tableView) > section.rawValue,
-      self.numberOfItems(in: section.rawValue) > indexPath.row,
-      let _ = self.items(in: section.rawValue)[indexPath.row].value as? (ImageViewElement, UIImage?) {
+       self.numberOfItems(in: section.rawValue) > indexPath.row,
+       let _ = self.items(in: section.rawValue)[indexPath.row].value as? (ImageViewElement, UIImage?) {
       return true
     }
 
     return false
   }
 
-  internal func imageViewElementURL(tableView: UITableView,
-                                    indexPath: IndexPath) -> URL? {
+  internal func imageViewElementURL(
+    tableView: UITableView,
+    indexPath: IndexPath
+  ) -> URL? {
     let section = ProjectPageViewControllerDataSource.Section.campaign
 
     guard indexPath.section == section.rawValue else { return nil }
 
     if self.numberOfSections(in: tableView) > section.rawValue,
-      self.numberOfItems(in: section.rawValue) > indexPath.row,
-      let (imageViewElement, _) = self.items(in: section.rawValue)[indexPath.row]
-      .value as? (ImageViewElement, UIImage?),
-      let urlString = imageViewElement.href,
-      let url = URL(string: urlString) {
+       self.numberOfItems(in: section.rawValue) > indexPath.row,
+       let (imageViewElement, _) = self.items(in: section.rawValue)[indexPath.row]
+       .value as? (ImageViewElement, UIImage?),
+       let urlString = imageViewElement.href,
+       let url = URL(string: urlString) {
       return url
     }
 
@@ -504,23 +516,25 @@ internal final class ProjectPageViewControllerDataSource: ValueCellDataSource {
     guard indexPath.section == section.rawValue else { return nil }
 
     if self.numberOfSections(in: tableView) > section.rawValue,
-      self.numberOfItems(in: section.rawValue) > indexPath.row,
-      let (element, player, _) = self.items(in: section.rawValue)[indexPath.row]
-      .value as? (AudioVideoViewElement, AVPlayer?, UIImage?),
-      player == nil {
+       self.numberOfItems(in: section.rawValue) > indexPath.row,
+       let (element, player, _) = self.items(in: section.rawValue)[indexPath.row]
+       .value as? (AudioVideoViewElement, AVPlayer?, UIImage?),
+       player == nil {
       return (element, indexPath)
     }
 
     return nil
   }
 
-  internal func updateAudioVideoViewElementSeektime(with seekTime: CMTime,
-                                                    tableView: UITableView,
-                                                    indexPath: IndexPath) {
+  internal func updateAudioVideoViewElementSeektime(
+    with seekTime: CMTime,
+    tableView: UITableView,
+    indexPath: IndexPath
+  ) {
     if self.numberOfSections(in: tableView) > indexPath.section,
-      self.numberOfItems(in: indexPath.section) > indexPath.row,
-      let audioVideoViewElementWithPlayerAndImage = self.items(in: indexPath.section)[indexPath.row]
-      .value as? (AudioVideoViewElement, AVPlayer, UIImage?) {
+       self.numberOfItems(in: indexPath.section) > indexPath.row,
+       let audioVideoViewElementWithPlayerAndImage = self.items(in: indexPath.section)[indexPath.row]
+       .value as? (AudioVideoViewElement, AVPlayer, UIImage?) {
       let updatedAudioVideoElement = audioVideoViewElementWithPlayerAndImage.0
         |> AudioVideoViewElement.lens.seekPosition .~ seekTime
 

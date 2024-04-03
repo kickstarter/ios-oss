@@ -20,8 +20,10 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_WithFailedRemovedAndSuccessfulComments_ShouldDisplayAll_Success() {
     let mockService =
-      MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope
-          .failedRemovedSuccessfulCommentsTemplate))
+      MockService(fetchProjectCommentsEnvelopeResult: .success(
+        CommentsEnvelope
+          .failedRemovedSuccessfulCommentsTemplate
+      ))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
@@ -49,8 +51,10 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView_WithSuccessFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
     let mockService =
-      MockService(fetchProjectCommentsEnvelopeResult: .success(CommentsEnvelope
-          .successFailedRetryingRetrySuccessCommentsTemplate))
+      MockService(fetchProjectCommentsEnvelopeResult: .success(
+        CommentsEnvelope
+          .successFailedRetryingRetrySuccessCommentsTemplate
+      ))
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, device in
@@ -159,7 +163,9 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.advance()
 
-        withEnvironment(apiService: MockService(fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON))) {
+        withEnvironment(
+          apiService: MockService(fetchProjectCommentsEnvelopeResult: .failure(.couldNotParseJSON))
+        ) {
           controller.viewModel.inputs.willDisplayRow(3, outOf: 4)
 
           self.scheduler.advance()

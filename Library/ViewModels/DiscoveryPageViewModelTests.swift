@@ -335,8 +335,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
-      self.vm.inputs.selectedFilter(.defaults
-        |> DiscoveryParams.lens.category .~ Category.art)
+      self.vm.inputs.selectedFilter(
+        .defaults
+          |> DiscoveryParams.lens.category .~ Category.art
+      )
       self.vm.inputs.tapped(project: project)
 
       self.goToPlaylist.assertValueCount(2, "New playlist for project emits.")
@@ -460,8 +462,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.activitiesForSample.assertValues([[activity1]], "Activity sample is shown.")
 
       // Change the filter.
-      self.vm.inputs.selectedFilter(.defaults
-        |> DiscoveryParams.lens.category .~ Category.art)
+      self.vm.inputs.selectedFilter(
+        .defaults
+          |> DiscoveryParams.lens.category .~ Category.art
+      )
       self.vm.inputs.viewDidDisappear(animated: true)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()

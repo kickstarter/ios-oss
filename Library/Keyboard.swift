@@ -27,10 +27,10 @@ public final class Keyboard {
 
   @objc private func change(_ notification: Notification) {
     guard let userInfo = notification.userInfo,
-      let frame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-      let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber,
-      let curveNumber = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber,
-      let curve = UIView.AnimationCurve(rawValue: curveNumber.intValue)
+          let frame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+          let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber,
+          let curveNumber = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber,
+          let curve = UIView.AnimationCurve(rawValue: curveNumber.intValue)
     else {
       return
     }

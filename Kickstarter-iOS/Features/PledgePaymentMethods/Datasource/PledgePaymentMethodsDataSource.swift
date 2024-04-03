@@ -62,7 +62,7 @@ internal final class PledgePaymentMethodsDataSource: ValueCellDataSource {
 
   func isLoadingStateCell(indexPath: IndexPath) -> Bool {
     guard let value = self[indexPath] as? Bool,
-      value else {
+          value else {
       return false
     }
 

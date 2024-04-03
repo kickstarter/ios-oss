@@ -38,8 +38,11 @@ public struct PostCampaignRewardsSummaryViewData {
 }
 
 public protocol PostCampaignPledgeRewardsSummaryViewModelInputs {
-  func configureWith(rewardsData: PostCampaignRewardsSummaryViewData, bonusAmount: Double?,
-                     pledgeData: PledgeSummaryViewData)
+  func configureWith(
+    rewardsData: PostCampaignRewardsSummaryViewData,
+    bonusAmount: Double?,
+    pledgeData: PledgeSummaryViewData
+  )
   func viewDidLoad()
 }
 
