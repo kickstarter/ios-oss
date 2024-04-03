@@ -149,7 +149,8 @@ private let cosmicSurgeryRewards: [Reward] = [
     |> Reward.lens.backersCount .~ 23
     |> Reward.lens.title .~ "Postcards"
     |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series."
-    |> Reward.lens.localPickup .~ nil,
+    |> Reward.lens.localPickup .~ nil
+    |> Reward.lens.isAvailable .~ true,
 
   .template
     |> Reward.lens.id .~ 1
@@ -173,7 +174,8 @@ private let cosmicSurgeryRewards: [Reward] = [
     |> Reward.lens
     .description .~
     "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July."
-    |> Reward.lens.localPickup .~ nil,
+    |> Reward.lens.localPickup .~ nil
+    |> Reward.lens.isAvailable .~ true,
 
   .template
     |> Reward.lens.id .~ 3
@@ -216,4 +218,5 @@ private let cosmicSurgeryRewards: [Reward] = [
         |> RewardsItem.lens.rewardId .~ 3
     ]
     |> Reward.lens.localPickup .~ nil
+    |> Reward.lens.isAvailable .~ true
 ]
