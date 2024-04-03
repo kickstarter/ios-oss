@@ -866,6 +866,7 @@ final class ConfirmDetailsViewModelTests: TestCase {
       self.createCheckoutSuccess.assertDidEmitValue()
       let expectedValue = PostCampaignCheckoutData(
         project: project,
+        baseReward: reward,
         rewards: expectedRewards,
         selectedQuantities: selectedQuantities,
         bonusAmount: expectedBonus,

@@ -7,6 +7,7 @@ import Stripe
 
 public struct PostCampaignCheckoutData: Equatable {
   public let project: Project
+  public let baseReward: Reward
   public let rewards: [Reward]
   public let selectedQuantities: SelectedRewardQuantities
   public let bonusAmount: Double?
@@ -98,13 +99,13 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsData
       .compactMap { data -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
-        guard let reward = data.rewards.first else { return nil }
+        let reward = data.baseReward
 
         return (user, data.project, reward, data.context, data.refTag, data.total, .paymentIntent)
       }
 
     self.goToLoginSignup = initialData.takeWhen(self.goToLoginSignupSignal)
-      .map { (LoginIntent.backProject, $0.project, $0.rewards.first) }
+      .map { (LoginIntent.backProject, $0.project, $0.baseReward) }
 
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
@@ -337,15 +338,12 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .skipNil()
       .combineLatest(with: newPaymentIntentForApplePay)
       .map { (data: PostCampaignCheckoutData, paymentIntent: String) -> PostCampaignPaymentAuthorizationData? in
-        guard let firstReward = data.rewards.first else {
-          // There should always be a reward - we create a special "no reward" reward if you make a monetary pledge
-          return nil
-        }
+        let baseReward = data.baseReward
 
         return PostCampaignPaymentAuthorizationData(
           project: data.project,
-          hasNoReward: firstReward.isNoReward,
-          subtotal: firstReward.isNoReward ? firstReward.minimum : calculateAllRewardsTotal(
+          hasNoReward: baseReward.isNoReward,
+          subtotal: baseReward.isNoReward ? baseReward.minimum : calculateAllRewardsTotal(
             addOnRewards: data.rewards,
             selectedQuantities: data.selectedQuantities
           ),
@@ -431,12 +429,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     // Page viewed event
     initialData
       .observeValues { data in
-        guard let baseReward = data.rewards.first else {
-          return
-        }
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: data.project,
-          reward: baseReward,
+          reward: data.baseReward,
           pledgeViewContext: data.context,
           checkoutData: self.trackingDataFromCheckoutParams(data),
           refTag: data.refTag
@@ -447,12 +442,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     initialData
       .takeWhen(self.submitButtonTappedProperty.signal)
       .observeValues { data in
-        guard let baseReward = data.rewards.first else {
-          return
-        }
         AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
           project: data.project,
-          reward: baseReward,
+          reward: data.baseReward,
           typeContext: .creditCard,
           checkoutData: self.trackingDataFromCheckoutParams(data),
           refTag: data.refTag
@@ -463,12 +455,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     initialData
       .takeWhen(self.applePayButtonTappedSignal)
       .observeValues { data in
-        guard let baseReward = data.rewards.first else {
-          return
-        }
         AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
           project: data.project,
-          reward: baseReward,
+          reward: data.baseReward,
           typeContext: .applePay,
           checkoutData: self.trackingDataFromCheckoutParams(data, isApplePay: true),
           refTag: data.refTag
@@ -483,10 +472,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     isApplePay: Bool = false
   )
     -> KSRAnalytics.CheckoutPropertiesData {
-    let baseReward = data.rewards.first!
     return checkoutProperties(
       from: data.project,
-      baseReward: baseReward,
+      baseReward: data.baseReward,
       addOnRewards: data.rewards,
       selectedQuantities: data.selectedQuantities,
       additionalPledgeAmount: data.bonusAmount ?? 0,
