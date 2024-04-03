@@ -247,10 +247,8 @@ final class PostCampaignCheckoutViewModelTests: TestCase {
       }
     }
     """
-    let completeSessionJson = try! JSONSerialization
-      .jsonObject(with: completeSessionJsonString.data(using: .utf8)!)
     let completeSessionData = try! GraphAPI.CompleteOnSessionCheckoutMutation
-      .Data(jsonObject: completeSessionJson as! JSONObject)
+      .Data(jsonString: completeSessionJsonString)
     let mockService = MockService(
       completeOnSessionCheckoutResult: .success(completeSessionData),
       createPaymentIntentResult: .success(paymentIntent)
