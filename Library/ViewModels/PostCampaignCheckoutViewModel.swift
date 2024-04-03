@@ -88,7 +88,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     let context = initialData.map(\.context)
     let project = initialData.map(\.project)
     let checkoutId = initialData.map(\.checkoutId)
-    let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
+    let baseReward = initialData.map(\.rewards).map(\.first)
 
     let configurePaymentMethodsData = Signal.merge(
       initialData,
@@ -110,40 +110,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let notChangingPaymentMethod = context.map { context in
-      context.isUpdating && context != .changePaymentMethod
-    }
-    .filter(isTrue)
+    let shouldEnablePledgeButton = self.creditCardSelectedProperty.signal.skipNil().mapConst(true)
 
-    let paymentMethodSelected = self.creditCardSelectedProperty.signal.skipNil()
-
-    let paymentMethodChangedAndValid = Signal.merge(
-      notChangingPaymentMethod.mapConst(false),
-      Signal.combineLatest(
-        project,
-        baseReward,
-        paymentMethodSelected.map { (source: PaymentSourceSelected, _, _) in source },
-        context
-      )
-      .map(paymentMethodValid)
-    )
-
-    let isEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false)
-        .take(until: paymentMethodChangedAndValid.ignoreValues()),
-      paymentMethodChangedAndValid
+    let pledgeButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      shouldEnablePledgeButton
     )
     .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       isLoggedIn,
-      isEnabled,
+      pledgeButtonEnabled,
       context
     )
-    .map { isLoggedIn, isEnabled, context in
+    .map { isLoggedIn, pledgeButtonEnabled, context in
       PledgeViewCTAContainerViewData(
         isLoggedIn: isLoggedIn,
-        isEnabled: isEnabled,
+        isEnabled: pledgeButtonEnabled,
         context: context,
         willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
       )
@@ -421,7 +404,9 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     let thanksPageData = Signal.combineLatest(initialData, baseReward)
       .map { initialData, baseReward -> ThanksPageData? in
-        (initialData.project, baseReward, nil, initialData.total)
+        guard let reward = baseReward else { return nil }
+
+        return (initialData.project, reward, nil, initialData.total)
       }
 
     self.checkoutComplete = thanksPageData.skipNil()
@@ -538,27 +523,4 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
   public var inputs: PostCampaignCheckoutViewModelInputs { return self }
   public var outputs: PostCampaignCheckoutViewModelOutputs { return self }
-}
-
-private func paymentMethodValid(
-  project: Project,
-  reward: Reward,
-  paymentSource: PaymentSourceSelected,
-  context: PledgeViewContext
-) -> Bool {
-  guard
-    let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
-    context.isUpdating,
-    userIsBacking(reward: reward, inProject: project)
-  else {
-    return true
-  }
-
-  if project.personalization.backing?.status == .errored {
-    return true
-  } else if backedPaymentSourceId != paymentSource.savedCreditCardId {
-    return true
-  }
-
-  return false
 }
