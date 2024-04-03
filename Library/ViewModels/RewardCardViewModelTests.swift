@@ -521,6 +521,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.isAvailable .~ true
 
     self.vm.inputs.configure(with: (project, reward, .pledge))
 
@@ -532,6 +533,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.remaining .~ 10
       |> Reward.lens.minimum .~ 1_000.0
+      |> Reward.lens.isAvailable .~ true
 
     self.vm.inputs.configure(with: (project, reward, .pledge))
 

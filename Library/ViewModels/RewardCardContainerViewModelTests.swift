@@ -17,27 +17,32 @@ final class RewardCardContainerViewModelTests: TestCase {
 
   let availableHasAddOns = Reward.postcards
     |> Reward.lens.hasAddOns .~ true
+    |> Reward.lens.isAvailable .~ true
   let availableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.endsAt .~ nil
+    |> Reward.lens.isAvailable .~ true
   let availableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.isAvailable .~ true
   let availableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.isAvailable .~ true
   let availableNonLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ nil
-
+    |> Reward.lens.isAvailable .~ true
   let unavailableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
     |> Reward.lens.endsAt .~ nil
+    |> Reward.lens.isAvailable .~ false
   let unavailableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
