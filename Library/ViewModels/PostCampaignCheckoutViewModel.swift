@@ -196,7 +196,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
 
     let paymentIntentClientSecretForExistingCards = newPaymentIntentForExistingCards.values()
       .map { $0.clientSecret }
-    
+
     let validateCheckoutExistingCardInput = Signal
       .combineLatest(
         checkoutId,
@@ -204,9 +204,6 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
         paymentIntentClientSecretForExistingCards,
         storedCardsValues
       )
-      .filter { _, selectedCard, _, _ in
-        selectedCard.isNewPaymentMethod == false
-      }
 
     // Runs validation for pre-existing cards that were created with setup intents originally but require payment intents for late pledges.
     let validateCheckoutExistingCard = validateCheckoutExistingCardInput
@@ -245,11 +242,8 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       }
 
     // MARK: - Validate New Cards
-    
+
     let validateCheckoutNewCardInput = Signal.combineLatest(checkoutId, selectedCard)
-      .filter { _, selectedCard in
-        selectedCard.isNewPaymentMethod == true
-      }
 
     // Runs validation for new cards that were created with payment intents.
     let validateCheckoutNewCard = validateCheckoutNewCardInput
@@ -407,13 +401,25 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .map { $0 }
 
     self.checkoutError = checkoutCompleteSignal.signal.errors()
-    
+
     // MARK: - UI related to checkout flow
+
+    let newCardActivatesPledgeButton = validateCheckoutNewCardInput
+      .filter { _, selectedCard in
+        selectedCard.isNewPaymentMethod == true
+      }
+      .mapConst(true)
+
+    let existingCardActivatesPledgeButton = validateCheckoutExistingCardInput
+      .filter { _, selectedCard, _, _ in
+        selectedCard.isNewPaymentMethod == false
+      }
+      .mapConst(true)
 
     let pledgeButtonEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      validateCheckoutNewCardInput.mapConst(true),
-      validateCheckoutExistingCardInput.mapConst(true)
+      newCardActivatesPledgeButton,
+      existingCardActivatesPledgeButton
     )
     .skipRepeats()
 
