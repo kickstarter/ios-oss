@@ -279,28 +279,8 @@ public func isNativeRiskMessagingControlEnabled() -> Bool {
   return true
 }
 
-public func rewardIsAvailable(project: Project, reward: Reward) -> Bool {
-  let isLimited = reward.isLimitedQuantity
-  let isTimebased = reward.isLimitedTime
-
-  guard isLimited || isTimebased else { return true }
-
-  let remainingQty = rewardLimitRemainingForBacker(project: project, reward: reward)
-  let isRemaining = remainingQty == nil || (remainingQty ?? 0) > 0
-
-  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
-  let endsAt = reward.endsAt.coalesceWith(now)
-  let timeLimitNotReached = endsAt > now
-
-  // Limited availability is valid if the reward is limited and remaining > 0 OR this reward is not limited.
-  let limitedAvailabilityValid = (isLimited && isRemaining) || !isLimited
-
-  // Timebased availability is valid if the reward is timebased and the time limit has not been reached
-  // OR the reward is not timebased.
-  let timebasedAvailabilityValid = (isTimebased && timeLimitNotReached) || !isTimebased
-
-  // Both types of availability must be valid in order for this reward to be considered available.
-  return limitedAvailabilityValid && timebasedAvailabilityValid
+public func rewardIsAvailable(_ reward: Reward) -> Bool {
+  reward.isAvailable == true || reward.isNoReward
 }
 
 public func rewardLimitRemainingForBacker(project: Project, reward: Reward) -> Int? {
@@ -377,7 +357,7 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
   guard !currentUserIsCreator(of: project) else { return false }
 
   let isBacking = userIsBacking(reward: reward, inProject: project)
-  let isAvailableForNewBacker = rewardIsAvailable(project: project, reward: reward) && !isBacking
+  let isAvailableForNewBacker = rewardIsAvailable(reward) && !isBacking
   let isAvailableForExistingBackerToEdit = (isBacking && reward.hasAddOns)
 
   if featurePostCampaignPledgeEnabled(), project.isInPostCampaignPledgingPhase {

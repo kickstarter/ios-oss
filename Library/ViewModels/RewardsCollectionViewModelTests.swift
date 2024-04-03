@@ -131,6 +131,7 @@ final class RewardsCollectionViewModelTests: TestCase {
           |> Reward.lens.localPickup .~ .brooklyn
           |> Reward.lens.shipping.preference .~ .local
           |> Reward.lens.shipping.enabled .~ false
+          |> Reward.lens.isAvailable .~ true
 
         return updatedReward
       }
@@ -172,6 +173,7 @@ final class RewardsCollectionViewModelTests: TestCase {
           |> Reward.lens.localPickup .~ .brooklyn
           |> Reward.lens.shipping.preference .~ .local
           |> Reward.lens.shipping.enabled .~ false
+          |> Reward.lens.isAvailable .~ true
 
         return updatedReward
       }
