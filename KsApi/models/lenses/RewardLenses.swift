@@ -25,7 +25,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -51,7 +51,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $0,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -77,7 +77,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -103,7 +103,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -129,7 +129,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -155,7 +155,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -181,7 +181,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -207,7 +207,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -233,7 +233,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -259,7 +259,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -285,7 +285,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -311,7 +311,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -337,7 +337,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -363,7 +363,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -389,7 +389,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -415,7 +415,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -441,7 +441,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -467,7 +467,7 @@ extension Reward {
         startsAt: $0,
         title: $1.title,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
@@ -493,7 +493,7 @@ extension Reward {
         startsAt: $1.startsAt,
         title: $0,
         localPickup: $1.localPickup,
-        isAvailable: nil
+        isAvailable: $1.isAvailable
       ) }
     )
 
