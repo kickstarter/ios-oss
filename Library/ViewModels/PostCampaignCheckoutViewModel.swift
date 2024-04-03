@@ -86,6 +86,7 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
     .skipNil()
 
     let context = initialData.map(\.context)
+    let project = initialData.map(\.project)
     let checkoutId = initialData.map(\.checkoutId)
     let baseReward = initialData.map(\.rewards).map(\.first)
 
@@ -109,14 +110,23 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
+    let shouldEnablePledgeButton = self.creditCardSelectedProperty.signal.skipNil().mapConst(true)
+
+    let pledgeButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      shouldEnablePledgeButton
+    )
+    .skipRepeats()
+
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       isLoggedIn,
+      pledgeButtonEnabled,
       context
     )
-    .map { isLoggedIn, context in
+    .map { isLoggedIn, pledgeButtonEnabled, context in
       PledgeViewCTAContainerViewData(
         isLoggedIn: isLoggedIn,
-        isEnabled: true, // Pledge button never needs to be disabled on checkout page.
+        isEnabled: pledgeButtonEnabled,
         context: context,
         willRetryPaymentMethod: false // Only retry in the `fixPaymentMethod` context.
       )
