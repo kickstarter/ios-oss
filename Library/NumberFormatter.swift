@@ -1,4 +1,3 @@
-// swiftformat:disable wrap
 import Foundation
 
 final class AttributedNumberFormatter: NumberFormatter {
@@ -11,10 +10,14 @@ final class AttributedNumberFormatter: NumberFormatter {
 
   // MARK: - Attributed string
 
-  override func attributedString(for obj: Any, withDefaultAttributes _: [NSAttributedString.Key: Any]? = nil) -> NSAttributedString? {
+  override func attributedString(
+    for obj: Any,
+    withDefaultAttributes _: [NSAttributedString.Key: Any]? = nil
+  ) -> NSAttributedString? {
     guard
       let number = obj as? NSNumber,
-      let string = string(from: number)?.replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)
+      let string = string(from: number)?
+      .replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)
     else { return nil }
 
     let mutableAttributedString = NSMutableAttributedString(
@@ -22,21 +25,24 @@ final class AttributedNumberFormatter: NumberFormatter {
       attributes: self.defaultAttributes
     )
 
-    if let currencySymbolRange = self.currencySymbolRange(for: string), currencySymbolRange.location != NSNotFound {
+    if let currencySymbolRange = self.currencySymbolRange(for: string),
+      currencySymbolRange.location != NSNotFound {
       mutableAttributedString.addAttributes(
         self.currencySymbolAttributes,
         range: currencySymbolRange
       )
     }
 
-    if let decimalSeparatorRange = self.decimalSeparatorRange(for: string), decimalSeparatorRange.location != NSNotFound {
+    if let decimalSeparatorRange = self.decimalSeparatorRange(for: string),
+      decimalSeparatorRange.location != NSNotFound {
       mutableAttributedString.addAttributes(
         self.decimalSeparatorAttributes,
         range: decimalSeparatorRange
       )
     }
 
-    if let fractionDigitsRange = self.fractionDigitsRange(for: string), fractionDigitsRange.location != NSNotFound {
+    if let fractionDigitsRange = self.fractionDigitsRange(for: string),
+      fractionDigitsRange.location != NSNotFound {
       mutableAttributedString.addAttributes(
         self.fractionDigitsAttributes,
         range: fractionDigitsRange
@@ -58,7 +64,8 @@ final class AttributedNumberFormatter: NumberFormatter {
   }
 
   private func fractionDigitsRange(for string: String) -> NSRange? {
-    if let decimalSeparatorRange = self.decimalSeparatorRange(for: string), decimalSeparatorRange.location != NSNotFound {
+    if let decimalSeparatorRange = self.decimalSeparatorRange(for: string),
+      decimalSeparatorRange.location != NSNotFound {
       return NSRange(
         location: decimalSeparatorRange.location + 1,
         length: self.maximumFractionDigits

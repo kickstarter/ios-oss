@@ -319,14 +319,10 @@ final class ServiceTypeTests: XCTestCase {
   }
 }
 
-// swiftformat:disable wrap
 private func userAgent() -> String {
-  return """
-  xctest/\(testToolBuildNumber()) (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) Scale/\(UIScreen.main.scale))
-  """
+  // swiftformat:disable:next wrap
+  return "xctest/\(testToolBuildNumber()) (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) Scale/\(UIScreen.main.scale))"
 }
-
-// swiftformat:enable wrap
 
 private func testToolBuildNumber() -> String {
   return Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""

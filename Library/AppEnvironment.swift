@@ -452,8 +452,6 @@ public struct AppEnvironment: AppEnvironmentType {
   ) {
     var data: [String: Any] = [:]
 
-    // swiftformat:disable wrap
-
     if let oauthToken = env.apiService.oauthToken?.token {
       // Try to save to the keychain, but if that fails, save to user defaults
       if !self.storeOAuthTokenToKeychain(oauthToken) {
@@ -464,16 +462,18 @@ public struct AppEnvironment: AppEnvironmentType {
     }
 
     data["apiService.serverConfig.apiBaseUrl"] = env.apiService.serverConfig.apiBaseUrl.absoluteString
-    data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth.clientId
-    data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username
-    data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?.password
+    data["apiService.serverConfig.apiClientAuth.clientId"] = env.apiService.serverConfig.apiClientAuth
+      .clientId
+    data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?
+      .username
+    data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?
+      .password
     data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
     data["apiService.serverConfig.environment"] = env.apiService.serverConfig.environment.description
     data["apiService.language"] = env.apiService.language
     data["apiService.currency"] = env.apiService.currency
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
-    // swiftformat:enable wrap
 
     userDefaults.set(data, forKey: self.environmentStorageKey)
   }

@@ -1,12 +1,12 @@
 import Foundation
 
 public enum AppKeys: String {
-  // swiftformat:disable wrap
   case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
   case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
   case favoriteCategoryIds = "favorite_category_ids"
-  case hasCompletedCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasCompletedCategoryPersonalizationFlow"
+  case hasCompletedCategoryPersonalizationFlow =
+    "com.kickstarter.KeyValueStoreType.hasCompletedCategoryPersonalizationFlow"
   case hasDismissedPersonalizationCard = "com.kickstarter.KeyValueStoreType.hasDismissedPersonalizationCard"
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
@@ -15,7 +15,6 @@ public enum AppKeys: String {
   case remoteConfigFeatureFlags = "com.kickstarter.KeyValueStoreType.remoteConfigFeatureFlags"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
-  // swiftformat:enable wrap
 }
 
 public protocol KeyValueStoreType: AnyObject {
