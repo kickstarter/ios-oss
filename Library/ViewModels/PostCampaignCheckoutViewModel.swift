@@ -425,6 +425,76 @@ public class PostCampaignCheckoutViewModel: PostCampaignCheckoutViewModelType,
       self.checkoutTerminatedProperty.signal.mapConst(true),
       checkoutCompleteSignal.signal.mapConst(true)
     )
+
+    // MARK: - Tracking
+
+    // Page viewed event
+    initialData
+      .observeValues { data in
+        guard let baseReward = data.rewards.first else {
+          return
+        }
+        AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
+          project: data.project,
+          reward: baseReward,
+          pledgeViewContext: data.context,
+          checkoutData: self.trackingDataFromCheckoutParams(data),
+          refTag: data.refTag
+        )
+      }
+
+    // Pledge button tapped event
+    initialData
+      .takeWhen(self.submitButtonTappedProperty.signal)
+      .observeValues { data in
+        guard let baseReward = data.rewards.first else {
+          return
+        }
+        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+          project: data.project,
+          reward: baseReward,
+          typeContext: .creditCard,
+          checkoutData: self.trackingDataFromCheckoutParams(data),
+          refTag: data.refTag
+        )
+      }
+
+    // Apple pay button tapped event
+    initialData
+      .takeWhen(self.applePayButtonTappedSignal)
+      .observeValues { data in
+        guard let baseReward = data.rewards.first else {
+          return
+        }
+        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+          project: data.project,
+          reward: baseReward,
+          typeContext: .applePay,
+          checkoutData: self.trackingDataFromCheckoutParams(data, isApplePay: true),
+          refTag: data.refTag
+        )
+      }
+  }
+
+  // MARK: - Helpers
+
+  private func trackingDataFromCheckoutParams(
+    _ data: PostCampaignCheckoutData,
+    isApplePay: Bool = false
+  )
+    -> KSRAnalytics.CheckoutPropertiesData {
+    let baseReward = data.rewards.first!
+    return checkoutProperties(
+      from: data.project,
+      baseReward: baseReward,
+      addOnRewards: data.rewards,
+      selectedQuantities: data.selectedQuantities,
+      additionalPledgeAmount: data.bonusAmount ?? 0,
+      pledgeTotal: data.total,
+      shippingTotal: data.shipping?.total ?? 0,
+      checkoutId: data.checkoutId,
+      isApplePay: isApplePay
+    )
   }
 
   // MARK: - Inputs

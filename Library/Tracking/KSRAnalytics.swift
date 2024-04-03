@@ -952,7 +952,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     switch pledgeViewContext {
-    case .pledge:
+    case .pledge, .latePledge:
       props = props.withAllValuesFrom(contextProperties(page: .checkout))
     case .changePaymentMethod:
       props = props.withAllValuesFrom(contextProperties(page: .changePayment))
