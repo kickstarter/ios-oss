@@ -163,8 +163,7 @@ private let cosmicSurgeryRewards: [Reward] = [
     |> Reward.lens
     .description .~
     "You will be the first to receive a copy of the book at this special ‘earlybird’ price. Limited to the first 100 copies."
-    |> Reward.lens.localPickup .~ nil
-    |> Reward.lens.isAvailable .~ true,
+    |> Reward.lens.localPickup .~ nil,
 
   .template
     |> Reward.lens.id .~ 2
